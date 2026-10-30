@@ -97,6 +97,41 @@ body{font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-
 #overlay:has(.phone-wrap) .win{max-width:500px}
 #overlay:has(.phone-wrap) .winmain{padding:14px}
 .phone-wrap{display:flex;align-items:center;flex-direction:column;gap:8px}.iphone{width:min(286px,72vw);aspect-ratio:9/18.8;border:7px solid #302735;border-radius:42px;padding:5px;background:#221d2d;box-shadow:0 12px 30px #3b245355;position:relative;overflow:hidden}.phone-wallpaper{height:100%;width:100%;border-radius:32px;overflow:hidden;position:relative;background:radial-gradient(ellipse at 66% 28%,#fff1d5 0%,transparent 25%),linear-gradient(175deg,#30276b 0%,#655aa8 32%,#dba4ca 66%,#f6b6b9 100%)}.phone-wallpaper:before{content:'☾';position:absolute;top:18%;right:19%;font-size:61px;color:#fff5ca;text-shadow:0 0 24px #fff8d5}.phone-wallpaper:after{content:'☁ ☁ ☁';position:absolute;top:43%;left:0;width:100%;font-size:42px;letter-spacing:9px;color:#f9c5dbb9;pointer-events:none}.phone-island{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:82px;height:20px;border-radius:25px;background:#211d2c;z-index:3}.phone-status{position:absolute;top:10px;left:18px;right:14px;display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:white;z-index:3}.phone-screen{position:relative;z-index:2;height:100%;padding:54px 15px 48px;color:white}.phone-date{text-align:center;font-size:13px;text-shadow:0 1px 3px #3b2e69}.phone-time{text-align:center;font-size:45px;font-weight:200;line-height:1.2;text-shadow:0 1px 5px #3b2e69}.phone-apps{position:absolute;left:14px;right:14px;bottom:99px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.phone-app{border:0!important;background:transparent!important;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0!important;font-size:11px;color:white!important;cursor:pointer}.phone-app-icon{display:grid;place-items:center;width:51px;height:51px;border-radius:13px;font-size:29px;color:white;box-shadow:0 2px 6px #2a215055}.contacts-icon{background:linear-gradient(135deg,#d9c5fc,#9489d9)}.mail-icon{background:linear-gradient(135deg,#9dd8ff,#3989eb)}.insta-icon{background:linear-gradient(135deg,#ffe28a,#ed71ac,#8c66d9)}.phone-bottom{position:absolute;bottom:13px;left:9px;right:9px;display:flex;justify-content:space-around;align-items:center;height:62px;border-radius:19px;background:#ffffff48;backdrop-filter:blur(9px);font-size:28px}.phone-home-indicator{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:90px;height:4px;border-radius:9px;background:white;z-index:4}.phone-caption{font-size:12px;color:#8e7b9e;margin:0}.phone-contact{position:absolute;inset:0;background:#faf8ff;color:#39314d;padding:50px 17px 35px;overflow:auto}.phone-back{border:0!important;background:none!important;color:#6a62bc!important;padding:0!important;font-size:13px}.phone-contact h3{text-align:center;font-size:20px;margin:12px 0}.phone-avatar{width:74px;height:74px;border-radius:50%;margin:8px auto;background:#d8b4df;display:grid;place-items:center;font-size:34px}.phone-contact a{color:#6558a4;overflow-wrap:anywhere}.phone-contact p{font-size:13px;border-radius:12px;padding:10px;background:#ece8f5}.phone-contact .phone-mail-button{display:block;width:100%;padding:10px!important;background:#e9d8f4!important;border-radius:12px!important;color:#57417d!important}.phone-contact h3{color:#39314d}
+</style><style>
+/* iPhone Miffy : référence approuvée, sans modifier l'illustration de chambre */
+#overlay:has(.iphone-ref) .win{max-width:480px}
+#overlay:has(.iphone-ref) .winmain{display:flex;justify-content:center;overflow:auto}
+.iphone-ref{position:relative;width:min(337px,78vw,calc((100dvh - 190px)*337/734));aspect-ratio:337/734;background:url("iphone-reference.jpg") center/100% 100% no-repeat;flex:none;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;color:#29242e}
+.phone-hit{position:absolute;top:12.6%;height:11%;width:22%;border:0;background:transparent;cursor:pointer;border-radius:16px;z-index:2}
+.phone-hit:focus-visible{outline:3px solid #6255b8}
+.phone-hit-contact{left:10%}.phone-hit-mail{left:39%}.phone-hit-instagram{left:67%}
+.iphone-app-layer{position:absolute;left:5.4%;right:5.3%;top:3%;bottom:3.4%;border-radius:29px;background:#f6f5fb;overflow:hidden;z-index:4;font-size:13px}
+.iphone-app-layer[hidden]{display:none}
+.ios-header{height:53px;display:flex;align-items:center;justify-content:space-between;padding:16px 10px 0;background:#f7e9f4;border-bottom:1px solid #e9d5e5;gap:5px}
+.ios-header button{background:none;border:0;color:#7751b2;font:inherit;cursor:pointer;padding:8px 2px}
+.ios-header strong{font-size:13px;white-space:nowrap}
+.ios-contacts{padding:15px;overflow:auto;height:calc(100% - 53px)}
+.ios-avatar{width:65px;height:65px;border-radius:50%;background:#dfb5d6;color:white;display:grid;place-items:center;font-size:35px;margin:8px auto}
+.ios-contacts h2{text-align:center;font-size:17px;margin:10px 0 22px}
+.ios-card{background:white;border-radius:12px;padding:12px;margin:9px 0;display:flex;flex-direction:column;gap:5px;overflow-wrap:anywhere}
+.ios-card small{color:#8c7b94}.ios-card a{color:#6251b1}
+.ios-compose-link{width:100%;border:0;border-radius:12px;background:#e6d8fb;color:#5c4c8a;padding:12px;margin-top:10px;cursor:pointer}
+.ios-mail{height:100%;display:flex;flex-direction:column}
+.ios-mail .ios-header{flex:none}
+.ios-send{font-size:22px!important;font-weight:800!important}
+.ios-send:disabled{opacity:.4}
+.ios-mail-scroll{flex:1;overflow:auto;background:#fff;padding:0 12px;min-height:0}
+.ios-mail-scroll label{display:flex;align-items:center;border-bottom:1px solid #eee7f1;padding:11px 0;gap:7px;color:#827a87;font-size:12px}
+.ios-mail-scroll input{border:0;outline:0;background:none;flex:1;min-width:0;font:inherit;font-size:12px;color:#29242e}
+.ios-recipient{color:#333;overflow-wrap:anywhere;font-size:11px}
+.ios-mail-scroll textarea{display:block;width:100%;min-height:130px;border:0;resize:none;outline:0;padding:13px 0;font:inherit;font-size:13px;box-sizing:border-box}
+.ios-mail-status{font-size:12px;min-height:20px;color:#756b83}.ios-mail-status.success{color:#24744b}.ios-mail-status.error{color:#a32d55}
+.ios-keyboard{display:none;background:#d9dce4;padding:8px 3px 17px;flex:none;user-select:none;touch-action:manipulation}
+.ios-keyboard.visible{display:block}
+.ios-keyrow{display:flex;justify-content:center;gap:3px;margin:4px 0}
+.ios-keyrow button{flex:1;min-width:0;border:0;background:white;border-radius:5px;height:27px;font-size:11px;color:#252532;box-shadow:0 1px 1px #a3a4ae}
+.ios-keyrow:last-child button:nth-child(2){flex:5}
+@media(pointer:coarse){.ios-keyboard{display:none!important}}
 </style></head><body>
 <div id="view" aria-label="Chambre interactive, déplacer et zoomer avec les doigts"><div id="scene"><div id="room"></div>
 <svg id="hotspots" viewBox="0 0 1536 866" aria-label="Objets interactifs" xmlns="http://www.w3.org/2000/svg"><path tabindex="0" role="button" aria-label="Présentation animée" data-item="ipad" d="M 592 578 L 641 555 Q 644 554 648 556 L 704 572 Q 710 576 704 581 L 652 606 Q 648 608 645 606 L 591 587 Q 585 583 592 578 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Enceinte Marshall" data-item="music" d="M 100 405 L 177 407 Q 182 408 183 412 L 183 463 Q 182 469 177 470 L 100 474 Q 96 475 95 470 L 95 411 Q 95 405 100 405 Z" fill-rule="evenodd"/><polygon tabindex="0" role="button" aria-label="CD et pochettes" data-item="covers" points="184,418 221,419 228,418 253,420 260,431 259,464 248,473 185,475 183,456"/><path tabindex="0" role="button" aria-label="Ring light" data-item="videos" d="M 52 371 C 31 370 16 388 11 416 C 6 449 16 490 33 508 C 48 526 71 517 84 493 C 99 465 98 425 87 398 C 80 382 66 371 52 371 Z M 53 391 C 66 391 75 408 77 438 C 80 468 68 491 53 493 C 39 492 30 472 29 449 C 28 422 38 394 53 391 Z M 47 514 L 59 513 L 60 633 L 52 633 Z M 52 626 L 59 626 L 11 752 L 0 754 Z M 54 624 L 61 626 L 107 744 L 96 751 Z M 52 628 L 60 627 L 59 746 L 50 746 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="T-shirt GABZILLA" data-item="textile" d="M 1201 499 Q 1210 490 1218 489 Q 1225 485 1233 492 Q 1248 498 1257 491 Q 1275 492 1293 501 Q 1306 507 1311 523 L 1322 585 Q 1324 593 1320 598 L 1290 611 L 1297 671 Q 1300 675 1315 675 Q 1323 676 1318 683 Q 1310 689 1298 681 L 1297 686 Q 1293 695 1282 696 Q 1269 695 1264 682 L 1259 676 Q 1249 679 1240 674 Q 1231 674 1226 663 L 1202 664 Q 1195 665 1194 656 L 1194 625 Q 1180 624 1172 618 Q 1166 614 1170 603 L 1183 544 Q 1187 518 1201 499 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Carnets sur le bureau" data-item="illustration" d="M 1154 457 L 1180 447 L 1215 443 L 1234 453 L 1234 485 L 1222 490 L 1157 488 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Pot à crayons sur le bureau" data-item="illustration" d="M 1221 435 L 1228 408 Q 1241 395 1254 401 L 1272 401 Q 1292 405 1299 428 L 1303 448 L 1319 453 L 1318 487 L 1230 492 L 1227 465 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Crayons et carnets sur le bureau" data-item="illustration" d="M 1308 450 Q 1310 439 1321 435 L 1337 438 Q 1356 420 1373 416 Q 1392 416 1403 436 L 1415 455 L 1419 490 L 1310 494 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Carnet sur le bureau" data-item="illustration" d="M 1397 481 L 1445 462 L 1489 458 L 1517 478 L 1515 500 L 1470 505 L 1409 505 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Livre sur la table" data-item="cv" d="M 782 742 L 834 702 Q 837 700 841 702 L 919 717 L 919 749 L 861 779 L 780 767 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Présentation" data-item="about" d="M 1460 397 L 1510 396 L 1519 401 L 1516 479 L 1462 480 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Smartphone" data-item="phone" d="M 1087 776 Q 1088 772 1095 768 L 1146 740 Q 1151 738 1156 739 L 1189 748 Q 1196 750 1197 755 L 1198 771 Q 1198 776 1193 780 L 1147 807 Q 1142 810 1138 809 L 1091 797 Q 1083 795 1084 790 Z" fill-rule="evenodd"/><path tabindex="0" role="button" aria-label="Tamagotchi" data-item="tamagotchi" d="M 1040 744 Q 1041 734 1053 730 Q 1063 729 1071 735 L 1083 749 Q 1088 756 1082 762 L 1081 781 Q 1076 796 1058 800 L 1040 798 Q 1026 797 1020 786 Q 1016 780 1019 762 Q 1023 752 1032 747 Z M 1052 734 Q 1069 731 1076 740 L 1086 752 L 1090 760 L 1085 763 Q 1082 750 1064 742 Z" fill-rule="evenodd"/><polygon tabindex="0" role="button" aria-label="Livres étagère haute" data-item="books1" points="0,0 53,0 54,23 58,44 58,95 48,94 47,91 0,81"/><polygon tabindex="0" role="button" aria-label="Livres étagère centrale" data-item="books2" points="0,128 17,128 17,130 41,132 55,129 57,215 42,218 28,219 0,214"/><polygon tabindex="0" role="button" aria-label="Livres étagère basse" data-item="books3" points="0,266 18,266 19,270 44,271 48,267 66,267 66,353 56,361 0,358"/><polygon tabindex="0" role="button" aria-label="Pile de livres sur étagère" data-item="books4" points="178,208 192,204 213,200 249,206 263,201 264,247 229,252 207,250 178,243"/><polygon tabindex="0" role="button" aria-label="Pile de livres sur le rebord" data-item="books5" points="934,457 945,455 959,447 1008,447 1028,455 1028,494 1013,500 936,501"/><polygon tabindex="0" role="button" aria-label="Affiche 1" data-item="poster1" points="205,2 277,22 277,139 204,126"/><polygon tabindex="0" role="button" aria-label="Affiche 2" data-item="poster2" points="304,0 408,27 407,216 303,194"/><polygon tabindex="0" role="button" aria-label="Affiche 3" data-item="poster3" points="450,22 529,54 528,221 450,200"/><polygon tabindex="0" role="button" aria-label="Affiche 4" data-item="poster4" points="584,29 705,5 705,208 586,230"/><polygon tabindex="0" role="button" aria-label="Affiche 5" data-item="poster5" points="722,53 772,46 772,153 722,160"/><polygon tabindex="0" role="button" aria-label="Affiche 6" data-item="poster6" points="319,226 398,242 398,378 319,364"/><polygon tabindex="0" role="button" aria-label="Affiche 7" data-item="poster7" points="464,238 517,251 517,376 462,364"/><polygon tabindex="0" role="button" aria-label="Affiche 8" data-item="poster8" points="545,261 607,253 607,372 544,378"/><polygon tabindex="0" role="button" aria-label="Affiche 9" data-item="poster9" points="620,239 677,233 678,351 620,354"/><polygon tabindex="0" role="button" aria-label="Affiche 10" data-item="poster10" points="723,192 769,186 769,271 723,272"/><polygon tabindex="0" role="button" aria-label="Affiche 11" data-item="poster11" points="410,335 446,337 446,418 410,416"/><polygon tabindex="0" role="button" aria-label="Affiche 12" data-item="poster12" points="621,376 675,372 675,445 622,447"/><polygon tabindex="0" role="button" aria-label="Affiche 13" data-item="poster13" points="720,461 770,458 769,521 720,521"/><polygon tabindex="0" role="button" aria-label="Affiche 14" data-item="poster14" points="1194,26 1314,10 1314,185 1197,207"/><polygon tabindex="0" role="button" aria-label="Affiche 15" data-item="poster15" points="1338,4 1466,5 1466,198 1339,207"/><polygon tabindex="0" role="button" aria-label="Affiche 16" data-item="poster16" points="1342,234 1484,227 1483,360 1344,365"/><polygon tabindex="0" role="button" aria-label="Affiche 17" data-item="poster17" points="1217,210 1304,208 1304,365 1217,366"/><polygon tabindex="0" role="button" aria-label="Affiche 18" data-item="poster18" points="1194,254 1226,253 1226,331 1194,333"/><polygon tabindex="0" role="button" aria-label="Illustration encadrée dans la chambre" data-item="poster19" points="695,290 778,285 778,443 696,443"/><polygon tabindex="0" role="button" aria-label="Petite affiche près du lit" data-item="poster20" points="332,398 375,397 376,462 332,463"/></svg></div></div>
@@ -118,7 +153,12 @@ posters:{name:"Affiches & projets",file:"posters.exe",html:"<p>Les espaces blanc
 cv:{name:"CV & contact",file:"contact.txt",html:"<p>Mon CV et mes coordonnées seront accessibles ici.</p><div class='placeholder'>CV / contact à compléter</div>"}
 };
 for(let i=1;i<=20;i++)items['poster'+i]={name:'Poster '+i+' · Galerie',file:'galerie_'+i+'.exe',html:"<p>Ce poster ouvrira une série d’illustrations à feuilleter.</p><div class='placeholder'>Galerie à compléter</div>"};
-const phoneHTML=`<div class="phone-wrap"><div class="iphone" aria-label="iPhone interactif"><div class="phone-wallpaper"><div class="phone-island"></div><div class="phone-status"><span>9:41</span><span>●●● ▰</span></div><div class="phone-screen" id="phone-screen"><div class="phone-date">Vendredi</div><div class="phone-time">19:07</div><div class="phone-apps"><button type="button" class="phone-app" data-phone-app="contacts"><span class="phone-app-icon contacts-icon">👤</span><span>Contacts</span></button><button type="button" class="phone-app" data-phone-app="mail"><span class="phone-app-icon mail-icon">✉</span><span>Mail</span></button><button type="button" class="phone-app" data-phone-app="instagram"><span class="phone-app-icon insta-icon">◎</span><span>Instagram</span></button></div><div class="phone-bottom"><span>☎</span><span>✉</span><span>◎</span></div></div><div class="phone-home-indicator"></div></div><p class="phone-caption">Touchez une application pour l’ouvrir</p></div>`;
+const phoneHTML=`<div class="phone-wrap"><div class="iphone-ref" aria-label="iPhone interactif, fond Miffy">
+  <button type="button" class="phone-hit phone-hit-contact" data-phone-app="contacts" aria-label="Ouvrir Contacts"></button>
+  <button type="button" class="phone-hit phone-hit-mail" data-phone-app="mail" aria-label="Ouvrir Mail"></button>
+  <button type="button" class="phone-hit phone-hit-instagram" data-phone-app="instagram" aria-label="Ouvrir Instagram"></button>
+  <div class="iphone-app-layer" id="iphone-app-layer" hidden></div>
+</div><p class="phone-caption">Touchez une application pour l’ouvrir</p></div>`;
 items.phone={name:'iPhone',file:'iPhone',html:phoneHTML};
 items.tamagotchi={name:'Tamagotchi',file:'Mon Tamagotchi',html:"<p>Emplacement réservé au mini-jeu Tamagotchi interactif.</p><div class='placeholder'>Mini-jeu à développer</div>"};
 for(let i=1;i<=5;i++)items['books'+i]={name:'Livres · Bibliothèque '+i,file:'livres.exe',html:"<p>Livres et projets à feuilleter.</p><div class='placeholder'>À compléter</div>"};
@@ -198,19 +238,77 @@ items.contactapp={name:'Contact',file:'Contacts',html:'<p><strong>Léna de Firma
 document.getElementById('minwin').onclick=()=>overlay.classList.remove('open');
 document.getElementById('maxwin').onclick=()=>document.querySelector('#overlay .win').classList.toggle('maximized');
 
-// iPhone : Contacts et Mail partagent le formulaire Formspree du Dock.
-document.addEventListener('click',function(e){
- const button=e.target.closest('[data-phone-app]');
- if(button){const app=button.dataset.phoneApp;
-  if(app==='mail'){originalOpenItem('mailapp');return;}
-  if(app==='instagram'){window.open('https://www.instagram.com/nanacolorstudio/','_blank','noopener,noreferrer');return;}
-  if(app==='contacts'){
-   const screen=document.getElementById('phone-screen');if(!screen)return;
-   screen.innerHTML=`<div class="phone-contact"><button type="button" class="phone-back" data-phone-back>‹ Retour</button><div class="phone-avatar">👤</div><h3>Léna de Firmas</h3><p><strong>Téléphone</strong><br><a href="tel:+33609630543">06 09 63 05 43</a></p><p><strong>E-mail</strong><br><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></p><p><strong>Instagram</strong><br><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio</a></p><button type="button" class="phone-mail-button" data-phone-compose>✉ Écrire un message</button></div>`;
-  }
-  return;
+// iPhone Miffy : écran et composition Mail intégrés, envoi Formspree.
+const iphoneLayer=()=>document.getElementById('iphone-app-layer');
+const iphoneHome=()=>{const layer=iphoneLayer();if(layer){layer.hidden=true;layer.innerHTML='';}};
+function iphoneContacts(){
+ const layer=iphoneLayer();if(!layer)return;layer.hidden=false;
+ layer.innerHTML=`<div class="ios-header"><button type="button" data-iphone-home>‹ Retour</button><strong>Contacts</strong><span></span></div>
+ <div class="ios-contacts"><div class="ios-avatar">L</div><h2>Léna de Firmas</h2>
+ <div class="ios-card"><small>téléphone</small><a href="tel:+33609630543">06 09 63 05 43</a></div>
+ <div class="ios-card"><small>e-mail</small><span>lena.defirmas@gmail.com</span></div>
+ <div class="ios-card"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio</a></div>
+ <button type="button" class="ios-compose-link" data-iphone-compose>✉ Écrire un e-mail</button></div>`;
+}
+function iphoneCompose(){
+ const layer=iphoneLayer();if(!layer)return;layer.hidden=false;
+ layer.innerHTML=`<form id="iphone-mail-form" class="ios-mail">
+ <div class="ios-header"><button type="button" data-iphone-home>Annuler</button><strong>Nouveau message</strong><button type="submit" class="ios-send">↑</button></div>
+ <div class="ios-mail-scroll">
+ <label>De : <input type="email" name="email" placeholder="Votre adresse e-mail" autocomplete="email" required maxlength="254"></label>
+ <label>Nom : <input name="name" placeholder="Votre nom" autocomplete="name" required maxlength="120"></label>
+ <label>À : <span class="ios-recipient">lena.defirmas@gmail.com</span></label>
+ <label>Objet : <input name="subject" placeholder="Objet" required maxlength="180"></label>
+ <textarea name="message" placeholder="Votre message…" aria-label="Votre message" required maxlength="10000"></textarea>
+ <p class="ios-mail-status" role="status" aria-live="polite"></p></div>
+ <div class="ios-keyboard" aria-label="Clavier virtuel"></div></form>`;
+ const kb=layer.querySelector('.ios-keyboard');
+ ['qwertyuiop','asdfghjkl','⇧zxcvbnm⌫'].forEach(row=>{
+  const line=document.createElement('div');line.className='ios-keyrow';
+  for(const key of row){const b=document.createElement('button');b.type='button';b.textContent=key;b.dataset.iosKey=key;line.append(b);}
+  kb.append(line);
+ });
+ const line=document.createElement('div');line.className='ios-keyrow';
+ for(const [text,value] of [['123','123'],['espace',' '],['.','.'],['↵','\\n']]){const b=document.createElement('button');b.type='button';b.textContent=text;b.dataset.iosKey=value;line.append(b);}kb.append(line);
+}
+let iphoneActiveInput=null;
+document.addEventListener('focusin',e=>{
+ if(e.target.closest('#iphone-mail-form') && e.target.matches('input,textarea')){
+  iphoneActiveInput=e.target;
+  const kb=document.querySelector('#iphone-mail-form .ios-keyboard');
+  if(kb)kb.classList.add('visible');
  }
- if(e.target.closest('[data-phone-compose]')){originalOpenItem('mailapp');return;}
- if(e.target.closest('[data-phone-back]')){originalOpenItem('phone');return;}
+});
+document.addEventListener('click',e=>{
+ const app=e.target.closest('[data-phone-app]');
+ if(app){if(app.dataset.phoneApp==='contacts')iphoneContacts();
+ else if(app.dataset.phoneApp==='mail')iphoneCompose();
+ else if(app.dataset.phoneApp==='instagram')window.open('https://www.instagram.com/nanacolorstudio/','_blank','noopener,noreferrer');
+ return;}
+ if(e.target.closest('[data-iphone-home]')){iphoneHome();return;}
+ if(e.target.closest('[data-iphone-compose]')){iphoneCompose();return;}
+ const key=e.target.closest('[data-ios-key]');
+ if(key && iphoneActiveInput){
+  e.preventDefault();const input=iphoneActiveInput,k=key.dataset.iosKey;
+  const a=input.selectionStart??input.value.length,b=input.selectionEnd??input.value.length;
+  if(k==='⌫'){const from=a===b?Math.max(0,a-1):a;input.setRangeText('',from,b,'end');}
+  else if(k==='⇧'||k==='123')return;
+  else input.setRangeText(k,a,b,'end');
+  input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();
+ }
+});
+document.addEventListener('submit',async e=>{
+ if(e.target.id!=='iphone-mail-form')return;
+ e.preventDefault();const form=e.target,button=form.querySelector('.ios-send'),status=form.querySelector('.ios-mail-status');
+ if(!form.reportValidity())return;
+ button.disabled=true;status.textContent='Envoi en cours…';
+ try{
+  const response=await fetch('https://formspree.io/f/mbggaaqo',{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+  if(!response.ok)throw new Error('Envoi impossible ('+response.status+')');
+  status.textContent='✓ Message envoyé !';status.className='ios-mail-status success';
+  form.querySelectorAll('input,textarea').forEach(el=>el.disabled=true);
+  const kb=form.querySelector('.ios-keyboard');if(kb)kb.classList.remove('visible');
+ }catch(err){status.textContent='Échec de l’envoi. Réessayez.';status.className='ios-mail-status error';}
+ finally{button.disabled=false;}
 });
 </script></body></html>
