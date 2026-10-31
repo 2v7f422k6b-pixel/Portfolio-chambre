@@ -122,7 +122,8 @@ async function turn(dir){
   // Updating both pages immediately made illustrations jump before the turn.
   if(isSmall()){
    fill('left',null,0);
-   fill('right',futureRight,future[1]);
+   // Forward reveals the next leaf; backward slides a leaf over the old one.
+   fill('right',goingForward?futureRight:previousRight,goingForward?future[1]:previous[1]);
   }else if(goingForward){
    fill('left',previousLeft,previous[0]);
    fill('right',futureRight,future[1]);
