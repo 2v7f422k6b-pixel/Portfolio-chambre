@@ -13,7 +13,18 @@
     ['.desktop-folder', 'frame', 127],
     ['.back-room', 'frame', 149],
     ['#dock .dock-app', 'frame', 48],
-    ['#window-shade .project-card', 'frame', 161]
+    ['#window-shade .project-card', 'frame', 161],
+    ['#menubar .menu-right > button', 'frame', 173],
+    ['#window-shade .art-tile', 'frame', 181],
+    ['#window-shade .contact-row', 'frame', 191],
+    ['#window-shade .phone-contact-card', 'frame', 199],
+    ['#window-shade .pill-link', 'frame', 211],
+    ['#window-shade .soft-btn', 'frame', 223],
+    ['#window-shade .send-btn', 'frame', 233],
+    ['#window-shade .viewer-btn', 'frame', 241],
+    ['#window-shade .library-toolbar', 'frame', 251],
+    ['#window-shade .about-mark', 'frame', 263],
+    ['#window-shade .window-end', 'rule', 271]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
