@@ -170,7 +170,13 @@ function openPages(){
  openWindow('Pages',`<div class="eyebrow">Pages / Writing</div><h2>Pages</h2><p class="section-lead">Articles, music journalism and personal writing.</p><div class="info-list"><div class="info-box"><small>Editorial writing</small><strong>Gearnews.fr</strong></div><div class="info-box"><small>Stories</small><strong>Personal writing</strong></div></div><div class="empty-state"><span class="empty-icon">▤</span><h3>Article library in preparation</h3><p>Full texts will be added here only when supplied or approved for republication. In the meantime, the original publications can be explored on Gearnews.</p><a class="pill-link" href="https://www.gearnews.fr/" rel="noopener noreferrer" target="_blank">Visit Gearnews.fr ↗</a></div>`,'pages');
 }
 function openAbout(){
- openWindow('About',`<div class="eyebrow">Hello / About</div><h2>Hi, I'm Léna.</h2><div class="about-hero"><div><p>I work with illustration, animation, editorial video and writing. This portfolio is a small, interactive collection of things I've made.</p><p>Explore freely in Play Mode, or browse selected work in Work Mode.</p><button class="soft-btn" data-open="contact">Get in touch ↗</button></div><div class="about-mark" aria-hidden="true">✿</div></div><div class="info-list"><div class="info-box"><small>Illustration</small><strong>Visual storytelling</strong></div><div class="info-box"><small>Editorial</small><strong>Writing & video</strong></div></div>`,'about');
+ // Keep the game isolated from the other portfolio apps and original room artwork.
+ closeWindow();
+ closeSpecial();
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=1" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
+ specialShade.hidden=false;
+ $('#special-close').setAttribute('aria-label','Close About Me');
+ $('#special-close').focus({preventScroll:true});
 }
 function openBook(){
  openWindow('Clown Princess',`<div class="eyebrow">Writing / Illustrated book</div><h2>Clown Princess</h2><p>An illustrated storytelling project.</p><div class="empty-state"><span class="empty-icon">♡</span><h3>The illustrated book is being prepared</h3><p>The finished reading version will be added here once the original pages are ready. No text or artwork has been invented for this preview.</p></div>`,'book');
@@ -312,7 +318,7 @@ window.addEventListener('message',e=>{
  // The Tamagotchi is a local same-origin iframe. Only it may request closing.
  if(e.origin!==location.origin)return;
  if(e.source!==$('#special-host iframe')?.contentWindow)return;
- if(e.data?.type==='close-tamagotchi')closeSpecial();
+ if(e.data?.type==='close-tamagotchi'||e.data?.type==='close-about-me')closeSpecial();
 });
 $('#player-seek').addEventListener('change',e=>{if(Number.isFinite(audio.duration))audio.currentTime=audio.duration*Number(e.target.value)/100});
 updatePlayer();
