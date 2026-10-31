@@ -37,7 +37,6 @@ function pagePair(p){
  return p===1?[0,1]:[p,p+1];
 }
 function limit(p){return Math.max(1,Math.min(pdf?.numPages||66,p));}
-function step(){return isSmall()?1:2;}
 function nextPosition(p,dir){if(isSmall())return limit(p+dir);if(dir>0)return p===1?2:Math.min(66,p+2);return p===2?1:Math.max(1,p-2);}
 async function imageFor(n){
  if(n<1||n>(pdf?.numPages||66))return null;
@@ -87,14 +86,16 @@ async function turn(dir){
   const [a,b]=await Promise.all(future.map(imageFor));
   if(!$('#book-reader'))return;
   const sheet=document.createElement('div');
+  sheet.dataset.mobile=String(isSmall());
   sheet.className='book-turn-sheet '+(dir>0?'go-next':'go-prev');
   const face=document.createElement('div');face.className='book-turn-face';
   const back=document.createElement('div');back.className='book-turn-back';
   const source=dir>0?previous[1]:previous[0];
   const destination=dir>0?future[0]:future[1];
   const oldSrc=await imageFor(source),newSrc=await imageFor(destination);
-  if(oldSrc)face.style.backgroundImage='url("'+oldSrc+'")';
-  if(newSrc)back.style.backgroundImage='url("'+newSrc+'")';
+  if(isSmall()&&dir<0){face.style.backgroundImage=newSrc?'url("'+newSrc+'")':'';back.style.backgroundImage=oldSrc?'url("'+oldSrc+'")':'';}
+  if(!(isSmall()&&dir<0)&&oldSrc)face.style.backgroundImage='url("'+oldSrc+'")';
+  if(!(isSmall()&&dir<0)&&newSrc)back.style.backgroundImage='url("'+newSrc+'")';
   sheet.append(face,back);
   const stage=$('#book-pages');stage.appendChild(sheet);
   // The target spread is behind the turning leaf.
@@ -127,12 +128,12 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-book-retry]')){openBook();return;}
  if(e.target.closest('[data-book-full]')){if(pdfUrl)window.open(pdfUrl,'_blank','noopener');return;}
  if(e.target.closest('[data-book-download]')){if(!pdfUrl)return;const a=document.createElement('a');a.href=pdfUrl;a.download='La_Princesse_Clown_lecture.pdf';document.body.appendChild(a);a.click();a.remove();return;}
- if(e.target.closest('#book-right'))turn(1);
- if(e.target.closest('#book-left'))turn(-1);
+ if(e.target.closest('#book-right')&&Date.now()>suppressClickUntil)turn(1);
+ if(e.target.closest('#book-left')&&Date.now()>suppressClickUntil)turn(-1);
 });
-let start=null;
+let start=null,suppressClickUntil=0;
 document.addEventListener('pointerdown',e=>{if(e.target.closest('#book-pages'))start={x:e.clientX,y:e.clientY};});
-document.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))turn(dx<0?1:-1);});
+document.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)){suppressClickUntil=Date.now()+500;turn(dx<0?1:-1);}});
 document.addEventListener('keydown',e=>{if(!$('#book-reader')||!$('#book-assembly')||$('#book-assembly').hidden)return;if(e.key==='ArrowRight'){e.preventDefault();turn(1);}if(e.key==='ArrowLeft'){e.preventDefault();turn(-1);}});
 let wasSmall=isSmall();
 window.addEventListener('resize',()=>{if(!pdf||!$('#book-reader'))return;const small=isSmall();if(small!==wasSmall){wasSmall=small;busy=false;draw(small?position:(position<=1?1:position%2===0?position:position-1));}});
