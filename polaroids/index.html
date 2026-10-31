@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff8f6">
+<title>My Polaroids — Léna</title>
+<style>
+@font-face{font-family:"Nana Trace UI";src:url("../assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");font-display:swap}
+:root{--red:#ff173b;--soft-red:#ff173b33;--paper:#fffaf7;--pink:#ffebec}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);color:var(--red);font-family:"Nana Trace UI","Segoe Print",sans-serif}
+body{overflow-x:hidden}
+button{font:inherit;cursor:pointer;color:var(--red);background:#fffcfa;border:1.5px solid var(--red);border-radius:0}
+button:focus-visible,.card:focus-visible{outline:3px dashed var(--red);outline-offset:4px}
+button:hover{background:#fff0f0;box-shadow:0 0 10px #ff173b44}
+.page{padding:clamp(13px,2vw,24px);min-height:100dvh;display:flex;flex-direction:column;gap:8px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.title-line{display:flex;align-items:center;gap:10px}
+h1{margin:0;font-size:clamp(25px,3.4vw,42px);font-weight:400;line-height:1.15}
+.hand-heart{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 0 4px #ff173b88)}
+.subtitle{margin:5px 0 0;font-size:clamp(11px,1.3vw,14px);line-height:1.45}
+.reset{padding:9px 12px;white-space:nowrap;box-shadow:2px 2px 0 #ff173b20}
+.board{position:relative;flex:1;min-height:420px;height:min(63vh,570px);max-height:630px;overflow:hidden;border:2px solid var(--red);box-shadow:0 0 9px #ff173b35;background:
+  repeating-linear-gradient(-1deg,transparent 0 31px,#ff173b0a 32px,#ff173b0a 33px,transparent 34px 66px),
+  radial-gradient(ellipse at 25% 10%,#ffe8eb88,transparent 54%),#fff7f3}
+.board:before,.board:after{content:"";position:absolute;pointer-events:none;border-top:1px solid #ff173b25;width:30%;transform:rotate(-2deg)}
+.board:before{left:2%;top:15%}.board:after{right:4%;bottom:17%;transform:rotate(1.3deg)}
+.card{position:absolute;width:clamp(124px,17vw,176px);height:clamp(184px,25vw,258px);z-index:1;transform:rotate(var(--r,0deg));transform-origin:center;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;filter:drop-shadow(5px 7px 5px #622b3540);transition:filter .18s}
+.card.dragging{cursor:grabbing;filter:drop-shadow(10px 13px 7px #622b3550);transition:none}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .48s cubic-bezier(.2,.72,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #e1d7ce;background:#fffdfa;padding:8px 8px 0;box-shadow:inset 0 0 0 2px #fcf8f3}
+.face:before{content:"";position:absolute;inset:2px;border:1px solid #bbb1aa16;pointer-events:none}
+.front{display:flex;flex-direction:column;gap:5px}
+.photo{flex:1;min-height:0;background:#f5e8e5;border:1px solid #ead2cd;display:grid;place-items:center;overflow:hidden;position:relative}
+.photo>img{display:block;width:100%;height:100%;object-fit:contain}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;height:100%;background:repeating-linear-gradient(135deg,#fff6f5 0 14px,#ffe9e8 14px 28px);text-align:center;padding:10px}
+.photo-placeholder img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 0 3px #ff173b55)}
+.photo-placeholder span{font-size:clamp(10px,1.2vw,12px);line-height:1.3}
+.front-bottom{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:26px;font-size:clamp(10px,1.1vw,12px);white-space:nowrap}
+.front-bottom .photo-number{overflow:hidden;text-overflow:ellipsis}
+.enlarge{padding:2px 5px;min-width:28px;background:#fffdfb;font-size:clamp(10px,1.2vw,13px);border-width:1px}
+.back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:17px 13px 23px;text-align:center;background:repeating-linear-gradient(0deg,#fffaf5 0 26px,#ff173b12 27px,#fffaf5 28px)}
+.back img{width:23px;height:23px;object-fit:contain}
+.back-title{font-size:clamp(14px,1.6vw,19px);line-height:1.2;overflow-wrap:anywhere}
+.back-note{font-size:clamp(11px,1.2vw,13px);font-style:italic;line-height:1.45;overflow-wrap:anywhere;max-height:52%;overflow:auto}
+.back-date{font-size:11px;margin-top:auto}
+.instructions{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:clamp(11px,1.3vw,13px);margin:3px 0 0}
+.instructions p{margin:0}
+.pending{opacity:.8;font-size:11px}
+dialog{border:2px solid var(--red);border-radius:0;box-shadow:0 0 18px #ff173b55;background:#fff8f5;color:var(--red);padding:12px;max-width:min(90vw,700px);max-height:92dvh;overflow:auto}
+dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
+.viewer-bar{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.viewer-bar p{font-size:13px;margin:0}
+.viewer-bar button{padding:4px 10px;font-size:20px}
+.viewer-card{width:min(68vw,285px);height:min(77vh,420px);min-height:300px;position:relative;margin:auto;perspective:900px}
+.viewer-card .card-inner{height:100%}
+.viewer-card.flipped .card-inner{transform:rotateY(180deg)}
+.viewer-card .front-bottom{font-size:15px;min-height:42px}
+.viewer-card .face{padding:12px 12px 0}
+.viewer-card .back{padding:20px}
+.viewer-card .back-title{font-size:22px}
+.viewer-card .back-note{font-size:17px}
+.viewer-card .photo-placeholder span{font-size:14px}
+.viewer-controls{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:13px}
+.viewer-controls button{padding:8px 12px;font-size:13px}
+.viewer-indicator{margin:8px 0 0;text-align:center;font-size:12px}
+@media(max-width:600px){
+ .page{padding:10px}
+ .board{height:65dvh;min-height:540px;max-height:none}
+ .card{width:clamp(116px,32vw,155px);height:clamp(177px,49vw,230px)}
+ .subtitle{max-width:270px}
+ header{align-items:center}
+ .reset{padding:7px;font-size:11px}
+ .front-bottom{min-height:26px}
+}
+@media(prefers-reduced-motion:reduce){.card-inner{transition:none}button{transition:none}}
+</style>
+</head>
+<body>
+<main class="page">
+<header>
+  <div>
+    <div class="title-line"><h1>My Polaroids</h1><img class="hand-heart" src="../assets/heart-lena.svg" alt=""></div>
+    <p class="subtitle">Little moments, kept on film. A scrapbook you can touch.</p>
+  </div>
+  <button class="reset" id="reset" type="button">↺ Reset the photos</button>
+</header>
+<section class="board" id="board" aria-label="Polaroid scrapbook: drag a photo to move it, tap to flip it"></section>
+<div class="instructions">
+  <p>Drag to move · Tap to turn over · Select ↗ to enlarge</p>
+  <p class="pending" id="pending" hidden>The original Polaroids will be added here.</p>
+</div>
+</main>
+<dialog id="viewer" aria-label="Enlarged Polaroid">
+  <div class="viewer-bar"><p id="viewer-label">My Polaroids</p><button type="button" id="viewer-close" aria-label="Close enlarged photo">×</button></div>
+  <div class="viewer-card" id="viewer-card"></div>
+  <div class="viewer-controls">
+    <button type="button" id="prev">← Previous</button>
+    <button type="button" id="turn">Turn over ↻</button>
+    <button type="button" id="next">Next →</button>
+  </div>
+  <p class="viewer-indicator" id="indicator"></p>
+</dialog>
+<script src="photos.js"></script>
+<script>
+(() => {
+  "use strict";
+  const original=Array.isArray(window.LENA_POLAROIDS)?window.LENA_POLAROIDS.filter(x=>x&&x.src):[];
+  const demo=!original.length;
+  const photos=demo?Array.from({length:5},(_,i)=>({
+    title:'Photo '+String(i+1).padStart(2,'0'),
+    date:'',note:'A little note to write on the back.',src:null
+  })):original;
+  const board=document.getElementById('board'),viewer=document.getElementById('viewer');
+  const viewerCard=document.getElementById('viewer-card');
+  document.getElementById('pending').hidden=!demo;
+  const small=window.matchMedia('(max-width: 600px)');
+  const desktopPositions=[[9,10,-8],[27,36,7],[46,9,-3],[63,38,9],[78,14,-7],[34,15,11],[56,56,-5]];
+  const mobilePositions=[[6,5,-8],[53,12,6],[13,41,-6],[53,52,8],[7,71,-3],[48,72,10]];
+  let activePhoto=0,zCounter=5;
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  function pose(i){
+    const candidates=small.matches?mobilePositions:desktopPositions;
+    const p=candidates[i%candidates.length];
+    if(i<candidates.length)return p;
+    return [Math.max(2,Math.min(80,p[0]+(i%3)*4)),Math.max(2,Math.min(73,p[1]-(i%3)*9)),p[2]];
+  }
+  function paper(photo,i,large=false){
+    const picture=photo.src
+      ? '<img draggable="false" loading="'+(large?'eager':'lazy')+'" src="'+esc(photo.src)+'" alt="'+esc(photo.alt||photo.title||'Instant photograph')+'">'
+      : '<div class="photo-placeholder"><img src="../assets/heart-lena.svg" alt=""><span>Photo to add</span></div>';
+    return '<div class="card-inner"><div class="face front"><div class="photo">'+picture+'</div><div class="front-bottom"><span class="photo-number">'+esc(photo.date||photo.title||'Photo '+(i+1))+'</span>'+(large?'':'<button class="enlarge" type="button" aria-label="Enlarge photo '+(i+1)+'">↗</button>')+'</div></div><div class="face back"><img src="../assets/heart-lena.svg" alt=""><div class="back-title">'+esc(photo.title||'A little memory')+'</div><div class="back-note">'+esc(photo.note||'A little note to be added.')+'</div><div class="back-date">'+esc(photo.date||'')+'</div></div></div>';
+  }
+  function placeCard(card,i){
+    const [x,y,r]=pose(i);
+    card.style.left=x+'%';card.style.top=y+'%';card.style.setProperty('--r',r+'deg');
+    card.classList.remove('flipped');
+  }
+  function flip(card){
+    card.classList.toggle('flipped');
+    card.setAttribute('aria-label',(card.classList.contains('flipped')?'Back':'Front')+' of '+(photos[Number(card.dataset.index)].title||'Polaroid')+'. Tap to turn over; drag to move.');
+  }
+  function mount(){
+    board.innerHTML='';
+    photos.forEach((photo,i)=>{
+      const card=document.createElement('article');
+      card.className='card';
+      card.tabIndex=0;
+      card.setAttribute('role','button');
+      card.setAttribute('aria-label','Polaroid '+(i+1)+'. Tap to turn over; drag to move.');
+      card.dataset.index=i;
+      card.innerHTML=paper(photo,i);
+      placeCard(card,i);
+      card.style.zIndex=String(i+2);
+      card.querySelector('.enlarge').addEventListener('click',e=>{e.stopPropagation();show(i)});
+      let gesture=null;
+      card.addEventListener('pointerdown',e=>{
+        if(e.button!==0||e.target.closest('button'))return;
+        const bounds=board.getBoundingClientRect();
+        gesture={id:e.pointerId,x:e.clientX,y:e.clientY,left:card.offsetLeft,top:card.offsetTop,moved:false,bounds};
+        card.setPointerCapture(e.pointerId);
+        card.style.zIndex=String(++zCounter);
+      });
+      card.addEventListener('pointermove',e=>{
+        if(!gesture||gesture.id!==e.pointerId)return;
+        const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;
+        if(Math.hypot(dx,dy)>6)gesture.moved=true;
+        if(!gesture.moved)return;
+        card.classList.add('dragging');
+        const w=board.clientWidth,h=board.clientHeight;
+        card.style.left=Math.max(0,Math.min(w-card.offsetWidth,gesture.left+dx))+'px';
+        card.style.top=Math.max(0,Math.min(h-card.offsetHeight,gesture.top+dy))+'px';
+      });
+      function endPointer(e){
+        if(!gesture||gesture.id!==e.pointerId)return;
+        const shouldFlip=!gesture.moved&&e.type==='pointerup';
+        card.classList.remove('dragging');
+        gesture=null;
+        if(card.hasPointerCapture(e.pointerId))card.releasePointerCapture(e.pointerId);
+        if(shouldFlip)flip(card);
+      }
+      card.addEventListener('pointerup',endPointer);
+      card.addEventListener('pointercancel',endPointer);
+      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){if(e.target!==card)return;e.preventDefault();flip(card)}});
+      board.appendChild(card);
+    });
+  }
+  function show(i){
+    activePhoto=(i+photos.length)%photos.length;
+    const p=photos[activePhoto];
+    viewerCard.classList.remove('flipped');
+    viewerCard.innerHTML=paper(p,activePhoto,true);
+    document.getElementById('viewer-label').textContent=p.title||'Polaroid';
+    document.getElementById('indicator').textContent=(activePhoto+1)+' / '+photos.length;
+    document.getElementById('turn').textContent='Turn over ↻';
+    if(!viewer.open)viewer.showModal();
+  }
+  document.getElementById('prev').addEventListener('click',()=>show(activePhoto-1));
+  document.getElementById('next').addEventListener('click',()=>show(activePhoto+1));
+  document.getElementById('turn').addEventListener('click',()=>{
+    viewerCard.classList.toggle('flipped');
+    document.getElementById('turn').textContent=viewerCard.classList.contains('flipped')?'Show front ↻':'Turn over ↻';
+  });
+  document.getElementById('viewer-close').addEventListener('click',()=>viewer.close());
+  viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});
+  document.addEventListener('keydown',e=>{
+    if(!viewer.open)return;
+    if(e.key==='ArrowLeft')show(activePhoto-1);
+    if(e.key==='ArrowRight')show(activePhoto+1);
+  });
+  document.getElementById('reset').addEventListener('click',()=>{
+    zCounter=photos.length+5;
+    board.querySelectorAll('.card').forEach((card,i)=>{placeCard(card,i);card.style.zIndex=String(i+2)});
+  });
+  mount();
+})();
+</script>
+</body>
+</html>
