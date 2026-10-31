@@ -4,7 +4,7 @@
 const BASE='assets/books/princesse-clown/', COUNT=18, BYTES=8699536;
 const CDN='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
 const $=s=>document.querySelector(s);
-let pdfUrl=null,pending=null,pdf=null,cache=new Map(),position=0,busy=false,token=0;
+let pdfUrl=null,pending=null,pdf=null,cache=new Map(),position=0,busy=false,token=0,pageRatio=.72;
 const isSmall=()=>matchMedia('(max-width: 700px)').matches;
 function status(s,n){const t=$('#book-status'),b=$('#book-meter-fill');if(t)t.textContent=s;if(b)b.style.width=n+'%';}
 async function loadPdf(){
@@ -27,6 +27,8 @@ async function loadPdf(){
   }
   window.pdfjsLib.GlobalWorkerOptions.workerSrc=CDN+'pdf.worker.min.js';
   pdf=await window.pdfjsLib.getDocument({url:pdfUrl}).promise;
+  const firstPage=await pdf.getPage(1),pageSize=firstPage.getViewport({scale:1});
+  pageRatio=pageSize.width/pageSize.height;
   status('Pages prêtes',100);
   return pdf;
  })();
@@ -60,6 +62,17 @@ function fill(side,src,n){
  el.classList.toggle('is-blank',blank);image.hidden=blank;
  if(src)image.src=src;else image.removeAttribute('src');
  el.setAttribute('aria-label',n?'Page '+n:'Intérieur de couverture');
+}
+function sizeSpread(){
+ const book=$('#book-pages'),assembly=$('#book-assembly');if(!book||!assembly)return;
+ const controls=assembly.querySelectorAll('.book-side-arrow');
+ const controlWidth=[...controls].reduce((sum,b)=>sum+b.getBoundingClientRect().width,0)+32;
+ const widthAvailable=Math.max(160,assembly.clientWidth-controlWidth-20);
+ const heightAvailable=Math.max(160,assembly.clientHeight-12);
+ const ratio=pageRatio*(isSmall()?1:2);
+ const height=Math.min(heightAvailable,widthAvailable/ratio);
+ book.style.width=Math.floor(height*ratio)+'px';book.style.height=Math.floor(height)+'px';
+ book.style.aspectRatio=String(ratio);
 }
 function updateControls(){
  const total=pdf?.numPages||66;
@@ -118,7 +131,7 @@ function openBook(){
  '<button class="book-side-arrow" data-book-next aria-label="Page suivante">›</button></div></div>'+
  '<footer class="book-reader-footer"><span>♡ Un conte de Léna de Firmas</span><span id="book-count" aria-live="polite">66 pages</span><span>Glisse ou clique pour tourner les pages</span></footer></section>','book');
  position=1;busy=false;token++;
- loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;document.querySelectorAll('#book-reader [data-book-full],#book-reader [data-book-download]').forEach(b=>b.disabled=false);}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
+ loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();document.querySelectorAll('#book-reader [data-book-full],#book-reader [data-book-download]').forEach(b=>b.disabled=false);}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
 window.openBook=openBook;
 function addFinder(){const grid=$('#window-content .project-grid');if(!grid||grid.querySelector('[data-open="book"]'))return;const b=document.createElement('button');b.type='button';b.className='project-card';b.dataset.open='book';b.innerHTML='<span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Livre illustré · 66 pages</small>';grid.appendChild(b);}
@@ -136,6 +149,6 @@ document.addEventListener('pointerdown',e=>{if(e.target.closest('#book-pages'))s
 document.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)){suppressClickUntil=Date.now()+500;turn(dx<0?1:-1);}});
 document.addEventListener('keydown',e=>{if(!$('#book-reader')||!$('#book-assembly')||$('#book-assembly').hidden)return;if(e.key==='ArrowRight'){e.preventDefault();turn(1);}if(e.key==='ArrowLeft'){e.preventDefault();turn(-1);}});
 let wasSmall=isSmall();
-window.addEventListener('resize',()=>{if(!pdf||!$('#book-reader'))return;const small=isSmall();if(small!==wasSmall){wasSmall=small;busy=false;draw(small?position:(position<=1?1:position%2===0?position:position-1));}});
+window.addEventListener('resize',()=>{if(!pdf||!$('#book-reader'))return;sizeSpread();const small=isSmall();if(small!==wasSmall){wasSmall=small;busy=false;draw(small?position:(position<=1?1:position%2===0?position:position-1));}});
 document.addEventListener('DOMContentLoaded',()=>{const el=$('#window-content');if(el)new MutationObserver(addFinder).observe(el,{childList:true});});
 })();
