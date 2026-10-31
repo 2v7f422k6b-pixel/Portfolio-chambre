@@ -6,8 +6,9 @@
   const SKIP = 'script,style,textarea,code,pre,noscript,svg,option,[contenteditable="true"]';
   const installed = new WeakSet();
   const frames = new WeakSet();
-  const heartURL = new URL('assets/heart-lena.svg', document.baseURI).href;
-  const cssURL = new URL('heart-theme.css', document.baseURI).href;
+  const scriptBase = document.currentScript?.src || document.baseURI;
+  const heartURL = new URL('assets/heart-lena.svg', scriptBase).href;
+  const cssURL = new URL('heart-theme.css', scriptBase).href;
 
   function replaceText(node) {
     if (node.nodeType !== 3 || !node.parentElement || !node.nodeValue) return;
@@ -81,8 +82,9 @@
   }
 
   function install(doc) {
-    if (installed.has(doc) || !doc.documentElement) return;
+    if (!doc.documentElement || installed.has(doc) || doc.documentElement.dataset.lenaHeartInstalled === 'true') return;
     installed.add(doc);
+    doc.documentElement.dataset.lenaHeartInstalled = 'true';
     if (doc !== document && !doc.querySelector('link[data-lena-heart-style]')) {
       const style = doc.createElement('link');
       style.rel = 'stylesheet';
