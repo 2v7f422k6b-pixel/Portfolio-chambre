@@ -112,9 +112,21 @@ async function turn(dir){
   face.className='book-turn-face';
   const back=document.createElement('div');
   back.className='book-turn-back';
-  // Front = outgoing page, reverse = incoming page. Never swap these for mobile.
-  if(oldSrc)face.style.backgroundImage='url("'+oldSrc+'")';
-  if(newSrc)back.style.backgroundImage='url("'+newSrc+'")';
+  // Each side is a real predecoded image, avoiding transient empty CSS
+  // backgrounds while the browser composites the rotating 3D leaf.
+  const decodes=[];
+  for(const [side,src] of [[face,oldSrc],[back,newSrc]]){
+   if(!src)continue;
+   const img=document.createElement('img');
+   img.alt='';
+   img.draggable=false;
+   img.decoding='async';
+   img.src=src;
+   side.appendChild(img);
+   if(typeof img.decode==='function')decodes.push(img.decode().catch(()=>{}));
+  }
+  await Promise.all(decodes);
+  if(!stage.isConnected||!$('#book-reader'))return;
   sheet.append(face,back);
   stage.appendChild(sheet);
   // Crucial: keep the stationary page from the OLD spread in place,
@@ -122,8 +134,8 @@ async function turn(dir){
   // Updating both pages immediately made illustrations jump before the turn.
   if(isSmall()){
    fill('left',null,0);
-   // Forward reveals the next leaf; backward slides a leaf over the old one.
-   fill('right',goingForward?futureRight:previousRight,goingForward?future[1]:previous[1]);
+   // The turning sheet hides the upcoming page until the leaf uncovers it.
+   fill('right',futureRight,future[1]);
   }else if(goingForward){
    fill('left',previousLeft,previous[0]);
    fill('right',futureRight,future[1]);
