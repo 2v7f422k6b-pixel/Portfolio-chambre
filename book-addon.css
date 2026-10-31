@@ -1,0 +1,16 @@
+/* La Princesse Clown PDF reader — scoped to book view. */
+#window:has(.book-reader){width:min(1100px,calc(100vw - 20px));max-height:calc(100dvh - 28px);height:calc(100dvh - 28px)}
+#window:has(.book-reader) .window-content{padding:0!important;flex:1;min-height:0;overflow:hidden}
+.book-reader{height:100%;min-height:0;display:flex;flex-direction:column;background:#fdf0e2;color:#693a53;font-family:'Courier New',monospace}
+.book-reader-header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 18px;background:#f5d8dd;border-bottom:1px solid #a67a86;flex-wrap:wrap}
+.book-reader-header small{font-size:9px;letter-spacing:.13em;color:#946f82}
+.book-reader h2{font:700 27px Georgia,serif!important;color:#8e4455!important;margin:2px 0!important;line-height:1.1!important}
+.book-reader h2 em{font-weight:400}.book-reader-header p{font-size:10px!important;margin:0!important}
+.book-reader-actions{display:flex;gap:8px}.book-reader-actions button,.book-reader-loader button{background:#fff6f3;color:#74405d;border:1px solid #8d6175;padding:9px 12px;box-shadow:2px 2px 0 #b98d99;cursor:pointer;font:700 11px 'Courier New',monospace}.book-reader-actions button:disabled{opacity:.5;cursor:wait}
+.book-reader-stage{flex:1;min-height:0;position:relative;background:#dcc3cc;display:flex;justify-content:center;align-items:stretch}
+#book-frame{width:100%;height:100%;border:0;background:#fff3e6}#book-frame[hidden]{display:none}
+.book-reader-loader{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#85496e;text-align:center;padding:20px}.book-flower{font-size:50px}.book-reader-loader strong{font-size:16px}#book-status{font-size:12px}
+.book-meter{width:min(250px,70vw);height:8px;border:1px solid #a5798f;background:#fff8f3}#book-meter-fill{height:100%;width:0;background:#cd83a7;transition:width .2s}
+.book-reader-footer{display:flex;justify-content:space-between;gap:12px;padding:8px 17px;border-top:1px solid #a67a86;background:#f5d8dd;font-size:10px}
+.book-finder-cover{display:flex;height:155px;align-items:center;justify-content:center;flex-direction:column;background:#f6e5d5;border:1px solid #cb9195;color:#ad5266;font:42px Georgia,serif;gap:8px}.book-finder-cover small{font:italic 17px Georgia,serif}
+@media(max-width:600px){.book-reader-header{padding:8px}.book-reader h2{font-size:22px!important}.book-reader-actions{width:100%;justify-content:flex-end}.book-reader-actions button{padding:7px;font-size:10px}.book-reader-footer{font-size:8px}}
