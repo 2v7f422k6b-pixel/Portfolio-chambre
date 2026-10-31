@@ -90,3 +90,7 @@
  .book-page{flex-basis:100%}
  .book-right{border-left-width:5px;border-right-width:5px}
 }
+
+/* Layout sizing comes from the actual PDF dimensions, not an estimated book ratio. */
+#book-reader #book-pages{flex:none!important;max-width:100%;max-height:100%;min-width:0;align-self:center;}
+#book-reader .book-page img{object-fit:fill!important;}
