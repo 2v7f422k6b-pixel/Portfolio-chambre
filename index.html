@@ -66,7 +66,19 @@
 
   <style id="new-room-day-hotspots">
     /* New front, 1670 × 942, with interactive artworks in illustrated frames. */
-    #play-scene { aspect-ratio: 1670 / 942; width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); }
+    /* Desktop: the complete room fits above the dock instead of being cropped. */
+    #play-scene {
+      aspect-ratio: 1670 / 942;
+      width: min(100vw, calc((100dvh - var(--menubar) - var(--dock) - 24px) * 1670 / 942));
+    }
+    @media (min-width: 761px) {
+      #play-viewport {
+        justify-content: center;
+        align-items: flex-start;
+        overflow: auto;
+        background: #f6d2e7;
+      }
+    }
     #hotspots .poster-artworks, #hotspots .poster-artwork { pointer-events: none; }
     #hotspots .poster-artwork { image-rendering: auto; }
     @media (max-width: 760px) { #play-scene { width: max(900px, 100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); } }
