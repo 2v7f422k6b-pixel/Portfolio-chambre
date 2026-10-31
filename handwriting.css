@@ -1,0 +1,8 @@
+/* Hand-traced words rendered as actual drawings. No changes to navigation fonts. */
+.welcome-kicker .handwritten-welcome {
+  display:block;
+  width:clamp(132px,20vw,190px);
+  max-width:100%;
+  height:auto;
+  margin:0 auto;
+}
