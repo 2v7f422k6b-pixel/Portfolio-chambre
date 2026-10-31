@@ -3,3 +3,14 @@
 .mac-window.sketch-ui-frame{position:relative;}
 #dock.sketch-ui-frame>.sketch-ui-svg,.mac-window.sketch-ui-frame>.sketch-ui-svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;z-index:5;pointer-events:none!important;}
 #dock.sketch-ui-frame>.sketch-ui-svg .sketch-ui-ink,.mac-window.sketch-ui-frame>.sketch-ui-svg .sketch-ui-ink{stroke:var(--nana-red,#ff173b);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 2px rgba(255,23,59,.28));}
+
+/* Remove the old rectangular paper rim and inherited straight edge. */
+#dock.sketch-ui-frame,html[data-theme="night"] #dock.sketch-ui-frame,
+.mac-window.sketch-ui-frame,html[data-theme="night"] .mac-window.sketch-ui-frame{
+ border-color:transparent!important;
+ border-radius:0!important;
+ outline:0!important;
+ background-clip:padding-box;
+}
+#dock.sketch-ui-frame{box-shadow:0 7px 20px rgba(128,59,80,.15)!important;}
+.mac-window.sketch-ui-frame{box-shadow:0 14px 45px rgba(113,63,67,.18)!important;}
