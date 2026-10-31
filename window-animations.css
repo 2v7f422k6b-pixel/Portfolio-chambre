@@ -20,26 +20,27 @@ html[data-theme="night"] #window-life .outside-day { opacity:0; }
 html[data-theme="night"] #window-life .outside-night { opacity:1; }
 
 #window-life .day-cloud {
-  fill:rgba(255,250,255,.70);
+  fill:rgba(255,252,255,.89);
   stroke:rgba(223,239,255,.70);
-  stroke-width:1.6;
+  stroke-width:2;
   stroke-linejoin:round;
 }
-#window-life .cloud-back { opacity:.62; animation:window-cloud-back 49s linear infinite -18s; }
-#window-life .cloud-front { opacity:.82; animation:window-cloud-front 64s linear infinite -37s; }
+#window-life .cloud-back { opacity:.85; animation:window-cloud-back 28s linear infinite -11s; }
+#window-life .cloud-front { opacity:.95; animation:window-cloud-front 35s linear infinite -16s; }
 #window-life .bird-flock {
   fill:none;
-  stroke:#364c86;
-  stroke-width:2.5;
+  stroke:#233c73;
+  stroke-width:3.4;
   stroke-linecap:round;
   stroke-linejoin:round;
-  opacity:.88;
-  animation:window-birds-fly 33s linear infinite -13s;
+  opacity:1;
+  filter:drop-shadow(0 0 .7px rgba(255,255,255,.65));
+  animation:window-birds-fly 17s linear infinite -7s;
 }
 #window-life .bird-flock--far {
-  opacity:.58;
-  stroke-width:2;
-  animation:window-birds-fly-far 46s linear infinite -23s;
+  opacity:.9;
+  stroke-width:2.6;
+  animation:window-birds-fly-far 23s linear infinite -10s;
 }
 #window-life .bird-wing {
   transform-box:fill-box;
@@ -61,7 +62,7 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
   filter:drop-shadow(0 0 2.5px rgba(252,239,184,.76));
   transform-box:fill-box;
   transform-origin:center;
-  animation:window-star-twinkle 4.6s ease-in-out infinite;
+  animation:window-star-twinkle 3.6s ease-in-out infinite;
 }
 #window-life .night-stars > :nth-child(2n) {animation-delay:-1.7s;}
 #window-life .night-stars > :nth-child(3n) {animation-delay:-3.4s;}
@@ -101,9 +102,9 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
   to {transform:translateX(178px);}
 }
 @keyframes window-star-twinkle {
-  0%,100% {opacity:.34; transform:scale(.72);}
-  45% {opacity:1; transform:scale(1.08);}
-  70% {opacity:.55; transform:scale(.85);}
+  0%,100% {opacity:.47; transform:scale(.65);}
+  45% {opacity:1; transform:scale(1.5);}
+  70% {opacity:.62; transform:scale(.85);}
 }
 @keyframes window-shooting-star {
   0%,74%,91%,100% {opacity:0; transform:translate(20px,-11px);}
@@ -116,4 +117,10 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
     transition:none!important;
   }
   #window-life .shooting-star {opacity:0;}
+}
+ 
+/* Keep the atmosphere readable on tablet screens without changing artwork. */
+@media (hover:none) and (pointer:coarse) {
+  #window-life .bird-flock {stroke-width:3.8;}
+  #window-life .night-star {stroke-width:.95;}
 }
