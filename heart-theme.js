@@ -65,14 +65,19 @@
 
   function catReaction(doc) {
     if (doc !== document) return;
+    // The room begins hidden. Fixed SVG coordinates avoid zero-size getBBox().
+    const placements = {
+      'cat-heart--one': { x: 558, y: 585, size: 40 },
+      'cat-heart--two': { x: 584, y: 555, size: 32 }
+    };
     doc.querySelectorAll('#cat-response path.cat-heart').forEach(path => {
-      let box;
-      try { box = path.getBBox(); } catch (_) { return; }
-      const size = Math.max(box.width / .73, box.height / .75);
+      const kind = [...path.classList].find(c => placements[c]);
+      if (!kind) return;
+      const { x, y, size } = placements[kind];
       const icon = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
       icon.setAttribute('href', heartURL);
-      icon.setAttribute('x', String(box.x + (box.width - size) / 2));
-      icon.setAttribute('y', String(box.y + (box.height - size) / 2));
+      icon.setAttribute('x', String(x));
+      icon.setAttribute('y', String(y));
       icon.setAttribute('width', String(size));
       icon.setAttribute('height', String(size));
       icon.setAttribute('class', path.getAttribute('class') || 'cat-heart');
