@@ -68,21 +68,57 @@ let savedTheme='day';
 try{savedTheme=localStorage.getItem(THEME_KEY)||'day'}catch(e){}
 applyTheme(savedTheme);
 
+// Keep the existing iMac zoom; only polish the reverse direction and interruption handling.
+let imacZoomAnimation=null,modeTransitionAnimations=[],modeTransitionId=0;
+function resetModeTransition(){
+ modeTransitionId++;
+ for(const animation of modeTransitionAnimations)animation.cancel();
+ modeTransitionAnimations=[];
+ play.style.zIndex='';play.style.pointerEvents='';
+ work.style.zIndex='';work.style.pointerEvents='';
+}
 function chooseMode(mode,zoom=false){
+ const previousMode=currentMode;
+ if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
+ resetModeTransition();
  closeWindow();closeSpecial();
  currentMode=mode;app.className='mode-'+mode;
  welcome.hidden=true;desktop.hidden=false;
- play.hidden=mode!=='play';work.hidden=mode!=='work';
+ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const reverseZoom=zoom && previousMode==='work' && mode==='play' && !reduceMotion;
+ play.hidden=mode!=='play';work.hidden=mode!=='work' && !reverseZoom;
  $('#menu-mode').textContent=mode==='play'?'Play Mode':'Work Mode';
  $('#dock-finder').title='Finder';
- if(zoom){
-  work.animate([{opacity:0,transform:'scale(.88)'},{opacity:1,transform:'scale(1)'}],{duration:600,easing:'cubic-bezier(.15,.7,.25,1)'});
+ if(reverseZoom){
+  // Work remains visible underneath while the room smoothly zooms back into place.
+  play.style.zIndex='2';work.style.zIndex='1';
+  play.style.pointerEvents='none';work.style.pointerEvents='none';
+  const scene=$('#play-scene');
+  const roomAnimation=scene.animate([
+   {transform:'scale(3.4)',opacity:0,filter:'blur(3px)'},
+   {transform:'scale(1.25)',opacity:1,filter:'blur(0)'},
+   {transform:'scale(1)',opacity:1,filter:'blur(0)'}
+  ],{duration:550,easing:'cubic-bezier(.55,.05,.45,1)'});
+  const desktopAnimation=work.animate([{opacity:1},{opacity:0}],
+   {duration:550,easing:'ease-in-out',fill:'forwards'});
+  modeTransitionAnimations=[roomAnimation,desktopAnimation];
+  const transitionId=modeTransitionId;
+  Promise.allSettled(modeTransitionAnimations.map(animation=>animation.finished)).then(()=>{
+   if(transitionId!==modeTransitionId)return;
+   work.hidden=true;
+   resetModeTransition();
+  });
+ }else if(zoom && mode==='work' && !reduceMotion){
+  const animation=work.animate([{opacity:0,transform:'scale(.88)'},{opacity:1,transform:'scale(1)'}],
+   {duration:600,easing:'cubic-bezier(.15,.7,.25,1)'});
+  modeTransitionAnimations=[animation];
  }
  updateClocks();
  if(mode==='work')openFinder();
 }
 function zoomIntoIMac(){
  if(currentMode!=='play'){chooseMode('work',true);return}
+ if(imacZoomAnimation)return;
  const scene=$('#play-scene');
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){chooseMode('work',false);return}
  const anim=scene.animate([
@@ -90,7 +126,14 @@ function zoomIntoIMac(){
   {transform:'scale(1.25)',opacity:1,filter:'blur(0)'},
   {transform:'scale(3.4)',opacity:.5,filter:'blur(3px)'}
  ],{duration:550,easing:'cubic-bezier(.55,.05,.45,1)',fill:'none'});
- anim.finished.then(()=>chooseMode('work',true)).catch(()=>chooseMode('work',true));
+ imacZoomAnimation=anim;
+ anim.finished.then(()=>{
+  if(imacZoomAnimation!==anim)return;
+  imacZoomAnimation=null;
+  if(currentMode==='play')chooseMode('work',true);
+ }).catch(()=>{
+  if(imacZoomAnimation===anim)imacZoomAnimation=null;
+ });
 }
 function returnToWelcome(){
  closeWindow();closeSpecial();audio.pause();player.hidden=true;
@@ -102,9 +145,30 @@ function showToast(message){
  toastTimer=setTimeout(()=>node.hidden=true,3000);
 }
 
-function closeWindow(){shade.hidden=true;currentWindow=null;win.classList.remove('expanded');winContent.innerHTML=''}
+let closingWindowAnimation=null;
+function closeWindow(animated=false){
+ if(closingWindowAnimation){
+  closingWindowAnimation.cancel();
+  closingWindowAnimation=null;
+ }
+ if(animated && !shade.hidden && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  // Mirror the existing .22s atelier-window-in animation on user-initiated close.
+  const animation=win.animate([
+   {opacity:1,transform:'translateY(0) scale(1)'},
+   {opacity:0,transform:'translateY(7px) scale(.99)'}
+  ],{duration:220,easing:'ease-in',fill:'forwards'});
+  closingWindowAnimation=animation;
+  animation.finished.then(()=>{
+   if(closingWindowAnimation!==animation)return;
+   closingWindowAnimation=null;closeWindow();
+  }).catch(()=>{});
+  return;
+ }
+ shade.hidden=true;currentWindow=null;win.classList.remove('expanded');winContent.innerHTML='';
+}
 function closeSpecial(){specialShade.hidden=true;specialHost.innerHTML='';phoneKeyboardInput=null}
 function openWindow(title,html,type='generic'){
+ if(closingWindowAnimation){closingWindowAnimation.cancel();closingWindowAnimation=null}
  closeSpecial();currentWindow=type;winTitle.textContent=title;winContent.innerHTML=html;
  if(window.nanaHydrate)window.nanaHydrate(winContent);
  win.setAttribute('aria-modal',String(currentMode!=='work'));
@@ -347,10 +411,10 @@ document.addEventListener('click',e=>{
  if(e.target.closest('#theme-toggle')){applyTheme(document.documentElement.dataset.theme==='night'?'day':'night');return}
  if(e.target.closest('#switch-mode,#dock-roomswap')){switchMode();return}
  if(e.target.closest('#back-to-room')){chooseMode('play',true);return}
- if(e.target.closest('#window-close,#window-minimize')){closeWindow();return}
+ if(e.target.closest('#window-close,#window-minimize')){closeWindow(true);return}
  if(e.target.closest('#window-maximize')){win.classList.toggle('expanded');return}
  if(e.target.closest('#special-close')){closeSpecial();return}
- if(e.target.id==='window-shade'){closeWindow();return}
+ if(e.target.id==='window-shade'){closeWindow(true);return}
  if(e.target.id==='special-shade'){closeSpecial();return}
  if(e.target.closest('#player-play')){toggleMusic();return}
  if(e.target.closest('#player-mute')){audio.muted=!audio.muted;return}
@@ -392,7 +456,7 @@ document.addEventListener('submit',e=>{
  if(e.target.matches('#desktop-mail-form,#phone-mail-form')){e.preventDefault();submitForm(e.target)}
 });
 document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow();else if(currentMode)returnToWelcome()}
+ if(e.key==='Escape'){if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow(true);else if(currentMode)returnToWelcome()}
  if(!shade.hidden && currentWindow==='gallery' && ['ArrowLeft','ArrowRight'].includes(e.key))changeGallery(e.key==='ArrowRight'?1:-1);
  if(e.key==='Enter' || e.key===' '){if(e.target.matches('#hotspots polygon')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}}
 });
