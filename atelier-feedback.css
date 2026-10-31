@@ -44,8 +44,9 @@ html[data-theme="night"] {
 #welcome, #welcome *,
 #menubar, #menubar *,
 #work-desktop, #work-desktop *,
-#dock:not(.sketch-ui-frame), #dock *,
-#window-shade, #window-shade *:not(.sketch-ui-frame) {
+#dock:not(.sketch-ui-frame), #dock :not(.sketch-ui-frame),
+#window-shade:not(.sketch-ui-frame), #window-shade :not(.sketch-ui-frame),
+#welcome :not(.sketch-ui-frame), #work-desktop :not(.sketch-ui-frame) {
   border-color: var(--atelier-red) !important;
 }
 #player, #player *, #toast, #toast * {
