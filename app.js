@@ -301,7 +301,7 @@ function showTamagotchi(){
 }
 function showLatte(){
   closeWindow();specialShade.hidden=false;
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=vanilla-gift-20261031"></iframe>';
   $('#special-close').setAttribute('aria-label','Close Latte Lab');
 }
 function showMusic(autoplay=false){
