@@ -183,6 +183,7 @@ function openApp(name,index){
   case 'phone':showPhone();break;
   case 'tamagotchi':showTamagotchi();break;
   case 'latte':showLatte();break;
+  case 'polaroids':showPolaroids();break;
   case 'music':showMusic(true);break;
   case 'clock':showToast('The Hello Kitty clock shows your local time: '+$('#kitty-time').textContent);break;
   case 'finder':openFinder();break;
@@ -270,6 +271,7 @@ function openInteractiveProjects(){
  <div class="project-grid">
  <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
  <button class="project-card" data-open="mini-games"><span class="project-icon">♥</span><strong>Mini Games</strong><small>See all four playable games</small></button>
+ <button class="project-card" data-open="polaroids"><span class="project-icon">▧</span><strong>My Polaroids</strong><small>Move, turn and explore my instant photographs</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
 }
@@ -369,6 +371,13 @@ function showLatte(){
   closeWindow();specialShade.hidden=false;
   specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=custom-art-20261031"></iframe>';
   $('#special-close').setAttribute('aria-label','Close Latte Lab');
+}
+function showPolaroids(){
+ closeWindow();closeSpecial();
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=1" loading="eager" style="display:block;width:min(1080px,95vw);height:min(780px,89dvh);border:2px solid #ff173b;border-radius:0;background:#fff8f6;box-shadow:0 0 14px #ff173b55"></iframe>';
+ specialShade.hidden=false;
+ $('#special-close').setAttribute('aria-label','Close the Polaroid gallery');
+ $('#special-close').focus({preventScroll:true});
 }
 function showMusic(autoplay=false){
  player.hidden=false;
