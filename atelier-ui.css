@@ -273,3 +273,57 @@ html[data-theme="night"] {
   .desktop-folder,.mode-tile,#dock button{transition:none}
   #window-shade:not([hidden]) .mac-window{animation:none}
 }
+
+
+/* Professional About: character-sheet composition, designed for a later
+   hand-drawn self portrait without changing the markup. */
+.atelier-about-layout {
+  display:grid;grid-template-columns:minmax(170px,.85fr) minmax(0,1.6fr);
+  gap:20px;align-items:stretch;margin-top:14px;
+}
+.atelier-about-portrait {
+  min-height:375px;position:relative;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:12px;
+  border:1.5px solid var(--atelier-red);border-radius:10px;
+  background:var(--atelier-paper-pattern),var(--atelier-blush);
+  color:var(--atelier-ink);text-align:center;padding:20px;
+}
+.atelier-about-portrait::before,.atelier-about-portrait::after {
+  content:"✧";position:absolute;color:var(--atelier-red);font:25px Georgia,serif;
+}
+.atelier-about-portrait::before{top:12px;left:12px}
+.atelier-about-portrait::after{bottom:12px;right:12px}
+.atelier-about-portrait>span{font:normal 76px/1 Georgia,serif;color:var(--atelier-red)}
+.atelier-about-portrait strong{font:normal 30px/1.2 Georgia,serif;letter-spacing:.1em}
+.atelier-about-portrait small{font:normal 11px/1.5 Georgia,serif;letter-spacing:.08em}
+.atelier-about-copy{min-width:0}
+.atelier-about-copy .info-list{display:grid;grid-template-columns:1fr}
+.window-content .info-box {
+  position:relative;background:var(--atelier-paper-pattern),var(--atelier-cream);
+  border:1.5px solid var(--atelier-soft-line);
+  border-radius:9px;padding:17px;
+}
+.window-content .info-box small {
+  color:var(--atelier-ink);font:normal 12px Georgia,serif;
+  letter-spacing:.09em;text-transform:uppercase;
+}
+.window-content .info-box strong {
+  color:var(--atelier-deep);font-size:14px;font-weight:550;
+  line-height:1.5;overflow-wrap:anywhere;
+}
+.window-content .info-box p{margin:8px 0 0}
+.window-content .contact-row small{color:var(--atelier-ink)}
+/* Content and action contrast in the alternative night palette. */
+html[data-theme="night"] .window-content .project-card strong,
+html[data-theme="night"] .window-content .contact-row a,
+html[data-theme="night"] .window-content .info-box strong {color:var(--atelier-ink)}
+html[data-theme="night"] .window-content .project-card small,
+html[data-theme="night"] .window-content .info-box p,
+html[data-theme="night"] .window-content .contact-row small {color:var(--atelier-deep)}
+html[data-theme="night"] .window-content .project-card img {background:var(--atelier-paper)}
+@media(max-width:680px) {
+  .atelier-about-layout {grid-template-columns:1fr}
+  .atelier-about-portrait{min-height:180px}
+  .atelier-about-portrait>span{font-size:44px}
+  .atelier-about-copy .info-list{grid-template-columns:1fr}
+}
