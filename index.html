@@ -66,17 +66,30 @@
 
   <style id="new-room-day-hotspots">
     /* New front, 1670 × 942, with interactive artworks in illustrated frames. */
-    /* Desktop: the complete room fits above the dock instead of being cropped. */
+    /* On computers, fill the entire space below the menu bar.
+       The coffee table has been moved farther back, so it stays visible.
+       Scale the artwork and SVG in the same geometry to keep every hotspot aligned. */
     #play-scene {
       aspect-ratio: 1670 / 942;
-      width: min(100vw, calc((100dvh - var(--menubar) - 54px) * 1670 / 942));
+      width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942));
     }
-    @media (min-width: 761px) {
+    @media (min-width: 761px) and (hover: hover) {
       #play-viewport {
-        justify-content: center;
-        align-items: flex-start;
-        overflow: auto;
-        background: #f6d2e7;
+        justify-content: flex-start;
+        align-items: stretch;
+        overflow: hidden;
+        background: transparent;
+      }
+      #play-scene {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: auto;
+        margin: 0;
+      }
+      #room-img, #room-night {
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
       }
     }
     #hotspots .poster-artworks, #hotspots .poster-artwork { pointer-events: none; }
@@ -115,7 +128,7 @@
         <div id="play-scene">
           <img id="room-img" src="assets/room-day-table-back.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
           <img id="room-night" src="assets/room-night.webp" alt="" aria-hidden="true" decoding="async">
-          <svg id="hotspots" viewBox="0 0 1670 942" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
+          <svg id="hotspots" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
           <defs><clipPath id="redraw-post-0"><polygon points="224,1 294,19 295,126 225,108"/></clipPath><clipPath id="redraw-post-1"><polygon points="325,1 427,61 428,231 326,209"/></clipPath><clipPath id="redraw-post-2"><polygon points="479,36 553,63 554,231 480,206"/></clipPath><clipPath id="redraw-post-3"><polygon points="630,63 746,27 747,228 630,256"/></clipPath><clipPath id="redraw-post-4"><polygon points="780,57 827,43 827,171 780,176"/></clipPath><clipPath id="redraw-post-5"><polygon points="347,252 420,267 420,399 346,393"/></clipPath><clipPath id="redraw-post-6"><polygon points="499,270 552,276 553,393 499,384"/></clipPath><clipPath id="redraw-post-7"><polygon points="587,284 645,280 645,393 587,396"/></clipPath><clipPath id="redraw-post-8"><polygon points="669,261 724,254 725,389 669,393"/></clipPath><clipPath id="redraw-post-9"><polygon points="782,211 826,210 827,292 782,296"/></clipPath><clipPath id="redraw-post-10"><polygon points="750,325 826,316 827,481 751,478"/></clipPath><clipPath id="redraw-post-12"><polygon points="678,407 723,399 725,471 677,471"/></clipPath><clipPath id="redraw-post-13"><polygon points="797,509 824,507 826,554 795,552"/></clipPath><clipPath id="redraw-post-14"><polygon points="1288,35 1407,17 1408,210 1289,216"/></clipPath><clipPath id="redraw-post-15"><polygon points="1442,28 1571,10 1573,212 1445,224"/></clipPath><clipPath id="redraw-post-16"><polygon points="1345,241 1406,233 1409,338 1344,345"/></clipPath><clipPath id="redraw-post-17"><polygon points="1288,287 1315,284 1315,333 1287,334"/></clipPath><clipPath id="redraw-post-18"><polygon points="1447,261 1580,248 1580,427 1448,432"/></clipPath></defs>
           <g class="poster-artworks" pointer-events="none"><image class="poster-artwork" href="assets/photos/bubblegum.jpg" x="224" y="1" width="71" height="125" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-0)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/photos/soap-bubbles.jpg" x="325" y="1" width="103" height="230" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-1)" aria-hidden="true"/>
