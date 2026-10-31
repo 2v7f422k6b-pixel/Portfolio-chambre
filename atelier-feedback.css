@@ -92,3 +92,14 @@ html[data-theme="night"] {
 @media(max-width:760px) {
   #dock button,#dock .dock-app,.traffic .dot {border-radius:0 !important}
 }
+
+/* Small textual UI details must obey the same bright-red rule. */
+#welcome input::placeholder,
+#window-shade input::placeholder,
+#window-shade textarea::placeholder,
+#special-shade input::placeholder,
+#special-shade textarea::placeholder,
+#kitty-time {
+  color:var(--atelier-red) !important;
+  opacity:1;
+}
