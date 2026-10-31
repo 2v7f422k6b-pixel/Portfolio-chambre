@@ -46,3 +46,17 @@ html body .sketch-ui-rule>.sketch-ui-svg>.sketch-ui-ink {
  stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;
  filter:drop-shadow(0 0 2px rgba(255,23,59,.28));
 }
+
+/* Work desktop: remove rectangular secondary glow/shadow, keep single drawn edge. */
+html body #work-desktop .desktop-folder.sketch-ui-frame,
+html body #work-desktop .desktop-folder.sketch-ui-frame:hover,
+html body #work-desktop .desktop-folder.sketch-ui-frame:focus-visible {
+  box-shadow:none!important;outline:0!important;border:0!important;
+}
+html body #work-desktop .desktop-folder.sketch-ui-frame>.sketch-ui-svg {z-index:3;}
+html body #work-desktop .back-room.sketch-ui-frame {
+  box-shadow:none!important;outline:0!important;border:0!important;
+}
+/* Keep return-to-room visible and right-aligned even with inherited styles. */
+html body #work-desktop .back-room {left:auto!important;right:24px!important;}
+@media(max-width:760px){html body #work-desktop .back-room{right:8px!important;}}
