@@ -80,3 +80,43 @@ html body #work-desktop #back-to-room.back-room.sketch-ui-frame {
    right:8px!important;margin-right:8px!important;
  }
 }
+
+/* Hand-traced UX across navigation and content controls. */
+html body :is(
+ #menubar .menu-right>button,
+ #window-shade .art-tile,
+ #window-shade .contact-row,
+ #window-shade .phone-contact-card,
+ #window-shade .pill-link,
+ #window-shade .soft-btn,
+ #window-shade .send-btn,
+ #window-shade .viewer-btn,
+ #window-shade .library-toolbar,
+ #window-shade .about-mark
+).sketch-ui-frame {
+ position:relative;
+ border-color:transparent!important;
+ outline:0!important;
+ box-shadow:none!important;
+}
+html body #window-shade .window-end.sketch-ui-rule {
+ position:relative;border-bottom-color:transparent!important;
+}
+html body :is(
+ #menubar .menu-right>button,
+ #window-shade .art-tile,
+ #window-shade .contact-row,
+ #window-shade .phone-contact-card,
+ #window-shade .pill-link,
+ #window-shade .soft-btn,
+ #window-shade .send-btn,
+ #window-shade .viewer-btn,
+ #window-shade .library-toolbar,
+ #window-shade .about-mark
+).sketch-ui-frame>.sketch-ui-svg {
+ position:absolute;inset:0;width:100%;height:100%;z-index:2;
+ overflow:hidden;pointer-events:none!important;
+}
+html body #window-shade .window-end.sketch-ui-rule>.sketch-ui-svg {
+ position:absolute;inset:0;width:100%;height:100%;pointer-events:none!important;
+}
