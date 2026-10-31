@@ -69,7 +69,7 @@
     /* Desktop: the complete room fits above the dock instead of being cropped. */
     #play-scene {
       aspect-ratio: 1670 / 942;
-      width: min(100vw, calc((100dvh - var(--menubar) - var(--dock) - 24px) * 1670 / 942));
+      width: min(100vw, calc((100dvh - var(--menubar) - 54px) * 1670 / 942));
     }
     @media (min-width: 761px) {
       #play-viewport {
@@ -113,7 +113,7 @@
       </header>
       <div id="play-viewport" hidden>
         <div id="play-scene">
-          <img id="room-img" src="assets/room-day-redrawn.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
+          <img id="room-img" src="assets/room-day-table-back.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
           <img id="room-night" src="assets/room-night.webp" alt="" aria-hidden="true" decoding="async">
           <svg id="hotspots" viewBox="0 0 1670 942" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
           <defs><clipPath id="redraw-post-0"><polygon points="224,1 294,19 295,126 225,108"/></clipPath><clipPath id="redraw-post-1"><polygon points="325,1 427,61 428,231 326,209"/></clipPath><clipPath id="redraw-post-2"><polygon points="479,36 553,63 554,231 480,206"/></clipPath><clipPath id="redraw-post-3"><polygon points="630,63 746,27 747,228 630,256"/></clipPath><clipPath id="redraw-post-4"><polygon points="780,57 827,43 827,171 780,176"/></clipPath><clipPath id="redraw-post-5"><polygon points="347,252 420,267 420,399 346,393"/></clipPath><clipPath id="redraw-post-6"><polygon points="499,270 552,276 553,393 499,384"/></clipPath><clipPath id="redraw-post-7"><polygon points="587,284 645,280 645,393 587,396"/></clipPath><clipPath id="redraw-post-8"><polygon points="669,261 724,254 725,389 669,393"/></clipPath><clipPath id="redraw-post-9"><polygon points="782,211 826,210 827,292 782,296"/></clipPath><clipPath id="redraw-post-10"><polygon points="750,325 826,316 827,481 751,478"/></clipPath><clipPath id="redraw-post-12"><polygon points="678,407 723,399 725,471 677,471"/></clipPath><clipPath id="redraw-post-13"><polygon points="797,509 824,507 826,554 795,552"/></clipPath><clipPath id="redraw-post-14"><polygon points="1288,35 1407,17 1408,210 1289,216"/></clipPath><clipPath id="redraw-post-15"><polygon points="1442,28 1571,10 1573,212 1445,224"/></clipPath><clipPath id="redraw-post-16"><polygon points="1345,241 1406,233 1409,338 1344,345"/></clipPath><clipPath id="redraw-post-17"><polygon points="1288,287 1315,284 1315,333 1287,334"/></clipPath><clipPath id="redraw-post-18"><polygon points="1447,261 1580,248 1580,427 1448,432"/></clipPath></defs>
@@ -159,10 +159,10 @@
           <polygon data-open="music" points="94,440 197,435 201,510 95,512" aria-label="Play FACING SUN on the Marshall speaker" tabindex="0"/>
           <polygon data-mv-open="" points="198,458 252,458 254,512 197,511" aria-label="Open Music & Visual Design by tapping the CDs on the shelf" tabindex="0"/>
           <polygon data-open="clock" points="101,316 153,312 180,345 175,387 112,392 100,368" aria-label="Hello Kitty clock with the real time" tabindex="0"/>
-          <polygon data-open="phone" points="1162,809 1212,800 1278,815 1275,864 1166,864" aria-label="Open the interactive iPhone" tabindex="0"/>
-          <polygon data-open="tamagotchi" points="1097,799 1141,798 1160,815 1159,858 1090,854 1087,826" aria-label="Play with the Tamagotchi" tabindex="0"/>
-          <polygon data-open="book" points="855,777 959,761 1004,773 1006,810 877,838 851,814" aria-label="Explore Clown Princess" tabindex="0"/>
-          <polygon data-open="photos" points="984,680 1006,644 1053,636 1096,647 1135,699 1127,765 1015,803 969,765" aria-label="Browse illustrations by the flowers" tabindex="0"/>
+          <polygon data-open="phone" points="1192,748 1248,752 1292,778 1283,831 1202,824" aria-label="Open the interactive iPhone" tabindex="0"/>
+          <polygon data-open="tamagotchi" points="1134,751 1179,750 1202,769 1204,821 1151,825 1132,797" aria-label="Play with the Tamagotchi" tabindex="0"/>
+          <polygon data-open="book" points="949,735 1015,729 1083,756 1092,787 1013,815 948,792" aria-label="Explore Clown Princess" tabindex="0"/>
+          <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1168,765 1099,780 1040,744" aria-label="Browse illustrations by the flowers" tabindex="0"/>
           <polygon data-open="about" points="520,431 539,425 577,422 617,433 637,459 637,533 615,562 555,562 529,534" aria-label="About me, via the teddy bear" tabindex="0"/>
           <polygon data-open="photos" points="2,352 49,343 80,377 89,528 78,835 2,825" aria-label="Open Photos via the ring light" tabindex="0"/>
           <polygon data-open="contact" points="1542,567 1586,560 1645,551 1667,584 1669,842 1552,831" aria-label="Contact me by the guitar" tabindex="0"/>
