@@ -114,7 +114,7 @@ function chooseMode(mode,zoom=false){
   modeTransitionAnimations=[animation];
  }
  updateClocks();
- if(mode==='work')openFinder();
+ // Enter the Work desktop without opening the redundant Projects window.
 }
 function zoomIntoIMac(){
  if(currentMode!=='play'){chooseMode('work',true);return}
