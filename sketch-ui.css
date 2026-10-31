@@ -191,3 +191,7 @@ html body #work-desktop .desktop-folder {
 html body #welcome::before,html body #welcome::after{display:none!important;content:none!important}
 html body #welcome .welcome-top{justify-content:center!important}
 html body #welcome .welcome-top>span{flex:none}
+
+/* No background hearts on the welcome selection screen. */
+#welcome::before,#welcome::after,#welcome .heart-float,#welcome .lena-heart,#welcome .w-orb,#welcome .w-cloud{display:none!important}
+#welcome .welcome-top .lena-heart{display:inline-block!important}
