@@ -106,6 +106,7 @@ function closeWindow(){shade.hidden=true;currentWindow=null;win.classList.remove
 function closeSpecial(){specialShade.hidden=true;specialHost.innerHTML='';phoneKeyboardInput=null}
 function openWindow(title,html,type='generic'){
  closeSpecial();currentWindow=type;winTitle.textContent=title;winContent.innerHTML=html;
+ if(window.nanaHydrate)window.nanaHydrate(winContent);
  win.setAttribute('aria-modal',String(currentMode!=='work'));
  win.classList.remove('expanded');shade.hidden=false;
  $('#window-close').focus({preventScroll:true});
@@ -144,7 +145,7 @@ function openFinder(){
    <button class="project-card" data-open="interactive"><span class="project-icon">♥</span><strong>Interactive</strong><small>Illustrated stories, a dress-up game & this website</small></button>
    <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
- openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">♥ WORK MODE / PROJECTS</div><h2>A little bit of everything I create.</h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
+ openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">♥ WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
 }
 function openIllustrationProjects(){
  openWindow('ILLUSTRATION',`<div class="eyebrow">♥ PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
@@ -172,10 +173,10 @@ function openInteractiveProjects(){
 function openWorkAbout(){
  openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">♥ PROFILE / ABOUT ME</div><div class="atelier-about-layout">
  <div class="atelier-about-portrait" aria-label="Decorative illustration placeholder"><span aria-hidden="true">♥</span><strong>LÉNA</strong><small>ILLUSTRATION · IDEAS · STORIES</small></div>
- <div class="atelier-about-copy"><h2>Hello, I'm Léna ♡</h2><p>I'm a freelance illustrator, social media manager and writer. I move between visual storytelling, music, moving images and editorial projects.</p>
+ <div class="atelier-about-copy"><h2 class="nana-script-heading"><span class="nana-hand nana-hand--hello-lena" data-nana-script="hello-lena">Hello, I'm Léna ♡</span></h2><p>I'm a freelance illustrator, social media manager and writer. I move between visual storytelling, music, moving images and editorial projects.</p>
  <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
  <div class="info-box"><small>TOOLS</small><strong>Procreate · Procreate Dreams · Video editing</strong></div>
- <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch ♡</button></div></div></div></div>`,'work-about');
+ <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch ♡</button></div></div><p class="nana-script-note"><span class="nana-hand nana-hand--with-love" data-nana-script="with-love">with love, Léna ♡</span></p></div></div>`,'work-about');
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
@@ -183,7 +184,7 @@ function renderArtTiles(filtered=ART){
  const count=$('#photos-count');if(count)count.textContent=filtered.length+' works';
 }
 function openPhotos(){
- openWindow('Photos',`<div class="eyebrow">Illustration / Archive</div><h2>Original illustrations</h2><p class="section-lead">A selection of 19 illustrations, displayed from the original files. Click any image to view it larger.</p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"><span class="count" id="photos-count"></span></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
+ openWindow('Photos',`<div class="eyebrow">Illustration / Archive</div><h2>Original illustrations</h2><p class="section-lead">A selection of 19 illustrations, displayed from the original files. Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"><span class="count" id="photos-count"></span></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
  renderArtTiles();
 }
 function openGallery(which,index=0){
@@ -221,7 +222,7 @@ function openBook(){
  openWindow('Clown Princess',`<div class="eyebrow">Writing / Illustrated book</div><h2>Clown Princess</h2><p>An illustrated storytelling project.</p><div class="empty-state"><span class="empty-icon">♡</span><h3>The illustrated book is being prepared</h3><p>The finished reading version will be added here once the original pages are ready. No text or artwork has been invented for this preview.</p></div>`,'book');
 }
 function openContacts(){
- openWindow('Contacts',`<div class="eyebrow">Contact / Let's talk</div><h2>Let's work together</h2><p>You can contact me directly, or use the Mail application to write a message without leaving this website.</p><div class="contact-list"><div class="contact-row"><small>Name</small><strong>Léna de Firmas</strong></div><div class="contact-row"><small>Email</small><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></div><div class="contact-row"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div></div><button class="soft-btn" data-open="mail">✉ Write an email</button>`,'contact');
+ openWindow('Contacts',`<div class="eyebrow">Contact / Let's talk</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p>You can contact me directly, or use the Mail application to write a message without leaving this website.</p><div class="contact-list"><div class="contact-row"><small>Name</small><strong>Léna de Firmas</strong></div><div class="contact-row"><small>Email</small><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></div><div class="contact-row"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div></div><button class="soft-btn" data-open="mail">✉ Write an email</button>`,'contact');
 }
 function mailFields(){return `<label>Your name<input type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></label><label>Your email<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label>Subject<input type="text" name="subject" required maxlength="180" placeholder="Hello!"></label><label>Message<textarea name="message" required maxlength="10000" placeholder="Write your message here…"></textarea></label>`}
 function openMail(){
