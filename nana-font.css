@@ -1,17 +1,70 @@
-/* Nana Trace UI — custom hand-drawn typeface for portfolio interface.
-   The existing layout, decorations and animations are intentionally untouched. */
+/* Nana Trace UI — original hand-drawn alphabet, October 2026.
+   Applied as a reversible interface-only layer. The room illustrations,
+   poster artwork, book pages, animation and game behavior are untouched. */
 @font-face {
   font-family: "Nana Trace UI";
-  src: url("assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");
+  src: url("./assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-html,
-body,
-body *,
-body *::before,
-body *::after {
-  font-family: "Nana Trace UI", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+:root, html[data-theme="night"] {
+  --nana-red: #ff173b;
+  --nana-glow: rgba(255,23,59,.26);
+  --atelier-ink: var(--nana-red);
+  --atelier-deep: var(--nana-red);
+  --atelier-red: var(--nana-red);
+  --atelier-line: var(--nana-red);
+  --atelier-soft-line: var(--nana-red);
 }
-/* Keep pictorial controls, the book artwork, and their dimensions unchanged. */
+/* Include the mode switcher, Work Mode desktop, dock, menu bar and
+   Mac windows in both modes. Emoji and pictograms use system fallback. */
+:is(#welcome,#menubar,#work-desktop,#dock,#window-shade,#special-shade,#toast,#player),
+:is(#welcome,#menubar,#work-desktop,#dock,#window-shade,#special-shade,#toast,#player) :is(button,a,input,textarea,select,option,label,span,p,h1,h2,h3,h4,strong,small,em,li,dt,dd,summary,time,blockquote,div) {
+  font-family: "Nana Trace UI", Arial, sans-serif !important;
+  color: var(--nana-red) !important;
+  font-weight: 400 !important;
+}
+/* Never recolor image, animation, or canvas content. */
+:is(#welcome,#menubar,#work-desktop,#dock,#window-shade,#special-shade,#toast,#player) :is(input,textarea)::placeholder {
+  color: var(--nana-red) !important;
+  opacity: .75;
+}
+:is(#welcome,#menubar,#work-desktop,#dock,#window-shade,#special-shade,#toast,#player) :is(button,a,input,textarea,select):focus-visible {
+  outline: 2px solid var(--nana-red) !important;
+  outline-offset: 3px;
+}
+/* The rectangles are intentionally square, not modern/macOS-rounded. */
+:is(.welcome-panel,.mode-tile,.tile-art,.tile-screen,.tile-room,.desktop-folder,.desktop-folder>span:last-child,.back-room,#dock,.dock-app,.dock-tooltip,.mac-window,.window-top,.window-content,.info-box,.project-card,.art-tile,.contact-row,.empty-state,.viewer-stage,.search,.pill-link,.soft-btn,.send-btn,.viewer-btn,.window-content input,.window-content textarea,#menubar button,#toast,.player,.traffic .dot,.atelier-about-portrait) {
+  border-radius: 0 !important;
+}
+/* Fine red borders with a small glow, on the actual interactive surfaces. */
+:is(.welcome-panel,.mode-tile,.desktop-folder,.back-room,#dock,.dock-app,.dock-tooltip,.mac-window,.info-box,.project-card,.art-tile,.contact-row,.viewer-stage,.search,.pill-link,.soft-btn,.send-btn,.viewer-btn,.atelier-about-portrait) {
+  border-color: var(--nana-red) !important;
+  box-shadow: 0 0 8px var(--nana-glow) !important;
+}
+#menubar,.window-top {
+  border-bottom-color: var(--nana-red) !important;
+  box-shadow: 0 1px 6px rgba(255,23,59,.17) !important;
+}
+/* Flowers and decorative sparkles become small drawn red hearts. */
+#welcome::before,#welcome::after,
+.work-wallpaper::before,.work-wallpaper::after,
+.window-top::before,.window-content::before,.window-content::after,
+.desktop-folder::after,.window-content .project-card::after,
+.atelier-about-portrait::before,.atelier-about-portrait::after {
+  content: "♥" !important;
+  color: var(--nana-red) !important;
+  font-family: Georgia, serif !important;
+}
+/* Preserve icon visibility when the custom font does not contain the symbol. */
+:is(.dock-app,.folder-tile,.traffic .dot,.apple-symbol,.theme-icon,.player-icon) {
+  font-family: "Nana Trace UI", "Apple Color Emoji", "Segoe UI Symbol", sans-serif;
+}
+/* A little breathing room for an intentionally imperfect hand-drawn face. */
+.window-content p,.window-content small,.desktop-folder,.dock-tooltip {
+  line-height: 1.55;
+}
+@media (max-width:430px) {
+  .window-content p,.window-content small {line-height:1.6;}
+}
