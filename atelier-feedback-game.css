@@ -1,0 +1,16 @@
+/* Matching the red/square portfolio chrome in the dress-up game.
+   The avatar and clothing illustrations are preserved without styling edits. */
+:root { --ink:#e60024; --outline:#e60024; --outline-soft:#e60024; }
+body,.frame,.frame :is(h1,h2,h3,p,strong,small,label,span,button,a,div) {
+  color:#e60024 !important;
+}
+.frame,.panel,.action,.tab,.item,.preset,.toast,
+.frame :is(input,textarea,select,button) {
+  border-radius:0 !important;
+  border-color:#e60024 !important;
+}
+.frame {box-shadow:0 0 6px rgba(230,0,36,.3),0 0 14px rgba(230,0,36,.12) !important}
+.panel,.action,.tab,.item,.preset,.toast {
+  box-shadow:0 0 4px rgba(230,0,36,.2),0 0 10px rgba(230,0,36,.07) !important;
+}
+.panel::before,.panel::after {color:#e60024 !important}
