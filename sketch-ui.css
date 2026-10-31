@@ -47,31 +47,36 @@ html body .sketch-ui-rule>.sketch-ui-svg>.sketch-ui-ink {
  filter:drop-shadow(0 0 2px rgba(255,23,59,.28));
 }
 
-/* Work desktop: remove rectangular secondary glow/shadow, keep single drawn edge. */
-html body #work-desktop .desktop-folder.sketch-ui-frame,
-html body #work-desktop .desktop-folder.sketch-ui-frame:hover,
-html body #work-desktop .desktop-folder.sketch-ui-frame:focus-visible {
-  box-shadow:none!important;outline:0!important;border:0!important;
+/* Desktop: one hand-traced border, no extra rectangular glow. */
+html body #work-desktop .folder-grid > .desktop-folder.sketch-ui-frame {
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  background-clip:border-box;
 }
-html body #work-desktop .desktop-folder.sketch-ui-frame>.sketch-ui-svg {z-index:3;}
-html body #work-desktop .back-room.sketch-ui-frame {
-  box-shadow:none!important;outline:0!important;border:0!important;
+html body #work-desktop .folder-grid > .desktop-folder.sketch-ui-frame:hover,
+html body #work-desktop .folder-grid > .desktop-folder.sketch-ui-frame:focus-visible {
+  box-shadow:none!important;
+  outline:0!important;
 }
-/* Keep return-to-room visible and right-aligned even with inherited styles. */
-html body #work-desktop .back-room {left:auto!important;right:24px!important;}
-@media(max-width:760px){html body #work-desktop .back-room{right:8px!important;}}
-
-/* Fix root cause: SVG wrapper must not turn fixed return button into relative. */
-html body #back-to-room.back-room.sketch-ui-frame{
- position:fixed!important;left:auto!important;right:24px!important;
- bottom:calc(var(--dock) + 14px)!important;z-index:8;
-}
-/* The older glow sheet has a later !important box-shadow on folder tiles. */
-html body #work-desktop .folder-grid>.desktop-folder.sketch-ui-frame,
-html body #work-desktop .folder-grid>.desktop-folder.sketch-ui-frame:hover,
-html body #work-desktop .folder-grid>.desktop-folder.sketch-ui-frame:focus-visible{
- box-shadow:none!important;outline:0!important;border:0!important;
+html body #work-desktop .desktop-folder.sketch-ui-frame > .sketch-ui-svg {z-index:3;}
+/* Position relative to the work desktop, not to a transformed viewport. */
+html body #work-desktop #back-to-room.back-room.sketch-ui-frame {
+  position:sticky!important;
+  display:block;
+  width:max-content;
+  left:auto!important;
+  right:24px!important;
+  bottom:100px!important;
+  margin: -94px 24px 95px auto!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  z-index:8;
 }
 @media(max-width:760px){
- html body #back-to-room.back-room.sketch-ui-frame{right:8px!important;bottom:86px!important;}
+ html body #work-desktop #back-to-room.back-room.sketch-ui-frame{
+   right:8px!important;margin-right:8px!important;
+ }
 }
