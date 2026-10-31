@@ -1,0 +1,61 @@
+/* Lena's hand-drawn heart — traced directly from her transparent illustration.
+   A single icon shared by desktop, dock, games and dynamically loaded views. */
+:root {
+  --lena-heart-image: url("assets/heart-lena.svg");
+  --lena-heart-glow: drop-shadow(0 0 3px rgba(255, 0, 30, .55));
+}
+.lena-heart {
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
+  min-inline-size: 1em;
+  flex: 0 0 auto;
+  vertical-align: -.13em;
+  background: var(--lena-heart-image) center / contain no-repeat;
+  filter: var(--lena-heart-glow);
+  transform-origin: 50% 53%;
+  animation: lena-heart-pulse 3.3s ease-in-out infinite;
+  pointer-events: none;
+  color: transparent !important;
+  font-size: 1em;
+}
+@keyframes lena-heart-pulse {
+  0%, 76%, 100% { transform: scale(1); }
+  82% { transform: scale(1.12); }
+  89% { transform: scale(.98); }
+  94% { transform: scale(1.07); }
+}
+:is(button,a,.project-card,.desktop-folder,.mode-tile):is(:hover,:focus-visible) .lena-heart {
+  filter: drop-shadow(0 0 5px rgba(255,0,30,.8));
+}
+:is(button,a,.project-card,.desktop-folder,.mode-tile):active .lena-heart {
+  filter: drop-shadow(0 0 7px rgba(255,0,30,.9));
+}
+/* CSS-generated decorative hearts were previously text characters. Reuse the drawing. */
+#welcome::before, #welcome::after,
+.work-wallpaper::before, .work-wallpaper::after,
+.window-top::before, .window-content::before, .window-content::after,
+.desktop-folder::after, .window-content .project-card::after,
+.atelier-about-portrait::before, .atelier-about-portrait::after,
+#work-desktop .desktop-folder.mini-games-folder::after,
+#window-content:has(.mini-games-section)::before,
+#window-content:has(.mini-games-section)::after,
+#menubar #menu-about::before,
+.station::before, .station::after {
+  content: "" !important;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-image: var(--lena-heart-image) !important;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  filter: var(--lena-heart-glow);
+  color: transparent !important;
+}
+/* Keep game/desktop specific placement and original animations. */
+#cat-response image.cat-heart { filter: var(--lena-heart-glow); }
+.heart-float .lena-heart { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .lena-heart { animation: none !important; transition: none !important; }
+}
