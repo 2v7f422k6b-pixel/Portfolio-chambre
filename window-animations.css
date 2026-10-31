@@ -1,0 +1,119 @@
+/* Tiny, hand-drawn movements outside the bedroom window.
+   The overlay uses the exact same 1670 x 942 coordinates as the approved art. */
+#window-life {
+  position:absolute;
+  inset:0;
+  z-index:2; /* Room art: 0/1; interactive hotspots: 3 */
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  user-select:none;
+  overflow:visible;
+}
+#window-life .outside-day,
+#window-life .outside-night {
+  transition:opacity 1.8s cubic-bezier(.42,0,.25,1);
+}
+#window-life .outside-day { opacity:1; }
+#window-life .outside-night { opacity:0; }
+html[data-theme="night"] #window-life .outside-day { opacity:0; }
+html[data-theme="night"] #window-life .outside-night { opacity:1; }
+
+#window-life .day-cloud {
+  fill:rgba(255,250,255,.70);
+  stroke:rgba(223,239,255,.70);
+  stroke-width:1.6;
+  stroke-linejoin:round;
+}
+#window-life .cloud-back { opacity:.62; animation:window-cloud-back 49s linear infinite -18s; }
+#window-life .cloud-front { opacity:.82; animation:window-cloud-front 64s linear infinite -37s; }
+#window-life .bird-flock {
+  fill:none;
+  stroke:#364c86;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.88;
+  animation:window-birds-fly 33s linear infinite -13s;
+}
+#window-life .bird-flock--far {
+  opacity:.58;
+  stroke-width:2;
+  animation:window-birds-fly-far 46s linear infinite -23s;
+}
+#window-life .bird-wing {
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:window-bird-flap 1.65s ease-in-out infinite alternate;
+}
+#window-life .bird-wing:nth-child(2) { animation-delay:-.55s; }
+#window-life .bird-wing:nth-child(3) { animation-delay:-.9s; }
+
+#window-life .night-cloud {
+  fill:#9bb2dc;
+  opacity:.15;
+  animation:window-night-cloud 67s linear infinite -30s;
+}
+#window-life .night-star {
+  fill:#fff7df;
+  stroke:#fff6e4;
+  stroke-width:.65;
+  filter:drop-shadow(0 0 2.5px rgba(252,239,184,.76));
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:window-star-twinkle 4.6s ease-in-out infinite;
+}
+#window-life .night-stars > :nth-child(2n) {animation-delay:-1.7s;}
+#window-life .night-stars > :nth-child(3n) {animation-delay:-3.4s;}
+#window-life .night-stars > :nth-child(5n) {animation-duration:6.2s;}
+#window-life .shooting-star {
+  opacity:0;
+  fill:none;
+  stroke:#fff7dc;
+  stroke-width:1.6;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 3px #dbe8ff);
+  animation:window-shooting-star 25s ease-out infinite -8s;
+}
+
+@keyframes window-cloud-back {
+  from {transform:translateX(-110px);}
+  to {transform:translateX(145px);}
+}
+@keyframes window-cloud-front {
+  from {transform:translateX(-85px);}
+  to {transform:translateX(145px);}
+}
+@keyframes window-birds-fly {
+  from {transform:translate(-90px,9px);}
+  to {transform:translate(255px,-28px);}
+}
+@keyframes window-birds-fly-far {
+  from {transform:translate(-82px,-4px);}
+  to {transform:translate(245px,-21px);}
+}
+@keyframes window-bird-flap {
+  from {transform:scaleY(.5);}
+  to {transform:scaleY(1.08);}
+}
+@keyframes window-night-cloud {
+  from {transform:translateX(-112px);}
+  to {transform:translateX(178px);}
+}
+@keyframes window-star-twinkle {
+  0%,100% {opacity:.34; transform:scale(.72);}
+  45% {opacity:1; transform:scale(1.08);}
+  70% {opacity:.55; transform:scale(.85);}
+}
+@keyframes window-shooting-star {
+  0%,74%,91%,100% {opacity:0; transform:translate(20px,-11px);}
+  77% {opacity:.95; transform:translate(0,0);}
+  80% {opacity:0; transform:translate(-26px,18px);}
+}
+@media (prefers-reduced-motion:reduce) {
+  #window-life *,#window-life .outside-day,#window-life .outside-night {
+    animation:none!important;
+    transition:none!important;
+  }
+  #window-life .shooting-star {opacity:0;}
+}
