@@ -166,3 +166,23 @@ html body #window-shade .traffic button.sketch-ui-frame{position:relative;border
 html body :is(.welcome-top,.welcome-foot,.tile-art,#window-shade .project-icon,#window-shade .project-card img,#window-shade .traffic button)>.sketch-ui-svg{
  position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none!important;overflow:hidden;
 }
+
+/* Work desktop cleanup: one continuous paper color and only meaningful hearts. */
+html body #work-desktop,
+html[data-theme="night"] body #work-desktop,
+html body #work-desktop .work-wallpaper,
+html[data-theme="night"] body #work-desktop .work-wallpaper {
+ background:var(--atelier-blush)!important;
+ background-image:none!important;
+}
+html body #work-desktop .work-wallpaper::before,
+html body #work-desktop .work-wallpaper::after,
+html body #work-desktop .work-wallpaper > *,
+html body #work-desktop .desktop-folder::after {
+ display:none!important;
+ content:none!important;
+}
+html body #work-desktop .desktop-folder {
+ background:var(--atelier-cream)!important;
+ background-image:none!important;
+}
