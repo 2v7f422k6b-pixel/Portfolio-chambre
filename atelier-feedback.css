@@ -1,0 +1,94 @@
+/*
+ * User-approved refinement: square corners, vivid red UI text, red hearts,
+ * and a soft red glow around borders. All source illustrations are untouched.
+ */
+:root {
+  --atelier-red: #e60024;
+  --atelier-ink: #e60024;
+  --atelier-deep: #e60024;
+  --atelier-line: #e60024;
+  --atelier-soft-line: #e60024;
+  --atelier-glow: 0 0 5px rgba(230,0,36,.28), 0 0 12px rgba(230,0,36,.11);
+  --atelier-glow-tiny: 0 0 4px rgba(230,0,36,.16);
+}
+html[data-theme="night"] {
+  --atelier-red: #ff3853;
+  --atelier-ink: #ff3853;
+  --atelier-deep: #ff3853;
+  --atelier-line: #ff3853;
+  --atelier-soft-line: #ff3853;
+  --atelier-glow: 0 0 5px rgba(255,56,83,.37), 0 0 13px rgba(255,56,83,.14);
+  --atelier-glow-tiny: 0 0 4px rgba(255,56,83,.22);
+}
+/* Only application chrome: never recolor the illustrated bedroom,
+   the artwork images or rendered PDFs. */
+#welcome, #welcome *,
+#menubar, #menubar *,
+#work-desktop, #work-desktop *,
+#dock, #dock *,
+#window-shade, #window-shade *,
+#special-shade, #special-shade *,
+#player, #player *,
+#toast, #toast *,
+.play-caption {
+  color: var(--atelier-red) !important;
+}
+#welcome, #welcome *,
+#menubar, #menubar *,
+#work-desktop, #work-desktop *,
+#dock, #dock *,
+#window-shade, #window-shade *,
+#special-shade, #special-shade * {
+  border-radius: 0 !important;
+}
+#welcome, #welcome *,
+#menubar, #menubar *,
+#work-desktop, #work-desktop *,
+#dock, #dock *,
+#window-shade, #window-shade * {
+  border-color: var(--atelier-red) !important;
+}
+#player, #player *, #toast, #toast * {
+  border-radius: 0 !important;
+  border-color: var(--atelier-red) !important;
+}
+/* Strong outlines get a little light, rather than bulky drop shadows. */
+.welcome-panel,
+.mode-tile,
+.desktop-folder,
+#dock,
+#menubar,
+.mac-window,
+.atelier-about-portrait,
+#player,
+#toast {
+  box-shadow: var(--atelier-glow) !important;
+}
+#window-shade .window-top,
+#window-shade :is(.project-card,.art-tile,.info-box,.contact-row,.viewer-stage,.empty-state,.search,.mail-form input,.mail-form textarea,.pill-link,.soft-btn,.send-btn,.viewer-btn),
+#window-shade .traffic .dot,
+#menubar :is(#theme-toggle,#switch-mode),
+#welcome .tile-art,
+#dock .dock-app,
+#special-close {
+  box-shadow: var(--atelier-glow-tiny) !important;
+}
+#work-desktop .desktop-folder:hover,
+#welcome .mode-tile:hover,
+#window-shade :is(.project-card,.art-tile):hover {
+  box-shadow: 0 0 8px rgba(230,0,36,.36), 0 0 18px rgba(230,0,36,.12) !important;
+}
+/* Decorative flowers added by the UI are now red hearts. */
+.work-wallpaper::before,.work-wallpaper::after,
+.window-top::before {
+  content: "♥" !important;
+  color: var(--atelier-red) !important;
+}
+.window-content::before,.window-content::after,
+.atelier-about-portrait::before,.atelier-about-portrait::after {
+  color: var(--atelier-red) !important;
+}
+/* Keep the button shapes square on touch devices too. */
+@media(max-width:760px) {
+  #dock button,#dock .dock-app,.traffic .dot {border-radius:0 !important}
+}
