@@ -94,30 +94,63 @@ async function turn(dir){
  if(busy||!pdf)return;
  const target=nextPosition(position,dir);if(target===position)return;
  busy=true;updateControls();
+ let sheet=null;
  try{
   const previous=pagePair(position),future=pagePair(target);
-  const [a,b]=await Promise.all(future.map(imageFor));
-  if(!$('#book-reader'))return;
-  const sheet=document.createElement('div');
-  sheet.dataset.mobile=String(isSmall());
-  sheet.className='book-turn-sheet '+(dir>0?'go-next':'go-prev');
-  const face=document.createElement('div');face.className='book-turn-face';
-  const back=document.createElement('div');back.className='book-turn-back';
-  const source=dir>0?previous[1]:previous[0];
-  const destination=dir>0?future[0]:future[1];
-  const oldSrc=await imageFor(source),newSrc=await imageFor(destination);
-  if(isSmall()&&dir<0){face.style.backgroundImage=newSrc?'url("'+newSrc+'")':'';back.style.backgroundImage=oldSrc?'url("'+oldSrc+'")':'';}
-  if(!(isSmall()&&dir<0)&&oldSrc)face.style.backgroundImage='url("'+oldSrc+'")';
-  if(!(isSmall()&&dir<0)&&newSrc)back.style.backgroundImage='url("'+newSrc+'")';
+  // Freeze the visible leaves and prepare the destination spread before animating.
+  const [previousLeft,previousRight,futureLeft,futureRight]=await Promise.all(
+   [previous[0],previous[1],future[0],future[1]].map(imageFor)
+  );
+  const stage=$('#book-pages');
+  if(!stage||!$('#book-reader'))return;
+  const goingForward=dir>0;
+  const oldSrc=goingForward?previousRight:previousLeft;
+  const newSrc=goingForward?futureLeft:futureRight;
+  sheet=document.createElement('div');
+  sheet.className='book-turn-sheet '+(goingForward?'go-next':'go-prev');
+  const face=document.createElement('div');
+  face.className='book-turn-face';
+  const back=document.createElement('div');
+  back.className='book-turn-back';
+  // Front = outgoing page, reverse = incoming page. Never swap these for mobile.
+  if(oldSrc)face.style.backgroundImage='url("'+oldSrc+'")';
+  if(newSrc)back.style.backgroundImage='url("'+newSrc+'")';
   sheet.append(face,back);
-  const stage=$('#book-pages');stage.appendChild(sheet);
-  // The target spread is behind the turning leaf.
-  fill('left',a,future[0]);fill('right',b,future[1]);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>sheet.classList.add('turning')));
-  await new Promise(resolve=>{sheet.addEventListener('transitionend',resolve,{once:true});setTimeout(resolve,850);});
-  sheet.remove();position=target;
- }catch(err){status(err.message||'Impossible de tourner la page',100);await draw(position);}
- finally{busy=false;updateControls();}
+  stage.appendChild(sheet);
+  // Crucial: keep the stationary page from the OLD spread in place,
+  // and reveal only the far page of the NEW spread underneath the leaf.
+  // Updating both pages immediately made illustrations jump before the turn.
+  if(isSmall()){
+   fill('left',null,0);
+   fill('right',futureRight,future[1]);
+  }else if(goingForward){
+   fill('left',previousLeft,previous[0]);
+   fill('right',futureRight,future[1]);
+  }else{
+   fill('left',futureLeft,future[0]);
+   fill('right',previousRight,previous[1]);
+  }
+  // The sheet is attached and painted before the transition begins.
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  if(!sheet.isConnected)return;
+  sheet.classList.add('turning');
+  await new Promise(resolve=>{
+   const complete=e=>{if(e.target===sheet&&e.propertyName==='transform'){sheet.removeEventListener('transitionend',complete);resolve();}};
+   sheet.addEventListener('transitionend',complete);
+   setTimeout(()=>{sheet.removeEventListener('transitionend',complete);resolve();},1050);
+  });
+  if(!$('#book-reader'))return;
+  // Only now replace the folded leaf with the final, fixed spread.
+  fill('left',futureLeft,future[0]);
+  fill('right',futureRight,future[1]);
+  position=target;
+  for(const n of [target-2,target-1,target+1,target+2])imageFor(n).catch(()=>{});
+ }catch(err){
+  if($('#book-reader')){status(err.message||'Impossible de tourner la page',100);await draw(position);}
+ }finally{
+  if(sheet)sheet.remove();
+  busy=false;updateControls();
+ }
 }
 function openBook(){
  if(typeof window.openWindow!=='function')return;
