@@ -8,6 +8,7 @@
   <title>Nana — Portfolio</title>
   <link rel="stylesheet" href="style.css?v=retro-jour-nuit-fusion-20261031">
   <link rel="stylesheet" href="window-animations.css?v=1">
+  <link rel="stylesheet" href="cat-interaction.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=5">
   <link rel="stylesheet" href="music-visuals.css?v=1">
   <link rel="stylesheet" href="pages-addon.css?v=1">
@@ -241,9 +242,19 @@
           <polygon data-open="latte" points="887,742 897,739 897,730 937,729 945,739 945,779 938,786 906,785 896,773 890,769 883,757" aria-label="Make a latte by clicking the pink mug" tabindex="0"/>
           <polygon data-open="book" points="949,735 1015,729 1083,756 1092,787 1013,815 948,792" aria-label="Explore Clown Princess" tabindex="0"/>
           <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1168,765 1099,780 1040,744" aria-label="Browse illustrations by the flowers" tabindex="0"/>
+          <!-- Pet the cat: the original illustration stays untouched. -->
+          <polygon data-cat-pet="" points="402,615 415,602 436,594 463,592 490,600 502,583 518,584 537,592 558,590 567,608 561,630 548,645 520,650 495,658 461,661 423,658 405,645 400,627" aria-label="Pet the sleeping cat" tabindex="0"/>
           <polygon data-open="about" points="520,431 539,425 577,422 617,433 637,459 637,533 615,562 555,562 529,534" aria-label="About me, via the teddy bear" tabindex="0"/>
           <polygon data-open="photos" points="2,352 49,343 80,377 89,528 78,835 2,825" aria-label="Open Photos via the ring light" tabindex="0"/>
           <polygon data-open="contact" points="1542,567 1586,560 1645,551 1667,584 1669,842 1552,831" aria-label="Contact me by the guitar" tabindex="0"/>
+          <g id="cat-response" aria-hidden="true" pointer-events="none">
+            <!-- Two small irregular hearts and faint purring ripples, in red UI ink. -->
+            <path class="cat-purr-line" d="M 394 616 Q 388 625 395 633"/>
+            <path class="cat-purr-line" d="M 386 619 Q 379 630 388 640"/>
+            <text class="cat-purr-word" x="567" y="595">prrr...</text>
+            <path class="cat-heart cat-heart--one" d="M 575 616 C 563 607 565 599 573 602 Q 577 604 577 607 Q 581 597 588 602 C 596 611 584 616 575 616 Z"/>
+            <path class="cat-heart cat-heart--two" d="M 600 578 C 589 568 591 563 597 566 Q 600 567 601 570 C 606 562 613 565 611 571 Q 609 576 600 578 Z"/>
+          </g>
           </svg>
           <!-- A live clock covers only the digits inside the original Hello Kitty display. -->
           <div id="kitty-clock" aria-label="Local time on the Hello Kitty alarm clock"><span id="kitty-time">--:--</span></div>
@@ -287,6 +298,7 @@
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="app.js?v=latte-custom-art-20261031" defer></script>
+  <script src="cat-interaction.js?v=1" defer></script>
    <script src="coloring-addon.js?v=1" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
   <script src="motion-addon.js?v=6" defer></script>
