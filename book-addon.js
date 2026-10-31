@@ -14,7 +14,7 @@ async function load(){
   async function worker(){while(next<COUNT){const i=next++;const result=await fetch(BASE+'part-'+String(i).padStart(2,'0')+'.bin');if(!result.ok)throw Error('Impossible de charger le livre.');parts[i]=await result.arrayBuffer();done++;status('Chargement : '+Math.round(done/COUNT*100)+' %',done/COUNT*100);}}
   await Promise.all([worker(),worker(),worker(),worker()]);
   const blob=new Blob(parts,{type:'application/pdf'});
-  if(blob.size!==8674656)throw Error('Le fichier est incomplet. Réessaie.');
+  if(blob.size!==8699536)throw Error('Le fichier est incomplet. Réessaie.');
   pdfUrl=URL.createObjectURL(blob);return pdfUrl;
  })();
  try{return await pending;}finally{pending=null;}
