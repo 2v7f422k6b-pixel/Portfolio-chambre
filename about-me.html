@@ -118,7 +118,7 @@ $('#close').addEventListener('click',()=>{if(window.parent!==window){window.pare
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
 async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);const body=await decode(BASE);ctx.drawImage(body,0,0,W,H);
 for(const key of ['pants','skirts','tops','dresses','shoes','jackets','bags','bagAccessories'])if(slots[key]&&FITS[slots[key]])if(FITTED[slots[key]])ctx.drawImage(await decode(FITTED[slots[key]]),0,0,W,H);else ctx.drawImage(await decode(SPRITES[slots[key]]),...FITS[slots[key]]);
-ctx.drawImage(body,0,0,W,185,0,0,W,185);
+ctx.drawImage(body,0,0,W,480,0,0,W,480);
 for(const key of ['earrings','necklace','hat','headphones','clips'])if(slots[key]&&FITS[slots[key]])if(FITTED[slots[key]])ctx.drawImage(await decode(FITTED[slots[key]]),0,0,W,H);else ctx.drawImage(await decode(SPRITES[slots[key]]),...FITS[slots[key]]);
 for(const id of slots.makeup)if(FITTED[id])ctx.drawImage(await decode(FITTED[id]),0,0,W,H);
 c.toBlob(blob=>{if(!blob){toast('Export indisponible');return}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='lena-look.png';a.click();setTimeout(()=>URL.revokeObjectURL(u),1600);toast('♡ Look sauvegardé en PNG transparent')},'image/png');}catch(e){toast('Impossible d’enregistrer le look');console.error(e)}finally{btn.disabled=false}}
