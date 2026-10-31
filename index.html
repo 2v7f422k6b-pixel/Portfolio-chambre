@@ -9,6 +9,59 @@
   <link rel="stylesheet" href="style.css?v=retro-jour-nuit-fusion-20261031">
   <link rel="stylesheet" href="motion-addon.css?v=5">
   <link rel="stylesheet" href="music-visuals.css?v=1">
+
+  <!-- iPad/touch feedback for illustrated Play Mode hotspots. -->
+  <style id="touch-hotspots-style">
+    #hotspots polygon:active,
+    #hotspots polygon.touch-target {
+      stroke: #fff !important;
+      stroke-width: 4.5 !important;
+      fill: rgba(255, 255, 255, .19) !important;
+      filter: drop-shadow(0 0 5px rgba(77, 45, 115, .85)) !important;
+    }
+    #hotspots.hotspot-peek polygon,
+    #hotspots.hotspot-guide-on polygon {
+      stroke: rgba(255, 255, 255, .96);
+      stroke-width: 4;
+      fill: rgba(255, 255, 255, .10);
+      filter: drop-shadow(0 0 3px rgba(77, 45, 115, .75));
+    }
+    #hotspots.hotspot-peek polygon.touch-target,
+    #hotspots.hotspot-guide-on polygon.touch-target {
+      fill: rgba(255, 225, 244, .3) !important;
+      stroke: #fff !important;
+    }
+    #hotspot-guide {
+      display: none;
+      position: fixed;
+      top: calc(var(--menubar, 42px) + 12px);
+      right: 14px;
+      z-index: 24;
+      background: #fff5fbe9;
+      border: 1px solid #92749b;
+      border-radius: 8px;
+      box-shadow: 3px 3px 0 #5b4e7460;
+      color: #58436b;
+      font: 700 12px/1.1 "Courier New", monospace;
+      padding: 10px 12px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #hotspot-guide[aria-pressed="true"] {
+      background: #f6d2ec;
+      box-shadow: inset 2px 2px 0 #92749b66;
+    }
+    #hotspot-guide:focus-visible { outline: 3px solid #7152a4; outline-offset: 3px; }
+    @media (any-pointer: coarse) {
+      #hotspot-guide { display: block; }
+    }
+    @media (max-width: 550px) {
+      #hotspot-guide { padding: 8px 10px; font-size: 11px; right: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #hotspots polygon { transition: none; }
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -120,5 +173,85 @@
   <script src="app.js?v=retro-jour-nuit-fusion-20261031" defer></script>
   <script src="motion-addon.js?v=5" defer></script>
   <script src="music-visuals.js?v=1" defer></script>
+
+  <script id="touch-hotspots-script">
+  (() => {
+    const scene = document.getElementById('play-scene');
+    const svg = document.getElementById('hotspots');
+    const viewport = document.getElementById('play-viewport');
+    if (!scene || !svg || !viewport) return;
+
+    const guide = document.createElement('button');
+    guide.type = 'button';
+    guide.id = 'hotspot-guide';
+    guide.textContent = '✧ Voir les zones';
+    guide.setAttribute('aria-label', 'Afficher les contours des éléments cliquables');
+    guide.setAttribute('aria-pressed', 'false');
+    viewport.appendChild(guide);
+
+    let releaseTimer;
+    let touching = false;
+    const isTouch = event => event.pointerType === 'touch' || event.pointerType === 'pen';
+
+    function mark(target) {
+      svg.querySelectorAll('polygon.touch-target').forEach(p => p.classList.remove('touch-target'));
+      const polygon = target && target.closest && target.closest('polygon');
+      if (polygon && svg.contains(polygon)) polygon.classList.add('touch-target');
+    }
+    function clearPeek() {
+      if (guide.getAttribute('aria-pressed') !== 'true') svg.classList.remove('hotspot-peek');
+      mark(null);
+    }
+    function release() {
+      if (!touching) return;
+      touching = false;
+      clearTimeout(releaseTimer);
+      releaseTimer = setTimeout(clearPeek, 1200);
+    }
+
+    scene.addEventListener('pointerdown', event => {
+      if (!isTouch(event)) return;
+      touching = true;
+      clearTimeout(releaseTimer);
+      svg.classList.add('hotspot-peek');
+      mark(event.target);
+    }, { passive: true });
+
+    scene.addEventListener('pointermove', event => {
+      if (!isTouch(event)) return;
+      if (touching) {
+        mark(document.elementFromPoint(event.clientX, event.clientY));
+      } else if (event.pointerType === 'pen') {
+        // iPads with Apple Pencil hover also show the currently hovered area.
+        mark(document.elementFromPoint(event.clientX, event.clientY));
+      }
+    }, { passive: true });
+
+    scene.addEventListener('pointerleave', event => {
+      if (event.pointerType === 'pen' && !touching) mark(null);
+    });
+    window.addEventListener('pointerup', release, { passive: true });
+    window.addEventListener('pointercancel', release, { passive: true });
+    window.addEventListener('blur', () => {
+      touching = false;
+      clearTimeout(releaseTimer);
+      clearPeek();
+    });
+
+    guide.addEventListener('click', () => {
+      const enabled = guide.getAttribute('aria-pressed') !== 'true';
+      guide.setAttribute('aria-pressed', String(enabled));
+      guide.setAttribute('aria-label', enabled
+        ? 'Masquer les contours des éléments cliquables'
+        : 'Afficher les contours des éléments cliquables');
+      guide.textContent = enabled ? '✓ Masquer les zones' : '✧ Voir les zones';
+      svg.classList.toggle('hotspot-guide-on', enabled);
+      if (!enabled) {
+        svg.classList.remove('hotspot-peek');
+        mark(null);
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
