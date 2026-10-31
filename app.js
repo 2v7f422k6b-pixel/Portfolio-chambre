@@ -79,6 +79,7 @@ function chooseMode(mode,zoom=false){
   work.animate([{opacity:0,transform:'scale(.88)'},{opacity:1,transform:'scale(1)'}],{duration:600,easing:'cubic-bezier(.15,.7,.25,1)'});
  }
  updateClocks();
+ if(mode==='work')openFinder();
 }
 function zoomIntoIMac(){
  if(currentMode!=='play'){chooseMode('work',true);return}
@@ -116,12 +117,16 @@ function openApp(name,index){
   case 'music':showMusic(true);break;
   case 'clock':showToast('The Hello Kitty clock shows your local time: '+$('#kitty-time').textContent);break;
   case 'finder':openFinder();break;
+  case 'illustration':openIllustrationProjects();break;
+  case 'social':openSocialProjects();break;
+  case 'interactive':openInteractiveProjects();break;
+  case 'dressup':openAbout();break;
   case 'photos':openPhotos();break;
   case 'artwork':openGallery('art',index||0);break;
   case 'gabzilla':openGallery('gabzilla',0);break;
   case 'motion':openMotion();break;
   case 'pages':openPages();break;
-  case 'about':openAbout();break;
+  case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
   case 'book':openBook();break;
   case 'mail':openMail();break;
   case 'contact':openContacts();break;
@@ -130,13 +135,46 @@ function openApp(name,index){
 }
 
 function openFinder(){
- const cards=`<div class="project-grid">
-   <button class="project-card" data-open="gabzilla"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA original illustration"><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
-   <button class="project-card" data-open="photos"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"><strong>Illustration</strong><small>19 original works</small></button>
-   <button class="project-card" data-open="motion"><span class="project-icon">▶</span><strong>Motion</strong><small>Animation & editorial video · Library in preparation</small></button>
-   <button class="project-card" data-open="pages"><span class="project-icon">▤</span><strong>Pages</strong><small>Writing & articles · Library in preparation</small></button>
+ const cards=`<div class="project-grid atelier-project-grid">
+   <button class="project-card" data-open="illustration"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"><strong>Illustration</strong><small>Drawings, visual storytelling & collaborations</small></button>
+   <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Motion</strong><small>Animation & moving images</small></button>
+   <button class="project-card" data-open="social"><span class="project-icon">♡</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
+   <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
+   <button class="project-card" data-open="interactive"><span class="project-icon">✿</span><strong>Interactive</strong><small>Illustrated stories, a dress-up game & this website</small></button>
+   <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
- openWindow('Finder — Projects',`<div class="eyebrow">Finder / Projects</div><h2>Selected work</h2><p class="section-lead">A quick way to explore illustration, collaborations and creative projects.</p>${cards}`,'finder');
+ openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">✿ WORK MODE / PROJECTS</div><h2>A little bit of everything I create.</h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
+}
+function openIllustrationProjects(){
+ openWindow('ILLUSTRATION',`<div class="eyebrow">✿ PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
+ <button class="project-card" data-open="photos"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"><strong>Original illustrations</strong><small>Explore the gallery</small></button>
+ <button class="project-card" data-open="gabzilla"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
+ <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
+ </div>`,'illustration');
+}
+function openSocialProjects(){
+ openWindow('SOCIAL MEDIA',`<div class="eyebrow">✿ PROJECTS / SOCIAL MEDIA</div><h2>Social media & community</h2><p class="section-lead">Creative content, storytelling and community building for music and artistic projects.</p>
+ <div class="info-list">
+ <div class="info-box"><small>01 / SYNTHS & MUSICAL EXPRESSION</small><strong>Expressive E</strong><p>Social media content, community management and product storytelling.</p></div>
+ <div class="info-box"><small>02 / MUSIC</small><strong>Tomasz Bura Group</strong><p>Communication and community management for a jazz project.</p></div>
+ <div class="info-box"><small>03 / MEDITATION & MUSIC</small><strong>Zorza</strong><p>Content creation and creative communication for a meditation project.</p></div>
+ </div>`,'social');
+}
+function openInteractiveProjects(){
+ openWindow('INTERACTIVE',`<div class="eyebrow">✿ PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
+ <div class="project-grid">
+ <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
+ <button class="project-card" data-open="dressup"><span class="project-icon">✿</span><strong>Dress-up game</strong><small>Try the interactive character wardrobe</small></button>
+ <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
+ </div>`,'interactive');
+}
+function openWorkAbout(){
+ openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">✿ PROFILE / ABOUT ME</div><div class="atelier-about-layout">
+ <div class="atelier-about-portrait" aria-label="Decorative illustration placeholder"><span aria-hidden="true">✿</span><strong>LÉNA</strong><small>ILLUSTRATION · IDEAS · STORIES</small></div>
+ <div class="atelier-about-copy"><h2>Hello, I'm Léna ♡</h2><p>I'm a freelance illustrator, social media manager and writer. I move between visual storytelling, music, moving images and editorial projects.</p>
+ <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
+ <div class="info-box"><small>TOOLS</small><strong>Procreate · Procreate Dreams · Video editing</strong></div>
+ <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch ♡</button></div></div></div></div>`,'work-about');
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
