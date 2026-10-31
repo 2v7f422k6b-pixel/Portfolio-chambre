@@ -123,6 +123,7 @@ function openApp(name,index){
   case 'illustration':openIllustrationProjects();break;
   case 'social':openSocialProjects();break;
   case 'interactive':openInteractiveProjects();break;
+  case 'mini-games':openMiniGames();break;
   case 'dressup':openAbout();break;
   case 'photos':openPhotos();break;
   case 'artwork':openGallery('art',index||0);break;
@@ -143,7 +144,8 @@ function openFinder(){
    <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Motion</strong><small>Animation & moving images</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">♡</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
-   <button class="project-card" data-open="interactive"><span class="project-icon">♥</span><strong>Interactive</strong><small>Illustrated stories, a dress-up game & this website</small></button>
+   <button class="project-card" data-open="interactive"><span class="project-icon">♥</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
+   <button class="project-card" data-open="mini-games"><span class="project-icon">♥</span><strong>Mini Games</strong><small>Coloring Book, Tamagotchi, Dress-up & Latte Lab</small></button>
    <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
  openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">♥ WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
@@ -163,12 +165,45 @@ function openSocialProjects(){
  <div class="info-box"><small>03 / MEDITATION & MUSIC</small><strong>Zorza</strong><p>Content creation and creative communication for a meditation project.</p></div>
  </div>`,'social');
 }
+function openMiniGames(){
+ openWindow('MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
+  <div class="eyebrow">♥ WORK MODE / MINI GAMES ♥</div>
+  <h2 id="mini-games-heading">Mini Games ♡</h2>
+  <p class="mini-games-intro">Four little games to explore, color and play with. Click a card to start ♡</p>
+  <div class="mini-game-grid">
+    <button class="mini-game-card" type="button" data-open="coloring" aria-label="Play Coloring Book">
+      <span class="mini-game-preview"><img src="assets/coloring-book/fleurs.jpg" alt="" loading="lazy"></span>
+      <span class="mini-game-name">Coloring Book</span>
+      <span class="mini-game-description">Color five of my drawings using the paint bucket and freehand brush.</span>
+      <span class="mini-game-cta">Play ♡</span>
+    </button>
+    <button class="mini-game-card" type="button" data-open="tamagotchi" aria-label="Play Tamagotchi">
+      <span class="mini-game-preview mini-game-preview--tama"><img src="tamagotchi/tamagotchi.png" alt="" loading="lazy"></span>
+      <span class="mini-game-name">Tamagotchi</span>
+      <span class="mini-game-description">Take care of a tiny digital companion in my little room.</span>
+      <span class="mini-game-cta">Play ♡</span>
+    </button>
+    <button class="mini-game-card" type="button" data-open="latte" aria-label="Play Latte Lab">
+      <span class="mini-game-preview mini-game-preview--latte" aria-hidden="true"><span class="mini-game-mug">♥</span></span>
+      <span class="mini-game-name">Latte Lab</span>
+      <span class="mini-game-description">Make your own tiny coffee and finish it with a foam heart.</span>
+      <span class="mini-game-cta">Play ♡</span>
+    </button>
+    <button class="mini-game-card" type="button" data-open="dressup" aria-label="Play Dress-up">
+      <span class="mini-game-preview mini-game-preview--dressup" aria-hidden="true"><span>♡</span><span class="mini-game-dressup-deco">♥ ♥ ♥</span></span>
+      <span class="mini-game-name">Dress-up Game</span>
+      <span class="mini-game-description">Explore my illustrated wardrobe and dress the character.</span>
+      <span class="mini-game-cta">Play ♡</span>
+    </button>
+  </div>
+  <p class="mini-games-footnote">♥ Illustrated and coded with care ♥</p>
+ </section>`,'mini-games');
+}
 function openInteractiveProjects(){
  openWindow('INTERACTIVE',`<div class="eyebrow">♥ PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
  <div class="project-grid">
  <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
- <button class="project-card" data-open="dressup"><span class="project-icon">♥</span><strong>Dress-up game</strong><small>Try the interactive character wardrobe</small></button>
-  <button class="project-card" data-open="latte"><span class="project-icon">♥</span><strong>Latte Lab</strong><small>Make a tiny coffee with a foam heart</small></button>
+ <button class="project-card" data-open="mini-games"><span class="project-icon">♥</span><strong>Mini Games</strong><small>See all four playable games</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
 }

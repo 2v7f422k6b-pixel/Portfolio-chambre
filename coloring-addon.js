@@ -25,9 +25,9 @@ const overlay=document.createElement("div");overlay.className="coloring-overlay"
 overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">♥ COLORING BOOK ♥</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html" loading="lazy"></iframe></section>';
 document.body.append(overlay);
 let previousFocus=null;
-function open(){if(!root.classList.contains("mode-play"))return;previousFocus=document.activeElement;overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
+function open(){previousFocus=document.activeElement;overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
 function close(){if(overlay.hidden)return;overlay.hidden=true;if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true})}
-document.addEventListener("click",function(e){const trigger=e.target.closest('[data-open="coloring"]');if(!trigger||!root.classList.contains("mode-play"))return;e.preventDefault();e.stopImmediatePropagation();open()},true);
+document.addEventListener("click",function(e){const trigger=e.target.closest('[data-open="coloring"]');if(!trigger)return;e.preventDefault();e.stopImmediatePropagation();open()},true);
 document.getElementById("coloring-close").addEventListener("click",close);
 overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!overlay.hidden){e.preventDefault();close()}});
