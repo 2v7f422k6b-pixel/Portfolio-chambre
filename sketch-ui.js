@@ -2,17 +2,10 @@
 (() => {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
+  // Deliberately limited to two components for visual approval.
   const targets = [
-    ['#menubar', 'rule', 12],
     ['#dock', 'frame', 31],
-    ['#dock .dock-app', 'frame', 48],
-    ['.mac-window', 'frame', 57],
-    ['.window-top', 'rule', 68],
-    ['.welcome-panel', 'frame', 71],
-    ['.welcome-top', 'rule', 83],
-    ['.mode-tile', 'frame', 101],
-    ['.desktop-folder', 'frame', 127],
-    ['.back-room', 'frame', 149]
+    ['.mac-window', 'frame', 57]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
@@ -33,7 +26,7 @@
   // horizontal and vertical stroke slightly different, like a stylus trace.
   function makePath(width, height, seed, kind, variation) {
     const random = rng(seed);
-    const pad = 2.7;
+    const pad = 1.5;
     const left = pad, top = pad;
     const right = Math.max(left + 4, width - pad);
     const bottom = Math.max(top + 4, height - pad);
@@ -103,7 +96,7 @@
     item.previousWidth = width;
     item.previousHeight = height;
     item.svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-    const variation = item.kind === 'rule' ? .9 : item.element.id === 'dock' ? 1.5 : 1.1;
+    const variation = item.element.id === 'dock' ? .85 : .75;
     item.ink.setAttribute('d', makePath(width, height, item.seed, item.kind, variation));
   }
 
