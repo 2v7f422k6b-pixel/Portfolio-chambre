@@ -162,7 +162,7 @@
           <div id="motion-reels-loading" class="motion-reels-loading" role="status">Loading animations…</div>
         </div>
         <footer class="motion-reels-footer">
-          <div class="motion-reels-label"><span class="motion-reels-deco" aria-hidden="true">✿</span><div><strong id="motion-reels-title">Original animations</strong><span>2D Animation · Moving image</span></div></div>
+          <div class="motion-reels-label"><span class="motion-reels-deco" aria-hidden="true">♥</span><div><strong id="motion-reels-title">Original animations</strong><span>2D Animation · Moving image</span></div></div>
           <div class="motion-reels-seek"><span id="motion-reels-time">0:00</span><input type="range" id="motion-reels-progress" min="0" max="1000" value="0" step="1" aria-label="Position de lecture"><span id="motion-reels-duration">0:00</span></div>
         </footer>
         <aside id="motion-reels-drawer" class="motion-reels-drawer" hidden aria-label="Toutes les animations">
