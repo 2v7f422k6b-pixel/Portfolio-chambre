@@ -48,7 +48,8 @@ function updateClocks(){
 }
 updateClocks();setInterval(updateClocks,15000);
 
-// Night mode recolors the displayed room using CSS; the original artwork file stays untouched.
+// Night mode crossfades between the two user-approved bedroom artworks.
+// Hotspots and the live clock remain in exactly the same UI coordinates.
 const THEME_KEY='nana-portfolio-theme';
 function applyTheme(theme){
  const night=theme==='night';
