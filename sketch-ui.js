@@ -8,7 +8,6 @@
     ['.mac-window', 'frame', 57],
     ['.window-top', 'rule', 68],
     ['.welcome-top', 'rule', 69],
-    ['.welcome-foot', 'top-rule', 70],
     ['.tile-art', 'frame', 72],
     ['#window-shade .project-card .project-icon', 'frame', 73],
     ['#window-shade .traffic button', 'frame', 75],
