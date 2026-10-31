@@ -1,0 +1,80 @@
+/* A very small reaction when the sleeping cat is petted.
+   All coordinates belong to the original 1670x942 room; no artwork changes. */
+#hotspots [data-cat-pet] {
+  cursor:pointer;
+  touch-action:manipulation;
+}
+#hotspots #cat-response,
+#hotspots #cat-response * {
+  pointer-events:none;
+}
+#cat-response .cat-purr-word,
+#cat-response .cat-heart,
+#cat-response .cat-purr-line {
+  opacity:0;
+}
+#cat-response .cat-purr-word {
+  fill:#ff173b;
+  font:400 19px "Nana Trace UI", cursive;
+  letter-spacing:.01em;
+  stroke:rgba(255,246,250,.92);
+  stroke-width:2.8px;
+  paint-order:stroke fill;
+  filter:drop-shadow(0 1px 1px rgba(255,23,59,.12));
+  transform-box:fill-box;
+  transform-origin:center;
+}
+#cat-response .cat-heart {
+  fill:none;
+  stroke:#ff173b;
+  stroke-width:2.3px;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 2px rgba(255,23,59,.26));
+}
+#cat-response .cat-purr-line {
+  fill:none;
+  stroke:#ff173b;
+  stroke-width:2;
+  stroke-linecap:round;
+}
+#cat-response.is-purring .cat-purr-word {
+  animation:cat-word 2.2s ease-out forwards;
+}
+#cat-response.is-purring .cat-heart--one {
+  animation:cat-heart-rise 1.8s ease-out .08s both;
+}
+#cat-response.is-purring .cat-heart--two {
+  animation:cat-heart-rise-two 1.7s ease-out .27s both;
+}
+#cat-response.is-purring .cat-purr-line {
+  animation:cat-tiny-purr 1.45s ease-out .08s both;
+}
+@keyframes cat-word {
+  0% {opacity:0; transform:translateY(5px) rotate(-3deg);}
+  16%,60% {opacity:1; transform:translateY(0) rotate(-3deg);}
+  100% {opacity:0; transform:translateY(-7px) rotate(-3deg);}
+}
+@keyframes cat-heart-rise {
+  0% {opacity:0; transform:translateY(6px) rotate(-10deg) scale(.7);}
+  23% {opacity:.96; transform:translateY(1px) rotate(-7deg) scale(1);}
+  100% {opacity:0; transform:translateY(-24px) rotate(9deg) scale(1.08);}
+}
+@keyframes cat-heart-rise-two {
+  0% {opacity:0; transform:translateY(3px) rotate(8deg) scale(.75);}
+  24% {opacity:.8; transform:translateY(0) rotate(4deg) scale(1);}
+  100% {opacity:0; transform:translateY(-22px) rotate(-8deg) scale(1);}
+}
+@keyframes cat-tiny-purr {
+  0%,100% {opacity:0;}
+  20%,55% {opacity:.65;}
+  70% {opacity:.3;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #cat-response.is-purring .cat-purr-word,
+  #cat-response.is-purring .cat-heart,
+  #cat-response.is-purring .cat-purr-line {
+    animation:none!important;
+    opacity:.9;
+  }
+}
