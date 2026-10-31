@@ -69,7 +69,18 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
 .tip{border-left:3px solid var(--red);background:#fff0f1;padding:10px 12px;font-size:11px;line-height:1.5;margin-top:15px}
 .status{min-height:32px;font-size:12px;line-height:1.4;border-top:1px dashed var(--red);padding-top:12px;margin-top:auto}
 .finish-stars{color:var(--red);font-family:Georgia,serif;font-size:30px;letter-spacing:16px;text-align:center;margin:13px auto}
-#drawing-tip{font-size:12px;margin-top:8px}
+
+#drawing-tip{font-size:12px;margin-top:9px;line-height:1.45}
+.art-tools{display:grid;gap:9px;margin:12px 0}
+.art-tools .tool-row{display:flex;gap:7px;flex-wrap:wrap}
+.art-tools button{flex:1;min-height:39px;white-space:nowrap;border:1.5px solid var(--red);background:var(--paper);color:var(--red);padding:8px;font-size:12px;box-shadow:var(--glow)}
+.art-tools button.active{background:var(--pink);box-shadow:inset 0 0 0 1px var(--red)}
+.art-tools button:disabled{box-shadow:none}
+.art-tools label{font-size:12px;display:flex;justify-content:space-between}
+.art-tools input[type=range]{height:26px;margin:0}
+.art-name{font-size:12px;display:block;margin:10px 0}
+.art-name input{display:block;width:100%;border:1.5px solid var(--red);padding:10px;background:var(--paper);color:var(--red);border-radius:0;margin:6px 0;font-size:14px}
+
 .heart-float{position:absolute;font:28px Georgia,serif;color:var(--red);animation:heart-up 1.5s ease-out forwards;pointer-events:none}
 @keyframes heart-up{to{opacity:0;transform:translateY(-100px) rotate(24deg)}}
 @media(max-width:650px){
@@ -160,11 +171,25 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
       </div>
       <div class="step" data-step="4">
         <p class="eyebrow">05 / 05 · THE FINISHING TOUCH</p>
-        <h2 class="step-title">A heart on top!</h2>
-        <p class="description">Draw directly on the coffee with your finger, or let the café make you a tiny foam heart.</p>
-        <button class="action" type="button" id="stamp-btn">Stamp a foam heart ♥</button>
-        <button class="action secondary" type="button" id="serve-btn" disabled>Serve my latte ♡</button>
-        <p id="drawing-tip">Try drawing a heart in the cup above.</p>
+        <h2 class="step-title">Design your own latte art!</h2>
+        <p class="description">Draw whatever you imagine directly on the foam, with your finger, Apple Pencil or mouse.</p>
+        <div class="art-tools" aria-label="Drawing tools">
+          <div class="tool-row" role="group" aria-label="Choose brush">
+            <button type="button" data-tool="foam" class="active" aria-pressed="true">White foam</button>
+            <button type="button" data-tool="cocoa" aria-pressed="false">Cocoa</button>
+            <button type="button" data-tool="erase" aria-pressed="false">Eraser</button>
+          </div>
+          <div><label for="brush-size">Brush size <output id="size-label" for="brush-size">12</output></label><input id="brush-size" type="range" min="5" max="28" value="12" aria-label="Brush size"></div>
+          <div class="tool-row">
+            <button type="button" id="undo-art" disabled>↶ Undo</button>
+            <button type="button" id="redo-art" disabled>↷ Redo</button>
+            <button type="button" id="clear-art" disabled>Clear</button>
+          </div>
+        </div>
+        <button class="action secondary" type="button" id="stamp-btn">Optional foam heart ♡</button>
+        <label class="art-name" for="art-name">Name your creation (optional)<input id="art-name" maxlength="28" autocomplete="off" placeholder="My dreamy latte"></label>
+        <button class="action" type="button" id="serve-btn" disabled>Serve my custom latte ♡</button>
+        <p id="drawing-tip">A smile, a doodle, a word, a portrait… the foam is yours!</p>
       </div>
       <div class="step" data-step="5">
         <p class="eyebrow">ORDER COMPLETE ♥</p>
@@ -183,7 +208,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
 <script>
 (function(){
   "use strict";
-  var step=0,steam=0,poured=0,milk="Oat",hasArt=false,drawing=false,moved=0,last=null;
+  var step=0,steam=0,poured=0,milk="Oat",hasArt=false,drawing=false,last=null,activePointer=null,tool="foam",size=12,undo=[],redo=[];
   var $=function(q){return document.querySelector(q)};
   var $$=function(q){return Array.from(document.querySelectorAll(q))};
   var canvas=$("#art-canvas"),ctx=canvas.getContext("2d");
@@ -218,7 +243,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
     $("#station-note").textContent="15 ml vanilla syrup stirred into your espresso.";
     goto(2);floatHeart();message("Vanilla added! Time for the silky milk.");
   });
-  $("[data-milk]").forEach(function(b){b.addEventListener("click",function(){
+  $$("[data-milk]").forEach(function(b){b.addEventListener("click",function(){
     milk=b.dataset.milk;
     $$("[data-milk]").forEach(function(x){var yes=x===b;x.classList.toggle("selected",yes);x.setAttribute("aria-pressed",String(yes))});
     message(milk+" milk selected. Steam it until silky!");
@@ -242,48 +267,98 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
     $("#vanilla-swirl").setAttribute("opacity",String(Math.max(0,1-f).toFixed(3)));
     $("#pour-next").disabled=poured<160;
     $("#cup-label").textContent=poured===160?"latte base ready ♡":"pouring… "+poured+" ml";
-    message(poured===160?"Great pour! Now for the heart.":"Slow and steady… "+poured+" ml poured.");
+    message(poured===160?"Perfect! Time to personalize the foam.":"Slow and steady… "+poured+" ml poured.");
   }
   $("#pour").addEventListener("input",updatePour);
   $("#pour-next").addEventListener("click",function(){
     if(poured<160)return;goto(4);$("#steam-lines").classList.remove("visible");
-    message("The fun bit! Draw on your coffee, or stamp a heart.");
+    message("The foam is your canvas! Draw anything you like.");
   });
-  function strokePoint(e){
-    var rect=canvas.getBoundingClientRect();
-    var x=(e.clientX-rect.left)*canvas.width/rect.width;
-    var y=(e.clientY-rect.top)*canvas.height/rect.height;
-    var dx=x-150,dy=y-150;
-    if(dx*dx+dy*dy>125*125)return null;
-    return {x:x,y:y};
+
+  function point(e){
+    var r=canvas.getBoundingClientRect();if(!r.width||!r.height)return null;
+    var x=(e.clientX-r.left)*canvas.width/r.width,y=(e.clientY-r.top)*canvas.height/r.height;
+    return (x-150)**2+(y-150)**2<=128**2?{x:x,y:y}:null;
+  }
+  function containsArt(){
+    var p=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    for(var i=3;i<p.length;i+=4)if(p[i])return true;
+    return false;
+  }
+  function updateArt(){
+    hasArt=containsArt();
+    $("#undo-art").disabled=!undo.length;$("#redo-art").disabled=!redo.length;
+    $("#clear-art").disabled=!hasArt;$("#serve-btn").disabled=!hasArt;
+  }
+  function snapshot(){
+    if(undo.length===20)undo.shift();
+    undo.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    redo=[];updateArt();
+  }
+  $$("[data-tool]").forEach(function(b){b.addEventListener("click",function(){
+    tool=b.dataset.tool;
+    $$("[data-tool]").forEach(function(x){var selected=x===b;x.classList.toggle("active",selected);x.setAttribute("aria-pressed",String(selected))});
+    message(tool==="erase"?"Erase any part of your design.":tool==="cocoa"?"Cocoa brush selected.":"Foam brush selected.");
+  })});
+  $("#brush-size").addEventListener("input",function(){size=Number(this.value);$("#size-label").textContent=size});
+  function brush(){
+    ctx.globalCompositeOperation=tool==="erase"?"destination-out":"source-over";
+    ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=size;
+    ctx.strokeStyle=ctx.fillStyle=tool==="cocoa"?"#79422f":"#fffaf0";
   }
   canvas.addEventListener("pointerdown",function(e){
-    if(step!==4)return;
-    var p=strokePoint(e);if(!p)return;
-    drawing=true;last=p;moved=0;
+    if(step!==4||drawing)return;
+    var p=point(e);if(!p)return;
+    snapshot();drawing=true;activePointer=e.pointerId;last=p;
     canvas.setPointerCapture(e.pointerId);
-    ctx.strokeStyle="#fffaf0";ctx.fillStyle="#fffaf0";ctx.lineWidth=10;ctx.lineCap="round";ctx.lineJoin="round";
-    ctx.beginPath();ctx.arc(p.x,p.y,5,0,2*Math.PI);ctx.fill();
+    brush();ctx.beginPath();ctx.arc(p.x,p.y,size/2,0,Math.PI*2);ctx.fill();
+    ctx.globalCompositeOperation="source-over";
     e.preventDefault();
   });
   canvas.addEventListener("pointermove",function(e){
-    if(!drawing)return;var p=strokePoint(e);if(!p)return;
-    ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();
-    moved+=Math.hypot(p.x-last.x,p.y-last.y);last=p;
-    if(moved>40){hasArt=true;$("#serve-btn").disabled=false}
-    e.preventDefault();
+    if(!drawing||e.pointerId!==activePointer)return;
+    var p=point(e);if(!p){last=null;return}
+    brush();ctx.beginPath();
+    if(last){ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke()}
+    else{ctx.arc(p.x,p.y,size/2,0,Math.PI*2);ctx.fill()}
+    ctx.globalCompositeOperation="source-over";last=p;e.preventDefault();
   });
-  function stopDrawing(){if(!drawing)return;drawing=false;if(!hasArt){hasArt=true;$("#serve-btn").disabled=false}message("A little handmade latte art! ♥")}
-  canvas.addEventListener("pointerup",stopDrawing);
-  canvas.addEventListener("pointercancel",stopDrawing);
+  function finish(e){
+    if(!drawing||(e&&e.pointerId!==activePointer))return;
+    drawing=false;activePointer=null;last=null;
+    ctx.globalCompositeOperation="source-over";updateArt();
+    message("Your custom latte art is looking lovely ♡");
+  }
+  canvas.addEventListener("pointerup",finish);
+  canvas.addEventListener("pointercancel",finish);
+  canvas.addEventListener("lostpointercapture",finish);
+  $("#undo-art").addEventListener("click",function(){
+    if(!undo.length)return;
+    redo.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    ctx.putImageData(undo.pop(),0,0);updateArt();message("Undone ♡");
+  });
+  $("#redo-art").addEventListener("click",function(){
+    if(!redo.length)return;
+    undo.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    ctx.putImageData(redo.pop(),0,0);updateArt();message("Restored ♡");
+  });
+  $("#clear-art").addEventListener("click",function(){
+    if(!hasArt)return;snapshot();ctx.clearRect(0,0,canvas.width,canvas.height);
+    updateArt();message("A fresh cup! Draw anything you like.");
+  });
   $("#stamp-btn").addEventListener("click",function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    $("#heart-stamp").classList.add("visible");
-    hasArt=true;$("#serve-btn").disabled=false;floatHeart();message("A foam heart, just for you.");
+    snapshot();ctx.save();ctx.globalCompositeOperation="source-over";ctx.fillStyle="#fffaf0";
+    ctx.beginPath();ctx.moveTo(150,210);
+    ctx.bezierCurveTo(72,160,93,96,132,106);
+    ctx.bezierCurveTo(145,110,150,121,150,121);
+    ctx.bezierCurveTo(173,86,219,98,218,139);
+    ctx.bezierCurveTo(218,166,184,190,150,210);
+    ctx.fill();ctx.restore();updateArt();floatHeart();
+    message("A foam heart, only if you want one. Keep drawing!");
   });
   $("#serve-btn").addEventListener("click",function(){
     if(!hasArt)return;goto(5);
-    $("#receipt").textContent="Double espresso + 15 ml vanilla syrup + 160 ml "+milk.toLowerCase()+" milk + a heart. Made by you, with love ♡";
+    var name=$("#art-name").value.trim();$("#receipt").textContent="Double espresso + 15 ml vanilla syrup + 160 ml "+milk.toLowerCase()+" milk + "+(name?'"'+name+'"':"your original latte art")+". Made by you, with love ♡";
     $("#cup-label").textContent="your perfect latte ♡";
     floatHeart();message("Order served! ♥");
   });
@@ -293,7 +368,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
     floatHeart();message("A little virtual coffee for Léna, with love ♡");
   });
   $("#restart-btn").addEventListener("click",function(){
-    step=0;steam=0;poured=0;milk="Oat";hasArt=false;drawing=false;last=null;
+    step=0;steam=0;poured=0;milk="Oat";hasArt=false;drawing=false;last=null;activePointer=null;undo=[];redo=[];
     ctx.clearRect(0,0,canvas.width,canvas.height);
     $("#espresso").setAttribute("opacity","0");$("#milk").setAttribute("opacity","0");
     $("#cream-ring").setAttribute("opacity","0");$("#vanilla-swirl").setAttribute("opacity","0");$("#heart-stamp").classList.remove("visible");
@@ -304,7 +379,9 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
     $("#steam-btn").disabled=false;$("#steam-btn").textContent="Steam milk · 0/3";
     $$("#steam-meter i").forEach(function(el){el.classList.remove("active")});
     $$("[data-milk]").forEach(function(el){var yes=el.dataset.milk==="Oat";el.classList.toggle("selected",yes);el.setAttribute("aria-pressed",String(yes))});
-    $("#serve-btn").disabled=true;
+    $("#art-name").value="";$("#brush-size").value="12";size=12;$("#size-label").textContent="12";
+    tool="foam";$$("[data-tool]").forEach(function(b){var on=b.dataset.tool==="foam";b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on))});
+    updateArt();
     $("#gift-btn").hidden=false;$("#gift-reply").hidden=true;
     goto(0);message("Welcome back! Ready for another latte?");
   });
