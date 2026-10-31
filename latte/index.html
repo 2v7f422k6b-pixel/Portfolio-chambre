@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff4ef">
+<title>Latte Lab ♡</title>
+<style>
+@font-face{font-family:NanaTrace;src:url("../assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");font-display:swap}
+:root{--red:#ff173b;--pink:#ffdce1;--cream:#fff8ef;--paper:#fffdf7;--coffee:#8b5038;--glow:0 0 10px rgba(255,23,59,.19)}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:NanaTrace,"Trebuchet MS",sans-serif;color:var(--red);background:transparent}
+button,input{font:inherit}
+button{color:var(--red);cursor:pointer;border-radius:0}
+button:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+button:disabled{opacity:.42;cursor:not-allowed}
+[hidden]{display:none!important}
+.window{display:flex;flex-direction:column;width:100%;height:100%;overflow:hidden;background:var(--paper);border:2px solid var(--red);box-shadow:var(--glow),8px 8px 0 rgba(255,23,59,.10)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:43px;padding:8px 14px;background:#ffe7e9;border-bottom:2px solid var(--red);font-size:12px;letter-spacing:.06em}
+.bar-mark{font-size:14px}
+.bar button{background:var(--paper);border:1.5px solid var(--red);width:29px;height:28px;box-shadow:var(--glow);font-size:16px;line-height:1}
+.main{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:minmax(270px,1.02fr) minmax(290px,1fr)}
+.station{background:linear-gradient(160deg,#fff3f1 0%,#fffaf3 70%);position:relative;border-right:1.5px solid var(--red);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 18px 20px;overflow:hidden}
+.station:before,.station:after{content:"♥";position:absolute;color:#ff173b;font-family:Georgia,serif;opacity:.6}
+.station:before{top:45px;left:10%;font-size:23px;transform:rotate(-16deg)}
+.station:after{right:11%;bottom:85px;font-size:18px;transform:rotate(19deg)}
+.station-label{font-size:12px;letter-spacing:.1em;align-self:flex-start}
+.station h1{font-size:clamp(27px,3.6vw,39px);line-height:1.1;font-weight:400;margin:8px 0 0;letter-spacing:.025em;text-align:center}
+.cup-stage{width:min(100%,340px);position:relative;flex:none;display:grid;place-items:center;margin:10px auto 0}
+.cup-stage svg{width:100%;height:auto;display:block;overflow:visible}
+.cup-stage .cup-art{position:absolute;top:9%;left:12%;width:76%;height:81%;touch-action:none;opacity:0;pointer-events:none;cursor:crosshair}
+.cup-stage .cup-art.enabled{opacity:1;pointer-events:auto}
+#espresso{transition:opacity .55s ease}#milk{transition:opacity .18s ease}
+#cream-ring{transition:opacity .3s ease}
+#steam-lines{opacity:0;transform-origin:center;transition:opacity .3s ease}
+#steam-lines.visible{opacity:1;animation:float 1.5s ease-in-out infinite alternate}
+#heart-stamp{opacity:0;transform:scale(.5);transform-origin:180px 156px;transition:opacity .45s ease,transform .5s ease}
+#heart-stamp.visible{opacity:1;transform:scale(1)}
+@keyframes float{to{transform:translateY(-5px)}}
+.saucer-label{border:1.5px solid var(--red);background:var(--paper);padding:6px 11px;box-shadow:var(--glow);font-size:12px;text-align:center;transform:rotate(-2deg);margin-top:-5px}
+.station-note{text-align:center;font-size:12px;line-height:1.5;margin:20px 0 0;max-width:310px}
+.controls{display:flex;flex-direction:column;min-width:0;padding:22px clamp(17px,3vw,31px) 21px;gap:15px}
+.progress{display:flex;gap:5px;align-items:center;justify-content:space-between;padding-bottom:13px;border-bottom:1px solid var(--red)}
+.progress span{font-size:11px;line-height:1.3;text-align:center;flex:1}
+.progress i{font-family:Georgia,serif;font-style:normal;display:block;font-size:18px;line-height:1.1;opacity:.35}
+.progress span.done i,.progress span.current i{opacity:1}
+.progress span.current{font-weight:bold;text-decoration:underline;text-underline-offset:4px}
+.progress b{font-size:12px;font-weight:normal;opacity:.5}
+.eyebrow{font-size:11px;letter-spacing:.12em;margin:0}
+.step-title{font-size:clamp(24px,3.1vw,33px);font-weight:400;line-height:1.1;margin:3px 0 4px}
+.description{font-size:13px;line-height:1.6;margin:0 0 11px}
+.step{display:none}
+.step.active{display:block;animation:appear .25s ease}
+@keyframes appear{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}
+.action{width:100%;border:2px solid var(--red);background:var(--pink);box-shadow:3px 3px 0 rgba(255,23,59,.20),var(--glow);padding:13px 14px;font-size:15px;min-height:48px}
+.action:hover:not(:disabled){background:#ffc6d0}
+.action.secondary{background:var(--paper);margin-top:10px}
+.milk-options{display:flex;gap:9px;margin:9px 0 14px}
+.milk-options button{border:1.5px solid var(--red);background:var(--paper);padding:11px 9px;flex:1;box-shadow:var(--glow);font-size:13px}
+.milk-options button.selected{background:var(--pink);box-shadow:inset 0 0 0 2px var(--red)}
+.meter{height:16px;border:1.5px solid var(--red);display:flex;gap:3px;padding:3px;margin:12px 0 10px}
+.meter i{flex:1;background:transparent;transition:background .2s}
+.meter i.active{background:var(--red)}
+.readout{display:flex;justify-content:space-between;font-size:12px;margin:8px 0 12px;gap:10px}
+input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9px;cursor:pointer}
+.tip{border-left:3px solid var(--red);background:#fff0f1;padding:10px 12px;font-size:11px;line-height:1.5;margin-top:15px}
+.status{min-height:32px;font-size:12px;line-height:1.4;border-top:1px dashed var(--red);padding-top:12px;margin-top:auto}
+.finish-stars{color:var(--red);font-family:Georgia,serif;font-size:30px;letter-spacing:16px;text-align:center;margin:13px auto}
+#drawing-tip{font-size:12px;margin-top:8px}
+.heart-float{position:absolute;font:28px Georgia,serif;color:var(--red);animation:heart-up 1.5s ease-out forwards;pointer-events:none}
+@keyframes heart-up{to{opacity:0;transform:translateY(-100px) rotate(24deg)}}
+@media(max-width:650px){
+ .main{display:block}
+ .station{min-height:280px;padding:12px 14px 9px;border-right:0;border-bottom:1.5px solid var(--red)}
+ .station h1{font-size:28px;margin-top:0}
+ .station-label{display:none}
+ .cup-stage{width:min(80%,248px);margin:1px auto 0}
+ .saucer-label{font-size:11px}
+ .station-note{display:none}
+ .controls{padding:16px 17px 26px;gap:10px}
+ .step-title{font-size:28px}
+}
+@media(max-height:560px) and (min-width:651px){.station{padding:12px 16px}.cup-stage{width:min(100%,265px)}.controls{padding-top:12px;gap:8px}.station-note{margin-top:7px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="window" role="application" aria-label="Latte Lab mini-game">
+  <div class="bar"><span class="bar-mark">♥ LATTE LAB.EXE</span><span>made with love / 01</span><button id="close" type="button" aria-label="Close Latte Lab">×</button></div>
+  <div class="main">
+    <section class="station" aria-label="Your latte">
+      <div class="station-label">NANA'S LITTLE CAFÉ ♡</div>
+      <h1>Make a latte!</h1>
+      <div class="cup-stage" id="cup-stage">
+        <svg viewBox="0 0 360 300" role="img" aria-label="Top view of a latte in a pink mug">
+          <defs><radialGradient id="coffee-shade"><stop offset="0" stop-color="#ad6548"/><stop offset="1" stop-color="#713b2a"/></radialGradient><radialGradient id="saucer"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#ffe1e4"/></radialGradient></defs>
+          <ellipse cx="182" cy="161" rx="139" ry="122" fill="url(#saucer)" stroke="#ff173b" stroke-width="2.5"/>
+          <path d="M280 115 C353 81 356 214 280 199" fill="none" stroke="#ff173b" stroke-width="24" stroke-linecap="round"/>
+          <path d="M280 115 C353 81 356 214 280 199" fill="none" stroke="#ffc3cf" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="181" cy="155" r="113" fill="#ffced5" stroke="#ff173b" stroke-width="3"/>
+          <circle cx="181" cy="155" r="99" fill="#fff8f0" stroke="#ff173b" stroke-width="2"/>
+          <circle id="espresso" cx="181" cy="155" r="94" fill="url(#coffee-shade)" opacity="0"/>
+          <circle id="milk" cx="181" cy="155" r="94" fill="#dcb88d" opacity="0"/>
+          <circle id="cream-ring" cx="181" cy="155" r="88" fill="none" stroke="#f8e8cc" stroke-width="7" opacity="0"/>
+          <g id="heart-stamp"><path d="M181 198 C133 165 119 148 132 128 C145 110 169 120 181 136 C193 120 217 110 230 128 C243 148 229 165 181 198 Z" fill="#fffaf0" stroke="#fffaf0" stroke-width="3"/><path d="M157 139 Q181 124 204 139" fill="none" stroke="#f1d3b0" stroke-width="2" stroke-linecap="round"/></g>
+          <g id="steam-lines" stroke="#ff173b" stroke-width="3" stroke-linecap="round" fill="none"><path d="M90 47 q-12 -15 2 -29"/><path d="M181 24 q-12 -14 3 -22"/><path d="M272 46 q-11 -16 3 -28"/></g>
+          <path d="M92 243 Q181 283 270 243" fill="none" stroke="#ff173b" stroke-width="1.5" opacity=".4"/>
+        </svg>
+        <canvas id="art-canvas" class="cup-art" width="300" height="300" aria-label="Draw your latte art here with a finger or pointer"></canvas>
+      </div>
+      <div class="saucer-label" id="cup-label">your cup is waiting ♡</div>
+      <p class="station-note" id="station-note">A tiny café break, made by you.</p>
+    </section>
+    <section class="controls">
+      <div class="progress" aria-label="Recipe progress">
+        <span data-progress="0" class="current"><i>♥</i>Espresso</span><b>→</b>
+        <span data-progress="1"><i>♥</i>Steam</span><b>→</b>
+        <span data-progress="2"><i>♥</i>Pour</span><b>→</b>
+        <span data-progress="3"><i>♥</i>Art</span>
+      </div>
+      <div class="step active" data-step="0">
+        <p class="eyebrow">01 / 04 · FIRST THINGS FIRST</p>
+        <h2 class="step-title">Pull an espresso</h2>
+        <p class="description">Every latte begins with a little coffee magic. Extract a double espresso into your mug.</p>
+        <button class="action" type="button" id="espresso-btn">Pull 2 shots ♥</button>
+        <p class="tip">RECIPE NOTE ♥ 36–40 ml espresso + approximately 160 ml silky steamed milk.</p>
+      </div>
+      <div class="step" data-step="1">
+        <p class="eyebrow">02 / 04 · GET IT SILKY</p>
+        <h2 class="step-title">Steam the milk</h2>
+        <p class="description">Choose your milk, then tap the steam button three times to make lovely microfoam.</p>
+        <div class="milk-options" role="group" aria-label="Milk type">
+          <button type="button" data-milk="Oat" class="selected" aria-pressed="true">Oat milk ♡</button>
+          <button type="button" data-milk="Whole" aria-pressed="false">Whole milk ♡</button>
+        </div>
+        <div class="meter" aria-label="Milk steaming progress" id="steam-meter"><i></i><i></i><i></i></div>
+        <button class="action" type="button" id="steam-btn">Steam milk · 0/3</button>
+        <p class="tip">BARISTA TIP ♥ Keep the tip just below the surface for a smooth, glossy foam.</p>
+      </div>
+      <div class="step" data-step="2">
+        <p class="eyebrow">03 / 04 · NICE AND SLOW</p>
+        <h2 class="step-title">Pour your milk</h2>
+        <p class="description">Slide the little bar to pour your steamed milk into the espresso. Watch the color change!</p>
+        <label class="readout" for="pour"><span>Milk poured</span><strong id="pour-count">0 / 160 ml</strong></label>
+        <input id="pour" type="range" min="0" max="160" step="10" value="0" aria-label="Pour milk up to 160 millilitres">
+        <button class="action" type="button" id="pour-next" disabled>Make latte art ♡</button>
+        <p class="tip">BARISTA TIP ♥ Pour slowly, then bring the pitcher closer to the surface.</p>
+      </div>
+      <div class="step" data-step="3">
+        <p class="eyebrow">04 / 04 · THE FINISHING TOUCH</p>
+        <h2 class="step-title">A heart on top!</h2>
+        <p class="description">Draw directly on the coffee with your finger, or let the café make you a tiny foam heart.</p>
+        <button class="action" type="button" id="stamp-btn">Stamp a foam heart ♥</button>
+        <button class="action secondary" type="button" id="serve-btn" disabled>Serve my latte ♡</button>
+        <p id="drawing-tip">Try drawing a heart in the cup above.</p>
+      </div>
+      <div class="step" data-step="4">
+        <p class="eyebrow">ORDER COMPLETE ♥</p>
+        <h2 class="step-title">Your latte is ready!</h2>
+        <div class="finish-stars" aria-hidden="true">♥ ♥ ♥</div>
+        <p class="description" id="receipt">A homemade latte, with love.</p>
+        <button class="action" type="button" id="restart-btn">Make another latte ♡</button>
+        <p class="tip">THANK YOU ♥ for visiting Nana's little café.</p>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite">Welcome! Your mug is waiting.</p>
+    </section>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var step=0,steam=0,poured=0,milk="Oat",hasArt=false,drawing=false,moved=0,last=null;
+  var $=function(q){return document.querySelector(q)};
+  var $$=function(q){return Array.from(document.querySelectorAll(q))};
+  var canvas=$("#art-canvas"),ctx=canvas.getContext("2d");
+  function message(s){$("#status").textContent=s}
+  function goto(n){
+    step=n;
+    $$("[data-step]").forEach(function(el){el.classList.toggle("active",Number(el.dataset.step)===n)});
+    $$("[data-progress]").forEach(function(el){
+      var i=Number(el.dataset.progress);
+      el.classList.toggle("done",i<n);
+      el.classList.toggle("current",i===n&&n<4);
+    });
+    canvas.classList.toggle("enabled",n===3);
+  }
+  function floatHeart(){
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+    var el=document.createElement("span");
+    el.className="heart-float";el.textContent="♥";
+    el.style.left=(40+Math.random()*25)+"%";el.style.top="45%";
+    $("#cup-stage").appendChild(el);
+    el.addEventListener("animationend",function(){el.remove()},{once:true});
+  }
+  $("#espresso-btn").addEventListener("click",function(){
+    $("#espresso").setAttribute("opacity","1");
+    $("#cup-label").textContent="double espresso ♡";
+    $("#station-note").textContent="36–40 ml of warm espresso.";
+    goto(1);floatHeart();message("Lovely! Time to make silky milk.");
+  });
+  $$("[data-milk]").forEach(function(b){b.addEventListener("click",function(){
+    milk=b.dataset.milk;
+    $$("[data-milk]").forEach(function(x){var yes=x===b;x.classList.toggle("selected",yes);x.setAttribute("aria-pressed",String(yes))});
+    message(milk+" milk selected. Steam it until silky!");
+  })});
+  $("#steam-btn").addEventListener("click",function(){
+    if(steam>=3)return;steam++;
+    $$("#steam-meter i").forEach(function(el,i){el.classList.toggle("active",i<steam)});
+    $("#steam-btn").textContent="Steam milk · "+steam+"/3";
+    $("#steam-lines").classList.add("visible");
+    if(steam===3){
+      $("#steam-btn").disabled=true;$("#cup-label").textContent="silky "+milk.toLowerCase()+" milk ♡";
+      goto(2);floatHeart();message("Perfect microfoam! Slide to pour 160 ml.");
+    }else message("Keep steaming… "+steam+" of 3.");
+  });
+  function updatePour(){
+    poured=Number($("#pour").value);
+    var f=poured/160;
+    $("#pour-count").textContent=poured+" / 160 ml";
+    $("#milk").setAttribute("opacity",String((f*.88).toFixed(3)));
+    $("#cream-ring").setAttribute("opacity",String((f*.95).toFixed(3)));
+    $("#pour-next").disabled=poured<160;
+    $("#cup-label").textContent=poured===160?"latte base ready ♡":"pouring… "+poured+" ml";
+    message(poured===160?"Great pour! Now for the heart.":"Slow and steady… "+poured+" ml poured.");
+  }
+  $("#pour").addEventListener("input",updatePour);
+  $("#pour-next").addEventListener("click",function(){
+    if(poured<160)return;goto(3);$("#steam-lines").classList.remove("visible");
+    message("The fun bit! Draw on your coffee, or stamp a heart.");
+  });
+  function strokePoint(e){
+    var rect=canvas.getBoundingClientRect();
+    var x=(e.clientX-rect.left)*canvas.width/rect.width;
+    var y=(e.clientY-rect.top)*canvas.height/rect.height;
+    var dx=x-150,dy=y-150;
+    if(dx*dx+dy*dy>125*125)return null;
+    return {x:x,y:y};
+  }
+  canvas.addEventListener("pointerdown",function(e){
+    if(step!==3)return;
+    var p=strokePoint(e);if(!p)return;
+    drawing=true;last=p;moved=0;
+    canvas.setPointerCapture(e.pointerId);
+    ctx.strokeStyle="#fffaf0";ctx.fillStyle="#fffaf0";ctx.lineWidth=10;ctx.lineCap="round";ctx.lineJoin="round";
+    ctx.beginPath();ctx.arc(p.x,p.y,5,0,2*Math.PI);ctx.fill();
+    e.preventDefault();
+  });
+  canvas.addEventListener("pointermove",function(e){
+    if(!drawing)return;var p=strokePoint(e);if(!p)return;
+    ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();
+    moved+=Math.hypot(p.x-last.x,p.y-last.y);last=p;
+    if(moved>40){hasArt=true;$("#serve-btn").disabled=false}
+    e.preventDefault();
+  });
+  function stopDrawing(){if(!drawing)return;drawing=false;if(!hasArt){hasArt=true;$("#serve-btn").disabled=false}message("A little handmade latte art! ♥")}
+  canvas.addEventListener("pointerup",stopDrawing);
+  canvas.addEventListener("pointercancel",stopDrawing);
+  $("#stamp-btn").addEventListener("click",function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    $("#heart-stamp").classList.add("visible");
+    hasArt=true;$("#serve-btn").disabled=false;floatHeart();message("A foam heart, just for you.");
+  });
+  $("#serve-btn").addEventListener("click",function(){
+    if(!hasArt)return;goto(4);
+    $("#receipt").textContent="Double espresso + 160 ml "+milk.toLowerCase()+" milk + a heart. Made by you, with love ♡";
+    $("#cup-label").textContent="your perfect latte ♡";
+    floatHeart();message("Order served! ♥");
+  });
+  $("#restart-btn").addEventListener("click",function(){
+    step=0;steam=0;poured=0;milk="Oat";hasArt=false;drawing=false;last=null;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    $("#espresso").setAttribute("opacity","0");$("#milk").setAttribute("opacity","0");
+    $("#cream-ring").setAttribute("opacity","0");$("#heart-stamp").classList.remove("visible");
+    $("#steam-lines").classList.remove("visible");
+    $("#cup-label").textContent="your cup is waiting ♡";
+    $("#station-note").textContent="A tiny café break, made by you.";
+    $("#pour").value="0";$("#pour-count").textContent="0 / 160 ml";$("#pour-next").disabled=true;
+    $("#steam-btn").disabled=false;$("#steam-btn").textContent="Steam milk · 0/3";
+    $$("#steam-meter i").forEach(function(el){el.classList.remove("active")});
+    $$("[data-milk]").forEach(function(el){var yes=el.dataset.milk==="Oat";el.classList.toggle("selected",yes);el.setAttribute("aria-pressed",String(yes))});
+    $("#serve-btn").disabled=true;
+    goto(0);message("Welcome back! Ready for another latte?");
+  });
+  $("#close").addEventListener("click",function(){
+    if(window.parent!==window)window.parent.postMessage({type:"close-latte"},window.location.origin);
+  });
+})();
+</script>
+</body>
+</html>
