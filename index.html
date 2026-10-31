@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#efc8df">
   <meta name="description" content="An interactive portfolio of illustration, animation and editorial work.">
   <title>Nana — Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=night-menu-20261031">
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -24,13 +24,16 @@
     <main id="desktop" hidden>
       <header id="menubar">
         <div class="menu-left">
-          <button id="home-menu" class="apple-symbol" aria-label="Choose another mode">✿</button>
-          <button id="menu-mode" class="menu-app">Portfolio</button>
-          <button id="menu-projects" class="menu-shortcut" data-open="finder">File</button>
-          <button id="menu-view" class="menu-shortcut" data-open="photos">View</button>
-          <button id="menu-help" class="menu-shortcut" data-open="help">Help</button>
+          <button id="home-menu" class="apple-symbol" aria-label="Return to mode selection" title="Choose a mode">✿</button>
+          <span id="menu-mode" class="menu-app">Portfolio</span>
         </div>
-        <div class="menu-right"><button id="switch-mode" title="Switch between Work and Play modes">Switch Mode <span>⇄</span></button><span class="menu-wifi" aria-label="Decorative Wi-Fi">◔</span><time id="menubar-clock"></time></div>
+        <div class="menu-right">
+          <button id="menu-about" data-open="about" type="button" title="About Me" aria-label="About Me">About Me</button>
+          <button id="menu-help" data-open="help" type="button" title="Help" aria-label="Help">Help</button>
+          <button id="menu-contact" data-open="contact" type="button" title="Contact" aria-label="Contact">Contact</button>
+          <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Enable night mode" title="Toggle night mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Night Mode</span></button>
+          <button id="switch-mode" type="button" aria-label="Switch Mode" title="Switch between Work and Play modes">Switch Mode <span aria-hidden="true">⇄</span></button>
+        </div>
       </header>
       <div id="play-viewport" hidden>
         <div id="play-scene">
@@ -107,6 +110,6 @@
     <audio id="audio" preload="metadata" src="assets/music/facing-sun.mp3"></audio>
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=about-help-night-20261031" defer></script>
 </body>
 </html>

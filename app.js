@@ -44,10 +44,28 @@ function formatTime(seconds){
 function updateClocks(){
  const d=new Date();const hour=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');
  $('#kitty-time').textContent=hour+':'+min;
- $('#menubar-clock').textContent=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
  const phoneClock=$('#phone-time');if(phoneClock)phoneClock.textContent=hour+':'+min;
 }
 updateClocks();setInterval(updateClocks,15000);
+
+// Night mode recolors the displayed room using CSS; the original artwork file stays untouched.
+const THEME_KEY='nana-portfolio-theme';
+function applyTheme(theme){
+ const night=theme==='night';
+ document.documentElement.dataset.theme=night?'night':'day';
+ const toggle=$('#theme-toggle');
+ if(toggle){
+  toggle.setAttribute('aria-pressed',String(night));
+  toggle.setAttribute('aria-label',night?'Enable day mode':'Enable night mode');
+  toggle.title=night?'Switch to Day Mode':'Switch to Night Mode';
+  toggle.querySelector('.theme-icon').textContent=night?'☀':'☾';
+  toggle.querySelector('.theme-label').textContent=night?'Day Mode':'Night Mode';
+ }
+ try{localStorage.setItem(THEME_KEY,night?'night':'day')}catch(e){}
+}
+let savedTheme='day';
+try{savedTheme=localStorage.getItem(THEME_KEY)||'day'}catch(e){}
+applyTheme(savedTheme);
 
 function chooseMode(mode,zoom=false){
  closeWindow();closeSpecial();
@@ -237,6 +255,7 @@ async function submitForm(form){
 document.addEventListener('click',e=>{
  const mode=e.target.closest('[data-mode]');if(mode){chooseMode(mode.dataset.mode);return}
  if(e.target.closest('#home-menu,#menu-mode')){returnToWelcome();return}
+ if(e.target.closest('#theme-toggle')){applyTheme(document.documentElement.dataset.theme==='night'?'day':'night');return}
  if(e.target.closest('#switch-mode,#dock-roomswap')){switchMode();return}
  if(e.target.closest('#back-to-room')){chooseMode('play',true);return}
  if(e.target.closest('#window-close,#window-minimize')){closeWindow();return}
