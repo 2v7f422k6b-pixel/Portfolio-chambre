@@ -58,9 +58,9 @@ function applyTheme(theme){
  if(toggle){
   toggle.setAttribute('aria-pressed',String(night));
   toggle.setAttribute('aria-label',night?'Enable day mode':'Enable night mode');
-  toggle.title=night?'Switch to Day Mode':'Switch to Night Mode';
+  toggle.title=night?'Switch to Day':'Switch to Night';
   toggle.querySelector('.theme-icon').textContent=night?'☀':'☾';
-  toggle.querySelector('.theme-label').textContent=night?'Day Mode':'Night Mode';
+  toggle.querySelector('.theme-label').textContent=night?'Day':'Night';
  }
  try{localStorage.setItem(THEME_KEY,night?'night':'day')}catch(e){}
 }
