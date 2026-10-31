@@ -136,10 +136,12 @@ function zoomIntoIMac(){
  });
 }
 function returnToWelcome(){
+ if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
+ resetModeTransition();
  closeWindow();closeSpecial();audio.pause();player.hidden=true;
  desktop.hidden=true;welcome.hidden=false;app.className='mode-select';currentMode=null;
 }
-function switchMode(){if(currentMode)chooseMode(currentMode==='play'?'work':'play',true);else returnToWelcome()}
+function switchMode(){if(currentMode==='play')zoomIntoIMac();else if(currentMode==='work')chooseMode('play',true);else returnToWelcome()}
 function showToast(message){
  const node=$('#toast');clearTimeout(toastTimer);node.textContent=message;node.hidden=false;
  toastTimer=setTimeout(()=>node.hidden=true,3000);
@@ -406,7 +408,12 @@ async function submitForm(form){
 
 // Event delegation keeps all apps working after window contents are replaced.
 document.addEventListener('click',e=>{
- const mode=e.target.closest('[data-mode]');if(mode){chooseMode(mode.dataset.mode);return}
+ const mode=e.target.closest('[data-mode]');if(mode){
+  const target=mode.dataset.mode;
+  if(currentMode==='play' && target==='work')zoomIntoIMac();
+  else chooseMode(target,currentMode==='work' && target==='play');
+  return;
+ }
  if(e.target.closest('#home-menu,#menu-mode')){returnToWelcome();return}
  if(e.target.closest('#theme-toggle')){applyTheme(document.documentElement.dataset.theme==='night'?'day':'night');return}
  if(e.target.closest('#switch-mode,#dock-roomswap')){switchMode();return}
