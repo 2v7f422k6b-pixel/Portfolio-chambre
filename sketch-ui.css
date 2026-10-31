@@ -14,3 +14,17 @@
 }
 #dock.sketch-ui-frame{box-shadow:0 7px 20px rgba(128,59,80,.15)!important;}
 .mac-window.sketch-ui-frame{box-shadow:0 14px 45px rgba(113,63,67,.18)!important;}
+
+/* Final override: the global glow sheet used !important on these surfaces. */
+html body #dock.sketch-ui-frame,
+html body #window-shade .mac-window.sketch-ui-frame{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+html body #dock.sketch-ui-frame>.sketch-ui-svg,
+html body #window-shade .mac-window.sketch-ui-frame>.sketch-ui-svg{
+  inset:0!important;
+  z-index:20;
+}
