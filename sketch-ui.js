@@ -2,10 +2,18 @@
 (() => {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
-  // Deliberately limited to two components for visual approval.
+  // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
     ['#dock', 'frame', 31],
-    ['.mac-window', 'frame', 57]
+    ['.mac-window', 'frame', 57],
+    ['#menubar', 'rule', 12],
+    ['.window-top', 'rule', 68],
+    ['.welcome-panel', 'frame', 71],
+    ['.mode-tile', 'frame', 101],
+    ['.desktop-folder', 'frame', 127],
+    ['.back-room', 'frame', 149],
+    ['#dock .dock-app', 'frame', 48],
+    ['#window-shade .project-card', 'frame', 161]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
