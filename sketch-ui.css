@@ -195,3 +195,14 @@ html body #welcome .welcome-top>span{flex:none}
 /* No background hearts on the welcome selection screen. */
 #welcome::before,#welcome::after,#welcome .heart-float,#welcome .lena-heart,#welcome .w-orb,#welcome .w-cloud{display:none!important}
 #welcome .welcome-top .lena-heart{display:inline-block!important}
+
+/* Welcome redesign based on approved hand-drawn composition */
+#welcome .welcome-hero{position:relative;text-align:center;padding-top:1.3rem}
+#welcome .welcome-kicker{font-family:cursive!important;font-size:clamp(2.5rem,6vw,5.8rem)!important;line-height:1.12!important;color:#e60024!important}
+#welcome .welcome-portfolio{font-family:cursive;font-size:clamp(2.4rem,5.3vw,5rem);line-height:1.1;color:#e60024}
+#welcome .welcome-stars{color:#e60024;font-size:clamp(1rem,2vw,1.8rem);letter-spacing:.15em;margin:.2rem auto}
+#welcome #welcome-heading{font-size:clamp(1.3rem,2.6vw,2.4rem)!important;margin:.65rem 0 1rem!important}
+#welcome .mode-tile .tile-name{font-size:clamp(1.25rem,2vw,1.8rem)!important}
+#welcome .mode-tile .tile-desc{font-size:clamp(.8rem,1.2vw,1rem)!important}
+#welcome .welcome-top{justify-content:flex-start!important}
+#welcome .welcome-top>span{padding-left:.8rem}
