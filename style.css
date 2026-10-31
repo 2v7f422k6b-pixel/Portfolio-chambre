@@ -348,3 +348,165 @@ html[data-theme="night"] #toast{background:#352746;color:#f9e5ff;border-color:#8
 
 /* Re-enable Help on mobile: legacy rules hid it with !important. */
 @media(max-width:760px){#menubar #menu-help{display:inline-flex!important}}
+
+/* Retro pastel interface — October 2026.
+   Scoped to desktop chrome. Room artwork, hotspots and special apps retain their styles. */
+:root{
+ --retro-ink:#394561;--retro-border:#59657f;--retro-paper:#fffdf9;
+ --retro-pink:#f3c9dd;--retro-blue:#899fe5;--retro-grid:#ffffff80;
+ --retro-lift:3px 3px 0 #394561;--retro-bar:#f8e7ef;
+}
+html[data-theme="night"]{
+ --retro-ink:#f0e6f6;--retro-border:#b4a3cf;--retro-paper:#292638;
+ --retro-pink:#64435f;--retro-blue:#596493;--retro-grid:#ddd0ff12;
+ --retro-lift:3px 3px 0 #141322;--retro-bar:#3c314c;
+}
+#welcome,html[data-theme="night"] #welcome,
+.work-wallpaper,html[data-theme="night"] .work-wallpaper{
+ background-color:var(--retro-pink);
+ background-image:linear-gradient(var(--retro-grid) 1px,transparent 1px),linear-gradient(90deg,var(--retro-grid) 1px,transparent 1px);
+ background-size:32px 32px;
+}
+#welcome::before,#welcome::after,.w-orb,.w-cloud{display:none}
+.welcome-panel,html[data-theme="night"] .welcome-panel{
+ background:var(--retro-paper);border:1px solid var(--retro-border);
+ border-radius:3px;box-shadow:6px 6px 0 var(--retro-border);backdrop-filter:none;
+ padding:0 28px 20px;
+}
+.welcome-top{
+ margin:0 -28px;padding:9px 14px;background:var(--retro-bar);
+ border-bottom:1px solid var(--retro-border);color:var(--retro-ink);
+ font-family:"Courier New",monospace;letter-spacing:.06em;
+}
+.welcome-top .apple-symbol{font-size:20px;color:var(--retro-ink)}
+.welcome-hero{padding:30px 0 25px}
+.welcome-hero h1{font-family:"Courier New",monospace;font-weight:400;letter-spacing:-.065em;color:var(--retro-ink)}
+.welcome-kicker,.tiny-kicker{color:var(--retro-ink)}
+.welcome-hero p,.tile-desc{color:#655c73}
+.mode-tile,html[data-theme="night"] .mode-tile{
+ border:1px solid var(--retro-border);border-radius:2px;background:var(--retro-paper);
+ box-shadow:var(--retro-lift);padding:10px 10px 17px;
+}
+.mode-tile:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--retro-border)}
+.tile-art{border:1px solid var(--retro-border);border-radius:1px;height:155px}
+.work-choice .tile-art{background:linear-gradient(135deg,#d6dcfa,#a3b5ed)}
+.play-choice .tile-art{background:linear-gradient(135deg,#fbe8ed,#f2bcd7)}
+.tile-screen{border:7px ridge #869ce0;border-radius:3px;background:#fffdf9;color:#879cdf;box-shadow:3px 3px 0 #394561}
+.tile-screen-stand{border-radius:0;background:#596a9c;box-shadow:0 -10px 0 -2px #596a9c}
+.tile-room{color:#67557c;text-shadow:none}
+.tile-room-bed{border:1px solid #67557c;border-radius:8px 8px 1px 1px;box-shadow:0 8px 0 #bc7c9c}
+.tile-name{font-family:"Courier New",monospace;font-weight:700;color:var(--retro-ink);margin-top:5px}
+.welcome-foot{border-color:var(--retro-border);color:var(--retro-ink)}
+#menubar,html[data-theme="night"] #menubar{
+ background:var(--retro-paper);border-bottom:1px solid var(--retro-border);
+ box-shadow:0 2px 0 var(--retro-pink);backdrop-filter:none;color:var(--retro-ink);
+}
+#menubar .menu-app,#menubar button{font-family:"Courier New",monospace}
+#menubar .apple-symbol{color:var(--retro-ink)}
+#menubar #menu-about,#menubar #menu-help,#menubar #menu-contact,
+#menubar #theme-toggle,#menubar #switch-mode{border-radius:2px}
+#menubar #theme-toggle,#menubar #switch-mode{
+ background:var(--retro-bar)!important;border:1px solid var(--retro-border)!important;
+ box-shadow:inset 1px 1px 0 #ffffff85,inset -1px -1px 0 #39456135;
+}
+#work-desktop{background:var(--retro-pink)}
+.work-desktop-label h2{
+ font-family:"Courier New",monospace;font-size:clamp(32px,4.5vw,54px);
+ font-weight:400;color:var(--retro-ink);letter-spacing:-.06em;
+}
+.work-desktop-label p{color:var(--retro-ink)}
+.w-star{color:var(--retro-ink);opacity:.4}
+.folder-grid{max-width:680px;gap:32px 20px}
+.desktop-folder{color:var(--retro-ink);font:14px "Courier New",monospace;text-shadow:none;gap:13px}
+.folder-tile{
+ width:91px;height:65px;border:1px solid var(--retro-border);border-radius:2px;
+ box-shadow:3px 3px 0 #39456166,inset 2px 2px 0 #fff7;color:#465477;font-size:27px;
+ background:linear-gradient(135deg,#f8e0eb,#efbfd7);
+}
+.folder-tile::before{
+ width:33px;height:11px;left:0;top:-11px;border:1px solid var(--retro-border);
+ border-bottom:0;border-radius:3px 6px 0 0;background:#f6d7e7;
+}
+.folder-tile.blue{background:linear-gradient(135deg,#e0e4fb,#a5b6ee)}
+.folder-tile.blue::before{background:#d8dff6}
+.folder-tile.lavender{background:linear-gradient(135deg,#ede0f7,#c9b7e8)}
+.folder-tile.apricot{background:linear-gradient(135deg,#fff0d9,#f3d1ae)}
+.desktop-folder>span:last-child{padding:3px 7px;background:var(--retro-paper);border:1px solid transparent}
+.desktop-folder:hover>span:last-child,.desktop-folder:focus-visible>span:last-child{border-color:var(--retro-border)}
+.back-room,html[data-theme="night"] .back-room{
+ border:1px solid var(--retro-border);border-radius:2px;background:var(--retro-paper);
+ color:var(--retro-ink);box-shadow:var(--retro-lift);font-family:"Courier New",monospace;
+}
+#dock,html[data-theme="night"] #dock{
+ border:1px solid var(--retro-border);border-radius:3px;background:var(--retro-paper);
+ box-shadow:3px 3px 0 #39456188,inset 2px 2px 0 #ffffff80;backdrop-filter:none;
+ gap:10px;padding:9px 12px;
+}
+#dock button:hover{transform:translateY(-4px)}
+.dock-app{
+ border:1px solid var(--retro-border);border-radius:3px;color:#35415e;
+ box-shadow:inset 2px 2px 0 #fff9,inset -2px -2px 0 #39456133,2px 2px 0 #39456166;
+}
+.dock-tooltip,html[data-theme="night"] .dock-tooltip{
+ background:var(--retro-paper);color:var(--retro-ink);border:1px solid var(--retro-border);
+ border-radius:1px;box-shadow:2px 2px 0 #39456166;font-family:"Courier New",monospace;
+}
+#window-shade{backdrop-filter:none;background:#29354b35}
+.mac-window,html[data-theme="night"] .mac-window{
+ border:1px solid var(--retro-border);border-radius:2px;background:var(--retro-paper);
+ box-shadow:6px 6px 0 #25304b66;
+}
+.window-top,html[data-theme="night"] .window-top{
+ display:flex;gap:12px;justify-content:space-between;height:46px;padding:0 8px 0 14px;
+ background:var(--retro-bar);border-bottom:1px solid var(--retro-border);
+}
+.window-top #window-title{
+ order:0;text-align:left;font:14px "Courier New",monospace;color:var(--retro-ink);
+}
+.window-end{display:none}
+.traffic{order:1;flex-shrink:0;gap:6px;flex-direction:row-reverse}
+.traffic .dot{
+ width:30px;height:30px;border:1px solid var(--retro-border);border-radius:1px;
+ background:var(--retro-paper);color:var(--retro-ink);
+ box-shadow:inset 1px 1px 0 #fff8,inset -2px -2px 0 #39456126;
+ display:grid;place-items:center;font:20px/1 "Courier New",monospace;
+}
+.traffic .red::before{content:"×"}
+.traffic .yellow::before{content:"−"}
+.traffic .green::before{content:"□"}
+.traffic .dot:hover{background:var(--retro-pink)}
+.window-content{background:var(--retro-paper)}
+.window-content h2{font-family:"Courier New",monospace;letter-spacing:-.045em}
+.window-content :is(.project-card,.art-tile,.info-box,.contact-row,.empty-state,.about-mark,.viewer-stage,.search,.mail-form input,.mail-form textarea){
+ border-radius:2px;
+}
+.window-content :is(.project-card,.art-tile,.info-box,.contact-row,.search,.mail-form input,.mail-form textarea){border-color:var(--retro-border)}
+.window-content :is(.pill-link,.soft-btn,.send-btn,.viewer-btn){
+ border:1px solid var(--retro-border);border-radius:2px;
+ background:var(--retro-bar);color:var(--retro-ink);box-shadow:2px 2px 0 #39456155;
+}
+.player,html[data-theme="night"] .player{
+ border:1px solid var(--retro-border);border-radius:3px;background:var(--retro-paper);
+ box-shadow:var(--retro-lift);backdrop-filter:none;
+}
+.player-icon,.player-buttons button{border-radius:2px}
+#toast{border:1px solid var(--retro-border);border-radius:2px;box-shadow:var(--retro-lift)}
+html[data-theme="night"] .welcome-hero p,html[data-theme="night"] .tile-desc{color:#d9cbe6}
+@media(max-width:760px){
+ .welcome-panel{padding:0 18px 18px}
+ .welcome-top{margin:0 -18px}
+ .tile-art{height:120px}
+ #dock{gap:7px;padding:8px}
+ .folder-tile{width:76px;height:57px}
+ .traffic .dot{width:32px;height:32px}
+}
+@media(max-width:420px){
+ .welcome-hero{padding:16px 0}
+ .tile-art{height:95px}
+ #dock{gap:5px;padding:7px}
+ .dock-app{width:34px;height:36px}
+}
+@media(hover:hover){
+ .mode-tile:active,.back-room:active{transform:translate(2px,2px);box-shadow:none}
+}
+
