@@ -186,3 +186,8 @@ html body #work-desktop .desktop-folder {
  background:var(--atelier-cream)!important;
  background-image:none!important;
 }
+
+/* Welcome: the only heart is the one between LÉNA and PORTFOLIO. */
+html body #welcome::before,html body #welcome::after{display:none!important;content:none!important}
+html body #welcome .welcome-top{justify-content:center!important}
+html body #welcome .welcome-top>span{flex:none}
