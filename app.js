@@ -106,6 +106,7 @@ function closeWindow(){shade.hidden=true;currentWindow=null;win.classList.remove
 function closeSpecial(){specialShade.hidden=true;specialHost.innerHTML='';phoneKeyboardInput=null}
 function openWindow(title,html,type='generic'){
  closeSpecial();currentWindow=type;winTitle.textContent=title;winContent.innerHTML=html;
+ win.setAttribute('aria-modal',String(currentMode!=='work'));
  win.classList.remove('expanded');shade.hidden=false;
  $('#window-close').focus({preventScroll:true});
 }
