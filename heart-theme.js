@@ -67,8 +67,8 @@
     if (doc !== document) return;
     // The room begins hidden. Fixed SVG coordinates avoid zero-size getBBox().
     const placements = {
-      'cat-heart--one': { x: 558, y: 585, size: 40 },
-      'cat-heart--two': { x: 584, y: 555, size: 32 }
+      'cat-heart--one': { x: 565, y: 590, size: 29 },
+      'cat-heart--two': { x: 591, y: 558, size: 24 }
     };
     doc.querySelectorAll('#cat-response path.cat-heart').forEach(path => {
       const kind = [...path.classList].find(c => placements[c]);
