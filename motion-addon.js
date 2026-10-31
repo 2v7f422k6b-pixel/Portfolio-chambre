@@ -1,17 +1,17 @@
-/* Nana Portfolio — original Motion gallery. Loads only existing MP4s. */
+/* Nana Portfolio — original Motion gallery. Loads only videos present on GitHub Pages. */
 (function () {
   'use strict';
   const MOTION = [
-    { title: 'Animation 01', file: 'AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mp4' },
-    { title: 'Dream 1', file: 'Dream 1.mp4' },
-    { title: 'Dream 2', file: 'Dream 2.mp4' },
-    { title: 'Dream 5', file: 'Dream 5.mp4' },
+    { title: 'Animation 01', file: 'AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mov' },
+    { title: 'Dream 1', file: 'dream-1_FYODQUKb.mp4' },
+    { title: 'Dream 2', file: 'Dream 2.mov' },
+    { title: 'Dream 5', file: 'Dream 5.mov' },
     { title: 'Dream 4', file: 'Dream 4.mp4' },
-    { title: 'Animation 06', file: 'v1anim.mp4' },
+    { title: 'Animation 06', file: 'v1anim.mov' },
     { title: 'Animation 07', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0.mp4' },
-    { title: 'Animation 08', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mp4' },
-    { title: 'Cœur nomade', file: 'coeur_nomade_animation.mp4' },
-    { title: 'Bird', file: 'bird_animation.mp4' }
+    { title: 'Animation 08', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mov' },
+    { title: 'Cœur nomade', file: 'coeur_nomade_animation.mov' },
+    { title: 'Bird', file: 'bird_animation.mov' }
   ];
   const videoURL = file => 'assets/motion/' + encodeURIComponent(file);
   const byId = id => document.getElementById(id);
