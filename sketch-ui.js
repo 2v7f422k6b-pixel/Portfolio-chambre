@@ -6,7 +6,6 @@
   const targets = [
     ['#dock', 'frame', 31],
     ['.mac-window', 'frame', 57],
-    ['#menubar', 'rule', 12],
     ['.window-top', 'rule', 68],
     ['.welcome-panel', 'frame', 71],
     ['.mode-tile', 'frame', 101],
