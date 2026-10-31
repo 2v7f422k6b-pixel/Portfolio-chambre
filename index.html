@@ -16,6 +16,7 @@
   <link rel="preload" href="assets/fonts/NanaTraceUI-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="nana-font.css?v=nana-red-hearts-20261031">
   <link rel="stylesheet" href="handwriting.css?v=1">
+  <link rel="stylesheet" href="nana-handwriting.css?v=1">
 
   <!-- iPad/touch feedback for illustrated Play Mode hotspots. -->
   <style id="touch-hotspots-style">
@@ -119,7 +120,7 @@
           <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode"><span class="tile-art"><span class="tile-screen"><span>▧</span><span>▤</span><span>▧</span></span><span class="tile-screen-stand"></span></span><span class="tile-name">Work Mode <span aria-hidden="true">↗</span></span><span class="tile-desc">Browse selected projects</span></button>
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode"><span class="tile-art"><span class="tile-room">♥ <span>♡</span> ✦</span><span class="tile-room-bed"></span></span><span class="tile-name">Play Mode <span aria-hidden="true">↗</span></span><span class="tile-desc">Explore my room</span></button>
         </div>
-        <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span>Made with care ♡</span></div>
+        <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care ♡</span></div>
       </div>
     </section>
     <main id="desktop" hidden>
@@ -194,12 +195,13 @@
           </svg>
           <!-- A live clock covers only the digits inside the original Hello Kitty display. -->
           <div id="kitty-clock" aria-label="Local time on the Hello Kitty alarm clock"><span id="kitty-time">--:--</span></div>
+          <div class="nana-secret" aria-hidden="true"><span class="nana-hand nana-hand--psst" data-nana-script="psst-click">psst... click here!</span></div>
         </div>
         <div class="play-caption">Tap the objects to explore · Open the iMac to enter Work Mode</div>
       </div>
       <section id="work-desktop" aria-label="Work Mode desktop" hidden>
         <div class="work-wallpaper" aria-hidden="true"><div class="w-orb"></div><div class="w-cloud c1"></div><div class="w-cloud c2"></div><div class="w-cloud c3"></div><span class="w-star s1">✦</span><span class="w-star s2">✧</span><span class="w-star s3">✦</span></div>
-        <div class="work-desktop-label"><span class="tiny-kicker">✧ WORK MODE ✧</span><h2>Léna’s creative world ♡</h2><p>Illustration · Motion · Social Media · Editorial</p></div>
+        <div class="work-desktop-label"><span class="tiny-kicker">✧ WORK MODE ✧</span><h2 class="nana-script-heading"><span class="nana-hand nana-hand--creative-world" data-nana-script="creative-world">Léna’s creative world ♡</span></h2><p>Illustration · Motion · Social Media · Editorial</p></div>
         <div class="folder-grid" aria-label="Desktop folders">
           <button data-open="finder" class="desktop-folder"><span class="folder-tile blue">▤</span><span>Projects</span></button>
           <button data-open="photos" class="desktop-folder"><span class="folder-tile pink">♥</span><span>Illustration</span></button>
@@ -232,6 +234,7 @@
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="app.js?v=definitive-body-outfits-20261031" defer></script>
+  <script src="nana-handwriting.js?v=1" defer></script>
   <script src="motion-addon.js?v=6" defer></script>
   <script src="music-visuals.js?v=1" defer></script>
   <script src="pages-addon.js?v=1" defer></script>
