@@ -69,3 +69,24 @@
  .book-turn-sheet.go-prev .book-turn-back{transform:none}
 }
 @media(prefers-reduced-motion:reduce){.book-turn-sheet{transition-duration:.08s}}
+
+/* Fix 1 — keep both original PDF pages touching at the center gutter. 
+   Each page preserves its aspect ratio; the spread shrinks to fit its height. */
+.book-assembly{min-width:0}
+.book-pages{
+  flex:0 1 auto;
+  width:min(100%, calc((100dvh - 205px) * 1.44));
+  height:auto;
+  aspect-ratio:1.44 / 1;
+  max-height:100%;
+  align-self:center;
+}
+.book-page{min-width:0;flex:0 0 50%;height:100%}
+.book-page img{width:100%;height:100%;object-fit:fill}
+.book-left{border-left-width:5px}
+.book-right{border-right-width:5px}
+@media(max-width:700px){
+ .book-pages{width:min(100%, calc((100dvh - 190px) * .72));aspect-ratio:.72 / 1}
+ .book-page{flex-basis:100%}
+ .book-right{border-left-width:5px;border-right-width:5px}
+}
