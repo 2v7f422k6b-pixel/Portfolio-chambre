@@ -7,6 +7,7 @@
   <meta name="description" content="An interactive portfolio of illustration, animation and editorial work.">
   <title>Nana — Portfolio</title>
   <link rel="stylesheet" href="style.css?v=retro-jour-nuit-fusion-20261031">
+  <link rel="stylesheet" href="window-animations.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=5">
   <link rel="stylesheet" href="music-visuals.css?v=1">
   <link rel="stylesheet" href="pages-addon.css?v=1">
@@ -143,6 +144,53 @@
         <div id="play-scene">
           <img id="room-img" src="assets/room-day-table-back.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
           <img id="room-night" src="assets/room-night-table-back.webp" alt="" aria-hidden="true" decoding="async">
+          <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
+          <svg id="window-life" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="window-glass-clip" clipPathUnits="userSpaceOnUse">
+                <polygon points="994,57 1170,17 1170,477 994,475"/>
+              </clipPath>
+            </defs>
+            <g clip-path="url(#window-glass-clip)">
+              <!-- Day: two slow drifting clouds and a few hand-drawn flying birds. -->
+              <g class="outside-day">
+                <g class="cloud-back">
+                  <path class="day-cloud" d="M 963 155 Q 960 147 970 143 Q 977 130 991 139 Q 1003 132 1010 147 Q 1027 145 1031 159 Q 1031 171 1017 172 L 977 172 Q 960 172 963 155 Z"/>
+                </g>
+                <g class="cloud-front">
+                  <path class="day-cloud" d="M 977 225 Q 972 214 985 209 Q 994 195 1009 204 Q 1022 194 1032 208 Q 1045 205 1052 216 Q 1067 214 1070 229 Q 1071 239 1055 240 L 993 240 Q 976 239 977 225 Z"/>
+                </g>
+                <g class="bird-flock">
+                  <path class="bird-wing" d="M 959 128 Q 968 116 978 128 Q 988 116 997 128"/>
+                  <path class="bird-wing" d="M 932 153 Q 939 146 945 154 Q 952 146 959 154"/>
+                  <path class="bird-wing" d="M 987 160 Q 994 151 1001 160 Q 1008 152 1015 160"/>
+                </g>
+                <g class="bird-flock bird-flock--far">
+                  <path class="bird-wing" d="M 955 91 Q 961 84 968 92 Q 976 85 982 92"/>
+                  <path class="bird-wing" d="M 930 113 Q 935 107 941 113 Q 947 108 952 113"/>
+                </g>
+              </g>
+              <!-- Night: the moon and city remain part of the ORIGINAL illustration. -->
+              <g class="outside-night">
+                <g class="night-cloud">
+                  <path d="M 961 215 Q 968 201 986 207 Q 999 194 1014 204 Q 1037 193 1051 212 Q 1074 212 1082 227 L 963 227 Z"/>
+                </g>
+                <g class="night-stars">
+                  <path class="night-star" d="M 1041 83 l 2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z"/>
+                  <circle class="night-star" cx="1026" cy="139" r="2.5"/>
+                  <path class="night-star" d="M 1150 89 l 1.6 4.2 4.2 1.6 -4.2 1.6 -1.6 4.2 -1.6 -4.2 -4.2 -1.6 4.2 -1.6 Z"/>
+                  <circle class="night-star" cx="1128" cy="60" r="2.2"/>
+                  <path class="night-star" d="M 1020 230 l 1.7 5 4 1.5 -4 1.5 -1.7 5 -1.7 -5 -4 -1.5 4 -1.5 Z"/>
+                  <circle class="night-star" cx="1151" cy="201" r="2.4"/>
+                  <path class="night-star" d="M 1084 262 l 1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z"/>
+                  <circle class="night-star" cx="1062" cy="176" r="1.8"/>
+                  <circle class="night-star" cx="1143" cy="279" r="2.1"/>
+                  <path class="night-star" d="M 1075 113 l 1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4 Z"/>
+                </g>
+                <path class="shooting-star" d="M 1148 117 L 1160 104"/>
+              </g>
+            </g>
+          </svg>
           <svg id="hotspots" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
           <defs><clipPath id="redraw-post-0"><polygon points="224,1 294,19 295,126 225,108"/></clipPath><clipPath id="redraw-post-1"><polygon points="325,1 427,61 428,231 326,209"/></clipPath><clipPath id="redraw-post-2"><polygon points="479,36 553,63 554,231 480,206"/></clipPath><clipPath id="redraw-post-3"><polygon points="630,63 746,27 747,228 630,256"/></clipPath><clipPath id="redraw-post-4"><polygon points="780,57 827,43 827,171 780,176"/></clipPath><clipPath id="redraw-post-5"><polygon points="347,252 420,267 420,399 346,393"/></clipPath><clipPath id="redraw-post-6"><polygon points="499,270 552,276 553,393 499,384"/></clipPath><clipPath id="redraw-post-7"><polygon points="587,284 645,280 645,393 587,396"/></clipPath><clipPath id="redraw-post-8"><polygon points="669,261 724,254 725,389 669,393"/></clipPath><clipPath id="redraw-post-9"><polygon points="782,211 826,210 827,292 782,296"/></clipPath><clipPath id="redraw-post-10"><polygon points="750,325 826,316 827,481 751,478"/></clipPath><clipPath id="redraw-post-12"><polygon points="678,407 723,399 725,471 677,471"/></clipPath><clipPath id="redraw-post-13"><polygon points="797,509 824,507 826,554 795,552"/></clipPath><clipPath id="redraw-post-14"><polygon points="1288,35 1407,17 1408,210 1289,216"/></clipPath><clipPath id="redraw-post-15"><polygon points="1442,28 1571,10 1573,212 1445,224"/></clipPath><clipPath id="redraw-post-16"><polygon points="1345,241 1406,233 1409,338 1344,345"/></clipPath><clipPath id="redraw-post-17"><polygon points="1288,287 1315,284 1315,333 1287,334"/></clipPath><clipPath id="redraw-post-18"><polygon points="1447,261 1580,248 1580,427 1448,432"/></clipPath></defs>
           <g class="poster-artworks" pointer-events="none"><image class="poster-artwork" href="assets/photos/bubblegum.jpg" x="224" y="1" width="71" height="125" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-0)" aria-hidden="true"/>
