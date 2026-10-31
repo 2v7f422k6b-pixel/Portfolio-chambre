@@ -7,6 +7,12 @@
     ['#dock', 'frame', 31],
     ['.mac-window', 'frame', 57],
     ['.window-top', 'rule', 68],
+    ['.welcome-top', 'rule', 69],
+    ['.welcome-foot', 'top-rule', 70],
+    ['.tile-art', 'frame', 72],
+    ['#window-shade .project-card .project-icon', 'frame', 73],
+    ['#window-shade .project-card img', 'frame', 74],
+    ['#window-shade .traffic button', 'frame', 75],
     ['.welcome-panel', 'frame', 71],
     ['.mode-tile', 'frame', 101],
     ['.desktop-folder', 'frame', 127],
@@ -67,6 +73,12 @@
         d += ' Q ' + round(controlX) + ' ' + round(controlY)
           + ' ' + round(endX) + ' ' + round(endY);
       }
+    }
+    if (kind === 'top-rule') {
+      const y = 2;
+      d = 'M ' + round(left) + ' ' + round(y);
+      edge(left, y, right, y, true);
+      return d;
     }
     if (kind === 'rule') {
       const y = Math.max(1, height - 2.6);
