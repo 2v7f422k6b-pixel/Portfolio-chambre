@@ -206,3 +206,21 @@ html body #welcome .welcome-top>span{flex:none}
 #welcome .mode-tile .tile-desc{font-size:clamp(.8rem,1.2vw,1rem)!important}
 #welcome .welcome-top{justify-content:flex-start!important}
 #welcome .welcome-top>span{padding-left:.8rem}
+
+/* Final welcome composition — artist's own Nana Trace UI typeface */
+html body #welcome .welcome-panel{width:min(980px,calc(100vw - 36px))!important;max-width:980px!important}
+html body #welcome .welcome-kicker,html body #welcome .welcome-portfolio,html body #welcome #welcome-heading,html body #welcome .tile-name,html body #welcome .tile-desc{font-family:"Nana Trace UI",Arial,sans-serif!important;font-weight:400!important}
+html body #welcome .welcome-kicker{font-size:clamp(2.2rem,5.7vw,5.2rem)!important;letter-spacing:.015em!important}
+html body #welcome .welcome-portfolio{font-size:clamp(2.5rem,5.5vw,5rem)!important;letter-spacing:.015em!important}
+html body #welcome .welcome-hero{padding:1.4rem 0 .6rem!important}
+html body #welcome .welcome-stars{position:absolute;inset:20px 0 auto;display:flex;justify-content:space-between;pointer-events:none}
+html body #welcome .star-side{display:flex;flex-direction:column;gap:4px;align-items:center}
+html body #welcome .star-side img{width:34px;height:34px;object-fit:contain}
+html body #welcome .star-side img:nth-child(2){width:23px;height:23px;margin-left:22px}
+html body #welcome .mode-options{gap:20px!important}
+html body #welcome .mode-tile{text-align:center!important}
+html body #welcome .tile-art{background:transparent!important;height:clamp(145px,21vw,220px)!important;overflow:visible!important}
+html body #welcome .tile-art .welcome-icon{display:block;width:100%;height:100%;object-fit:contain}
+html body #welcome .tile-name{display:block!important;font-size:clamp(1.5rem,2.5vw,2.2rem)!important}
+html body #welcome .tile-desc{display:block!important;font-size:clamp(.85rem,1.35vw,1.15rem)!important}
+@media(max-width:600px){html body #welcome .welcome-stars{inset:12px 0 auto}html body #welcome .star-side img{width:19px;height:19px}html body #welcome .star-side img:nth-child(2){width:14px;height:14px;margin-left:6px}html body #welcome .mode-options{gap:9px!important}html body #welcome .tile-art{height:125px!important}}
