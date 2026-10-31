@@ -141,20 +141,20 @@ function openFinder(){
    <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Motion</strong><small>Animation & moving images</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">♡</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
-   <button class="project-card" data-open="interactive"><span class="project-icon">✿</span><strong>Interactive</strong><small>Illustrated stories, a dress-up game & this website</small></button>
+   <button class="project-card" data-open="interactive"><span class="project-icon">♥</span><strong>Interactive</strong><small>Illustrated stories, a dress-up game & this website</small></button>
    <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
- openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">✿ WORK MODE / PROJECTS</div><h2>A little bit of everything I create.</h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
+ openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">♥ WORK MODE / PROJECTS</div><h2>A little bit of everything I create.</h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
 }
 function openIllustrationProjects(){
- openWindow('ILLUSTRATION',`<div class="eyebrow">✿ PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
+ openWindow('ILLUSTRATION',`<div class="eyebrow">♥ PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
  <button class="project-card" data-open="photos"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"><strong>Original illustrations</strong><small>Explore the gallery</small></button>
  <button class="project-card" data-open="gabzilla"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
  <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
  </div>`,'illustration');
 }
 function openSocialProjects(){
- openWindow('SOCIAL MEDIA',`<div class="eyebrow">✿ PROJECTS / SOCIAL MEDIA</div><h2>Social media & community</h2><p class="section-lead">Creative content, storytelling and community building for music and artistic projects.</p>
+ openWindow('SOCIAL MEDIA',`<div class="eyebrow">♥ PROJECTS / SOCIAL MEDIA</div><h2>Social media & community</h2><p class="section-lead">Creative content, storytelling and community building for music and artistic projects.</p>
  <div class="info-list">
  <div class="info-box"><small>01 / SYNTHS & MUSICAL EXPRESSION</small><strong>Expressive E</strong><p>Social media content, community management and product storytelling.</p></div>
  <div class="info-box"><small>02 / MUSIC</small><strong>Tomasz Bura Group</strong><p>Communication and community management for a jazz project.</p></div>
@@ -162,16 +162,16 @@ function openSocialProjects(){
  </div>`,'social');
 }
 function openInteractiveProjects(){
- openWindow('INTERACTIVE',`<div class="eyebrow">✿ PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
+ openWindow('INTERACTIVE',`<div class="eyebrow">♥ PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
  <div class="project-grid">
  <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
- <button class="project-card" data-open="dressup"><span class="project-icon">✿</span><strong>Dress-up game</strong><small>Try the interactive character wardrobe</small></button>
+ <button class="project-card" data-open="dressup"><span class="project-icon">♥</span><strong>Dress-up game</strong><small>Try the interactive character wardrobe</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
 }
 function openWorkAbout(){
- openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">✿ PROFILE / ABOUT ME</div><div class="atelier-about-layout">
- <div class="atelier-about-portrait" aria-label="Decorative illustration placeholder"><span aria-hidden="true">✿</span><strong>LÉNA</strong><small>ILLUSTRATION · IDEAS · STORIES</small></div>
+ openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">♥ PROFILE / ABOUT ME</div><div class="atelier-about-layout">
+ <div class="atelier-about-portrait" aria-label="Decorative illustration placeholder"><span aria-hidden="true">♥</span><strong>LÉNA</strong><small>ILLUSTRATION · IDEAS · STORIES</small></div>
  <div class="atelier-about-copy"><h2>Hello, I'm Léna ♡</h2><p>I'm a freelance illustrator, social media manager and writer. I move between visual storytelling, music, moving images and editorial projects.</p>
  <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
  <div class="info-box"><small>TOOLS</small><strong>Procreate · Procreate Dreams · Video editing</strong></div>
