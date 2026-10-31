@@ -14,7 +14,7 @@ button{font:inherit;cursor:pointer;color:inherit}button:focus-visible{outline:3p
 .top button{width:29px;height:27px;background:#eacdf0;border:2px solid #7e5494;box-shadow:2px 2px #a67cbc}
 nav{display:flex;flex-wrap:wrap;gap:8px;padding:11px 13px;border-bottom:2px solid #bb8dbd}
 .tab,.save,.look,.accessory,.arrow{border:2px solid #875694;background:linear-gradient(#fff0fd,#e2b9e4);border-radius:7px;box-shadow:inset 2px 2px #ffffffab,3px 3px #b789b8;font-size:11px;font-weight:700;padding:10px 12px}
-.tab.selected,.look.selected,.accessory.selected{background:linear-gradient(#c6a2e5,#9c70c5);color:white}
+.tab.selected,.look.selected,.accessory.selected,.choice.selected{background:linear-gradient(#c6a2e5,#9c70c5);color:white}
 .save{margin-left:auto;background:linear-gradient(#be9cde,#805aa9);color:white}
 .grid{display:grid;grid-template-columns:minmax(210px,280px) minmax(0,1fr);gap:13px;padding:13px}
 .profile{display:flex;flex-direction:column;gap:10px}.portrait{background:#cbaae8;border:3px double #875a9b;border-radius:14px;height:220px;overflow:hidden;display:grid;place-items:center}
@@ -29,20 +29,20 @@ nav{display:flex;flex-wrap:wrap;gap:8px;padding:11px 13px;border-bottom:2px soli
 .platform{position:absolute;bottom:16px;left:12%;width:76%;height:65px;border:2px solid #ac68a0;background:linear-gradient(#efa0d1,#b66ead);border-radius:50%;box-shadow:0 12px #c17bac,0 19px #dc9ac6;z-index:1}
 .options{margin:auto 13px 14px;background:#ffeff9e8;border:2px solid #b788b9;border-radius:11px;padding:13px;z-index:3;box-shadow:3px 3px #ba8dbd}
 .options strong{color:#7b4e8d;font-size:13px}.options p{font-size:11px;color:#7a5b7e;line-height:1.5}
-.looks{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.look{padding:11px 5px}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.choice{border:2px solid #9a70a5;background:linear-gradient(#fff7fd,#e8d1f0);border-radius:8px;box-shadow:inset 2px 2px #fff9,2px 2px #b992c4;color:#69477d;min-height:55px;padding:9px 5px;font-size:11px;font-weight:bold}.choice.selected{background:linear-gradient(#c4a0e2,#9f76c6);color:white}.choice small{display:block;font-size:9px;opacity:.75;font-weight:normal;margin-top:3px}
 .controls{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:10px;color:#88618e}
 .accessories{display:flex;flex-wrap:wrap;gap:7px}.accessory{padding:9px}
 .note{padding:10px 14px;border-top:2px solid #c393bb;display:flex;justify-content:space-between;gap:10px;color:#805f85;font-size:9px}
 .toast{position:fixed;z-index:10;right:15px;bottom:15px;background:#fff2fc;border:2px solid #8f639c;box-shadow:3px 3px #bc8bb8;border-radius:8px;padding:11px 15px;font-size:12px}
 [hidden]{display:none!important}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.profile{display:grid;grid-template-columns:110px 1fr;gap:8px}.portrait{height:153px}.nav-arrows{display:none}.profile>.info:nth-of-type(2){grid-column:2}.profile>.info:nth-of-type(3),.profile>.quest{grid-column:1/-1}.scene{min-height:680px}.figure{height:480px}.top{height:38px;font-size:11px}nav{gap:5px;padding:9px}.tab,.save{font-size:10px;padding:9px 8px}}
-@media(max-width:440px){.portrait{height:145px}.info{padding:8px}.skills{grid-template-columns:1fr 65px 22px}.scene{min-height:645px}.figure{height:440px}.heading h1{font-size:22px}.look{font-size:9px}.save{margin-left:0}.options{margin:0 8px 10px;padding:9px}.note{font-size:8px}}
+@media(max-width:440px){.choices{gap:4px}.choice{padding:7px 3px;font-size:9px;min-height:50px}.portrait{height:145px}.info{padding:8px}.skills{grid-template-columns:1fr 65px 22px}.scene{min-height:645px}.figure{height:440px}.heading h1{font-size:22px}.look{font-size:9px}.save{margin-left:0}.options{margin:0 8px 10px;padding:9px}.note{font-size:8px}}
 </style>
 </head>
 <body>
 <div class="shell">
 <header class="top"><span>✿ ABOUT_ME.EXE ♡</span><button id="close" title="Close About Me" aria-label="Close About Me">×</button></header>
-<nav aria-label="Game categories"><button data-tab="outfits" class="tab selected">✧ OUTFITS</button><button data-tab="accessories" class="tab">♡ ACCESSORIES</button><button data-tab="stats" class="tab">★ STATS</button><button id="save" class="save">♡ SAVE LOOK</button></nav>
+<nav aria-label="Dress-up categories"><button data-tab="tops" class="tab selected">TOPS</button><button data-tab="bottoms" class="tab">BOTTOMS</button><button data-tab="outerwear" class="tab">JACKETS</button><button data-tab="shoes" class="tab">SHOES</button><button data-tab="accessories" class="tab">ACCESSORIES</button><button data-tab="sets" class="tab">SETS</button><button id="save" class="save">♡ SAVE LOOK</button></nav>
 <main class="grid">
 <aside class="profile">
 <div id="portrait" class="portrait" aria-label="Léna's character portrait"></div>
@@ -56,9 +56,7 @@ nav{display:flex;flex-wrap:wrap;gap:8px;padding:11px 13px;border-bottom:2px soli
 <div class="heading"><div class="kicker">DRESS-UP GAME / LVL 32</div><h1>Choose your look ♡</h1></div>
 <div class="figure"><div class="platform"></div><div id="avatar" role="img" aria-label="Léna's avatar wearing pink pajamas"></div></div>
 <div class="options"><strong id="lookTitle">☾ PYJAMA MODE</strong><p id="description">Pink velvet pajamas for a cozy day at home.</p>
-<div id="outfits" class="looks"><button data-look="0" class="look selected">☾ PYJAMA</button><button data-look="1" class="look">★ STYLÉE</button><button data-look="2" class="look">♡ PRINCESSE CLOWN</button></div>
-<div id="accessories" class="accessories" hidden><button data-acc="none" class="accessory selected">No accessory</button><button data-acc="book" class="accessory">✦ Book</button><button data-acc="ipad" class="accessory">✿ iPad</button><button data-acc="cat" class="accessory">♡ Cat</button><button data-acc="headphones" class="accessory">♫ Headphones</button></div>
-<div id="stats" hidden><p>Drawing ✦ Storytelling ✦ Social Media ✦ Music ✦ Philosophy</p></div>
+<div id="choices" class="choices" role="group" aria-label="Clothing choices"></div>
 <div class="controls"><button class="arrow" data-step="-1" aria-label="Previous outfit">←</button><span id="counter">LOOK 01 / 03</span><button class="arrow" data-step="1" aria-label="Next outfit">→</button></div></div>
 </section></main>
 <footer class="note"><span>✿ WORK IN PROGRESS · AVATAR PROVISOIRE</span><span>DESIGNED WITH ♡ BY LÉNA</span></footer>
@@ -68,51 +66,70 @@ nav{display:flex;flex-wrap:wrap;gap:8px;padding:11px 13px;border-bottom:2px soli
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 const C={skin:'#f3baa5',hair:'#332d36',red:'#b23d5d',pink:'#e9a3be',velvet:'#e8a3be',purple:'#845397'};
 const looks=[
-{name:'☾ PYJAMA MODE',mode:'COZY',desc:'Your real pink velvet pajama set, translated into a simple hand-drawn avatar.',aria:'pink velvet pajamas'},
-{name:'★ STYLÉE MODE',mode:'STREET',desc:'Mustard vest, pink striped trousers and leopard coat. Marseille outfit.',aria:'stylish leopard coat and striped pants'},
-{name:'♡ PRINCESSE CLOWN',mode:'FAIRY TALE',desc:'The original Clown Princess: red corset, powder-blue sleeves, yellow skirt and red clown nose.',aria:'Clown Princess costume'}];
-let look=0,acc='none',tab='outfits';
+{name:'☾ PYJAMA',mode:'COZY',desc:'Rose velvet pajamas, all soft and cozy.',parts:{tops:'pajama',bottoms:'pajama',outerwear:'none',shoes:'slippers'}},
+{name:'★ STYLÉE',mode:'STREET',desc:'Yellow vest, striped trousers, leopard coat and chunky shoes.',parts:{tops:'yellow',bottoms:'stripes',outerwear:'leopard',shoes:'boots'}},
+{name:'♡ PRINCESSE CLOWN',mode:'FAIRY TALE',desc:'Your original red, blue and yellow clown princess costume.',parts:{tops:'clown',bottoms:'skirt',outerwear:'none',shoes:'princess'}}];
+const catalog={
+tops:[['pajama','Pink velvet shirt','☾'],['yellow','Yellow vest','★'],['clown','Red corset + blue sleeves','♡']],
+bottoms:[['pajama','Velvet trousers','☾'],['stripes','Striped pants','★'],['skirt','Princess skirt','♡']],
+outerwear:[['none','No jacket','✧'],['leopard','Leopard coat','🐆']],
+shoes:[['slippers','Bunny slippers','☾'],['boots','Chunky shoes','★'],['princess','Princess shoes','♡']],
+accessories:[['none','No accessory','✧'],['book','Book','📖'],['ipad','iPad','✎'],['cat','Cat','♡'],['headphones','Headphones','♫']]};
+const labels={tops:'TOPS',bottoms:'BOTTOMS',outerwear:'JACKETS',shoes:'SHOES',accessories:'ACCESSORIES',sets:'PRESET LOOKS'};
+let look=0,acc='none',tab='tops';
+const slots={...looks[0].parts};
 const path=(d,fill,stroke=C.red,w=2.2,extra='')=>'<path d="'+d+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round" '+extra+'/>';
 function avatarSVG(portrait=false){
  let s='';
  // Shared base character: fixed pose and position for every outfit.
  s+=path('M106 138 Q92 147 83 162 L72 264 Q67 287 72 310 L87 318 L100 222 L107 294 L100 450 Q101 485 96 500 L125 500 L139 349 L152 500 L183 500 Q175 474 175 450 L169 294 L176 221 L187 317 L202 311 Q210 292 203 264 L192 163 Q184 145 165 139Z',C.skin);
  s+=path('M104 280 Q139 290 170 280 L166 353 L152 494 L134 494 L139 353 L125 494 L103 494Z',C.skin);
- // Clothing layers, shared anchors
- if(look===0){
-  s+=path('M93 145 Q108 133 124 142 L144 151 L163 141 Q183 132 191 148 L206 301 Q196 319 181 315 L171 240 L170 293 L105 293 L106 236 L93 316 Q79 320 69 307 L81 168Z',C.velvet);
-  s+=path('M107 288 L171 288 L180 474 Q177 492 151 489 L139 360 L134 488 Q111 496 96 486Z',C.velvet);
+ // Each garment is independently drawn over the same fixed body.
+ // Bottoms first, then tops, coats, and shoes. All elements share viewBox coordinates.
+ if(slots.bottoms==='pajama'){
+  s+=path('M107 283 L171 283 L181 479 Q178 493 151 487 L139 354 L134 487 Q111 493 96 483Z','#e8a3be');
+  s+=path('M97 478 Q115 486 132 478 M151 481 Q165 486 181 477','none','#fce5ed',4);
+ }else if(slots.bottoms==='stripes'){
+  s+=path('M106 281 L172 281 L182 486 L149 487 L139 349 L132 487 L96 486Z','#e9b8cf');
+  for(const x of [101,110,119,127,150,159,169,178])s+=path('M'+x+' 286 L'+(x+2)+' 482','none','#955678',2.7);
+ }else if(slots.bottoms==='skirt'){
+  s+=path('M108 325 L132 325 L126 492 L103 492Z M149 325 L171 325 L180 492 L152 492Z','#fff0f1');
+  for(let y=347;y<480;y+=32){s+=path('M110 '+y+' l16 16 M163 '+y+' l-11 15','none','#eb99b8',4);}
+  s+=path('M105 274 Q139 284 171 274 Q203 316 231 351 Q141 386 48 352 Q86 308 105 274Z','#f2db9b');
+  for(const x of [82,110,159,197])s+=path('M138 287 L'+x+' 348','none','#d6b17c',1.5);
+  s+=path('M49 354 Q137 381 230 352','none','#e99db5',6);
+ }
+ if(slots.tops==='pajama'){
+  s+=path('M93 145 Q108 133 124 142 L144 151 L163 141 Q183 132 191 148 L206 301 Q196 319 181 315 L171 240 L170 293 L105 293 L106 236 L93 316 Q79 320 69 307 L81 168Z','#e8a3be');
   s+=path('M108 148 L137 172 L144 158 L152 171 L173 145','none');
-  s+=path('M140 173 L141 292','none');for(let y=196;y<288;y+=29)s+='<circle cx="141" cy="'+y+'" r="2.6" fill="#f9d9e6"/>';
-  s+=path('M93 304 Q82 310 71 305 M182 307 Q195 313 204 306 M97 483 Q115 487 134 481 M151 484 Q169 489 181 480','none','#fae1e8',4);
-  s+=path('M98 490 Q114 484 129 493 L129 513 L91 514Z M145 494 Q165 486 181 494 L186 514 L145 514Z','#f5c8d0');
-  for(const x of [104,117,158,172])s+='<ellipse cx="'+x+'" cy="489" rx="4" ry="9" fill="#f5c8d0" stroke="'+C.red+'" stroke-width="1.5"/>';
- }else if(look===1){
-  s+=path('M106 283 L172 283 L181 484 L149 486 L139 352 L132 485 L97 484Z','#e7b4cb');
-  for(const x of [104,115,125,152,163,174])s+=path('M'+x+' 287 L'+(x+2)+' 481','none','#9c5376',3);
-  s+=path('M100 490 L132 486 L135 506 L93 506Z M148 488 L180 490 L190 508 L147 507Z','#34313e','#65465b',2.5);
+  s+=path('M140 173 L141 292','none');for(let y=196;y<287;y+=29)s+='<circle cx="141" cy="'+y+'" r="2.6" fill="#f9d9e6"/>';
+  s+=path('M93 304 Q82 310 71 305 M182 307 Q195 313 204 306','none','#fae1e8',4);
+ }else if(slots.tops==='yellow'){
   s+=path('M110 143 L133 159 L143 169 L155 159 L167 143 L172 278 Q140 289 104 278Z','#c9b44b');
   s+=path('M117 145 L141 173 L127 193Z M158 145 L141 173 L153 194Z',C.skin);
   s+=path('M140 174 L140 278','none');for(const y of [210,237,264])s+='<circle cx="140" cy="'+y+'" r="2" fill="#f8e9b3"/>';
-  s+=path('M91 143 Q70 145 68 172 L58 295 Q62 314 91 306 L99 214 L111 186 L115 146Z','#c99a73');
-  s+=path('M169 144 Q189 138 201 166 L221 302 Q208 316 184 308 L176 217 L164 181Z','#c99a73');
-  s+=path('M108 141 L119 167 L112 194 L102 181Z M170 141 L158 168 L171 195 L186 174Z','#d9ae8b');
-  for(const [x,y] of [[75,193],[80,229],[68,270],[89,298],[103,181],[187,184],[197,224],[204,263],[204,297],[110,153]])s+='<ellipse cx="'+x+'" cy="'+y+'" rx="6" ry="9" fill="#5b403d" transform="rotate(25 '+x+' '+y+')"/>';
-  s+=path('M173 160 Q203 218 208 295','none','#363040',6);
-  s+=path('M201 279 L226 281 L235 343 L200 339Z','#363040','#363040');
- }else{
+ }else if(slots.tops==='clown'){
   s+=path('M108 144 Q80 139 79 177 Q79 204 105 204 L117 183Z','#b8d9eb');
   s+=path('M170 144 Q202 139 207 177 Q207 204 180 206 L164 182Z','#b8d9eb');
   s+=path('M88 202 Q99 212 109 202 M176 205 Q191 215 201 203','none','#f3b3c6',5);
   s+=path('M111 141 Q139 154 168 142 L183 183 L170 285 Q137 299 106 284 L96 181Z','#de4b66');
   s+=path('M113 149 Q121 140 129 149 Q138 142 145 150 Q155 139 164 147','none','#f6a9ba',5);
-  s+=path('M106 280 Q139 291 171 278 Q200 316 231 351 Q142 386 48 352 Q86 305 106 280Z','#f2d990');
-  s+=path('M48 353 Q138 380 231 352','none','#ed9ab1',7);
-  for(const x of [82,112,159,195])s+=path('M138 289 L'+x+' 348','none','#d9b478',1.5);
-  s+=path('M109 373 L130 376 L125 494 L103 494Z M151 376 L170 373 L179 494 L151 494Z','#ffe8ed');
-  for(let y=390;y<=459;y+=28){s+=path('M108 '+y+' l17 18 M165 '+y+' l-13 17','none','#e999b5',5);}
-  s+=path('M99 491 Q113 482 128 492 L130 511 L92 512Z M152 491 Q170 483 182 493 L186 512 L149 512Z','#efa0b9');
   s+=path('M101 143 Q135 156 169 142','none','#f4b3c3',5);
+ }
+ if(slots.outerwear==='leopard'){
+  s+=path('M91 143 Q70 145 68 172 L58 295 Q62 314 91 306 L99 214 L111 186 L115 146Z','#c99a73');
+  s+=path('M169 144 Q189 138 201 166 L221 302 Q208 316 184 308 L176 217 L164 181Z','#c99a73');
+  s+=path('M108 141 L119 167 L112 194 L102 181Z M170 141 L158 168 L171 195 L186 174Z','#d9ae8b');
+  for(const [x,y] of [[75,193],[80,229],[68,270],[89,298],[103,181],[187,184],[197,224],[204,263],[204,297],[110,153]])s+='<ellipse cx="'+x+'" cy="'+y+'" rx="6" ry="9" fill="#5b403d" transform="rotate(25 '+x+' '+y+')"/>';
+ }
+ if(slots.shoes==='slippers'){
+  s+=path('M98 490 Q114 484 129 493 L129 513 L91 514Z M145 494 Q165 486 181 494 L186 514 L145 514Z','#f5c8d0');
+  for(const x of [104,117,158,172])s+='<ellipse cx="'+x+'" cy="489" rx="4" ry="9" fill="#f5c8d0" stroke="'+C.red+'" stroke-width="1.5"/>';
+ }else if(slots.shoes==='boots'){
+  s+=path('M100 490 L132 486 L135 506 L93 506Z M148 488 L180 490 L190 508 L147 507Z','#34313e','#65465b',2.5);
+ }else if(slots.shoes==='princess'){
+  s+=path('M99 491 Q113 482 128 492 L130 511 L92 512Z M152 491 Q170 483 182 493 L186 512 L149 512Z','#efa0b9');
+  s+=path('M97 487 Q112 498 128 487 M152 487 Q170 498 181 487','none','#fbd5e4',3);
  }
  // Shared head, hair and face: same view and scale in all modes.
  s+=path('M104 61 Q100 91 104 117 Q111 145 138 148 Q166 145 175 117 L176 79 Q168 45 139 42 Q112 43 104 61Z',C.skin);
@@ -123,7 +140,7 @@ function avatarSVG(portrait=false){
  s+=path('M138 107 L136 120 L140 122 M130 133 Q139 139 148 132','none','#bb5571',2);
  s+='<ellipse cx="111" cy="119" rx="9" ry="4" fill="#f29aaa" opacity=".65"/><ellipse cx="165" cy="119" rx="9" ry="4" fill="#f29aaa" opacity=".65"/>';
  s+=path('M107 76 l3 -8 7 5 8 -5 -1 10 6 5 -10 1 -3 9 -5 -9 -10 -2Z','#f8d778','#a7416e',2);
- if(look===2){s+='<circle cx="139" cy="120" r="6" fill="#d94362"/><circle cx="111" cy="127" r="3" fill="#d94362"/><circle cx="164" cy="127" r="3" fill="#d94362"/>';s+=path('M172 62 l12 -7 3 15 -15 8Z','#f5a1b9');}
+ if(slots.tops==='clown'){s+='<circle cx="139" cy="120" r="6" fill="#d94362"/><circle cx="111" cy="127" r="3" fill="#d94362"/><circle cx="164" cy="127" r="3" fill="#d94362"/>';s+=path('M172 62 l12 -7 3 15 -15 8Z','#f5a1b9');}
  // Accessories
  if(acc==='headphones'){s+=path('M106 88 Q107 30 139 31 Q175 30 176 88','none','#7157a3',10);s+=path('M100 86 l16 0 0 29 -16 0Z M169 86 l13 0 0 29 -13 0Z','#b6a0d7');}
  if(acc==='book'){s+=path('M180 259 L232 245 L244 315 L191 327Z','#815ba8');s+=path('M187 263 L227 254 L237 309 L197 317Z','#e9cfe9');s+=path('M208 277 l5 12 12 2 -9 9 2 12 -12 -6 -11 8 1 -13 -9 -8 13 -3Z','#f9d783');}
@@ -131,22 +148,57 @@ function avatarSVG(portrait=false){
  if(acc==='cat'){s+=path('M194 475 Q219 450 246 471 L253 501 L193 503Z','#443b44');s+=path('M199 470 l0 -21 17 13 18 -12 -1 22Z','#443b44');s+='<circle cx="211" cy="480" r="3" fill="#f1cd80"/><circle cx="232" cy="480" r="3" fill="#f1cd80"/>';s+=path('M219 492 q5 5 9 0','none','#e6a4b6');}
  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+(portrait?'85 24 107 149':'0 0 280 540')+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
 }
+function renderChoices(){
+ const host=$('#choices');let choices=[];
+ if(tab==='sets'){
+  choices=looks.map((item,i)=>'<button type="button" class="choice '+(look===i?'selected':'')+'" data-preset="'+i+'" aria-pressed="'+(look===i)+'">'+['☾','★','♡'][i]+' '+['PYJAMA','STYLÉE','PRINCESSE CLOWN'][i]+'</button>');
+ }else{
+  const selected=tab==='accessories'?acc:slots[tab];
+  choices=catalog[tab].map(([id,label,symbol])=>'<button type="button" class="choice '+(selected===id?'selected':'')+'" data-item="'+id+'" data-category="'+tab+'" aria-pressed="'+(selected===id)+'">'+symbol+' '+label+'</button>');
+ }
+ host.innerHTML=choices.join('');
+}
 function render(){
  $('#avatar').innerHTML=avatarSVG();$('#portrait').innerHTML=avatarSVG(true);
- $('#avatar').setAttribute('aria-label',"Léna's avatar in "+looks[look].aria);
- $('#lookTitle').textContent=looks[look].name;$('#description').textContent=looks[look].desc;$('#mode').textContent=looks[look].mode;$('#counter').textContent='LOOK 0'+(look+1)+' / 03';
- $$('[data-look]').forEach(b=>{const on=Number(b.dataset.look)===look;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
- $$('[data-acc]').forEach(b=>{const on=b.dataset.acc===acc;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
+ const chosen=look>=0?looks[look]:null;
+ const names={tops:'TOP',bottoms:'BOTTOM',outerwear:'JACKET',shoes:'SHOES'};
+ $('#avatar').setAttribute('aria-label',"Léna's customizable avatar with "+slots.tops+' top, '+slots.bottoms+' bottom, '+slots.outerwear+' coat and '+slots.shoes+' shoes');
+ $('#lookTitle').textContent=chosen?chosen.name:'✧ CUSTOM LOOK';
+ $('#description').textContent=chosen?chosen.desc:'Mix and match clothes from all three outfits. Your own drawings will replace these temporary elements.';
+ $('#mode').textContent=chosen?chosen.mode:'CUSTOM';
+ $('#counter').textContent=chosen?'LOOK 0'+(look+1)+' / 03':'★ CUSTOM';
+ renderChoices();
 }
-function setTab(t){tab=t;$$('[data-tab]').forEach(b=>b.classList.toggle('selected',b.dataset.tab===t));for(const id of ['outfits','accessories','stats'])$('#'+id).hidden=id!==t;$('#description').hidden=t!=='outfits'}
+function setTab(t){
+ tab=t;$$('[data-tab]').forEach(b=>b.classList.toggle('selected',b.dataset.tab===t));
+ $('#description').hidden=false;
+ renderChoices();
+}
+function applyPreset(i){
+ look=i;Object.assign(slots,looks[i].parts);acc='none';render();
+}
+function updatePiece(category,id){
+ if(category==='accessories')acc=id;
+ else slots[category]=id;
+ look=looks.findIndex(p=>Object.keys(p.parts).every(k=>p.parts[k]===slots[k]));
+ if(acc!=='none')look=-1;
+ render();
+}
 function toast(s){const n=$('#toast');n.textContent=s;n.hidden=false;clearTimeout(window._toast);window._toast=setTimeout(()=>n.hidden=true,2700)}
 $('#skills').innerHTML=[['Drawing',95],['Storytelling',90],['Social Media',90],['Creativity',100]].map(([name,value])=>'<div class="skills"><span>'+name+'</span><div class="track"><div class="bar" style="width:'+value+'%"></div></div><span>'+value+'</span></div>').join('');
-$$('[data-look]').forEach(b=>b.addEventListener('click',()=>{look=Number(b.dataset.look);render()}));
-$$('[data-step]').forEach(b=>b.addEventListener('click',()=>{look=(look+Number(b.dataset.step)+3)%3;render()}));
-$$('[data-acc]').forEach(b=>b.addEventListener('click',()=>{acc=b.dataset.acc;render()}));
+$('#choices').addEventListener('click',e=>{
+ const btn=e.target.closest('button');
+ if(!btn)return;
+ if(btn.dataset.preset!==undefined)applyPreset(Number(btn.dataset.preset));
+ else if(btn.dataset.item!==undefined)updatePiece(btn.dataset.category,btn.dataset.item);
+});
+$$('[data-step]').forEach(b=>b.addEventListener('click',()=>{
+ const next=(look<0?0:(look+Number(b.dataset.step)+3)%3);
+ applyPreset(next);
+}));
 $$('[data-tab]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
 $('#close').addEventListener('click',()=>{if(window.parent!==window)window.parent.postMessage({type:'close-about-me'},location.origin);else window.history.back()});
-$('#save').addEventListener('click',()=>{try{const svg=avatarSVG().replace('<svg ','<svg width="560" height="1080" ');const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=560;canvas.height=1080;const ctx=canvas.getContext('2d');ctx.fillStyle='#fae5f1';ctx.fillRect(0,0,560,1080);ctx.drawImage(img,0,0,560,1080);URL.revokeObjectURL(url);canvas.toBlob(blob=>{if(!blob){toast('Save unavailable');return}const a=document.createElement('a'),link=URL.createObjectURL(blob);a.href=link;a.download='lena-look-'+(look+1)+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);toast('♡ Look saved!')},'image/png')};img.onerror=()=>toast('Save unavailable');img.src=url}catch(e){toast('Save unavailable')}});
+$('#save').addEventListener('click',()=>{try{const svg=avatarSVG().replace('<svg ','<svg width="560" height="1080" ');const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=560;canvas.height=1080;const ctx=canvas.getContext('2d');ctx.fillStyle='#fae5f1';ctx.fillRect(0,0,560,1080);ctx.drawImage(img,0,0,560,1080);URL.revokeObjectURL(url);canvas.toBlob(blob=>{if(!blob){toast('Save unavailable');return}const a=document.createElement('a'),link=URL.createObjectURL(blob);a.href=link;a.download='lena-custom-look.png';a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);toast('♡ Look saved!')},'image/png')};img.onerror=()=>toast('Save unavailable');img.src=url}catch(e){toast('Save unavailable')}});
 render();
 })();
 </script>
