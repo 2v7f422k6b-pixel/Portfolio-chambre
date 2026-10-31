@@ -116,6 +116,7 @@ function openApp(name,index){
   case 'work-zoom':zoomIntoIMac();break;
   case 'phone':showPhone();break;
   case 'tamagotchi':showTamagotchi();break;
+  case 'latte':showLatte();break;
   case 'music':showMusic(true);break;
   case 'clock':showToast('The Hello Kitty clock shows your local time: '+$('#kitty-time').textContent);break;
   case 'finder':openFinder();break;
@@ -167,6 +168,7 @@ function openInteractiveProjects(){
  <div class="project-grid">
  <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
  <button class="project-card" data-open="dressup"><span class="project-icon">♥</span><strong>Dress-up game</strong><small>Try the interactive character wardrobe</small></button>
+  <button class="project-card" data-open="latte"><span class="project-icon">♥</span><strong>Latte Lab</strong><small>Make a tiny coffee with a foam heart</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
 }
@@ -229,7 +231,7 @@ function openMail(){
  openWindow('Mail — New Message',`<div class="eyebrow">To / lena.defirmas@gmail.com</div><h2>New message</h2><p>Send a message directly from the portfolio using a secure Formspree form.</p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'mail');
 }
 function openHelp(){
- openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, and the Tamagotchi is a mini-game.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and motion through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p>`,'help');
+ openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and motion through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p>`,'help');
 }
 
 function showPhone(){
@@ -261,6 +263,11 @@ function phoneMail(){
 function showTamagotchi(){
  closeWindow();specialShade.hidden=false;
  specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html" allow="autoplay"></iframe>';
+}
+function showLatte(){
+  closeWindow();specialShade.hidden=false;
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html"></iframe>';
+  $('#special-close').setAttribute('aria-label','Close Latte Lab');
 }
 function showMusic(autoplay=false){
  player.hidden=false;
@@ -358,7 +365,7 @@ window.addEventListener('message',e=>{
  // The Tamagotchi is a local same-origin iframe. Only it may request closing.
  if(e.origin!==location.origin)return;
  if(e.source!==$('#special-host iframe')?.contentWindow)return;
- if(e.data?.type==='close-tamagotchi'||e.data?.type==='close-about-me')closeSpecial();
+ if(e.data?.type==='close-tamagotchi'||e.data?.type==='close-about-me'||e.data?.type==='close-latte')closeSpecial();
 });
 $('#player-seek').addEventListener('change',e=>{if(Number.isFinite(audio.duration))audio.currentTime=audio.duration*Number(e.target.value)/100});
 updatePlayer();
