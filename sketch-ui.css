@@ -720,3 +720,25 @@ html body #menubar::after{
  z-index:2!important;pointer-events:none!important;
 }
 html body #menubar #menu-mode{background:transparent!important;border:0!important;box-shadow:none!important;color:#ff173b!important;font:inherit!important;cursor:pointer!important;padding:4px 6px!important;}
+
+/* Menu bar v7 — navigation on the left, utilities on the right.
+   No functional controls are removed; retain gentle hand-drawn borders. */
+html body #menubar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;flex-wrap:nowrap!important;padding-inline:clamp(10px,1.8vw,28px)!important}
+html body #menubar .menu-left,html body #menubar .menu-right{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:clamp(5px,.65vw,12px)!important;min-width:0!important}
+html body #menubar .menu-right{margin-left:auto!important}
+html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help){border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;padding:6px clamp(4px,.7vw,12px)!important;color:#ff173b!important;white-space:nowrap!important}
+html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help)::before,
+html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help)::after{content:none!important;display:none!important}
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode){position:relative!important;isolation:isolate!important;border:0!important;border-radius:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;color:#ff173b!important;padding:8px 11px!important;white-space:nowrap!important}
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::before{
+ content:""!important;display:block!important;position:absolute!important;inset:1px!important;z-index:-1!important;pointer-events:none!important;
+ background:center/100% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 48' preserveAspectRatio='none'%3E%3Cpath d='M3 3 Q55 2.1 100 3.2 T197 3 Q198 15 197 24 T197 45 Q148 45.8 100 45 T3 45 Q2.4 34 3 24 T3 3Z' fill='none' stroke='%23ff173b' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")!important;
+}
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::after{content:none!important;display:none!important}
+html body #menubar .menu-right #menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:39px!important}
+@media(max-width:850px){
+ html body #menubar{gap:5px!important;padding-inline:7px!important}
+ html body #menubar .menu-left,html body #menubar .menu-right{gap:2px!important}
+ html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help){padding-inline:4px!important}
+ html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode){padding-inline:6px!important}
+}
