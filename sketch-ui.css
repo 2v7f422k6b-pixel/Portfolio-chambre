@@ -783,3 +783,16 @@ html body #menubar .menu-right button::after {
 html body #menubar #menu-search svg {width:22px;height:22px}
 html body #menubar .menu-left button:not(.apple-symbol):hover,
 html body #menubar .menu-right button:hover {text-decoration:underline;text-underline-offset:5px}
+
+/* Wallpaper layer: visible above the desktop's opaque background, behind all UI. */
+html body #work-desktop {position:absolute!important;isolation:isolate!important}
+html body #work-desktop > .work-wallpaper {
+ position:fixed!important;
+ inset:var(--menubar, 42px) 0 0!important;
+ z-index:0!important;
+ opacity:1!important;
+ display:block!important;
+ background:#78a8d6 url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png") center center / cover no-repeat!important;
+}
+html body #work-desktop > .work-wallpaper > * {display:none!important}
+html body #work-desktop > :not(.work-wallpaper) {position:relative;z-index:1}
