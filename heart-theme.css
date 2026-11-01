@@ -62,3 +62,23 @@
 
 /* Decorative heart budget: at most two per visible screen. */
 .lena-heart.lena-heart--excess{display:none!important}
+
+/* Minimal hearts: remove CSS pseudo-element decorations across all portfolio screens.
+   The remaining hand-drawn hearts in content and the interactive cat are preserved. */
+#welcome::before,#welcome::after,
+.work-wallpaper::before,.work-wallpaper::after,
+.window-top::before,.window-top::after,
+.window-content::before,.window-content::after,
+.desktop-folder::before,.desktop-folder::after,
+.window-content .project-card::before,.window-content .project-card::after,
+.atelier-about-portrait::before,.atelier-about-portrait::after,
+#work-desktop .desktop-folder.mini-games-folder::before,
+#work-desktop .desktop-folder.mini-games-folder::after,
+#window-content:has(.mini-games-section)::before,
+#window-content:has(.mini-games-section)::after,
+#menubar #menu-about::before,
+.station::before,.station::after {
+ content:none!important;
+ display:none!important;
+ background-image:none!important;
+}
