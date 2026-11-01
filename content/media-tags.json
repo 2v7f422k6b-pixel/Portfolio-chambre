@@ -176,6 +176,86 @@
       "category": "Mini Games",
       "tags": [],
       "image": "/Portfolio-chambre/assets/mini-games/mini-game-coloring.webp"
+    },
+    {
+      "title": "Animation 01",
+      "id": "AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mov",
+      "image": ""
+    },
+    {
+      "title": "Dream 1",
+      "id": "dream-1_FYODQUKb.mp4",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/dream-1_FYODQUKb.mp4",
+      "image": ""
+    },
+    {
+      "title": "Dream 2",
+      "id": "Dream 2.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/Dream%202.mov",
+      "image": ""
+    },
+    {
+      "title": "Dream 5",
+      "id": "Dream 5.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/Dream%205.mov",
+      "image": ""
+    },
+    {
+      "title": "Dream 4",
+      "id": "Dream 4.mp4",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/Dream%204.mp4",
+      "image": ""
+    },
+    {
+      "title": "Animation 06",
+      "id": "v1anim.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/v1anim.mov",
+      "image": ""
+    },
+    {
+      "title": "Animation 07",
+      "id": "F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0.mp4",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0.mp4",
+      "image": ""
+    },
+    {
+      "title": "Animation 08",
+      "id": "F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mov",
+      "image": ""
+    },
+    {
+      "title": "Cœur nomade",
+      "id": "coeur_nomade_animation.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/coeur_nomade_animation.mov",
+      "image": ""
+    },
+    {
+      "title": "Bird",
+      "id": "bird_animation.mov",
+      "category": "Animation",
+      "tags": [],
+      "video": "/Portfolio-chambre/assets/motion/bird_animation.mov",
+      "image": ""
     }
   ]
 }
