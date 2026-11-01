@@ -472,3 +472,7 @@ html body #work-desktop #work-search>label{position:absolute!important;width:1px
 /* Contact page: no ornamental hearts inside the window. */
 #window[data-window-type="contact"] .lena-heart{display:none!important}
 #window[data-window-type="contact"] .window-content::before,#window[data-window-type="contact"] .window-content::after{content:none!important;display:none!important}
+
+/* Approved hand-drawn raster dock artwork. Preserve original texture. */
+html body #dock .dock-app.dock-drawn .dock-art{display:block!important;width:82%!important;height:82%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;filter:none!important;pointer-events:none!important;transform:none!important}
+html body #dock .dock-app.dock-drawn:has(.dock-art){background:transparent!important;box-shadow:none!important}
