@@ -18,7 +18,20 @@
    for(const item of matches){
     const button=document.createElement('button');button.type='button';button.className='work-search-hit';button.textContent=item.title+' · '+item.category+(item.tags?.length?' · #'+item.tags.join(' #'):'');
     button.addEventListener('click',()=>{
-     const target=document.querySelector('#work-desktop [data-open="'+item.open+'"], #dock [data-open="'+item.open+'"]');
+     // Open the destination directly: some items (especially tagged artworks)
+     // have no matching folder button, and hidden dock buttons cannot be clicked.
+     if(item.project && /\\.(?:jpe?g|png|webp)$/i.test(item.project)){
+       const artIndex=window.portfolioArtworkIndex?.(item.project);
+       if(Number.isInteger(artIndex) && typeof window.openApp==='function'){
+         window.openApp('artwork',artIndex);
+         return;
+       }
+     }
+     if(typeof window.openApp==='function'){
+       window.openApp(item.open||'finder');
+       return;
+     }
+     const target=document.querySelector('[data-open="'+(item.open||'finder')+'"]');
      if(target)target.click();
     });
     results.append(button);
