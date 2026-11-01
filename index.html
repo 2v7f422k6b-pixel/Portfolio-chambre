@@ -179,6 +179,8 @@
           <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Enable night mode" title="Toggle night mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Night</span></button>
           <button id="switch-mode" type="button" aria-label="Switch Mode" title="Switch between Work and Play modes">Passer en mode Play</button>
         </nav>
+        <button id="mobile-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-panel"><span aria-hidden="true">☰</span></button>
+        <div id="mobile-menu-panel" aria-label="Menu mobile"></div>
       </header>
       <div id="global-search-popover" hidden><label for="global-search-input">Search my portfolio</label><input id="global-search-input" type="search" placeholder="Search artworks, projects, games…" autocomplete="off"><div id="global-search-results" aria-live="polite"></div></div>
       <div id="play-viewport" hidden>
@@ -430,5 +432,22 @@
 <script src="desktop-extras.js?v=3" defer></script>
 <script src="global-search.js?v=20261101-fix" defer></script>
 <script src="i18n.js?v=bilingual-expanded-20261101" defer></script>
+<script>
+(function(){
+ const bar=document.getElementById('menubar'),toggle=document.getElementById('mobile-menu-toggle'),panel=document.getElementById('mobile-menu-panel');
+ if(!bar||!toggle||!panel)return;
+ const ids=['menu-about','menu-contact','menu-help','language-toggle','theme-toggle','switch-mode'];
+ const originals=ids.map(id=>document.getElementById(id)).filter(Boolean);
+ const slots=originals.map(el=>({el,parent:el.parentNode,next:el.nextSibling}));
+ const mq=window.matchMedia('(max-width:760px)');
+ function close(){bar.classList.remove('mobile-menu-open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Ouvrir le menu');}
+ function sync(){close();if(mq.matches){originals.forEach(el=>panel.appendChild(el));}else{slots.forEach(({el,parent,next})=>{if(next&&next.parentNode===parent)parent.insertBefore(el,next);else parent.appendChild(el);});}}
+ toggle.addEventListener('click',()=>{const open=bar.classList.toggle('mobile-menu-open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Fermer le menu':'Ouvrir le menu');});
+ panel.addEventListener('click',e=>{if(e.target.closest('button'))close();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+ document.addEventListener('pointerdown',e=>{if(!bar.contains(e.target))close();});
+ mq.addEventListener?.('change',sync);sync();
+})();
+</script>
 </body>
 </html>
