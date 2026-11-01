@@ -1,0 +1,58 @@
+# Nana Studio content management.
+# GitHub authentication requires a separately configured OAuth proxy.
+backend:
+  name: github
+  repo: 2v7f422k6b-pixel/Portfolio-chambre
+  branch: main
+  # Set base_url and auth_endpoint after configuring a trusted OAuth service.
+media_folder: "assets/uploads"
+public_folder: "/Portfolio-chambre/assets/uploads"
+locale: fr
+publish: true
+collections:
+  - name: "content"
+    label: "Contenus du portfolio"
+    files:
+      - name: "presentation"
+        label: "Présentation"
+        file: "content/presentation.json"
+        format: json
+        fields:
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Présentation", name: "about", widget: "text" }
+          - { label: "Image de présentation", name: "image", widget: "image", required: false }
+      - name: "mini_games"
+        label: "Mini-jeux"
+        file: "content/mini-games.json"
+        format: json
+        fields:
+          - label: "Cartes"
+            name: "games"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Identifiant", name: "id", widget: "hidden" }
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Illustration", name: "image", widget: "image" }
+      - name: "contact"
+        label: "Contact"
+        file: "content/contact.json"
+        format: json
+        fields:
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Texte", name: "description", widget: "text" }
+  - name: "projects"
+    label: "Projets"
+    label_singular: "Projet"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Catégorie", name: "category", widget: "select", options: ["Illustration", "Animation", "Music & Visuals", "Writing & Editorial", "Mini Games"] }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Lien", name: "url", widget: "string", required: false }
