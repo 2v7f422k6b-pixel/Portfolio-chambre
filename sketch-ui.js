@@ -32,8 +32,6 @@
     ['#window-shade .viewer-thumb', 'frame', 291],
     ['#window-shade .motion-reels-outline', 'frame', 301],
     ['#window-shade .motion-reels-actions button', 'frame', 311],
-    ['#window-shade .motion-reels-center-play', 'frame', 321],
-    ['#window-shade .motion-reels-screen', 'frame', 331],
     ['#window-shade .motion-reels-drawer', 'frame', 341],
     ['#window-shade .motion-reels-list button', 'frame', 351],
     ['#window-shade .project-card', 'frame', 361],
