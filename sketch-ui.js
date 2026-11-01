@@ -39,7 +39,20 @@
     ['#window-shade .viewer-thumbnails', 'rule', 381],
     ['#global-search-popover', 'frame', 391],
     ['#global-search-input', 'frame', 401],
-    ['#work-search-input', 'frame', 411]
+    ['#work-search-input', 'frame', 411],
+    ['#window-shade .mini-game-card', 'frame', 421],
+    ['#window-shade .mini-game-cta', 'frame', 431],
+    ['#window-shade .pages-tab', 'frame', 441],
+    ['#window-shade .pages-search', 'frame', 451],
+    ['#window-shade .pages-item', 'frame', 461],
+    ['#window-shade .pages-cover', 'frame', 471],
+    ['#window-shade .pages-feature', 'frame', 481],
+    ['#window-shade .mv-artist-card', 'frame', 491],
+    ['#window-shade .mv-work-card', 'frame', 501],
+    ['#window-shade .mv-project-hero', 'frame', 511],
+    ['#window-shade .mv-cover-art', 'frame', 521],
+    ['#window-shade .mv-card-open', 'frame', 531],
+    ['#window-shade .atelier-about-copy > div', 'frame', 541]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
