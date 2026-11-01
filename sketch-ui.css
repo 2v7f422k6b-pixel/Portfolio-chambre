@@ -468,3 +468,7 @@ html body #work-desktop #work-search>label{position:absolute!important;width:1px
 
 #dock .dock-drawn svg{width:76%;height:76%;display:block;color:#ff173b;stroke:#ff173b}
 #dock .dock-drawn{font-size:0!important;background:transparent!important;display:flex!important;align-items:center;justify-content:center}
+
+/* Contact page: no ornamental hearts inside the window. */
+#window[data-window-type="contact"] .lena-heart{display:none!important}
+#window[data-window-type="contact"] .window-content::before,#window[data-window-type="contact"] .window-content::after{content:none!important;display:none!important}
