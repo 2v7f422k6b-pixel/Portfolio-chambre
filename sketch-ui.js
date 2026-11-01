@@ -27,7 +27,21 @@
     ['#window-shade .viewer-btn', 'frame', 241],
     ['#window-shade .library-toolbar', 'frame', 251],
     ['#window-shade .about-mark', 'frame', 263],
-    ['#window-shade .window-end', 'rule', 271]
+    ['#window-shade .window-end', 'rule', 271],
+    ['#window-shade .viewer-stage', 'frame', 281],
+    ['#window-shade .viewer-thumb', 'frame', 291],
+    ['#window-shade .motion-reels-outline', 'frame', 301],
+    ['#window-shade .motion-reels-actions button', 'frame', 311],
+    ['#window-shade .motion-reels-center-play', 'frame', 321],
+    ['#window-shade .motion-reels-screen', 'frame', 331],
+    ['#window-shade .motion-reels-drawer', 'frame', 341],
+    ['#window-shade .motion-reels-list button', 'frame', 351],
+    ['#window-shade .project-card', 'frame', 361],
+    ['#window-shade .project-icon', 'frame', 371],
+    ['#window-shade .viewer-thumbnails', 'rule', 381],
+    ['#global-search-popover', 'frame', 391],
+    ['#global-search-input', 'frame', 401],
+    ['#work-search-input', 'frame', 411]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
@@ -109,35 +123,33 @@
   }
 
   const items = [];
-  for (const [selector, kind, base] of targets) {
-    document.querySelectorAll(selector).forEach((element, index) => {
-      const item = attach(element, kind, base + index * 131 + (++serial * 7));
-      if (item) items.push(item);
-    });
+  const observer = 'ResizeObserver' in window ? new ResizeObserver(entries => {
+    for (const entry of entries) { const item = redrawn.get(entry.target); if (item) draw(item); }
+  }) : null;
+  function scan(){
+    for(const [selector,kind,base] of targets){
+      document.querySelectorAll(selector).forEach((element,index)=>{
+        const item=attach(element,kind,base+index*131+(++serial*7));
+        if(item){items.push(item);observer?.observe(element);draw(item);}
+      });
+    }
   }
-
   function draw(item) {
-    const width = item.element.offsetWidth;
-    const height = item.element.offsetHeight;
-    if (width < 18 || height < 12) return;
-    if (width === item.previousWidth && height === item.previousHeight) return;
-    item.previousWidth = width;
-    item.previousHeight = height;
-    item.svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-    const variation = item.element.id === 'dock' ? .85 : .75;
-    item.ink.setAttribute('d', makePath(width, height, item.seed, item.kind, variation));
+    const width=item.element.offsetWidth,height=item.element.offsetHeight;
+    if(width<18||height<12)return;
+    if(width===item.previousWidth&&height===item.previousHeight)return;
+    item.previousWidth=width;item.previousHeight=height;
+    item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
+    const variation=item.element.id==='dock'?.85:1.05;
+    item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
-
-  for (const item of items) draw(item);
-  if ('ResizeObserver' in window) {
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        const item = redrawn.get(entry.target);
-        if (item) draw(item);
-      }
-    });
-    for (const item of items) observer.observe(item.element);
-  } else {
-    window.addEventListener('resize', () => items.forEach(draw), {passive:true});
-  }
+  scan();
+  // Modal contents are created after page load; trace those when they appear.
+  let queued=false;
+  const mutation=new MutationObserver(()=>{
+    if(queued)return;queued=true;
+    requestAnimationFrame(()=>{queued=false;scan();});
+  });
+  mutation.observe(document.body,{childList:true,subtree:true});
+  if(!observer)window.addEventListener('resize',()=>items.forEach(draw),{passive:true});
 })();
