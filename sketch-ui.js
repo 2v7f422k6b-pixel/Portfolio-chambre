@@ -57,7 +57,7 @@
     ['#window-shade .pages-item', 'frame', 461],
     ['#window-shade .pages-cover', 'frame', 471],
     ['#window-shade .pages-feature', 'frame', 481],
-    ['#window-shade .atelier-about-copy > div', 'frame', 541]
+    ['#window-shade .atelier-about-copy .info-box', 'frame', 541]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
@@ -137,8 +137,14 @@
     const ink = document.createElementNS(NS, 'path');
     ink.classList.add('sketch-ui-ink');
     svg.appendChild(ink);
-    // Decorative SVG must not participate as a flex/grid child.\n    svg.style.position='absolute';\n    svg.style.inset='0';\n    svg.style.pointerEvents='none';\n    svg.style.display='block';\n    element.appendChild(svg);
-    if(getComputedStyle(element).position==='static')element.style.position='relative';\n    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
+    // Decorative SVG must not participate as a flex/grid child.
+    svg.style.position='absolute';
+    svg.style.inset='0';
+    svg.style.pointerEvents='none';
+    svg.style.display='block';
+    element.appendChild(svg);
+    if(getComputedStyle(element).position==='static')element.style.position='relative';
+    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
     const item = {element, svg, ink, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
@@ -168,7 +174,9 @@
   scan();
   // Modal contents are created after page load; trace those when they appear.
   let queued=false;
-  const mutation=new MutationObserver(records=>{\n    // Our own SVG insertion is not a reason to rescan the whole document.\n    if(!records.some(record=>[...record.addedNodes].some(node=>node.nodeType===1 && !node.classList?.contains('sketch-ui-svg'))))return;
+  const mutation=new MutationObserver(records=>{
+    // Our own SVG insertion is not a reason to rescan the whole document.
+    if(!records.some(record=>[...record.addedNodes].some(node=>node.nodeType===1 && !node.classList?.contains('sketch-ui-svg'))))return;
     if(queued)return;queued=true;
     requestAnimationFrame(()=>{queued=false;scan();});
   });
