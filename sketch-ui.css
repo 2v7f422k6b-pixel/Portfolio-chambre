@@ -791,3 +791,27 @@ html body #menubar #switch-mode {
  border:0!important;outline:0!important;
  background:transparent!important;box-shadow:none!important;
 }
+
+/* Readable navigation on tablet and desktop — single source of truth. */
+html body #menubar :is(.menu-left,.menu-right) > button {
+ font-size:16px!important;
+ line-height:1.3!important;
+ letter-spacing:.015em!important;
+}
+html body #menubar #language-toggle,
+html body #menubar #switch-mode,
+html body #menubar #theme-toggle,
+html body #menubar #menu-mode,
+html body #menubar #menu-about,
+html body #menubar #menu-contact,
+html body #menubar #menu-help {
+ font-size:16px!important;
+}
+html body #menubar #menu-search svg:not(.sketch-ui-svg){width:25px!important;height:25px!important}
+html body #menubar :is(.menu-left,.menu-right){gap:16px!important}
+html body #menubar{min-height:62px!important;padding:0 22px!important}
+@media(max-width:760px){
+ html body #menubar :is(.menu-left,.menu-right){gap:9px!important}
+ html body #menubar :is(.menu-left,.menu-right)>button{font-size:14px!important}
+ html body #menubar{padding:0 9px!important;min-height:54px!important}
+}
