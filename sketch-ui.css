@@ -426,3 +426,20 @@ html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"]{ba
 html body #work-desktop .desk-panel{margin:-72px auto 105px!important}
 @media(max-width:800px){html body #work-desktop .work-desk-layout{grid-template-columns:minmax(0,1fr) 260px!important;gap:12px!important;padding:0 12px!important}html body #work-desktop .work-desk-layout>.desk-extras{gap:6px!important}html body #work-desktop .desk-extra[data-object="postit"]{width:150px!important;max-width:150px!important;font-size:14px!important}}
 @media(max-width:540px){html body #work-desktop .work-desk-layout{display:flex!important;flex-direction:column-reverse!important;align-items:stretch!important;margin-bottom:110px!important}html body #work-desktop .work-desk-layout>.folder-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}html body #work-desktop .work-desk-layout>.desk-extras{grid-template-columns:repeat(3,minmax(0,1fr))!important}html body #work-desktop .work-desk-layout .desktop-folder .folder-tile{width:54px!important;height:42px!important}html body #work-desktop .work-desk-layout .desktop-folder>span:last-child{font-size:11px!important}}
+
+/* Simplified Work Mode: two desk objects at far left and compact folders at right. */
+html body #work-desktop .work-desktop-label{margin:10px auto 4px!important}
+html body #work-desktop .work-desktop-label h2{font-size:clamp(34px,4.5vw,60px)!important;line-height:1.08!important;margin:0 0 4px!important}
+html body #work-desktop #work-search{margin:4px auto 0!important}
+html body #work-desktop #work-search-input{padding:8px 12px!important}
+html body #work-desktop .work-desk-layout{grid-template-columns:minmax(0,1fr) 390px!important;max-width:1350px!important;gap:12px!important;margin:10px auto 70px!important;padding:0 20px!important;min-height:0!important}
+html body #work-desktop .work-desk-layout>.folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px 12px!important}
+html body #work-desktop .work-desk-layout .desktop-folder,html body #work-desktop .work-desk-layout .mv-desktop-folder{min-height:94px!important;gap:3px!important}
+html body #work-desktop .work-desk-layout .desktop-folder .folder-tile{width:69px!important;height:49px!important;margin-top:12px!important}
+html body #work-desktop .work-desk-layout .desktop-folder>span:last-child,html body #work-desktop .work-desk-layout .mv-desktop-folder>span:last-child{font-size:13px!important}
+html body #work-desktop .work-desk-layout>.desk-extras{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:space-between!important;gap:26px!important;margin:0!important;padding:0!important;min-height:355px!important}
+html body #work-desktop .desk-extra[data-object="postit"]{width:175px!important;max-width:175px!important;min-height:150px!important;margin:0 0 0 2px!important}
+html body #work-desktop .desk-extra[data-object="trash"]{width:100px!important;max-width:100px!important;min-height:105px!important;margin:0 0 0 4px!important;align-items:center!important}
+html body #work-desktop .desk-panel{margin:0 auto 90px!important}
+@media(max-width:800px){html body #work-desktop .work-desk-layout{grid-template-columns:minmax(0,1fr) 300px!important;padding:0 12px!important}html body #work-desktop .work-desk-layout>.desk-extras{min-height:340px!important}}
+@media(max-width:540px){html body #work-desktop .work-desk-layout{display:grid!important;grid-template-columns:120px minmax(0,1fr)!important;gap:8px!important}html body #work-desktop .work-desk-layout>.folder-grid{grid-column:2!important;grid-row:1!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}html body #work-desktop .work-desk-layout>.desk-extras{grid-column:1!important;grid-row:1!important;min-height:340px!important}html body #work-desktop .desk-extra[data-object="postit"]{width:108px!important;max-width:108px!important;min-height:115px!important;padding:9px!important;font-size:12px!important}html body #work-desktop .work-desk-layout .desktop-folder .folder-tile{width:56px!important;height:40px!important}}
