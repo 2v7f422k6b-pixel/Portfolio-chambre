@@ -379,3 +379,10 @@ html body #work-desktop .mv-desktop-folder .folder-tile{position:relative!import
 #work-search{margin-top:8px!important;margin-bottom:0!important}
 html body #work-desktop .folder-grid{padding-top:12px!important}
 @media(max-width:720px){html body #work-desktop .mv-desktop-folder>span:last-child{font-size:15px!important}}
+
+/* Keep the Work heading in normal flow above search on iPad and desktop. */
+html body #work-desktop{overflow-y:auto!important;scroll-padding-top:22px!important}
+html body #work-desktop .work-desktop-label{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;display:block!important;margin:26px auto 12px!important;padding:0 18px!important;max-width:1000px!important;text-align:center!important;visibility:visible!important;opacity:1!important}
+html body #work-desktop .work-desktop-label h2{margin:5px 0!important}
+html body #work-desktop #work-search{margin:10px auto 0!important}
+html body #work-desktop .mv-desktop-folder>span:last-child{text-transform:none!important;font-variant:normal!important;letter-spacing:normal!important}
