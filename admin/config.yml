@@ -4,7 +4,8 @@ backend:
   name: github
   repo: 2v7f422k6b-pixel/Portfolio-chambre
   branch: main
-  # Set base_url and auth_endpoint after configuring a trusted OAuth service.
+  base_url: https://nana-studio-auth.2v7f422k6b.workers.dev
+  auth_endpoint: auth
 media_folder: "assets/uploads"
 public_folder: "/Portfolio-chambre/assets/uploads"
 locale: fr
