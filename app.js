@@ -416,6 +416,8 @@ async function submitForm(form){
 }
 
 // Event delegation keeps all apps working after window contents are replaced.
+let lastPointerDownTarget=null;
+document.addEventListener('pointerdown',e=>{lastPointerDownTarget=e.target},{capture:true,passive:true});
 document.addEventListener('click',e=>{
  if(e.defaultPrevented)return;
  const mode=e.target.closest('[data-mode]');if(mode){
@@ -431,8 +433,16 @@ document.addEventListener('click',e=>{
  if(e.target.closest('#window-close,#window-minimize')){closeWindow(true);return}
  if(e.target.closest('#window-maximize')){win.classList.toggle('expanded');return}
  if(e.target.closest('#special-close')){closeSpecial();return}
- if(e.target.id==='window-shade'){closeWindow(true);return}
- if(e.target.id==='special-shade'){closeSpecial();return}
+ if(e.target.id==='window-shade'){
+  // On touch screens, an opening tap can finish over the newly displayed backdrop.
+  // Close only when the gesture actually began on the backdrop.
+  if(e.detail===0 || lastPointerDownTarget===shade)closeWindow(true);
+  return;
+ }
+ if(e.target.id==='special-shade'){
+  if(e.detail===0 || lastPointerDownTarget===specialShade)closeSpecial();
+  return;
+ }
  if(e.target.closest('#player-play')){toggleMusic();return}
  if(e.target.closest('#player-mute')){audio.muted=!audio.muted;return}
  if(e.target.closest('#player-hide')){player.hidden=true;return}
