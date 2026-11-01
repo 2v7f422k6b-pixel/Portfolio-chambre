@@ -601,3 +601,15 @@ html body #window-shade :is(
 }
 /* Keep illustrated assets, posters and typography untransformed. */
 html body #window-shade .mini-game-card.sketch-ui-frame{overflow:hidden!important}
+
+/* Music library safety: preserve intrinsic card grid, text and image proportions. */
+html body #window-shade .mv-app :is(.mv-artist-card,.mv-work-card,.mv-project-hero,.mv-cover-art,.mv-card-open){
+ border-radius:0!important;
+}
+html body #window-shade .mv-app :is(.mv-artist-card,.mv-work-card,.mv-project-hero,.mv-cover-art,.mv-card-open)>.sketch-ui-svg{
+ display:none!important;
+}
+html body #window-shade .mv-app .mv-artist-card,
+html body #window-shade .mv-app .mv-work-card{
+ min-width:0!important;
+}
