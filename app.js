@@ -92,7 +92,7 @@ function chooseMode(mode,zoom=false){
  if(reverseZoom){
   // Work remains visible underneath while the room smoothly zooms back into place.
   play.style.zIndex='2';work.style.zIndex='1';
-  play.style.pointerEvents='none';work.style.pointerEvents='none';
+  play.style.pointerEvents='auto';work.style.pointerEvents='none';
   const scene=$('#play-scene');
   const roomAnimation=scene.animate([
    {transform:'scale(3.4)',opacity:0,filter:'blur(3px)'},
