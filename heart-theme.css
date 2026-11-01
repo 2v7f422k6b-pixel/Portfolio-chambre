@@ -59,3 +59,6 @@
 @media (prefers-reduced-motion: reduce) {
   .lena-heart { animation: none !important; transition: none !important; }
 }
+
+/* Decorative heart budget: at most two per visible screen. */
+.lena-heart.lena-heart--excess{display:none!important}
