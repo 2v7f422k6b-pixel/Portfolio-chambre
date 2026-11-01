@@ -275,13 +275,49 @@ function openInteractiveProjects(){
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
 }
-function openWorkAbout(){
- openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">♥ PROFILE / ABOUT ME</div><div class="atelier-about-layout">
- <div class="atelier-about-portrait" aria-label="Decorative illustration placeholder"><span aria-hidden="true">♥</span><strong>LÉNA</strong><small>ILLUSTRATION · IDEAS · STORIES</small></div>
- <div class="atelier-about-copy"><h2 class="nana-script-heading"><span class="nana-hand nana-hand--hello-lena" data-nana-script="hello-lena">Hello, I'm Léna ♡</span></h2><p>I'm a freelance illustrator, social media manager and writer. I move between visual storytelling, music, moving images and editorial projects.</p>
+function escapePresentation(value){
+ return String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function safePresentationImage(value){
+ if(typeof value!=='string')return '';
+ const path=value.trim();
+ if(!path || /^(?:javascript|data):/i.test(path))return '';
+ try{
+  const url=new URL(path,location.href);
+  if(url.origin!==location.origin)return '';
+  return url.href;
+ }catch{return ''}
+}
+async function openWorkAbout(){
+ openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">PROFILE / ABOUT ME</div><div class="atelier-about-layout">
+ <div class="atelier-about-portrait" id="nana-about-portrait" aria-label="Illustration de présentation"><strong>LÉNA</strong></div>
+ <div class="atelier-about-copy"><h2 class="nana-script-heading" id="nana-about-title">Léna’s creative world</h2><p id="nana-about-description">Chargement de la présentation…</p>
  <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
  <div class="info-box"><small>TOOLS</small><strong>Procreate · Procreate Dreams · Video editing</strong></div>
- <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch ♡</button></div></div><p class="nana-script-note"><span class="nana-hand nana-hand--with-love" data-nana-script="with-love">with love, Léna ♡</span></p></div></div>`,'work-about');
+ <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch</button></div></div></div></div>`,'work-about');
+ const panel=$('#nana-about-description');
+ try{
+  const response=await fetch('content/presentation.json',{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const data=await response.json();
+  if(!panel || !panel.isConnected)return;
+  $('#nana-about-title').textContent=data.title||'Léna’s creative world';
+  panel.textContent=data.about||'';
+  panel.style.whiteSpace='pre-line';
+  const image=safePresentationImage(data.image);
+  const portrait=$('#nana-about-portrait');
+  if(image && portrait){
+   portrait.textContent='';
+   const img=document.createElement('img');
+   img.src=image;
+   img.alt='Illustration de présentation';
+   img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;';
+   portrait.appendChild(img);
+  }
+ }catch(error){
+  if(panel && panel.isConnected)panel.textContent='Présentation indisponible pour le moment.';
+  console.warn('Nana Studio: présentation non chargée',error);
+ }
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
