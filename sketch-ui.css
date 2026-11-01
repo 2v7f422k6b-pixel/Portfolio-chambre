@@ -771,3 +771,23 @@ html body #work-desktop > .work-wallpaper {
 }
 html body #work-desktop > .work-wallpaper > *{display:none!important}
 html body #work-desktop > :not(.work-wallpaper){position:relative;z-index:1}
+
+/* Topbar cleanup: suppress JS-injected decorative SVG frames, not icon SVGs. */
+html body #menubar .menu-right > button > svg.sketch-ui-svg,
+html body #menubar .menu-left > button > svg.sketch-ui-svg,
+html body #menubar .menu-right > button > .sketch-ui-svg,
+html body #menubar .menu-left > button > .sketch-ui-svg {
+ display:none!important;visibility:hidden!important;
+}
+html body #menubar #menu-search > svg:not(.sketch-ui-svg) {
+ display:block!important;position:static!important;
+ width:23px!important;height:23px!important;
+ margin:0!important;transform:none!important;
+}
+html body #menubar #theme-toggle,
+html body #menubar #language-toggle,
+html body #menubar #menu-search,
+html body #menubar #switch-mode {
+ border:0!important;outline:0!important;
+ background:transparent!important;box-shadow:none!important;
+}
