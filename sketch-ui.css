@@ -443,3 +443,17 @@ html body #work-desktop .desk-extra[data-object="trash"]{width:100px!important;m
 html body #work-desktop .desk-panel{margin:0 auto 90px!important}
 @media(max-width:800px){html body #work-desktop .work-desk-layout{grid-template-columns:minmax(0,1fr) 300px!important;padding:0 12px!important}html body #work-desktop .work-desk-layout>.desk-extras{min-height:340px!important}}
 @media(max-width:540px){html body #work-desktop .work-desk-layout{display:grid!important;grid-template-columns:120px minmax(0,1fr)!important;gap:8px!important}html body #work-desktop .work-desk-layout>.folder-grid{grid-column:2!important;grid-row:1!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}html body #work-desktop .work-desk-layout>.desk-extras{grid-column:1!important;grid-row:1!important;min-height:340px!important}html body #work-desktop .desk-extra[data-object="postit"]{width:108px!important;max-width:108px!important;min-height:115px!important;padding:9px!important;font-size:12px!important}html body #work-desktop .work-desk-layout .desktop-folder .folder-tile{width:56px!important;height:40px!important}}
+
+/* Compact Work search and shared menubar magnifier. */
+html body #work-desktop #work-search{max-width:410px!important;margin:4px auto 0!important;padding:0 12px!important}
+html body #work-desktop #work-search label{font-size:14px!important;margin-bottom:4px!important}
+html body #work-desktop #work-search-input{padding:7px 10px!important;font-size:14px!important;min-height:34px!important}
+#menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:34px!important;padding:5px 8px!important;color:#ff173b!important}
+#global-search-popover{position:fixed!important;top:calc(var(--menubar-height,48px) + 6px)!important;right:14px!important;z-index:99999!important;width:min(350px,calc(100vw - 28px))!important;padding:13px!important;box-sizing:border-box!important;border:2px solid #ff173b!important;border-radius:0!important;background:#fff2fc!important;color:#ff173b!important;box-shadow:3px 4px 0 #ff173b55!important;font-family:"Nana Trace UI",sans-serif!important}
+#global-search-popover[hidden]{display:none!important}
+#global-search-popover label{display:block;margin-bottom:6px;font-size:14px}
+#global-search-input{width:100%;box-sizing:border-box;padding:9px;border:2px solid #ff173b;border-radius:0;background:#fff;color:#ff173b;font:inherit;outline-offset:2px}
+#global-search-results{max-height:270px;overflow:auto}
+#global-search-results button{display:block;width:100%;padding:10px;text-align:left;background:transparent;color:#ff173b;border:0;border-bottom:1px solid #ff173b66;font:inherit;cursor:pointer}
+#global-search-results button:hover{background:#e9b5ff}
+html[data-theme="night"] #global-search-popover{background:#e9b5ff!important}
