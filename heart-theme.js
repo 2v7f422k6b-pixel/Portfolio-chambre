@@ -86,6 +86,30 @@
     });
   }
 
+  // Keep no more than two decorative heart icons in each visible screen.
+  // Run independently in embedded mini-games, and update after navigation.
+  const queued = new WeakSet();
+  function limitVisibleHearts(doc) {
+    const hearts = Array.from(doc.querySelectorAll('.lena-heart'));
+    hearts.forEach(el => el.classList.remove('lena-heart--excess'));
+    let shown = 0;
+    for (const heart of hearts) {
+      if (!heart.isConnected || !heart.getClientRects().length) continue;
+      const style = doc.defaultView?.getComputedStyle(heart);
+      if (style?.visibility === 'hidden' || style?.display === 'none') continue;
+      if (shown >= 2) heart.classList.add('lena-heart--excess');
+      else shown++;
+    }
+  }
+  function queueLimit(doc) {
+    if (queued.has(doc)) return;
+    queued.add(doc);
+    (doc.defaultView || window).requestAnimationFrame(() => {
+      queued.delete(doc);
+      limitVisibleHearts(doc);
+    });
+  }
+
   function install(doc) {
     if (!doc.documentElement || installed.has(doc) || doc.documentElement.dataset.lenaHeartInstalled === 'true') return;
     installed.add(doc);
@@ -99,13 +123,17 @@
     }
     catReaction(doc);
     visit(doc.documentElement);
+    queueLimit(doc);
     const observer = new MutationObserver(records => {
       for (const record of records) {
         if (record.type === 'characterData') replaceText(record.target);
         else record.addedNodes.forEach(visit);
       }
+      queueLimit(doc);
     });
     observer.observe(doc.documentElement, { subtree: true, childList: true, characterData: true });
+    doc.addEventListener('click', () => queueLimit(doc), true);
+    doc.addEventListener('transitionend', () => queueLimit(doc), true);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => install(document), { once: true });
