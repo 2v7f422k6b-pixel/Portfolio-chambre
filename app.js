@@ -88,7 +88,8 @@ function chooseMode(mode,zoom=false){
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const reverseZoom=zoom && previousMode==='work' && mode==='play' && !reduceMotion;
  play.hidden=mode!=='play';work.hidden=mode!=='work' && !reverseZoom;
- $('#menu-mode').textContent=mode==='play'?'Play Mode':'Work Mode';
+ $('#menu-mode').textContent='Accueil';
+ const modeSwitch=$('#switch-mode');if(modeSwitch){modeSwitch.textContent=mode==='play'?'Passer en mode Work':'Passer en mode Play';modeSwitch.setAttribute('aria-label',modeSwitch.textContent);modeSwitch.title=modeSwitch.textContent;}
  $('#dock-finder').title='Finder';
  if(reverseZoom){
   // Work remains visible underneath while the room smoothly zooms back into place.
