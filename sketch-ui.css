@@ -462,3 +462,6 @@ html[data-theme="night"] #global-search-popover{background:#e9b5ff!important}
 #language-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:38px!important;padding:5px 8px!important;border:1.5px solid #ff173b!important;border-radius:0!important;background:transparent!important;color:#ff173b!important;font-family:"Nana Trace UI",sans-serif!important;font-size:13px!important;cursor:pointer!important}
 #language-toggle:hover,#language-toggle:focus-visible{background:#e9b5ff!important}
 @media(max-width:620px){#language-toggle{min-width:32px!important;padding:4px 5px!important}}
+
+/* Hide redundant label above Work Mode search; keep accessible input label. */
+html body #work-desktop #work-search>label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
