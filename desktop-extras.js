@@ -13,7 +13,7 @@ const entries=[
 ['▧','Latest additions',()=>{show('Latest additions');line('Selected creations currently available in the portfolio.');projects.slice(0,3).forEach(projectButton)}],
 ['ⓘ','Get Info',()=>{show('Get Info');line('Select a project to see its category and related work.');projects.forEach(p=>{const b=document.createElement('button');b.className='desk-project-link';b.textContent=p[0];b.onclick=()=>{show(p[0]);line('Category: '+p[1]);line('Project: '+p[3]);projectButton(p);(window.portfolioRelated?.(p[3])||[]).filter(x=>x.title!==p[0]).forEach(x=>line('Related: '+x.title))};content.append(b)})}],
 ['▤','Scrapped Ideas',()=>{show('Scrapped Ideas');line('Sketches, unfinished experiments and ideas to revisit.');line('This archive is waiting for its first entries.')}] ];
-for(const [icon,name,action] of entries){const b=document.createElement('button');b.className='desk-extra';b.dataset.object=['postit','latest','info','trash'][extras.children.length];b.innerHTML='<span class="desk-extra-icon">'+icon+'</span><span>'+name+'</span>';b.onclick=action;extras.append(b)}
+for(const [icon,name,action] of entries){if(name==='Latest additions'||name==='Get Info')continue;const b=document.createElement('button');b.className='desk-extra';b.dataset.object=name==='Currently working on…'?'postit':'trash';b.innerHTML='<span class="desk-extra-icon">'+icon+'</span><span>'+name+'</span>';b.onclick=action;extras.append(b)}
 const layout=document.createElement('div');layout.className='work-desk-layout';grid.parentNode.insertBefore(layout,grid);layout.append(extras,grid);layout.after(panel);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
