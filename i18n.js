@@ -81,7 +81,9 @@ const button=document.getElementById('language-toggle');
 if(button){button.textContent=lang==='en'?'EN · FR':'FR · EN';button.title=lang==='en'?'Langue actuelle : anglais. Passer en français':'Langue actuelle : français. Switch to English';button.setAttribute('aria-label',button.title)}
 update(document.body);
 document.dispatchEvent(new CustomEvent('portfolio-language-change',{detail:{language:lang}}));
+for(const frame of document.querySelectorAll('iframe')){try{frame.contentWindow?.postMessage({type:'portfolio-language',language:lang},location.origin)}catch(e){}}
 }
+window.addEventListener('message',event=>{if(event.origin!==location.origin||event.data?.type!=='portfolio-language-request')return;event.source?.postMessage({type:'portfolio-language',language:lang},location.origin)});
 function init(){
 const button=document.getElementById('language-toggle');if(!button)return;
 button.addEventListener('click',()=>{lang=lang==='en'?'fr':'en';try{localStorage.setItem('portfolio-language-v2',lang)}catch(e){}apply()});
