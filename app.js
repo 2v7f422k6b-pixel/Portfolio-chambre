@@ -196,7 +196,7 @@ function openApp(name,index){
   case 'artwork':openGallery('art',index||0);break;
   case 'gabzilla':openGallery('gabzilla',0);break;
   case 'motion':openMotion();break;
-  case 'pages':openPages();break;
+  case 'pages':(window.openEditorialPages||window.openPages||openPages)();break;
   case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
   case 'book':openBook();break;
   case 'mail':openMail();break;
