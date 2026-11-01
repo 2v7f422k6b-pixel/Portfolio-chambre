@@ -23,6 +23,7 @@ const ART = [
   ['Marseille Emblem','marseille-emblem.jpg'],
   ['Swans and Lotus','swans-lotus.jpg']
 ].map(([title,filename],index)=>({title,src:'assets/photos/'+filename,index}));
+window.portfolioArtworkIndex = filename => ART.findIndex(art => art.src.endsWith('/'+String(filename||'')));
 const GABZILLA = [
   {title:'Original illustration',src:'assets/gabzilla/illustration.jpeg'},
   {title:'Textile composition',src:'assets/gabzilla/composition.jpeg'},
