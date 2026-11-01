@@ -148,33 +148,36 @@ function showToast(message){
 }
 
 let closingWindowAnimation=null;
-function closeWindow(animated=false){
- if(closingWindowAnimation){
-  closingWindowAnimation.cancel();
-  closingWindowAnimation=null;
- }
- if(animated && !shade.hidden && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  // Mirror the existing .22s atelier-window-in animation on user-initiated close.
-  const animation=win.animate([
-   {opacity:1,transform:'translateY(0) scale(1)'},
-   {opacity:0,transform:'translateY(7px) scale(.99)'}
-  ],{duration:220,easing:'ease-in',fill:'forwards'});
-  closingWindowAnimation=animation;
-  animation.finished.then(()=>{
-   if(closingWindowAnimation!==animation)return;
-   closingWindowAnimation=null;closeWindow();
-  }).catch(()=>{});
-  return;
- }
- shade.hidden=true;currentWindow=null;win.classList.remove('expanded');winContent.innerHTML='';
-}
-function closeSpecial(){specialShade.hidden=true;specialHost.innerHTML='';phoneKeyboardInput=null}
-function openWindow(title,html,type='generic'){
+function closeWindow(){
  if(closingWindowAnimation){closingWindowAnimation.cancel();closingWindowAnimation=null}
- closeSpecial();currentWindow=type;win.dataset.windowType=type;winTitle.textContent=title;winContent.innerHTML=html;
+ shade.hidden=true;
+ shade.style.pointerEvents='none';
+ win.style.pointerEvents='none';
+ win.getAnimations().forEach(animation=>animation.cancel());
+ currentWindow=null;
+ win.classList.remove('expanded');
+ winContent.innerHTML='';
+}
+function closeSpecial(){
+ specialShade.hidden=true;
+ specialShade.style.pointerEvents='none';
+ specialHost.innerHTML='';
+ phoneKeyboardInput=null;
+}
+function openWindow(title,html,type='generic'){
+ closeWindow();
+ closeSpecial();
+ currentWindow=type;
+ win.dataset.windowType=type;
+ winTitle.textContent=title;
+ winContent.innerHTML=html;
  if(window.nanaHydrate)window.nanaHydrate(winContent);
  win.setAttribute('aria-modal',String(currentMode!=='work'));
- win.classList.remove('expanded');shade.hidden=false;
+ win.classList.remove('expanded');
+ shade.hidden=false;
+ // Work Mode behaves like a desktop: folders remain clickable behind the window.
+ shade.style.pointerEvents=currentMode==='work'?'none':'auto';
+ win.style.pointerEvents='auto';
  $('#window-close').focus({preventScroll:true});
 }
 function openApp(name,index){
@@ -355,7 +358,7 @@ function openAbout(){
  closeWindow();
  closeSpecial();
  specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=10" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
- specialShade.hidden=false;
+ specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close About Me');
  $('#special-close').focus({preventScroll:true});
 }
@@ -374,7 +377,7 @@ function openHelp(){
 }
 
 function showPhone(){
- closeWindow();specialShade.hidden=false;
+ closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  specialHost.innerHTML=`<div class="phone-device" aria-label="Interactive iPhone"><div class="phone-screen"><div class="phone-wallpaper"></div><div class="phone-status"><time id="phone-time"></time><span class="phone-island" aria-hidden="true"></span><span aria-hidden="true">▂ ▰</span></div><div class="phone-app-row"><button class="phone-app" data-phone-app="contacts"><span class="ios-icon" aria-hidden="true">♙</span><span>Contacts</span></button><button class="phone-app" data-phone-app="mail"><span class="ios-icon mail" aria-hidden="true">✉</span><span>Mail</span></button><button class="phone-app" data-phone-app="instagram"><span class="ios-icon ig" aria-hidden="true">◎</span><span>Instagram</span></button></div><div class="phone-home-line"></div><div class="phone-page" id="phone-page" hidden></div></div></div>`;
  updateClocks();
 }
@@ -400,18 +403,18 @@ function phoneMail(){
  kb.append(end);
 }
 function showTamagotchi(){
- closeWindow();specialShade.hidden=false;
+ closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html" allow="autoplay"></iframe>';
 }
 function showLatte(){
-  closeWindow();specialShade.hidden=false;
+  closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
   specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=custom-art-20261031"></iframe>';
   $('#special-close').setAttribute('aria-label','Close Latte Lab');
 }
 function showPolaroids(){
  closeWindow();closeSpecial();
  specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=1" loading="eager" style="display:block;width:min(1080px,95vw);height:min(780px,89dvh);border:2px solid #ff173b;border-radius:0;background:#fff8f6;box-shadow:0 0 14px #ff173b55"></iframe>';
- specialShade.hidden=false;
+ specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close the Polaroid gallery');
  $('#special-close').focus({preventScroll:true});
 }
