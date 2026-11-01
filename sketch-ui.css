@@ -360,3 +360,14 @@ html body #work-desktop .desktop-folder>span:last-child{
 }
 html body #work-desktop .desktop-folder:focus-visible{outline:2px dashed #FF173B!important}
 @media(max-width:720px){html body #work-desktop .folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:22px 8px!important;padding-inline:8px!important}html body #work-desktop .desktop-folder .folder-tile{width:78px!important;height:60px!important}html body #work-desktop .desktop-folder{min-height:130px!important}html body #work-desktop .desktop-folder>span:last-child{font-size:15px!important}}
+
+/* Hand-drawn Work search, matching the portfolio's red ink. */
+#work-search{position:relative;z-index:3;max-width:580px;margin:16px auto 0;padding:0 16px;color:#ff173b}
+#work-search label{display:block;margin-bottom:7px;font-family:"Nana Trace UI",sans-serif;font-size:17px}
+#work-search-input{display:block;width:100%;box-sizing:border-box;border:2px solid #ff173b;border-radius:2px;background:#fff2fc;color:#ff173b;padding:12px 15px;font-family:"Nana Trace UI",sans-serif;font-size:16px;outline-offset:3px}
+#work-search-input::placeholder{color:#ad5270;opacity:1}
+#work-search-results{position:absolute;top:100%;left:16px;right:16px;z-index:8;max-height:280px;overflow:auto;background:#fff2fc;border:2px solid #ff173b;box-shadow:3px 4px 0 #ff173b44}
+#work-search-results[hidden]{display:none}
+.work-search-hit{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid #ff173b66;padding:12px;color:#ff173b;font:inherit;cursor:pointer}
+.work-search-hit:hover,.work-search-hit:focus-visible{background:#e9b5ff}
+html[data-theme="night"] #work-search-input,html[data-theme="night"] #work-search-results{background:#e9b5ff;color:#ff173b}
