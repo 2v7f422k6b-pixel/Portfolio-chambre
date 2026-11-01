@@ -59,7 +59,7 @@
   const allWorkIndex=work=>ALL_WORKS.findIndex(w=>w.src===work.src);
   const cover=a=>a.works[0];
   const workImage=(w,cls='',lazy=true)=>`<img class="${cls}" src="${w.src}" alt="${escapeHTML(w.title)}" ${lazy?'loading="lazy"':''} draggable="false">`;
-  const navs=[['home','⌂','Home'],['artists','♧','Artists'],['covers','▧','Covers'],['packaging','▣','Packaging'],['visuals','✿','Music visuals'],['favorites','♡','Favorites']];
+  const navs=[['home','⌂','Home'],['artists','♧','Artists'],['covers','▧','Covers'],['packaging','▣','Packaging'],['visuals','✿','Music visuals'],['favorites','✦','Favorites']];
 
   // Entry points use their own data attribute: app.js never intercepts them.
   function installEntryPoints(){
@@ -118,7 +118,7 @@
     return `<article class="mv-artist-card"><button type="button" class="mv-card-open" data-mv-artist="${a.id}" aria-label="View ${escapeHTML(a.name)}">
       <div class="mv-cover-art mv-tint-${a.theme}">${workImage(cover(a),'mv-art-img')}</div>
       <span class="mv-card-title">${escapeHTML(a.name)}</span><span class="mv-card-sub">${a.works.length} ${a.works.length===1?'visual':'visuals'}</span></button>
-      <button type="button" class="mv-fav-button" data-mv-favorite="${a.id}" aria-label="${favorites.includes(a.id)?'Remove':'Add'} ${escapeHTML(a.name)} ${favorites.includes(a.id)?'from':'to'} favorites" aria-pressed="${favorites.includes(a.id)}">${favorites.includes(a.id)?'♥':'♡'}</button>
+      <button type="button" class="mv-fav-button" data-mv-favorite="${a.id}" aria-label="${favorites.includes(a.id)?'Remove':'Add'} ${escapeHTML(a.name)} ${favorites.includes(a.id)?'from':'to'} favorites" aria-pressed="${favorites.includes(a.id)}">${favorites.includes(a.id)?'✦':'✦'}</button>
     </article>`;
   }
   function artworkCard(w){
@@ -145,7 +145,7 @@
     return `<div class="mv-project-page"><button class="mv-back" type="button" data-mv-page="artists">← All artists</button>
       <section class="mv-project-hero mv-tint-${a.theme}"><div class="mv-project-hero-art">${workImage(cover(a),'',false)}</div>
         <div class="mv-project-copy"><span class="mv-project-eyebrow">ARTIST / ${a.works.length} ${a.works.length===1?'WORK':'WORKS'}</span><h2>${escapeHTML(a.name)}</h2><h3>${escapeHTML(a.project)}</h3><p>${escapeHTML(a.introduction)}</p>${a.credit?`<p class="mv-credit">${escapeHTML(a.credit)}</p>`:''}
-        <button type="button" class="mv-primary-action" data-mv-work="${allWorkIndex(cover(a))}">View artwork <span>↗</span></button><button type="button" class="mv-fav-outline" data-mv-favorite="${a.id}" aria-pressed="${favorites.includes(a.id)}">${favorites.includes(a.id)?'♥ Saved':'♡ Save artist'}</button>
+        <button type="button" class="mv-primary-action" data-mv-work="${allWorkIndex(cover(a))}">View artwork <span>↗</span></button><button type="button" class="mv-fav-outline" data-mv-favorite="${a.id}" aria-pressed="${favorites.includes(a.id)}">${favorites.includes(a.id)?'✦ Saved':'✦ Save artist'}</button>
         </div></section>
       <section class="mv-section"><div class="mv-section-heading"><h3>Works by ${escapeHTML(a.name)}</h3><span>${a.works.length} original ${a.works.length===1?'image':'images'}</span></div><div class="mv-work-grid">${a.works.map(artworkCard).join('')}</div></section>
     </div>`;
@@ -166,7 +166,7 @@
     const isArtistList=page==='artists'||page==='favorites';
     return `<div class="mv-list-page"><div class="mv-list-header"><span class="mv-feature-kicker">NANA / PORTFOLIO</span><h2>${heading}</h2><p>${intro}</p></div>
      ${works.length?`<div class="${isArtistList?'mv-artist-grid':'mv-work-grid'}">${works.map(isArtistList?artistCard:artworkCard).join('')}</div>`:
-     `<div class="mv-empty"><span>♡</span><h3>No results yet</h3><p>${page==='favorites'?'Save an artist using the heart icon to see them here.':'Try another search or explore a different section.'}</p><button type="button" data-mv-page="home" class="mv-primary-action">Back home ↗</button></div>`}</div>`;
+     `<div class="mv-empty"><span>✦</span><h3>No results yet</h3><p>${page==='favorites'?'Save an artist using the heart icon to see them here.':'Try another search or explore a different section.'}</p><button type="button" data-mv-page="home" class="mv-primary-action">Back home ↗</button></div>`}</div>`;
   }
   function render(keepScroll=false){
     const host=$('#mv-content');if(!host)return;
