@@ -568,3 +568,36 @@ html body #window-shade #motion-reels .motion-reels-center-play{
   height:min(78dvh,820px)!important;
  }
 }
+
+/* Interior artwork-style frames: one outline per UI component, no double rules. */
+html body #window-shade :is(
+ .mini-game-card,.mini-game-cta,.pages-tab,.pages-search,.pages-item,
+ .pages-cover,.pages-feature,.mv-artist-card,.mv-work-card,
+ .mv-project-hero,.mv-cover-art,.mv-card-open,
+ .atelier-about-copy > div
+).sketch-ui-frame{
+ position:relative!important;border:0!important;outline:0!important;
+ border-radius:0!important;box-shadow:none!important;
+}
+html body #window-shade :is(
+ .mini-game-card,.mini-game-cta,.pages-tab,.pages-search,.pages-item,
+ .pages-cover,.pages-feature,.mv-artist-card,.mv-work-card,
+ .mv-project-hero,.mv-cover-art,.mv-card-open,
+ .atelier-about-copy > div
+).sketch-ui-frame>.sketch-ui-svg{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ display:block!important;overflow:hidden!important;pointer-events:none!important;z-index:3!important;
+}
+html body #window-shade :is(
+ .mini-game-card,.mini-game-cta,.pages-tab,.pages-search,.pages-item,
+ .pages-cover,.pages-feature,.mv-artist-card,.mv-work-card,
+ .mv-project-hero,.mv-cover-art,.mv-card-open,
+ .atelier-about-copy > div
+).sketch-ui-frame>.sketch-ui-svg>.sketch-ui-ink{
+ stroke:#ff173b!important;stroke-width:1.35!important;fill:none!important;
+ stroke-linecap:round!important;stroke-linejoin:round!important;
+ vector-effect:non-scaling-stroke!important;
+ filter:drop-shadow(0 0 1px rgba(255,23,59,.18));
+}
+/* Keep illustrated assets, posters and typography untransformed. */
+html body #window-shade .mini-game-card.sketch-ui-frame{overflow:hidden!important}
