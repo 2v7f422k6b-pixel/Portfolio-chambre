@@ -796,3 +796,24 @@ html body #work-desktop > .work-wallpaper {
 }
 html body #work-desktop > .work-wallpaper > * {display:none!important}
 html body #work-desktop > :not(.work-wallpaper) {position:relative;z-index:1}
+
+/* Menu bar definitive: no frames, readable text, one hand-drawn baseline. */
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::before,
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::after,
+html body #menubar .menu-left button::before,
+html body #menubar .menu-left button::after {
+ content:none!important;display:none!important;background:none!important;border:0!important;
+}
+html body #menubar :is(.menu-left,.menu-right) button,
+html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode) {
+ font-size:clamp(16px,1.25vw,19px)!important;
+ line-height:1.25!important;
+ padding:7px clamp(7px,.8vw,13px)!important;
+ border:0!important;outline:0!important;border-radius:0!important;
+ background:transparent!important;background-image:none!important;
+ box-shadow:none!important;filter:none!important;
+ color:#ff173b!important;
+}
+html body #menubar #menu-search svg{width:23px!important;height:23px!important}
+html body #menubar .menu-left,html body #menubar .menu-right{gap:clamp(5px,.8vw,14px)!important}
+html body #menubar{min-height:56px!important;height:auto!important}
