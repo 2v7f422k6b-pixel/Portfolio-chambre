@@ -944,3 +944,17 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  }
  html body #work-desktop .folder-grid{margin-bottom:0!important}
 }
+
+/* Mobile Work desktop: compact layout; return button in document flow. */
+@media (max-width:760px){
+ html body #work-desktop{padding-bottom:20px!important;min-height:0!important}
+ html body #work-desktop .folder-grid{margin-bottom:0!important;row-gap:12px!important;gap:12px!important}
+ html body #work-desktop #back-to-room.back-room,
+ html body #work-desktop #back-to-room.back-room.sketch-ui-frame{
+  position:relative!important;inset:auto!important;top:auto!important;right:auto!important;
+  bottom:auto!important;left:auto!important;transform:none!important;float:none!important;
+  display:block!important;width:max-content!important;max-width:calc(100% - 24px)!important;
+  margin:14px auto 8px!important;padding:10px 14px!important;z-index:2!important;
+  font-size:14px!important;white-space:nowrap!important
+ }
+}
