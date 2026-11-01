@@ -36,6 +36,21 @@ collections:
               - { label: "Titre", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Illustration", name: "image", widget: "image" }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
+      - name: "media_tags"
+        label: "Tags des médias"
+        file: "content/media-tags.json"
+        format: json
+        fields:
+          - label: "Médias et projets"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Titre du média", name: "title", widget: "string" }
+              - { label: "Identifiant ou nom du fichier", name: "id", widget: "string", hint: "Conserve cet identifiant pour que la recherche retrouve le bon média." }
+              - { label: "Catégorie", name: "category", widget: "select", options: ["Illustration", "Animation", "Music & Visuals", "Writing & Editorial", "Mini Games", "Other"], required: false }
+              - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Un tag par élément. Tu peux en ajouter autant que tu veux." }
       - name: "contact"
         label: "Contact"
         file: "content/contact.json"
@@ -57,3 +72,4 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "Lien", name: "url", widget: "string", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Ajoute un mot-clé par ligne, par exemple illustration, musique, personnel." }
