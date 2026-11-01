@@ -922,3 +922,25 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
    pointer-events:none!important;
  }
 }
+
+/* Mobile: the return action must always be reachable without scrolling. */
+@media (max-width:760px){
+ html body #work-desktop{padding-bottom:105px!important}
+ html body #work-desktop #back-to-room.back-room,
+ html body #work-desktop #back-to-room.back-room.sketch-ui-frame{
+   position:fixed!important;
+   top:auto!important;
+   left:12px!important;
+   right:auto!important;
+   bottom:76px!important;
+   margin:0!important;
+   width:auto!important;
+   max-width:calc(100vw - 24px)!important;
+   padding:9px 12px!important;
+   font-size:12px!important;
+   line-height:1.2!important;
+   z-index:60!important;
+   white-space:nowrap!important;
+ }
+ html body #work-desktop .folder-grid{margin-bottom:0!important}
+}
