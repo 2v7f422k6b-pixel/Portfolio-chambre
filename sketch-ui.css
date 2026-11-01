@@ -457,3 +457,8 @@ html body #work-desktop #work-search-input{padding:7px 10px!important;font-size:
 #global-search-results button{display:block;width:100%;padding:10px;text-align:left;background:transparent;color:#ff173b;border:0;border-bottom:1px solid #ff173b66;font:inherit;cursor:pointer}
 #global-search-results button:hover{background:#e9b5ff}
 html[data-theme="night"] #global-search-popover{background:#e9b5ff!important}
+
+/* Language switch in the common menu, styled like the hand-drawn controls. */
+#language-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:38px!important;padding:5px 8px!important;border:1.5px solid #ff173b!important;border-radius:0!important;background:transparent!important;color:#ff173b!important;font-family:"Nana Trace UI",sans-serif!important;font-size:13px!important;cursor:pointer!important}
+#language-toggle:hover,#language-toggle:focus-visible{background:#e9b5ff!important}
+@media(max-width:620px){#language-toggle{min-width:32px!important;padding:4px 5px!important}}
