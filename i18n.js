@@ -52,6 +52,15 @@ const originalText=new WeakMap(),originalAttr=new WeakMap();
 let lang='fr',busy=false;
 try{const saved=localStorage.getItem('portfolio-language-v2');lang=saved==='en'?'en':'fr'}catch(e){}
 const attrs=['placeholder','title','aria-label','alt'];
+Object.assign(translations,{
+"Play Mode:":"Mode jeu :",
+"Work Mode:":"Mode travail :",
+"tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.":"touche les objets de la chambre illustrée. Les affiches ouvrent mes illustrations, l’iPhone donne accès aux contacts et aux e-mails, le Tamagotchi est un mini-jeu et le mug rose ouvre l’atelier latte.",
+"browse projects, illustrations, writing and motion through the desktop folders.":"explore mes projets, illustrations, articles et animations dans les dossiers du bureau.",
+"Click the iMac in Play Mode to enter Work Mode. Use":"Clique sur l’iMac en mode jeu pour accéder au mode travail. Utilise",
+"Switch Mode":"Changer de mode",
+"in the menu bar to move between them at any time.":"dans la barre de menu pour passer de l’un à l’autre à tout moment."
+});
 function translateString(str){const leading=str.match(/^\s*/)?.[0]||'',trailing=str.match(/\s*$/)?.[0]||'',key=str.trim();return translations[key]===undefined?str:leading+translations[key]+trailing}
 function update(root){
 if(busy)return;busy=true;
