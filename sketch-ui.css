@@ -710,3 +710,13 @@ html body #work-desktop #work-search-input{
   border-image-source:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cpath d='M3 3 Q32 2.5 60 3 T117 3 Q117.5 20 117 30 T117 57 Q85 57.5 59 57 T3 57 Q2.5 38 3 29 T3 3Z' fill='none' stroke='%23ff173b' stroke-width='2.1'/%3E%3C/svg%3E")!important;
   border-image-slice:8!important;border-image-width:2px!important;
 }
+
+/* Topmost menu bar: visibly hand-drawn yet controlled edge. */
+html body #menubar{position:relative!important;border-bottom:0!important;}
+html body #menubar::after{
+ content:""!important;position:absolute!important;left:0!important;right:0!important;
+ bottom:-2px!important;height:7px!important;background:#ff173b!important;
+ clip-path:polygon(0 39%,4% 48%,9% 27%,14% 52%,19% 33%,25% 56%,30% 32%,35% 49%,41% 26%,47% 54%,52% 35%,58% 52%,64% 29%,70% 57%,76% 31%,82% 51%,88% 28%,94% 54%,100% 36%,100% 65%,94% 77%,88% 54%,82% 80%,76% 60%,70% 82%,64% 57%,58% 78%,52% 62%,47% 79%,41% 55%,35% 75%,30% 57%,25% 81%,19% 58%,14% 76%,9% 55%,4% 75%,0 63%)!important;
+ z-index:2!important;pointer-events:none!important;
+}
+html body #menubar #menu-mode{background:transparent!important;border:0!important;box-shadow:none!important;color:#ff173b!important;font:inherit!important;cursor:pointer!important;padding:4px 6px!important;}
