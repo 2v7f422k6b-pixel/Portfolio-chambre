@@ -386,3 +386,17 @@ html body #work-desktop .work-desktop-label{position:relative!important;top:auto
 html body #work-desktop .work-desktop-label h2{margin:5px 0!important}
 html body #work-desktop #work-search{margin:10px auto 0!important}
 html body #work-desktop .mv-desktop-folder>span:last-child{text-transform:none!important;font-variant:normal!important;letter-spacing:normal!important}
+
+/* Four small retro desktop objects, not another folder row. */
+html body #work-desktop .desk-extras{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:0 auto 26px;padding:0 16px;max-width:900px}
+html body #work-desktop .desk-extra{display:flex;align-items:center;gap:8px;padding:9px 12px;border:2px solid #ff173b;border-radius:1px;background:#fff2fc;color:#ff173b;font-family:"Nana Trace UI",sans-serif;font-size:15px;cursor:pointer;box-shadow:2px 3px 0 #ff173b44}
+html body #work-desktop .desk-extra-icon{font-size:24px;line-height:1}
+html body #work-desktop .desk-extra:hover{background:#e9b5ff;transform:translateY(-2px)}
+html body #work-desktop .desk-panel{position:relative;z-index:12;max-width:640px;margin:0 auto 28px;padding:18px 22px;border:2px solid #ff173b;background:#fff2fc;color:#ff173b;box-shadow:4px 5px 0 #ff173b55;font-family:"Nana Trace UI",sans-serif}
+html body #work-desktop .desk-panel[hidden]{display:none!important}
+html body #work-desktop .desk-panel>button:first-child{float:right;background:transparent;border:1px solid #ff173b;color:#ff173b;font-size:22px;cursor:pointer}
+html body #work-desktop .desk-panel h3{font-size:22px;margin:0 0 12px}
+html body #work-desktop .desk-project-link{display:block;width:100%;text-align:left;padding:10px;margin:6px 0;border:1px solid #ff173b;background:transparent;color:#ff173b;font:inherit;cursor:pointer}
+html body #work-desktop .desk-project-link:hover{background:#e9b5ff}
+html[data-theme="night"] body #work-desktop .desk-extra,html[data-theme="night"] body #work-desktop .desk-panel{background:#e9b5ff}
+@media(max-width:720px){html body #work-desktop .desk-extras{gap:8px}html body #work-desktop .desk-extra{font-size:13px;padding:7px}}
