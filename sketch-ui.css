@@ -815,3 +815,9 @@ html body #menubar{min-height:62px!important;padding:0 22px!important}
  html body #menubar :is(.menu-left,.menu-right)>button{font-size:14px!important}
  html body #menubar{padding:0 9px!important;min-height:54px!important}
 }
+
+/* Compact top bar: preserve readable type without covering wallpaper. */
+html body #menubar{height:46px!important;min-height:46px!important;max-height:46px!important;padding:0 18px!important;box-sizing:border-box!important}
+html body #menubar :is(.menu-left,.menu-right){height:100%!important;align-items:center!important}
+html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;line-height:1.1!important;padding-top:3px!important;padding-bottom:3px!important}
+@media(max-width:760px){html body #menubar{height:44px!important;min-height:44px!important;max-height:44px!important;padding:0 9px!important}html body #menubar :is(.menu-left,.menu-right)>button{font-size:14px!important}}
