@@ -487,3 +487,22 @@ html body #dock .dock-app .dock-art{width:100%!important;height:100%!important;o
 /* Ensure closed modal backdrops never intercept clicks across the portfolio. */
 html body #window-shade[hidden],
 html body #special-shade[hidden]{display:none!important;pointer-events:none!important;visibility:hidden!important}
+
+/* Hand-traced details inside dynamically opened portfolio windows. */
+html body #window-shade :is(.viewer-stage,.viewer-thumb,.motion-reels-outline,.motion-reels-actions button,.motion-reels-center-play,.motion-reels-screen,.motion-reels-drawer,.motion-reels-list button,.project-icon).sketch-ui-frame,
+html body :is(#global-search-popover,#global-search-input,#work-search-input).sketch-ui-frame{
+ position:relative!important;border-color:transparent!important;outline:0!important;border-radius:0!important;
+ box-shadow:none!important;
+}
+html body #window-shade :is(.viewer-stage,.viewer-thumb,.motion-reels-outline,.motion-reels-actions button,.motion-reels-center-play,.motion-reels-screen,.motion-reels-drawer,.motion-reels-list button,.project-icon).sketch-ui-frame>.sketch-ui-svg,
+html body :is(#global-search-popover,#global-search-input,#work-search-input).sketch-ui-frame>.sketch-ui-svg{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ display:block!important;pointer-events:none!important;z-index:6!important;overflow:hidden!important;
+}
+html body #window-shade :is(.viewer-stage,.viewer-thumb,.motion-reels-outline,.motion-reels-actions button,.motion-reels-center-play,.motion-reels-screen,.motion-reels-drawer,.motion-reels-list button,.project-icon).sketch-ui-frame>.sketch-ui-svg>.sketch-ui-ink,
+html body :is(#global-search-popover,#global-search-input,#work-search-input).sketch-ui-frame>.sketch-ui-svg>.sketch-ui-ink{
+ stroke:#ff173b!important;stroke-width:1.5!important;fill:none!important;stroke-linecap:round!important;
+ stroke-linejoin:round!important;vector-effect:non-scaling-stroke!important;
+ filter:drop-shadow(0 0 1.5px rgba(255,23,59,.22));
+}
+html body #window-shade .viewer-thumbnails.sketch-ui-rule>.sketch-ui-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
