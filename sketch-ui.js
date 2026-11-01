@@ -137,8 +137,8 @@
     const ink = document.createElementNS(NS, 'path');
     ink.classList.add('sketch-ui-ink');
     svg.appendChild(ink);
-    element.appendChild(svg);
-    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
+    // Decorative SVG must not participate as a flex/grid child.\n    svg.style.position='absolute';\n    svg.style.inset='0';\n    svg.style.pointerEvents='none';\n    svg.style.display='block';\n    element.appendChild(svg);
+    if(getComputedStyle(element).position==='static')element.style.position='relative';\n    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
     const item = {element, svg, ink, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
@@ -168,7 +168,7 @@
   scan();
   // Modal contents are created after page load; trace those when they appear.
   let queued=false;
-  const mutation=new MutationObserver(()=>{
+  const mutation=new MutationObserver(records=>{\n    // Our own SVG insertion is not a reason to rescan the whole document.\n    if(!records.some(record=>[...record.addedNodes].some(node=>node.nodeType===1 && !node.classList?.contains('sketch-ui-svg'))))return;
     if(queued)return;queued=true;
     requestAnimationFrame(()=>{queued=false;scan();});
   });
