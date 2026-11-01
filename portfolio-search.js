@@ -16,7 +16,7 @@
    const matches=(window.portfolioCatalog||[]).filter(item=>normalize([item.title,item.category,item.project,...item.tags].join(' ')).includes(q));
    if(!matches.length){results.textContent='No matching projects yet.';return}
    for(const item of matches){
-    const button=document.createElement('button');button.type='button';button.className='work-search-hit';button.textContent=item.title+' · '+item.category;
+    const button=document.createElement('button');button.type='button';button.className='work-search-hit';button.textContent=item.title+' · '+item.category+(item.tags?.length?' · #'+item.tags.join(' #'):'');
     button.addEventListener('click',()=>{
      const target=document.querySelector('#work-desktop [data-open="'+item.open+'"], #dock [data-open="'+item.open+'"]');
      if(target)target.click();
