@@ -506,3 +506,28 @@ html body :is(#global-search-popover,#global-search-input,#work-search-input).sk
  filter:drop-shadow(0 0 1.5px rgba(255,23,59,.22));
 }
 html body #window-shade .viewer-thumbnails.sketch-ui-rule>.sketch-ui-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* Photos archive: single hand-drawn toolbar, no stacked rectangular borders. */
+html body #window-shade .library-toolbar.sketch-ui-frame{
+ position:relative!important;display:flex!important;align-items:center!important;
+ gap:0!important;padding:0 13px!important;min-height:49px!important;
+ border:0!important;outline:0!important;box-shadow:none!important;
+ background:transparent!important;border-radius:0!important;
+}
+html body #window-shade .library-toolbar.sketch-ui-frame::before,
+html body #window-shade .library-toolbar.sketch-ui-frame::after{
+ content:none!important;display:none!important;
+}
+html body #window-shade .library-toolbar.sketch-ui-frame > .search{
+ flex:1 1 auto!important;min-width:0!important;width:auto!important;max-width:none!important;
+ background:transparent!important;border:0!important;outline:0!important;
+ box-shadow:none!important;border-radius:0!important;padding:12px 8px!important;
+}
+html body #window-shade .library-toolbar.sketch-ui-frame > .count{
+ flex:0 0 auto!important;min-width:90px!important;text-align:right!important;
+ border:0!important;outline:0!important;box-shadow:none!important;
+ background:transparent!important;padding:12px 4px 12px 18px!important;
+}
+html body #window-shade .library-toolbar.sketch-ui-frame > .sketch-ui-svg{
+ z-index:4!important;pointer-events:none!important;
+}
