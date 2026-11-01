@@ -531,3 +531,40 @@ html body #window-shade .library-toolbar.sketch-ui-frame > .count{
 html body #window-shade .library-toolbar.sketch-ui-frame > .sketch-ui-svg{
  z-index:4!important;pointer-events:none!important;
 }
+
+/* Motion stabilization: no SVG overlay on the video; keep all transport buttons legible. */
+html body #window-shade #motion-reels-screen{
+ border:2px solid #ff173b!important;background:transparent!important;
+ border-radius:0!important;box-shadow:none!important;outline:0!important;
+}
+html body #window-shade #motion-reels-screen>.sketch-ui-svg,
+html body #window-shade #motion-reels-center-play>.sketch-ui-svg{display:none!important}
+html body #window-shade #motion-reels-video{background:transparent!important}
+html body #window-shade .motion-reels-actions button{
+ border:1.5px solid #ff173b!important;background:#fff9f8!important;
+ color:#ff173b!important;box-shadow:none!important;border-radius:0!important;
+}
+html body #window-shade .motion-reels-actions button.sketch-ui-frame{
+ border-color:transparent!important;
+}
+html body #window-shade .motion-reels-actions button.sketch-ui-frame>.sketch-ui-svg{
+ display:block!important;z-index:4!important;
+}
+html body #window-shade .motion-reels-header,
+html body #window-shade .motion-reels-footer{
+ border-color:#ff173b!important;
+}
+html body #window-shade #motion-reels .motion-reels-center-play{
+ border:1.5px solid #ff173b!important;border-radius:0!important;
+ background:#fff9f8!important;color:#ff173b!important;
+}
+@media(min-width:651px){
+ html body #window-shade:has(#motion-reels){
+  padding-top:calc(var(--menubar-height,48px) + 12px)!important;
+  align-items:center!important;
+ }
+ html body #window-shade #window:has(#motion-reels){
+  max-height:calc(100dvh - var(--menubar-height,48px) - 24px)!important;
+  height:min(78dvh,820px)!important;
+ }
+}
