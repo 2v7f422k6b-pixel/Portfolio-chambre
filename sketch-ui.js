@@ -45,6 +45,9 @@
     ['#window-shade .mv-work-frame', 'frame', 621],
     ['#window-shade .mv-nav-link.is-active', 'frame', 631],
     ['#window-shade .mv-section-heading', 'rule', 641],
+    ['#window-shade .mv-fav-button', 'frame', 651],
+    ['#window-shade .mv-header', 'rule', 661],
+    ['#window-shade .mv-sidebar-divider', 'rule', 671],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
     ['#window-shade .pages-tab', 'frame', 441],
@@ -151,7 +154,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.id==='dock'?.85:1.05;
+    const variation=item.element.closest('.mv-app') ? 3.1 : (item.element.id==='dock' ? .85 : 1.05);
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
   scan();
