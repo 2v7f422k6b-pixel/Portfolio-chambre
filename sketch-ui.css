@@ -312,3 +312,51 @@ html[data-theme="night"] body #welcome .welcome-panel .sketch-ui-svg,
 html[data-theme="night"] body #welcome .mode-tile .sketch-ui-svg{
   color:#FF173B!important;
 }
+
+/* Retro hand-drawn Mac folders — preserve original data-open interactions. */
+html body #work-desktop .folder-grid{
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ gap:38px 26px!important;max-width:1050px!important;
+ padding:30px 20px 48px!important;margin-inline:auto!important;
+ align-items:start!important;
+}
+html body #work-desktop .desktop-folder,
+html[data-theme="night"] body #work-desktop .desktop-folder{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ outline:0!important;min-height:150px!important;padding:8px!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ justify-content:flex-start!important;gap:12px!important;
+ color:var(--atelier-red,#FF173B)!important;
+}
+html body #work-desktop .desktop-folder>.sketch-ui-svg,
+html body #work-desktop .desktop-folder::before,
+html body #work-desktop .desktop-folder::after{display:none!important;content:none!important}
+html body #work-desktop .desktop-folder .folder-tile{
+ display:block!important;position:relative!important;box-sizing:border-box!important;
+ width:108px!important;height:77px!important;margin-top:17px!important;
+ border:3px solid #FF173B!important;border-radius:5px 7px 8px 5px!important;
+ background:#E9B5FF!important;color:transparent!important;
+ font-size:0!important;box-shadow:3px 4px 0 #bc1640!important;
+ transform:rotate(-1.5deg);transition:transform .2s ease!important;
+}
+html body #work-desktop .desktop-folder .folder-tile::before{
+ content:""!important;display:block!important;position:absolute!important;
+ width:48px;height:15px;left:-3px;top:-16px;
+ border:3px solid #FF173B;border-bottom:0;border-radius:6px 9px 0 0;
+ background:#E9B5FF;transform:skew(-8deg);
+}
+html body #work-desktop .desktop-folder .folder-tile::after{
+ content:""!important;display:block!important;position:absolute!important;
+ left:8px;right:8px;top:10px;bottom:9px;border:2px solid rgba(255,23,59,.22);
+ border-radius:3px;transform:rotate(.8deg);
+}
+html body #work-desktop .desktop-folder:nth-child(even) .folder-tile{transform:rotate(1.3deg)}
+html body #work-desktop .desktop-folder:hover .folder-tile,
+html body #work-desktop .desktop-folder:focus-visible .folder-tile{transform:translateY(-7px) rotate(2deg)!important}
+html body #work-desktop .desktop-folder>span:last-child{
+ font-family:"Nana Trace UI",sans-serif!important;font-size:19px!important;
+ line-height:1.3!important;text-align:center!important;
+ color:#FF173B!important;text-shadow:none!important;
+}
+html body #work-desktop .desktop-folder:focus-visible{outline:2px dashed #FF173B!important}
+@media(max-width:720px){html body #work-desktop .folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:22px 8px!important;padding-inline:8px!important}html body #work-desktop .desktop-folder .folder-tile{width:78px!important;height:60px!important}html body #work-desktop .desktop-folder{min-height:130px!important}html body #work-desktop .desktop-folder>span:last-child{font-size:15px!important}}
