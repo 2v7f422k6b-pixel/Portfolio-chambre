@@ -47,6 +47,8 @@
     ['#window-shade .mv-section-heading', 'rule', 641],
     ['#window-shade .mv-fav-button', 'frame', 651],
     ['#window-shade .mv-header', 'rule', 661],
+    ['#window-shade .mv-sidebar', 'vertical-rule', 681],
+    ['#window-shade .mv-now-viewing', 'top-rule', 691],
     ['#window-shade .mv-sidebar-divider', 'rule', 671],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
@@ -100,6 +102,12 @@
           + ' ' + round(endX) + ' ' + round(endY);
       }
     }
+    if (kind === 'vertical-rule') {
+      const x = Math.max(1,width-2.6);
+      d = 'M ' + round(x) + ' ' + round(top);
+      edge(x,top,x,bottom,false);
+      return d;
+    }
     if (kind === 'top-rule') {
       const y = 2;
       d = 'M ' + round(left) + ' ' + round(y);
@@ -130,7 +138,7 @@
     ink.classList.add('sketch-ui-ink');
     svg.appendChild(ink);
     element.appendChild(svg);
-    element.classList.add(kind === 'rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
+    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
     const item = {element, svg, ink, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
