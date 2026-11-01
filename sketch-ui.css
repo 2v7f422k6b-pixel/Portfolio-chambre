@@ -613,3 +613,27 @@ html body #window-shade .mv-app .mv-artist-card,
 html body #window-shade .mv-app .mv-work-card{
  min-width:0!important;
 }
+
+/* Music & Visuals: trace only fixed-size visual frames, never flex/grid cards. */
+html body #window-shade .mv-app :is(.mv-search-wrap,.mv-cover-art,.mv-work-frame,.mv-nav-link.is-active).sketch-ui-frame{
+ position:relative!important;border-color:transparent!important;outline:0!important;
+ border-radius:0!important;box-shadow:none!important;
+}
+html body #window-shade .mv-app :is(.mv-search-wrap,.mv-cover-art,.mv-work-frame,.mv-nav-link.is-active).sketch-ui-frame>.sketch-ui-svg{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ display:block!important;pointer-events:none!important;z-index:5!important;overflow:hidden!important;
+}
+html body #window-shade .mv-app :is(.mv-search-wrap,.mv-cover-art,.mv-work-frame,.mv-nav-link.is-active).sketch-ui-frame>.sketch-ui-svg>.sketch-ui-ink{
+ stroke:#ff173b!important;stroke-width:1.35!important;fill:none!important;
+ stroke-linecap:round!important;stroke-linejoin:round!important;vector-effect:non-scaling-stroke!important;
+}
+html body #window-shade .mv-app .mv-section-heading.sketch-ui-rule{
+ position:relative!important;border-bottom-color:transparent!important;
+}
+html body #window-shade .mv-app .mv-section-heading.sketch-ui-rule>.sketch-ui-svg{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ pointer-events:none!important;z-index:2!important;
+}
+html body #window-shade .mv-app .mv-section-heading.sketch-ui-rule>.sketch-ui-svg>.sketch-ui-ink{
+ stroke:#ff173b!important;stroke-width:1.2!important;fill:none!important;
+}
