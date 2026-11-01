@@ -821,3 +821,21 @@ html body #menubar{height:46px!important;min-height:46px!important;max-height:46
 html body #menubar :is(.menu-left,.menu-right){height:100%!important;align-items:center!important}
 html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;line-height:1.1!important;padding-top:3px!important;padding-bottom:3px!important}
 @media(max-width:760px){html body #menubar{height:44px!important;min-height:44px!important;max-height:44px!important;padding:0 9px!important}html body #menubar :is(.menu-left,.menu-right)>button{font-size:14px!important}}
+
+/* Mobile welcome: compact first screen, no oversized stacked cards. */
+@media(max-width:600px){
+ html body #welcome{padding:12px!important;place-items:center!important;overflow-y:auto!important}
+ html body #welcome .welcome-panel{width:min(100%,420px)!important;max-width:420px!important;padding:10px 12px 12px!important;margin:auto!important;box-sizing:border-box!important}
+ html body #welcome .welcome-hero{padding:5px 0 8px!important}
+ html body #welcome .welcome-kicker{font-size:clamp(23px,7vw,31px)!important;line-height:1.1!important}
+ html body #welcome .welcome-portfolio{font-size:clamp(24px,7.5vw,34px)!important;line-height:1.1!important}
+ html body #welcome #welcome-heading{font-size:clamp(17px,5vw,22px)!important;margin:8px 0!important}
+ html body #welcome .welcome-stars{inset:6px 0 auto!important}
+ html body #welcome .mode-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ html body #welcome .mode-tile{min-width:0!important;width:100%!important;padding:9px 5px!important;gap:4px!important;box-sizing:border-box!important}
+ html body #welcome .mode-tile .tile-art{height:85px!important;max-height:85px!important;flex:0 0 85px!important}
+ html body #welcome .mode-tile .tile-art img.welcome-icon{height:72px!important;max-height:72px!important;max-width:90%!important}
+ html body #welcome .mode-tile .tile-name{font-size:clamp(17px,5vw,22px)!important;margin-top:2px!important}
+ html body #welcome .mode-tile .tile-desc{font-size:clamp(11px,3vw,14px)!important;line-height:1.2!important;margin:0!important}
+ html body #welcome .welcome-foot{margin-top:10px!important;padding-top:8px!important;gap:3px!important}
+}
