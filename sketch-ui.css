@@ -680,3 +680,33 @@ html body #window-shade .mv-app :is(.mv-sidebar,.mv-now-viewing).sketch-ui-rule>
  stroke-linecap:round!important;stroke-linejoin:round!important;
  vector-effect:non-scaling-stroke!important;
 }
+
+/* Work desktop refinements: labels below folders and search icon. */
+html body #work-desktop .work-desk-layout .folder-grid>.desktop-folder,
+html body #work-desktop .folder-grid>.desktop-folder,
+html body #work-desktop .folder-grid>.mv-desktop-folder{
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:flex-start!important;gap:7px!important;
+}
+html body #work-desktop .folder-grid>.desktop-folder>.folder-tile,
+html body #work-desktop .folder-grid>.mv-desktop-folder>.folder-tile{order:0!important;flex:none!important;}
+html body #work-desktop .folder-grid>.desktop-folder>span:last-child,
+html body #work-desktop .folder-grid>.mv-desktop-folder>span:last-child{
+  order:1!important;position:static!important;inset:auto!important;top:auto!important;
+  left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;
+  display:block!important;float:none!important;margin:0!important;padding:2px 3px!important;
+  border:0!important;background:transparent!important;box-shadow:none!important;
+  text-align:center!important;white-space:normal!important;max-width:100%!important;
+}
+html body #work-desktop #work-search{position:relative!important;}
+html body #work-desktop #work-search::before{
+  content:"";position:absolute;left:25px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;pointer-events:none;z-index:5;
+  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.6 3.5C6.6 3.3 3.6 6.5 3.8 10.4c.1 3.8 3 6.5 6.8 6.3 3.9-.1 6.7-3.2 6.4-7-.2-3.6-3.1-6.2-6.9-6.2ZM15.5 15.7 21 21' fill='none' stroke='%23ff173b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html body #work-desktop #work-search-input{
+  padding-left:39px!important;border:2px solid transparent!important;border-radius:0!important;
+  background-color:#fff2fc!important;
+  border-image-source:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cpath d='M3 3 Q32 2.5 60 3 T117 3 Q117.5 20 117 30 T117 57 Q85 57.5 59 57 T3 57 Q2.5 38 3 29 T3 3Z' fill='none' stroke='%23ff173b' stroke-width='2.1'/%3E%3C/svg%3E")!important;
+  border-image-slice:8!important;border-image-width:2px!important;
+}
