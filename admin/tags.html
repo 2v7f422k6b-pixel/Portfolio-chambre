@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nana Studio · Galerie des tags</title>
+<style>
+:root{--red:#ff173b;--pink:#fff0ef}*{box-sizing:border-box}body{margin:0;background:var(--pink);color:var(--red);font:16px system-ui,sans-serif}header{position:sticky;top:0;background:#fff9f7;border-bottom:2px solid var(--red);padding:14px 22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;z-index:5}h1{font-size:22px;margin:0 18px 0 0}button,a.button{font:inherit;border:1.5px solid var(--red);color:var(--red);background:white;padding:9px 13px;cursor:pointer;text-decoration:none}button:hover,a.button:hover{background:#ffe2e4}button:disabled{opacity:.5;cursor:wait}#status{padding:12px 22px;min-height:44px}main{padding:8px 22px 60px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.card{background:#fffaf7;border:1.5px solid var(--red);padding:12px;min-width:0}.card img{width:100%;height:180px;object-fit:contain;background:#f7e3e0;display:block}.card h2{font-size:17px;margin:12px 0 3px}.category{font-size:12px;opacity:.8;margin-bottom:12px}.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}.tag{border:1px solid var(--red);padding:4px 6px;font-size:12px}.tag button{border:0;padding:0 2px;margin-left:5px;background:transparent}.add{display:flex;gap:5px}.add input{min-width:0;width:100%;padding:8px;border:1px solid var(--red);color:#a00;background:white;font:inherit}#search{padding:9px;border:1.5px solid var(--red);font:inherit;min-width:180px;flex:1}#save{background:var(--red);color:white}.muted{opacity:.7}#login{display:none}#grid:empty:after{content:'Connecte-toi pour afficher les médias.'}.actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}@media(max-width:500px){header{padding:12px}main{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{padding:7px}.card img{height:125px}.card h2{font-size:14px}.add{flex-direction:column}}
+</style></head><body>
+<header><h1>Nana Studio · Tags</h1><input id="search" type="search" placeholder="Rechercher un média ou un tag…" aria-label="Rechercher"><div class="actions"><a class="button" href="./">Administration</a><button id="login">Connexion GitHub</button><button id="save" disabled>Enregistrer les tags</button></div></header>
+<div id="status" role="status">Chargement…</div><main><div class="grid" id="grid"></div></main>
+<script>
+(()=>{
+'use strict';
+const repo='2v7f422k6b-pixel/Portfolio-chambre',path='content/media-tags.json',base='https://api.github.com/repos/'+repo+'/contents/'+path;
+const auth='https://nana-studio-auth.2v7f422k6b.workers.dev/auth';
+const $=id=>document.getElementById(id);let token=sessionStorage.getItem('nana_gallery_token')||'',sha='',data=null,dirty=false,working=false;
+function status(s){$('status').textContent=s}
+function apiHeaders(){return {'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
+function imageUrl(path){if(!path)return '';try{const u=new URL(path,location.origin+'/Portfolio-chambre/');return u.origin===location.origin?u.href:''}catch{return ''}}
+function changed(){dirty=true;$('save').disabled=false;status('Modifications non enregistrées. Clique sur « Enregistrer les tags ».')}
+function render(){
+ const grid=$('grid');grid.replaceChildren();if(!data)return;
+ const q=$('search').value.trim().toLocaleLowerCase();
+ for(const item of data.items){
+  if(q && ![item.title,item.category,...(item.tags||[])].join(' ').toLocaleLowerCase().includes(q))continue;
+  const card=document.createElement('article');card.className='card';
+  const img=document.createElement('img');img.alt=item.title||'Aperçu';img.loading='lazy';img.src=imageUrl(item.image)||'';img.onerror=()=>{img.onerror=null;img.removeAttribute('src');img.alt='Aperçu indisponible'};
+  const h=document.createElement('h2');h.textContent=item.title||item.id;
+  const category=document.createElement('div');category.className='category';category.textContent=item.category||'Autre';
+  const tags=document.createElement('div');tags.className='tags';
+  function showTags(){tags.replaceChildren();for(const [index,tag] of (item.tags||[]).entries()){
+    const chip=document.createElement('span');chip.className='tag';chip.append(document.createTextNode('#'+tag));
+    const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Supprimer '+tag);remove.onclick=()=>{item.tags.splice(index,1);changed();showTags()};chip.append(remove);tags.append(chip);
+  }}
+  showTags();
+  const form=document.createElement('form');form.className='add';const input=document.createElement('input');input.placeholder='Ajouter un tag';input.setAttribute('aria-label','Ajouter un tag à '+item.title);
+  const add=document.createElement('button');add.type='submit';add.textContent='+ Ajouter';form.append(input,add);
+  form.onsubmit=e=>{e.preventDefault();const v=input.value.trim().replace(/^#/,'');if(!v)return;item.tags=Array.isArray(item.tags)?item.tags:[];if(!item.tags.some(t=>t.toLocaleLowerCase()===v.toLocaleLowerCase())){item.tags.push(v);changed();showTags()}input.value='';input.focus()};
+  card.append(img,h,category,tags,form);grid.append(card);
+ }
+}
+async function load(){
+ if(!token){$('login').style.display='inline-block';$('save').disabled=true;status('Connecte-toi avec GitHub pour gérer les tags.');return}
+ status('Chargement des médias…');
+ try{
+  const r=await fetch(base,{headers:apiHeaders(),cache:'no-store'});if(!r.ok)throw Error('GitHub : '+r.status);
+  const file=await r.json();sha=file.sha;const raw=atob(file.content.replace(/\\s/g,''));const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));data=JSON.parse(new TextDecoder().decode(bytes));if(!Array.isArray(data.items))throw Error('Liste de médias invalide');
+  dirty=false;$('save').disabled=true;$('login').style.display='none';render();status(data.items.length+' médias disponibles. Ajoute tes tags directement sous les images.');
+ }catch(e){status('Impossible de charger les médias : '+e.message);$('login').style.display='inline-block'}
+}
+$('login').onclick=()=>{
+ const popup=window.open(auth,'nana-github-auth','width=620,height=760');
+ if(!popup){status('Autorise les fenêtres pop-up pour te connecter.');return}
+ const receive=e=>{
+  if(e.origin!==location.origin && e.origin!=='https://nana-studio-auth.2v7f422k6b.workers.dev')return;
+  if(e.data==='authorizing:github'){popup.postMessage('authorizing:github',e.origin);return}
+  if(typeof e.data!=='string'||!e.data.startsWith('authorization:github:success:'))return;
+  try{const result=JSON.parse(e.data.slice('authorization:github:success:'.length));if(!result.token)return;token=result.token;sessionStorage.setItem('nana_gallery_token',token);window.removeEventListener('message',receive);popup.close();load()}catch{}
+ };
+ window.addEventListener('message',receive);
+};
+$('save').onclick=async()=>{
+ if(!dirty||working||!token)return;working=true;$('save').disabled=true;status('Enregistrement sur GitHub…');
+ try{
+  const json=JSON.stringify(data,null,2)+'\n';const bytes=new TextEncoder().encode(json);let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.slice(i,i+8192));
+  const r=await fetch(base,{method:'PUT',headers:{...apiHeaders(),'Content-Type':'application/json'},body:JSON.stringify({message:'Update media tags from Nana Studio gallery',content:btoa(binary),sha,branch:'main'})});
+  if(!r.ok){const body=await r.json().catch(()=>({}));throw Error(body.message||'GitHub : '+r.status)}
+  const result=await r.json();sha=result.content.sha;dirty=false;status('Tags enregistrés ! Ils seront disponibles dans la recherche du portfolio après publication.');
+ }catch(e){status('Enregistrement impossible : '+e.message)}finally{working=false;$('save').disabled=!dirty}
+};
+$('search').addEventListener('input',render);
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+load();
+})();
+</script></body></html>
