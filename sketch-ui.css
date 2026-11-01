@@ -276,3 +276,39 @@ html[data-theme="night"] body :is(.project-card,.art-tile,.info-box,.contact-row
  color:#FF173B!important;
 }
 html[data-theme="night"] body :is(.project-card,.art-tile,.info-box,.contact-row) :is(strong,small,span){color:#FF173B!important}
+
+
+/* Approved night welcome artwork: purple canvas, lavender only on Work/Play. */
+html[data-theme="night"] body #welcome .welcome-panel.sketch-ui-frame{
+  background:#6546A6!important;color:#FFF2FC!important;
+}
+html[data-theme="night"] body #welcome .welcome-top{
+  background:transparent!important;
+  justify-content:flex-start!important;
+  padding-left:14px!important;
+}
+html[data-theme="night"] body #welcome .welcome-top>span{
+  display:block!important;
+  font-size:0!important;
+  width:32px!important;height:32px!important;
+  padding:0!important;
+  background:var(--lena-heart-image) center/contain no-repeat!important;
+  filter:drop-shadow(0 0 3px #FF173B88);
+}
+html[data-theme="night"] body #welcome .mode-tile.sketch-ui-frame{
+  background:#E9B5FF!important;
+  color:#FF173B!important;
+}
+html[data-theme="night"] body #welcome .welcome-foot{
+  background:transparent!important;color:#FFF2FC!important;
+}
+html[data-theme="night"] body #welcome .welcome-foot span{
+  color:#FFF2FC!important;
+}
+html[data-theme="night"] body #welcome .welcome-stars img{
+  filter:saturate(1.6) contrast(1.25);
+}
+html[data-theme="night"] body #welcome .welcome-panel .sketch-ui-svg,
+html[data-theme="night"] body #welcome .mode-tile .sketch-ui-svg{
+  color:#FF173B!important;
+}
