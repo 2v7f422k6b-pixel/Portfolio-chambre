@@ -134,3 +134,10 @@
 .mv-artist-card .mv-card-open,.mv-work-card .mv-card-open{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;text-align:left}
 .mv-artist-card .mv-cover-art,.mv-work-card .mv-work-frame{width:100%;max-width:100%;box-sizing:border-box}
 .mv-artist-card .mv-card-title,.mv-artist-card .mv-card-sub,.mv-work-card .mv-card-title,.mv-work-card .mv-card-sub{display:block;max-width:100%;overflow-wrap:anywhere;word-break:normal;white-space:normal}
+
+/* Fix Selected visuals: each cover must fit its own track, including iPad. */
+.mv-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);gap:14px;overflow-x:auto;overflow-y:hidden;min-width:0;max-width:100%;width:100%;scrollbar-width:thin}
+.mv-strip>.mv-work-card{box-sizing:border-box;width:100%;min-width:0;max-width:100%;overflow:hidden;align-self:start}
+.mv-strip .mv-work-frame{display:grid;box-sizing:border-box;width:100%;max-width:100%;min-width:0;overflow:hidden}
+.mv-strip .mv-work-frame img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.mv-strip .mv-work-name,.mv-strip .mv-work-by{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
