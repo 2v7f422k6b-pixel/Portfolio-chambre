@@ -476,3 +476,10 @@ html body #work-desktop #work-search>label{position:absolute!important;width:1px
 /* Approved hand-drawn raster dock artwork. Preserve original texture. */
 html body #dock .dock-app.dock-drawn .dock-art{display:block!important;width:82%!important;height:82%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;filter:none!important;pointer-events:none!important;transform:none!important}
 html body #dock .dock-app.dock-drawn:has(.dock-art){background:transparent!important;box-shadow:none!important}
+
+/* Dock: one frame only, baked into the artist's PNGs. */
+html body #dock button:has(.dock-art),html body #dock button:has(.dock-art):hover{background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important}
+html body #dock button:has(.dock-art)::before,html body #dock button:has(.dock-art)::after,html body #dock .dock-app:has(.dock-art)::before,html body #dock .dock-app:has(.dock-art)::after{content:none!important;display:none!important;border:0!important;box-shadow:none!important}
+html body #dock .dock-app:has(.dock-art){border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
+html body #dock .dock-app:has(.dock-art)>.sketch-ui-svg{display:none!important}
+html body #dock .dock-app .dock-art{width:100%!important;height:100%!important;object-fit:contain!important}
