@@ -235,3 +235,44 @@ html body #welcome .mode-tile .tile-desc{margin:0 0 6px!important}
 html[data-theme="night"] body #welcome .mode-tile{background:#493441!important}
 html[data-theme="night"] body #welcome .tile-art{background:transparent!important}
 @media(max-width:600px){html body #welcome .mode-tile .tile-art{height:120px!important;max-height:120px!important;flex-basis:120px!important}html body #welcome .mode-tile .tile-art img.welcome-icon{height:100px!important;max-height:100px!important}}
+
+
+/* Night Lavender Pop — night-only palette, preserves Day and scene artwork. */
+html[data-theme="night"]{
+ --atelier-blush:#6546A6;
+ --atelier-cream:#E9B5FF;
+ --atelier-red:#FF173B;
+ --atelier-ink:#FFF2FC;
+}
+html[data-theme="night"] body #welcome,
+html[data-theme="night"] body #work-desktop,
+html[data-theme="night"] body #work-desktop .work-wallpaper{
+ background:#6546A6!important;
+ background-image:none!important;
+}
+html[data-theme="night"] body #welcome .welcome-panel,
+html[data-theme="night"] body #welcome .mode-tile,
+html[data-theme="night"] body #work-desktop .desktop-folder,
+html[data-theme="night"] body .mac-window,
+html[data-theme="night"] body .window-top,
+html[data-theme="night"] body #menubar,
+html[data-theme="night"] body #dock{
+ background:#E9B5FF!important;
+ color:#FF173B!important;
+}
+html[data-theme="night"] body #welcome .tile-art{background:transparent!important}
+html[data-theme="night"] body #welcome .welcome-kicker,
+html[data-theme="night"] body #welcome .welcome-portfolio,
+html[data-theme="night"] body #welcome #welcome-heading,
+html[data-theme="night"] body #welcome .tile-name,
+html[data-theme="night"] body #welcome .tile-desc{
+ color:#FF173B!important;
+}
+html[data-theme="night"] body .window-content,
+html[data-theme="night"] body .window-content :is(h2,h3,p,.section-lead),
+html[data-theme="night"] body .window-top #window-title{color:#FF173B!important}
+html[data-theme="night"] body :is(.project-card,.art-tile,.info-box,.contact-row,.search,.mail-form input,.mail-form textarea){
+ background:#FFF2FC!important;
+ color:#FF173B!important;
+}
+html[data-theme="night"] body :is(.project-card,.art-tile,.info-box,.contact-row) :is(strong,small,span){color:#FF173B!important}
