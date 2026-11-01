@@ -1,0 +1,28 @@
+{
+  "games": [
+    {
+      "id": "coloring",
+      "title": "Coloring Book",
+      "description": "Color five of my drawings using the paint bucket and freehand brush.",
+      "image": "assets/mini-games/mini-game-coloring.webp"
+    },
+    {
+      "id": "tamagotchi",
+      "title": "Tamagotchi",
+      "description": "Take care of a tiny digital companion in my little room.",
+      "image": "assets/mini-games/mini-game-tamagotchi.webp"
+    },
+    {
+      "id": "latte",
+      "title": "Latte Lab",
+      "description": "Make your own tiny coffee and finish it with a foam heart.",
+      "image": "assets/mini-games/mini-game-latte.webp"
+    },
+    {
+      "id": "dressup",
+      "title": "Dress-up Game",
+      "description": "Explore my illustrated wardrobe and dress the character.",
+      "image": "assets/mini-games/mini-game-dressup.webp"
+    }
+  ]
+}
