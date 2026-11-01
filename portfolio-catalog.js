@@ -42,6 +42,8 @@ window.portfolioRegisterArtwork = item => {
     existing.tags=[...new Set([...(existing.tags||[]),...tags])];
    }else if(item.category==='Animation' && item.video){
     window.portfolioCatalog.push({title:item.title||item.id,category:'Animation',project:item.id,tags,open:'motion',video:item.video});
+   }else if(item.category==='Music & Visuals' && item.artist){
+    window.portfolioCatalog.push({title:item.title||item.id,category:'Music & Visuals',project:item.id,tags,open:'music',artist:item.artist});
    }else if(artworkNames[item.id]){
     window.portfolioCatalog.push({title:item.title||artworkNames[item.id],category:item.category||'Illustration',project:item.id,tags,open:'photos'});
    }else{
