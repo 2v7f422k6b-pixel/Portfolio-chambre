@@ -239,25 +239,25 @@ function openMiniGames(){
   <p class="mini-games-intro">Four little games to explore, color and play with. Click a card to start ♡</p>
   <div class="mini-game-grid">
     <button class="mini-game-card" type="button" data-open="coloring" aria-label="Play Coloring Book">
-      <span class="mini-game-preview"><img src="assets/mini-games/coloring.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/coloring-book/fleurs.jpg'"></span>
+      <span class="mini-game-preview"><img src="assets/mini-games/mini-game-coloring.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/coloring-book/fleurs.jpg'"></span>
       <span class="mini-game-name">Coloring Book</span>
       <span class="mini-game-description">Color five of my drawings using the paint bucket and freehand brush.</span>
       <span class="mini-game-cta">Play ♡</span>
     </button>
     <button class="mini-game-card" type="button" data-open="tamagotchi" aria-label="Play Tamagotchi">
-      <span class="mini-game-preview mini-game-preview--tama"><img src="assets/mini-games/tamagotchi.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='tamagotchi/tamagotchi.png'"></span>
+      <span class="mini-game-preview mini-game-preview--tama"><img src="assets/mini-games/mini-game-tamagotchi.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='tamagotchi/tamagotchi.png'"></span>
       <span class="mini-game-name">Tamagotchi</span>
       <span class="mini-game-description">Take care of a tiny digital companion in my little room.</span>
       <span class="mini-game-cta">Play ♡</span>
     </button>
     <button class="mini-game-card" type="button" data-open="latte" aria-label="Play Latte Lab">
-      <span class="mini-game-preview mini-game-preview--latte" aria-hidden="true"><img src="assets/mini-games/latte.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
+      <span class="mini-game-preview mini-game-preview--latte" aria-hidden="true"><img src="assets/mini-games/mini-game-latte.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
       <span class="mini-game-name">Latte Lab</span>
       <span class="mini-game-description">Make your own tiny coffee and finish it with a foam heart.</span>
       <span class="mini-game-cta">Play ♡</span>
     </button>
     <button class="mini-game-card" type="button" data-open="dressup" aria-label="Play Dress-up">
-      <span class="mini-game-preview mini-game-preview--dressup" aria-hidden="true"><img src="assets/mini-games/dressup.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
+      <span class="mini-game-preview mini-game-preview--dressup" aria-hidden="true"><img src="assets/mini-games/mini-game-dressup.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
       <span class="mini-game-name">Dress-up Game</span>
       <span class="mini-game-description">Explore my illustrated wardrobe and dress the character.</span>
       <span class="mini-game-cta">Play ♡</span>
