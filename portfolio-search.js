@@ -27,6 +27,7 @@
          return;
        }
      }
+     if(item.category==='Animation' && item.video && typeof window.openMotionAt==='function'){window.openMotionAt(item.project);return;}
      if(typeof window.openApp==='function'){
        window.openApp(item.open||'finder');
        return;
