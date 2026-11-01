@@ -40,6 +40,8 @@ window.portfolioRegisterArtwork = item => {
    const existing=window.portfolioCatalog.find(entry=>entry.project===item.id || entry.title===item.title);
    if(existing){
     existing.tags=[...new Set([...(existing.tags||[]),...tags])];
+   }else if(item.category==='Animation' && item.video){
+    window.portfolioCatalog.push({title:item.title||item.id,category:'Animation',project:item.id,tags,open:'motion'});
    }else if(artworkNames[item.id]){
     window.portfolioCatalog.push({title:item.title||artworkNames[item.id],category:item.category||'Illustration',project:item.id,tags,open:'photos'});
    }else{
