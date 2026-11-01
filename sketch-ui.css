@@ -483,3 +483,7 @@ html body #dock button:has(.dock-art)::before,html body #dock button:has(.dock-a
 html body #dock .dock-app:has(.dock-art){border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
 html body #dock .dock-app:has(.dock-art)>.sketch-ui-svg{display:none!important}
 html body #dock .dock-app .dock-art{width:100%!important;height:100%!important;object-fit:contain!important}
+
+/* Ensure closed modal backdrops never intercept clicks across the portfolio. */
+html body #window-shade[hidden],
+html body #special-shade[hidden]{display:none!important;pointer-events:none!important;visibility:hidden!important}
