@@ -465,3 +465,6 @@ html[data-theme="night"] #global-search-popover{background:#e9b5ff!important}
 
 /* Hide redundant label above Work Mode search; keep accessible input label. */
 html body #work-desktop #work-search>label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+#dock .dock-drawn svg{width:76%;height:76%;display:block;color:#ff173b;stroke:#ff173b}
+#dock .dock-drawn{font-size:0!important;background:transparent!important;display:flex!important;align-items:center;justify-content:center}
