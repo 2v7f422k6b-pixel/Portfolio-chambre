@@ -855,3 +855,24 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  html body #work-desktop .work-desktop-label h2{margin:4px 0 8px!important}
  html body #work-desktop .folder-grid{margin-top:22px!important}
 }
+
+/* Mobile burger navigation — preserve the desktop toolbar unchanged. */
+#mobile-menu-toggle,#mobile-menu-panel{display:none}
+@media(max-width:760px){
+ :root{--menubar:56px!important}
+ html body #menubar{height:56px!important;min-height:56px!important;max-height:56px!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;padding:0 13px!important;gap:10px!important;position:absolute!important;overflow:visible!important}
+ html body #menubar .menu-left{width:auto!important;height:56px!important;min-height:0!important;gap:12px!important;justify-content:flex-start!important;flex:0 1 auto!important}
+ html body #menubar .menu-right{width:auto!important;height:56px!important;min-height:0!important;gap:0!important;justify-content:flex-end!important;flex:0 0 auto!important;margin-left:auto!important}
+ html body #menubar .menu-left>button:not(#home-menu):not(#menu-mode){display:none!important}
+ html body #menubar .menu-right>button:not(#menu-search){display:none!important}
+ html body #menubar #home-menu{font-size:22px!important}
+ html body #menubar #menu-mode{font-size:15px!important}
+ html body #menubar #menu-search{display:flex!important;align-items:center!important;justify-content:center!important;padding:8px!important}
+ html body #mobile-menu-toggle{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 40px!important;width:40px!important;height:42px!important;padding:0!important;border:0!important;background:transparent!important;color:#ff173b!important;font-size:27px!important;line-height:1!important}
+ html body #mobile-menu-panel{display:none!important;position:absolute!important;top:calc(100% + 2px)!important;right:10px!important;left:auto!important;width:min(280px,calc(100vw - 20px))!important;max-height:calc(100dvh - 80px)!important;overflow:auto!important;padding:12px!important;background:#fff0eb!important;border:1.5px solid #ff173b!important;box-shadow:4px 5px 0 rgba(160,0,45,.13)!important;z-index:99999!important;flex-direction:column!important;gap:4px!important}
+ html body #menubar.mobile-menu-open #mobile-menu-panel{display:flex!important}
+ html body #mobile-menu-panel>button{display:block!important;position:relative!important;width:100%!important;height:auto!important;min-height:43px!important;margin:0!important;padding:10px 12px!important;border:0!important;border-bottom:1px solid rgba(255,23,59,.24)!important;border-radius:0!important;background:transparent!important;text-align:left!important;color:#ff173b!important;font-size:16px!important;white-space:normal!important}
+ html body #mobile-menu-panel>button:last-child{border-bottom:0!important}
+ html body #work-desktop{inset:56px 0 0!important}
+ html body #work-desktop>.work-wallpaper{inset:56px 0 0!important}
+}
