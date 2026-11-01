@@ -417,6 +417,7 @@ async function submitForm(form){
 
 // Event delegation keeps all apps working after window contents are replaced.
 document.addEventListener('click',e=>{
+ if(e.defaultPrevented)return;
  const mode=e.target.closest('[data-mode]');if(mode){
   const target=mode.dataset.mode;
   if(currentMode==='play' && target==='work')zoomIntoIMac();
@@ -455,7 +456,12 @@ document.addEventListener('click',e=>{
  const thumb=e.target.closest('[data-gallery-index]');if(thumb){if(currentGallery){currentGallery.index=Number(thumb.dataset.galleryIndex);updateGallery()}return}
  const art=e.target.closest('[data-art-index]');if(art){openGallery('art',Number(art.dataset.artIndex));return}
  const hotspot=e.target.closest('#hotspots [data-type="poster"]');if(hotspot){openGallery('art',Number(hotspot.dataset.index));return}
- const open=e.target.closest('[data-open]');if(open){const name=open.dataset.open;openApp(name);return}
+ const open=e.target.closest('[data-open]');if(open){
+  if(open.closest('[data-open]')!==open)return;
+  const name=open.dataset.open;
+  if(!name)return;
+  openApp(name);return
+ }
 });
 document.addEventListener('focusin',e=>{
  if(e.target.closest('#phone-mail-form') && e.target.matches('input,textarea')){
