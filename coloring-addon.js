@@ -29,7 +29,9 @@ function open(){previousFocus=document.activeElement;overlay.hidden=false;docume
 function close(){if(overlay.hidden)return;overlay.hidden=true;if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true})}
 document.addEventListener("click",function(e){const trigger=e.target.closest('[data-open="coloring"]');if(!trigger)return;e.preventDefault();e.stopImmediatePropagation();open()},true);
 document.getElementById("coloring-close").addEventListener("click",close);
-overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
+let backdropPointerStarted=false;
+overlay.addEventListener("pointerdown",e=>{backdropPointerStarted=e.target===overlay},{passive:true});
+overlay.addEventListener("click",e=>{if(e.target===overlay && (e.detail===0 || backdropPointerStarted))close();backdropPointerStarted=false});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!overlay.hidden){e.preventDefault();close()}});
 new MutationObserver(()=>{if(!root.classList.contains("mode-play"))close()}).observe(root,{attributes:true,attributeFilter:["class"]});
 })();
