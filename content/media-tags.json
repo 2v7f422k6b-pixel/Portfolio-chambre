@@ -256,6 +256,118 @@
       "tags": [],
       "video": "/Portfolio-chambre/assets/motion/bird_animation.mov",
       "image": ""
+    },
+    {
+      "title": "Au Revoir — Cover",
+      "id": "pyrene-au-revoir-cover.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/pyrene-au-revoir-cover.jpeg",
+      "artist": "Pyrène"
+    },
+    {
+      "title": "Au Revoir — Caravane",
+      "id": "pyrene-au-revoir-caravane.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/pyrene-au-revoir-caravane.jpeg",
+      "artist": "Pyrène"
+    },
+    {
+      "title": "Au Revoir — Oiseaux et ville",
+      "id": "pyrene-au-revoir-oiseaux-ville.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/pyrene-au-revoir-oiseaux-ville.jpeg",
+      "artist": "Pyrène"
+    },
+    {
+      "title": "Personnage au casque",
+      "id": "polars-personnage-casque.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/polars-personnage-casque.jpeg",
+      "artist": "Polars"
+    },
+    {
+      "title": "Portrait à cagoule",
+      "id": "polars-portrait-cagoule.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/polars-portrait-cagoule.jpeg",
+      "artist": "Polars"
+    },
+    {
+      "title": "Ma tête",
+      "id": "polars-ma-tete.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/polars-ma-tete.jpeg",
+      "artist": "Polars"
+    },
+    {
+      "title": "Chapeau rose",
+      "id": "polars-chapeau-rose.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/polars-chapeau-rose.jpeg",
+      "artist": "Polars"
+    },
+    {
+      "title": "Duo rose et rouge",
+      "id": "polars-duo-rose-rouge.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/polars-duo-rose-rouge.jpeg",
+      "artist": "Polars"
+    },
+    {
+      "title": "Handmade in Marseille — Jaquette de cassette",
+      "id": "naud-handmade-in-marseille-cassette.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/naud-handmade-in-marseille-cassette.jpeg",
+      "artist": "NAUD"
+    },
+    {
+      "title": "Essier on Stage",
+      "id": "naud-essier-on-stage.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/naud-essier-on-stage.jpeg",
+      "artist": "NAUD"
+    },
+    {
+      "title": "Studio musical violet",
+      "id": "naud-studio-violet.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/naud-studio-violet.jpeg",
+      "artist": "NAUD"
+    },
+    {
+      "title": "Scène à la guillotine",
+      "id": "naud-scene-guillotine.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/naud-scene-guillotine.jpeg",
+      "artist": "NAUD"
+    },
+    {
+      "title": "Piscine et pelote",
+      "id": "baje-nunca-piscine-pelote.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/baje-nunca-piscine-pelote.jpeg",
+      "artist": "Baje Nunca"
+    },
+    {
+      "title": "Réel — Packaging CD",
+      "id": "charlie-reel-cd-packaging-malva.jpeg",
+      "category": "Music & Visuals",
+      "tags": [],
+      "image": "/Portfolio-chambre/assets/music-visuals/charlie-reel-cd-packaging-malva.jpeg",
+      "artist": "Charlie"
     }
   ]
 }
