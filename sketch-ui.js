@@ -162,7 +162,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('.mv-app') ? 3.1 : (item.element.id==='dock' ? .85 : 1.05);
+    const variation=item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05);
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
   scan();
