@@ -1,0 +1,51 @@
+/* Window system stabilization — 2026-11-01
+   This layer only governs window geometry and scrolling, not illustration styles.
+   Keep window chrome and the desktop dock independently clickable. */
+:root{--nana-window-top-safe:54px;--nana-window-bottom-safe:12px}
+html body #window-shade:not([hidden]){
+  box-sizing:border-box!important;
+  padding:var(--nana-window-top-safe) 12px var(--nana-window-bottom-safe)!important;
+  align-items:center!important;
+  overflow:hidden!important;
+}
+html body #window-shade:not([hidden]) > #window{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:calc(100vw - 24px)!important;
+  max-height:calc(100dvh - var(--nana-window-top-safe) - var(--nana-window-bottom-safe))!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+html body #window-shade:not([hidden]) > #window.expanded{
+  width:calc(100vw - 24px)!important;
+  height:calc(100dvh - var(--nana-window-top-safe) - var(--nana-window-bottom-safe))!important;
+}
+html body #window-shade #window > .window-top{
+  flex:0 0 auto!important;
+  min-width:0!important;
+}
+html body #window-shade #window > #window-content{
+  min-height:0!important;
+  min-width:0!important;
+  flex:1 1 auto!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+html body #window-shade[hidden],
+html body #special-shade[hidden]{
+  display:none!important;
+  pointer-events:none!important;
+}
+html body #window-shade:not([hidden]) > #window{
+  pointer-events:auto!important;
+}
+@media(max-width:650px){
+  :root{--nana-window-top-safe:50px;--nana-window-bottom-safe:8px}
+  html body #window-shade:not([hidden]){padding-inline:6px!important}
+  html body #window-shade:not([hidden]) > #window{
+    max-width:calc(100vw - 12px)!important;
+  }
+}
