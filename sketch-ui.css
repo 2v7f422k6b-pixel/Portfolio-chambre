@@ -371,3 +371,11 @@ html body #work-desktop .desktop-folder:focus-visible{outline:2px dashed #FF173B
 .work-search-hit{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid #ff173b66;padding:12px;color:#ff173b;font:inherit;cursor:pointer}
 .work-search-hit:hover,.work-search-hit:focus-visible{background:#e9b5ff}
 html[data-theme="night"] #work-search-input,html[data-theme="night"] #work-search-results{background:#e9b5ff;color:#ff173b}
+
+/* Make the dynamically inserted Music & Visuals folder match all other folders. */
+html body #work-desktop .folder-grid>.mv-desktop-folder,html[data-theme="night"] body #work-desktop .folder-grid>.mv-desktop-folder{position:relative!important;inset:auto!important;transform:none!important;background:transparent!important;border:0!important;box-shadow:none!important;filter:none!important;padding:8px!important;min-height:150px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important}
+html body #work-desktop .mv-desktop-folder>span:last-child{position:static!important;inset:auto!important;transform:none!important;display:block!important;width:auto!important;max-width:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;filter:none!important;white-space:normal!important;letter-spacing:normal!important;font-family:"Nana Trace UI",sans-serif!important;font-size:19px!important;line-height:1.3!important;text-align:center!important;color:#ff173b!important}
+html body #work-desktop .mv-desktop-folder .folder-tile{position:relative!important;inset:auto!important;float:none!important}
+#work-search{margin-top:8px!important;margin-bottom:0!important}
+html body #work-desktop .folder-grid{padding-top:12px!important}
+@media(max-width:720px){html body #work-desktop .mv-desktop-folder>span:last-child{font-size:15px!important}}
