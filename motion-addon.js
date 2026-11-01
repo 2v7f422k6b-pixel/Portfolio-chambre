@@ -19,6 +19,8 @@
   const $ = selector => document.querySelector(selector);
   const videoURL = file => 'assets/motion/' + encodeURIComponent(file);
   let available = [];
+  let requestedFile = null;
+  window.openMotionAt = function(file){ requestedFile = String(file||''); window.openMotion(); };
   let selected = 0;
   let soundOn = false;
   let requestId = 0;
@@ -231,7 +233,9 @@
     video.addEventListener('play', updatePlayButton);
     video.addEventListener('pause', updatePlayButton);
     video.addEventListener('error', () => { $('#motion-reels-error').hidden = false; updatePlayButton(); });
-    selectVideo(0);
+    const wanted = available.findIndex(item => item.file === requestedFile);
+    requestedFile = null;
+    selectVideo(wanted >= 0 ? wanted : 0);
   }
 
   document.addEventListener('click', event => {
