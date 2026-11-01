@@ -11,7 +11,7 @@ while((node=walker.nextNode())){if(node.parentElement?.closest('script,style,tex
 const value=node.nodeValue,trim=value.trim();if(!trim)continue;
 let original=originals.get(node);if(original===undefined||value.trim()!==original.trim()&&value.trim()!==dictionary[original.trim()]){original=reverse[trim]||value;originals.set(node,original)}
 const key=original.trim(),translated=language==='fr'?(dictionary[key]||original):original;
-const next=original.match(/^\\s*/)[0]+translated.trim()+original.match(/\\s*$/)[0];if(node.nodeValue!==next)node.nodeValue=next;
+const next=original.match(/^\s*/)[0]+translated.trim()+original.match(/\s*$/)[0];if(node.nodeValue!==next)node.nodeValue=next;
 }
 for(const el of [root,...root.querySelectorAll('*')]){for(const a of ['placeholder','aria-label','title']){if(!el.hasAttribute?.(a))continue;const value=el.getAttribute(a),translated=language==='fr'?dictionary[value]:reverse[value];if(translated)el.setAttribute(a,translated)}}
 }finally{busy=false}}
