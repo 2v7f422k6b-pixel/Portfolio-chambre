@@ -41,7 +41,7 @@ async function load(){
  status('Chargement des médias…');
  try{
   const r=await fetch(base,{headers:apiHeaders(),cache:'no-store'});if(!r.ok)throw Error('GitHub : '+r.status);
-  const file=await r.json();sha=file.sha;const raw=atob(file.content.replace(/\\s/g,''));const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));data=JSON.parse(new TextDecoder().decode(bytes));if(!Array.isArray(data.items))throw Error('Liste de médias invalide');
+  const file=await r.json();sha=file.sha;const raw=atob(file.content.replace(/\s/g,''));const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));data=JSON.parse(new TextDecoder().decode(bytes));if(!Array.isArray(data.items))throw Error('Liste de médias invalide');
   dirty=false;$('save').disabled=true;$('login').style.display='none';render();status(data.items.length+' médias disponibles. Ajoute tes tags directement sous les images.');
  }catch(e){status('Impossible de charger les médias : '+e.message);$('login').style.display='inline-block'}
 }
