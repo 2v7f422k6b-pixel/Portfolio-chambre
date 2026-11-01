@@ -742,3 +742,19 @@ html body #menubar .menu-right #menu-search{display:inline-flex!important;align-
  html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help){padding-inline:4px!important}
  html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode){padding-inline:6px!important}
 }
+
+/* Work Mode wallpaper — uploaded original illustration, day and night. */
+html body #work-desktop,
+html[data-theme="night"] body #work-desktop {
+  background-color:#78a8d6!important;
+  background-image:url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png")!important;
+  background-position:center center!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+}
+html body #work-desktop .work-wallpaper,
+html[data-theme="night"] body #work-desktop .work-wallpaper{
+  background:transparent!important;
+  background-image:none!important;
+  pointer-events:none!important;
+}
