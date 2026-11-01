@@ -839,3 +839,19 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  html body #welcome .mode-tile .tile-desc{font-size:clamp(11px,3vw,14px)!important;line-height:1.2!important;margin:0!important}
  html body #welcome .welcome-foot{margin-top:10px!important;padding-top:8px!important;gap:3px!important}
 }
+
+/* Mobile navigation: two orderly rows instead of overlapping links. */
+@media(max-width:760px){
+ :root{--menubar:86px!important}
+ html body #menubar{position:absolute!important;top:0!important;height:86px!important;min-height:86px!important;max-height:86px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;gap:0!important;padding:3px 10px!important;overflow:visible!important}
+ html body #menubar .menu-left,html body #menubar .menu-right{width:100%!important;height:39px!important;min-height:39px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:4px!important;margin:0!important;flex-wrap:nowrap!important;white-space:nowrap!important}
+ html body #menubar :is(.menu-left,.menu-right)>button{font-size:clamp(12px,3.5vw,15px)!important;line-height:1.2!important;flex:0 0 auto!important;padding:4px 2px!important;min-width:0!important}
+ html body #menubar #home-menu{font-size:22px!important}
+ html body #menubar #menu-search svg:not(.sketch-ui-svg){width:21px!important;height:21px!important}
+ html body #menubar #switch-mode{font-size:clamp(11px,3.3vw,14px)!important}
+ html body #work-desktop{inset:86px 0 0!important}
+ html body #work-desktop>.work-wallpaper{inset:86px 0 0!important}
+ html body #work-desktop .work-desktop-label{padding-top:18px!important}
+ html body #work-desktop .work-desktop-label h2{margin:4px 0 8px!important}
+ html body #work-desktop .folder-grid{margin-top:22px!important}
+}
