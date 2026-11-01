@@ -13,7 +13,6 @@
     ['#window-shade .traffic button', 'frame', 75],
     ['.welcome-panel', 'frame', 71],
     ['.mode-tile', 'frame', 101],
-    ['.desktop-folder', 'frame', 127],
     ['.back-room', 'frame', 149],
     ['#dock .dock-app', 'frame', 48],
     ['#window-shade .project-card', 'frame', 161],
