@@ -113,6 +113,7 @@
     render();
   }
   // app.js defines openPages globally. Override only this app entry, not the main click routing.
+  window.openEditorialPages=openEditorialPages;
   window.openPages=openEditorialPages;
   document.addEventListener('click',event=>{
     const filter=event.target.closest('#pages-library [data-pages-source]');
