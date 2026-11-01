@@ -888,3 +888,37 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  html body #mobile-menu-panel>button:not(:last-child){border-bottom:0!important;position:relative!important}
  html body #mobile-menu-panel>button:not(:last-child)::after{content:""!important;display:block!important;position:absolute!important;bottom:0!important;left:7px!important;right:7px!important;height:2px!important;background:#ff173b!important;opacity:.35!important;clip-path:polygon(0 45%,12% 35%,25% 58%,38% 42%,52% 54%,68% 38%,83% 60%,100% 43%,100% 85%,0 90%)!important}
 }
+
+
+/* Mobile Work desktop: keep the return action below all folders, never overlay Contact. */
+@media (max-width:760px){
+ html body #work-desktop{
+   overflow-x:hidden!important;
+   overflow-y:auto!important;
+   padding-bottom:120px!important;
+ }
+ html body #work-desktop .folder-grid{
+   position:relative!important;
+   margin-bottom:0!important;
+ }
+ html body #work-desktop #back-to-room.back-room,
+ html body #work-desktop #back-to-room.back-room.sketch-ui-frame{
+   position:relative!important;
+   display:block!important;
+   float:none!important;
+   clear:both!important;
+   inset:auto!important;
+   top:auto!important;
+   right:auto!important;
+   bottom:auto!important;
+   left:auto!important;
+   transform:none!important;
+   width:max-content!important;
+   max-width:calc(100% - 32px)!important;
+   margin:28px auto 34px!important;
+   z-index:1!important;
+ }
+ html body #work-desktop #back-to-room.back-room .sketch-ui-svg{
+   pointer-events:none!important;
+ }
+}
