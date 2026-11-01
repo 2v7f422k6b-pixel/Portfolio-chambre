@@ -4,121 +4,141 @@
       "title": "Bubblegum",
       "id": "bubblegum.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/bubblegum.jpg"
     },
     {
       "title": "Bubbles",
       "id": "soap-bubbles.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/soap-bubbles.jpg"
     },
     {
       "title": "Butterfly Garden",
       "id": "butterflies-grass.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/butterflies-grass.jpg"
     },
     {
       "title": "Floral Portrait",
       "id": "flower-portrait.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/flower-portrait.jpg"
     },
     {
       "title": "Kitchen",
       "id": "kitchen.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/kitchen.jpg"
     },
     {
       "title": "Cherry Blossoms",
       "id": "cherry-blossom.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/cherry-blossom.jpg"
     },
     {
       "title": "Butterfly",
       "id": "butterfly-back.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/butterfly-back.jpg"
     },
     {
       "title": "The Lighter",
       "id": "lighter.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/lighter.jpg"
     },
     {
       "title": "Close-up",
       "id": "closeup.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/closeup.jpg"
     },
     {
       "title": "Sunglasses",
       "id": "sunglasses.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/sunglasses.jpg"
     },
     {
       "title": "Clown",
       "id": "clown.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/clown.jpg"
     },
     {
       "title": "The Pink Castle",
       "id": "pink-castle.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/pink-castle.jpg"
     },
     {
       "title": "Snowy City",
       "id": "snow-city.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/snow-city.jpg"
     },
     {
       "title": "Still Life",
       "id": "still-life.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/still-life.jpg"
     },
     {
       "title": "Motorcycle",
       "id": "motorbike.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/motorbike.jpg"
     },
     {
       "title": "Studio",
       "id": "synth-portrait.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/synth-portrait.jpg"
     },
     {
       "title": "Marseille",
       "id": "marseille.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/marseille.jpg"
     },
     {
       "title": "Marseille Emblem",
       "id": "marseille-emblem.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/marseille-emblem.jpg"
     },
     {
       "title": "Swans and Lotus",
       "id": "swans-lotus.jpg",
       "category": "Illustration",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/swans-lotus.jpg"
     },
     {
       "title": "La Princesse Clown",
       "id": "clown-princess",
       "category": "Writing & Editorial",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/clown.jpg"
     },
     {
       "title": "GABZILLA",
@@ -126,31 +146,36 @@
       "category": "Illustration",
       "tags": [
         "naud"
-      ]
+      ],
+      "image": "assets/gabzilla/illustration.jpg"
     },
     {
       "title": "Animation",
       "id": "animation",
       "category": "Animation",
-      "tags": []
+      "tags": [],
+      "image": "assets/mini-games/mini-game-dressup.webp"
     },
     {
       "title": "Music & Visuals",
       "id": "music-visuals",
       "category": "Music & Visuals",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/synth-portrait.jpg"
     },
     {
       "title": "Writing & Editorial",
       "id": "editorial",
       "category": "Writing & Editorial",
-      "tags": []
+      "tags": [],
+      "image": "assets/photos/kitchen.jpg"
     },
     {
       "title": "Mini Games",
       "id": "mini-games",
       "category": "Mini Games",
-      "tags": []
+      "tags": [],
+      "image": "assets/mini-games/mini-game-coloring.webp"
     }
   ]
 }
