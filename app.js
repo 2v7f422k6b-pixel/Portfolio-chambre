@@ -212,23 +212,23 @@ function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
    <button class="project-card" data-open="illustration"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"><strong>Illustration</strong><small>Drawings, visual storytelling & collaborations</small></button>
    <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Motion</strong><small>Animation & moving images</small></button>
-   <button class="project-card" data-open="social"><span class="project-icon">♡</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
+   <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
-   <button class="project-card" data-open="interactive"><span class="project-icon">♥</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
-   <button class="project-card" data-open="mini-games"><span class="project-icon">♥</span><strong>Mini Games</strong><small>Coloring Book, Tamagotchi, Dress-up & Latte Lab</small></button>
-   <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
+   <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
+   <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Coloring Book, Tamagotchi, Dress-up & Latte Lab</small></button>
+   <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
- openWindow('LÉNA ♡ PROJECTS',`<div class="eyebrow">♥ WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
+ openWindow('LÉNA PROJECTS',`<div class="eyebrow">WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
 }
 function openIllustrationProjects(){
- openWindow('ILLUSTRATION',`<div class="eyebrow">♥ PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
+ openWindow('ILLUSTRATION',`<div class="eyebrow">PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
  <button class="project-card" data-open="photos"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"><strong>Original illustrations</strong><small>Explore the gallery</small></button>
  <button class="project-card" data-open="gabzilla"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
- <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
+ <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
  </div>`,'illustration');
 }
 function openSocialProjects(){
- openWindow('SOCIAL MEDIA',`<div class="eyebrow">♥ PROJECTS / SOCIAL MEDIA</div><h2>Social media & community</h2><p class="section-lead">Creative content, storytelling and community building for music and artistic projects.</p>
+ openWindow('SOCIAL MEDIA',`<div class="eyebrow">PROJECTS / SOCIAL MEDIA</div><h2>Social media & community</h2><p class="section-lead">Creative content, storytelling and community building for music and artistic projects.</p>
  <div class="info-list">
  <div class="info-box"><small>01 / SYNTHS & MUSICAL EXPRESSION</small><strong>Expressive E</strong><p>Social media content, community management and product storytelling.</p></div>
  <div class="info-box"><small>02 / MUSIC</small><strong>Tomasz Bura Group</strong><p>Communication and community management for a jazz project.</p></div>
@@ -237,43 +237,43 @@ function openSocialProjects(){
 }
 function openMiniGames(){
  openWindow('MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
-  <div class="eyebrow">♥ WORK MODE / MINI GAMES ♥</div>
-  <h2 id="mini-games-heading">Mini Games ♡</h2>
-  <p class="mini-games-intro">Four little games to explore, color and play with. Click a card to start ♡</p>
+  <div class="eyebrow">WORK MODE / MINI GAMES</div>
+  <h2 id="mini-games-heading">Mini Games</h2>
+  <p class="mini-games-intro">Four little games to explore, color and play with. Click a card to start</p>
   <div class="mini-game-grid">
     <button class="mini-game-card" type="button" data-open="coloring" aria-label="Play Coloring Book">
       <span class="mini-game-preview"><img src="assets/mini-games/mini-game-coloring.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/coloring-book/fleurs.jpg'"></span>
       <span class="mini-game-name">Coloring Book</span>
       <span class="mini-game-description">Color five of my drawings using the paint bucket and freehand brush.</span>
-      <span class="mini-game-cta">Play ♡</span>
+      <span class="mini-game-cta">Play</span>
     </button>
     <button class="mini-game-card" type="button" data-open="tamagotchi" aria-label="Play Tamagotchi">
       <span class="mini-game-preview mini-game-preview--tama"><img src="assets/mini-games/mini-game-tamagotchi.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='tamagotchi/tamagotchi.png'"></span>
       <span class="mini-game-name">Tamagotchi</span>
       <span class="mini-game-description">Take care of a tiny digital companion in my little room.</span>
-      <span class="mini-game-cta">Play ♡</span>
+      <span class="mini-game-cta">Play</span>
     </button>
     <button class="mini-game-card" type="button" data-open="latte" aria-label="Play Latte Lab">
       <span class="mini-game-preview mini-game-preview--latte" aria-hidden="true"><img src="assets/mini-games/mini-game-latte.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
       <span class="mini-game-name">Latte Lab</span>
       <span class="mini-game-description">Make your own tiny coffee and finish it with a foam heart.</span>
-      <span class="mini-game-cta">Play ♡</span>
+      <span class="mini-game-cta">Play</span>
     </button>
     <button class="mini-game-card" type="button" data-open="dressup" aria-label="Play Dress-up">
       <span class="mini-game-preview mini-game-preview--dressup" aria-hidden="true"><img src="assets/mini-games/mini-game-dressup.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
       <span class="mini-game-name">Dress-up Game</span>
       <span class="mini-game-description">Explore my illustrated wardrobe and dress the character.</span>
-      <span class="mini-game-cta">Play ♡</span>
+      <span class="mini-game-cta">Play</span>
     </button>
   </div>
-  <p class="mini-games-footnote">♥ Illustrated and coded with care ♥</p>
+  <p class="mini-games-footnote">Illustrated and coded with care</p>
  </section>`,'mini-games');
 }
 function openInteractiveProjects(){
- openWindow('INTERACTIVE',`<div class="eyebrow">♥ PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
+ openWindow('INTERACTIVE',`<div class="eyebrow">PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
  <div class="project-grid">
- <button class="project-card" data-open="book"><span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
- <button class="project-card" data-open="mini-games"><span class="project-icon">♥</span><strong>Mini Games</strong><small>See all four playable games</small></button>
+ <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
+ <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>See all four playable games</small></button>
  <button class="project-card" data-open="polaroids"><span class="project-icon">▧</span><strong>My Polaroids</strong><small>Move, turn and explore my instant photographs</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
@@ -292,7 +292,7 @@ function safePresentationImage(value){
  }catch{return ''}
 }
 async function openWorkAbout(){
- openWindow('LÉNA ♡ ABOUT',`<div class="eyebrow">PROFILE / ABOUT ME</div><div class="atelier-about-layout">
+ openWindow('LÉNA ABOUT',`<div class="eyebrow">PROFILE / ABOUT ME</div><div class="atelier-about-layout">
  <div class="atelier-about-portrait" id="nana-about-portrait" aria-label="Illustration de présentation"><strong>LÉNA</strong></div>
  <div class="atelier-about-copy"><h2 class="nana-script-heading" id="nana-about-title">Léna’s creative world</h2><p id="nana-about-description">Chargement de la présentation…</p>
  <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
@@ -363,7 +363,7 @@ function openAbout(){
  $('#special-close').focus({preventScroll:true});
 }
 function openBook(){
- openWindow('Clown Princess',`<div class="eyebrow">Writing / Illustrated book</div><h2>Clown Princess</h2><p>An illustrated storytelling project.</p><div class="empty-state"><span class="empty-icon">♡</span><h3>The illustrated book is being prepared</h3><p>The finished reading version will be added here once the original pages are ready. No text or artwork has been invented for this preview.</p></div>`,'book');
+ openWindow('Clown Princess',`<div class="eyebrow">Writing / Illustrated book</div><h2>Clown Princess</h2><p>An illustrated storytelling project.</p><div class="empty-state"><span class="empty-icon">✧</span><h3>The illustrated book is being prepared</h3><p>The finished reading version will be added here once the original pages are ready. No text or artwork has been invented for this preview.</p></div>`,'book');
 }
 function openContacts(){
  openWindow('Contacts',`<div class="eyebrow">Contact / Let's talk</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p>You can contact me directly, or use the Mail application to write a message without leaving this website.</p><div class="contact-list"><div class="contact-row"><small>Name</small><strong>Léna de Firmas</strong></div><div class="contact-row"><small>Email</small><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></div><div class="contact-row"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div></div><button class="soft-btn" data-open="mail">✉ Write an email</button>`,'contact');
