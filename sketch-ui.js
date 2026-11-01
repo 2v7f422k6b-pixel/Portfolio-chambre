@@ -51,11 +51,6 @@
     ['#window-shade .mv-sidebar-divider', 'rule', 671],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
-    ['#window-shade .pages-tab', 'frame', 441],
-    ['#window-shade .pages-search', 'frame', 451],
-    ['#window-shade .pages-item', 'frame', 461],
-    ['#window-shade .pages-cover', 'frame', 471],
-    ['#window-shade .pages-feature', 'frame', 481],
     ['#window-shade .atelier-about-copy .info-box', 'frame', 541]
   ];
   let serial = 0;
