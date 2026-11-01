@@ -721,99 +721,53 @@ html body #menubar::after{
 }
 html body #menubar #menu-mode{background:transparent!important;border:0!important;box-shadow:none!important;color:#ff173b!important;font:inherit!important;cursor:pointer!important;padding:4px 6px!important;}
 
-/* Menu bar v7 — navigation on the left, utilities on the right.
-   No functional controls are removed; retain gentle hand-drawn borders. */
-html body #menubar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;flex-wrap:nowrap!important;padding-inline:clamp(10px,1.8vw,28px)!important}
-html body #menubar .menu-left,html body #menubar .menu-right{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:clamp(5px,.65vw,12px)!important;min-width:0!important}
+/* Consolidated top navigation — one source of truth.
+   Frameless controls, readable typography, gentle irregular baseline above. */
+html body #menubar {
+ display:flex!important;align-items:center!important;justify-content:space-between!important;
+ gap:12px!important;flex-wrap:nowrap!important;
+ padding-inline:clamp(9px,1.5vw,24px)!important;
+ min-height:56px!important;height:auto!important;
+}
+html body #menubar :is(.menu-left,.menu-right) {
+ display:flex!important;align-items:center!important;flex-wrap:nowrap!important;
+ gap:clamp(5px,.8vw,14px)!important;min-width:0!important;
+}
 html body #menubar .menu-right{margin-left:auto!important}
-html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help){border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;padding:6px clamp(4px,.7vw,12px)!important;color:#ff173b!important;white-space:nowrap!important}
-html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help)::before,
-html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help)::after{content:none!important;display:none!important}
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode){position:relative!important;isolation:isolate!important;border:0!important;border-radius:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;color:#ff173b!important;padding:8px 11px!important;white-space:nowrap!important}
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::before{
- content:""!important;display:block!important;position:absolute!important;inset:1px!important;z-index:-1!important;pointer-events:none!important;
- background:center/100% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 48' preserveAspectRatio='none'%3E%3Cpath d='M3 3 Q55 2.1 100 3.2 T197 3 Q198 15 197 24 T197 45 Q148 45.8 100 45 T3 45 Q2.4 34 3 24 T3 3Z' fill='none' stroke='%23ff173b' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")!important;
-}
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::after{content:none!important;display:none!important}
-html body #menubar .menu-right #menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:39px!important}
-@media(max-width:850px){
- html body #menubar{gap:5px!important;padding-inline:7px!important}
- html body #menubar .menu-left,html body #menubar .menu-right{gap:2px!important}
- html body #menubar .menu-left :is(#menu-mode,#menu-about,#menu-contact,#menu-help){padding-inline:4px!important}
- html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode){padding-inline:6px!important}
-}
-
-/* Work Mode wallpaper — uploaded original illustration, day and night. */
-html body #work-desktop,
-html[data-theme="night"] body #work-desktop {
-  background-color:#78a8d6!important;
-  background-image:url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png")!important;
-  background-position:center center!important;
-  background-size:cover!important;
-  background-repeat:no-repeat!important;
-}
-html body #work-desktop .work-wallpaper,
-html[data-theme="night"] body #work-desktop .work-wallpaper{
-  background:transparent!important;
-  background-image:none!important;
-  pointer-events:none!important;
-}
-
-/* Top navigation: unboxed handwritten labels, slightly larger. */
-html body #menubar .menu-left button:not(.apple-symbol),
-html body #menubar .menu-right button {
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  background:transparent!important;
-  background-image:none!important;
-  border-radius:0!important;
-  font-size:clamp(15px,1.12vw,18px)!important;
-  line-height:1.3!important;
-  padding:8px 11px!important;
-}
-html body #menubar .menu-left button:not(.apple-symbol)::before,
-html body #menubar .menu-left button:not(.apple-symbol)::after,
-html body #menubar .menu-right button::before,
-html body #menubar .menu-right button::after {
-  border:0!important;
-  box-shadow:none!important;
-  background-image:none!important;
-}
-html body #menubar #menu-search svg {width:22px;height:22px}
-html body #menubar .menu-left button:not(.apple-symbol):hover,
-html body #menubar .menu-right button:hover {text-decoration:underline;text-underline-offset:5px}
-
-/* Wallpaper layer: visible above the desktop's opaque background, behind all UI. */
-html body #work-desktop {position:absolute!important;isolation:isolate!important}
-html body #work-desktop > .work-wallpaper {
- position:fixed!important;
- inset:var(--menubar, 42px) 0 0!important;
- z-index:0!important;
- opacity:1!important;
- display:block!important;
- background:#78a8d6 url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png") center center / cover no-repeat!important;
-}
-html body #work-desktop > .work-wallpaper > * {display:none!important}
-html body #work-desktop > :not(.work-wallpaper) {position:relative;z-index:1}
-
-/* Menu bar definitive: no frames, readable text, one hand-drawn baseline. */
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::before,
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode)::after,
-html body #menubar .menu-left button::before,
-html body #menubar .menu-left button::after {
- content:none!important;display:none!important;background:none!important;border:0!important;
-}
-html body #menubar :is(.menu-left,.menu-right) button,
-html body #menubar .menu-right :is(#menu-search,#language-toggle,#theme-toggle,#switch-mode) {
- font-size:clamp(16px,1.25vw,19px)!important;
- line-height:1.25!important;
- padding:7px clamp(7px,.8vw,13px)!important;
+html body #menubar :is(.menu-left,.menu-right) button {
+ position:relative!important;display:inline-flex!important;align-items:center!important;
+ justify-content:center!important;white-space:nowrap!important;
+ color:#ff173b!important;font-size:clamp(16px,1.25vw,19px)!important;
+ line-height:1.25!important;padding:7px clamp(7px,.8vw,13px)!important;
  border:0!important;outline:0!important;border-radius:0!important;
  background:transparent!important;background-image:none!important;
  box-shadow:none!important;filter:none!important;
- color:#ff173b!important;
+}
+html body #menubar :is(.menu-left,.menu-right) button::before,
+html body #menubar :is(.menu-left,.menu-right) button::after {
+ content:none!important;display:none!important;border:0!important;
+ background:none!important;background-image:none!important;box-shadow:none!important;
 }
 html body #menubar #menu-search svg{width:23px!important;height:23px!important}
-html body #menubar .menu-left,html body #menubar .menu-right{gap:clamp(5px,.8vw,14px)!important}
-html body #menubar{min-height:56px!important;height:auto!important}
+html body #menubar :is(.menu-left,.menu-right) button:hover {
+ text-decoration:underline!important;text-underline-offset:5px!important;
+}
+@media(max-width:850px){
+ html body #menubar{gap:5px!important;padding-inline:7px!important}
+ html body #menubar :is(.menu-left,.menu-right){gap:2px!important}
+ html body #menubar :is(.menu-left,.menu-right) button{padding-inline:5px!important}
+}
+
+/* Work desktop illustration: one wallpaper layer behind interactive content. */
+html body #work-desktop {
+ position:absolute!important;isolation:isolate!important;
+ background:#78a8d6 url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png") center/cover no-repeat!important;
+}
+html body #work-desktop > .work-wallpaper {
+ position:fixed!important;inset:var(--menubar,42px) 0 0!important;
+ z-index:0!important;opacity:1!important;display:block!important;
+ pointer-events:none!important;
+ background:#78a8d6 url("assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png") center/cover no-repeat!important;
+}
+html body #work-desktop > .work-wallpaper > *{display:none!important}
+html body #work-desktop > :not(.work-wallpaper){position:relative;z-index:1}
