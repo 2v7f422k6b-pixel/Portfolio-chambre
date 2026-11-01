@@ -171,7 +171,7 @@ function closeWindow(animated=false){
 function closeSpecial(){specialShade.hidden=true;specialHost.innerHTML='';phoneKeyboardInput=null}
 function openWindow(title,html,type='generic'){
  if(closingWindowAnimation){closingWindowAnimation.cancel();closingWindowAnimation=null}
- closeSpecial();currentWindow=type;winTitle.textContent=title;winContent.innerHTML=html;
+ closeSpecial();currentWindow=type;win.dataset.windowType=type;winTitle.textContent=title;winContent.innerHTML=html;
  if(window.nanaHydrate)window.nanaHydrate(winContent);
  win.setAttribute('aria-modal',String(currentMode!=='work'));
  win.classList.remove('expanded');shade.hidden=false;
