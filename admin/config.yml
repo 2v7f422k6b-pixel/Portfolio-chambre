@@ -47,6 +47,7 @@ collections:
             widget: "list"
             summary: "{{fields.title}}"
             fields:
+              - { label: "Aperçu du média", name: "image", widget: "image", required: false, hint: "Image pour reconnaître ce média. Tu peux la remplacer." }
               - { label: "Titre du média", name: "title", widget: "string" }
               - { label: "Identifiant ou nom du fichier", name: "id", widget: "string", hint: "Conserve cet identifiant pour que la recherche retrouve le bon média." }
               - { label: "Catégorie", name: "category", widget: "select", options: ["Illustration", "Animation", "Music & Visuals", "Writing & Editorial", "Mini Games", "Other"], required: false }
