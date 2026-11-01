@@ -49,3 +49,38 @@ html body #window-shade:not([hidden]) > #window{
     max-width:calc(100vw - 12px)!important;
   }
 }
+
+/* Hand-traced content frames: one border only, no doubled geometric outline. */
+html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame{
+  position:relative!important;
+  border:0!important;outline:0!important;box-shadow:none!important;
+}
+html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame>.sketch-ui-svg{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  display:block!important;pointer-events:none!important;z-index:2!important;
+}
+html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame>.sketch-ui-svg .sketch-ui-ink{
+  stroke:#ff173b!important;stroke-width:1.4!important;fill:none!important;
+}
+/* Pages: keep the grid in its own scrollable pane. SVG strokes must not
+   become grid children or overflow into adjacent articles. */
+html body #window-shade #pages-library .pages-item.sketch-ui-frame,
+html body #window-shade #pages-library .pages-cover.sketch-ui-frame,
+html body #window-shade #pages-library .pages-feature.sketch-ui-frame{
+  position:relative!important;
+  min-width:0!important;
+  border-color:transparent!important;
+  outline:0!important;
+}
+html body #window-shade #pages-library :is(.pages-item,.pages-cover,.pages-feature).sketch-ui-frame>.sketch-ui-svg{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  display:block!important;pointer-events:none!important;z-index:2!important;overflow:hidden!important;
+}
+html body #window-shade #pages-library .pages-item.sketch-ui-frame{
+  border:0!important;
+}
+/* Do not double the About box outlines with pseudo-element decorations. */
+html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame::before,
+html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame::after{
+  border:0!important;
+}
