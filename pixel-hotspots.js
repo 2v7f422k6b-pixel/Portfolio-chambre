@@ -60,7 +60,23 @@
   }
   function hit(item,p) {
     const x = Math.floor(p.x*item.width), y = Math.floor(p.y*item.height);
-    return item.alpha[(y*item.width+x)*4+3] > 0;
+    if(item.alpha[(y*item.width+x)*4+3]>25)return true;
+    // Line-art PNGs have transparent interiors: test enclosed regions via a cached flood fill.
+    if(!item.filled){
+      const w=item.width,h=item.height,a=item.alpha;
+      const solid=new Uint8Array(w*h);
+      for(let yy=2;yy<h-2;yy++)for(let xx=2;xx<w-2;xx++){
+        const i=yy*w+xx;if(a[i*4+3]>25)
+          for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)solid[i+dy*w+dx]=1;
+      }
+      const outside=new Uint8Array(w*h),q=new Int32Array(w*h);let head=0,tail=0;
+      function add(i){if(!solid[i]&&!outside[i]){outside[i]=1;q[tail++]=i;}}
+      for(let xx=0;xx<w;xx++){add(xx);add((h-1)*w+xx);}
+      for(let yy=0;yy<h;yy++){add(yy*w);add(yy*w+w-1);}
+      while(head<tail){const i=q[head++],xx=i%w;if(xx)add(i-1);if(xx<w-1)add(i+1);if(i>=w)add(i-w);if(i<(h-1)*w)add(i+w);}
+      item.filled=outside;
+    }
+    return item.filled[y*item.width+x]===0;
   }
   let forwarding = false;
   scene.addEventListener('click',event => {
