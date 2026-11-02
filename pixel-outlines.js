@@ -15,8 +15,11 @@
   queued=false;ctx.clearRect(0,0,W,H);
   const showAll=guide();
   canvas.style.display=(showAll||hovered)?'block':'none';
-  if(showAll){for(const layer of layers.values())ctx.drawImage(layer.outline,0,0);}
-  else if(hovered&&layers.has(hovered))ctx.drawImage(layers.get(hovered).outline,0,0);
+  ctx.save();
+  ctx.shadowColor='rgba(255,255,255,.95)';ctx.shadowBlur=6;
+  if(showAll){for(const layer of layers.values()){ctx.drawImage(layer.outline,0,0);ctx.drawImage(layer.outline,0,0);}}
+  else if(hovered&&layers.has(hovered)){ctx.drawImage(layers.get(hovered).outline,0,0);ctx.drawImage(layers.get(hovered).outline,0,0);}
+  ctx.restore();
  }
  function schedule(){if(!queued){queued=true;requestAnimationFrame(draw);}}
  // Decode each layer at the displayed coordinate system, and cache its edge pixels.
