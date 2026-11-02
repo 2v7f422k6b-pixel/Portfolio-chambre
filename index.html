@@ -353,6 +353,37 @@ html body #welcome .welcome-hero{padding-bottom:32px!important;}
   box-shadow:none !important;
   background:transparent !important;
 }
+
+/* Welcome composition reset: use the actual artwork, not stacked CSS frames. */
+html body #welcome{display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(14px,3vw,34px)!important;min-height:100dvh!important;overflow:auto!important;background:#d9b6ed!important;}
+html body #welcome .welcome-panel{position:relative!important;width:min(1100px,100%)!important;max-width:1100px!important;margin:auto!important;padding:clamp(12px,2vw,24px)!important;box-sizing:border-box!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;overflow:visible!important;}
+html body #welcome .welcome-hero{padding:0!important;margin:0 auto clamp(20px,3vw,36px)!important;text-align:center!important;}
+html body #welcome .welcome-title-cloud{width:min(680px,85%)!important;margin:auto!important;padding:0!important;min-height:0!important;border:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;}
+html body #welcome .welcome-title-art{width:100%!important;height:auto!important;display:block!important;}
+html body #welcome .mode-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(18px,4vw,46px)!important;margin:0!important;padding:0!important;}
+html body #welcome .mode-tile{position:relative!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;min-width:0!important;min-height:0!important;width:100%!important;aspect-ratio:1.64!important;padding:8% 8% 10%!important;box-sizing:border-box!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;transform:none!important;}
+html body #welcome .mode-tile:hover,html body #welcome .mode-tile:focus-visible{outline:0!important;transform:translateY(-3px)!important;box-shadow:none!important;}
+html body #welcome .mode-tile .welcome-hand-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;z-index:0!important;pointer-events:none!important;}
+html body #welcome .mode-tile .tile-art{position:relative!important;display:block!important;z-index:1!important;width:85%!important;height:auto!important;aspect-ratio:1.75!important;border:0!important;border-radius:0!important;overflow:hidden!important;background:transparent!important;box-shadow:none!important;order:1!important;}
+html body #welcome .mode-tile .tile-art img.welcome-icon{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:0!important;}
+html body #welcome .mode-tile .tile-name{position:relative!important;z-index:2!important;order:0!important;margin:0 auto 5px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;font-size:clamp(19px,2.5vw,31px)!important;line-height:1.1!important;color:#ff173b!important;}
+html body #welcome .mode-tile .tile-desc{position:relative!important;z-index:2!important;order:2!important;margin:5px auto 0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;font-size:clamp(12px,1.5vw,18px)!important;line-height:1.2!important;color:#ff173b!important;}
+html body #welcome .welcome-choice-footer{margin:clamp(12px,2vw,25px) auto 0!important;text-align:center!important;}
+html body #welcome #welcome-heading{font-size:clamp(22px,3vw,34px)!important;margin:0 0 10px!important;}
+html body #welcome .welcome-choice-hints{display:flex!important;justify-content:center!important;gap:clamp(18px,5vw,65px)!important;}
+html body #welcome .welcome-choice-hints button{font-size:clamp(17px,2vw,24px)!important;padding:7px 26px!important;border:2px solid #ff173b!important;border-radius:35% 43% 38% 42% / 48% 38% 49% 41%!important;background:#fff0f9!important;color:#ff173b!important;box-shadow:none!important;transform:none!important;}
+html body #welcome .welcome-foot{display:none!important;}
+@media(max-width:680px){
+ html body #welcome{align-items:flex-start!important;padding:16px 12px!important;}
+ html body #welcome .welcome-panel{padding:5px!important;}
+ html body #welcome .welcome-title-cloud{width:92%!important;}
+ html body #welcome .welcome-hero{margin-bottom:24px!important;}
+ html body #welcome .mode-options{grid-template-columns:1fr!important;gap:20px!important;max-width:440px!important;margin:auto!important;}
+ html body #welcome .mode-tile{aspect-ratio:1.65!important;}
+ html body #welcome .mode-tile .tile-name{font-size:24px!important;}
+ html body #welcome .mode-tile .tile-desc{font-size:15px!important;}
+ html body #welcome .welcome-choice-footer{margin-top:22px!important;}
+}
 </style>
 </head>
 <body>
