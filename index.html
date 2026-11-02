@@ -29,6 +29,10 @@
 #play-viewport { justify-content: center; align-items: center; }
 #play-scene { width: min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); height: auto; aspect-ratio: 1670 / 942; flex: none; margin: 0 auto; }
 #room-img, #room-night { width: 100%; height: 100%; object-fit: contain; }
+
+/* For PNG-backed objects, show true alpha boundaries rather than coarse SVG polygons. */
+#hotspots.hotspot-guide-on polygon:is([data-open="work-zoom"],[data-open="gabzilla"],[data-open="music"],[data-open="phone"],[data-open="tamagotchi"],[data-open="latte"],[data-open="book"],[data-open="about"],[data-open="contact"],[data-mv-open],[data-cat-pet]),
+#hotspots.hotspot-peek polygon:is([data-open="work-zoom"],[data-open="gabzilla"],[data-open="music"],[data-open="phone"],[data-open="tamagotchi"],[data-open="latte"],[data-open="book"],[data-open="about"],[data-open="contact"],[data-mv-open],[data-cat-pet]) { stroke:transparent !important; fill:transparent !important; filter:none !important; }
 </style>
 
   <!-- iPad/touch feedback for illustrated Play Mode hotspots. -->
@@ -358,6 +362,7 @@
   <script src="app.js?v=menubar-mode-6" defer></script>
 
   <script src="pixel-hotspots.js?v=1" defer></script>
+  <script src="pixel-outlines.js?v=1" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
    <script src="coloring-addon.js?v=remove-play-dock-20261102" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
