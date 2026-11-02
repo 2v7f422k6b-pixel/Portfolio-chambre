@@ -156,9 +156,14 @@
       filter: brightness(.77) saturate(.9);
     }
   
-/* FINAL RESPONSIVE ROOM OVERRIDE: same coordinate system for background and hotspots. */
+/* Earlier contain-fit override; superseded below. */
 #play-viewport { display:flex; justify-content:center !important; align-items:center !important; overflow:hidden; }
 #play-scene { width:min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 auto !important; }
+#room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
+
+/* Immersive proportional cover: crop edges instead of stretching or letterboxing. */
+#play-viewport { display:flex !important; justify-content:center !important; align-items:center !important; overflow:hidden !important; }
+#play-scene { width:max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 !important; }
 #room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
 </style>
 </head>
