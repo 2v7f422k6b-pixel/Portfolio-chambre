@@ -184,6 +184,11 @@
 @media (min-width:761px) and (hover:hover) {
  #hotspot-guide { top:calc(var(--menubar,42px) + 12px); right:14px; }
 }
+
+/* Desktop hover must never reveal the legacy approximate SVG silhouettes. */
+#hotspots polygon[data-open]:hover,
+#hotspots polygon[data-mv-open]:hover,
+#hotspots polygon[data-cat-pet]:hover { stroke:transparent !important; fill:transparent !important; filter:none !important; }
 </style>
 </head>
 <body>
@@ -377,7 +382,7 @@
   <script src="app.js?v=menubar-mode-6" defer></script>
 
   <script src="pixel-hotspots.js?v=1" defer></script>
-  <script src="pixel-outlines.js?v=1" defer></script>
+  <script src="pixel-outlines.js?v=2" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
    <script src="coloring-addon.js?v=remove-play-dock-20261102" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
