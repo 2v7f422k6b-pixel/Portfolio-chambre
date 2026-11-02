@@ -99,7 +99,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
 .cup-stage{width:min(100%,350px);aspect-ratio:1;position:relative}
 .cup-stage .latte-custom-mug,.cup-stage .latte-liquid-overlay{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .cup-stage .latte-custom-mug{z-index:2;pointer-events:none}
-.cup-stage .latte-liquid-overlay{z-index:1;overflow:hidden;transform:translate(4%,17%) scale(1.13)!important;transform-origin:50% 50%}
+.cup-stage .latte-liquid-overlay{z-index:1;overflow:hidden;transform:none!important;transform-origin:50% 50%}
 .cup-stage .cup-art{z-index:3}
 </style>
 <link rel="stylesheet" href="../heart-theme.css?v=lena-original-1" data-lena-heart-style>
@@ -113,7 +113,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
       <h1>Make a latte!</h1>
       <div class="cup-stage" id="cup-stage">
         <img class="latte-custom-mug" src="../assets/mini-games/latte/latte%20atelier%20mug.png" alt="Hand-drawn pink latte mug" draggable="false">
-        <svg class="latte-liquid-overlay" viewBox="0 0 500 500" role="img" aria-label="Animated latte contents"><defs><radialGradient id="coffee-shade"><stop offset="0" stop-color="#ad6548"/><stop offset="1" stop-color="#713b2a"/></radialGradient><clipPath id="latte-liquid-clip"><path d="M 250 109 C 325 108 391 160 394 242 C 398 328 333 391 251 393 C 169 396 109 329 108 249 C 105 170 167 112 250 109 Z"/></clipPath></defs><g clip-path="url(#latte-liquid-clip)"><circle id="espresso" cx="250" cy="250" r="150" fill="url(#coffee-shade)" opacity="0"/>
+        <svg class="latte-liquid-overlay" viewBox="0 0 500 500" role="img" aria-label="Animated latte contents"><defs><radialGradient id="coffee-shade"><stop offset="0" stop-color="#ad6548"/><stop offset="1" stop-color="#713b2a"/></radialGradient><clipPath id="latte-liquid-clip"><path d="M 244 94 C 329 94 389 150 396 222 C 407 302 350 370 268 378 C 183 384 111 333 96 260 C 80 180 148 101 244 94 Z"/></clipPath></defs><g clip-path="url(#latte-liquid-clip)"><circle id="espresso" cx="250" cy="250" r="150" fill="url(#coffee-shade)" opacity="0"/>
           <path id="vanilla-swirl" d="M189 197 Q205 155 249 168 Q288 179 271 205 Q258 223 233 210 Q222 203 232 194" fill="none" stroke="#ffcf7c" stroke-width="10" stroke-linecap="round" opacity="0"/>
           <circle id="milk" cx="250" cy="250" r="150" fill="#dcb88d" opacity="0"/>
           <circle id="cream-ring" cx="250" cy="250" r="140" fill="none" stroke="#f8e8cc" stroke-width="7" opacity="0"/>
