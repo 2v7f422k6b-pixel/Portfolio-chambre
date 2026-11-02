@@ -282,6 +282,41 @@ html body #welcome .welcome-foot{display:none!important;}
  html body #welcome .mode-tile .tile-art{aspect-ratio:1.9!important;}
  html body #welcome .welcome-choice-footer{margin-top:35px!important;}
 }
+
+/* Home mockup v2: organic hand-drawn clouds, irregular frames and illustrated buttons. */
+html body #welcome{background:#d8b8ed!important;background-image:radial-gradient(ellipse at 15% 5%,#eed3f3 0,transparent 50%),radial-gradient(ellipse at 83% 95%,#d2a7ed 0,transparent 53%)!important;isolation:isolate!important;overflow:auto!important;}
+html body #welcome .welcome-panel{border:none!important;outline:none!important;box-shadow:none!important;background:transparent!important;max-width:1320px!important;padding:30px 16px 22px!important;}
+html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{content:'☁'!important;position:absolute!important;font-size:clamp(100px,18vw,260px)!important;line-height:1!important;color:#fff0f9!important;text-shadow:2px 2px #ff173b,-1px -1px #ff173b!important;opacity:.86!important;z-index:-1!important;pointer-events:none!important;}
+html body #welcome .welcome-panel::before{top:5%!important;left:-12%!important;transform:rotate(-12deg)!important;}
+html body #welcome .welcome-panel::after{bottom:-4%!important;right:-10%!important;transform:rotate(12deg)!important;}
+html body #welcome .welcome-hero{padding:0 0 42px!important;}
+html body #welcome .welcome-title-cloud{position:relative!important;display:inline-flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-height:160px!important;padding:18px 64px!important;background:#fff0f9!important;border:3px solid #ff173b!important;border-radius:48% 42% 45% 39% / 55% 48% 53% 45%!important;box-shadow:8px 5px 0 #f4cce9!important;transform:rotate(-1deg)!important;}
+html body #welcome .welcome-title-cloud::before,html body #welcome .welcome-title-cloud::after{content:'☆'!important;position:absolute!important;color:#ff173b!important;font-size:38px!important;top:18px!important;}
+html body #welcome .welcome-title-cloud::before{left:17px!important;}html body #welcome .welcome-title-cloud::after{right:19px!important;}
+html body #welcome .welcome-kicker{font-size:clamp(31px,4.5vw,62px)!important;white-space:normal!important;}
+html body #welcome .welcome-portfolio{font-size:clamp(28px,3.5vw,49px)!important;}
+html body #welcome .mode-options{gap:clamp(16px,4vw,60px)!important;}
+html body #welcome .mode-tile{background:#fff0f9!important;border:3px solid #ff173b!important;border-radius:14% 9% 13% 8% / 17% 12% 15% 11%!important;padding:15px 13px 16px!important;box-shadow:5px 5px 0 #f5c5e8!important;min-height:0!important;}
+html body #welcome .mode-tile .tile-name{border:2.5px solid #ff173b!important;border-radius:49% 43% 45% 40% / 56% 52% 48% 45%!important;background:#ffd8ed!important;margin:-46px auto 12px!important;padding:11px 30px!important;transform:rotate(-2deg)!important;font-size:clamp(19px,2.5vw,32px)!important;white-space:nowrap!important;}
+html body #welcome .mode-tile.work-choice .tile-name{transform:rotate(2deg)!important;}
+html body #welcome .mode-tile .tile-art{border:0!important;border-radius:11% 8% 10% 7% / 15% 11% 13% 9%!important;aspect-ratio:1.75!important;overflow:hidden!important;}
+html body #welcome .mode-tile .tile-art img.welcome-icon{object-fit:cover!important;object-position:center!important;}
+html body #welcome .mode-tile .tile-desc{background:#ffe5f2!important;border:2.5px solid #ff173b!important;border-radius:48% 42% 46% 39% / 58% 48% 54% 45%!important;margin:-9px 0 -31px!important;padding:10px 24px!important;font-size:clamp(14px,1.7vw,21px)!important;transform:rotate(-1deg)!important;}
+html body #welcome .welcome-choice-footer{margin:58px 0 0!important;}
+html body #welcome #welcome-heading{font-size:clamp(25px,3.2vw,42px)!important;margin-bottom:16px!important;}
+html body #welcome .welcome-choice-hints{gap:clamp(18px,7vw,100px)!important;}
+html body #welcome .welcome-choice-hints button{cursor:pointer!important;background:#ffe1f0!important;color:#ff173b!important;border:3px solid #ff173b!important;border-radius:48% 43% 47% 40% / 55% 49% 54% 47%!important;padding:12px 42px!important;font:inherit!important;font-size:clamp(20px,2.2vw,30px)!important;transform:rotate(-2deg)!important;box-shadow:4px 4px 0 #f3b4df!important;}
+html body #welcome .welcome-choice-hints button:last-child{transform:rotate(2deg)!important;}
+html body #welcome .welcome-choice-hints button:hover,html body #welcome .welcome-choice-hints button:focus-visible{background:#fff2fc!important;transform:translateY(-3px)!important;}
+@media(max-width:680px){
+ html body #welcome .welcome-panel{padding:12px 12px 35px!important;}
+ html body #welcome .welcome-title-cloud{min-height:110px!important;padding:15px 30px!important;}
+ html body #welcome .welcome-hero{padding-bottom:40px!important;}
+ html body #welcome .mode-options{gap:54px!important;}
+ html body #welcome .mode-tile .tile-name{margin-top:-37px!important;}
+ html body #welcome .welcome-choice-footer{margin-top:54px!important;}
+ html body #welcome .welcome-choice-hints button{padding:10px 20px!important;}
+}
 </style>
 </head>
 <body>
@@ -290,8 +325,7 @@ html body #welcome .welcome-foot{display:none!important;}
       <div class="welcome-panel">
         <div class="welcome-top"><span>♥</span></div>
         <div class="welcome-hero">
-          <div class="welcome-kicker">Léna de Firmas</div>
-          <div class="welcome-portfolio">Portfolio</div>
+          <div class="welcome-title-cloud"><div class="welcome-kicker">Léna de Firmas ♡</div><div class="welcome-portfolio">Portfolio</div></div>
         </div>
         <div class="mode-options">
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
@@ -307,7 +341,10 @@ html body #welcome .welcome-foot{display:none!important;}
         </div>
         <div class="welcome-choice-footer">
           <h1 id="welcome-heading">Choose your mood:</h1>
-          <div class="welcome-choice-hints"><span>♡ Play</span><span>♡ Work</span></div>
+          <div class="welcome-choice-hints">
+            <button type="button" data-mode="play">♡ Play</button>
+            <button type="button" data-mode="work">♡ Work</button>
+          </div>
         </div>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
