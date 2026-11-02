@@ -334,6 +334,25 @@ html body #welcome .welcome-hero{padding-bottom:32px!important;}
  html body #welcome .mode-tile{padding:10% 7% 9%!important;}
  html body #welcome .mode-tile .tile-name{margin:-5% auto 8px!important;}
 }
+
+/* Work desktop: no rectangular hover/focus highlights around folders. */
+#work-desktop .desktop-folder:hover,
+#work-desktop .desktop-folder:focus,
+#work-desktop .desktop-folder:focus-visible,
+#work-desktop .desktop-folder:hover > *,
+#work-desktop .desktop-folder:focus-visible > * {
+  outline:none !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+  background-color:transparent;
+}
+#work-desktop .desktop-folder:hover > span:last-child,
+#work-desktop .desktop-folder:focus-visible > span:last-child {
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
 </style>
 </head>
 <body>
