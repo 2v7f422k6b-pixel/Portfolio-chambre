@@ -242,6 +242,10 @@
  z-index:1;
 }
 #app.mode-work #work-desktop .work-wallpaper {pointer-events:none;}
+
+/* Home previews use the exact scene backgrounds, not generic illustrations. */
+#welcome .mode-tile .tile-art{display:block;overflow:hidden;background:transparent;}
+#welcome .mode-tile .tile-art img.welcome-icon{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center;border:0;transform:none;filter:none;}
 </style>
 </head>
 <body>
@@ -251,8 +255,8 @@
         <div class="welcome-top"><span>♥</span></div>
         <div class="welcome-hero"><div class="welcome-kicker">Léna de Firmas</div><div class="welcome-portfolio">Portfolio</div><div class="welcome-stars" aria-hidden="true"><span class="star-side"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""></span><span class="star-side"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""></span></div><h1 id="welcome-heading">Choose your mood</h1></div>
         <div class="mode-options">
-          <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode"><span class="tile-art"><img class="welcome-icon" src="assets/welcome-work.svg" alt=""></span><span class="tile-name">Work</span><span class="tile-desc">Browse selected projects</span></button>
-          <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode"><span class="tile-art"><img class="welcome-icon" src="assets/welcome-play.svg" alt=""></span><span class="tile-name">Play</span><span class="tile-desc">Explore my world</span></button>
+          <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode"><span class="tile-art"><img class="welcome-icon" src="assets/BACKGROUND.PNG" alt=""></span><span class="tile-name">Work</span><span class="tile-desc">Browse selected projects</span></button>
+          <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode"><span class="tile-art"><img class="welcome-icon" src="assets/IMG_4903.png" alt=""></span><span class="tile-name">Play</span><span class="tile-desc">Explore my world</span></button>
         </div>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
