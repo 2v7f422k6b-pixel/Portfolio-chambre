@@ -29,7 +29,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .station h1{font-size:clamp(27px,3.6vw,39px);line-height:1.1;font-weight:400;margin:8px 0 0;letter-spacing:.025em;text-align:center}
 .cup-stage{width:min(100%,340px);position:relative;flex:none;display:grid;place-items:center;margin:10px auto 0}
 .cup-stage svg{width:100%;height:auto;display:block;overflow:visible}
-.cup-stage .cup-art{position:absolute;top:15.2%;left:16.4%;width:57.6%;height:auto;aspect-ratio:1;clip-path:circle(49% at 50% 50%);touch-action:none;opacity:0;pointer-events:none;cursor:crosshair}
+.cup-stage .cup-art{position:absolute;top:19.4%;left:17.8%;width:61.2%;height:auto;aspect-ratio:1;clip-path:circle(49% at 50% 50%);touch-action:none;opacity:0;pointer-events:none;cursor:crosshair}
 .cup-stage .cup-art.enabled{opacity:1;pointer-events:auto}
 #espresso{transition:opacity .55s ease}#milk{transition:opacity .18s ease}
 #cream-ring{transition:opacity .3s ease}
@@ -37,7 +37,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .gift-reply{font-size:26px;text-align:center;margin:13px 0;color:var(--red);animation:appear .3s ease}
 #steam-lines{opacity:0;transform-origin:center;transition:opacity .3s ease}
 #steam-lines.visible{opacity:1;animation:float 1.5s ease-in-out infinite alternate}
-#heart-stamp{opacity:0;transform:scale(.5);transform-origin:180px 156px;transition:opacity .45s ease,transform .5s ease}
+#heart-stamp{opacity:0;transform:scale(.5);transform-origin:242px 241px;transition:opacity .45s ease,transform .5s ease}
 #heart-stamp.visible{opacity:1;transform:scale(1)}
 @keyframes float{to{transform:translateY(-5px)}}
 .saucer-label{border:1.5px solid var(--red);background:var(--paper);padding:6px 11px;box-shadow:var(--glow);font-size:12px;text-align:center;transform:rotate(-2deg);margin-top:-5px}
@@ -113,11 +113,11 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
       <h1>Make a latte!</h1>
       <div class="cup-stage" id="cup-stage">
         <img class="latte-custom-mug" src="../assets/mini-games/latte/latte%20atelier%20mug.png" alt="Hand-drawn pink latte mug" draggable="false">
-        <svg class="latte-liquid-overlay" viewBox="0 0 500 500" role="img" aria-label="Animated latte contents"><defs><radialGradient id="coffee-shade"><stop offset="0" stop-color="#ad6548"/><stop offset="1" stop-color="#713b2a"/></radialGradient><clipPath id="latte-liquid-clip"><circle cx="226" cy="220" r="144"/></clipPath></defs><g clip-path="url(#latte-liquid-clip)"><circle id="espresso" cx="226" cy="220" r="145" fill="url(#coffee-shade)" opacity="0"/>
-          <path id="vanilla-swirl" d="M125 157 Q141 115 185 128 Q224 139 207 165 Q194 183 169 170 Q158 163 168 154" fill="none" stroke="#ffcf7c" stroke-width="10" stroke-linecap="round" opacity="0"/>
-          <circle id="milk" cx="226" cy="220" r="145" fill="#dcb88d" opacity="0"/>
-          <circle id="cream-ring" cx="226" cy="220" r="136" fill="none" stroke="#f8e8cc" stroke-width="7" opacity="0"/>
-          <g id="heart-stamp"><path d="M181 198 C133 165 119 148 132 128 C145 110 169 120 181 136 C193 120 217 110 230 128 C243 148 229 165 181 198 Z" fill="#fffaf0" stroke="#fffaf0" stroke-width="3"/><path d="M157 139 Q181 124 204 139" fill="none" stroke="#f1d3b0" stroke-width="2" stroke-linecap="round"/></g>
+        <svg class="latte-liquid-overlay" viewBox="0 0 500 500" role="img" aria-label="Animated latte contents"><defs><radialGradient id="coffee-shade"><stop offset="0" stop-color="#ad6548"/><stop offset="1" stop-color="#713b2a"/></radialGradient><clipPath id="latte-liquid-clip"><circle cx="242" cy="250" r="144"/></clipPath></defs><g clip-path="url(#latte-liquid-clip)"><circle id="espresso" cx="242" cy="250" r="154" fill="url(#coffee-shade)" opacity="0"/>
+          <path id="vanilla-swirl" d="M181 197 Q197 155 241 168 Q280 179 263 205 Q250 223 225 210 Q214 203 224 194" fill="none" stroke="#ffcf7c" stroke-width="10" stroke-linecap="round" opacity="0"/>
+          <circle id="milk" cx="242" cy="250" r="154" fill="#dcb88d" opacity="0"/>
+          <circle id="cream-ring" cx="242" cy="250" r="145" fill="none" stroke="#f8e8cc" stroke-width="7" opacity="0"/>
+          <g id="heart-stamp" transform="translate(61 85)"><path d="M181 198 C133 165 119 148 132 128 C145 110 169 120 181 136 C193 120 217 110 230 128 C243 148 229 165 181 198 Z" fill="#fffaf0" stroke="#fffaf0" stroke-width="3"/><path d="M157 139 Q181 124 204 139" fill="none" stroke="#f1d3b0" stroke-width="2" stroke-linecap="round"/></g>
           <g id="steam-lines" stroke="#ff173b" stroke-width="3" stroke-linecap="round" fill="none"><path d="M90 47 q-12 -15 2 -29"/><path d="M181 24 q-12 -14 3 -22"/><path d="M272 46 q-11 -16 3 -28"/></g>
           </g></svg>
         <canvas id="art-canvas" class="cup-art" width="300" height="300" aria-label="Draw your latte art here with a finger or pointer"></canvas>
