@@ -384,6 +384,27 @@ html body #welcome .welcome-foot{display:none!important;}
  html body #welcome .mode-tile .tile-desc{font-size:15px!important;}
  html body #welcome .welcome-choice-footer{margin-top:22px!important;}
 }
+
+/* Welcome adjustments Nov 2: keep only the user's hand-drawn frame and title. */
+html body #welcome .welcome-panel,
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after{border:0!important;outline:0!important;box-shadow:none!important;}
+html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{display:none!important;content:none!important;}
+html body #welcome .welcome-mood-heading{display:block!important;text-align:center!important;color:#ff173b!important;font-size:clamp(22px,2.7vw,34px)!important;line-height:1.2!important;margin:0 0 clamp(18px,2.6vw,30px)!important;font-weight:700!important;}
+html body #welcome .welcome-hero{margin-bottom:clamp(12px,2vw,22px)!important;}
+html body #welcome .mode-tile,
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus-visible{border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;}
+html body #welcome .mode-tile .tile-name{font-size:clamp(14px,1.65vw,21px)!important;font-weight:600!important;line-height:1.1!important;margin:0 auto 5px!important;letter-spacing:0!important;white-space:nowrap!important;}
+html body #welcome .mode-tile .tile-desc{font-size:clamp(11px,1.2vw,15px)!important;line-height:1.1!important;margin:5px auto 0!important;}
+/* Colored inset beneath the drawn border; crop each scene to its irregular inner opening. */
+html body #welcome .mode-tile::before{content:''!important;display:block!important;position:absolute!important;left:10.5%!important;right:10.5%!important;top:22%!important;bottom:20%!important;background:#fff0f9!important;border-radius:9% 8% 9% 8% / 16% 14% 15% 13%!important;z-index:0!important;pointer-events:none!important;}
+html body #welcome .mode-tile .tile-art{width:78%!important;aspect-ratio:1.83!important;border-radius:9% 8% 9% 8% / 16% 14% 15% 13%!important;overflow:hidden!important;background:#fff0f9!important;z-index:1!important;}
+html body #welcome .mode-tile .tile-art img.welcome-icon{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;border:0!important;}
+html body #welcome .mode-tile .welcome-hand-frame{z-index:2!important;}
+html body #welcome .mode-tile .tile-name,html body #welcome .mode-tile .tile-desc{z-index:3!important;}
+html body #welcome .welcome-choice-footer{display:none!important;}
+@media(max-width:680px){html body #welcome .welcome-mood-heading{margin-bottom:22px!important;}html body #welcome .mode-tile .tile-name{font-size:18px!important;}html body #welcome .mode-tile .tile-desc{font-size:12px!important;}}
 </style>
 </head>
 <body>
@@ -394,6 +415,7 @@ html body #welcome .welcome-foot{display:none!important;}
         <div class="welcome-hero">
           <div class="welcome-title-cloud"><img class="welcome-title-art" src="assets/accueil/titre%20accueil.png" alt="Léna de Firmas — Portfolio"></div>
         </div>
+        <h1 id="welcome-heading" class="welcome-mood-heading">Choose your mood:</h1>
         <div class="mode-options">
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
             <span class="tile-name">Mode Play ♡</span>
@@ -407,13 +429,6 @@ html body #welcome .welcome-foot{display:none!important;}
             <img class="welcome-hand-frame" src="assets/accueil/cadre%20accueil.png" alt="" aria-hidden="true">
             <span class="tile-desc">Discover my projects ♡</span>
           </button>
-        </div>
-        <div class="welcome-choice-footer">
-          <h1 id="welcome-heading">Choose your mood:</h1>
-          <div class="welcome-choice-hints">
-            <button type="button" data-mode="play">♡ Play</button>
-            <button type="button" data-mode="work">♡ Work</button>
-          </div>
         </div>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
