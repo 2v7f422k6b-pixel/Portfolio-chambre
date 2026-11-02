@@ -12,7 +12,7 @@
     ['tamagotchi','TAMAGOTCHI.PNG'],
     ['latte','MUG LATTE.PNG'],
     ['book','TALE.PNG'],
-    ['photos','VASE.PNG'],['photos','STARS LAMP.PNG'],['about','JELLY LAMP.PNG'],['photos','INSTAX.PNG'],
+    ['photos','VASE.PNG'],['photos','STARS LAMP.PNG'],['about','JELLY LAMP.PNG'],['polaroids','INSTAX.PNG'],
     ['photos','CRAYONS 1.PNG'],['photos','CRAYONS 2.PNG'],['photos','CRAYONS 3.PNG'],
     ['pages','BOOKS 1.PNG'],['pages','BOOKS 2.PNG'],['pages','BOOKS 3.PNG'],
     ['photos','OFFICE LAMP.PNG'],['photos','IPAD.PNG'],['photos','RUG.PNG'],
@@ -22,7 +22,7 @@
     ['contact','GUITARE.PNG']
   ];
   const targets = definitions.map(([action, file]) => ({
-    file, action, target: svg.querySelector('[data-open="'+action+'"]')
+    file, action, target: file==='INSTAX.PNG' ? document.getElementById('instax-hotspot') : svg.querySelector('[data-open="'+action+'"]')
   })).filter(item => item.target);
   const cd = svg.querySelector('[data-mv-open]');
   if (cd) targets.push({file:'CDS.PNG',target:cd});
