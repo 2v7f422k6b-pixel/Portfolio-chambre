@@ -58,15 +58,34 @@
      const cc=c.getContext('2d',{willReadFrequently:true});cc.drawImage(img,0,0,W,H);
      const raw=cc.getImageData(0,0,W,H).data,alpha=new Uint8Array(W*H),pixels=new Uint8ClampedArray(W*H*4);
      for(let i=0;i<alpha.length;i++)alpha[i]=raw[i*4+3];
+     // Fill the object silhouette: connect small gaps, then flood-fill the exterior.
+     const solid=new Uint8Array(W*H);
      for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
-      const i=y*W+x;
-      if(alpha[i]>25&&(alpha[i-1]<=25||alpha[i+1]<=25||alpha[i-W]<=25||alpha[i+W]<=25)){
-       const p=i*4;pixels[p]=pixels[p+1]=pixels[p+2]=pixels[p+3]=255;
-      }
+       const i=y*W+x;if(alpha[i]>25){
+        for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)solid[i+dy*W+dx]=1;
+       }
+     }
+     const exterior=new Uint8Array(W*H),queue=new Int32Array(W*H);
+     let head=0,tail=0;
+     function seed(i){if(!solid[i]&&!exterior[i]){exterior[i]=1;queue[tail++]=i;}}
+     for(let x=0;x<W;x++){seed(x);seed((H-1)*W+x);}
+     for(let y=0;y<H;y++){seed(y*W);seed(y*W+W-1);}
+     while(head<tail){
+       const i=queue[head++],x=i%W;
+       if(x>0)seed(i-1);if(x<W-1)seed(i+1);
+       if(i>=W)seed(i-W);if(i<W*(H-1))seed(i+W);
+     }
+     const filled=new Uint8Array(W*H);
+     for(let i=0;i<filled.length;i++)if(!exterior[i])filled[i]=255;
+     for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+       const i=y*W+x;
+       if(filled[i]&&(!filled[i-1]||!filled[i+1]||!filled[i-W]||!filled[i+W])){
+         const p=i*4;pixels[p]=pixels[p+1]=pixels[p+2]=pixels[p+3]=255;
+       }
      }
      const out=document.createElement('canvas');out.width=W;out.height=H;
      out.getContext('2d').putImageData(new ImageData(pixels,W,H),0,0);
-     layers.set(file,{alpha,outline:out});schedule();
+     layers.set(file,{alpha:filled,outline:out});schedule();
     }catch(e){console.warn('PNG outline error',file,e);}
     active--;pump();
    };
