@@ -8,12 +8,15 @@
  Object.assign(canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',zIndex:'8',display:'none'});
  scene.appendChild(canvas);
  const ctx=canvas.getContext('2d'),layers=[];
+ const hoverMap={'work-zoom':'IMAC.PNG','gabzilla':'TSHIRT GABZILLA.PNG','music':'MARSHALL.PNG','phone':'IPHONE.PNG','tamagotchi':'TAMAGOTCHI.PNG','latte':'MUG LATTE.PNG','book':'TALE.PNG','about':'RILAKKUMA.PNG','contact':'GUITARE.PNG'};
+ let hoveredFile=null;
  function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.strokeStyle='rgba(255,255,255,.98)';
   ctx.lineWidth=1.6;
   ctx.shadowColor='rgba(90,45,120,.7)';ctx.shadowBlur=2;
   for(const mask of layers){
+   if(hoveredFile && mask.file!==hoveredFile)continue;
    const {alpha,w,h}=mask;
    ctx.beginPath();
    // Each destination pixel samples the original 3072x1732 PNG transparency.
@@ -41,15 +44,27 @@
     const rgba=cx.getImageData(0,0,c.width,c.height).data;
     const alpha=new Uint8Array(c.width*c.height);
     for(let i=0;i<alpha.length;i++)alpha[i]=rgba[i*4+3];
-    layers.push({alpha,w:c.width,h:c.height});schedule();
+    layers.push({file,alpha,w:c.width,h:c.height});schedule();
    }catch(e){console.warn('Mask unavailable',file,e);}
   };
   img.src='assets/'+encodeURIComponent(file);
  }
  function sync(){
-  const visible=svg.classList.contains('hotspot-guide-on')||svg.classList.contains('hotspot-peek');
+  const visible=svg.classList.contains('hotspot-guide-on')||svg.classList.contains('hotspot-peek')||Boolean(hoveredFile);
   canvas.style.display=visible?'block':'none';
  }
- new MutationObserver(sync).observe(svg,{attributes:true,attributeFilter:['class']});
+ new MutationObserver(()=>{sync();schedule();}).observe(svg,{attributes:true,attributeFilter:['class']});
+ scene.addEventListener('pointerover',e=>{
+   if(e.pointerType==='touch')return;
+   const el=e.target.closest?.('#hotspots polygon');
+   const file=el?.hasAttribute('data-mv-open')?'CDS.PNG':el?.hasAttribute('data-cat-pet')?'CAT.PNG':hoverMap[el?.getAttribute('data-open')];
+   if(hoveredFile!==file){hoveredFile=file||null;sync();schedule();}
+ });
+ scene.addEventListener('pointerout',e=>{
+   if(e.pointerType==='touch')return;
+   const next=e.relatedTarget?.closest?.('#hotspots polygon');
+   if(next)return;
+   if(hoveredFile){hoveredFile=null;sync();schedule();}
+ });
  sync();
 })();
