@@ -1,0 +1,79 @@
+/* Pixel-accurate hit testing against the original transparent Procreate layers.
+   The original SVG elements remain the sole action targets and keyboard controls. */
+(() => {
+  const scene = document.getElementById('play-scene');
+  const svg = document.getElementById('hotspots');
+  if (!scene || !svg) return;
+  const definitions = [
+    ['work-zoom','IMAC.PNG'],
+    ['gabzilla','TSHIRT GABZILLA.PNG'],
+    ['music','MARSHALL.PNG'],
+    ['phone','IPHONE.PNG'],
+    ['tamagotchi','TAMAGOTCHI.PNG'],
+    ['latte','MUG LATTE.PNG'],
+    ['book','TALE.PNG'],
+    ['about','RILAKKUMA.PNG'],
+    ['contact','GUITARE.PNG']
+  ];
+  const targets = definitions.map(([action, file]) => ({
+    file, target: svg.querySelector('[data-open="'+action+'"]')
+  })).filter(item => item.target);
+  const cd = svg.querySelector('[data-mv-open]');
+  if (cd) targets.push({file:'CDS.PNG',target:cd});
+  const ring = [...svg.querySelectorAll('[data-open="photos"]')]
+    .find(el => el.getAttribute('aria-label')?.toLowerCase().includes('ring light'));
+  if (ring) targets.push({file:'RING LIGHT.PNG',target:ring});
+  const cat = svg.querySelector('[data-cat-pet]');
+  if (cat) targets.push({file:'CAT.PNG',target:cat});
+  const maskCanvas = document.createElement('canvas');
+  const maskContext = maskCanvas.getContext('2d', {willReadFrequently:true});
+  for (const item of targets) {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d', {willReadFrequently:true});
+      if (!ctx) return;
+      ctx.drawImage(img,0,0);
+      try {
+        item.alpha = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+        item.width = canvas.width;
+        item.height = canvas.height;
+      } catch(e) { /* preserve old polygon if pixels are unavailable */ }
+    };
+    img.src = 'assets/'+encodeURIComponent(item.file);
+  }
+  const image = document.getElementById('room-img');
+  function point(event) {
+    const r = image?.getBoundingClientRect();
+    if (!r || !r.width || !r.height) return null;
+    const x = (event.clientX-r.left)/r.width;
+    const y = (event.clientY-r.top)/r.height;
+    return x>=0 && x<1 && y>=0 && y<1 ? {x,y} : null;
+  }
+  function hit(item,p) {
+    const x = Math.floor(p.x*item.width), y = Math.floor(p.y*item.height);
+    return item.alpha[(y*item.width+x)*4+3] > 0;
+  }
+  let forwarding = false;
+  scene.addEventListener('click',event => {
+    if (forwarding || !event.isTrusted || !event.clientX && !event.clientY) return;
+    const p = point(event);
+    if (!p) return;
+    const ready = targets.filter(item => item.alpha);
+    if (!ready.length) return;
+    const matched = [...ready].reverse().find(item => hit(item,p));
+    const original = event.target.closest?.('#hotspots polygon');
+    if (matched) {
+      if (original === matched.target) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      forwarding = true;
+      try { matched.target.click(); } finally { forwarding = false; }
+    } else if (original && ready.some(item => item.target === original)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  },true);
+})();
