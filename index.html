@@ -219,6 +219,29 @@
  pointer-events:all !important;
  cursor:pointer;
 }
+
+/* Work and Play are mutually exclusive surfaces. Respect the hidden attribute
+   even when earlier responsive CSS forces display:flex or display:block. */
+#desktop #play-viewport[hidden],
+#desktop #work-desktop[hidden],
+#play-viewport[hidden],
+#work-desktop[hidden] {
+ display:none !important;
+ visibility:hidden !important;
+ pointer-events:none !important;
+}
+#desktop.mode-work #play-viewport,
+#app.mode-work #play-viewport {
+ display:none !important;
+ pointer-events:none !important;
+}
+#app.mode-work #work-desktop {
+ display:block !important;
+ position:relative;
+ isolation:isolate;
+ z-index:1;
+}
+#app.mode-work #work-desktop .work-wallpaper {pointer-events:none;}
 </style>
 </head>
 <body>
