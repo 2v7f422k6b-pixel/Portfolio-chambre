@@ -158,6 +158,8 @@
   }
 
   if (editing) {
+    // Keep touch and Pencil drags on posters from triggering page gestures.
+    svg.style.touchAction = 'none';
     const panel = document.createElement('section');
     panel.id = 'poster-edit-panel';
     panel.setAttribute('aria-label', 'Réglage des affiches');
