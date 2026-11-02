@@ -1,8 +1,8 @@
 /* Coloring Book for Play Mode. This feature is independent of existing windows. */
 (function(){
 "use strict";
-const root=document.getElementById("app"),dock=document.getElementById("dock");
-if(!root||!dock)return;
+const root=document.getElementById("app");
+if(!root)return;
 const style=document.createElement("style");style.id="coloring-book-styles";
 style.textContent=[
 '#app.mode-work #dock .coloring-dock-button{display:none!important}',
@@ -17,10 +17,6 @@ style.textContent=[
 '@media(max-width:600px){.coloring-overlay{padding:5px}.coloring-panel{width:100%;height:calc(100dvh - 10px)}.coloring-panel-head{height:42px;font-size:16px;padding:4px 8px}}'
 ].join("\n");
 document.head.append(style);
-const btn=document.createElement("button");btn.className="coloring-dock-button";btn.type="button";btn.dataset.open="coloring";btn.title="Coloring Book";btn.setAttribute("aria-label","Open Coloring Book");
-btn.innerHTML='<span class="dock-app coloring">✎</span><span class="dock-tooltip">Coloring Book</span>';
-const pages=dock.querySelector('[data-open="pages"]');
-if(pages)pages.insertAdjacentElement("afterend",btn);else dock.append(btn);
 const overlay=document.createElement("div");overlay.className="coloring-overlay";overlay.id="coloring-overlay";overlay.hidden=true;
 overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">♥ COLORING BOOK ♥</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html" loading="lazy"></iframe></section>';
 document.body.append(overlay);
