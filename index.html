@@ -195,6 +195,20 @@
 #hotspots polygon:focus-visible, #hotspots polygon.active {
  outline:none !important; box-shadow:none !important;
 }
+
+/* Disable native SVG polygon outlines on every interaction state. The PNG overlay owns visual feedback. */
+#play-scene #hotspots polygon,
+#play-scene #hotspots polygon:hover,
+#play-scene #hotspots polygon:focus,
+#play-scene #hotspots polygon:focus-visible,
+#play-scene #hotspots polygon:active,
+#play-scene #hotspots polygon.active,
+#play-scene #hotspots polygon.touch-target,
+#play-scene #hotspots.hotspot-guide-on polygon,
+#play-scene #hotspots.hotspot-peek polygon {
+ stroke:none !important; fill:transparent !important; filter:none !important;
+ outline:none !important; box-shadow:none !important;
+}
 </style>
 </head>
 <body>
