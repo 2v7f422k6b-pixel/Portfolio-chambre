@@ -317,6 +317,23 @@ html body #welcome .welcome-choice-hints button:hover,html body #welcome .welcom
  html body #welcome .welcome-choice-footer{margin-top:54px!important;}
  html body #welcome .welcome-choice-hints button{padding:10px 20px!important;}
 }
+
+/* User-drawn welcome assets: original transparent PNGs, no CSS imitation. */
+html body #welcome .welcome-title-cloud{display:block!important;width:min(740px,90vw)!important;max-width:100%!important;min-height:0!important;margin:0 auto!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;}
+html body #welcome .welcome-title-cloud::before,html body #welcome .welcome-title-cloud::after{display:none!important;content:none!important;}
+html body #welcome .welcome-title-art{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important;}
+html body #welcome .mode-tile{position:relative!important;isolation:isolate!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:10% 7% 9%!important;overflow:visible!important;}
+html body #welcome .mode-tile .welcome-hand-frame{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;z-index:0!important;pointer-events:none!important;}
+html body #welcome .mode-tile .tile-art{position:relative!important;z-index:1!important;width:100%!important;aspect-ratio:1.7!important;border-radius:0!important;overflow:hidden!important;}
+html body #welcome .mode-tile .tile-name{z-index:2!important;margin:-5% auto 8px!important;}
+html body #welcome .mode-tile .tile-desc{z-index:2!important;margin:8px auto -3%!important;}
+html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{display:none!important;content:none!important;}
+html body #welcome .welcome-hero{padding-bottom:32px!important;}
+@media(max-width:680px){
+ html body #welcome .welcome-title-cloud{width:min(520px,94vw)!important;}
+ html body #welcome .mode-tile{padding:10% 7% 9%!important;}
+ html body #welcome .mode-tile .tile-name{margin:-5% auto 8px!important;}
+}
 </style>
 </head>
 <body>
@@ -325,17 +342,19 @@ html body #welcome .welcome-choice-hints button:hover,html body #welcome .welcom
       <div class="welcome-panel">
         <div class="welcome-top"><span>♥</span></div>
         <div class="welcome-hero">
-          <div class="welcome-title-cloud"><div class="welcome-kicker">Léna de Firmas ♡</div><div class="welcome-portfolio">Portfolio</div></div>
+          <div class="welcome-title-cloud"><img class="welcome-title-art" src="assets/accueil/titre%20accueil.png" alt="Léna de Firmas — Portfolio"></div>
         </div>
         <div class="mode-options">
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
             <span class="tile-name">Mode Play ♡</span>
             <span class="tile-art"><img class="welcome-icon" src="assets/IMG_4903.png" alt="Illustrated bedroom"></span>
+            <img class="welcome-hand-frame" src="assets/accueil/cadre%20accueil.png" alt="" aria-hidden="true">
             <span class="tile-desc">Explore my universe ♡</span>
           </button>
           <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode">
             <span class="tile-name">Mode Work ♡</span>
             <span class="tile-art"><img class="welcome-icon" src="assets/work-wallpaper-20261102.webp" alt="Illustrated Work desktop"></span>
+            <img class="welcome-hand-frame" src="assets/accueil/cadre%20accueil.png" alt="" aria-hidden="true">
             <span class="tile-desc">Discover my projects ♡</span>
           </button>
         </div>
