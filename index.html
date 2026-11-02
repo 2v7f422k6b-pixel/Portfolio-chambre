@@ -209,6 +209,21 @@
  stroke:none !important; fill:transparent !important; filter:none !important;
  outline:none !important; box-shadow:none !important;
 }
+
+/* Transparent SVG fills are not reliably pointer-targetable: retain invisible painted hit regions. */
+#play-scene #hotspots polygon,
+#play-scene #hotspots polygon:hover,
+#play-scene #hotspots polygon:focus,
+#play-scene #hotspots polygon:focus-visible,
+#play-scene #hotspots polygon:active,
+#play-scene #hotspots polygon.active,
+#play-scene #hotspots polygon.touch-target,
+#play-scene #hotspots.hotspot-guide-on polygon,
+#play-scene #hotspots.hotspot-peek polygon {
+ fill:rgba(255,255,255,0.001) !important;
+ pointer-events:all !important;
+ cursor:pointer;
+}
 </style>
 </head>
 <body>
