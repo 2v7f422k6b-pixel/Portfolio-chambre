@@ -155,7 +155,12 @@
     html[data-theme="night"] #hotspots .poster-artwork {
       filter: brightness(.77) saturate(.9);
     }
-  </style>
+  
+/* FINAL RESPONSIVE ROOM OVERRIDE: same coordinate system for background and hotspots. */
+#play-viewport { display:flex; justify-content:center !important; align-items:center !important; overflow:hidden; }
+#play-scene { width:min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 auto !important; }
+#room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
