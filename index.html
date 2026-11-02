@@ -448,29 +448,50 @@ html body #welcome .welcome-stars img:nth-child(1){top:5%!important;left:5%!impo
 html body #welcome .welcome-stars img:nth-child(2){top:12%!important;right:5%!important;width:clamp(29px,4vw,55px)!important;transform:rotate(14deg)!important;}
 html body #welcome .welcome-stars img:nth-child(3){bottom:7%!important;right:12%!important;width:clamp(25px,3.5vw,48px)!important;transform:rotate(-9deg)!important;}
 @media(max-width:680px){html body #welcome .welcome-stars img:nth-child(1){top:2%!important;left:0!important;}html body #welcome .welcome-stars img:nth-child(2){top:6%!important;right:0!important;}html body #welcome .welcome-stars img:nth-child(3){bottom:2%!important;right:1%!important;}}
+
+/* Precisely overlay labels on the already-painted pink and ivory bubbles. */
+html body #welcome .mode-tile{display:block!important;position:relative!important;aspect-ratio:1.65!important;padding:0!important;overflow:visible!important;min-height:0!important;}
+html body #welcome .mode-tile::before{content:none!important;display:none!important;}
+html body #welcome .mode-tile .welcome-hand-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;z-index:0!important;}
+html body #welcome .mode-tile .tile-name,html body #welcome .mode-tile .tile-desc{position:absolute!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;z-index:3!important;color:#ff173b!important;text-align:center!important;white-space:nowrap!important;font-weight:600!important;}
+html body #welcome .mode-tile .tile-name{top:9%!important;left:32%!important;width:36%!important;height:14%!important;font-size:clamp(13px,1.6vw,22px)!important;}
+html body #welcome .mode-tile .tile-desc{top:82%!important;left:26%!important;width:48%!important;height:12%!important;font-size:clamp(10px,1.05vw,15px)!important;}
+html body #welcome .welcome-mood-heading{font-size:clamp(18px,2.1vw,27px)!important;margin:0 auto clamp(10px,1.6vw,20px)!important;}
+html body #welcome .mood-arrow{display:inline-block!important;margin:0 14px!important;font-size:1.35em!important;transform:translateY(3px)!important;}
+html body #welcome .welcome-panel{padding-top:clamp(16px,3vw,36px)!important;}
+html body #welcome .welcome-hero{margin-bottom:clamp(8px,1.5vw,18px)!important;}
+html body #welcome .welcome-title-cloud{width:min(610px,75%)!important;}
+html body #welcome .welcome-stars{z-index:2!important;}
+html body #welcome .welcome-star-extra{position:absolute!important;display:block!important;object-fit:contain!important;pointer-events:none!important;width:clamp(18px,3vw,40px)!important;height:auto!important;opacity:.85!important;}
+html body #welcome .welcome-stars .s4{top:26%!important;left:14%!important;}
+html body #welcome .welcome-stars .s5{top:27%!important;right:16%!important;width:26px!important;}
+html body #welcome .welcome-stars .s6{top:62%!important;left:1%!important;}
+html body #welcome .welcome-stars .s7{bottom:3%!important;left:24%!important;width:30px!important;}
+html body #welcome .welcome-stars .s8{bottom:7%!important;right:2%!important;width:35px!important;}
+@media(max-width:680px){html body #welcome .mode-tile .tile-name{font-size:clamp(15px,4vw,20px)!important;}html body #welcome .mode-tile .tile-desc{font-size:clamp(10px,2.7vw,14px)!important;}html body #welcome .welcome-title-cloud{width:90%!important;}html body #welcome .mood-arrow{margin:0 5px!important;}}
 </style>
 </head>
 <body>
   <div id="app" class="mode-select">
     <section id="welcome" aria-labelledby="welcome-heading">
       <div class="welcome-panel">
-        <div class="welcome-stars" aria-hidden="true"><img src="assets/accueil/etoile%201.png" alt=""><img src="assets/accueil/etoile%202.png" alt=""><img src="assets/accueil/etoile%203.png" alt=""></div>
+        <div class="welcome-stars" aria-hidden="true"><img src="assets/accueil/etoile%201.png" alt=""><img src="assets/accueil/etoile%202.png" alt=""><img src="assets/accueil/etoile%203.png" alt=""><img class="welcome-star-extra s4" src="assets/accueil/etoile%201.png" alt="" aria-hidden="true"><img class="welcome-star-extra s5" src="assets/accueil/etoile%202.png" alt="" aria-hidden="true"><img class="welcome-star-extra s6" src="assets/accueil/etoile%203.png" alt="" aria-hidden="true"><img class="welcome-star-extra s7" src="assets/accueil/etoile%201.png" alt="" aria-hidden="true"><img class="welcome-star-extra s8" src="assets/accueil/etoile%202.png" alt="" aria-hidden="true"></div>
         <div class="welcome-hero">
           <div class="welcome-title-cloud"><img class="welcome-title-art" src="assets/accueil/titre%20accueil.png" alt="Léna de Firmas — Portfolio"></div>
         </div>
-        <h1 id="welcome-heading" class="welcome-mood-heading">Choose your mood:</h1>
+        <h1 id="welcome-heading" class="welcome-mood-heading"><span class="mood-arrow">↙</span> Choose your mood <span class="mood-arrow">↘</span></h1>
         <div class="mode-options">
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
-            <span class="tile-name">Mode Play ♡</span>
+            <span class="tile-name">Mode Play</span>
             
             <img class="welcome-hand-frame" src="assets/accueil/accueil%20jeu.png" alt="" aria-hidden="true">
-            <span class="tile-desc">Explore my universe ♡</span>
+            <span class="tile-desc">Explore my universe</span>
           </button>
           <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode">
-            <span class="tile-name">Mode Work ♡</span>
+            <span class="tile-name">Mode Work</span>
             
             <img class="welcome-hand-frame" src="assets/accueil/accueil%20travail.png" alt="" aria-hidden="true">
-            <span class="tile-desc">Discover my projects ♡</span>
+            <span class="tile-desc">Discover my projects</span>
           </button>
         </div>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
