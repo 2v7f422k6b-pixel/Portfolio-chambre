@@ -250,6 +250,38 @@
 /* Both home previews are full-bleed screenshots of the actual mode backgrounds. */
 #welcome .mode-options .mode-tile .tile-art{position:relative!important;display:block!important;overflow:hidden!important;}
 #welcome .mode-options .mode-tile .tile-art > img.welcome-icon{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;min-width:100%!important;min-height:100%!important;object-fit:cover!important;object-position:center!important;margin:0!important;padding:0!important;opacity:1!important;visibility:visible!important;transform:none!important;}
+
+/* Illustrated mood-picker homepage, implemented with live HTML buttons and real artwork. */
+html body #welcome{background:#d9b6ed!important;background-image:radial-gradient(ellipse at 18% 24%,#f2d6f3 0,transparent 42%),radial-gradient(ellipse at 83% 76%,#c69be8 0,transparent 43%)!important;padding:22px!important;overflow:auto!important;}
+html body #welcome::before,html body #welcome::after{content:'☆'!important;position:absolute!important;color:#ff173b!important;font-size:clamp(40px,6vw,86px)!important;opacity:.8!important;pointer-events:none!important;}
+html body #welcome::before{left:4%!important;top:9%!important}html body #welcome::after{right:5%!important;bottom:9%!important}
+html body #welcome .welcome-panel{width:min(1280px,100%)!important;max-width:1280px!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;padding:10px 14px 20px!important;border-radius:0!important;}
+html body #welcome .welcome-top{display:none!important;}
+html body #welcome .welcome-hero{padding:5px 0 18px!important;text-align:center!important;position:relative!important;}
+html body #welcome .welcome-kicker,html body #welcome .welcome-portfolio{color:#ff173b!important;letter-spacing:.015em!important;text-shadow:1px 1px 0 #fff2fc!important;font-weight:700!important;line-height:1.05!important;}
+html body #welcome .welcome-kicker{font-size:clamp(35px,6vw,78px)!important;}
+html body #welcome .welcome-portfolio{font-size:clamp(30px,4.5vw,64px)!important;margin-top:0!important;}
+html body #welcome .mode-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(14px,4vw,58px)!important;align-items:stretch!important;}
+html body #welcome .mode-tile{position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:0!important;padding:20px 12px 13px!important;background:#fff3fc!important;border:3px solid #ff173b!important;border-radius:42px 34px 44px 30px!important;box-shadow:5px 5px 0 #ff173b24!important;min-width:0!important;overflow:visible!important;text-align:center!important;transform:none!important;}
+html body #welcome .mode-tile:hover,html body #welcome .mode-tile:focus-visible{transform:translateY(-5px)!important;box-shadow:5px 9px 0 #ff173b40!important;outline:3px solid #ff173b!important;outline-offset:3px!important;}
+html body #welcome .mode-tile .tile-name{position:relative!important;z-index:2!important;order:0!important;display:block!important;background:#ffd5e9!important;color:#ff173b!important;border:2px solid #ff173b!important;border-radius:24px 31px 20px 28px!important;font-size:clamp(19px,2.6vw,35px)!important;line-height:1.1!important;padding:7px 23px!important;margin:-45px auto 9px!important;font-weight:700!important;letter-spacing:0!important;}
+html body #welcome .mode-tile .tile-art{order:1!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1.7!important;border:0!important;border-radius:23px 19px 25px 17px!important;overflow:hidden!important;background:#fff2fc!important;}
+html body #welcome .mode-tile .tile-art img.welcome-icon{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;opacity:1!important;transform:none!important;}
+html body #welcome .mode-tile .tile-desc{order:2!important;color:#ff173b!important;background:#ffe2f0!important;border:2px solid #ff173b!important;border-radius:22px 18px 25px 19px!important;font-size:clamp(13px,1.6vw,21px)!important;font-weight:700!important;letter-spacing:0!important;padding:7px 16px!important;margin:-5px 0 -26px!important;z-index:2!important;position:relative!important;}
+html body #welcome .welcome-choice-footer{text-align:center!important;margin:36px 0 4px!important;color:#ff173b!important;}
+html body #welcome #welcome-heading{font-size:clamp(24px,3vw,38px)!important;color:#ff173b!important;letter-spacing:0!important;font-weight:700!important;margin:0 0 13px!important;}
+html body #welcome .welcome-choice-hints{display:flex!important;justify-content:center!important;gap:clamp(25px,8vw,110px)!important;}
+html body #welcome .welcome-choice-hints span{color:#ff173b!important;background:#ffe2f0!important;border:2px solid #ff173b!important;border-radius:24px 30px 20px 27px!important;padding:7px 32px!important;font-size:clamp(18px,2vw,27px)!important;}
+html body #welcome .welcome-foot{display:none!important;}
+@media(max-width:680px){
+ html body #welcome{padding:18px 12px!important;place-items:start center!important;}
+ html body #welcome .welcome-panel{padding:0 8px 25px!important;}
+ html body #welcome .welcome-hero{padding:4px 0 32px!important;}
+ html body #welcome .mode-options{grid-template-columns:1fr!important;gap:42px!important;}
+ html body #welcome .mode-tile .tile-name{margin-top:-35px!important;}
+ html body #welcome .mode-tile .tile-art{aspect-ratio:1.9!important;}
+ html body #welcome .welcome-choice-footer{margin-top:35px!important;}
+}
 </style>
 </head>
 <body>
@@ -257,10 +289,25 @@
     <section id="welcome" aria-labelledby="welcome-heading">
       <div class="welcome-panel">
         <div class="welcome-top"><span>♥</span></div>
-        <div class="welcome-hero"><div class="welcome-kicker">Léna de Firmas</div><div class="welcome-portfolio">Portfolio</div><div class="welcome-stars" aria-hidden="true"><span class="star-side"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""></span><span class="star-side"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABHklEQVR42u1YQRICMQhrmb7Cs/9/kef9hp721u4CTahVOOk4AyRAqJSSljZllen8KM/3+flRXpRYsnsFJIL93vesABPAqPcZVaBWgDW4VAA9lplAJJp9dBsJm/0th7jHPmuYZWf2KRW4GlhGFdpKlkf+LKpVkUlqAyNjNFaSXh9WcHXlEkIsRrlLdpW6aAkVDeMrQGi7QbQ9GgnC0spiGbQIENY5FKtaMEF4ROR2E0eB8Cqg6inBBjEj3+q3EAvE7O4xPeYilpo1hrADsH3/31kFfS6c/Y+Qh62fB8B+flRW/1v13TtbLZLx8zekFDdm4iOFQQJpDLavDltoIBU1jNYkUP6mW8jLXq8ioS2EGkQUkK/Q9NVXkLS0tDS7fQCtIqFfVdXtmgAAAABJRU5ErkJggg==" alt=""></span></div><h1 id="welcome-heading">Choose your mood</h1></div>
+        <div class="welcome-hero">
+          <div class="welcome-kicker">Léna de Firmas</div>
+          <div class="welcome-portfolio">Portfolio</div>
+        </div>
         <div class="mode-options">
-          <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode"><span class="tile-art"><img class="welcome-icon" src="assets/work-wallpaper-20261102.webp" alt=""></span><span class="tile-name">Work</span><span class="tile-desc">Browse selected projects</span></button>
-          <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode"><span class="tile-art"><img class="welcome-icon" src="assets/IMG_4903.png" alt=""></span><span class="tile-name">Play</span><span class="tile-desc">Explore my world</span></button>
+          <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
+            <span class="tile-name">Mode Play ♡</span>
+            <span class="tile-art"><img class="welcome-icon" src="assets/IMG_4903.png" alt="Illustrated bedroom"></span>
+            <span class="tile-desc">Explore my universe ♡</span>
+          </button>
+          <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode">
+            <span class="tile-name">Mode Work ♡</span>
+            <span class="tile-art"><img class="welcome-icon" src="assets/work-wallpaper-20261102.webp" alt="Illustrated Work desktop"></span>
+            <span class="tile-desc">Discover my projects ♡</span>
+          </button>
+        </div>
+        <div class="welcome-choice-footer">
+          <h1 id="welcome-heading">Choose your mood:</h1>
+          <div class="welcome-choice-hints"><span>♡ Play</span><span>♡ Work</span></div>
         </div>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
