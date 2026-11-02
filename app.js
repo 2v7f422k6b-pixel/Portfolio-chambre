@@ -44,7 +44,7 @@ function formatTime(seconds){
 }
 function updateClocks(){
  const d=new Date();const hour=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');
- $('#kitty-time').textContent=hour+':'+min;
+ const kittyClock=$('#kitty-time');if(kittyClock)kittyClock.textContent=hour+':'+min;
  const phoneClock=$('#phone-time');if(phoneClock)phoneClock.textContent=hour+':'+min;
 }
 updateClocks();setInterval(updateClocks,15000);
@@ -190,7 +190,7 @@ function openApp(name,index){
   case 'latte':showLatte();break;
   case 'polaroids':showPolaroids();break;
   case 'music':showMusic(true);break;
-  case 'clock':showToast('The Hello Kitty clock shows your local time: '+$('#kitty-time').textContent);break;
+  case 'clock':showToast('Local time: '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}));break;
   case 'finder':openFinder();break;
   case 'illustration':openIllustrationProjects();break;
   case 'social':openSocialProjects();break;
