@@ -421,6 +421,24 @@ html body #welcome .welcome-panel::before,
 html body #welcome .welcome-panel::after,
 html body #welcome .mode-tile::after {content:none!important;display:none!important;}
 html body #welcome .mode-tile .tile-art{border:none!important;outline:none!important;box-shadow:none!important;}
+
+/* The old sketch-ui script inserts actual SVG rectangle overlays.
+   Hide those overlays ONLY on the welcome screen; preserve user's PNG artwork. */
+html body #welcome .welcome-panel > svg.sketch-ui-svg,
+html body #welcome .mode-tile > svg.sketch-ui-svg,
+html body #welcome .tile-art > svg.sketch-ui-svg,
+html body #welcome .welcome-top > svg.sketch-ui-svg,
+html body #welcome .welcome-foot > svg.sketch-ui-svg,
+html body #welcome .sketch-ui-svg {
+ display:none!important;
+ visibility:hidden!important;
+ opacity:0!important;
+}
+html body #welcome .welcome-panel.sketch-ui-frame,
+html body #welcome .mode-tile.sketch-ui-frame,
+html body #welcome .tile-art.sketch-ui-frame{
+ border:0!important;outline:0!important;box-shadow:none!important;
+}
 </style>
 </head>
 <body>
