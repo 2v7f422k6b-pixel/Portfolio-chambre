@@ -530,3 +530,6 @@ html[data-theme="night"] #room-img{filter:none!important}
 .phone-wallpaper{border-radius:inherit!important}
 .phone-app .ios-icon,.phone-app .ios-icon.mail,.phone-app .ios-icon.ig{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;width:72px!important;max-width:100%!important;aspect-ratio:1!important;overflow:visible!important}
 .phone-app .phone-drawn-icon{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important}
+
+/* Smartphone camera island: softly rounded pill instead of a rectangle. */
+.phone-device .phone-island{border-radius:999px!important;overflow:hidden!important;clip-path:inset(0 round 999px)!important}
