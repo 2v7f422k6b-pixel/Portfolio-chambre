@@ -419,9 +419,9 @@ html body #work-desktop .desk-extra[data-object="latest"] .desk-extra-icon{backg
 html body #work-desktop .desk-extra[data-object="info"]{grid-column:1!important;grid-row:2!important}
 html body #work-desktop .desk-extra[data-object="info"] .desk-extra-icon{border:2px solid #ff173b!important;border-radius:50%!important;background:#e9b5ff!important}
 html body #work-desktop .desk-extra[data-object="trash"]{grid-column:3!important;grid-row:2!important}
-html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon{font-size:0!important;position:relative!important;width:48px!important;height:56px!important;margin-top:8px!important;border:3px solid #ff173b!important;border-top:0!important;background:repeating-linear-gradient(90deg,#fff2fc 0 10px,#ffc4db 10px 13px)!important;clip-path:polygon(0 0,100% 0,87% 100%,13% 100%)!important}
-html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::before{content:""!important;position:absolute!important;top:1px;left:0;right:0;border-top:5px solid #ff173b!important}
-html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::after{content:""!important;position:absolute!important;top:8px;bottom:8px;left:45%;border-left:2px solid #ff173b!important}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon{font-size:0!important;position:relative!important;width:96px!important;height:108px!important;margin-top:0!important;border:0!important;background:none!important;clip-path:none!important;box-shadow:none!important;overflow:visible!important;padding:0!important}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::before{content:none!important;display:none!important}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::after{content:none!important;display:none!important}
 html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"]{background:#fff2a6!important;color:#ff173b!important}
 html body #work-desktop .desk-panel{margin:-72px auto 105px!important}
 @media(max-width:800px){html body #work-desktop .work-desk-layout{grid-template-columns:minmax(0,1fr) 260px!important;gap:12px!important;padding:0 12px!important}html body #work-desktop .work-desk-layout>.desk-extras{gap:6px!important}html body #work-desktop .desk-extra[data-object="postit"]{width:150px!important;max-width:150px!important;font-size:14px!important}}
@@ -966,3 +966,9 @@ html body #work-desktop > .work-wallpaper,
 html[data-theme="night"] body #work-desktop > .work-wallpaper {
  background:#78a8d6 url("assets/work-wallpaper-20261102.webp") center/cover no-repeat!important;
 }
+
+/* Single artist-drawn trash icon: remove legacy CSS shape and allow full-size PNG. */
+html body #work-desktop .desk-extra[data-object="trash"]{width:140px!important;max-width:140px!important;min-height:150px!important}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon{width:108px!important;height:116px!important;min-width:108px!important;min-height:116px!important;background:none!important;background-image:none!important;border:0!important;clip-path:none!important;box-shadow:none!important;overflow:visible!important;transform:none!important}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::before,html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon::after{content:none!important;display:none!important}
+html body #work-desktop .desk-extra[data-object="trash"] img.custom-trash-art{width:108px!important;height:116px!important;max-width:none!important;object-fit:contain!important;display:block!important;clip-path:none!important}
