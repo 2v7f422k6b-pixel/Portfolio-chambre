@@ -150,6 +150,13 @@
       filter: brightness(.77) saturate(.9);
     }
   </style>
+
+  <!-- Draft branch: original transparent exports keep their shared 3072 × 1732 canvas. -->
+  <style id="draft-room-styles">
+    #play-scene { background: white; aspect-ratio: 3072 / 1732; }
+    #play-scene .draft-room-layer { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; pointer-events:none; user-select:none; z-index:1; }
+    #play-scene #instax-hotspot { left:12.598%; top:8.603%; width:3.809%; height:7.044%; }
+  </style>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -185,112 +192,54 @@
       <div id="global-search-popover" hidden><label for="global-search-input">Search my portfolio</label><input id="global-search-input" type="search" placeholder="Search artworks, projects, games…" autocomplete="off"><div id="global-search-results" aria-live="polite"></div></div>
       <div id="play-viewport" hidden>
         <div id="play-scene">
-          <img id="room-img" src="assets/room-day-table-back.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
-          <img id="room-night" src="assets/room-night-table-back.webp" alt="" aria-hidden="true" decoding="async">
-          <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
-          <svg id="window-life" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="window-glass-clip" clipPathUnits="userSpaceOnUse">
-                <polygon points="994,57 1170,17 1170,477 994,475"/>
-              </clipPath>
-            </defs>
-            <g clip-path="url(#window-glass-clip)">
-              <!-- Day: two slow drifting clouds and a few hand-drawn flying birds. -->
-              <g class="outside-day">
-                <g class="cloud-back">
-                  <path class="day-cloud" d="M 963 155 Q 960 147 970 143 Q 977 130 991 139 Q 1003 132 1010 147 Q 1027 145 1031 159 Q 1031 171 1017 172 L 977 172 Q 960 172 963 155 Z"/>
-                </g>
-                <g class="cloud-front">
-                  <path class="day-cloud" d="M 977 225 Q 972 214 985 209 Q 994 195 1009 204 Q 1022 194 1032 208 Q 1045 205 1052 216 Q 1067 214 1070 229 Q 1071 239 1055 240 L 993 240 Q 976 239 977 225 Z"/>
-                </g>
-                <g class="bird-flock">
-                  <path class="bird-wing" d="M 959 128 Q 968 116 978 128 Q 988 116 997 128"/>
-                  <path class="bird-wing" d="M 932 153 Q 939 146 945 154 Q 952 146 959 154"/>
-                  <path class="bird-wing" d="M 987 160 Q 994 151 1001 160 Q 1008 152 1015 160"/>
-                </g>
-                <g class="bird-flock bird-flock--far">
-                  <path class="bird-wing" d="M 955 91 Q 961 84 968 92 Q 976 85 982 92"/>
-                  <path class="bird-wing" d="M 930 113 Q 935 107 941 113 Q 947 108 952 113"/>
-                </g>
-              </g>
-              <!-- Night: the moon and city remain part of the ORIGINAL illustration. -->
-              <g class="outside-night">
-                <g class="night-cloud">
-                  <path d="M 961 215 Q 968 201 986 207 Q 999 194 1014 204 Q 1037 193 1051 212 Q 1074 212 1082 227 L 963 227 Z"/>
-                </g>
-                <g class="night-stars">
-                  <path class="night-star" d="M 1041 83 l 2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z"/>
-                  <circle class="night-star" cx="1026" cy="139" r="2.5"/>
-                  <path class="night-star" d="M 1150 89 l 1.6 4.2 4.2 1.6 -4.2 1.6 -1.6 4.2 -1.6 -4.2 -4.2 -1.6 4.2 -1.6 Z"/>
-                  <circle class="night-star" cx="1128" cy="60" r="2.2"/>
-                  <path class="night-star" d="M 1020 230 l 1.7 5 4 1.5 -4 1.5 -1.7 5 -1.7 -5 -4 -1.5 4 -1.5 Z"/>
-                  <circle class="night-star" cx="1151" cy="201" r="2.4"/>
-                  <path class="night-star" d="M 1084 262 l 1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z"/>
-                  <circle class="night-star" cx="1062" cy="176" r="1.8"/>
-                  <circle class="night-star" cx="1143" cy="279" r="2.1"/>
-                  <path class="night-star" d="M 1075 113 l 1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4 Z"/>
-                </g>
-                <path class="shooting-star" d="M 1148 117 L 1160 104"/>
-              </g>
-            </g>
-          </svg>
-          <svg id="hotspots" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
-          <defs><clipPath id="redraw-post-0"><polygon points="228,5 296,29 297,143 279,138 274,99 255,81 228,81"/></clipPath><clipPath id="redraw-post-1"><polygon points="331,0 437,31 438,237 331,211"/></clipPath><clipPath id="redraw-post-2"><polygon points="491,39 564,72 565,243 491,224"/></clipPath><clipPath id="redraw-post-3"><polygon points="639,65 762,33 763,230 639,249"/></clipPath><clipPath id="redraw-post-4"><polygon points="792,75 840,63 841,168 792,178"/></clipPath><clipPath id="redraw-post-5"><polygon points="352,255 428,274 428,408 350,403"/></clipPath><clipPath id="redraw-post-6"><polygon points="507,270 560,282 560,399 506,395"/></clipPath><clipPath id="redraw-post-7"><polygon points="597,294 654,287 654,396 597,400"/></clipPath><clipPath id="redraw-post-8"><polygon points="678,272 735,265 735,389 678,391"/></clipPath><clipPath id="redraw-post-9"><polygon points="794,218 838,212 838,296 794,302"/></clipPath><clipPath id="redraw-post-10"><polygon points="763,334 841,328 841,486 763,486"/></clipPath><clipPath id="redraw-post-12"><polygon points="690,414 735,410 735,476 690,476"/></clipPath><clipPath id="redraw-post-13"><polygon points="808,514 837,514 837,564 808,563"/></clipPath><clipPath id="redraw-post-14"><polygon points="1307,35 1425,10 1426,201 1307,216"/></clipPath><clipPath id="redraw-post-15"><polygon points="1463,37 1595,12 1597,211 1464,227"/></clipPath><clipPath id="redraw-post-16"><polygon points="1355,247 1426,237 1429,345 1365,350 1362,372 1355,373"/></clipPath><clipPath id="redraw-post-17"><polygon points="1306,291 1335,289 1335,337 1306,338"/></clipPath><clipPath id="redraw-post-18"><polygon points="1466,265 1608,252 1609,369 1593,385 1609,402 1609,434 1556,434 1559,343 1466,349"/></clipPath></defs>
-          <g class="poster-artworks" pointer-events="none"><image class="poster-artwork" href="assets/photos/bubblegum.jpg" x="228" y="5" width="69" height="138" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-0)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/soap-bubbles.jpg" x="331" y="0" width="107" height="237" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-1)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/butterflies-grass.jpg" x="491" y="39" width="74" height="204" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-2)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/flower-portrait.jpg" x="639" y="33" width="124" height="216" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-3)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/kitchen.jpg" x="792" y="63" width="49" height="115" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-4)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/cherry-blossom.jpg" x="350" y="255" width="78" height="153" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-5)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/butterfly-back.jpg" x="506" y="270" width="54" height="129" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-6)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/lighter.jpg" x="597" y="287" width="57" height="113" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-7)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/closeup.jpg" x="678" y="265" width="57" height="126" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-8)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/sunglasses.jpg" x="794" y="212" width="44" height="90" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-9)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/clown.jpg" x="763" y="328" width="78" height="158" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-10)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/snow-city.jpg" x="690" y="410" width="45" height="66" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-12)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/still-life.jpg" x="808" y="514" width="29" height="50" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-13)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/motorbike.jpg" x="1307" y="10" width="119" height="206" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-14)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/synth-portrait.jpg" x="1463" y="12" width="134" height="215" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-15)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/marseille.jpg" x="1355" y="237" width="74" height="136" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-16)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/marseille-emblem.jpg" x="1306" y="289" width="29" height="49" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-17)" aria-hidden="true"/>
-            <image class="poster-artwork" href="assets/photos/swans-lotus.jpg" x="1466" y="252" width="143" height="182" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-18)" aria-hidden="true"/></g>
-          <polygon data-type="poster" data-index="0" points="228,5 296,29 297,143 279,138 274,99 255,81 228,81" aria-label="Poster 1" tabindex="0"/>
-          <polygon data-type="poster" data-index="1" points="331,0 437,31 438,237 331,211" aria-label="Poster 2" tabindex="0"/>
-          <polygon data-type="poster" data-index="2" points="491,39 564,72 565,243 491,224" aria-label="Poster 3" tabindex="0"/>
-          <polygon data-type="poster" data-index="3" points="639,65 762,33 763,230 639,249" aria-label="Poster 4" tabindex="0"/>
-          <polygon data-type="poster" data-index="4" points="792,75 840,63 841,168 792,178" aria-label="Poster 5" tabindex="0"/>
-          <polygon data-type="poster" data-index="5" points="352,255 428,274 428,408 350,403" aria-label="Poster 6" tabindex="0"/>
-          <polygon data-type="poster" data-index="6" points="507,270 560,282 560,399 506,395" aria-label="Poster 7" tabindex="0"/>
-          <polygon data-type="poster" data-index="7" points="597,294 654,287 654,396 597,400" aria-label="Poster 8" tabindex="0"/>
-          <polygon data-type="poster" data-index="8" points="678,272 735,265 735,389 678,391" aria-label="Poster 9" tabindex="0"/>
-          <polygon data-type="poster" data-index="9" points="794,218 838,212 838,296 794,302" aria-label="Poster 10" tabindex="0"/>
-          <polygon data-type="poster" data-index="10" points="763,334 841,328 841,486 763,486" aria-label="Poster 11" tabindex="0"/>
-          <polygon data-type="poster" data-index="11" points="361,434 411,437 411,506 361,506" aria-label="Poster 12" tabindex="0"/>
-          <polygon data-type="poster" data-index="12" points="690,414 735,410 735,476 690,476" aria-label="Poster 13" tabindex="0"/>
-          <polygon data-type="poster" data-index="13" points="808,514 837,514 837,564 808,563" aria-label="Poster 14" tabindex="0"/>
-          <polygon data-type="poster" data-index="14" points="1307,35 1425,10 1426,201 1307,216" aria-label="Poster 15" tabindex="0"/>
-          <polygon data-type="poster" data-index="15" points="1463,37 1595,12 1597,211 1464,227" aria-label="Poster 16" tabindex="0"/>
-          <polygon data-type="poster" data-index="16" points="1355,247 1426,237 1429,345 1365,350 1362,372 1355,373" aria-label="Poster 17" tabindex="0"/>
-          <polygon data-type="poster" data-index="17" points="1306,291 1335,289 1335,337 1306,338" aria-label="Poster 18" tabindex="0"/>
-          <polygon data-type="poster" data-index="18" points="1466,265 1608,252 1609,369 1593,385 1609,402 1609,434 1556,434 1559,343 1466,349" aria-label="Poster 19" tabindex="0"/>
-          <polygon class="important" data-open="work-zoom" points="1335,342 1529,336 1527,486 1332,482" aria-label="Enter Work Mode through the iMac" tabindex="0"/>
-          <polygon class="important" data-open="gabzilla" points="1259,540 1280,524 1316,520 1362,530 1419,547 1446,603 1431,622 1431,744 1392,744 1306,736 1267,728 1270,609 1248,603" aria-label="Open the GABZILLA collaboration" tabindex="0"/>
-          <polygon data-open="music" points="94,440 197,435 201,510 95,512" aria-label="Play FACING SUN on the Marshall speaker" tabindex="0"/>
-          <polygon data-mv-open="" points="198,458 252,458 254,512 197,511" aria-label="Open Music & Visual Design by tapping the CDs on the shelf" tabindex="0"/>
-          <!-- Pink Instax camera on the upper-left shelf, beside the bunny. Keep the original illustration untouched. -->
-          <polygon data-open="clock" points="101,316 153,312 180,345 175,387 112,392 100,368" aria-label="Hello Kitty clock with the real time" tabindex="0"/>
-          <polygon data-open="phone" points="1192,748 1248,752 1292,778 1283,831 1202,824" aria-label="Open the interactive iPhone" tabindex="0"/>
-          <polygon data-open="tamagotchi" points="1134,751 1179,750 1202,769 1204,821 1151,825 1132,797" aria-label="Play with the Tamagotchi" tabindex="0"/>
-          <!-- Pink coffee mug on the glass table, distinct from the book hotspot. -->
-          <polygon data-open="latte" points="887,742 897,739 897,730 937,729 945,739 945,779 938,786 906,785 896,773 890,769 883,757" aria-label="Make a latte by clicking the pink mug" tabindex="0"/>
-          <polygon data-open="book" points="949,735 1015,729 1083,756 1092,787 1013,815 948,792" aria-label="Explore Clown Princess" tabindex="0"/>
-          <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1168,765 1099,780 1040,744" aria-label="Browse illustrations by the flowers" tabindex="0"/>
-          <!-- Pet the cat: the original illustration stays untouched. -->
-          <polygon data-cat-pet="" points="402,615 415,602 436,594 463,592 490,600 502,583 518,584 537,592 558,590 567,608 561,630 548,645 520,650 495,658 461,661 423,658 405,645 400,627" aria-label="Pet the sleeping cat" tabindex="0"/>
-          <polygon data-open="about" points="520,431 539,425 577,422 617,433 637,459 637,533 615,562 555,562 529,534" aria-label="About me, via the teddy bear" tabindex="0"/>
-          <polygon data-open="photos" points="2,352 49,343 80,377 89,528 78,835 2,825" aria-label="Open Photos via the ring light" tabindex="0"/>
-          <polygon data-open="contact" points="1542,567 1586,560 1645,551 1667,584 1669,842 1552,831" aria-label="Contact me by the guitar" tabindex="0"/>
-          <g id="cat-response" aria-hidden="true" pointer-events="none">
+          <img id="room-img" src="assets/room-drafts/background.png" alt="Brouillon de la chambre de Léna, dessiné en contours rouges.">
+          <img class="draft-room-layer" src="assets/room-drafts/rug.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/instax.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/vase.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/office-lamp.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/miffy.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/stars-lamp.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/tshirt-gabzilla.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/ring-light.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/rilakkuma.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/tamagotchi.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/books-3.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/crayons-1.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/guitare.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/mug-latte.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/cat.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/jelly-lamp.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/bretzel.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/iphone.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/crayons-3.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/bambi-lamp.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/marshall.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/cds.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/tale.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/crayons-2.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/books-2.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/sonny-angel.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/books-1.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/ipad.png" alt="" aria-hidden="true" decoding="async">
+          <img class="draft-room-layer" src="assets/room-drafts/imac.png" alt="" aria-hidden="true" decoding="async">
+
+
+          <svg id="hotspots" viewBox="0 0 3072 1732" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Interactive objects in the bedroom">
+            <polygon data-open="work-zoom" points="2488,603 2920,603 2920,994 2488,994" aria-label="Enter Work Mode" tabindex="0"/>
+            <polygon data-open="gabzilla" points="2451,973 2887,973 2887,1292 2451,1292" aria-label="GABZILLA" tabindex="0"/>
+            <polygon data-open="music" points="302,372 496,372 496,510 302,510" aria-label="Play music" tabindex="0"/>
+            <polygon data-mv-open="" points="492,397 610,397 610,526 492,526" aria-label="Music & Visual Design" tabindex="0"/>
+            <polygon data-open="phone" points="2105,1406 2258,1406 2258,1496 2105,1496" aria-label="Contacts and Mail" tabindex="0"/>
+            <polygon data-open="tamagotchi" points="2007,1398 2164,1398 2164,1493 2007,1493" aria-label="Tamagotchi" tabindex="0"/>
+            <polygon data-open="latte" points="1472,1300 1716,1300 1716,1438 1472,1438" aria-label="Make a latte" tabindex="0"/>
+            <polygon data-open="book" points="1620,1365 1887,1365 1887,1483 1620,1483" aria-label="Clown Princess" tabindex="0"/>
+            <polygon data-open="photos" points="1818,1153 2119,1153 2119,1464 1818,1464" aria-label="Illustrations" tabindex="0"/>
+            <polygon data-cat-pet="" points="742,1069 1037,1069 1037,1230 742,1230" aria-label="Pet the cat" tabindex="0"/>
+            <polygon data-open="about" points="855,717 1298,717 1298,1115 855,1115" aria-label="About me" tabindex="0"/>
+            <polygon data-open="photos" points="0,646 286,646 286,1566 0,1566" aria-label="Photos" tabindex="0"/>
+            <polygon data-open="contact" points="2861,1009 3072,1009 3072,1599 2861,1599" aria-label="Contact" tabindex="0"/>
+            <polygon data-open="polaroids" points="387,149 504,149 504,271 387,271" aria-label="My Polaroids" tabindex="0"/>
+<g id="cat-response" transform="translate(6 -16) scale(1.84)" aria-hidden="true" pointer-events="none">
             <!-- Two small irregular hearts and faint purring ripples, in red UI ink. -->
             <path class="cat-purr-line" d="M 394 616 Q 388 625 395 633"/>
             <path class="cat-purr-line" d="M 386 619 Q 379 630 388 640"/>

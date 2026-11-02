@@ -1,0 +1,142 @@
+[
+  {
+    "asset": "imac",
+    "bounds": [
+      2488,
+      603,
+      2920,
+      994
+    ],
+    "action": "data-open=\"work-zoom\""
+  },
+  {
+    "asset": "tshirt-gabzilla",
+    "bounds": [
+      2451,
+      973,
+      2887,
+      1292
+    ],
+    "action": "data-open=\"gabzilla\""
+  },
+  {
+    "asset": "marshall",
+    "bounds": [
+      302,
+      372,
+      496,
+      510
+    ],
+    "action": "data-open=\"music\""
+  },
+  {
+    "asset": "cds",
+    "bounds": [
+      492,
+      397,
+      610,
+      526
+    ],
+    "action": "data-mv-open=\"\""
+  },
+  {
+    "asset": "iphone",
+    "bounds": [
+      2105,
+      1406,
+      2258,
+      1496
+    ],
+    "action": "data-open=\"phone\""
+  },
+  {
+    "asset": "tamagotchi",
+    "bounds": [
+      2007,
+      1398,
+      2164,
+      1493
+    ],
+    "action": "data-open=\"tamagotchi\""
+  },
+  {
+    "asset": "mug-latte",
+    "bounds": [
+      1472,
+      1300,
+      1716,
+      1438
+    ],
+    "action": "data-open=\"latte\""
+  },
+  {
+    "asset": "tale",
+    "bounds": [
+      1620,
+      1365,
+      1887,
+      1483
+    ],
+    "action": "data-open=\"book\""
+  },
+  {
+    "asset": "vase",
+    "bounds": [
+      1818,
+      1153,
+      2119,
+      1464
+    ],
+    "action": "data-open=\"photos\""
+  },
+  {
+    "asset": "cat",
+    "bounds": [
+      742,
+      1069,
+      1037,
+      1230
+    ],
+    "action": "data-cat-pet=\"\""
+  },
+  {
+    "asset": "rilakkuma",
+    "bounds": [
+      855,
+      717,
+      1298,
+      1115
+    ],
+    "action": "data-open=\"about\""
+  },
+  {
+    "asset": "ring-light",
+    "bounds": [
+      0,
+      646,
+      286,
+      1566
+    ],
+    "action": "data-open=\"photos\""
+  },
+  {
+    "asset": "guitare",
+    "bounds": [
+      2861,
+      1009,
+      3072,
+      1599
+    ],
+    "action": "data-open=\"contact\""
+  },
+  {
+    "asset": "instax",
+    "bounds": [
+      387,
+      149,
+      504,
+      271
+    ],
+    "action": "data-open=\"polaroids\""
+  }
+]
