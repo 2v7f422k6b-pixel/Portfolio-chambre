@@ -147,12 +147,7 @@
       outline:3px dashed #ff173b !important;
       outline-offset:2px !important;
     }
-    @media (hover:hover) {
-      #play-scene #instax-hotspot:hover {
-        outline:2px solid rgba(255,23,59,.55) !important;
-        outline-offset:2px;
-      }
-    }
+    @media (hover:hover) { #play-scene #instax-hotspot:hover { outline:none !important; } }
   </style>
   <style id="night-illustration-lighting">
     /* Same user illustrations on both scenes; naturally dim them at night. */
@@ -416,8 +411,8 @@
   </div>
   <script src="app.js?v=menubar-mode-6" defer></script>
 
-  <script src="pixel-hotspots.js?v=3" defer></script>
-  <script src="pixel-outlines.js?v=5" defer></script>
+  <script src="pixel-hotspots.js?v=4" defer></script>
+  <script src="pixel-outlines.js?v=6" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
    <script src="coloring-addon.js?v=remove-play-dock-20261102" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
