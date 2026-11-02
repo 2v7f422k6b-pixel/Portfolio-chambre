@@ -100,9 +100,10 @@
           document.body.appendChild(button);button.click();button.remove();
         } else matched.target.click();
       } finally { forwarding = false; }
-    } else if (original && ready.some(item => item.target === original)) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
+    } else if (original) {
+      // A transparent or imperfect PNG mask must never swallow the SVG hotspot click.
+      // Let app.js handle the original action immediately on the first click.
+      return;
     }
   },true);
 })();
