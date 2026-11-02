@@ -178,6 +178,12 @@
 #hotspots.hotspot-peek polygon[data-open],
 #hotspots.hotspot-peek polygon[data-mv-open],
 #hotspots.hotspot-peek polygon[data-cat-pet] {stroke:transparent !important;fill:transparent !important;filter:none !important;}
+
+/* Make pixel-perfect hotspot inspection available on desktop too. */
+#hotspot-guide { display:block !important; }
+@media (min-width:761px) and (hover:hover) {
+ #hotspot-guide { top:calc(var(--menubar,42px) + 12px); right:14px; }
+}
 </style>
 </head>
 <body>
