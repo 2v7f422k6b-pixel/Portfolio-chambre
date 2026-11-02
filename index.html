@@ -189,6 +189,12 @@
 #hotspots polygon[data-open]:hover,
 #hotspots polygon[data-mv-open]:hover,
 #hotspots polygon[data-cat-pet]:hover { stroke:transparent !important; fill:transparent !important; filter:none !important; }
+
+/* Chrome desktop SVG focus/hover must not draw a rectangular bounding box. */
+#hotspots polygon, #hotspots polygon:hover, #hotspots polygon:focus,
+#hotspots polygon:focus-visible, #hotspots polygon.active {
+ outline:none !important; box-shadow:none !important;
+}
 </style>
 </head>
 <body>
