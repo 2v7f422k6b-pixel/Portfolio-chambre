@@ -958,3 +958,11 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
   font-size:14px!important;white-space:nowrap!important
  }
 }
+
+/* Approved illustrated Work Mode wallpaper — 2 November 2026. */
+html body #work-desktop,
+html[data-theme="night"] body #work-desktop,
+html body #work-desktop > .work-wallpaper,
+html[data-theme="night"] body #work-desktop > .work-wallpaper {
+ background:#78a8d6 url("assets/work-wallpaper-20261102.webp") center/cover no-repeat!important;
+}
