@@ -533,3 +533,7 @@ html[data-theme="night"] #room-img{filter:none!important}
 
 /* Smartphone camera island: softly rounded pill instead of a rectangle. */
 .phone-device .phone-island{border-radius:999px!important;overflow:hidden!important;clip-path:inset(0 round 999px)!important}
+
+/* Camera cutout: override generic rectangular span styling and enforce pill geometry. */
+html body .phone-device .phone-screen .phone-status span.phone-island{display:block!important;position:relative!important;flex:0 0 91px!important;width:91px!important;height:25px!important;min-height:25px!important;padding:0!important;margin-top:-8px!important;background:#241d2c!important;border:0!important;border-radius:9999px!important;clip-path:ellipse(50% 50% at 50% 50%)!important;overflow:hidden!important;box-shadow:none!important}
+html body .phone-device .phone-screen .phone-status span.phone-island::before,html body .phone-device .phone-screen .phone-status span.phone-island::after{content:none!important;display:none!important}
