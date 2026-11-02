@@ -1,0 +1,81 @@
+/* Drawn UX assets from Portfolio UX, 2 November 2026.
+   Preserve original transparent 512px PNG artworks. */
+
+/* Existing dock handlers remain unchanged; the PNG owns each icon frame. */
+html body #dock .dock-app.dock-drawn {
+  width:52px!important;
+  height:52px!important;
+  min-width:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html body #dock .dock-app.dock-drawn img.dock-art {
+  display:block!important;
+  width:155%!important;
+  height:155%!important;
+  max-width:none!important;
+  max-height:none!important;
+  flex:0 0 auto!important;
+  object-fit:contain!important;
+  filter:none!important;
+  pointer-events:none!important;
+  transform:none!important;
+}
+html body #app.mode-play #dock button[data-open="music"],
+html body #app.mode-play #dock button[data-open="mail"]{
+  display:block!important;
+}
+/* Show the supplied FILE.PNG for all desktop folders, including dynamic ones. */
+html body #work-desktop .desktop-folder .folder-tile,
+html body #work-desktop .mv-desktop-folder .folder-tile,
+html body #work-desktop .work-desk-layout .desktop-folder .folder-tile,
+html body #work-desktop .work-desk-layout .mv-desktop-folder .folder-tile{
+  display:block!important;
+  width:90px!important;
+  height:68px!important;
+  margin-top:0!important;
+  background:transparent url("assets/portfolio-ux/file.png") center/162% 162% no-repeat!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+html body #work-desktop .desktop-folder .folder-tile::before,
+html body #work-desktop .desktop-folder .folder-tile::after,
+html body #work-desktop .mv-desktop-folder .folder-tile::before,
+html body #work-desktop .mv-desktop-folder .folder-tile::after{
+  content:none!important;
+  display:none!important;
+}
+html body #work-desktop .work-desk-layout .desktop-folder,
+html body #work-desktop .work-desk-layout .mv-desktop-folder{
+  min-height:110px!important;
+}
+html body #work-desktop .desktop-folder:hover .folder-tile,
+html body #work-desktop .desktop-folder:focus-visible .folder-tile{
+  transform:translateY(-4px)!important;
+}
+@media(max-width:760px){
+  html body #dock .dock-app.dock-drawn{width:40px!important;height:40px!important}
+  html body #dock{gap:3px!important;padding:6px 8px!important}
+  html body #work-desktop .desktop-folder .folder-tile,
+  html body #work-desktop .mv-desktop-folder .folder-tile,
+  html body #work-desktop .work-desk-layout .desktop-folder .folder-tile,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder .folder-tile{
+    width:76px!important;height:57px!important
+  }
+  html body #work-desktop .work-desk-layout .desktop-folder,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder{
+    min-height:100px!important
+  }
+}

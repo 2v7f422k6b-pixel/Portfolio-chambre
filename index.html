@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="heart-theme.css?v=remove-pseudo-hearts-2">
   <link rel="stylesheet" href="sketch-ui.css?v=work-wallpaper-20261102">
 <link rel="stylesheet" href="window-system.css?v=stabilize-2">
+  <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261102">
   <style id="latte-frame-style">.latte-frame{display:block;width:min(860px,94vw);height:min(720px,88dvh);max-height:88dvh;border:0;background:transparent}</style>
 
   <!-- iPad/touch feedback for illustrated Play Mode hotspots. -->
@@ -322,11 +323,13 @@
         <button id="back-to-room" class="back-room">← Back to my room</button>
       </section>
       <nav id="dock" aria-label="Portfolio applications">
-<button id="dock-finder" data-open="finder" title="Finder" aria-label="Finder"><span class="dock-app finder dock-drawn"><img class="dock-art" src="assets/dock/finder.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Finder</span></button>
-<button data-open="photos" title="Photos" aria-label="Photos"><span class="dock-app photo dock-drawn"><img class="dock-art" src="assets/dock/illustration.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Photos</span></button>
-<button data-open="motion" title="Motion" aria-label="Motion"><span class="dock-app motion dock-drawn"><img class="dock-art" src="assets/dock/video.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Motion</span></button>
-
-</nav>
+          <button id="dock-finder" type="button" data-open="finder" title="Finder" aria-label="Finder"><span class="dock-app finder dock-drawn"><img class="dock-art" src="assets/portfolio-ux/finder.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Finder</span></button>
+          <button type="button" data-open="photos" title="Photos" aria-label="Photos"><span class="dock-app photos dock-drawn"><img class="dock-art" src="assets/portfolio-ux/photos.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Photos</span></button>
+          <button type="button" data-open="motion" title="Motion" aria-label="Motion"><span class="dock-app motion dock-drawn"><img class="dock-art" src="assets/portfolio-ux/videos.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Motion</span></button>
+          <button type="button" data-open="pages" title="Pages" aria-label="Pages"><span class="dock-app pages dock-drawn"><img class="dock-art" src="assets/portfolio-ux/pages.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Pages</span></button>
+          <button type="button" data-open="music" title="Music" aria-label="Music"><span class="dock-app music dock-drawn"><img class="dock-art" src="assets/portfolio-ux/music.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Music</span></button>
+          <button type="button" data-open="mail" title="Mail" aria-label="Mail"><span class="dock-app mail dock-drawn"><img class="dock-art" src="assets/portfolio-ux/mail.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Mail</span></button>
+        </nav>
     </main>
     <div id="window-shade" hidden><section id="window" class="mac-window" role="dialog" aria-modal="true" aria-labelledby="window-title"><div class="window-top"><div class="traffic"><button id="window-close" class="dot red" aria-label="Close window" title="Close"></button><button id="window-minimize" class="dot yellow" aria-label="Minimize window" title="Minimize"></button><button id="window-maximize" class="dot green" aria-label="Expand window" title="Expand"></button></div><div id="window-title">Portfolio</div><span class="window-end" aria-hidden="true"></span></div><div id="window-content" class="window-content"></div></section></div>
     <div id="special-shade" hidden><button id="special-close" aria-label="Close" title="Close">×</button><div id="special-host"></div></div>
