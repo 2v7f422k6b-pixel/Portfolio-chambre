@@ -538,6 +538,15 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 #window-maximize{background-image:url('assets/ux/grand.png')!important}
 #window-minimize{background-image:url('assets/ux/reduire.png')!important}
 </style>
+
+<style id="handdrawn-navigation-arrows">
+/* Artist's arrows across internal galleries and readers, not the welcome screen. */
+#book-reader .book-side-arrow,
+.mv-now-controls [data-mv-prev],.mv-now-controls [data-mv-next],
+.mv-lightstage [data-mv-light-prev],.mv-lightstage [data-mv-light-next]{background-color:transparent!important;background-repeat:no-repeat!important;background-position:center!important;background-size:contain!important;font-size:0!important;color:transparent!important;text-shadow:none!important}
+#book-reader [data-book-prev],.mv-now-controls [data-mv-prev],.mv-lightstage [data-mv-light-prev]{background-image:url('assets/ux/left.png')!important}
+#book-reader [data-book-next],.mv-now-controls [data-mv-next],.mv-lightstage [data-mv-light-next]{background-image:url('assets/ux/right.png')!important}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
