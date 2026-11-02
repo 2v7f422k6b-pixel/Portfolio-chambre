@@ -169,6 +169,15 @@
 #play-viewport { display:flex !important; justify-content:center !important; align-items:center !important; overflow:hidden !important; }
 #play-scene { width:max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 !important; }
 #room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
+
+/* Place the alpha-guide above all scene layers and suppress coarse SVG outlines. */
+#play-scene #pixel-outline-overlay { z-index:999 !important; display:block; }
+#hotspots.hotspot-guide-on polygon[data-open],
+#hotspots.hotspot-guide-on polygon[data-mv-open],
+#hotspots.hotspot-guide-on polygon[data-cat-pet],
+#hotspots.hotspot-peek polygon[data-open],
+#hotspots.hotspot-peek polygon[data-mv-open],
+#hotspots.hotspot-peek polygon[data-cat-pet] {stroke:transparent !important;fill:transparent !important;filter:none !important;}
 </style>
 </head>
 <body>
