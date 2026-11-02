@@ -12,11 +12,17 @@
     ['tamagotchi','TAMAGOTCHI.PNG'],
     ['latte','MUG LATTE.PNG'],
     ['book','TALE.PNG'],
+    ['photos','VASE.PNG'],['photos','STARS LAMP.PNG'],['about','JELLY LAMP.PNG'],['photos','INSTAX.PNG'],
+    ['photos','CRAYONS 1.PNG'],['photos','CRAYONS 2.PNG'],['photos','CRAYONS 3.PNG'],
+    ['pages','BOOKS 1.PNG'],['pages','BOOKS 2.PNG'],['pages','BOOKS 3.PNG'],
+    ['photos','OFFICE LAMP.PNG'],['photos','IPAD.PNG'],['photos','RUG.PNG'],
+    ['about','MIFFY.PNG'],['about','BAMBI LAMP.PNG'],['about','SONNY ANGEL.PNG'],
+    ['latte','BRETZEL.PNG'],
     ['about','RILAKKUMA.PNG'],
     ['contact','GUITARE.PNG']
   ];
   const targets = definitions.map(([action, file]) => ({
-    file, target: svg.querySelector('[data-open="'+action+'"]')
+    file, action, target: svg.querySelector('[data-open="'+action+'"]')
   })).filter(item => item.target);
   const cd = svg.querySelector('[data-mv-open]');
   if (cd) targets.push({file:'CDS.PNG',target:cd});
@@ -66,11 +72,16 @@
     const matched = [...ready].reverse().find(item => hit(item,p));
     const original = event.target.closest?.('#hotspots polygon');
     if (matched) {
-      if (original === matched.target) return;
+      if (original === matched.target && original.getAttribute('data-open')===matched.action) return;
       event.preventDefault();
       event.stopImmediatePropagation();
       forwarding = true;
-      try { matched.target.click(); } finally { forwarding = false; }
+      try {
+        if(matched.action && matched.target.getAttribute('data-open')!==matched.action){
+          const button=document.createElement('button');button.dataset.open=matched.action;button.hidden=true;
+          document.body.appendChild(button);button.click();button.remove();
+        } else matched.target.click();
+      } finally { forwarding = false; }
     } else if (original && ready.some(item => item.target === original)) {
       event.preventDefault();
       event.stopImmediatePropagation();
