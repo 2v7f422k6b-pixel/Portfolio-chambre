@@ -405,13 +405,28 @@ html body #welcome .mode-tile .welcome-hand-frame{z-index:2!important;}
 html body #welcome .mode-tile .tile-name,html body #welcome .mode-tile .tile-desc{z-index:3!important;}
 html body #welcome .welcome-choice-footer{display:none!important;}
 @media(max-width:680px){html body #welcome .welcome-mood-heading{margin-bottom:22px!important;}html body #welcome .mode-tile .tile-name{font-size:18px!important;}html body #welcome .mode-tile .tile-desc{font-size:12px!important;}}
+
+/* Definitive removal of legacy rectangular outlines, including pseudo-frames. */
+html body #welcome,
+html body #welcome .welcome-panel,
+html body #welcome .mode-options,
+html body #welcome .mode-tile,
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus,
+html body #welcome .mode-tile:focus-visible {
+ border:none!important;border-image:none!important;outline:none!important;
+ box-shadow:none!important;background-clip:padding-box!important;
+}
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after,
+html body #welcome .mode-tile::after {content:none!important;display:none!important;}
+html body #welcome .mode-tile .tile-art{border:none!important;outline:none!important;box-shadow:none!important;}
 </style>
 </head>
 <body>
   <div id="app" class="mode-select">
     <section id="welcome" aria-labelledby="welcome-heading">
       <div class="welcome-panel">
-        <div class="welcome-top"><span>♥</span></div>
         <div class="welcome-hero">
           <div class="welcome-title-cloud"><img class="welcome-title-art" src="assets/accueil/titre%20accueil.png" alt="Léna de Firmas — Portfolio"></div>
         </div>
