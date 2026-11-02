@@ -12,7 +12,7 @@
     ['tamagotchi','TAMAGOTCHI.PNG'],
     ['latte','MUG LATTE.PNG'],
     ['book','TALE.PNG'],
-    ['photos','VASE.PNG'],['photos','STARS LAMP.PNG'],['about','JELLY LAMP.PNG'],['polaroids','INSTAX.PNG'],
+    ['photos','VASE.PNG'],['toggle-night','STARS LAMP.PNG'],['toggle-night','JELLY LAMP.PNG'],['polaroids','INSTAX.PNG'],
     ['photos','CRAYONS 1.PNG'],['photos','CRAYONS 2.PNG'],['photos','CRAYONS 3.PNG'],
     ['pages','BOOKS 1.PNG'],['pages','BOOKS 2.PNG'],['pages','BOOKS 3.PNG'],
     ['toggle-night','OFFICE LAMP.PNG'],['photos','IPAD.PNG'],['photos','RUG.PNG'],
