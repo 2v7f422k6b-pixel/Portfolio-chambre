@@ -115,7 +115,8 @@
     '#hotspots .poster-glowy-handline { fill:none; stroke:#ff173b; stroke-width:.85;',
     'stroke-linecap:round; stroke-linejoin:round; pointer-events:none!important;',
     'filter:drop-shadow(0 0 1.15px rgba(255,23,59,.35)); }',
-    'html[data-theme="night"] #hotspots .poster-glowy-handline { opacity:.78; }'
+    'html[data-theme="night"] #hotspots .poster-glowy-handline {',
+    'stroke:#091329; opacity:1; filter:drop-shadow(0 0 .8px rgba(9,19,41,.18)); }'
   ].join(' ');
   document.head.appendChild(borderStyle);
   // The static layer remains as a progressive-enhancement fallback until rendering succeeds.
@@ -154,9 +155,20 @@
     14:[1], 15:[0,1], 16:[1], 18:[0]
   };
   const tapeArt = [
-    { src:'assets/decor/scotch-1.svg', width:208, height:77 },
-    { src:'assets/decor/scotch-2.svg', width:194, height:89 }
+    { src:'assets/decor/scotch-1.svg', nightSrc:'assets/decor/scotch-1-nuit.svg', width:208, height:77 },
+    { src:'assets/decor/scotch-2.svg', nightSrc:'assets/decor/scotch-2-nuit.svg', width:194, height:89 }
   ];
+  const isPosterNight = () => document.documentElement.getAttribute('data-theme') === 'night';
+  function syncPosterTapeTheme() {
+    const night = isPosterNight();
+    tapeLayer.querySelectorAll('.poster-handdrawn-tape').forEach(image => {
+      const source = image.getAttribute(night ? 'data-night-src' : 'data-day-src');
+      if (source && image.getAttribute('href') !== source) image.setAttribute('href', source);
+    });
+  }
+  new MutationObserver(syncPosterTapeTheme).observe(document.documentElement, {
+    attributes:true, attributeFilter:['data-theme']
+  });
   function unit(vector) {
     const length = Math.hypot(vector[0], vector[1]) || 1;
     return vector.map(value => value / length);
@@ -193,7 +205,8 @@
       const e = center[0] - a*tape.width/2 - c*tape.height/2;
       const f = center[1] - b*tape.width/2 - d*tape.height/2;
       tapeLayer.appendChild(node('image',{
-        class:'poster-handdrawn-tape', href:tape.src,
+        class:'poster-handdrawn-tape', href:isPosterNight() ? tape.nightSrc : tape.src,
+        'data-day-src':tape.src, 'data-night-src':tape.nightSrc,
         x:0,y:0,width:tape.width,height:tape.height,
         preserveAspectRatio:'none',
         transform:'matrix(' + [a,b,c,d,e,f].join(' ') + ')',
