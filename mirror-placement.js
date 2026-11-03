@@ -9,10 +9,10 @@
   const NS = 'http://www.w3.org/2000/svg';
   const W = 550, H = 542;
   const roomW = 1670, roomH = 942;
-  const oldKey = 'nana-wall-mirror-position-v1';
   const key = 'nana-wall-mirror-perspective-v1';
   const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
-  const defaults = { x: 1450, y: 284, width: 150 };
+  // Coordinates approved by the artist, in the 1670 × 942 room grid.
+  const defaultQuad = [[1322.9421302303758,212.60360032394615],[1434.095914604014,201.2034456191082],[1438.4527009202245,315.53787883400656],[1322.9421302303758,325.7088107239462]];
 
   const fromRect = (x, y, width) => {
     const height = width * H / W;
@@ -24,14 +24,9 @@
     points.every(p => Array.isArray(p) && p.length === 2 &&
       p.every(n => Number.isFinite(n) && Math.abs(n) < 10000));
 
-  const state = { quad: fromRect(defaults.x,defaults.y,defaults.width) };
+  const state = { quad: copy(defaultQuad) };
   try {
-    // Preserve positions users saved with the previous mirror tool.
-    const previous = JSON.parse(localStorage.getItem(oldKey) || 'null');
-    if (previous && [previous.x,previous.y,previous.width].every(Number.isFinite)) {
-      const width = Math.max(55,Math.min(340,previous.width));
-      state.quad = fromRect(previous.x,previous.y,width);
-    }
+    // Later adjustments in the same browser take precedence over the approved default.
     const saved = JSON.parse(localStorage.getItem(key) || 'null');
     if (saved && valid(saved.quad)) state.quad = copy(saved.quad);
   } catch (_) { /* Private browsing may restrict storage. */ }
@@ -247,7 +242,7 @@
       render();store();
     });
     button('Réinitialiser',()=>{
-      state.quad=fromRect(defaults.x,defaults.y,defaults.width);
+      state.quad=copy(defaultQuad);
       render();store();
     });
     button('Copier les coins',()=>{
