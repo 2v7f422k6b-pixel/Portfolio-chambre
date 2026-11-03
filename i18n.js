@@ -196,13 +196,13 @@ function syncDressUpFrames(){
     frame.addEventListener('load',()=>{
       try{
         const doc=frame.contentDocument;
-        if(!doc?.head||doc.getElementById('nana-translated-frame'))return;
+        if(!doc?.head||doc.getElementById('nana-translated-frame')||doc.getElementById('nana-native-i18n'))return;
         const extraScript=doc.createElement('script');
         extraScript.id='nana-translated-frame';
-        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-2',location.href).href;
+        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-3',location.href).href;
         extraScript.addEventListener('load',()=>{
           const main=doc.createElement('script');
-          main.src=new URL('i18n.js?v=20261103-complete-2',location.href).href;
+          main.src=new URL('i18n.js?v=20261103-complete-3',location.href).href;
           doc.head.appendChild(main);
         },{once:true});
         doc.head.appendChild(extraScript);
