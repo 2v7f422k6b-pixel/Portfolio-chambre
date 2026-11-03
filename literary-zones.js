@@ -738,32 +738,38 @@
     drawReadingBook(options[Math.floor(Math.random()*options.length)]);
   }
   function showPoet() {
-    const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
-    if(!result)return;
-    const p=souvenuesEntries[poet];
-    root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
-    let poem='';
-    if(p.aligned){
-      poem=`<div class="lit-archive-poem lit-archive-aligned" lang="fr">${p.aligned.map(([left,right],i)=>`
-        <div class="lit-archive-verse${i===4||i===8||i===11?' lit-archive-new-stanza':''}">
-          <span>${escape(left)}</span><span>${escape(right)}</span>
-        </div>`).join('')}</div>`;
-    }else if(p.poem){
-      poem=`<details class="lit-archive-expand" ${p.id==='noailles'?'open':''}>
-        <summary>${p.id==='noailles'?'Lire les quatre vers':'Lire le poème retrouvé'}</summary>
-        <div class="lit-archive-poem">${escape(p.poem)}</div>
-      </details>`;
-    }else{
-      poem=`<div class="lit-archive-reference">Cet extrait est conservé dans ton archive personnelle. Pour respecter les droits des œuvres contemporaines, la fenêtre publique présente sa référence, sans reproduire le passage intégral.</div>`;
-    }
-    result.innerHTML=`<span class="lit-book-ribbon">LES SOUVENUES · ${escape(p.kind)} · ARCHIVE Nº ${String(poet+1).padStart(2,'0')}</span>
-      <h3>${escape(p.title)}</h3>
-      <p class="lit-byline">${escape(p.name)} <small>${escape(p.dates)}</small></p>
-      <p class="lit-archive-source">${escape(p.kindNote)}</p>
-      <p class="lit-archive-note">${escape(p.note)}</p>
-      ${poem}
-      <a class="lit-text-link" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">Consulter la source ↗</a>`;
+  const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
+  if(!result)return;
+  const p=souvenuesEntries[poet];
+  if(!p)return;
+  root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
+  let content='';
+  if(p.aligned){
+    content=`<div class="lit-archive-poem lit-archive-aligned" lang="fr">${p.aligned.map(([left,right],i)=>
+      `<div class="lit-archive-verse${[4,8,11].includes(i)?' lit-archive-new-stanza':''}">
+        <span>${escape(left)}</span><span>${escape(right)}</span>
+      </div>`).join('')}</div>`;
+  } else if(p.poem) {
+    content=`<details class="lit-archive-expand" ${p.id==='noailles'?'open':''}>
+      <summary>${p.id==='noailles'?'Lire les vers':'Lire le texte retrouvé'}</summary>
+      <div class="lit-archive-poem">${escape(p.poem)}</div>
+    </details>`;
+  } else {
+    content=`<div class="lit-archive-reference">Cette fiche conserve la trace du texte et de son autrice, sans reproduire le long extrait contemporain qui figurait dans la publication d’origine.</div>`;
   }
+  const original=p.source==='https://www.facebook.com/lessouvenues';
+  result.innerHTML=`<div class="lit-archive-detail-inner" style="--archive-bg:${p.bg};--archive-ink:${p.ink}">
+    <span class="lit-book-ribbon">CARTE Nº ${String(poet+1).padStart(2,'0')} · ${escape(p.kind)} · ${escape(p.section)}</span>
+    <h3>${escape(p.title)}</h3>
+    <p class="lit-byline">${escape(p.name)} ${p.dates?`<small>${escape(p.dates)}</small>`:''}</p>
+    <p class="lit-archive-source">${escape(p.kindNote)}</p>
+    <p class="lit-archive-note">${escape(p.note)}</p>
+    ${content}
+    <a class="lit-text-link" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">
+      ${original?'Retrouver les publications sur Facebook ↗':'Consulter une source de l’œuvre ↗'}
+    </a>
+  </div>`;
+}
   function freshBank() {
     // Avoid duplicating currently placed words in the palette.
     const active=new Set(poem.map(item=>item.word));
@@ -828,11 +834,11 @@
   function activate(name) {
     current=name;
     if(name==='reading-room'){selectedMood='surprise';selection=-1;showReading();}
-    if(name==='souvenues'){poet=0;showPoet();}
+    if(name==='souvenues'){poet=0;archiveFilter='toutes';archiveQuery='';renderSouvenuesGrid();showPoet();}
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
     if(!target||!target.closest('#window-content .lit-app'))return;
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
@@ -840,8 +846,23 @@
       selectedMood='surprise';
       drawReadingBook(readingExamples.find(b=>b.rank===Number(target.dataset.litBook)));
     }
-    else if(target.hasAttribute('data-lit-poet')){poet=Number(target.dataset.litPoet);showPoet();}
-    else if(target.hasAttribute('data-lit-pick-poet')){poet=(poet+1+Math.floor(Math.random()*(souvenuesEntries.length-1)))%souvenuesEntries.length;showPoet();}
+    else if(target.hasAttribute('data-lit-poet')){
+      poet=Number(target.dataset.litPoet);
+      showPoet();
+      scrollToPoet();
+    }
+    else if(target.hasAttribute('data-lit-pick-poet')){
+      const candidates=archiveVisible().map(x=>x.index);
+      const options=candidates.length>1?candidates.filter(i=>i!==poet):candidates;
+      if(options.length){poet=options[Math.floor(Math.random()*options.length)];showPoet();scrollToPoet();}
+    }
+    else if(target.hasAttribute('data-lit-filter')){
+      archiveFilter=target.dataset.litFilter;
+      renderSouvenuesGrid();
+      const next=archiveVisible()[0];
+      if(next){poet=next.index;showPoet();}
+      else appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+    }
     else if(target.hasAttribute('data-lit-add'))insertFromBank(Number(target.dataset.litAdd));
     else if(target.hasAttribute('data-lit-remove')){
       const pos=Number(target.dataset.litRemove);
@@ -858,7 +879,18 @@
   document.addEventListener('error',event=>{
     if(event.target.matches?.('#window-content .lit-cover img')) event.target.hidden=true;
   },true);
-    document.addEventListener('dragstart',event=>{
+    function scrollToPoet() {
+  appRoot()?.querySelector('#lit-poet-detail')?.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+  document.addEventListener('input',event=>{
+    if(!event.target.matches?.('#window-content .lit-archive-search'))return;
+    archiveQuery=event.target.value;
+    renderSouvenuesGrid();
+    const next=archiveVisible()[0];
+    if(next){poet=next.index;showPoet();}
+    else appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+  });
+  document.addEventListener('dragstart',event=>{
     const tile=event.target.closest('[data-lit-drag]');
     if(!tile||!tile.closest('#window-content .lit-app'))return;
     dragItem=tile.dataset.litDrag;
