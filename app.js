@@ -249,7 +249,7 @@ function openGearnewsSeries(){
    </a>
    <div class="gearnews-ring-details">
     <span class="gearnews-ring-number">${number}</span>
-    <span class="gearnews-ring-copy"><strong>${name}</strong><a href="${url}" target="_blank" rel="noopener noreferrer">${watch} ↗</a></span>
+    <span class="gearnews-ring-copy"><strong>${name}</strong><a href="${url}" target="_blank" rel="noopener noreferrer">${watch}</a></span>
    </div>
   </article>`;
  };
