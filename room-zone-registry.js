@@ -183,11 +183,14 @@
         if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
         if(zone.id==='vase') poly.dataset.vasePetal='';
+        else if(zone.id==='miffy'||zone.id==='sonny-angel') {
+          poly.dataset.figurineSpeech=zone.id;
+          poly.setAttribute('aria-label',zone.id==='miffy' ? 'Faire parler Miffy' : 'Faire parler Sonny Angel');
+        }
         else if(zone.destination) poly.dataset.open=zone.destination;
         else poly.dataset.zonePending='';
-        // The vase must be on top of overlapping hotspots to receive a first click.
-        // All other zones keep their original stacking order.
-        if(zone.id==='vase') svg.appendChild(poly);
+        // Figurines and vase must stay clickable, even when other object zones overlap.
+        if(zone.id==='vase'||zone.id==='miffy'||zone.id==='sonny-angel') svg.appendChild(poly);
         else if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
         zone.element=poly;
