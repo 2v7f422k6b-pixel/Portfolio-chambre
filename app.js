@@ -532,7 +532,7 @@ document.addEventListener('click',e=>{
  }
  if(e.target.closest('#player-play')){toggleMusic();return}
  if(e.target.closest('#player-mute')){audio.muted=!audio.muted;return}
- if(e.target.closest('#player-hide')){player.hidden=true;return}
+ if(e.target.closest('#player-hide')){audio.pause();player.hidden=true;return}
  if(e.target.closest('[data-phone-back]')){$('#phone-page').hidden=true;phoneKeyboardInput=null;return}
  const phoneApp=e.target.closest('[data-phone-app]');
  if(phoneApp){const val=phoneApp.dataset.phoneApp;if(val==='contacts')phoneContacts();if(val==='mail')phoneMail();if(val==='instagram')window.open('https://www.instagram.com/nanacolorstudio/','_blank','noopener,noreferrer');return}
