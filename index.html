@@ -121,35 +121,6 @@
     #hotspots .poster-artwork { image-rendering: auto; }
     @media (max-width: 760px) { #play-scene { width: max(900px, 100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); } }
   </style>
-  <style id="instax-touch-target">
-    /* Invisible native button over the pink camera on the top-left shelf.
-       Coordinates measured against the original 1670 x 942 room; never modify the art. */
-    #play-scene #instax-hotspot {
-      position:absolute !important;
-      left:11.8% !important;
-      top:7.6% !important;
-      width:5.2% !important;
-      height:9.1% !important;
-      z-index:7 !important;
-      box-sizing:border-box !important;
-      border:0 !important;
-      border-radius:0 !important;
-      padding:0 !important;
-      background:transparent !important;
-      box-shadow:none !important;
-      outline:0 !important;
-      cursor:pointer !important;
-      touch-action:manipulation;
-      -webkit-tap-highlight-color:transparent;
-      color:transparent !important;
-      font-size:0 !important;
-    }
-    #play-scene #instax-hotspot:focus-visible {
-      outline:3px dashed #ff173b !important;
-      outline-offset:2px !important;
-    }
-    @media (hover:hover) { #play-scene #instax-hotspot:hover { outline:none !important; } }
-  </style>
   <style id="night-illustration-lighting">
     /* Same user illustrations on both scenes; naturally dim them at night. */
     html[data-theme="night"] #hotspots .poster-artwork {
@@ -689,7 +660,6 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
           <polygon class="important" data-open="gabzilla" points="1487,688 1411,702 1364,702 1336,642 1332,538 1344,534 1450,529 1472,535 1482,554" aria-label="Open the GABZILLA collaboration" tabindex="0"/>
           <polygon data-open="music" points="266,275 189,267 165,212 193,202 265,215 269,220" aria-label="Play FACING SUN on the Marshall speaker" tabindex="0"/>
           <polygon data-mv-open="" points="331,286 270,276 269,221 288,216 331,226" aria-label="Open Music & Visual Design by tapping the CDs on the shelf" tabindex="0"/>
-          <!-- Pink Instax camera on the upper-left shelf, beside the bunny. Keep the original illustration untouched. -->
 
           <polygon data-open="phone" points="1226,773 1225,780 1187,813 1145,807 1146,798 1187,765 1219,768" aria-label="Open the interactive iPhone" tabindex="0"/>
           <polygon data-open="tamagotchi" points="1176,763 1127,808 1106,811 1092,801 1098,782 1118,769 1160,761" aria-label="Play with the Tamagotchi" tabindex="0"/>
@@ -702,6 +672,8 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
           <polygon data-open="about" points="700,591 691,597 612,606 583,605 536,583 466,462 469,437 491,420 622,390 641,394 658,413 705,566" aria-label="About me, via the teddy bear" tabindex="0"/>
           <polygon data-open="photos" points="111,851 0,804 0,433 8,401 23,369 34,358 53,351 79,360 103,398 155,692 118,846" aria-label="Open Photos via the ring light" tabindex="0"/>
           <polygon data-open="contact" points="1607,867 1580,857 1562,838 1556,798 1603,671 1669,549 1669,854 1643,869" aria-label="Contact me by the guitar" tabindex="0"/>
+          <!-- Same SVG hotspot system as the other Play objects. Coordinates preserve the former Instax hit box. -->
+          <polygon data-open="polaroids" points="197,72 284,72 284,158 197,158" aria-label="Open my Polaroid gallery via the Instax camera" tabindex="0"/>
           <g id="cat-response" aria-hidden="true" pointer-events="none">
             <!-- Two small irregular hearts and faint purring ripples, in red UI ink. -->
             <path class="cat-purr-line" d="M 394 616 Q 388 625 395 633"/>
@@ -711,8 +683,6 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
             <path class="cat-heart cat-heart--two" d="M 600 578 C 589 568 591 563 597 566 Q 600 567 601 570 C 606 562 613 565 611 571 Q 609 576 600 578 Z"/>
           </g>
           </svg>
-          <!-- HTML touch target on the actual Instax; sits above posters and SVG on iPad. -->
-          <button id="instax-hotspot" type="button" data-open="polaroids" aria-label="Open my Polaroid gallery" title="My Polaroids"></button>
 
           
         </div>
