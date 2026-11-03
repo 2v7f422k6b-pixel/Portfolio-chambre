@@ -11,14 +11,14 @@
   if(!app||!viewport||!scene||!hotspots)return;
 
   const W=1670,H=942;
-  const COLS=210,ROWS=118; // Small pixels, about half the size of the previous version
+  const COLS=242,ROWS=136; // Slightly smaller floating pixels, retaining reasonable iPad performance
   const REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const INTRO_MS=1650,RESTORE_MS=1450;
+  const INTRO_MS=5600,RESTORE_MS=4300; // Slow, dreamy breakup and reconstruction
   const style=document.createElement('style');
   style.id='nana-floating-pixels-css';
   style.textContent=[
     '#play-viewport.nana-pixel-chaos,html[data-theme="night"] #play-viewport.nana-pixel-chaos {',
-    '  background:radial-gradient(ellipse at 50% 45%,#6546a6 0%,#38235a 58%,#1c1236 100%) !important;',
+    '  background:#fffafc !important;',
     '}',
     '#play-viewport.nana-pixel-chaos #play-scene {background:transparent!important;}',
     '#play-viewport.nana-pixel-chaos #play-scene > :not(#nana-pixel-field) {',
@@ -206,7 +206,7 @@
   function render(now){
     const {width,height}=resizeField();
     ctx.clearRect(0,0,width,height);
-    const t=now*.001;
+    const t=now*.00022; // Calm, drifting motion: ~4.5x slower than before
     const gridW=width/COLS;
     const gridH=height/ROWS;
     const magnitude=Math.max(0,Math.min(1,mix));
@@ -246,7 +246,7 @@
     frameId=0;
     if(!active)return;
     // Keep the suspended pixel cloud alive; it never fades away or ends on a void.
-    if(!REDUCE.matches&&now-lastPaint<29){
+    if(!REDUCE.matches&&now-lastPaint<33){
       frameId=requestAnimationFrame(paint);
       return;
     }
