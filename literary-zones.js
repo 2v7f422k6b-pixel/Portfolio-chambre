@@ -656,9 +656,9 @@
   }
   function souvenuesHtml() {
  return `<div class="lit-app lit-souvenues lit-archive-gallery lit-archive-reader">
-   ${header('Les Souvenues','Des textes de femmes à lire, tout simplement.')}
+   ${header('Les Souvenues','J’ai un blog où je partage des poèmes et des extraits de textes écrits par des femmes. J’y rassemble les voix et les mots que j’ai envie de faire découvrir.')}
    <div class="lit-reader-head">
-     <span class="lit-reader-kicker">ARCHIVES LITTÉRAIRES · 24 TEXTES RETROUVÉS</span>
+     <span class="lit-reader-kicker">MON BLOG · 24 TEXTES À DÉCOUVRIR</span>
      <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte au hasard</button>
    </div>
    <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite" aria-label="Extrait à lire">
@@ -681,7 +681,7 @@
      <div class="lit-poets" aria-label="Liste des textes"></div>
      <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun résultat pour cette recherche.</p>
    </section>
-   <p class="lit-caption">Textes retranscrits à partir des archives retrouvées. Certaines graphies et traductions méritent une relecture. <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Ancienne page Facebook ↗</a></p>
+   <p class="lit-caption">Une sélection de textes que je partage dans Les Souvenues. Certaines retranscriptions ou traductions méritent encore une relecture. <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Retrouver mon blog sur Facebook ↗</a></p>
  </div>`;
 }
   function archiveVisible() {
@@ -771,12 +771,12 @@
  root.querySelectorAll('[data-lit-poet]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.litPoet)===poet)));
  const isFb=p.source==='https://www.facebook.com/lessouvenues';
  result.innerHTML=`<div class="lit-readable-paper">
-   <p class="lit-readable-eyebrow">LES SOUVENUES · ${escape(p.kind)} · ARCHIVE Nº ${String(poet+1).padStart(2,'0')}</p>
+   <p class="lit-readable-eyebrow">LES SOUVENUES · ${escape(p.kind)} · TEXTE Nº ${String(poet+1).padStart(2,'0')}</p>
    <h3 class="lit-readable-title">${escape(p.title)}</h3>
    <p class="lit-readable-author">${escape(p.name)}</p>
    <p class="lit-readable-origin">${escape(p.kindNote)}</p>
    <div class="lit-readable-excerpt" lang="fr">${escape(lines)}</div>
-   <a class="lit-readable-source" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">${isFb?'Voir l’ancienne page Les Souvenues ↗':'Consulter la référence de l’œuvre ↗'}</a>
+   <a class="lit-readable-source" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">${isFb?'Voir Les Souvenues sur Facebook ↗':'Consulter la référence de l’œuvre ↗'}</a>
  </div>`;
 }
   function freshBank() {
