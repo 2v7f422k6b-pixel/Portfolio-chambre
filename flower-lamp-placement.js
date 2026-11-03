@@ -92,7 +92,7 @@
   });
   const handles = [0,1,2,3].map(index => {
     const handle=make('circle',{
-      'data-mirror-corner':index,
+      'data-lamp-corner':index,
       r:10,fill:'#fff4fa',stroke:'#ff173b',
       'stroke-width':3,'vector-effect':'non-scaling-stroke',
       'pointer-events':'all',
@@ -165,7 +165,7 @@
 
   // In edit mode moving the mirror must not trigger the dress-up interaction.
   group.addEventListener('click',event=>{
-    if(event.target===hit || event.target.closest('[data-mirror-corner]')){
+    if(event.target===hit || event.target.closest('[data-lamp-corner]')){
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -173,7 +173,7 @@
 
   let drag=null;
   group.addEventListener('pointerdown',event=>{
-    const cornerEl=event.target.closest('[data-mirror-corner]');
+    const cornerEl=event.target.closest('[data-lamp-corner]');
     if(event.target!==hit && !cornerEl) return;
     if(event.pointerType==='mouse' && event.button!==0) return;
     event.preventDefault();
@@ -181,7 +181,7 @@
     const rect=svg.getBoundingClientRect();
     drag={
       id:event.pointerId,
-      corner:cornerEl ? Number(cornerEl.getAttribute('data-mirror-corner')) : null,
+      corner:cornerEl ? Number(cornerEl.getAttribute('data-lamp-corner')) : null,
       client:[event.clientX,event.clientY],
       quad:copy(state.quad),
       scale:[roomW/rect.width,roomH/rect.height]
