@@ -131,8 +131,10 @@
   const style=document.createElement('style');
   style.id='wall-lamp-perspective-style';
   style.textContent=[
-    '#wall-lamp-hit:focus-visible{outline:none;stroke:#ff173b;stroke-width:4;stroke-dasharray:7 5}',
-    '@media (hover:hover){#wall-lamp-hit:hover{stroke:#ff173b;stroke-width:2;stroke-dasharray:6 5}}',
+    // No rectangular/dashed SVG hitbox on hover, click or focus.
+    '#wall-lamp-hit,#wall-lamp-hit:hover,#wall-lamp-hit:focus,#wall-lamp-hit:focus-visible,#wall-lamp-hit:active{outline:none;box-shadow:none;stroke:transparent;stroke-width:0;stroke-dasharray:none}',
+    // Keyboard users still get a subtle glow around the illustrated lamp itself.
+    'html:not(.lamp-edit-mode) #nana-wall-lamp:has(#wall-lamp-hit:focus-visible) .nana-wall-lamp-visual{filter:drop-shadow(0 0 5px rgba(255,23,59,.65))}',
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
     'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 5px rgba(255,201,57,.6))}'
   ].join('\n');
