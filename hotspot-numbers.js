@@ -75,47 +75,55 @@
             (Math.min(...ys) + Math.max(...ys)) / 2];
   }
   function entries() {
-    const polygons = [...svg.querySelectorAll('polygon[data-type="poster"], polygon[data-open], polygon[data-mv-open], polygon[data-cat-pet]')];
-    const posters = polygons.filter(el => el.dataset.type === 'poster')
-      .sort((a,b) => Number(a.dataset.index) - Number(b.dataset.index));
-    const other = polygons.filter(el => el.dataset.type !== 'poster');
-    return [...posters, ...other];
+    const posters=[...svg.querySelectorAll('polygon[data-type="poster"]')]
+      .sort((a,b)=>Number(a.dataset.index)-Number(b.dataset.index));
+    const items=posters.map((el,i)=>({
+      el,number:i+1,id:'poster-'+el.dataset.index,
+      name:'Affiche '+(Number(el.dataset.index)+1),type:'poster',
+      action:'gallery',center:null
+    }));
+    const zones=window.NANA_ROOM_ZONES || [];
+    for(const zone of zones){
+      if(!zone.element)continue;
+      items.push({
+        el:zone.element,number:zone.number,id:zone.id,
+        name:zone.label,type:'object',
+        action:zone.element.dataset.open || (zone.element.hasAttribute('data-mv-open')?'music-visuals':
+          zone.element.hasAttribute('data-cat-pet')?'pet-cat':'to-define'),
+        center:zone.center
+      });
+    }
+    const flowers=svg.querySelector('polygon[aria-label="Browse illustrations by the flowers"]');
+    if(flowers)items.push({
+      el:flowers,number:45,id:'fleurs',name:'Fleurs (galerie)',type:'object',
+      action:'photos',center:null
+    });
+    return items;
   }
   let labels = new Map();
   function redraw() {
-    const targets = entries();
-    const current = new Set(targets);
-    for (const [el, label] of labels) if (!current.has(el)) { label.remove(); labels.delete(el); }
-    targets.forEach((target, i) => {
-      const number = i + 1;
-      let label = labels.get(target);
-      if (!label) {
-        label = document.createElement('span');
-        label.className = 'number-label';
+    const targets=entries();
+    const current=new Set(targets.map(t=>t.el));
+    for(const [el,label] of labels){
+      if(!current.has(el)){label.remove();labels.delete(el);}
+    }
+    for(const target of targets){
+      let label=labels.get(target.el);
+      if(!label){
+        label=document.createElement('span');
+        label.className='number-label';
         stage.appendChild(label);
-        labels.set(target, label);
+        labels.set(target.el,label);
       }
-      label.textContent = String(number);
-      const description = target.dataset.type === 'poster'
-        ? 'Affiche ' + (Number(target.dataset.index) + 1)
-        : (target.getAttribute('aria-label') || 'Zone cliquable');
-      label.setAttribute('title', number + ' · ' + description);
-      const [x, y] = center(target.getAttribute('points'));
-      const px = x / W * 100, py = y / H * 100;
-      label.style.left = px + '%';
-      label.style.top = py + '%';
-    });
-    window.hotspotNumberGuide = targets.map((target, i) => ({
-      number: i + 1,
-      type: target.dataset.type === 'poster' ? 'poster' : 'object',
-      name: target.dataset.type === 'poster'
-        ? 'Affiche ' + (Number(target.dataset.index) + 1)
-        : (target.getAttribute('aria-label') || 'Zone cliquable'),
-      action: target.dataset.open || (target.hasAttribute('data-mv-open') ? 'music-visuals' :
-        target.hasAttribute('data-cat-pet') ? 'pet-cat' :
-        target.dataset.type === 'poster' ? 'gallery' : 'polaroids')
-    }));
+      label.textContent=String(target.number);
+      label.setAttribute('title',target.number+' · '+target.name);
+      const [x,y]=target.center || center(target.el.getAttribute('points'));
+      label.style.left=(x/W*100)+'%';
+      label.style.top=(y/H*100)+'%';
+    }
+    window.hotspotNumberGuide=targets.map(({number,id,name,type,action})=>({number,id,name,type,action}));
   }
+  window.addEventListener('nana-room-zones-ready',redraw);
   redraw();
   // Poster positions can be recalibrated; labels must follow without changing the hotspots.
   const observer = new MutationObserver(redraw);
