@@ -37,8 +37,8 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .gift-reply{font-size:26px;text-align:center;margin:13px 0;color:var(--red);animation:appear .3s ease}
 #steam-lines{opacity:0;transform-origin:center;transition:opacity .3s ease}
 #steam-lines.visible{opacity:1;animation:float 1.5s ease-in-out infinite alternate}
-#heart-stamp{opacity:0;transform:scale(.5);transform-origin:250px 250px;transition:opacity .45s ease,transform .5s ease}
-#heart-stamp.visible{opacity:1;transform:scale(1)}
+#heart-stamp{opacity:0;transform:translate(69px,90px) scale(.5);transform-origin:181px 155px;transition:opacity .45s ease,transform .5s ease}
+#heart-stamp.visible{opacity:1;transform:translate(69px,90px) scale(1)}
 @keyframes float{to{transform:translateY(-5px)}}
 .saucer-label{border:1.5px solid var(--red);background:var(--paper);padding:6px 11px;box-shadow:var(--glow);font-size:12px;text-align:center;transform:rotate(-2deg);margin-top:-5px}
 .station-note{text-align:center;font-size:12px;line-height:1.5;margin:20px 0 0;max-width:310px}
@@ -117,7 +117,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
           <path id="vanilla-swirl" d="M181 183 Q197 141 241 154 Q280 165 263 191 Q250 209 225 196 Q214 189 224 180" fill="none" stroke="#ffcf7c" stroke-width="10" stroke-linecap="round" opacity="0"/>
           <rect id="milk" x="0" y="0" width="500" height="500" fill="#dcb88d" opacity="0"/>
           <circle id="cream-ring" cx="242" cy="236" r="159" fill="none" stroke="#f8e8cc" stroke-width="7" opacity="0"/>
-          <g id="heart-stamp" transform="translate(61 71)"><path d="M181 198 C133 165 119 148 132 128 C145 110 169 120 181 136 C193 120 217 110 230 128 C243 148 229 165 181 198 Z" fill="#fffaf0" stroke="#fffaf0" stroke-width="3"/><path d="M157 139 Q181 124 204 139" fill="none" stroke="#f1d3b0" stroke-width="2" stroke-linecap="round"/></g>
+          <g id="heart-stamp"><path d="M181 198 C133 165 119 148 132 128 C145 110 169 120 181 136 C193 120 217 110 230 128 C243 148 229 165 181 198 Z" fill="#fffaf0" stroke="#fffaf0" stroke-width="3"/><path d="M157 139 Q181 124 204 139" fill="none" stroke="#f1d3b0" stroke-width="2" stroke-linecap="round"/></g>
           <g id="steam-lines" stroke="#ff173b" stroke-width="3" stroke-linecap="round" fill="none"><path d="M90 47 q-12 -15 2 -29"/><path d="M181 24 q-12 -14 3 -22"/><path d="M272 46 q-11 -16 3 -28"/></g>
           </g></svg>
         <canvas id="art-canvas" class="cup-art" width="300" height="300" aria-label="Draw your latte art here with a finger or pointer"></canvas>
