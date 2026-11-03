@@ -137,19 +137,44 @@
       ctx.strokeStyle = red;
       ctx.lineWidth = 6;
       ctx.lineJoin = 'round';
-      // Slightly imperfect hand-drawn outlines, matching the portfolio.
-      const frame = (inset) => {
+      // Genuinely hand-traced outlines: many tiny organic deviations,
+      // never large waves or geometric straight segments.
+      const tracedRect = (x, y, w, h, wobble, seed, fill = false) => {
+        let state = seed >>> 0;
+        const random = () => {
+          state ^= state << 13;
+          state ^= state >>> 17;
+          state ^= state << 5;
+          return (state >>> 0) / 4294967296;
+        };
+        const edge = (x0, y0, x1, y1, horizontal) => {
+          const sections = Math.max(2, Math.ceil(Math.hypot(x1-x0, y1-y0) / 68));
+          for (let i = 1; i <= sections; i++) {
+            const mid = (i - .5) / sections;
+            const end = i / sections;
+            const offset = (random() - .5) * wobble * 2;
+            const slightEnd = i === sections ? 0 : (random() - .5) * wobble * .7;
+            ctx.quadraticCurveTo(
+              x0 + (x1-x0) * mid + (horizontal ? 0 : offset),
+              y0 + (y1-y0) * mid + (horizontal ? offset : 0),
+              x0 + (x1-x0) * end + (horizontal ? 0 : slightEnd),
+              y0 + (y1-y0) * end + (horizontal ? slightEnd : 0)
+            );
+          }
+        };
         ctx.beginPath();
-        ctx.moveTo(inset, inset + 3);
-        ctx.lineTo(1600 - inset - 2, inset);
-        ctx.lineTo(1600 - inset, 1120 - inset + 2);
-        ctx.lineTo(inset + 3, 1120 - inset);
+        ctx.moveTo(x, y);
+        edge(x,y,x+w,y,true);
+        edge(x+w,y,x+w,y+h,false);
+        edge(x+w,y+h,x,y+h,true);
+        edge(x,y+h,x,y,false);
         ctx.closePath();
-        ctx.stroke();
+        if (fill) ctx.fill();
+        else ctx.stroke();
       };
-      frame(42);
+      tracedRect(42,42,1516,1036,3.2,4201);
       ctx.lineWidth = 2;
-      frame(61);
+      tracedRect(61,61,1478,998,2.5,6121);
       const heart = (x, y, size) => {
         ctx.save();
         ctx.translate(x, y);
@@ -195,7 +220,7 @@
         const ratio = Math.min(maxW / drawing.naturalWidth, maxH / drawing.naturalHeight);
         const w = drawing.naturalWidth * ratio, h = drawing.naturalHeight * ratio;
         ctx.fillStyle = pink;
-        ctx.fillRect(800 - w / 2 - 9, 390 - 9, w + 18, h + 18);
+        tracedRect(800 - w / 2 - 9, 390 - 9, w + 18, h + 18, 2.1, 3909, true);
         ctx.drawImage(drawing, 800 - w / 2, 390, w, h);
       }
       centered(fr ? 'CHAMPION·NE OFFICIEL·LE' : 'OFFICIAL CHAMPION', 829, 62);
