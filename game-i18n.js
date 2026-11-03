@@ -65,6 +65,7 @@ const frenchGameOriginals={
   "coloriage": "colouring",
   "Double expresso": "Double espresso"
 };
+Object.assign(dictionary,{"My Polaroids — Léna":"Mes Polaroïds — Léna","Coloring Book ♡ — Portfolio":"Livre de coloriage ♡ — Portfolio","Latte Lab ♡":"Atelier latte ♡"});
 const reverse=Object.fromEntries(Object.entries(dictionary).map(([en,fr])=>[fr,en]));
 Object.assign(reverse,frenchGameOriginals);
 for(const [fr,en] of Object.entries(frenchGameOriginals)){
@@ -84,7 +85,9 @@ const next=original.match(/^\s*/)[0]+translated.trim()+original.match(/\s*$/)[0]
 }
 for(const el of [root,...root.querySelectorAll('*')]){for(const a of ['placeholder','aria-label','title','alt']){if(!el.hasAttribute?.(a))continue;const value=el.getAttribute(a),en=reverse[value]||value,translated=language==='fr'?(dictionary[en]||value):en;if(translated!==value)el.setAttribute(a,translated)}}
 }finally{busy=false}}
-window.addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.type!=='portfolio-language')return;language=e.data.language==='en'?'en':'fr';document.documentElement.lang=language;translate()});
-function init(){translate();new MutationObserver(()=>translate()).observe(document.body,{subtree:true,childList:true,characterData:true});try{parent.postMessage({type:'portfolio-language-request'},location.origin)}catch(e){}}
+window.addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.type!=='portfolio-language')return;language=e.data.language==='en'?'en':'fr';document.documentElement.lang=language;translate();updateTitle()});
+const originalTitle=document.title;
+function updateTitle(){const english=reverse[originalTitle]||originalTitle;document.title=language==='fr'?(dictionary[english]||originalTitle):english;}
+function init(){translate();updateTitle();new MutationObserver(()=>translate()).observe(document.body,{subtree:true,childList:true,characterData:true});try{parent.postMessage({type:'portfolio-language-request'},location.origin)}catch(e){}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
