@@ -104,9 +104,25 @@
   } catch (_) { /* Browsers can disable localStorage. The default fit still works. */ }
 
   const art = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
+  const lineLayer = node('g', {
+    class: 'poster-handdrawn-outlines',
+    'pointer-events': 'none',
+    'aria-hidden': 'true'
+  });
   const tapeLayer = node('g', { class: 'poster-tape-layer', 'pointer-events': 'none' });
   const defs = node('defs');
-  oldArtwork.after(defs, art, tapeLayer);
+  // Line layer is above the artwork and below the paper tape. It never captures clicks.
+  oldArtwork.after(defs, art, lineLayer, tapeLayer);
+  const borderStyle = document.createElement('style');
+  borderStyle.id = 'poster-handdrawn-outlines-style';
+  borderStyle.textContent = [
+    '#hotspots .poster-handdrawn-outlines { pointer-events:none!important; }',
+    '#hotspots .poster-glowy-handline { fill:none; stroke:#ff173b; stroke-width:1.7;',
+    'stroke-linecap:round; stroke-linejoin:round; pointer-events:none!important;',
+    'filter:drop-shadow(0 0 1.4px rgba(255,23,59,.82)) drop-shadow(0 0 3.5px rgba(255,23,59,.48)); }',
+    'html[data-theme="night"] #hotspots .poster-glowy-handline { opacity:.78; }'
+  ].join(' ');
+  document.head.appendChild(borderStyle);
   // The static layer remains as a progressive-enhancement fallback until rendering succeeds.
   function polygon(points) { return points.map(p => p.join(',')).join(' '); }
   function clip(id, points) {
@@ -192,12 +208,50 @@
     });
   }
 
+  // A deterministic hand-drawn line follows each actual visible silhouette.
+  // The corners stay sharp; small variations along each edge imitate a stylus.
+  function wobblyOutline(points, posterId) {
+    const fmt = n => Number(n.toFixed(2));
+    const path = ['M ' + fmt(points[0][0]) + ' ' + fmt(points[0][1])];
+    points.forEach((start, edge) => {
+      const end = points[(edge + 1) % points.length];
+      const dx = end[0] - start[0], dy = end[1] - start[1];
+      const length = Math.hypot(dx, dy);
+      const count = Math.max(1, Math.round(length / 19));
+      const nx = length ? -dy / length : 0, ny = length ? dx / length : 0;
+      const stations = [start];
+      for (let i = 1; i < count; i++) {
+        const t = i / count;
+        const deviation = .83 * Math.sin((posterId + 1) * 11.7 + edge * 4.1 + i * 2.7)
+          + .24 * Math.sin((posterId + 1) * 6.3 + edge * 9.2 + i * 4.7);
+        stations.push([
+          start[0] + dx * t + nx * deviation,
+          start[1] + dy * t + ny * deviation
+        ]);
+      }
+      stations.push(end);
+      if (stations.length === 2) {
+        path.push('L ' + fmt(end[0]) + ' ' + fmt(end[1]));
+      } else {
+        for (let i = 1; i < stations.length - 1; i++) {
+          const p = stations[i], next = stations[i + 1];
+          const target = i === stations.length - 2
+            ? next : [(p[0] + next[0]) / 2, (p[1] + next[1]) / 2];
+          path.push('Q ' + fmt(p[0]) + ' ' + fmt(p[1]) +
+            ' ' + fmt(target[0]) + ' ' + fmt(target[1]));
+        }
+      }
+    });
+    return path.join(' ') + ' Z';
+  }
+
   let overlay = null;
   let selected = 0;
   let statusLabel = null;
   function render() {
     defs.replaceChildren();
     art.replaceChildren();
+    lineLayer.replaceChildren();
     tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
@@ -209,6 +263,11 @@
       triangleImage(src, rec.quad, 0, posterGroup, rec.shape, index);
       triangleImage(src, rec.quad, 1, posterGroup, rec.shape, index);
       art.appendChild(posterGroup);
+      lineLayer.appendChild(node('path', {
+        class: 'poster-glowy-handline',
+        d: wobblyOutline(rec.shape, posterIds[index]),
+        'pointer-events': 'none'
+      }));
       renderTape(posterIds[index] + 1, rec.quad);
     });
     oldArtwork.style.display = 'none';
