@@ -410,7 +410,7 @@ function showTamagotchi(){
 }
 function showLatte(){
   closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=custom-art-20261031"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=latte-fill-f73824c"></iframe>';
   $('#special-close').setAttribute('aria-label','Close Latte Lab');
 }
 function showPolaroids(){
