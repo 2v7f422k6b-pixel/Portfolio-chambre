@@ -28,12 +28,12 @@ const translations={
 'Animation & moving images':'Animation et images en mouvement','Motion':'Animation','Editorial':'Éditorial','Social Media':'Réseaux sociaux',
 'Interactive':'Interactif','Illustrated stories and playful web experiments':'Histoires illustrées et expériences web ludiques',
 'See all four playable games':'Découvrir les quatre mini-jeux',
-'My Polaroids':'Mes Polaroïds','Move, turn and explore my instant photographs':'Déplacer, retourner et découvrir mes photos instantanées',
+'My Polaroids':'Mes Polaroïds','Move, turn and explore my instant photographs':'Déplacer, retourner et découvrir mes illustrations instantanées',
 'Coloring Book':'Coloriage','Dress-up':'Habillage','Latte Lab':'Atelier latte','Get in touch ♡':'Me contacter ♡',
 'Let’s work together':'Travaillons ensemble','Let\'s work together':'Travaillons ensemble',
 'Write an email':'Écrire un e-mail','Email':'E-mail','Name':'Nom','Category':'Catégorie','Year':'Année','Role':'Rôle','Tools':'Outils',
 'Close':'Fermer','Open':'Ouvrir','Open project':'Ouvrir le projet','More from this project':'Du même projet',
-'Projects':'Projets','Pages':'Écriture','Music':'Musique','Gallery':'Galerie','Photos':'Photos',
+'Projects':'Projets','Pages':'Écriture','Music':'Musique','Gallery':'Galerie','Illustrations':'Illustrations',
 'Back':'Retour','Next':'Suivant','Previous':'Précédent','Start':'Commencer','Restart':'Recommencer',
 'Continue':'Continuer','Save':'Enregistrer','Cancel':'Annuler','Done':'Terminé','Loading…':'Chargement…',
 'Coming soon':'Bientôt','Read more':'Lire la suite','View project':'Voir le projet','All':'Tout',
@@ -158,7 +158,7 @@ function translateString(str,target=lang){
     else if(key.startsWith('Zone ')&&key.includes(' — destination to be assigned')){const parts=key.split(' — destination to be assigned');value=parts[0].replace(/^Zone (\d+) · (.*)$/,(m,n,label)=>'Zone '+n+' · '+translateString(label,'fr'))+' — destination à définir'}
     else if(key.startsWith('Local time: '))value=key.replace('Local time: ','Heure locale : ');
   }
-  return leading+value+trailing;
+  return leading+value.replace(/\bPhotos\b/g,'Illustrations').replace(/\bphotos\b/g,'illustrations')+trailing;
 }
 window.portfolioTranslate=(value,target=lang)=>translateString(String(value),target);
 function update(root){
