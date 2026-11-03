@@ -673,16 +673,16 @@ html body #window-shade #window-content .lit-archive-reader .lit-readable-eyebro
 html body #window-shade #window-content .lit-archive-reader .lit-readable-title {
   font-family:Georgia,"Times New Roman",serif!important;
   font-weight:600!important;
-  font-size:clamp(26px,3.6vw,40px)!important;
+  font-size:clamp(18px,2.2vw,23px)!important;
   color:#a42443!important;
   line-height:1.18!important;
   overflow-wrap:break-word;
   max-width:none!important;
-  margin:0 0 14px!important;
+  margin:0 0 10px!important;
 }
 html body #window-shade #window-content .lit-archive-reader .lit-readable-author {
   font-family:Georgia,"Times New Roman",serif!important;
-  font-size:clamp(19px,2.4vw,24px)!important;
+  font-size:clamp(14px,1.7vw,16px)!important;
   font-weight:600!important;
   color:#a42443!important;
   line-height:1.4!important;
@@ -690,11 +690,11 @@ html body #window-shade #window-content .lit-archive-reader .lit-readable-author
 }
 html body #window-shade #window-content .lit-archive-reader .lit-readable-origin {
   font-family:Georgia,"Times New Roman",serif!important;
-  font-size:15px!important;
+  font-size:13px!important;
   line-height:1.5!important;
   font-style:italic;
   color:#715967!important;
-  margin:0 0 30px!important;
+  margin:0 0 18px!important;
 }
 html body #window-shade #window-content .lit-archive-reader .lit-readable-excerpt {
   display:block;
