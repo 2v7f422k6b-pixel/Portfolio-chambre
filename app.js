@@ -204,6 +204,15 @@ function openApp(name,index){
   case 'pages':(window.openEditorialPages||window.openPages||openPages)();break;
   case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
   case 'book':openBook();break;
+  case 'reading-room':
+  case 'souvenues':
+  case 'word-lab':{
+    if(!window.NanaLiterary){showToast('La bibliothèque est momentanément indisponible.');break;}
+    const page=window.NanaLiterary.view(name);
+    openWindow(page.title,page.html,'literary');
+    window.NanaLiterary.activate(name);
+    break;
+  }
   case 'mail':openMail();break;
   case 'contact':openContacts();break;
   case 'help':openHelp();break;
