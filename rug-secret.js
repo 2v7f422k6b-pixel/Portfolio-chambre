@@ -26,7 +26,6 @@
   style.textContent=`
     #nana-rug-secret{position:absolute;inset:0;width:100%;height:100%;
       z-index:4;overflow:visible;pointer-events:none;line-height:normal}
-    #nana-rug-secret .rug-reveal-floor{opacity:0;transition:opacity .5s ease}
     #nana-rug-secret .rug-nana-fold{opacity:0;
       transform-box:view-box;transform-origin:625px 859px;
       transform:translate(4px,7px) rotate(7deg) scale(.9);
@@ -34,30 +33,19 @@
     #nana-rug-secret .rug-secret-under{opacity:0;
       transform-box:view-box;transform-origin:650px 900px;
       transform:scale(.8);transition:opacity .3s ease,transform .6s ease}
-    #nana-rug-secret.is-open .rug-reveal-floor{opacity:1}
     #nana-rug-secret.is-open .rug-nana-fold{opacity:1;transform:none}
     #nana-rug-secret.is-open .rug-secret-under{opacity:1;transform:none;
       transition-delay:.55s}
-    html[data-theme="night"] #nana-rug-secret .rug-reveal-floor{filter:brightness(.78)}
     #nana-rug-secret .rug-fold-night{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-day{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-night{display:block}
     @media(prefers-reduced-motion:reduce){
-      #nana-rug-secret .rug-reveal-floor,
       #nana-rug-secret .rug-nana-fold,
       #nana-rug-secret .rug-secret-under{transition:none!important}}
   `;
   document.head.appendChild(style);
   const overlay=make('svg',{id:'nana-rug-secret',viewBox:'0 0 1670 942',
     preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'});
-
-  // The corner now sits at the LEFT, FRONT edge of the green rug, alongside
-  // the bed/table rather than floating on the wall beneath the window.
-  // These coordinates follow the original red outline in Nana's drawing.
-  const floor=make('path',{class:'rug-reveal-floor',
-    d:'M 625 860 Q 652 868 680 908 Q 647 928 617 942 L 618 871 Z',
-    fill:'#f7d6e3'});
-  overlay.appendChild(floor);
 
   const drawing=make('g',{class:'rug-nana-fold'});
   drawing.appendChild(make('image',{
