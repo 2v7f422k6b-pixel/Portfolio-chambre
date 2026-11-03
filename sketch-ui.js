@@ -49,6 +49,9 @@
     ['#window-shade .mv-sidebar', 'vertical-rule', 681],
     ['#window-shade .mv-now-viewing', 'top-rule', 691],
     ['#window-shade .mv-sidebar-divider', 'rule', 671],
+    ['#window-shade .lit-card', 'frame', 711],
+    ['#window-shade .lit-button', 'frame', 721],
+    ['#window-shade .lit-word', 'frame', 731],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
     ['#window-shade .atelier-about-copy .info-box', 'frame', 541]
