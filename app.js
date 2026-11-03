@@ -240,21 +240,46 @@ function openGearnewsSeries(){
  const second=en?'Arpeggios':'Les arpèges';
  const watch=en?'Watch on Instagram':'Voir sur Instagram';
  const more=en?'More episodes to come…':'D’autres épisodes arrivent…';
- const episode=(number,name,url)=>`<a class="gearnews-ring-episode" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name} — Instagram">
-  <span class="gearnews-ring-number">${number}</span>
-  <span class="gearnews-ring-copy"><strong>${name}</strong><small>${watch}</small></span>
-  <span class="gearnews-ring-arrow" aria-hidden="true">↗</span>
- </a>`;
+ // Try the reel's own image endpoint. If Instagram blocks image delivery,
+ // use its official embed so the preview still comes from the actual Reel.
+ const episode=(number,name,shortcode)=>{
+  const url='https://www.instagram.com/reel/'+shortcode+'/';
+  return `<article class="gearnews-ring-episode">
+   <a class="gearnews-ring-preview" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name} — Instagram">
+    <img class="gearnews-ring-thumbnail" src="https://www.instagram.com/p/${shortcode}/media/?size=l" alt="${name} — GearNews.fr" loading="lazy" decoding="async">
+    <iframe class="gearnews-ring-embed" title="${name} — Instagram Reel preview" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <span class="gearnews-ring-play" aria-hidden="true">▶</span>
+   </a>
+   <div class="gearnews-ring-details">
+    <span class="gearnews-ring-number">${number}</span>
+    <span class="gearnews-ring-copy"><strong>${name}</strong><a href="${url}" target="_blank" rel="noopener noreferrer">${watch} ↗</a></span>
+   </div>
+  </article>`;
+ };
  openWindow('GearNews.fr',`<section class="gearnews-ring-series" data-no-translate>
   <p class="gearnews-ring-kicker">GEARNEWS.FR · ${en?'ONGOING SERIES':'SÉRIE EN COURS'}</p>
   <h2>${label}</h2>
   <p class="gearnews-ring-intro">${intro}</p>
   <div class="gearnews-ring-episodes">
-   ${episode('01',first,'https://www.instagram.com/gearnews.fr/reel/DehTbhQxAUI/')}
-   ${episode('02',second,'https://www.instagram.com/gearnews.fr/reel/DfPtOh7CYOJ/')}
+   ${episode('01',first,'DehTbhQxAUI')}
+   ${episode('02',second,'DfPtOh7CYOJ')}
   </div>
   <p class="gearnews-ring-more">${more}</p>
  </section>`,'gearnews-series');
+ const previews=winContent.querySelectorAll('.gearnews-ring-preview');
+ previews.forEach(preview=>{
+  const img=preview.querySelector('.gearnews-ring-thumbnail');
+  const iframe=preview.querySelector('.gearnews-ring-embed');
+  // The embed is a fallback, not an extra network request when the still loads.
+  const fallback=()=>{
+   if(preview.classList.contains('is-embedded'))return;
+   preview.classList.add('is-embedded');
+   const code=preview.href.match(/\/reel\/([^/]+)\//)?.[1];
+   if(code && iframe)iframe.src='https://www.instagram.com/reel/'+code+'/embed/';
+  };
+  img.addEventListener('error',fallback,{once:true});
+  if(img.complete && !img.naturalWidth)fallback();
+ });
 }
 
 function openFinder(){
