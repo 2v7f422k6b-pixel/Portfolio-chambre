@@ -104,22 +104,17 @@
   } catch (_) { /* Browsers can disable localStorage. The default fit still works. */ }
 
   const art = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
-  const lineLayer = node('g', {
-    class: 'poster-handdrawn-outlines',
-    'pointer-events': 'none',
-    'aria-hidden': 'true'
-  });
   const tapeLayer = node('g', { class: 'poster-tape-layer', 'pointer-events': 'none' });
   const defs = node('defs');
-  // Line layer is above the artwork and below the paper tape. It never captures clicks.
-  oldArtwork.after(defs, art, lineLayer, tapeLayer);
+  // Draw each outline directly after its artwork. Subsequent, foreground posters
+  // paint over the earlier outlines instead of showing two borders at overlaps.
+  oldArtwork.after(defs, art, tapeLayer);
   const borderStyle = document.createElement('style');
   borderStyle.id = 'poster-handdrawn-outlines-style';
   borderStyle.textContent = [
-    '#hotspots .poster-handdrawn-outlines { pointer-events:none!important; }',
-    '#hotspots .poster-glowy-handline { fill:none; stroke:#ff173b; stroke-width:1.7;',
+    '#hotspots .poster-glowy-handline { fill:none; stroke:#ff173b; stroke-width:.85;',
     'stroke-linecap:round; stroke-linejoin:round; pointer-events:none!important;',
-    'filter:drop-shadow(0 0 1.4px rgba(255,23,59,.82)) drop-shadow(0 0 3.5px rgba(255,23,59,.48)); }',
+    'filter:drop-shadow(0 0 1.15px rgba(255,23,59,.35)); }',
     'html[data-theme="night"] #hotspots .poster-glowy-handline { opacity:.78; }'
   ].join(' ');
   document.head.appendChild(borderStyle);
@@ -251,7 +246,6 @@
   function render() {
     defs.replaceChildren();
     art.replaceChildren();
-    lineLayer.replaceChildren();
     tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
@@ -263,7 +257,7 @@
       triangleImage(src, rec.quad, 0, posterGroup, rec.shape, index);
       triangleImage(src, rec.quad, 1, posterGroup, rec.shape, index);
       art.appendChild(posterGroup);
-      lineLayer.appendChild(node('path', {
+      art.appendChild(node('path', {
         class: 'poster-glowy-handline',
         d: wobblyOutline(rec.shape, posterIds[index]),
         'pointer-events': 'none'
