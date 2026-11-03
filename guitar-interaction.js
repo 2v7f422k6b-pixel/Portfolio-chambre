@@ -36,7 +36,7 @@
     const b = guitar.getBBox();
     const x = b.x, y = b.y, w = b.width, h = b.height;
     const top = { x: x + w * 0.94, y: y + h * 0.09 };
-    const bottom = { x: x + w * 0.42, y: y + h * 0.85 };
+    const bottom = { x: x + w * 0.62, y: y + h * 0.74 };
     const body = { x: x + w * 0.43, y: y + h * 0.79 };
     return { top, bottom, body, scale: Math.min(w / 113, h / 320) };
   }
