@@ -584,6 +584,8 @@
   let selectedMood = 'surprise';
   let selection = -1;
   let poet = 0;
+  let archiveFilter = 'toutes';
+  let archiveQuery = '';
   let bank = [];
   let poem = [];
   let nextId = 0;
@@ -634,22 +636,58 @@
     </div>`;
   }
   function souvenuesHtml() {
-    return `<div class="lit-app lit-souvenues">
-      ${header('Les Souvenues', 'Quelques poèmes, fragments et voix de femmes que j’avais réunis sur mon ancien blog.')}
-      <div class="lit-notice" role="note">Six textes retrouvés dans les anciennes archives des Souvenues. Les textes anciens sont reproduits ici ; les œuvres plus récentes sont référencées avec un lien vers leur source.</div>
-      <p class="lit-souvenues-original"><a class="lit-text-link" href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Retrouver Les Souvenues sur Facebook ↗</a></p>
-      <div class="lit-souvenues-toolbar">
-        <p class="lit-micro-title">Choisis une autrice</p>
-        <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
-      </div>
-      <div class="lit-poets">${souvenuesEntries.map((p,i)=>`<button type="button" class="lit-card lit-poet" data-lit-poet="${i}" aria-pressed="${poet===i}">
-        <span class="lit-poet-number">0${i+1} · ${escape(p.kind)}</span>
-        <strong>${escape(p.name)}</strong><small>${escape(p.title)}</small>
-      </button>`).join('')}</div>
-      <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
-      <p class="lit-caption">Sélection historique retrouvée, pas un inventaire complet du blog. La typographie du sonnet de Catherine Pozzi conserve ses mots décalés ; les graphies de l’archive sont conservées.</p>
-    </div>`;
-  }
+  return `<div class="lit-app lit-souvenues lit-archive-gallery">
+    ${header('Les Souvenues','Une anthologie de voix de femmes. Des fragments choisis et des cartes pastel retrouvées.')}
+    <div class="lit-notice" role="note">
+      24 textes issus de mes anciennes sélections, retrouvés en plusieurs séries.
+      Les œuvres contemporaines sont référencées sans reproduire leurs longs extraits.
+      <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">La page Facebook d’origine ↗</a>
+    </div>
+    <div class="lit-souvenues-toolbar">
+      <p class="lit-micro-title">La collection · <span data-lit-archive-count>24 cartes</span></p>
+      <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
+    </div>
+    <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou une œuvre</label>
+    <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Une autrice, un poème, un mot…">
+    <div class="lit-archive-filters" role="group" aria-label="Filtrer les archives">
+      ${[['toutes','Toutes'],['poesie','Poésie'],['recit','Récits'],['essai','Essais'],['theatre','Théâtre']].map(([key,label])=>
+        `<button type="button" class="lit-button" data-lit-filter="${key}" aria-pressed="${archiveFilter===key}">${label}</button>`).join('')}
+    </div>
+    <div class="lit-poets" aria-label="Galerie des cartes des Souvenues"></div>
+    <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun texte trouvé. Essaie une autre recherche.</p>
+    <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
+    <p class="lit-caption">Cartes pastel réinterprétées d’après les archives retrouvées. Les textes anciens peuvent se lire dans leur fiche ; les extraits contemporains restent référencés.</p>
+  </div>`;
+}
+  function archiveVisible() {
+  const query=archiveQuery.toLocaleLowerCase('fr').trim();
+  return souvenuesEntries.map((entry,index)=>({entry,index})).filter(({entry})=>
+    (archiveFilter==='toutes'||entry.format===archiveFilter) &&
+    (!query||[entry.name,entry.title,entry.kind,entry.kindNote].join(' ').toLocaleLowerCase('fr').includes(query))
+  );
+}
+  function renderSouvenuesGrid() {
+  const root=appRoot(),grid=root?.querySelector('.lit-poets');
+  if(!root||!grid)return;
+  const visible=archiveVisible();
+  grid.innerHTML=visible.map(({entry:p,index:i})=>
+    `<button type="button" class="lit-card lit-poet" data-lit-poet="${i}"
+       style="--archive-bg:${p.bg};--archive-ink:${p.ink}"
+       aria-pressed="${poet===i}">
+       <span class="lit-poet-number">LES SOUVENUES · ${String(i+1).padStart(2,'0')}</span>
+       <span class="lit-poet-mark" aria-hidden="true">✳</span>
+       <span class="lit-poet-cardtext">
+         <strong>${escape(p.name)}</strong>
+         <small>${escape(p.title)}</small>
+       </span>
+       <span class="lit-poet-kind">${escape(p.kind)}</span>
+     </button>`).join('');
+  const counter=root.querySelector('[data-lit-archive-count]');
+  if(counter)counter.textContent=visible.length+' carte'+(visible.length!==1?'s':'');
+  const noresult=root.querySelector('[data-lit-noresult]');
+  if(noresult)noresult.hidden=visible.length>0;
+  root.querySelectorAll('[data-lit-filter]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litFilter===archiveFilter)));
+}
   function wordLabHtml() {
     return `<div class="lit-app lit-lab">
       ${header('Le laboratoire des mots', 'Découpe, déplace, mélange. Il n’y a pas de mauvaise poésie ici.')}
