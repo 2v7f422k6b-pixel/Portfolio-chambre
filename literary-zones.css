@@ -699,9 +699,9 @@ html body #window-shade #window-content .lit-archive-reader .lit-readable-origin
 html body #window-shade #window-content .lit-archive-reader .lit-readable-excerpt {
   display:block;
   font-family:Georgia,"Times New Roman",serif!important;
-  font-size:clamp(19px,2.25vw,24px)!important;
+  font-size:clamp(14px,1.5vw,16px)!important;
   font-weight:400!important;
-  line-height:1.75!important;
+  line-height:1.58!important;
   letter-spacing:.002em!important;
   color:#342933!important;
   background:transparent!important;
@@ -806,8 +806,8 @@ html[data-theme="night"] body #window-shade #window-content .lit-archive-reader 
   #window-content .lit-archive-reader .lit-poets{grid-template-columns:1fr;}
   #window-content .lit-archive-reader .lit-reader-head{align-items:flex-start;}
   html body #window-shade #window-content .lit-archive-reader .lit-readable-excerpt{
-    font-size:19px!important;
-    line-height:1.7!important;
+    font-size:14px!important;
+    line-height:1.55!important;
   }
   html body #window-shade #window-content .lit-archive-reader .lit-reader-nav{
     gap:8px;justify-content:center;
