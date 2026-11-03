@@ -1151,3 +1151,27 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
     transform:translateY(-12px)!important;
   }
 }
+
+/* Anchor Work desktop Post-it and folders near top of page, independent of theme. */
+/* The heading and search stay centered. Only the left Post-it and right
+   folder column rise toward the menu bar; the trash keeps its own place. */
+@media(min-width:1200px){
+  html body #work-desktop .work-desk-layout > .folder-grid,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
+    transform:translateY(-215px)!important;
+  }
+  html body #work-desktop .desk-extra[data-object="postit"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
+    margin:-175px 0 0 2px!important;
+  }
+}
+@media(min-width:761px) and (max-width:1199px){
+  html body #work-desktop .work-desk-layout > .folder-grid,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
+    transform:translateY(-100px)!important;
+  }
+  html body #work-desktop .desk-extra[data-object="postit"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
+    margin:-70px 0 0 2px!important;
+  }
+}
