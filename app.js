@@ -208,6 +208,7 @@ function openApp(name,index){
   case 'mini-games':openMiniGames();break;
   case 'dressup':openAbout();break;
   case 'photos':openPhotos();break;
+  case 'gearnews-series':openGearnewsSeries();break;
   case 'artwork':openGallery('art',index||0);break;
   case 'gabzilla':openGallery('gabzilla',0);break;
   case 'motion':openMotion();break;
@@ -228,6 +229,32 @@ function openApp(name,index){
   case 'contact':openContacts();break;
   case 'help':openHelp();break;
  }
+}
+
+// The illustrated ring light opens Léna's ongoing GearNews reel series.
+function openGearnewsSeries(){
+ const en=document.documentElement.lang==='en';
+ const label=en?'My first steps in music':'Mes premiers pas dans la musique';
+ const intro=en?'A GearNews.fr series in progress. New episodes will join this little collection as they come out.':'Une série GearNews.fr en cours. Les prochains épisodes viendront rejoindre cette petite collection.';
+ const first=en?'Finding the chords':'Trouver les accords';
+ const second=en?'Arpeggios':'Les arpèges';
+ const watch=en?'Watch on Instagram':'Voir sur Instagram';
+ const more=en?'More episodes to come…':'D’autres épisodes arrivent…';
+ const episode=(number,name,url)=>`<a class="gearnews-ring-episode" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name} — Instagram">
+  <span class="gearnews-ring-number">${number}</span>
+  <span class="gearnews-ring-copy"><strong>${name}</strong><small>${watch}</small></span>
+  <span class="gearnews-ring-arrow" aria-hidden="true">↗</span>
+ </a>`;
+ openWindow('GearNews.fr',`<section class="gearnews-ring-series" data-no-translate>
+  <p class="gearnews-ring-kicker">GEARNEWS.FR · ${en?'ONGOING SERIES':'SÉRIE EN COURS'}</p>
+  <h2>${label}</h2>
+  <p class="gearnews-ring-intro">${intro}</p>
+  <div class="gearnews-ring-episodes">
+   ${episode('01',first,'https://www.instagram.com/gearnews.fr/reel/DehTbhQxAUI/')}
+   ${episode('02',second,'https://www.instagram.com/gearnews.fr/reel/DfPtOh7CYOJ/')}
+  </div>
+  <p class="gearnews-ring-more">${more}</p>
+ </section>`,'gearnews-series');
 }
 
 function openFinder(){
