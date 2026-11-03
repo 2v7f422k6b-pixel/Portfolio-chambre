@@ -27,6 +27,20 @@
   <link rel="stylesheet" href="sketch-ui.css?v=work-wallpaper-20261102">
 <link rel="stylesheet" href="window-system.css?v=stabilize-2">
   <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261103-dock-compact-half-opacity">
+  <style id="night-decor-dimming-20261103">
+    /* Dim only independent illustrated overlays in Night mode; keep hit areas untouched. */
+    html[data-theme="night"] #hotspots .poster-artwork,
+    html[data-theme="night"] #hotspots .poster-perspective-artworks image,
+    html[data-theme="night"] #hotspots .poster-tape-layer image {
+      filter: brightness(.48) saturate(.78) !important;
+    }
+    html[data-theme="night"] #nana-wall-mirror g[pointer-events="none"] image {
+      filter: brightness(.42) saturate(.7) !important;
+    }
+    html[data-theme="night"] #nana-fortune-cookie image {
+      filter: brightness(.48) saturate(.8) !important;
+    }
+  </style>
   <style id="latte-frame-style">.latte-frame{display:block;width:min(860px,94vw);height:min(720px,88dvh);max-height:88dvh;border:0;background:transparent}
 /* Keep the illustrated room and its SVG hotspots in the same fixed ratio. */
 #play-viewport { justify-content: center; align-items: center; }
