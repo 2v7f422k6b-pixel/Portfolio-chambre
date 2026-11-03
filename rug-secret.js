@@ -66,14 +66,14 @@
       stroke:#141418;
     }
     @keyframes nana-spider-dash{
-      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(-10deg) scale(.28)}
-      13%    {opacity:1;transform:translate(620px,904px) rotate(12deg) scale(.42)}
-      25%    {opacity:1;transform:translate(628px,918px) rotate(-10deg) scale(.44)}
-      38%    {opacity:1;transform:translate(638px,936px) rotate(11deg) scale(.45)}
-      52%    {opacity:1;transform:translate(648px,958px) rotate(-9deg) scale(.44)}
-      68%    {opacity:1;transform:translate(660px,986px) rotate(10deg) scale(.43)}
-      84%    {opacity:1;transform:translate(673px,1018px) rotate(-8deg) scale(.40)}
-      100%   {opacity:0;transform:translate(688px,1060px) rotate(9deg) scale(.36)}
+      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(10deg) scale(.28)}
+      13%    {opacity:1;transform:translate(598px,904px) rotate(-12deg) scale(.42)}
+      25%    {opacity:1;transform:translate(579px,918px) rotate(9deg) scale(.44)}
+      38%    {opacity:1;transform:translate(562px,936px) rotate(-11deg) scale(.45)}
+      52%    {opacity:1;transform:translate(539px,958px) rotate(9deg) scale(.44)}
+      68%    {opacity:1;transform:translate(514px,986px) rotate(-10deg) scale(.43)}
+      84%    {opacity:1;transform:translate(490px,1018px) rotate(8deg) scale(.40)}
+      100%   {opacity:0;transform:translate(462px,1060px) rotate(-9deg) scale(.36)}
     }
     @keyframes nana-spider-scuttle{
       from{transform:rotate(-8deg) scaleX(.91)}
