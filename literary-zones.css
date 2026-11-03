@@ -817,3 +817,9 @@ html[data-theme="night"] body #window-shade #window-content .lit-archive-reader 
     font-size:14px;
   }
 }
+
+/* Smaller introductory description for Les Souvenues only; keep poetry reader size intact. */
+#window-content .lit-archive-reader .lit-header .lit-intro {
+  font-size:clamp(13px,1.7vw,16px) !important;
+  line-height:1.55;
+}
