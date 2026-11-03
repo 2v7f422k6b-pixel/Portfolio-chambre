@@ -122,14 +122,69 @@ function translated(value,target=language){
   return start+result+end;
 }
 
+
+/* The hand-drawn heart theme replaces ♥/♡ with an inline <span> before
+   localization starts. Translate the entire label across this icon, while
+   preserving the original heart element and its CSS animation. */
+const inlineHeartSources=new WeakMap();
+const inlineHeartSymbol=/[♥♡❤❣💗💕💖💓💘💝💟💞💜🩷💛💚💙🖤🤍](?:\uFE0F|\uFE0E)?/gu;
+function heartKey(value){return String(value).replace(inlineHeartSymbol,'♥').replace(/\s+/g,' ').trim();}
+const heartToFrench=new Map(),heartToEnglish=new Map();
+for(const [en,fr] of Object.entries(dictionary)){
+  if(!/[♥♡❤❣💗💕💖💓💘💝💟💞💜🩷💛💚💙🖤🤍]/u.test(en+fr))continue;
+  heartToFrench.set(heartKey(en),fr);
+  heartToFrench.set(heartKey(fr),fr);
+  heartToEnglish.set(heartKey(en),en);
+  heartToEnglish.set(heartKey(fr),en);
+}
+function translateHeartLabel(el){
+  if(el.closest('script,style,textarea,code,[contenteditable],[translate="no"]'))return false;
+  if(!Array.from(el.children).some(child=>child.classList.contains('lena-heart')))return false;
+  const slots=[[]];
+  for(const node of el.childNodes){
+    if(node.nodeType===3)slots[slots.length-1].push(node);
+    else if(node.nodeType===1&&node.classList.contains('lena-heart'))slots.push([]);
+    else return false; // Never disturb SVGs, nested controls, or other markup.
+  }
+  const current=slots.map(nodes=>nodes.map(n=>n.nodeValue).join('')).join('♥');
+  const past=inlineHeartSources.get(el);
+  const base=past&&[past.source,past.fr,past.en].some(v=>heartKey(v)===heartKey(current))
+    ?past.source:current;
+  const k=heartKey(base);
+  const fr=heartToFrench.get(k),en=heartToEnglish.get(k);
+  if(fr===undefined||en===undefined)return false;
+  inlineHeartSources.set(el,{source:base,fr,en});
+  const target=language==='fr'?fr:en;
+  const pieces=target.split(inlineHeartSymbol);
+  if(pieces.length!==slots.length)return false;
+  for(let i=0;i<slots.length;i++){
+    // Most slots already contain one text node. Create it only when a heart
+    // is at the beginning or end of a label.
+    if(!slots[i].length){
+      const text=el.ownerDocument.createTextNode('');
+      const icon=Array.from(el.children).filter(n=>n.classList.contains('lena-heart'));
+      if(i<icon.length)el.insertBefore(text,icon[i]);
+      else el.appendChild(text);
+      slots[i].push(text);
+    }
+    if(slots[i][0].nodeValue!==pieces[i])slots[i][0].nodeValue=pieces[i];
+    for(let j=1;j<slots[i].length;j++)if(slots[i][j].nodeValue)slots[i][j].nodeValue='';
+  }
+  return true;
+}
+
 function translate(root=document.body){
   if(!root||busy)return;
   busy=true;
   try{
+    const groups=new WeakSet();
+    const candidates=[...(root.nodeType===1?[root]:[]),...(root.querySelectorAll?.('*')||[])];
+    for(const el of candidates)if(translateHeartLabel(el))groups.add(el);
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     let node;
     while((node=walker.nextNode())){
       if(node.parentElement?.closest('script,style,textarea,code,[contenteditable],[translate="no"]'))continue;
+      if(node.parentElement&&groups.has(node.parentElement))continue;
       const current=node.nodeValue;
       if(!current.trim())continue;
       const old=originalTexts.get(node);
@@ -176,6 +231,9 @@ function init(){
     const roots=new Set();
     for(const r of records){
       if(r.type==='childList'){
+        // An inline heart icon splits text across sibling nodes; rerender
+        // the parent as one bilingual label, not only each added span.
+        if(r.target.nodeType===1)roots.add(r.target);
         r.addedNodes.forEach(n=>{
           if(n.nodeType===1)roots.add(n);
           else if(n.nodeType===3&&n.parentElement)roots.add(n.parentElement);
