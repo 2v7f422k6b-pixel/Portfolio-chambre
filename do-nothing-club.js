@@ -102,9 +102,9 @@
         '<div class="nothing-clock" id="nothing-countdown" aria-label="Time remaining">01:00</div>' +
         '<div class="nothing-progress-track" role="progressbar" aria-label="One minute of nothing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="nothing-progress" class="nothing-progress-fill"></div></div>' +
         '<div id="nothing-certificate" class="nothing-certificate" hidden aria-live="polite">' +
-          '<span>✳ OFFICIALLY CERTIFIED ✳</span>' +
-          '<strong>Certified Professional<br>at Doing Nothing</strong>' +
-          '<small>No achievements. No deadlines. No regrets.</small>' +
+          '<span>✳ AWARDED WITHOUT THE SLIGHTEST EFFORT ✳</span>' +
+          '<strong>Official Champion<br>of Absolutely Nothing</strong>' +
+          '<small>For 60 seconds of world-class inactivity.</small>' +
         '</div>' +
         '<button id="nothing-download" class="nothing-button nothing-download" type="button" hidden>Download my certificate</button>' +
         '<button id="nothing-action" class="nothing-button" type="button" data-nothing-action="start">Start doing nothing</button>' +
@@ -180,8 +180,8 @@
         ctx.fillText(value, 800, y);
       };
       centered('NANA COLOR STUDIO  ·  DO NOTHING CLUB', 138, 32);
-      centered(fr ? 'CERTIFICAT DE GLANDAGE' : 'CERTIFICATE OF DOING NOTHING', 236, 83);
-      centered(fr ? '✳ CERTIFIÉ OFFICIELLEMENT ✳' : '✳ OFFICIALLY CERTIFIED ✳', 323, 39);
+      centered(fr ? 'CERTIFICAT DE FLEMME INTERSIDÉRALE' : 'CERTIFICATE OF INTERGALACTIC LAZINESS', 236, 77);
+      centered(fr ? '✳ DÉLIVRÉ SANS LE MOINDRE EFFORT ✳' : '✳ AWARDED WITHOUT THE SLIGHTEST EFFORT ✳', 323, 39);
 
       // Embed the user's Rilakkuma drawing without cropping it.
       const drawing = new Image();
@@ -198,9 +198,9 @@
         ctx.fillRect(800 - w / 2 - 9, 390 - 9, w + 18, h + 18);
         ctx.drawImage(drawing, 800 - w / 2, 390, w, h);
       }
-      centered(fr ? 'PROFESSIONNEL·LE CERTIFIÉ·E' : 'CERTIFIED PROFESSIONAL', 829, 62);
-      centered(fr ? 'EN NE FAISANT RIEN' : 'AT DOING NOTHING', 906, 59);
-      centered(fr ? '60 secondes de repos absolument improductif.' : '60 seconds of beautifully unproductive rest.', 979, 36);
+      centered(fr ? 'CHAMPION·NE OFFICIEL·LE' : 'OFFICIAL CHAMPION', 829, 62);
+      centered(fr ? 'DU RIEN DU TOUT' : 'OF ABSOLUTELY NOTHING', 906, 59);
+      centered(fr ? 'Pour 60 secondes d’inactivité de très haut niveau.' : 'For 60 seconds of world-class inactivity.', 979, 36);
       const date = new Intl.DateTimeFormat(fr ? 'fr-FR' : 'en-GB', {dateStyle: 'long'}).format(new Date());
       centered(date, 1048, 26);
 
@@ -209,7 +209,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = fr ? 'certificat-de-glandage.png' : 'certificate-of-doing-nothing.png';
+      link.download = fr ? 'certificat-de-flemme-intersiderale.png' : 'certificate-of-intergalactic-laziness.png';
       document.body.appendChild(link);
       link.click();
       link.remove();
