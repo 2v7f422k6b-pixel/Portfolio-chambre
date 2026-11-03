@@ -715,7 +715,7 @@ html body #work-desktop #work-search-input{
 }
 
 /* Topmost menu bar: visibly hand-drawn yet controlled edge. */
-html body #menubar{position:relative!important;border-bottom:0!important;}
+html body #menubar{position:absolute!important;top:0!important;left:0!important;right:0!important;z-index:2000!important;border-bottom:0!important;}
 html body #menubar::after{
  content:""!important;position:absolute!important;left:0!important;right:0!important;
  bottom:-2px!important;height:7px!important;background:#ff173b!important;
@@ -1295,3 +1295,61 @@ html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] img
   }
 }
 /* On small screens folders may exceed the viewport: preserve access to them. */
+
+/* Nana top navigation layout fix 2 — 2026-11-03.
+   Make the header and scenes share the same geometry without overlap.
+   This canonical rule supersedes all prior navbar position/height versions. */
+html body #desktop {
+  --menubar: 46px !important;
+  position: fixed !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+}
+html body #desktop > #menubar {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  margin: 0 !important;
+  padding-block: 0 !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  z-index: 2147483000 !important;
+}
+html body #desktop > #menubar :is(.menu-left,.menu-right) {
+  height: 100% !important;
+  min-height: 0 !important;
+  align-items: center !important;
+}
+html body #desktop > #play-viewport {
+  position: absolute !important;
+  inset: 46px 0 0 0 !important;
+  margin: 0 !important;
+  z-index: 0 !important;
+}
+html body #desktop > #work-desktop {
+  position: absolute !important;
+  inset: 46px 0 0 0 !important;
+  margin: 0 !important;
+  z-index: 0 !important;
+}
+@media (max-width: 760px) {
+  html body #desktop { --menubar: 56px !important; }
+  html body #desktop > #menubar {
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+  html body #desktop > #play-viewport,
+  html body #desktop > #work-desktop {
+    top: 56px !important;
+  }
+}
