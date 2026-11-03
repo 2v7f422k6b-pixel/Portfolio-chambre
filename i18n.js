@@ -119,6 +119,7 @@ Object.assign(translations,{
   "MY PROJECTS":"MES PROJETS",
   "Browse my illustrated, animated, written projects and more":"parcourir mes projets illustrés, animés, écrits et plus"
 });
+Object.assign(translations,{ 'My Articles':'Mes articles' });
 let lang='fr',busy=false;
 try{const saved=localStorage.getItem('portfolio-language-v2');lang=saved==='en'?'en':'fr'}catch(e){}
 const attrs=['placeholder','title','aria-label','alt'];
