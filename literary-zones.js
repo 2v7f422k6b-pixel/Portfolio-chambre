@@ -149,13 +149,14 @@
       "title": "Desdemona",
       "kind": "Théâtre",
       "kindNote": "Dialogue autour d’Othello",
-      "note": "Une voix sur la mémoire, la mort et les femmes qui reprennent la parole.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.laparafe.fr/2012/01/desdemona-dialogue-autour-dothello-de-shakespeare/",
       "section": "Premières retrouvailles",
       "bg": "#f3e2f4",
       "ink": "#a34a79",
-      "format": "theatre"
+      "format": "theatre",
+      "poem": "What bless to know I will never die again. – We will never die again.\n\n« Quelle bénédiction de savoir que je ne mourrai plus jamais. – Nous ne mourrons plus jamais. »"
     },
     {
       "id": "pozzi",
@@ -253,13 +254,14 @@
       "title": "Dans la forêt",
       "kind": "Roman",
       "kindNote": "Extrait sur la lune",
-      "note": "Le fragment que tu avais choisi parle de la lune et de ce qu’on apprend en vivant près de la nature.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.senscritique.com/livre/dans_la_foret/22541510",
       "section": "Premières retrouvailles",
       "bg": "#ffefd7",
       "ink": "#35938c",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Mais j’ai appris quelque chose que l’encyclopédie ne sait pas\n— quand la lune est croissante, on peut l’atteindre\net tenir délicatement sa courbe externe dans la paume\nde la main droite. Quand elle est décroissante,\nelle remplit la paume de la main gauche."
     },
     {
       "id": "gauthier",
@@ -268,13 +270,14 @@
       "title": "Pourquoi sorcières ?",
       "kind": "Revue",
       "kindNote": "Sorcières",
-      "note": "Un manifeste sur la danse, le corps, la nature et la liberté des femmes.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://musees-occitanie.fr/assets/uploads/2021/03/dossier-de-presse-magies-compresse.pdf",
       "section": "Premières retrouvailles",
       "bg": "#fbdada",
       "ink": "#7b2348",
-      "format": "essai"
+      "format": "essai",
+      "poem": "« Pourquoi sorcières ? Parce qu’elles dansent. Elles dansent à la pleine lune. Femmes lunaires, lunatiques, atteintes – disent-ils – de folie périodique. […]\n\nPourquoi sorcières ? Parce qu’elles vivent. Parce qu’elles sont en contact direct avec la vie de leur corps, avec la vie de la nature, avec la vie du corps des autres. Les sorcières respiraient, palpaient, appelaient chaque fleur, chaque herbe, chaque plante. […]\n\nPourquoi sorcières ? Parce qu’elles jouissent. Elles éclatent, leur corps entier est désir... leur jouissance est si violente, si transgressante, si ouverte, si mortelle que les hommes n’en sont pas encore revenus »"
     },
     {
       "id": "ziade",
@@ -299,13 +302,14 @@
       "title": "Fragment attribué à Sappho",
       "kind": "Poésie",
       "kindNote": "Traduction et source non indiquées",
-      "note": "Une déclaration d’amour à la lumière et à la vie, signée « Sappho » sur la carte retrouvée.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#faede6",
       "ink": "#d2799a",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer..."
     },
     {
       "id": "estes",
@@ -314,13 +318,14 @@
       "title": "Femmes qui courent avec les loups",
       "kind": "Essai",
       "kindNote": "Extrait sur le rire",
-      "note": "Le rire envisagé comme une énergie corporelle, joyeuse et libératrice.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#dce6f2",
       "ink": "#855929",
-      "format": "essai"
+      "format": "essai",
+      "poem": "Le rire est un aspect secret de la sexualité féminine, un aspect physique, primitif, passionné, vitalisant et donc excitant. C'est le genre de sexualité dépourvue de but, au contraire de l'excitation génitale. C'est une sexualité joyeuse, une sexualité du moment, un véritable amour sensuel qui se libère, vit, meurt et revit de par sa propre énergie. Il est sacré parce qu'il a valeur de guérison. Il est sensuel parce qu'il réveille le corps et les émotions, parce qu'il excite et fait naître des ondes de plaisir. Il n'est pas unidimensionnel, car le rire se partage. C'est la sexualité la plus sauvage de la femme."
     },
     {
       "id": "diallo",
@@ -329,13 +334,14 @@
       "title": "Abstinence",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "Un poème sur le désir, la mémoire des gestes et la difficulté de l’oubli.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#edeacc",
       "ink": "#8f2546",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Abandonner...\nLes caresses charnelles\nDe tes paumes brûlantes\nAu secours de mes délires\nDans la frénésie des corps en sursaut\n\nOublier...\nLe souvenir de ton regard enflammé\nCaressant mon souffle effréné\nLe rire fascinant de tes yeux\nEt la virilité de ton corps éveillé\n\nPour m'abstenir\nJe m'offre à ces douces heures\nCes heures immortelles\nSuspendues au souvenir têtu\nDes ultimes confidences"
     },
     {
       "id": "ziade-lacrymosa",
@@ -360,13 +366,14 @@
       "title": "Ombres roses ombres",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "Des ombres qui se répondent sur une terre et dans une eau étrangères.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#ae6070",
       "ink": "#fff0f0",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Sous un ciel étranger\nombres roses\nombres\nsur une terre étrangère\nentre roses et ombres\ndans une eau étrangère\nmon ombre"
     },
     {
       "id": "gagnon",
@@ -375,13 +382,14 @@
       "title": "Venue à l’écriture",
       "kind": "Essai",
       "kindNote": "Extrait",
-      "note": "Le corps, sa représentation et les mots qui cherchent à le dire.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#dff2fc",
       "ink": "#cb6f97",
-      "format": "essai"
+      "format": "essai",
+      "poem": "Mon corps est nuit. Opaque et liquide, il a été caché pendant des siècles. Pour compenser ce manque-à-être, les hommes l’ont élevé au rang d’objet d’art, puis ils l’ont exhibé plus que tout autre corps vivant ou inerte. Ils en ont reproduit tellement d’exemplaires qu’il en devint marchandise d’une grande industrie."
     },
     {
       "id": "koltz",
@@ -390,13 +398,14 @@
       "title": "Poème (titre non indiqué)",
       "kind": "Poésie",
       "kindNote": "Extrait sans titre sur la carte",
-      "note": "Quelques vers brefs, une rivière, des pierres et une intimité minérale.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#f9eced",
       "ink": "#dd801b",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "J’aime te sentir\nSur moi\nComme un pont écroulé\n\nMa rivière\nPolira tes pierres"
     },
     {
       "id": "miano",
@@ -405,13 +414,14 @@
       "title": "La Saison de l’ombre",
       "kind": "Roman",
       "kindNote": "Extrait sur la nuit",
-      "note": "Une nuit presque palpable, chargée de mémoire et de sensations.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#807dbe",
       "ink": "#fff4dc",
-      "format": "recit"
+      "format": "recit",
+      "poem": "La nuit tombe d'un coup, comme un fruit trop mûr. Elle s'écrase sur le marais, la rivière, les cases sur pilotis.\n\nLa nuit a une texture : celle de la pulpe du kasimangolo, dont on ne peut savourer toute la douceur sucrée qu'en suçant prudemment les piquants du noyau.\n\nLa nuit est faite pour le repos, mais elle n'est pas si tranquille. Il faut rester sur ses gardes.\n\nLa nuit a une odeur : elle sent la peau de ceux qui sont ensemble par la force des choses. Ceux qui ne se seraient jamais rencontrés, s'il n'avait pas fallu s'enfuir, courir sans savoir où pour rester en vie, trouver une vie.\n\nLa nuit sent les souvenirs que le jour éloigne parce que l'on s'occupe l'esprit à assembler les parties d'une case sur pilotis, à chasser, à piler, à écailler, à soigner le nouveau venu, à caresser la joue de l'enfant qui ne parle pas, à lui chercher un nom pour le maintenir dans la famille des hommes.\n\nLa nuit charrie les réminiscences du dernier jour de la vie d'avant, dans le monde d'antan, sur la terre natale."
     },
     {
       "id": "matlwa",
