@@ -38,11 +38,11 @@
     const filter=element('filter',{id:cookieFilterId,x:'-50%',y:'-50%',width:'200%',height:'200%',
       'color-interpolation-filters':'sRGB'});
     filter.append(
-      element('feMorphology',{'in':'SourceAlpha',operator:'dilate',radius:'3.5',result:'outer'}),
+      element('feMorphology',{'in':'SourceAlpha',operator:'dilate',radius:'1.35',result:'outer'}),
       element('feComposite',{'in':'outer',in2:'SourceAlpha',operator:'out',result:'edge'}),
       element('feFlood',{'flood-color':'white',result:'ink'}),
       element('feComposite',{'in':'ink',in2:'edge',operator:'in',result:'white-edge'}),
-      element('feGaussianBlur',{'in':'white-edge',stdDeviation:'2.5',result:'glow'}),
+      element('feGaussianBlur',{'in':'white-edge',stdDeviation:'0.8',result:'glow'}),
       (()=>{const merge=element('feMerge');merge.append(
         element('feMergeNode',{'in':'glow'}),element('feMergeNode',{'in':'white-edge'})
       );return merge;})()
