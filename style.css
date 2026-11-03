@@ -537,3 +537,33 @@ html[data-theme="night"] #room-img{filter:none!important}
 /* Camera cutout: override generic rectangular span styling and enforce pill geometry. */
 html body .phone-device .phone-screen .phone-status span.phone-island{display:block!important;position:relative!important;flex:0 0 91px!important;width:91px!important;height:25px!important;min-height:25px!important;padding:0!important;margin-top:-8px!important;background:#241d2c!important;border:0!important;border-radius:9999px!important;clip-path:ellipse(50% 50% at 50% 50%)!important;overflow:hidden!important;box-shadow:none!important}
 html body .phone-device .phone-screen .phone-status span.phone-island::before,html body .phone-device .phone-screen .phone-status span.phone-island::after{content:none!important;display:none!important}
+
+/* Contacts: breathing room inside hand-drawn cards and an inline link to the in-site Mail app. */
+#window[data-window-type="contact"] .contact-row .contact-row-inner{
+ display:flex;
+ flex-direction:column;
+ gap:5px;
+ min-width:0;
+ padding-inline:12px;
+}
+#window[data-window-type="contact"] .contact-mail-link{
+ appearance:none;
+ -webkit-appearance:none;
+ display:inline;
+ background:transparent;
+ border:0;
+ box-shadow:none;
+ padding:0;
+ margin:0;
+ color:inherit;
+ font:inherit;
+ line-height:inherit;
+ text-decoration:underline;
+ text-underline-offset:3px;
+ cursor:pointer;
+}
+#window[data-window-type="contact"] .contact-mail-link:hover{text-decoration-thickness:2px}
+#window[data-window-type="contact"] .contact-mail-link:focus-visible{
+ outline:2px solid currentColor;
+ outline-offset:3px;
+}
