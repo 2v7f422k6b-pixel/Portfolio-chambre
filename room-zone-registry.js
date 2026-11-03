@@ -47,6 +47,52 @@
   const firstPoster=svg.querySelector('polygon[data-type="poster"]');
   const toast=document.getElementById('toast');
   let toastTimer;
+  const scene = document.getElementById('play-scene');
+
+  // One quiet interaction for the vase: a single hand-drawn poppy petal falls.
+  // No modal, message, or fortune is attached to it.
+  if (scene && !document.getElementById('nana-poppy-petal-style')) {
+    const style = document.createElement('style');
+    style.id = 'nana-poppy-petal-style';
+    style.textContent = `
+      #play-scene .nana-poppy-petal {
+        position: absolute; z-index: 6; width: 1.5%; height: auto;
+        display: block; line-height: 0; pointer-events: none;
+        transform-origin: center; opacity: 0;
+        animation: nana-petal-fall 2.25s ease-in forwards;
+      }
+      #play-scene .nana-poppy-petal svg { width: 100%; height: auto; display: block; }
+      @keyframes nana-petal-fall {
+        0%   { opacity: 0; transform: translate(0,0) rotate(-20deg) scale(.85); }
+        8%   { opacity: 1; }
+        38%  { transform: translate(var(--petal-x1),var(--petal-y1)) rotate(78deg) scale(1); }
+        72%  { opacity: 1; transform: translate(var(--petal-x2),var(--petal-y2)) rotate(160deg) scale(.98); }
+        100% { opacity: 0; transform: translate(var(--petal-x3),var(--petal-y3)) rotate(280deg) scale(.9); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #play-scene .nana-poppy-petal { animation-duration: .7s; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  function dropPoppyPetal(zone) {
+    if (!scene || !zone.center) return;
+    const petal = document.createElement('span');
+    petal.className = 'nana-poppy-petal';
+    petal.setAttribute('aria-hidden', 'true');
+    const [x,y] = zone.petalOrigin || zone.center;
+    const scale = scene.getBoundingClientRect().width / W;
+    petal.style.left = (x/W*100) + '%';
+    petal.style.top = (y/H*100) + '%';
+    const offsets = {x1:15,y1:55,x2:-12,y2:117,x3:26,y3:195};
+    for (const [key,value] of Object.entries(offsets)) {
+      petal.style.setProperty('--petal-'+key, (value*scale)+'px');
+    }
+    // An irregular red petal, not a new permanent element in the illustration.
+    petal.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 31" aria-hidden="true"><path d="M14 29 C8 26 3 21 2.8 15.3 C1.9 8.7 7 2 14 2 C21 .7 25.5 7.5 25 14 C25 21 20 25 14 29Z" fill="#ec2344" stroke="#c20f2f" stroke-width="1.25"/><path d="M13.5 26 C10 21 8.5 14 11 8" fill="none" stroke="#ff6878" stroke-width="1.4" stroke-linecap="round" opacity=".75"/></svg>';
+    scene.appendChild(petal);
+    petal.addEventListener('animationend', () => petal.remove(), {once:true});
+  }
 
   // New zones are intentionally unassigned until their destination is approved.
   svg.addEventListener('click',event=>{
@@ -55,7 +101,9 @@
     event.preventDefault();
     event.stopPropagation();
     const zone=zones.find(z=>z.id===target.dataset.roomZoneId);
-    if(!zone || !toast) return;
+    if(!zone) return;
+    if(zone.id==='vase') { dropPoppyPetal(zone); return; }
+    if(!toast) return;
     toast.textContent='Zone '+zone.number+' · '+zone.label+' — destination à définir';
     toast.hidden=false;
     clearTimeout(toastTimer);
@@ -97,7 +145,8 @@
       const right=selected.slice().reverse().map(r=>[clamp(r.right+6,W),clamp(r.y+6,H)]);
       return {
         points:[...left,...right].map(p=>p.join(',')).join(' '),
-        center:[(minX+maxX)/2,(minY+maxY)/2]
+        center:[(minX+maxX)/2,(minY+maxY)/2],
+        petalOrigin:[(minX+maxX)/2,minY+(maxY-minY)*.14]
       };
     }catch(_){return null;}
   }
@@ -108,6 +157,7 @@
       const hit=boundsFromAlpha(img);
       if(!hit)return;
       zone.center=hit.center;
+      zone.petalOrigin=hit.petalOrigin;
       if(!zone.element){
         const poly=document.createElementNS(NS,'polygon');
         poly.setAttribute('points',hit.points);
