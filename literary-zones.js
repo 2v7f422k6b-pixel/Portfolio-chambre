@@ -54,7 +54,7 @@
         <div class="lit-moods" role="group" aria-label="Ambiance de lecture">
           ${['surprise','étrange','intense','poétique'].map(m => `<button type="button" class="lit-button" data-lit-mood="${m}" aria-pressed="${m===selectedMood}">${m==='surprise'?'Surprends-moi !':m}</button>`).join('')}
         </div>
-      </div><article class="lit-card lit-book-card" id="lit-reading-result" aria-live="polite"></article>
+      </div><article class="lit-card lit-book-card" id="lit-reading-result" aria-live="polite"><div class="lit-card-body"></div></article>
       <button type="button" class="lit-button lit-primary" data-lit-random>Un autre livre, s’il te plaît</button>
       <p class="lit-caption">Bientôt : tes vrais favoris, tes notes de libraire et tes avis personnels.</p>
     </div>`;
@@ -66,7 +66,7 @@
       <p class="lit-micro-title">Ouvre une fiche</p>
       <div class="lit-poets">${poetExamples.map((p,i)=>`<button type="button" class="lit-card lit-poet" data-lit-poet="${i}" aria-pressed="${poet===i}">
           <span class="lit-poet-number">0${i+1}</span><strong>${escape(p.name)}</strong><small>${escape(p.dates)}</small></button>`).join('')}</div>
-      <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"></article>
+      <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
       <p class="lit-caption">Les textes et les autrices de ton ancien blog remplaceront ces exemples. Les poèmes seront publiés uniquement lorsqu’ils sont libres de droits ou avec autorisation.</p>
     </div>`;
   }
@@ -92,7 +92,7 @@
     return { title: titles[name] || 'Livres', html: name === 'reading-room' ? readingHtml() : name === 'souvenues' ? souvenuesHtml() : wordLabHtml() };
   }
   function showReading() {
-    const root=appRoot(), result=root?.querySelector('#lit-reading-result');
+    const root=appRoot(), result=root?.querySelector('#lit-reading-result .lit-card-body');
     if(!result)return;
     root.querySelectorAll('[data-lit-mood]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.litMood===selectedMood)));
     const available=readingExamples.filter(book=>selectedMood==='surprise'||book.mood===selectedMood);
@@ -103,7 +103,7 @@
       <h3>${escape(b.title)}</h3><p class="lit-byline">${escape(b.author)}</p><p>${escape(b.line)}</p><span class="lit-book-mood">Pour une envie ${escape(b.mood)}</span>`;
   }
   function showPoet() {
-    const root=appRoot(), result=root?.querySelector('#lit-poet-detail');
+    const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
     if(!result)return;
     const p=poetExamples[poet];
     root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
@@ -218,7 +218,7 @@
       if(poem[index])bank.push(poem.splice(index,1)[0]);renderPoem();
     }else if(event.target.closest('#lit-poem')){
       if(source==='bank')insertFromBank(index,targetIndex);
-      else moveInPoem(index,targetIndex>index?targetIndex-1:targetIndex);
+      else moveInPoem(index,targetIndex);
     }
     dragItem=null;
   });
