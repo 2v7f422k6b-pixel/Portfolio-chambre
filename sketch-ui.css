@@ -1393,3 +1393,29 @@ html body #window-shade #motion-reels-screen.sketch-ui-frame>.sketch-ui-svg {
 html body #window-shade #motion-reels .motion-reels-drawer.sketch-ui-frame{
   border:0!important;
 }
+
+/* Mail composer: one subtle hand-traced border per input, with no rigid double edge. */
+html body #window-shade .mail-form .mail-field-box {
+  display:block;
+  position:relative;
+  width:100%;
+  min-width:0;
+}
+html body #window-shade .mail-form .mail-field-box > :is(input,textarea) {
+  display:block;
+  width:100%;
+  box-sizing:border-box;
+  border-radius:0!important;
+}
+html body #window-shade .mail-form .mail-field-box.sketch-ui-frame > :is(input,textarea) {
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+html body #window-shade .mail-form .mail-field-box.sketch-ui-frame > .sketch-ui-svg {
+  z-index:2;
+  overflow:visible;
+  pointer-events:none!important;
+}
+html body #window-shade .mail-form .mail-field-box.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  stroke-width:1.5;
+}
