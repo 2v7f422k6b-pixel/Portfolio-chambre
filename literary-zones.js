@@ -156,7 +156,8 @@
       "bg": "#f3e2f4",
       "ink": "#a34a79",
       "format": "theatre",
-      "poem": "What bless to know I will never die again. – We will never die again.\n\n« Quelle bénédiction de savoir que je ne mourrai plus jamais. – Nous ne mourrons plus jamais. »"
+      "poem": "What bless to know I will never die again. – We will never die again.\n\n« Quelle bénédiction de savoir que je ne mourrai plus jamais. – Nous ne mourrons plus jamais. »",
+      "babelioQuery": "Toni Morrison Desdemona"
     },
     {
       "id": "pozzi",
@@ -229,7 +230,8 @@
       "section": "Premières retrouvailles",
       "bg": "#f9edf0",
       "ink": "#9e3152",
-      "format": "poesie"
+      "format": "poesie",
+      "babelioQuery": "Catherine Pozzi Très haut amour"
     },
     {
       "id": "noailles",
@@ -245,7 +247,8 @@
       "section": "Premières retrouvailles",
       "bg": "#fff1e5",
       "ink": "#c45c78",
-      "format": "poesie"
+      "format": "poesie",
+      "babelioQuery": "Anna de Noailles Les Vivants et les morts"
     },
     {
       "id": "hegland",
@@ -261,7 +264,8 @@
       "bg": "#ffefd7",
       "ink": "#35938c",
       "format": "recit",
-      "poem": "Mais j’ai appris quelque chose que l’encyclopédie ne sait pas\n— quand la lune est croissante, on peut l’atteindre\net tenir délicatement sa courbe externe dans la paume\nde la main droite. Quand elle est décroissante,\nelle remplit la paume de la main gauche."
+      "poem": "Mais j’ai appris quelque chose que l’encyclopédie ne sait pas\n— quand la lune est croissante, on peut l’atteindre\net tenir délicatement sa courbe externe dans la paume\nde la main droite. Quand elle est décroissante,\nelle remplit la paume de la main gauche.",
+      "babelioQuery": "Jean Hegland Dans la forêt"
     },
     {
       "id": "gauthier",
@@ -277,7 +281,8 @@
       "bg": "#fbdada",
       "ink": "#7b2348",
       "format": "essai",
-      "poem": "« Pourquoi sorcières ? Parce qu’elles dansent. Elles dansent à la pleine lune. Femmes lunaires, lunatiques, atteintes – disent-ils – de folie périodique. […]\n\nPourquoi sorcières ? Parce qu’elles vivent. Parce qu’elles sont en contact direct avec la vie de leur corps, avec la vie de la nature, avec la vie du corps des autres. Les sorcières respiraient, palpaient, appelaient chaque fleur, chaque herbe, chaque plante. […]\n\nPourquoi sorcières ? Parce qu’elles jouissent. Elles éclatent, leur corps entier est désir... leur jouissance est si violente, si transgressante, si ouverte, si mortelle que les hommes n’en sont pas encore revenus »"
+      "poem": "« Pourquoi sorcières ? Parce qu’elles dansent. Elles dansent à la pleine lune. Femmes lunaires, lunatiques, atteintes – disent-ils – de folie périodique. […]\n\nPourquoi sorcières ? Parce qu’elles vivent. Parce qu’elles sont en contact direct avec la vie de leur corps, avec la vie de la nature, avec la vie du corps des autres. Les sorcières respiraient, palpaient, appelaient chaque fleur, chaque herbe, chaque plante. […]\n\nPourquoi sorcières ? Parce qu’elles jouissent. Elles éclatent, leur corps entier est désir... leur jouissance est si violente, si transgressante, si ouverte, si mortelle que les hommes n’en sont pas encore revenus »",
+      "babelioQuery": "Xavière Gauthier Sorcières"
     },
     {
       "id": "ziade",
@@ -293,7 +298,8 @@
       "section": "Premières retrouvailles",
       "bg": "#fff1df",
       "ink": "#8b5365",
-      "format": "poesie"
+      "format": "poesie",
+      "babelioQuery": "May Ziadé Fleurs de rêve"
     },
     {
       "id": "sappho",
@@ -309,7 +315,8 @@
       "bg": "#faede6",
       "ink": "#d2799a",
       "format": "poesie",
-      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer..."
+      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer...",
+      "babelioQuery": "Sappho poèmes"
     },
     {
       "id": "estes",
@@ -325,7 +332,8 @@
       "bg": "#dce6f2",
       "ink": "#855929",
       "format": "essai",
-      "poem": "Le rire est un aspect secret de la sexualité féminine, un aspect physique, primitif, passionné, vitalisant et donc excitant. C'est le genre de sexualité dépourvue de but, au contraire de l'excitation génitale. C'est une sexualité joyeuse, une sexualité du moment, un véritable amour sensuel qui se libère, vit, meurt et revit de par sa propre énergie. Il est sacré parce qu'il a valeur de guérison. Il est sensuel parce qu'il réveille le corps et les émotions, parce qu'il excite et fait naître des ondes de plaisir. Il n'est pas unidimensionnel, car le rire se partage. C'est la sexualité la plus sauvage de la femme."
+      "poem": "Le rire est un aspect secret de la sexualité féminine, un aspect physique, primitif, passionné, vitalisant et donc excitant. C'est le genre de sexualité dépourvue de but, au contraire de l'excitation génitale. C'est une sexualité joyeuse, une sexualité du moment, un véritable amour sensuel qui se libère, vit, meurt et revit de par sa propre énergie. Il est sacré parce qu'il a valeur de guérison. Il est sensuel parce qu'il réveille le corps et les émotions, parce qu'il excite et fait naître des ondes de plaisir. Il n'est pas unidimensionnel, car le rire se partage. C'est la sexualité la plus sauvage de la femme.",
+      "babelioQuery": "Clarissa Pinkola Estés Femmes qui courent avec les loups"
     },
     {
       "id": "diallo",
@@ -341,7 +349,8 @@
       "bg": "#edeacc",
       "ink": "#8f2546",
       "format": "poesie",
-      "poem": "Abandonner...\nLes caresses charnelles\nDe tes paumes brûlantes\nAu secours de mes délires\nDans la frénésie des corps en sursaut\n\nOublier...\nLe souvenir de ton regard enflammé\nCaressant mon souffle effréné\nLe rire fascinant de tes yeux\nEt la virilité de ton corps éveillé\n\nPour m'abstenir\nJe m'offre à ces douces heures\nCes heures immortelles\nSuspendues au souvenir têtu\nDes ultimes confidences"
+      "poem": "Abandonner...\nLes caresses charnelles\nDe tes paumes brûlantes\nAu secours de mes délires\nDans la frénésie des corps en sursaut\n\nOublier...\nLe souvenir de ton regard enflammé\nCaressant mon souffle effréné\nLe rire fascinant de tes yeux\nEt la virilité de ton corps éveillé\n\nPour m'abstenir\nJe m'offre à ces douces heures\nCes heures immortelles\nSuspendues au souvenir têtu\nDes ultimes confidences",
+      "babelioQuery": "Koumanthio Zeinab Diallo Abstinence"
     },
     {
       "id": "ziade-lacrymosa",
@@ -357,7 +366,8 @@
       "bg": "#eaf2df",
       "ink": "#317d86",
       "format": "poesie",
-      "poem": "J'ai caressé ma lyre avec mes mains lassées\nEt j'ai gravi la côte où j'ai souvent marché,\nEt j'ai baisé les fleurs des branches enlacées,\nEt j'ai suivi mon rêve, allant au but cherché.\n\nLe cœur battant à coups précipités, dans l'ombre;\nUn seul désir dans l'âme, une larme à mon cil,\nVoyant le ciel trop noir et la cité trop sombre,\nJe t'ai suivi, mon rêve angoissant et subtil!\n\n(…)\n\n…Le ciel est noir, mais quelque chose,\nUn point à reflets chatouillants,\nUn semblant de prunelle rose,\nUn astre aux feux doux, ondoyants…\nAinsi que l'étoile, naguère,\nBethlehem aux Mages montrant,\nL'astre qui me guide m'attend\nÀ la porte du cimetière.\n\nEnfant depuis longtemps parti,\nO frère devenu bel ange,\nPardonne à ma voix, mon petit,\nMa triste voix qui te dérange!\nQue ta forme, sans s'attarder,\nReprenne la robe éphémère\nDe son enfance et de sa terre\nEt vienne un peu me regarder!"
+      "poem": "J'ai caressé ma lyre avec mes mains lassées\nEt j'ai gravi la côte où j'ai souvent marché,\nEt j'ai baisé les fleurs des branches enlacées,\nEt j'ai suivi mon rêve, allant au but cherché.\n\nLe cœur battant à coups précipités, dans l'ombre;\nUn seul désir dans l'âme, une larme à mon cil,\nVoyant le ciel trop noir et la cité trop sombre,\nJe t'ai suivi, mon rêve angoissant et subtil!\n\n(…)\n\n…Le ciel est noir, mais quelque chose,\nUn point à reflets chatouillants,\nUn semblant de prunelle rose,\nUn astre aux feux doux, ondoyants…\nAinsi que l'étoile, naguère,\nBethlehem aux Mages montrant,\nL'astre qui me guide m'attend\nÀ la porte du cimetière.\n\nEnfant depuis longtemps parti,\nO frère devenu bel ange,\nPardonne à ma voix, mon petit,\nMa triste voix qui te dérange!\nQue ta forme, sans s'attarder,\nReprenne la robe éphémère\nDe son enfance et de sa terre\nEt vienne un peu me regarder!",
+      "babelioQuery": "May Ziadé Fleurs de rêve"
     },
     {
       "id": "bachmann",
@@ -373,7 +383,8 @@
       "bg": "#ae6070",
       "ink": "#fff0f0",
       "format": "poesie",
-      "poem": "Sous un ciel étranger\nombres roses\nombres\nsur une terre étrangère\nentre roses et ombres\ndans une eau étrangère\nmon ombre"
+      "poem": "Sous un ciel étranger\nombres roses\nombres\nsur une terre étrangère\nentre roses et ombres\ndans une eau étrangère\nmon ombre",
+      "babelioQuery": "Ingeborg Bachmann Ombres roses ombres"
     },
     {
       "id": "gagnon",
@@ -389,7 +400,8 @@
       "bg": "#dff2fc",
       "ink": "#cb6f97",
       "format": "essai",
-      "poem": "Mon corps est nuit. Opaque et liquide, il a été caché pendant des siècles. Pour compenser ce manque-à-être, les hommes l’ont élevé au rang d’objet d’art, puis ils l’ont exhibé plus que tout autre corps vivant ou inerte. Ils en ont reproduit tellement d’exemplaires qu’il en devint marchandise d’une grande industrie."
+      "poem": "Mon corps est nuit. Opaque et liquide, il a été caché pendant des siècles. Pour compenser ce manque-à-être, les hommes l’ont élevé au rang d’objet d’art, puis ils l’ont exhibé plus que tout autre corps vivant ou inerte. Ils en ont reproduit tellement d’exemplaires qu’il en devint marchandise d’une grande industrie.",
+      "babelioQuery": "Madeleine Gagnon Venue à l'écriture"
     },
     {
       "id": "koltz",
@@ -405,7 +417,8 @@
       "bg": "#f9eced",
       "ink": "#dd801b",
       "format": "poesie",
-      "poem": "J’aime te sentir\nSur moi\nComme un pont écroulé\n\nMa rivière\nPolira tes pierres"
+      "poem": "J’aime te sentir\nSur moi\nComme un pont écroulé\n\nMa rivière\nPolira tes pierres",
+      "babelioQuery": "Anise Koltz poèmes"
     },
     {
       "id": "miano",
@@ -421,7 +434,8 @@
       "bg": "#807dbe",
       "ink": "#fff4dc",
       "format": "recit",
-      "poem": "La nuit tombe d'un coup, comme un fruit trop mûr. Elle s'écrase sur le marais, la rivière, les cases sur pilotis.\n\nLa nuit a une texture : celle de la pulpe du kasimangolo, dont on ne peut savourer toute la douceur sucrée qu'en suçant prudemment les piquants du noyau.\n\nLa nuit est faite pour le repos, mais elle n'est pas si tranquille. Il faut rester sur ses gardes.\n\nLa nuit a une odeur : elle sent la peau de ceux qui sont ensemble par la force des choses. Ceux qui ne se seraient jamais rencontrés, s'il n'avait pas fallu s'enfuir, courir sans savoir où pour rester en vie, trouver une vie.\n\nLa nuit sent les souvenirs que le jour éloigne parce que l'on s'occupe l'esprit à assembler les parties d'une case sur pilotis, à chasser, à piler, à écailler, à soigner le nouveau venu, à caresser la joue de l'enfant qui ne parle pas, à lui chercher un nom pour le maintenir dans la famille des hommes.\n\nLa nuit charrie les réminiscences du dernier jour de la vie d'avant, dans le monde d'antan, sur la terre natale."
+      "poem": "La nuit tombe d'un coup, comme un fruit trop mûr. Elle s'écrase sur le marais, la rivière, les cases sur pilotis.\n\nLa nuit a une texture : celle de la pulpe du kasimangolo, dont on ne peut savourer toute la douceur sucrée qu'en suçant prudemment les piquants du noyau.\n\nLa nuit est faite pour le repos, mais elle n'est pas si tranquille. Il faut rester sur ses gardes.\n\nLa nuit a une odeur : elle sent la peau de ceux qui sont ensemble par la force des choses. Ceux qui ne se seraient jamais rencontrés, s'il n'avait pas fallu s'enfuir, courir sans savoir où pour rester en vie, trouver une vie.\n\nLa nuit sent les souvenirs que le jour éloigne parce que l'on s'occupe l'esprit à assembler les parties d'une case sur pilotis, à chasser, à piler, à écailler, à soigner le nouveau venu, à caresser la joue de l'enfant qui ne parle pas, à lui chercher un nom pour le maintenir dans la famille des hommes.\n\nLa nuit charrie les réminiscences du dernier jour de la vie d'avant, dans le monde d'antan, sur la terre natale.",
+      "babelioQuery": "Léonora Miano La Saison de l'ombre"
     },
     {
       "id": "matlwa",
@@ -437,7 +451,8 @@
       "bg": "#e5f1fb",
       "ink": "#df6491",
       "format": "recit",
-      "poem": "J’ai décidé d’arrêter tous mes traitements. Je suis fatiguée. J’ai fini par aimer ce mince filet de sang qui s’écoule de mon corps jour après jour. Il teinte l’eau du bain d’une jolie couleur rose. Parfois, quand un petit caillot s’échappe, l’eau devient marron foncé.\n\nLa partie molle de mon ventre est chaude et me picote. Je me sens si mal que je suis souvent obligée de m’asseoir pour ne pas m’évanouir. C’est une sorte de douleur, une sorte de plaisir, une sorte de liberté que j’aime et que le traitement du docteur Phakama a essayé de me dérober. Mais cette sensation est à moi, et elle est agréable, et je la veux.\n\nLes murmures qui m’accompagnent ne me gênent pas non plus. Ils me tiennent compagnie, me chantent des chansons et me racontent des histoires qui font passer le temps. Ton silence était de toute façon bien trop assourdissant."
+      "poem": "J’ai décidé d’arrêter tous mes traitements. Je suis fatiguée. J’ai fini par aimer ce mince filet de sang qui s’écoule de mon corps jour après jour. Il teinte l’eau du bain d’une jolie couleur rose. Parfois, quand un petit caillot s’échappe, l’eau devient marron foncé.\n\nLa partie molle de mon ventre est chaude et me picote. Je me sens si mal que je suis souvent obligée de m’asseoir pour ne pas m’évanouir. C’est une sorte de douleur, une sorte de plaisir, une sorte de liberté que j’aime et que le traitement du docteur Phakama a essayé de me dérober. Mais cette sensation est à moi, et elle est agréable, et je la veux.\n\nLes murmures qui m’accompagnent ne me gênent pas non plus. Ils me tiennent compagnie, me chantent des chansons et me racontent des histoires qui font passer le temps. Ton silence était de toute façon bien trop assourdissant.",
+      "babelioQuery": "Kopano Matlwa Règles douloureuses"
     },
     {
       "id": "delpastre",
@@ -453,7 +468,8 @@
       "bg": "#d9edf9",
       "ink": "#324962",
       "format": "poesie",
-      "poem": "Couteau de sel, lame d'argent,\nla lune est blanche à l'horizon.\nQue sais-tu de la lune ?\nLame de cuivre, goutte de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue sur le sillon noirci\nluire comme une eau vive, et sur les feuilles des tilleuls.\nFrange de sel, vague d'argent,\nLa lune est blanche à l'horizon.\nLa lune et la nuit se ressemblent.\nPlume de givre, flaque de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue au milieu de l'étang\nplonger sa face endolorie, comme un noyé, comme un pendu\npour quel supplice méconnu,\nquelle figure et quelle solitude,\nquel symbole et quelle similitude.\nCouteau de feu, face d'argent,\nla lune est blanche à l'horizon.\nLame d'acier, face de sang,\nla lune est rouge à l'horizon."
+      "poem": "Couteau de sel, lame d'argent,\nla lune est blanche à l'horizon.\nQue sais-tu de la lune ?\nLame de cuivre, goutte de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue sur le sillon noirci\nluire comme une eau vive, et sur les feuilles des tilleuls.\nFrange de sel, vague d'argent,\nLa lune est blanche à l'horizon.\nLa lune et la nuit se ressemblent.\nPlume de givre, flaque de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue au milieu de l'étang\nplonger sa face endolorie, comme un noyé, comme un pendu\npour quel supplice méconnu,\nquelle figure et quelle solitude,\nquel symbole et quelle similitude.\nCouteau de feu, face d'argent,\nla lune est blanche à l'horizon.\nLame d'acier, face de sang,\nla lune est rouge à l'horizon.",
+      "babelioQuery": "Marcelle Delpastre Lune"
     },
     {
       "id": "real",
@@ -469,7 +485,8 @@
       "bg": "#ec9299",
       "ink": "#fff3eb",
       "format": "recit",
-      "poem": "À pas de louves, à pas de tigresses et d’oiseaux, nous marcherons sur la lune s’il le faut, nous gagnerons l’espace qui nous revient, à nous qui sommes le baume sur les blessures, et l’eau dans le désert, parfumées, étincelantes, offertes et blessées, douces et violentes, femmes et magiciennes, princesses de nos sens et du désir des hommes."
+      "poem": "À pas de louves, à pas de tigresses et d’oiseaux, nous marcherons sur la lune s’il le faut, nous gagnerons l’espace qui nous revient, à nous qui sommes le baume sur les blessures, et l’eau dans le désert, parfumées, étincelantes, offertes et blessées, douces et violentes, femmes et magiciennes, princesses de nos sens et du désir des hommes.",
+      "babelioQuery": "Grisélidis Réal Le Noir est une couleur"
     },
     {
       "id": "kane",
@@ -485,7 +502,8 @@
       "bg": "#e2f0e9",
       "ink": "#255a59",
       "format": "theatre",
-      "poem": "J'ai peur de perdre celle que jamais je n'ai touchée, l'amour me tient en esclavage dans une cage de larmes, je me mords la langue qui jamais ne peut lui parler, une femme me manque qui n'est jamais née, j'embrasse une femme par-delà les ans qui disent que jamais on ne se rencontrera. Tout passe. Tout périt. Tout pâlit. Ma pensée s'éloigne avec un sourire meurtrier et laisse la discordante anxiété rugir dans mon âme. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir.\n\nUne chanson pour mon aimée, touchant à son absence, aux marées de son cœur, l'éclat de son sourire. Dans dix ans elle sera toujours morte. Pendant que je vivrai avec, que je me débrouillerai avec, pendant que des jours passeront où je n'y penserai même pas, elle sera toujours morte. Pendant que je serai une vieille dame sans abri en train d'oublier mon nom elle sera toujours morte, elle sera toujours morte, c'est terminé, putain, c'est tout, et je dois tenir toute seule.\n\nMon amour, mon amour, pourquoi m'as-tu abandonnée ? Elle est la couche où jamais je ne m'étendrai, et la vie n'a aucun sens à la lumière de ma perte. Bâtie pour la solitude, pour aimer l'absente. Trouve-moi. Libère-moi du doute corrosif, désespoir futile, horreur du repos. Je peux remplir ma place, remplir mon temps, mais rien ne peut remplir ce vide-là dans mon cœur. Ce besoin vital pour lequel je mourrais."
+      "poem": "J'ai peur de perdre celle que jamais je n'ai touchée, l'amour me tient en esclavage dans une cage de larmes, je me mords la langue qui jamais ne peut lui parler, une femme me manque qui n'est jamais née, j'embrasse une femme par-delà les ans qui disent que jamais on ne se rencontrera. Tout passe. Tout périt. Tout pâlit. Ma pensée s'éloigne avec un sourire meurtrier et laisse la discordante anxiété rugir dans mon âme. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir.\n\nUne chanson pour mon aimée, touchant à son absence, aux marées de son cœur, l'éclat de son sourire. Dans dix ans elle sera toujours morte. Pendant que je vivrai avec, que je me débrouillerai avec, pendant que des jours passeront où je n'y penserai même pas, elle sera toujours morte. Pendant que je serai une vieille dame sans abri en train d'oublier mon nom elle sera toujours morte, elle sera toujours morte, c'est terminé, putain, c'est tout, et je dois tenir toute seule.\n\nMon amour, mon amour, pourquoi m'as-tu abandonnée ? Elle est la couche où jamais je ne m'étendrai, et la vie n'a aucun sens à la lumière de ma perte. Bâtie pour la solitude, pour aimer l'absente. Trouve-moi. Libère-moi du doute corrosif, désespoir futile, horreur du repos. Je peux remplir ma place, remplir mon temps, mais rien ne peut remplir ce vide-là dans mon cœur. Ce besoin vital pour lequel je mourrais.",
+      "babelioQuery": "Sarah Kane 4.48 Psychose"
     },
     {
       "id": "chedid",
@@ -501,7 +519,8 @@
       "bg": "#f9eced",
       "ink": "#94536f",
       "format": "poesie",
-      "poem": "Pour mieux tenir debout\nL’homme inventa la fable\nSe vêtit de légendes\nPeupla le ciel d’idoles\nMultiplia ses panthéons\nCumula ses utopies\n\nSe voulant éternel\nIl fixa son oreille\nSur la coquille du monde\nÀ l’écoute\nD’une voix souterraine\nQui l’escorte le guide\nEt l’agrandit\n\nAlors\nDe nuits en nuits\nEt d’aubes en aubes\nTantôt le jour s’éclaire\nTantôt le jour moisit\n\n(…)\n\nToute vie\nAmorça\nLe mystère\nTout mystère\nSe voilà\nDe ténèbres\nToute ténèbre\nSe chargea\nD’espérance\nToute espérance\nFut soumise\nÀ la Vie"
+      "poem": "Pour mieux tenir debout\nL’homme inventa la fable\nSe vêtit de légendes\nPeupla le ciel d’idoles\nMultiplia ses panthéons\nCumula ses utopies\n\nSe voulant éternel\nIl fixa son oreille\nSur la coquille du monde\nÀ l’écoute\nD’une voix souterraine\nQui l’escorte le guide\nEt l’agrandit\n\nAlors\nDe nuits en nuits\nEt d’aubes en aubes\nTantôt le jour s’éclaire\nTantôt le jour moisit\n\n(…)\n\nToute vie\nAmorça\nLe mystère\nTout mystère\nSe voilà\nDe ténèbres\nToute ténèbre\nSe chargea\nD’espérance\nToute espérance\nFut soumise\nÀ la Vie",
+      "babelioQuery": "Andrée Chedid Rythmes"
     },
     {
       "id": "cleyre",
@@ -517,7 +536,8 @@
       "bg": "#e9ddf7",
       "ink": "#403850",
       "format": "recit",
-      "poem": "Une âme qui franchissait le Portail s’arrêta à mi-chemin et dit à la Vie :\n— « Qu’as-tu à m’offrir ? »\nLa Vie répondit :\n— « De la tristesse, un incessant combat, des déceptions.\nPuis le Silence et la Nuit. »\nL’âme dit à la Mort :\n— « Et toi, qu’as-tu à m’offrir ? »\n— « Je te donnerai tout de suite ce que la Vie ne t’accordera qu’à la fin. »\nL’âme se tourna vers la Vie :\n— « Et si je vis ? Et si je me bats ? »\n— « D’autres vivront et se battront après toi.\nEt leurs combats seront plus faciles là où tu auras combattu. »\n— « Mais à quoi bon leurs luttes à eux ? »\n— « Elles rendront plus léger le fardeau de tous ceux qui naîtront ensuite à la douleur et qui la combattront à leur tour. »\n— « Mais qu’ai-je à voir avec ces autres ? Qui sont-ils donc ? »\n— « Ils sont toi. »\n— « Et ceux qui sont venus avant moi, qui sont-ils ? »\n— « Eux aussi, ils sont toi. »\n— « Le Silence et la Nuit auraient donc une fin ? »\n— « Ils finiront en chant et en lumière.\nEt la douleur s’achèvera en Paix\nPuisque la Mort meurt en moi\nTandis que tu passes de toi aux autres\nQue la lumière s’ombrage et que l’ombre s’illumine. Choisis ! »\nL’âme, en larmes, répondit :\n— « Je vivrai ! »"
+      "poem": "Une âme qui franchissait le Portail s’arrêta à mi-chemin et dit à la Vie :\n— « Qu’as-tu à m’offrir ? »\nLa Vie répondit :\n— « De la tristesse, un incessant combat, des déceptions.\nPuis le Silence et la Nuit. »\nL’âme dit à la Mort :\n— « Et toi, qu’as-tu à m’offrir ? »\n— « Je te donnerai tout de suite ce que la Vie ne t’accordera qu’à la fin. »\nL’âme se tourna vers la Vie :\n— « Et si je vis ? Et si je me bats ? »\n— « D’autres vivront et se battront après toi.\nEt leurs combats seront plus faciles là où tu auras combattu. »\n— « Mais à quoi bon leurs luttes à eux ? »\n— « Elles rendront plus léger le fardeau de tous ceux qui naîtront ensuite à la douleur et qui la combattront à leur tour. »\n— « Mais qu’ai-je à voir avec ces autres ? Qui sont-ils donc ? »\n— « Ils sont toi. »\n— « Et ceux qui sont venus avant moi, qui sont-ils ? »\n— « Eux aussi, ils sont toi. »\n— « Le Silence et la Nuit auraient donc une fin ? »\n— « Ils finiront en chant et en lumière.\nEt la douleur s’achèvera en Paix\nPuisque la Mort meurt en moi\nTandis que tu passes de toi aux autres\nQue la lumière s’ombrage et que l’ombre s’illumine. Choisis ! »\nL’âme, en larmes, répondit :\n— « Je vivrai ! »",
+      "babelioQuery": "Voltairine de Cleyre La Vie ou la Mort"
     },
     {
       "id": "duras",
@@ -533,7 +553,8 @@
       "bg": "#e7f4f0",
       "ink": "#167e8b",
       "format": "recit",
-      "poem": "Je te rencontre. Je me souviens de toi. Qui es-tu ? Tu me tues. Tu me fais du bien. Comment me serais-je doutée que cette ville était faite à la taille de l’amour ? Comment me serais-je doutée que tu étais fait à la taille de mon corps même ? Tu me plais. Quel événement. Tu me plais. Quelle lenteur tout à coup. Quelle douceur. Tu ne peux pas savoir. Tu me tues. Tu me fais du bien. Tu me tues. Tu me fais du bien. J’ai le temps. Je t’en prie. Dévore-moi. Déforme-moi jusqu’à la laideur."
+      "poem": "Je te rencontre. Je me souviens de toi. Qui es-tu ? Tu me tues. Tu me fais du bien. Comment me serais-je doutée que cette ville était faite à la taille de l’amour ? Comment me serais-je doutée que tu étais fait à la taille de mon corps même ? Tu me plais. Quel événement. Tu me plais. Quelle lenteur tout à coup. Quelle douceur. Tu ne peux pas savoir. Tu me tues. Tu me fais du bien. Tu me tues. Tu me fais du bien. J’ai le temps. Je t’en prie. Dévore-moi. Déforme-moi jusqu’à la laideur.",
+      "babelioQuery": "Marguerite Duras Hiroshima mon amour"
     },
     {
       "id": "woolf",
@@ -549,7 +570,8 @@
       "bg": "#294c9c",
       "ink": "#fff6ec",
       "format": "recit",
-      "poem": "J’ai voulu dilater la nuit, et y faire entrer sans cesse de plus en plus de rêves."
+      "poem": "J’ai voulu dilater la nuit, et y faire entrer sans cesse de plus en plus de rêves.",
+      "babelioQuery": "Virginia Woolf Les Vagues"
     },
     {
       "id": "nelson",
@@ -565,7 +587,8 @@
       "bg": "#bbcef0",
       "ink": "#242849",
       "format": "essai",
-      "poem": "D’un point de vue empirique, on est fait de poussière d’étoiles. Pourquoi est-ce qu’on n’en parle pas davantage ?"
+      "poem": "D’un point de vue empirique, on est fait de poussière d’étoiles. Pourquoi est-ce qu’on n’en parle pas davantage ?",
+      "babelioQuery": "Maggie Nelson Les Argonautes"
     },
     {
       "id": "sauvage",
@@ -581,7 +604,8 @@
       "bg": "#ee6971",
       "ink": "#fff5ec",
       "format": "poesie",
-      "poem": "Le cœur tremblant, la joue en feu,\nJ’emporte dans mes cheveux\nTes lèvres encore tièdes.\n\nTes baisers restent suspendus\nSur mon front et mes bras nus\nComme des papillons humides."
+      "poem": "Le cœur tremblant, la joue en feu,\nJ’emporte dans mes cheveux\nTes lèvres encore tièdes.\n\nTes baisers restent suspendus\nSur mon front et mes bras nus\nComme des papillons humides.",
+      "babelioQuery": "Cécile Sauvage poèmes"
     }
   ];
   const dictionary = [
@@ -614,8 +638,8 @@
   })[ch]);
   const shuffle = items => [...items].sort(() => Math.random() - .5);
   const appRoot = () => document.querySelector('#window-content .lit-app');
-  const header = (label, intro) => `<header class="lit-header">
-    <p class="lit-overline">NANA COLOR STUDIO / PETITS MONDES LITTÉRAIRES</p>
+  const header = (label, intro, showOverline=true) => `<header class="lit-header">
+    ${showOverline?'<p class="lit-overline">NANA COLOR STUDIO / PETITS MONDES LITTÉRAIRES</p>':''}
     <h2>${label}</h2><p class="lit-intro">${intro}</p></header>`;
   const moodOptions = [
     ['surprise','Surprends-moi !'],
@@ -656,9 +680,8 @@
   }
   function souvenuesHtml() {
  return `<div class="lit-app lit-souvenues lit-archive-gallery lit-archive-reader">
-   ${header('Les Souvenues','J’ai un blog où je partage des poèmes et des extraits de textes écrits par des femmes. J’y rassemble les voix et les mots que j’ai envie de faire découvrir.')}
+   ${header('Les Souvenues','J’ai un blog où je partage des poèmes et des extraits de textes écrits par des femmes. J’y rassemble les voix et les mots que j’ai envie de faire découvrir.',false)}
    <div class="lit-reader-head">
-     <span class="lit-reader-kicker">MON BLOG · 24 TEXTES À DÉCOUVRIR</span>
      <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte au hasard</button>
    </div>
    <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite" aria-label="Extrait à lire">
@@ -670,7 +693,6 @@
      <button type="button" class="lit-button" data-lit-next>Texte suivant →</button>
    </nav>
    <section class="lit-reader-index" aria-label="Index des textes">
-     <h3 class="lit-micro-title">Choisir un texte</h3>
      <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou un titre</label>
      <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Autrice, titre, œuvre…">
      <div class="lit-archive-filters" role="group" aria-label="Filtrer les textes">
@@ -681,7 +703,6 @@
      <div class="lit-poets" aria-label="Liste des textes"></div>
      <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun résultat pour cette recherche.</p>
    </section>
-   <p class="lit-caption">Une sélection de textes que je partage dans Les Souvenues. Certaines retranscriptions ou traductions méritent encore une relecture. <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Retrouver mon blog sur Facebook ↗</a></p>
  </div>`;
 }
   function archiveVisible() {
@@ -769,14 +790,13 @@
  const position=filtered.findIndex(({index})=>index===poet)+1;
  if(countRoot)countRoot.textContent=(position||'–')+' / '+filtered.length;
  root.querySelectorAll('[data-lit-poet]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.litPoet)===poet)));
- const isFb=p.source==='https://www.facebook.com/lessouvenues';
+ const babelioUrl='https://www.babelio.com/recherche.php?Recherche='+encodeURIComponent(p.babelioQuery);
  result.innerHTML=`<div class="lit-readable-paper">
-   <p class="lit-readable-eyebrow">LES SOUVENUES · ${escape(p.kind)} · TEXTE Nº ${String(poet+1).padStart(2,'0')}</p>
    <h3 class="lit-readable-title">${escape(p.title)}</h3>
    <p class="lit-readable-author">${escape(p.name)}</p>
    <p class="lit-readable-origin">${escape(p.kindNote)}</p>
    <div class="lit-readable-excerpt" lang="fr">${escape(lines)}</div>
-   <a class="lit-readable-source" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">${isFb?'Voir Les Souvenues sur Facebook ↗':'Consulter la référence de l’œuvre ↗'}</a>
+   <a class="lit-readable-source" href="${escape(babelioUrl)}" target="_blank" rel="noopener noreferrer">Rechercher cette œuvre sur Babelio ↗</a>
  </div>`;
 }
   function freshBank() {
