@@ -30,6 +30,49 @@
   }
 
   const group=element('g',{id:'nana-fortune-cookie'});
+  // Match the other room objects: glow around the *transparent PNG silhouette*,
+  // not the rectangular hitbox. The outline travels with position and rotation.
+  const cookieFilterId='nana-fortune-cookie-edge-filter';
+  if (!document.getElementById(cookieFilterId)) {
+    const defs=svg.querySelector('defs') || svg.insertBefore(element('defs'),svg.firstChild);
+    const filter=element('filter',{id:cookieFilterId,x:'-50%',y:'-50%',width:'200%',height:'200%',
+      'color-interpolation-filters':'sRGB'});
+    filter.append(
+      element('feMorphology',{'in':'SourceAlpha',operator:'dilate',radius:'3.5',result:'outer'}),
+      element('feComposite',{'in':'outer',in2:'SourceAlpha',operator:'out',result:'edge'}),
+      element('feFlood',{'flood-color':'white',result:'ink'}),
+      element('feComposite',{'in':'ink',in2:'edge',operator:'in',result:'white-edge'}),
+      element('feGaussianBlur',{'in':'white-edge',stdDeviation:'2.5',result:'glow'}),
+      (()=>{const merge=element('feMerge');merge.append(
+        element('feMergeNode',{'in':'glow'}),element('feMergeNode',{'in':'white-edge'})
+      );return merge;})()
+    );
+    defs.appendChild(filter);
+  }
+  const outline=element('image',{
+    href:'assets/fortune-cookie.png',
+    'aria-hidden':'true',
+    'pointer-events':'none',
+    preserveAspectRatio:'xMidYMid meet',
+    filter:'url(#'+cookieFilterId+')',
+    class:'nana-fortune-cookie-outline'
+  });
+  if (!document.getElementById('nana-fortune-cookie-outline-styles')) {
+    const style=document.createElement('style');
+    style.id='nana-fortune-cookie-outline-styles';
+    style.textContent=`
+      #nana-fortune-cookie .nana-fortune-cookie-outline { opacity:0; transition:opacity .18s ease; }
+      #nana-fortune-cookie:hover .nana-fortune-cookie-outline,
+      #nana-fortune-cookie:focus-within .nana-fortune-cookie-outline,
+      #hotspots.hotspot-guide-on #nana-fortune-cookie .nana-fortune-cookie-outline,
+      #hotspots.hotspot-peek #nana-fortune-cookie .nana-fortune-cookie-outline { opacity:1; }
+      #hotspots #nana-fortune-cookie polygon,
+      #hotspots #nana-fortune-cookie polygon:hover,
+      #hotspots #nana-fortune-cookie polygon:focus-visible { fill:transparent!important; stroke:transparent!important; filter:none!important; }
+      @media (prefers-reduced-motion:reduce) { #nana-fortune-cookie .nana-fortune-cookie-outline {transition:none;} }
+    `;
+    document.head.appendChild(style);
+  }
   const image=element('image',{
     href:'assets/fortune-cookie.png',
     'aria-hidden':'true',
@@ -47,7 +90,7 @@
   });
   hit.style.cursor=editor?'grab':'pointer';
   hit.style.touchAction=editor?'none':'manipulation';
-  group.append(image,hit);
+  group.append(outline,image,hit);
   svg.appendChild(group);
 
   function render(){
@@ -57,10 +100,12 @@
     position.x=clamp(position.x,0,ROOM_W-position.width);
     position.y=clamp(position.y,0,ROOM_H-height);
     group.setAttribute('transform',`rotate(${position.angle} ${position.x+position.width/2} ${position.y+height/2})`);
-    image.setAttribute('x',position.x);
-    image.setAttribute('y',position.y);
-    image.setAttribute('width',position.width);
-    image.setAttribute('height',height);
+    for(const im of [outline,image]){
+      im.setAttribute('x',position.x);
+      im.setAttribute('y',position.y);
+      im.setAttribute('width',position.width);
+      im.setAttribute('height',height);
+    }
     hit.setAttribute('points',[
       [position.x,position.y],
       [position.x+position.width,position.y],
