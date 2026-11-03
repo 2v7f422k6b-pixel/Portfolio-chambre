@@ -73,7 +73,11 @@
     ['#window-shade .lit-word', 'frame', 731],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
-    ['#window-shade .atelier-about-copy .info-box', 'frame', 541]
+    ['#window-shade .atelier-about-copy .info-box', 'frame', 541],
+    // Coloring modal in the main document; the iframe handles its own drawn controls.
+    ['.coloring-overlay .coloring-panel', 'frame', 981],
+    ['.coloring-overlay .coloring-panel-head', 'rule', 991],
+    ['.coloring-overlay .coloring-panel-head button', 'frame', 1001]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
