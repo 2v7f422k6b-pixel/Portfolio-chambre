@@ -49,6 +49,7 @@
   const written = dialog.querySelector('.wb-written');
   const machine = dialog.querySelector('.wb-machine');
   // Expose the entire quote to screen readers without 150 incremental announcements.
+  written.removeAttribute('aria-hidden');
   written.setAttribute('aria-label', MESSAGE);
   written.setAttribute('role', 'img');
 
@@ -158,6 +159,7 @@
   dialog.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
       event.preventDefault();
+      event.stopPropagation();
       hidePrompt();
     } else if (event.key === 'Tab') {
       const controls = [...dialog.querySelectorAll('button')];
