@@ -655,28 +655,34 @@
     </div>`;
   }
   function souvenuesHtml() {
-  return `<div class="lit-app lit-souvenues lit-archive-gallery">
-    ${header('Les Souvenues','Une anthologie de voix de femmes. Des fragments choisis et des cartes pastel retrouvées.')}
-    <div class="lit-notice" role="note">
-      24 textes issus de mes anciennes sélections, retrouvés en plusieurs séries.
-      Les œuvres contemporaines sont référencées sans reproduire leurs longs extraits.
-      <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">La page Facebook d’origine ↗</a>
-    </div>
-    <div class="lit-souvenues-toolbar">
-      <p class="lit-micro-title">La collection · <span data-lit-archive-count>24 cartes</span></p>
-      <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
-    </div>
-    <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou une œuvre</label>
-    <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Une autrice, un poème, un mot…">
-    <div class="lit-archive-filters" role="group" aria-label="Filtrer les archives">
-      ${[['toutes','Toutes'],['poesie','Poésie'],['recit','Récits'],['essai','Essais'],['theatre','Théâtre']].map(([key,label])=>
-        `<button type="button" class="lit-button" data-lit-filter="${key}" aria-pressed="${archiveFilter===key}">${label}</button>`).join('')}
-    </div>
-    <div class="lit-poets" aria-label="Galerie des cartes des Souvenues"></div>
-    <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun texte trouvé. Essaie une autre recherche.</p>
-    <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
-    <p class="lit-caption">Cartes pastel réinterprétées d’après les archives retrouvées. Les textes anciens peuvent se lire dans leur fiche ; les extraits contemporains restent référencés.</p>
-  </div>`;
+ return `<div class="lit-app lit-souvenues lit-archive-gallery lit-archive-reader">
+   ${header('Les Souvenues','Des textes de femmes à lire, tout simplement.')}
+   <div class="lit-reader-head">
+     <span class="lit-reader-kicker">ARCHIVES LITTÉRAIRES · 24 TEXTES RETROUVÉS</span>
+     <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte au hasard</button>
+   </div>
+   <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite" aria-label="Extrait à lire">
+     <div class="lit-card-body"></div>
+   </article>
+   <nav class="lit-reader-nav" aria-label="Parcourir les textes">
+     <button type="button" class="lit-button" data-lit-prev>← Texte précédent</button>
+     <span class="lit-reader-count" data-lit-position>1 / 24</span>
+     <button type="button" class="lit-button" data-lit-next>Texte suivant →</button>
+   </nav>
+   <section class="lit-reader-index" aria-label="Index des textes">
+     <h3 class="lit-micro-title">Choisir un texte</h3>
+     <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou un titre</label>
+     <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Autrice, titre, œuvre…">
+     <div class="lit-archive-filters" role="group" aria-label="Filtrer les textes">
+       ${[['toutes','Tous'],['poesie','Poèmes'],['recit','Récits'],['essai','Essais'],['theatre','Théâtre']].map(([key,label])=>
+         `<button type="button" class="lit-button" data-lit-filter="${key}" aria-pressed="${archiveFilter===key}">${label}</button>`).join('')}
+     </div>
+     <p class="lit-reader-indexcount" data-lit-archive-count>24 textes</p>
+     <div class="lit-poets" aria-label="Liste des textes"></div>
+     <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun résultat pour cette recherche.</p>
+   </section>
+   <p class="lit-caption">Textes retranscrits à partir des archives retrouvées. Certaines graphies et traductions méritent une relecture. <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Ancienne page Facebook ↗</a></p>
+ </div>`;
 }
   function archiveVisible() {
   const query=archiveQuery.toLocaleLowerCase('fr').trim();
@@ -685,27 +691,21 @@
     (!query||[entry.name,entry.title,entry.kind,entry.kindNote].join(' ').toLocaleLowerCase('fr').includes(query))
   );
 }
-  function renderSouvenuesGrid() {
-  const root=appRoot(),grid=root?.querySelector('.lit-poets');
-  if(!root||!grid)return;
-  const visible=archiveVisible();
-  grid.innerHTML=visible.map(({entry:p,index:i})=>
-    `<button type="button" class="lit-card lit-poet" data-lit-poet="${i}"
-       style="--archive-bg:${p.bg};--archive-ink:${p.ink}"
-       aria-pressed="${poet===i}">
-       <span class="lit-poet-number">LES SOUVENUES · ${String(i+1).padStart(2,'0')}</span>
-       <span class="lit-poet-mark" aria-hidden="true">✳</span>
-       <span class="lit-poet-cardtext">
-         <strong>${escape(p.name)}</strong>
-         <small>${escape(p.title)}</small>
-       </span>
-       <span class="lit-poet-kind">${escape(p.kind)}</span>
-     </button>`).join('');
-  const counter=root.querySelector('[data-lit-archive-count]');
-  if(counter)counter.textContent=visible.length+' carte'+(visible.length!==1?'s':'');
-  const noresult=root.querySelector('[data-lit-noresult]');
-  if(noresult)noresult.hidden=visible.length>0;
-  root.querySelectorAll('[data-lit-filter]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litFilter===archiveFilter)));
+    function renderSouvenuesGrid() {
+ const root=appRoot(),grid=root?.querySelector('.lit-poets');
+ if(!root||!grid)return;
+ const visible=archiveVisible();
+ grid.innerHTML=visible.map(({entry:p,index:i})=>
+  `<button type="button" class="lit-index-item" data-lit-poet="${i}" aria-pressed="${poet===i}">
+    <span class="lit-index-num">${String(i+1).padStart(2,'0')}</span>
+    <span class="lit-index-copy"><strong>${escape(p.name)}</strong><small>${escape(p.title)}</small></span>
+    <span class="lit-index-arrow" aria-hidden="true">↗</span>
+  </button>`).join('');
+ const counter=root.querySelector('[data-lit-archive-count]');
+ if(counter)counter.textContent=visible.length+' texte'+(visible.length!==1?'s':'');
+ const noresult=root.querySelector('[data-lit-noresult]');
+ if(noresult)noresult.hidden=visible.length>0;
+ root.querySelectorAll('[data-lit-filter]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litFilter===archiveFilter)));
 }
   function wordLabHtml() {
     return `<div class="lit-app lit-lab">
@@ -757,37 +757,27 @@
     drawReadingBook(options[Math.floor(Math.random()*options.length)]);
   }
   function showPoet() {
-  const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
-  if(!result)return;
-  const p=souvenuesEntries[poet];
-  if(!p)return;
-  root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
-  let content='';
-  if(p.aligned){
-    content=`<div class="lit-archive-poem lit-archive-aligned" lang="fr">${p.aligned.map(([left,right],i)=>
-      `<div class="lit-archive-verse${[4,8,11].includes(i)?' lit-archive-new-stanza':''}">
-        <span>${escape(left)}</span><span>${escape(right)}</span>
-      </div>`).join('')}</div>`;
-  } else if(p.poem) {
-    content=`<details class="lit-archive-expand" ${p.id==='noailles'?'open':''}>
-      <summary>${p.id==='noailles'?'Lire les vers':'Lire le texte retrouvé'}</summary>
-      <div class="lit-archive-poem">${escape(p.poem)}</div>
-    </details>`;
-  } else {
-    content=`<div class="lit-archive-reference">Cette fiche conserve la trace du texte et de son autrice, sans reproduire le long extrait contemporain qui figurait dans la publication d’origine.</div>`;
-  }
-  const original=p.source==='https://www.facebook.com/lessouvenues';
-  result.innerHTML=`<div class="lit-archive-detail-inner" style="--archive-bg:${p.bg};--archive-ink:${p.ink}">
-    <span class="lit-book-ribbon">CARTE Nº ${String(poet+1).padStart(2,'0')} · ${escape(p.kind)} · ${escape(p.section)}</span>
-    <h3>${escape(p.title)}</h3>
-    <p class="lit-byline">${escape(p.name)} ${p.dates?`<small>${escape(p.dates)}</small>`:''}</p>
-    <p class="lit-archive-source">${escape(p.kindNote)}</p>
-    <p class="lit-archive-note">${escape(p.note)}</p>
-    ${content}
-    <a class="lit-text-link" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">
-      ${original?'Retrouver les publications sur Facebook ↗':'Consulter une source de l’œuvre ↗'}
-    </a>
-  </div>`;
+ const root=appRoot(),result=root?.querySelector('#lit-poet-detail .lit-card-body');
+ if(!root||!result)return;
+ const p=souvenuesEntries[poet];
+ if(!p)return;
+ const lines=p.aligned ?
+   p.aligned.map(([left,right],index)=>([4,8,11].includes(index)?'\n':'')+left+' '+right).join('\n') :
+   (p.poem||'Texte en attente de retranscription.');
+ const countRoot=root.querySelector('[data-lit-position]');
+ const filtered=archiveVisible();
+ const position=filtered.findIndex(({index})=>index===poet)+1;
+ if(countRoot)countRoot.textContent=(position||'–')+' / '+filtered.length;
+ root.querySelectorAll('[data-lit-poet]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.litPoet)===poet)));
+ const isFb=p.source==='https://www.facebook.com/lessouvenues';
+ result.innerHTML=`<div class="lit-readable-paper">
+   <p class="lit-readable-eyebrow">LES SOUVENUES · ${escape(p.kind)} · ARCHIVE Nº ${String(poet+1).padStart(2,'0')}</p>
+   <h3 class="lit-readable-title">${escape(p.title)}</h3>
+   <p class="lit-readable-author">${escape(p.name)}</p>
+   <p class="lit-readable-origin">${escape(p.kindNote)}</p>
+   <div class="lit-readable-excerpt" lang="fr">${escape(lines)}</div>
+   <a class="lit-readable-source" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">${isFb?'Voir l’ancienne page Les Souvenues ↗':'Consulter la référence de l’œuvre ↗'}</a>
+ </div>`;
 }
   function freshBank() {
     // Avoid duplicating currently placed words in the palette.
