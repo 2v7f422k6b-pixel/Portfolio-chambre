@@ -18,7 +18,7 @@ style.textContent=[
 ].join("\n");
 document.head.append(style);
 const overlay=document.createElement("div");overlay.className="coloring-overlay";overlay.id="coloring-overlay";overlay.hidden=true;
-overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">♥ COLORING BOOK ♥</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html" loading="lazy"></iframe></section>';
+overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">♥ COLORING BOOK ♥</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html?v=20261103-i18n-5" loading="lazy"></iframe></section>';
 document.body.append(overlay);
 let previousFocus=null;
 function open(){previousFocus=document.activeElement;overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
