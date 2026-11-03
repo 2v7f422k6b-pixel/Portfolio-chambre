@@ -823,3 +823,105 @@ html[data-theme="night"] body #window-shade #window-content .lit-archive-reader 
   font-size:clamp(13px,1.7vw,16px) !important;
   line-height:1.55;
 }
+
+/* Souvenues — compact reading scale, with the same vivid red as the rest of the site.
+   Scoped to this window: books and word-lab remain unchanged. */
+html body #window-shade #window-content .lit-archive-reader {
+  padding:clamp(9px,1.3vw,18px)!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-header {
+  margin:0 0 12px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-header h2 {
+  font-size:clamp(23px,2.4vw,32px)!important;
+  line-height:1.17!important;
+  margin:4px 0 8px!important;
+  color:#ff173b!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-header .lit-intro {
+  font-size:clamp(12px,1.15vw,14px)!important;
+  line-height:1.45!important;
+  color:#ff173b!important;
+  margin:0!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-head {
+  margin:10px 0 8px!important;
+  gap:8px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-head .lit-button,
+html body #window-shade #window-content .lit-archive-reader .lit-reader-nav .lit-button {
+  font-size:clamp(12px,1vw,14px)!important;
+  padding:8px 11px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-poet-detail {
+  padding:clamp(5px,.8vw,12px)!important;
+  margin:8px 0!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-paper {
+  padding:clamp(12px,1.6vw,22px)!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-title {
+  font-size:clamp(16px,1.65vw,20px)!important;
+  line-height:1.24!important;
+  color:#ff173b!important;
+  margin:0 0 7px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-author {
+  font-size:clamp(13px,1.3vw,15px)!important;
+  line-height:1.35!important;
+  color:#ff173b!important;
+  margin:0 0 3px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-origin {
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin:0 0 12px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-excerpt {
+  font-size:clamp(12px,1.18vw,14px)!important;
+  line-height:1.5!important;
+  padding:4px 0 12px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-readable-source {
+  font-size:12px!important;
+  margin:10px 0 0!important;
+  color:#ff173b!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-nav {
+  padding:6px 0 16px!important;
+  gap:8px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-count {
+  font-size:12px!important;
+  color:#ff173b!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-index {
+  padding-top:14px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-index .lit-archive-searchlabel,
+html body #window-shade #window-content .lit-archive-reader .lit-reader-indexcount {
+  font-size:12px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-index .lit-archive-search {
+  font-size:13px!important;
+  min-height:35px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-reader-index .lit-index-item {
+  padding:9px 10px!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-index-copy strong {
+  font-size:13px!important;
+  color:#ff173b!important;
+}
+html body #window-shade #window-content .lit-archive-reader .lit-index-copy small {
+  font-size:12px!important;
+}
+@media(max-width:620px){
+  html body #window-shade #window-content .lit-archive-reader .lit-readable-excerpt {
+    font-size:13px!important;
+    line-height:1.52!important;
+  }
+  html body #window-shade #window-content .lit-archive-reader .lit-header h2 {
+    font-size:24px!important;
+  }
+}
