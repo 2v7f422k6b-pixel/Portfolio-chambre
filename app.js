@@ -237,7 +237,7 @@ function openApp(name,index){
 function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
    <button class="project-card" data-open="illustration"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"><strong>Illustration</strong><small>Drawings, visual storytelling & collaborations</small></button>
-   <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Motion</strong><small>Animation & moving images</small></button>
+   <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Animations</strong><small>Animation & moving images</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
    <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
@@ -374,7 +374,7 @@ function updateGallery(){
 }
 function changeGallery(delta){if(!currentGallery)return;const len=(currentGallery.which==='gabzilla'?GABZILLA:ART).length;currentGallery.index=(currentGallery.index+delta+len)%len;updateGallery()}
 function openMotion(){
- openWindow('Motion',`<div class="eyebrow">Motion / Video</div><h2>Motion</h2><p class="section-lead">Animation, moving image and editorial video — kept separate so each type of work has room to breathe.</p><div class="info-list"><div class="info-box"><small>01 / Animation</small><strong>2D animation & loops</strong></div><div class="info-box"><small>02 / Editorial video</small><strong>Reels & features</strong></div></div><div class="empty-state"><span class="empty-icon">▷</span><h3>Video library coming soon</h3><p>No video files have been added yet. When the original videos are available, they can play here, directly in the portfolio, without a YouTube embed.</p></div>`,'motion');
+ openWindow('Animations',`<div class="eyebrow">Animations / Video</div><h2>Animations</h2><p class="section-lead">Animation, moving image and editorial video — kept separate so each type of work has room to breathe.</p><div class="info-list"><div class="info-box"><small>01 / Animation</small><strong>2D animation & loops</strong></div><div class="info-box"><small>02 / Editorial video</small><strong>Reels & features</strong></div></div><div class="empty-state"><span class="empty-icon">▷</span><h3>Video library coming soon</h3><p>No video files have been added yet. When the original videos are available, they can play here, directly in the portfolio, without a YouTube embed.</p></div>`,'motion');
 }
 function openPages(){
  openWindow('Pages',`<div class="eyebrow">Pages / Writing</div><h2>Pages</h2><p class="section-lead">Articles, music journalism and personal writing.</p><div class="info-list"><div class="info-box"><small>Editorial writing</small><strong>Gearnews.fr</strong></div><div class="info-box"><small>Stories</small><strong>Personal writing</strong></div></div><div class="empty-state"><span class="empty-icon">▤</span><h3>Article library in preparation</h3><p>Full texts will be added here only when supplied or approved for republication. In the meantime, the original publications can be explored on Gearnews.</p><a class="pill-link" href="https://www.gearnews.fr/" rel="noopener noreferrer" target="_blank">Visit Gearnews.fr ↗</a></div>`,'pages');
@@ -399,7 +399,7 @@ function openMail(){
  openWindow('Mail — New Message',`<div class="eyebrow">To / lena.defirmas@gmail.com</div><h2>New message</h2><p>Send a message directly from the portfolio using a secure Formspree form.</p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'mail');
 }
 function openHelp(){
- openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and motion through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p>`,'help');
+ openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and animations through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p>`,'help');
 }
 
 function showPhone(){
