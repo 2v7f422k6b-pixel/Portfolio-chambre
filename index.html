@@ -629,7 +629,182 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
       #play-scene > #marseille-night { transition: none; }
     }
   </style>
-  </head>
+  
+<!-- Mobile Work fit: fixed canvas, compact search and fully visible folders (2026-11-04) -->
+<style id="work-mobile-fit-20261104">
+@media (max-width: 760px) {
+  /* The Work desktop behaves like the non-scrolling computer version. */
+  html body #desktop > #work-desktop,
+  html body #work-desktop,
+  html[data-theme="night"] body #work-desktop {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    overscroll-behavior: none !important;
+    scrollbar-gutter: auto !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    touch-action: pan-x !important;
+  }
+
+  /* The heart/Accueil in the fixed menu already goes home. */
+  html body #work-desktop #back-to-room,
+  html body #work-desktop #back-to-room.back-room,
+  html body #work-desktop #back-to-room.back-room.sketch-ui-frame {
+    display: none !important;
+  }
+
+  html body #work-desktop .work-desktop-label {
+    margin: 10px auto 2px !important;
+    padding: 0 10px !important;
+  }
+  html body #work-desktop .work-desktop-label h2 {
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+  html body #work-desktop .work-desktop-label h2 .nana-hand {
+    width: min(330px, 83vw) !important;
+  }
+  /* Already repeated by the folders; frees space without hiding work. */
+  html body #work-desktop .work-desktop-label p {
+    display: none !important;
+  }
+
+  /* A small search, centred under the heading, not edge-to-edge. */
+  html body #work-desktop #work-search,
+  html[data-theme="night"] body #work-desktop #work-search {
+    width: min(270px, calc(100vw - 56px)) !important;
+    max-width: 270px !important;
+    margin: 8px auto 0 !important;
+    padding: 0 !important;
+  }
+  html body #work-desktop #work-search::before {
+    left: 11px !important;
+    width: 15px !important;
+    height: 15px !important;
+  }
+  html body #work-desktop #work-search-input,
+  html[data-theme="night"] body #work-desktop #work-search-input {
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 5px 10px 5px 34px !important;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    border-width: 1.5px !important;
+  }
+
+  /* Keep the Post-it, trash and all four folder rows above the dock. */
+  html body #work-desktop .work-desk-layout,
+  html[data-theme="night"] body #work-desktop .work-desk-layout {
+    display: grid !important;
+    grid-template-columns: 116px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    margin: 11px auto 0 !important;
+    padding: 0 12px !important;
+    min-height: 0 !important;
+  }
+  html body #work-desktop .work-desk-layout > .folder-grid,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid,
+  html body #work-desktop .work-desk-layout > .desk-extras,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .desk-extras {
+    transform: none !important;
+  }
+  html body #work-desktop .work-desk-layout > .folder-grid,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
+    display: grid !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(1px, 0.6dvh, 5px) 4px !important;
+    align-content: start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  html body #work-desktop .work-desk-layout .desktop-folder,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder {
+    height: clamp(66px, 10.5dvh, 86px) !important;
+    min-height: clamp(66px, 10.5dvh, 86px) !important;
+    gap: 3px !important;
+    padding: 1px !important;
+    justify-content: flex-start !important;
+  }
+  html body #work-desktop .work-desk-layout .desktop-folder .folder-tile,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder .folder-tile {
+    width: clamp(54px, 7.2dvh, 66px) !important;
+    height: clamp(40px, 5.5dvh, 50px) !important;
+    margin-top: 10px !important;
+  }
+  html body #work-desktop .work-desk-layout .desktop-folder > span:last-child,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder > span:last-child {
+    font-size: clamp(11px, 1.65dvh, 13px) !important;
+    line-height: 1.1 !important;
+    padding: 1px !important;
+  }
+  html body #work-desktop .work-desk-layout > .desk-extras,
+  html[data-theme="night"] body #work-desktop .work-desk-layout > .desk-extras {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-height: 0 !important;
+    gap: 16px !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+  }
+  html body #work-desktop .desk-extra[data-object="postit"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
+    box-sizing: border-box !important;
+    width: 110px !important;
+    max-width: 110px !important;
+    min-height: 111px !important;
+    height: 111px !important;
+    padding: 11px !important;
+    margin: 0 0 0 2px !important;
+    font-size: 12px !important;
+    gap: 6px !important;
+  }
+  html body #work-desktop .desk-extra[data-object="postit"] .desk-extra-icon {
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+  html body #work-desktop .desk-extra[data-object="trash"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] {
+    position: relative !important;
+    top: 18px !important;
+    margin: 0 0 0 6px !important;
+    width: 88px !important;
+    max-width: 88px !important;
+    min-height: 92px !important;
+  }
+
+  /* Clicking the Post-it still opens a usable panel without page scrolling. */
+  html body #work-desktop > .desk-panel {
+    position: fixed !important;
+    z-index: 300 !important;
+    top: calc(var(--menubar, 56px) + 60px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: min(360px, calc(100vw - 30px)) !important;
+    max-height: calc(100dvh - 170px) !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Short mobile viewports: compress spacings, never clip the final folder. */
+@media (max-width: 760px) and (max-height: 680px) {
+  html body #work-desktop .work-desktop-label { margin-top: 4px !important; }
+  html body #work-desktop #work-search { margin-top: 3px !important; }
+  html body #work-desktop .work-desk-layout { margin-top: 5px !important; }
+  html body #work-desktop .work-desk-layout .desktop-folder,
+  html body #work-desktop .work-desk-layout .mv-desktop-folder {
+    height: 66px !important;
+    min-height: 66px !important;
+  }
+}
+</style>
+
+</head>
 <body>
   <div id="app" class="mode-select">
     <section id="welcome" aria-labelledby="welcome-heading">
