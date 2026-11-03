@@ -96,7 +96,7 @@
 
   // New zones are intentionally unassigned until their destination is approved.
   svg.addEventListener('click',event=>{
-    const target=event.target.closest?.('polygon[data-zone-pending]');
+    const target=event.target.closest?.('polygon[data-vase-petal],polygon[data-zone-pending]');
     if(!target) return;
     event.preventDefault();
     event.stopPropagation();
@@ -161,13 +161,16 @@
       if(!zone.element){
         const poly=document.createElementNS(NS,'polygon');
         poly.setAttribute('points',hit.points);
-        poly.setAttribute('aria-label',zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
+        poly.setAttribute('aria-label',zone.id==='vase' ? 'Vase de coquelicots — faire tomber un pétale' : zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
         poly.setAttribute('tabindex','0');
         poly.dataset.roomZoneId=zone.id;
-        if(zone.destination)poly.dataset.open=zone.destination;
+        if(zone.id==='vase') poly.dataset.vasePetal='';
+        else if(zone.destination) poly.dataset.open=zone.destination;
         else poly.dataset.zonePending='';
-        // Keep existing buttons/posters on top; these are additions only.
-        if(firstPoster)svg.insertBefore(poly,firstPoster);
+        // The vase must be on top of overlapping hotspots to receive a first click.
+        // All other zones keep their original stacking order.
+        if(zone.id==='vase') svg.appendChild(poly);
+        else if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
         zone.element=poly;
       }
