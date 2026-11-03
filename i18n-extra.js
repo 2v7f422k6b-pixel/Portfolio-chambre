@@ -52,7 +52,7 @@ window.NanaI18nExtra = {
   "Sleeping illustration coming soon": "Illustration de Rilakkuma endormi à venir",
   "DO NOTHING CLUB.exe": "CLUB NE RIEN FAIRE.exe",
   "The art of doing nothing.": "L’art de ne rien faire.",
-  "Still nothing on the agenda...": "Toujours rien au programme…",
+  "The world can wait.": "Le monde peut attendre.",
   "You have 60 seconds to accomplish absolutely nothing.": "Tu as 60 secondes pour ne rien accomplir du tout.",
   "No tasks. No deadlines. Just existing.": "Aucune tâche. Aucune échéance. Juste exister.",
   "Actually, never mind.": "Finalement, non.",
