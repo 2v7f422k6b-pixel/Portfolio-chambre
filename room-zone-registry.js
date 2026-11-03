@@ -69,6 +69,14 @@
         animation: nana-petal-fall 2.25s ease-in forwards;
       }
       #play-scene .nana-poppy-petal svg { width: 100%; height: auto; display: block; }
+      /* Dark blue petal in Night mode, retaining the original red in Day mode. */
+      html[data-theme="night"] #play-scene .nana-poppy-petal svg path:first-child {
+        fill: #14264a;
+        stroke: #091632;
+      }
+      html[data-theme="night"] #play-scene .nana-poppy-petal svg path:nth-child(2) {
+        stroke: #36537c;
+      }
       @keyframes nana-petal-fall {
         0%   { opacity: 0; transform: translate(0,0) rotate(-20deg) scale(.85); }
         8%   { opacity: 1; }
