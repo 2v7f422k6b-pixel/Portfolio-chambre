@@ -138,11 +138,136 @@
       "cover": "https://media.senscritique.com/media/000000045043/300/l_usage_du_monde.jpg"
     }
   ];
-    /* These poets are public-domain discovery examples, NOT a recovered blog archive. */
-  const poetExamples = [
-    { name: 'Louise Labé', dates: 'XVIe siècle', note: 'Une voix de la Renaissance, passionnée et directe.' },
-    { name: 'Marceline Desbordes-Valmore', dates: '1786–1859', note: 'Une poésie de l’émotion, de la tendresse et de la perte.' },
-    { name: 'Renée Vivien', dates: '1877–1909', note: 'Une poésie à la fois sensuelle et mélancolique.' }
+    /* Extraits retrouvés de Les Souvenues par Léna, novembre 2026.
+     Les textes non libres de droits restent des références bibliographiques :
+     aucune citation protégée n'est reproduite sur ce site public. */
+  const souvenuesEntries = [
+    {
+      "id": "morrison",
+      "name": "Toni Morrison",
+      "dates": "1931–2019",
+      "title": "Desdemona",
+      "kind": "Théâtre",
+      "kindNote": "Dialogue autour d’Othello",
+      "note": "Une voix sur la mémoire, la mort et les femmes qui reprennent la parole.",
+      "status": "reference",
+      "source": "https://www.laparafe.fr/2012/01/desdemona-dialogue-autour-dothello-de-shakespeare/"
+    },
+    {
+      "id": "pozzi",
+      "name": "Catherine Pozzi",
+      "dates": "1882–1934",
+      "title": "Sonnet moral sur les rimes d’un poème de mon amant impossible",
+      "kind": "Poésie",
+      "kindNote": "Très haut amour",
+      "note": "Un sonnet dont les rimes sont visuellement rejetées au bout de la ligne.",
+      "status": "full",
+      "source": "https://francais.agonia.net/index.php/poetry/14106426/SONNET_MORAL_SUR_LES_RIMES_D%E2%80%99UN_PO%C3%88ME_DE_MON_AMANT_IMPOSSIBLE",
+      "aligned": [
+        [
+          "J’aime les roses qui se",
+          "meurent"
+        ],
+        [
+          "Les caprices",
+          "inachevés"
+        ],
+        [
+          "Et le long regret qui",
+          "demeure"
+        ],
+        [
+          "Au bout des refus",
+          "énervés."
+        ],
+        [
+          "J’aime aussi les promesses",
+          "lentes"
+        ],
+        [
+          "De paradis",
+          "vertigineux"
+        ],
+        [
+          "Qui (soulevant sa main",
+          "ardente)"
+        ],
+        [
+          "Raidissent le monsieur",
+          "nerveux."
+        ],
+        [
+          "Mais ma belle âme",
+          "renversée"
+        ],
+        [
+          "Sur l’alme sagesse",
+          "irisée"
+        ],
+        [
+          "Que les dieux éternels m’ont",
+          "fait [sic]"
+        ],
+        [
+          "Goûte la chasteté",
+          "Fervente"
+        ],
+        [
+          "Cher flirt, Bagdad, valse",
+          "Indolente"
+        ],
+        [
+          "Et rit de vos sexes",
+          "défaits."
+        ]
+      ]
+    },
+    {
+      "id": "noailles",
+      "name": "Anna de Noailles",
+      "dates": "1876–1933",
+      "title": "J’espère de mourir…",
+      "kind": "Poésie",
+      "kindNote": "Les Vivants et les morts · extrait",
+      "note": "Un cœur débordant, un corps trop étroit : quatre vers conservés de ton ancienne sélection.",
+      "status": "full",
+      "source": "https://www.gutenberg.org/cache/epub/22054/pg22054-images.html",
+      "poem": "Prenez ce coeur puissant qu'un faible corps opprime,\nEt qui, heurtant sans fin ses étroites parois,\nEut l'attrait du divin et le pouvoir des cimes,\nEt s'élevait aux cieux comme la pierre choit."
+    },
+    {
+      "id": "hegland",
+      "name": "Jean Hegland",
+      "dates": "née en 1956",
+      "title": "Dans la forêt",
+      "kind": "Roman",
+      "kindNote": "Extrait sur la lune",
+      "note": "Le fragment que tu avais choisi parle de la lune et de ce qu’on apprend en vivant près de la nature.",
+      "status": "reference",
+      "source": "https://www.senscritique.com/livre/dans_la_foret/22541510"
+    },
+    {
+      "id": "gauthier",
+      "name": "Xavière Gauthier",
+      "dates": "née en 1942",
+      "title": "Pourquoi sorcières ?",
+      "kind": "Revue",
+      "kindNote": "Sorcières",
+      "note": "Un manifeste sur la danse, le corps, la nature et la liberté des femmes.",
+      "status": "reference",
+      "source": "https://musees-occitanie.fr/assets/uploads/2021/03/dossier-de-presse-magies-compresse.pdf"
+    },
+    {
+      "id": "ziade",
+      "name": "May Ziadé",
+      "dates": "1886–1941",
+      "title": "Capricieuse",
+      "kind": "Poésie",
+      "kindNote": "Fleurs de rêve · signé Isis Copia",
+      "note": "Le Caire au couchant, les pyramides, et une voix qui interroge les monuments.",
+      "status": "full",
+      "source": "https://fr.wikisource.org/wiki/Fleurs_de_r%C3%AAve/Texte_entier",
+      "poem": "Grandiose, imposant dans la voûte profonde,\nLe soleil saluait d'un coutumier adieu\nLe fleuve les palmiers, les sables de ce lieu\nEt cheminait vers l'autre monde.\n\nAlors tout l'horizon laisse monter un cri,\nLe firmament se teint de lilas et de rose\n(Frémissantes couleurs où l'azur doux repose),\nEt le zéphire souffle attendri.\n\nLe Caire était caché sous une vague brume,\nLes arbres tournoyant sur les bords bruns du Nil\nL'ombre tombait partout, sans trouver de péril,\nEt couvrait la plaine et l'écume.\n\nO Pyramides! C’est alors\nQue, levant ma tête pensive,\nJ'entends errer sur vos flancs forts\nL'écho de quelque voix plaintive;\nMais quoi! Serait-ce en votre sein\nQ'un orphelin pleure sa mère?\nEst-ce un hymne, est-ce une prière,\nEst-ce un gémissement divin?\n\nMais déjà revient le silence\nAutour du grand monument noir.\nUn temps - Mon coeur frémit, s'élance,\nPlane avec la brise du soir...\n\nSoudain les sons se font entendre,\nO dieux! Mais d'où viennent-ils donc?\nUne douce harmonie y fond...\nEst-ce de la voix d'Alexandre\nUn écho? De Napoléon\nEst-ce le sabre qui miroite?\nEst-ce ta statue, o Memnon,\nQui tombe en une vapeur moite?\nEst-ce le soupir d'un soldat\nDéfunt? Un cheval qui se cabre?\nEst-ce un craquement d'un marbre\nQui depuis des siècles gît là?\n\nRépondez, Monuments! Pyramides altières,\nDes siècles révolus ô souvenir muet!\nSont-ce des chants d'amour, des commandes guerrières\nQue vos entrailles jettent net?\n\nNon, sur vos côtes délabrées\nCe n'est plus l'aigle Impérial\nQui marque vos terres sacrées\nDes pas de son fougueux cheval;\nOh! Baissez vos armes françaises\nVos drapeaux sont à peine vus...\nEt Mohamed Ali n'est plus,\nToutes les choses sont anglaises.\n\n…\n\nCes longs échos flottants et chatouillant mon âme\nComme un souffle de brise, une haleine d'azur,\nUn baiser maternel, un regard triste et pur,\nL'éclair d'une subtile flamme,\n\nUn doigt câlin d'enfant qui caresse mon front,\nUn gazouillis d'oiseau, d'un fleuve le murmure,\nUn sourire amical, un cri de la nature\nOu du soleil un rayon blond,\n\nC'était la fanfare lointaine\nQui jouait Dieu sauve le Roi\nC'était la vibration certaine\nDe coeurs vaillants et pleins de foi;\n\nDe tes moelleux flots nostalgiques\nHarmonie, ô nectar divin,\nJe laisse couler dans mon sein\nLes tiédeurs mélancoliques....\n\nMuses, Beautés, Beaux-Arts aimés,\nOcéans, rivière, verdures,\nAzur immense, astres dorés\nQui du ciel êtes la parure\n\nA vous, à vous mes jeunes ans,\nA vous ma jeune intelligence,\nMon amour et ma confiance,\nA vous mes rêves bleus et blancs!\n\nMais trêve de transports. A bientôt, Pyramides,\nEt vous, Liban, Beyrouth, cher Antoura, salut!\nMa Syrie, Salut! Dès qu je l'aurai pu\nJ'irai revoir tes horizons limpides."
+    }
   ];
   const dictionary = [
     'je', 'tu', 'nous', 'elle', 'les', 'une', 'mon', 'ton', 'ce', 'dans',
@@ -212,15 +337,20 @@
       <p class="lit-caption">Notes : ${'<a href="'+profileUrl+'" target="_blank" rel="noopener noreferrer">mon profil SensCritique</a>'}. Les petites descriptions et les catégories d’ambiance sont rédigées pour cette bibliothèque, pas extraites de mes critiques.</p>
     </div>`;
   }
-    function souvenuesHtml() {
+  function souvenuesHtml() {
     return `<div class="lit-app lit-souvenues">
-      ${header('Les Souvenues', 'Des voix de femmes à lire, retrouver et transmettre.')}
-      <div class="lit-notice" role="note">Le nom du blog est authentique. Ses archives n’ont pas encore été importées : les autrices ci-dessous sont des exemples pour préparer la présentation.</div>
-      <p class="lit-micro-title">Ouvre une fiche</p>
-      <div class="lit-poets">${poetExamples.map((p,i)=>`<button type="button" class="lit-card lit-poet" data-lit-poet="${i}" aria-pressed="${poet===i}">
-          <span class="lit-poet-number">0${i+1}</span><strong>${escape(p.name)}</strong><small>${escape(p.dates)}</small></button>`).join('')}</div>
+      ${header('Les Souvenues', 'Quelques poèmes, fragments et voix de femmes que j’avais réunis sur mon ancien blog.')}
+      <div class="lit-notice" role="note">Six textes retrouvés dans les anciennes archives des Souvenues. Les textes anciens sont reproduits ici ; les œuvres plus récentes sont référencées avec un lien vers leur source.</div>
+      <div class="lit-souvenues-toolbar">
+        <p class="lit-micro-title">Choisis une autrice</p>
+        <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
+      </div>
+      <div class="lit-poets">${souvenuesEntries.map((p,i)=>`<button type="button" class="lit-card lit-poet" data-lit-poet="${i}" aria-pressed="${poet===i}">
+        <span class="lit-poet-number">0${i+1} · ${escape(p.kind)}</span>
+        <strong>${escape(p.name)}</strong><small>${escape(p.title)}</small>
+      </button>`).join('')}</div>
       <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
-      <p class="lit-caption">Les textes et les autrices de ton ancien blog remplaceront ces exemples. Les poèmes seront publiés uniquement lorsqu’ils sont libres de droits ou avec autorisation.</p>
+      <p class="lit-caption">Sélection historique retrouvée, pas un inventaire complet du blog. La typographie du sonnet de Catherine Pozzi conserve ses mots décalés ; les graphies de l’archive sont conservées.</p>
     </div>`;
   }
   function wordLabHtml() {
@@ -272,16 +402,32 @@
     const options=available.length>1 ? available.filter(book=>book.rank!==previous?.rank):available;
     drawReadingBook(options[Math.floor(Math.random()*options.length)]);
   }
-    function showPoet() {
+  function showPoet() {
     const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
     if(!result)return;
-    const p=poetExamples[poet];
+    const p=souvenuesEntries[poet];
     root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
-    const link='https://fr.wikisource.org/w/index.php?search='+encodeURIComponent(p.name);
-    result.innerHTML=`<span class="lit-book-ribbon">FICHE D’AUTRICE • EXEMPLE</span>
-      <h3>${escape(p.name)}</h3><p class="lit-byline">${escape(p.dates)}</p><p>${escape(p.note)}</p>
-      <a class="lit-text-link" href="${escape(link)}" target="_blank" rel="noopener noreferrer">Chercher ses poèmes sur Wikisource ↗</a>
-      <p class="lit-caption">Aucun poème de l’ancien blog n’est reproduit ici pour le moment.</p>`;
+    let poem='';
+    if(p.aligned){
+      poem=`<div class="lit-archive-poem lit-archive-aligned" lang="fr">${p.aligned.map(([left,right],i)=>`
+        <div class="lit-archive-verse${i===4||i===8||i===11?' lit-archive-new-stanza':''}">
+          <span>${escape(left)}</span><span>${escape(right)}</span>
+        </div>`).join('')}</div>`;
+    }else if(p.poem){
+      poem=`<details class="lit-archive-expand" ${p.id==='noailles'?'open':''}>
+        <summary>${p.id==='noailles'?'Lire les quatre vers':'Lire le poème retrouvé'}</summary>
+        <div class="lit-archive-poem">${escape(p.poem)}</div>
+      </details>`;
+    }else{
+      poem=`<div class="lit-archive-reference">Cet extrait est conservé dans ton archive personnelle. Pour respecter les droits des œuvres contemporaines, la fenêtre publique présente sa référence, sans reproduire le passage intégral.</div>`;
+    }
+    result.innerHTML=`<span class="lit-book-ribbon">LES SOUVENUES · ${escape(p.kind)} · ARCHIVE Nº ${String(poet+1).padStart(2,'0')}</span>
+      <h3>${escape(p.title)}</h3>
+      <p class="lit-byline">${escape(p.name)} <small>${escape(p.dates)}</small></p>
+      <p class="lit-archive-source">${escape(p.kindNote)}</p>
+      <p class="lit-archive-note">${escape(p.note)}</p>
+      ${poem}
+      <a class="lit-text-link" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">Consulter la source ↗</a>`;
   }
   function freshBank() {
     // Avoid duplicating currently placed words in the palette.
@@ -351,7 +497,7 @@
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
     if(!target||!target.closest('#window-content .lit-app'))return;
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
@@ -360,6 +506,7 @@
       drawReadingBook(readingExamples.find(b=>b.rank===Number(target.dataset.litBook)));
     }
     else if(target.hasAttribute('data-lit-poet')){poet=Number(target.dataset.litPoet);showPoet();}
+    else if(target.hasAttribute('data-lit-pick-poet')){poet=(poet+1+Math.floor(Math.random()*(souvenuesEntries.length-1)))%souvenuesEntries.length;showPoet();}
     else if(target.hasAttribute('data-lit-add'))insertFromBank(Number(target.dataset.litAdd));
     else if(target.hasAttribute('data-lit-remove')){
       const pos=Number(target.dataset.litRemove);
