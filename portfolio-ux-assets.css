@@ -79,3 +79,28 @@ html body #work-desktop .desktop-folder:focus-visible .folder-tile{
     min-height:100px!important
   }
 }
+
+/* Dock scale and 50% background opacity — Work + Play, 3 Nov 2026. */
+/* Only the dock surface is translucent, not the illustrated PNG buttons. */
+html body #dock {
+  gap:5px!important;
+  padding:6px 8px!important;
+  background:rgba(255,248,239,.5)!important;
+}
+html[data-theme="night"] body #dock {
+  background:rgba(233,181,255,.5)!important;
+}
+html body #dock .dock-app.dock-drawn {
+  width:46px!important;
+  height:46px!important;
+}
+@media(max-width:760px) {
+  html body #dock {
+    gap:3px!important;
+    padding:5px 7px!important;
+  }
+  html body #dock .dock-app.dock-drawn {
+    width:36px!important;
+    height:36px!important;
+  }
+}
