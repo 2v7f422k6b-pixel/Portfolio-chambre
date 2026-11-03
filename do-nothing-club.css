@@ -106,6 +106,22 @@
   color: var(--nothing-ink);
   outline: 0;
 }
+/* Override broad portfolio button styles so the label is legible before hover. */
+#window[data-window-type="do-nothing"] #nothing-action,
+#window[data-window-type="do-nothing"] #nothing-action:visited {
+  background: #fff2fc !important;
+  color: #ff173b !important;
+  -webkit-text-fill-color: #ff173b !important;
+  border-color: #ff173b !important;
+  opacity: 1 !important;
+}
+#window[data-window-type="do-nothing"] #nothing-action:hover,
+#window[data-window-type="do-nothing"] #nothing-action:focus-visible,
+#window[data-window-type="do-nothing"] #nothing-action:active {
+  background: #ff173b !important;
+  color: #fff2fc !important;
+  -webkit-text-fill-color: #fff2fc !important;
+}
 .nothing-footnote { font-size: 11px; line-height: 1.4; opacity: .85; margin: 7px 0 2px; }
 .nothing-certificate {
   margin: 7px auto 13px;
