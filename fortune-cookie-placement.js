@@ -11,13 +11,14 @@
   const ROOM_W=1670, ROOM_H=942, IMG_RATIO=300/283;
   const key='nana-fortune-cookie-position-v1';
   const editor=new URLSearchParams(location.search).get('cookieEdit')==='1';
-  const defaults={x:1027,y:794,width:73};
+  const defaults={x:1027,y:794,width:73,angle:0};
   const position={...defaults};
 
   try {
     const saved=JSON.parse(localStorage.getItem(key)||'null');
     if(saved && ['x','y','width'].every(k=>Number.isFinite(saved[k])))
-      Object.assign(position,{x:saved.x,y:saved.y,width:saved.width});
+      Object.assign(position,{x:saved.x,y:saved.y,width:saved.width,
+        angle:Number.isFinite(saved.angle)?clamp(saved.angle,-30,30):0});
   } catch (_) {}
 
   function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
@@ -51,9 +52,11 @@
 
   function render(){
     position.width=clamp(position.width,20,220);
+    position.angle=clamp(position.angle,-30,30);
     const height=position.width*IMG_RATIO;
     position.x=clamp(position.x,0,ROOM_W-position.width);
     position.y=clamp(position.y,0,ROOM_H-height);
+    group.setAttribute('transform',`rotate(${position.angle} ${position.x+position.width/2} ${position.y+height/2})`);
     image.setAttribute('x',position.x);
     image.setAttribute('y',position.y);
     image.setAttribute('width',position.width);
@@ -90,11 +93,13 @@
     fortune.timer=setTimeout(()=>{toast.hidden=true;},5200);
   }
 
-  let panel=null, text=null, sizeInput=null, sizeLabel=null;
+  let panel=null, text=null, sizeInput=null, sizeLabel=null, angleInput=null, angleLabel=null;
   function updateEditor(){
     if(text)text.textContent='x : '+Math.round(position.x)+' · y : '+Math.round(position.y);
     if(sizeInput)sizeInput.value=String(Math.round(position.width));
     if(sizeLabel)sizeLabel.textContent=Math.round(position.width)+' px';
+    if(angleInput)angleInput.value=String(position.angle);
+    if(angleLabel)angleLabel.textContent=position.angle+'°';
   }
   function resizeCookie(width){
     width=clamp(width,20,220);
@@ -102,6 +107,11 @@
     position.x+=(previous-width)/2;
     position.y+=(previous-width)*IMG_RATIO/2;
     position.width=width;
+    render();
+    save();
+  }
+  function rotateCookie(angle){
+    position.angle=clamp(Math.round(angle),-30,30);
     render();
     save();
   }
@@ -129,7 +139,13 @@
           <input id="fortune-cookie-size" type="range" min="20" max="220" step="1" value="73" style="min-width:0;flex:1;accent-color:#ff173b" />
           <button type="button" data-cookie-larger aria-label="Agrandir le cookie">+</button>
         </div>
-        <p style="margin:0 0 9px;font-size:12px;line-height:1.35">Glisse le cookie sur la table. La taille et la position sont enregistrées automatiquement.</p>
+        <label for="fortune-cookie-angle">Rotation : <output data-cookie-angle-label>0°</output></label>
+        <div style="display:flex;align-items:center;gap:5px;margin:7px 0 9px">
+          <button type="button" data-cookie-counterclockwise aria-label="Tourner de 1 degré vers la gauche">↶</button>
+          <input id="fortune-cookie-angle" type="range" min="-30" max="30" step="1" value="0" style="min-width:0;flex:1;accent-color:#ff173b" />
+          <button type="button" data-cookie-clockwise aria-label="Tourner de 1 degré vers la droite">↷</button>
+        </div>
+        <p style="margin:0 0 9px;font-size:12px;line-height:1.35">Glisse le cookie sur la table. Sa taille, sa rotation et sa position sont enregistrées automatiquement.</p>
         <div data-cookie-coords style="font-size:12px;margin-bottom:8px"></div>
         <div style="display:flex;gap:5px;flex-wrap:wrap">
           <button type="button" data-cookie-copy>Copier la position</button>
@@ -141,6 +157,8 @@
     text=panel.querySelector('[data-cookie-coords]');
     sizeInput=panel.querySelector('#fortune-cookie-size');
     sizeLabel=panel.querySelector('[data-cookie-size-label]');
+    angleInput=panel.querySelector('#fortune-cookie-angle');
+    angleLabel=panel.querySelector('[data-cookie-angle-label]');
     // Appending to body avoids positioning inside a transformed/zoomed viewport.
     document.body.appendChild(panel);
     const controls=panel.querySelector('#fortune-cookie-controls');
@@ -154,9 +172,12 @@
     sizeInput.addEventListener('input',()=>resizeCookie(Number(sizeInput.value)));
     panel.querySelector('[data-cookie-smaller]').addEventListener('click',()=>resizeCookie(position.width-5));
     panel.querySelector('[data-cookie-larger]').addEventListener('click',()=>resizeCookie(position.width+5));
+    angleInput.addEventListener('input',()=>rotateCookie(Number(angleInput.value)));
+    panel.querySelector('[data-cookie-counterclockwise]').addEventListener('click',()=>rotateCookie(position.angle-1));
+    panel.querySelector('[data-cookie-clockwise]').addEventListener('click',()=>rotateCookie(position.angle+1));
     const copy=panel.querySelector('[data-cookie-copy]');
     copy.addEventListener('click',()=>{
-      const value=JSON.stringify({cookie:'table',x:+position.x.toFixed(2),y:+position.y.toFixed(2),width:+position.width.toFixed(2)});
+      const value=JSON.stringify({cookie:'table',x:+position.x.toFixed(2),y:+position.y.toFixed(2),width:+position.width.toFixed(2),angle:position.angle});
       if(navigator.clipboard?.writeText){
         navigator.clipboard.writeText(value).then(()=>{copy.textContent='Position copiée ✓';})
           .catch(()=>{window.prompt('Copie la position :',value);});
@@ -210,6 +231,6 @@
   render();
   window.NANA_FORTUNE_COOKIE={
     position,
-    setPosition(next){if(next&&Number.isFinite(next.x)&&Number.isFinite(next.y)&&Number.isFinite(next.width)){Object.assign(position,next);render();save();}}
+    setPosition(next){if(next&&Number.isFinite(next.x)&&Number.isFinite(next.y)&&Number.isFinite(next.width)){Object.assign(position,{x:next.x,y:next.y,width:next.width,angle:Number.isFinite(next.angle)?next.angle:position.angle});render();save();}}
   };
 })();
