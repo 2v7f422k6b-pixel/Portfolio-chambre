@@ -7,12 +7,12 @@
   const oldArtwork = svg.querySelector('.poster-artworks');
   // These three prints are no longer displayed in the bedroom. The gallery
   // files and original poster numbering remain untouched.
-  const removedPosterIds = new Set([3, 16, 18]); // posters 4, 17 and 19
+  const removedPosterIds = new Set([3, 9, 16, 18]); // posters 4, 10, 17 and 19
   if (!oldArtwork) return;
   const allPosters = Array.from(svg.querySelectorAll('polygon[data-type="poster"]'));
   const clickable = allPosters.filter(el => !removedPosterIds.has(Number(el.dataset.index)));
   const posterIds = clickable.map(el => Number(el.dataset.index));
-  if (clickable.length !== 16) return;
+  if (clickable.length !== 15) return;
   // Eliminate stale fallback SVG elements as well, including cached HTML.
   allPosters.filter(el => removedPosterIds.has(Number(el.dataset.index))).forEach(el => el.remove());
   oldArtwork.querySelectorAll('image').forEach(image => {
@@ -75,7 +75,7 @@
     shape: copyPoints(rec.shape), quad: copyPoints(rec.quad)
   }));
   // First alignment supplied by the user. Local browser positions take priority.
-  const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[331,0],[437,31],[438,237],[331,211]],null],[[[491,39],[564,72],[565,243],[491,224]],null],[[[1436.4,237.5],[1559.4,205.5],[1560.4,402.5],[1436.4,421.5]],null],[[[703.7,123],[774.8,128.3],[775.2,239.6],[706,246.6]],null],[[[352,255],[428,274],[428,408],[350,403]],null],[[[477.8,258.9],[560,282],[560,399],[477.7,394.1]],null],[[[595.7,258],[672.3,251.8],[671.7,383.6],[595.6,385.3]],null],[[[674.9,275],[769.7,268],[773,389.5],[674.9,394]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[778.8,303.6]],null],[[[762.9,334],[840.9,328],[841.4,462.5],[764.8,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[680.1,403.6],[738.6,399.5],[739.8,476],[681.5,476.3]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1307,35.1],[1425,10.1],[1426,201.1],[1307,216.1]],null],[[[1463,37],[1595,12],[1597,211],[1464,227]],null],[[[1354.6,247],[1425.6,237],[1428.6,372],[1354.6,383]],[[1354.6,247],[1425.6,237],[1428.6,345],[1364.6,350],[1361.6,372],[1354.6,373]]],[[[610.4,121.2],[717.8,108.1],[717.2,265],[610.3,272.2]],null],[[[1466.1,265],[1608.1,252],[1609.1,434],[1466.1,449]],[[1466.1,265],[1608.1,252],[1609.1,369],[1593.1,385],[1609.1,402],[1609.1,434],[1556.1,434],[1559.1,343],[1466.1,349]]]];
+  const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[344.9,20.7],[497.2,65.9],[496.7,242.9],[345.7,210.9]],null],[[[503.2,15],[576.2,48],[577.2,219],[503.2,200]],null],[[[1219.6,320.2],[1342.6,288.2],[1343.6,485.2],[1219.6,504.2]],null],[[[721,60.3],[820.3,38.4],[823.2,192.7],[724.6,203.2]],null],[[[351.8,221.1],[464.6,244.1],[463.1,446.9],[351.3,451.9]],null],[[[477.8,259.1],[560.8,273.6],[560,399.2],[477.7,394.3]],null],[[[588.5,235.4],[665.1,229.2],[664.5,361],[588.4,362.7]],null],[[[669.6,271.5],[764.4,264.5],[767.7,386],[669.6,390.5]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[777.1,303.6]],null],[[[762.9,334],[840.9,328],[841.4,462.5],[764.8,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[679.9,403.6],[738.4,399.5],[739.6,476],[681.3,476.3]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1295.1,37.3],[1450,10.1],[1455.7,201.1],[1294.9,218.9]],null],[[[1463,37],[1595,12],[1597,211],[1464,227]],null],[[[1352.3,241.3],[1423.3,231.3],[1426.3,366.3],[1352.3,377.3]],[[1352.3,241.3],[1423.3,231.3],[1426.3,339.3],[1362.3,344.3],[1359.3,366.3],[1352.3,367.3]]],[[[598.5,33.5],[718.6,8.1],[721.6,212.5],[598.4,224.5]],null],[[[1478.4,234.3],[1620.4,221.3],[1621.4,403.3],[1478.4,418.3]],[[1478.4,234.3],[1620.4,221.3],[1621.4,338.3],[1605.4,354.3],[1621.4,371.3],[1621.4,403.3],[1568.4,403.3],[1571.4,312.3],[1478.4,318.3]]]];
   posterIds.forEach((posterId, index) => {
     const [quad, shape] = firstCalibration[posterId];
     current[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
@@ -87,9 +87,13 @@
   }
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (Array.isArray(saved) && (saved.length === current.length || saved.length === 19)) {
+    // Keep previous layouts from both the 19- and 16-poster editor versions.
+    const previousPosterIds = [0,1,2,4,5,6,7,8,9,10,11,12,13,14,15,17];
+    if (Array.isArray(saved) && [current.length, 16, 19].includes(saved.length)) {
       current.forEach((_, index) => {
-        const sourceIndex = saved.length === 19 ? posterIds[index] : index;
+        const originalId = posterIds[index];
+        const sourceIndex = saved.length === 19 ? originalId :
+          saved.length === 16 ? previousPosterIds.indexOf(originalId) : index;
         const rec = saved[sourceIndex];
         if (rec && validPoints(rec.shape, originals[index].shape.length) &&
           validPoints(rec.quad, 4)) {
