@@ -92,9 +92,8 @@
     remaining = DURATION;
     const content =
       '<section id="nana-do-nothing" class="nothing-club" data-stage="idle">' +
-        '<div class="nothing-graphic" aria-label="Emplacement pour le dessin de Rilakkuma endormi">' +
-          '<span class="nothing-zzz" aria-hidden="true">z <span>z</span> Z</span>' +
-          '<span class="nothing-art-note">Rilakkuma is resting.<small>Sleeping illustration coming soon</small></span>' +
+        '<div class="nothing-graphic">' +
+          '<img src="assets/rilakkuma%20game%20illu.png" alt="Rilakkuma endormi sous une couverture" width="1200" height="802" draggable="false" decoding="async">' +
         '</div>' +
         '<p class="nothing-kicker">DO NOTHING CLUB / NO. 001</p>' +
         '<h2 id="nothing-headline">The art of doing nothing.</h2>' +
