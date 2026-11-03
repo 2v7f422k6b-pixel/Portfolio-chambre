@@ -1,0 +1,31 @@
+/* Five-minute Work-mode Easter egg. Intentionally scoped; no change to the room artwork. */
+#work-break-nudge{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:20px;background:rgba(42,12,55,.46);box-sizing:border-box}
+#work-break-nudge[hidden]{display:none!important}
+#work-break-nudge *{box-sizing:border-box}
+#work-break-nudge .wb-card{position:relative;width:min(100%,540px);max-height:min(90vh,820px);overflow-y:auto;background:#fff2fc;border:3px solid #ff173b;outline:2px solid #fff2fc;box-shadow:8px 10px 0 rgba(255,23,59,.27);padding:23px 26px 24px;text-align:center;color:#a0173c;transform:rotate(-.45deg)}
+#work-break-nudge .wb-close{position:absolute;right:12px;top:7px;width:34px;height:34px;font:26px/1 Georgia,serif;border:0;background:transparent;color:#ff173b;cursor:pointer;z-index:2}
+#work-break-nudge .wb-close:hover,#work-break-nudge .wb-close:focus-visible{outline:2px dashed #ff173b}
+#work-break-nudge .wb-heading{font:700 15px/1.4 "Courier New",monospace;letter-spacing:.08em;text-transform:uppercase;color:#ff173b;margin:0 35px 12px}
+#work-break-nudge .wb-machine{position:relative;width:min(100%,445px);margin:0 auto 19px;padding-top:4px}
+#work-break-nudge .wb-paper{position:relative;z-index:1;width:89%;min-height:185px;margin:0 auto -3px;padding:23px 21px;background:#fffdf5;border:2px solid #c9435f;box-shadow:3px 3px 0 #e8aabd;transform:rotate(.65deg);text-align:left}
+#work-break-nudge .wb-written{font:15px/1.48 "Courier New",Courier,monospace;color:#7e2438;white-space:pre-wrap;overflow-wrap:break-word}
+#work-break-nudge .wb-caret{display:inline-block;width:7px;height:14px;background:#d72c4f;vertical-align:-2px;animation:wb-blink .65s steps(1) infinite}
+#work-break-nudge .wb-paper[data-done="true"] .wb-caret{display:none}
+#work-break-nudge .wb-roller{position:relative;z-index:2;height:18px;width:95%;margin:0 auto -4px;background:#83476d;border:3px solid #ff173b;box-shadow:0 3px 0 #e6a6d1}
+#work-break-nudge .wb-body{position:relative;z-index:3;width:100%;height:86px;background:#e9b5ff;border:3px solid #ff173b;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);padding:19px 13% 12px;box-shadow:inset 0 -8px 0 #d994e6}
+#work-break-nudge .wb-keys{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;margin:0 auto}
+#work-break-nudge .wb-key{display:block;aspect-ratio:1/1;min-width:0;background:#fffdf5;border:2px solid #c42b54;border-bottom-width:4px;border-radius:50%;box-shadow:0 1px 0 #8d2152}
+#work-break-nudge .wb-key:nth-child(4n){background:#ffe2ef}
+#work-break-nudge .wb-machine.is-typing .wb-key:nth-child(3n){animation:wb-keypress .32s steps(2,end) infinite alternate}
+#work-break-nudge .wb-machine.is-typing .wb-key:nth-child(4n){animation:wb-keypress .42s steps(2,end) infinite alternate-reverse}
+#work-break-nudge .wb-desc{margin:2px 0 17px;font:15px/1.45 "Courier New",monospace;color:#a0173c}
+#work-break-nudge .wb-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+#work-break-nudge .wb-actions button{min-height:43px;padding:10px 15px;border:2px solid #ff173b;border-radius:0;cursor:pointer;font:700 13px/1.2 "Courier New",monospace;transition:transform .15s,background-color .15s}
+#work-break-nudge .wb-go{background:#ff173b;color:#fffdf5}
+#work-break-nudge .wb-stay{background:#fffdf5;color:#af1b42}
+#work-break-nudge .wb-actions button:hover{transform:translateY(-2px)}
+#work-break-nudge .wb-actions button:focus-visible{outline:3px dotted #8d2152;outline-offset:3px}
+@keyframes wb-blink{50%{opacity:0}}
+@keyframes wb-keypress{to{transform:translateY(3px);border-bottom-width:2px}}
+@media(max-width:520px){#work-break-nudge{padding:10px}#work-break-nudge .wb-card{padding:19px 12px}#work-break-nudge .wb-paper{min-height:194px;padding:17px 13px}#work-break-nudge .wb-written{font-size:13px;line-height:1.35}#work-break-nudge .wb-body{height:72px;padding:16px 12% 9px}#work-break-nudge .wb-keys{gap:2px}#work-break-nudge .wb-key{border-width:1px 1px 3px}}
+@media(prefers-reduced-motion:reduce){#work-break-nudge .wb-key,#work-break-nudge .wb-caret{animation:none!important}#work-break-nudge .wb-actions button{transition:none}}
