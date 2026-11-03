@@ -1419,3 +1419,58 @@ html body #window-shade .mail-form .mail-field-box.sketch-ui-frame > .sketch-ui-
 html body #window-shade .mail-form .mail-field-box.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
   stroke-width:1.5;
 }
+
+
+/* Rilakkuma Do Nothing Club: same subtle, hand-traced red linework as the rest of the portfolio. */
+html body #window[data-window-type="do-nothing"] .nothing-club :is(
+  .nothing-progress-track,.nothing-button,.nothing-certificate
+).sketch-ui-frame {
+  position:relative!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+html body #window[data-window-type="do-nothing"] .nothing-club .sketch-ui-frame > .sketch-ui-svg {
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  z-index:5!important;
+}
+html body #window[data-window-type="do-nothing"] .nothing-club .sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  stroke:#ff173b!important;
+  stroke-width:1.6!important;
+  fill:none!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  filter:drop-shadow(0 0 1.5px rgba(255,23,59,.22))!important;
+}
+html body #window[data-window-type="do-nothing"] .nothing-certificate.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-inner {
+  stroke-width:1!important;
+  opacity:.75;
+}
+/* No rigid rectangular button fill underneath the hand-traced outline. */
+html body #window[data-window-type="do-nothing"] :is(#nothing-action,#nothing-download).nothing-button.sketch-ui-frame {
+  background:transparent!important;
+  isolation:isolate;
+  overflow:visible!important;
+}
+html body #window[data-window-type="do-nothing"] .nothing-button.sketch-ui-frame::before {
+  content:"";
+  position:absolute;
+  inset:1.5px;
+  z-index:-1;
+  pointer-events:none;
+  background:var(--nothing-paper);
+  clip-path:polygon(1% 2%,25% .8%,50% 2%,75% 1%,99% 2%,100% 25%,99.2% 50%,100% 75%,99% 98%,75% 99%,50% 98%,25% 99%,1% 98%,0 75%,.8% 50%,0 25%);
+}
+html body #window[data-window-type="do-nothing"] .nothing-button.sketch-ui-frame:is(:hover,:focus-visible,:active)::before {
+  background:var(--nothing-ink);
+}
+html body #window[data-window-type="do-nothing"] .nothing-progress-fill {
+  clip-path:polygon(0 4%,33% 0,67% 5%,100% 0,100% 100%,67% 96%,33% 100%,0 95%);
+}
