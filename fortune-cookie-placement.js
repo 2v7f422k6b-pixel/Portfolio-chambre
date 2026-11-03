@@ -50,7 +50,7 @@
   svg.appendChild(group);
 
   function render(){
-    position.width=clamp(position.width,34,220);
+    position.width=clamp(position.width,20,220);
     const height=position.width*IMG_RATIO;
     position.x=clamp(position.x,0,ROOM_W-position.width);
     position.y=clamp(position.y,0,ROOM_H-height);
@@ -90,9 +90,20 @@
     fortune.timer=setTimeout(()=>{toast.hidden=true;},5200);
   }
 
-  let panel=null, text=null;
+  let panel=null, text=null, sizeInput=null, sizeLabel=null;
   function updateEditor(){
-    if(text)text.textContent='x: '+Math.round(position.x)+' · y: '+Math.round(position.y)+' · largeur: '+Math.round(position.width);
+    if(text)text.textContent='x : '+Math.round(position.x)+' · y : '+Math.round(position.y);
+    if(sizeInput)sizeInput.value=String(Math.round(position.width));
+    if(sizeLabel)sizeLabel.textContent=Math.round(position.width)+' px';
+  }
+  function resizeCookie(width){
+    width=clamp(width,20,220);
+    const previous=position.width;
+    position.x+=(previous-width)/2;
+    position.y+=(previous-width)*IMG_RATIO/2;
+    position.width=width;
+    render();
+    save();
   }
   function screenToRoom(event){
     const rect=svg.getBoundingClientRect();
@@ -105,11 +116,44 @@
   if(editor){
     panel=document.createElement('div');
     panel.id='fortune-cookie-editor';
-    panel.innerHTML='<strong>Fortune cookie · placement</strong><span data-cookie-coords></span><button type="button" data-cookie-copy>Copier la position</button><button type="button" data-cookie-reset>Réinitialiser</button>';
-    panel.style.cssText='position:fixed;right:12px;bottom:16px;z-index:9998;display:flex;flex-wrap:wrap;align-items:center;gap:9px;max-width:min(96vw,590px);padding:10px 12px;background:#fff2fc;color:#ff173b;border:1px solid #ff173b;font:14px Arial,sans-serif;box-shadow:0 2px 9px #6546a644';
-    panel.querySelectorAll('button').forEach(b=>b.style.cssText='font:inherit;color:#ff173b;background:#fff;border:1px solid #ff173b;padding:6px 8px;cursor:pointer');
+    // A small, collapsible palette at the top, never over the bottom dock.
+    panel.innerHTML=`
+      <div data-cookie-header style="display:flex;align-items:center;justify-content:space-between;gap:9px">
+        <strong>🥠 Fortune cookie</strong>
+        <button type="button" data-cookie-toggle aria-expanded="false" aria-controls="fortune-cookie-controls" title="Afficher ou masquer les réglages">Réglages +</button>
+      </div>
+      <div id="fortune-cookie-controls" style="display:none;margin-top:10px">
+        <label for="fortune-cookie-size">Taille du cookie : <output data-cookie-size-label>73 px</output></label>
+        <div style="display:flex;align-items:center;gap:5px;margin:7px 0 9px">
+          <button type="button" data-cookie-smaller aria-label="Réduire le cookie">−</button>
+          <input id="fortune-cookie-size" type="range" min="20" max="220" step="1" value="73" style="min-width:0;flex:1;accent-color:#ff173b" />
+          <button type="button" data-cookie-larger aria-label="Agrandir le cookie">+</button>
+        </div>
+        <p style="margin:0 0 9px;font-size:12px;line-height:1.35">Glisse le cookie sur la table. La taille et la position sont enregistrées automatiquement.</p>
+        <div data-cookie-coords style="font-size:12px;margin-bottom:8px"></div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <button type="button" data-cookie-copy>Copier la position</button>
+          <button type="button" data-cookie-reset>Réinitialiser</button>
+        </div>
+      </div>`;
+    panel.style.cssText='position:fixed;right:12px;top:clamp(64px,9vh,94px);bottom:auto;z-index:9998;width:min(265px,calc(100vw - 24px));max-height:calc(100vh - 110px);overflow:auto;padding:9px 10px;background:#fff2fc;color:#ff173b;border:1px solid #ff173b;font:13px Arial,sans-serif;box-shadow:0 2px 9px #6546a644;';
+    panel.querySelectorAll('button').forEach(b=>b.style.cssText='font:inherit;color:#ff173b;background:#fff;border:1px solid #ff173b;padding:5px 7px;cursor:pointer');
     text=panel.querySelector('[data-cookie-coords]');
-    viewport.appendChild(panel);
+    sizeInput=panel.querySelector('#fortune-cookie-size');
+    sizeLabel=panel.querySelector('[data-cookie-size-label]');
+    // Appending to body avoids positioning inside a transformed/zoomed viewport.
+    document.body.appendChild(panel);
+    const controls=panel.querySelector('#fortune-cookie-controls');
+    const toggle=panel.querySelector('[data-cookie-toggle]');
+    toggle.addEventListener('click',()=>{
+      const open=controls.style.display==='none';
+      controls.style.display=open?'block':'none';
+      toggle.setAttribute('aria-expanded',String(open));
+      toggle.textContent=open?'Réduire −':'Réglages +';
+    });
+    sizeInput.addEventListener('input',()=>resizeCookie(Number(sizeInput.value)));
+    panel.querySelector('[data-cookie-smaller]').addEventListener('click',()=>resizeCookie(position.width-5));
+    panel.querySelector('[data-cookie-larger]').addEventListener('click',()=>resizeCookie(position.width+5));
     const copy=panel.querySelector('[data-cookie-copy]');
     copy.addEventListener('click',()=>{
       const value=JSON.stringify({cookie:'table',x:+position.x.toFixed(2),y:+position.y.toFixed(2),width:+position.width.toFixed(2)});
