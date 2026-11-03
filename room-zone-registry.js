@@ -29,7 +29,7 @@
     ['livres-3','Livres 3','BOOKS 3.PNG',null,'word-lab'],
     ['lampe-bureau','Lampe de bureau','OFFICE LAMP.PNG',null,'toggle-theme'],
     ['ipad','iPad','IPAD.PNG',null],
-    ['tapis','Tapis','RUG.PNG',null],
+    ['tapis','Tapis','RUG.PNG',null,'rug-secret'],
     ['miffy','Miffy clown','MIFFY.PNG',null],
     ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null,'toggle-theme'],
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
