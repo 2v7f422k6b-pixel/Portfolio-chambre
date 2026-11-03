@@ -85,25 +85,128 @@
 @media (max-width:570px){#pages-library .pages-intro{padding:24px 22px}#pages-library .pages-feature{margin-left:0;max-width:none;min-height:190px}#pages-library .pages-intro h1{font-size:53px}#pages-library .pages-grid{gap:15px}#pages-library .pages-cover{height:155px;padding:8px}#pages-library .pages-cover-top,#pages-library .pages-cover-bottom{font-size:7px}#pages-library .pages-cover-center{inset:24px 9px 18px}#pages-library .pages-cover-keyword{font-size:17px}#pages-library .pages-item-meta{font-size:9px;flex-wrap:wrap}#pages-library .pages-item h3{font-size:16px}#pages-library .pages-item-foot{font-size:9px;flex-wrap:wrap}#pages-library .pages-results>span:last-child{display:none}#pages-library .pages-shelf-heading{align-items:start}#pages-library .pages-shelf-total{margin-top:16px;font-size:8px}#pages-library .pages-footer{display:block}#pages-library .pages-footer span{display:block;margin-bottom:6px}#pages-library .pages-grid-list .pages-item{grid-template-columns:72px minmax(0,1fr)}#pages-library .pages-grid-list .pages-cover{height:65px}#pages-library .pages-grid-list .pages-item-foot{grid-column:2;grid-row:3;align-items:flex-start;padding:0;margin-top:4px}#pages-library .pages-grid-list .pages-cover-keyword{font-size:8px}}
 @media (prefers-reduced-motion:reduce){#pages-library .pages-cover{transition:none}}
 
-/* Nana hand-traced Pages: subtle, stable outlines; no DOM/SVG overlays. */
-#pages-library {
-  --nana-page-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120' preserveAspectRatio='none'%3E%3Cpath d='M 6 6 Q 36 5 62 6 T 114 6 Q 115 37 114 62 T 114 114 Q 83 115 58 114 T 6 114 Q 5 85 6 58 T 6 6 Z' fill='none' stroke='%23ff173b' stroke-width='2.3'/%3E%3C/svg%3E");
+/* Articles: a single gentle hand-drawn contour, shared with the portfolio.
+   The former border-image and native input outline were overlapping here. */
+#pages-library .pages-intro {
+  background:var(--pages-paper)!important; /* no rigid graph-paper stripes */
 }
-#pages-library :is(.pages-tab,.pages-search,.pages-view,.pages-shelf-total,.pages-cover) {
-  border: 2px solid transparent !important;
-  border-image-source:var(--nana-page-edge) !important;
-  border-image-slice:12 !important;
-  border-image-width:2px !important;
-  border-image-repeat:stretch !important;
-  border-radius:0 !important;
+#pages-library :is(.pages-tab,.pages-search,.pages-view,.pages-shelf-total,.pages-cover).sketch-ui-frame {
+  position:relative!important;
+  border:0!important;
+  border-image:none!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
 }
-#pages-library .pages-view button,
-#pages-library .pages-view button + button {border:0 !important;}
+#pages-library :is(.pages-intro,.pages-controls,.pages-shelf,.pages-item-foot).sketch-ui-rule,
+#pages-library .pages-grid-list .pages-item.sketch-ui-rule {
+  position:relative!important;
+  border:0!important;
+  border-image:none!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+#pages-library .pages-tab[aria-pressed="true"] {
+  background:#edbcd5;
+  box-shadow:none!important;
+  transform:none!important;
+}
+#pages-library .pages-tab:hover {
+  background:#ffeff6;
+}
+#pages-library .pages-tab[aria-pressed="true"]:hover {
+  background:#edbcd5;
+}
+/* Search is ONE box: icon and input are inside the same traced label. */
+#pages-library .pages-search {
+  min-height:46px;
+  max-width:360px;
+  gap:9px;
+  padding:10px 13px;
+  background:#fffafc;
+  filter:none;
+  box-shadow:none!important;
+}
+#pages-library .pages-search input,
+#pages-library #pages-search {
+  appearance:none;
+  -webkit-appearance:none;
+  border:0!important;
+  border-image:none!important;
+  box-shadow:none!important;
+  outline:0!important;
+  background:transparent!important;
+  min-width:0;
+  padding:0!important;
+}
+#pages-library .pages-search:focus-within {
+  outline:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 0 3px rgba(255,23,59,.22));
+  background:#fff!important;
+}
+#pages-library #pages-search:focus-visible {
+  outline:0!important;
+  box-shadow:none!important;
+}
+#pages-library .pages-search>span {
+  position:relative;
+  flex:none;
+  line-height:1;
+  font-size:21px;
+  z-index:1;
+}
+/* One outer frame around the grid/list switch, one delicate inner divider. */
+#pages-library .pages-view {
+  position:relative;
+  border:0!important;
+  border-image:none!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+#pages-library .pages-view button {
+  border:0!important;
+  border-image:none!important;
+  outline-offset:-3px;
+  box-shadow:none!important;
+}
+#pages-library .pages-view button+button {
+  border:0!important;
+}
+/* Remove remaining straight rules and heavy rectangular shadows. */
+#pages-library .pages-item-foot.sketch-ui-rule,
+#pages-library .pages-grid-list .pages-item.sketch-ui-rule,
+#pages-library .pages-shelf.sketch-ui-rule {
+  border:0!important;
+}
+#pages-library .pages-cover {
+  overflow:hidden;
+}
 #pages-library .pages-cover-lines,
-#pages-library .pages-cover-lines::after {display:none !important;}
-#pages-library .pages-item-foot,
-#pages-library .pages-masthead,
-#pages-library .pages-intro,
-#pages-library .pages-shelf,
-#pages-library .pages-footer {border-color:transparent !important;}
-#pages-library .pages-cover {overflow:hidden;}
+#pages-library .pages-cover-lines::after {
+  display:none!important;
+}
+/* SVG strokes are decorative: never hide labels or intercept clicks. */
+#pages-library :is(.pages-tab,.pages-search,.pages-view,.pages-shelf-total,.pages-cover).sketch-ui-frame>.sketch-ui-svg,
+#pages-library :is(.pages-intro,.pages-controls,.pages-shelf,.pages-item-foot).sketch-ui-rule>.sketch-ui-svg,
+#pages-library .pages-grid-list .pages-item.sketch-ui-rule>.sketch-ui-svg,
+#pages-library .pages-view button.sketch-ui-rule>.sketch-ui-svg {
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+  z-index:3!important;
+}
+#pages-library .sketch-ui-svg>.sketch-ui-ink {
+  stroke:#ff173b!important;
+  stroke-width:1.35!important;
+  fill:none!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+@media(max-width:570px) {
+  #pages-library .pages-search {max-width:none;}
+}
