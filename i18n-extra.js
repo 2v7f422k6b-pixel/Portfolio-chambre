@@ -644,3 +644,13 @@ Object.assign(window.NanaI18nExtra.frToEn, {
   "Aquarium": "Aquarium",
   "Belle du Seigneur": "Belle du Seigneur"
 });
+
+/* Also localize the parent popup header around the colouring iframe. */
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "♥ COLORING BOOK ♥": "♥ LIVRE DE COLORIAGE ♥",
+  "Coloring Book game": "Jeu de coloriage",
+  "Close Coloring Book": "Fermer le livre de coloriage",
+  "Interactive Latte Lab game": "Jeu interactif de l’atelier latte",
+  "Close Latte Lab": "Fermer l’atelier latte",
+  "Interactive Tamagotchi": "Tamagotchi interactif"
+});
