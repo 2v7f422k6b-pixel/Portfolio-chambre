@@ -1137,6 +1137,12 @@ html[data-theme="night"] body #work-desktop #work-search-input {
   box-shadow:none!important;
   outline-offset:2px;
 }
+/* Disable the secondary traced SVG frame around this input only: keeping
+   both it and the real border produced a broken/doubled outline. */
+html body #work-desktop #work-search-input.sketch-ui-frame > .sketch-ui-svg,
+html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame > .sketch-ui-svg {
+  display:none!important;
+}
 @media(max-width:540px){
   html body #work-desktop .work-desk-layout > .folder-grid,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid,
