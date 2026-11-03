@@ -73,6 +73,10 @@
     ['#window-shade .lit-word', 'frame', 731],
     ['#window-shade .mini-game-card', 'frame', 421],
     ['#window-shade .mini-game-cta', 'frame', 431],
+    // Rilakkuma: gently traced interactive controls and a double certificate frame.
+    ['#nana-do-nothing .nothing-progress-track', 'frame', 951],
+    ['#nana-do-nothing .nothing-button', 'frame', 961],
+    ['#nana-do-nothing .nothing-certificate', 'double-frame', 971],
     ['#window-shade .atelier-about-copy .info-box', 'frame', 541],
     // Coloring modal in the main document; the iframe handles its own drawn controls.
     ['.coloring-overlay .coloring-panel', 'frame', 981],
@@ -96,9 +100,9 @@
 
   // Short quadratic sections preserve crisp corners while keeping each
   // horizontal and vertical stroke slightly different, like a stylus trace.
-  function makePath(width, height, seed, kind, variation) {
+  function makePath(width, height, seed, kind, variation, inset = 0) {
     const random = rng(seed);
-    const pad = 1.5;
+    const pad = 1.5 + inset;
     const left = pad, top = pad;
     const right = Math.max(left + 4, width - pad);
     const bottom = Math.max(top + 4, height - pad);
@@ -157,6 +161,11 @@
     const ink = document.createElementNS(NS, 'path');
     ink.classList.add('sketch-ui-ink');
     svg.appendChild(ink);
+    const innerInk = kind === 'double-frame' ? document.createElementNS(NS, 'path') : null;
+    if (innerInk) {
+      innerInk.classList.add('sketch-ui-ink', 'sketch-ui-inner');
+      svg.appendChild(innerInk);
+    }
     // Decorative SVG must not participate as a flex/grid child.
     svg.style.position='absolute';
     svg.style.inset='0';
@@ -165,7 +174,7 @@
     element.appendChild(svg);
     if(getComputedStyle(element).position==='static')element.style.position='relative';
     element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
-    const item = {element, svg, ink, kind, seed, previousWidth:0, previousHeight:0};
+    const item = {element, svg, ink, innerInk, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
   }
@@ -188,8 +197,9 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05))));
+    const variation=item.element.closest('#nana-do-nothing') ? 1.45 : (item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05)))));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
+    if (item.innerInk) item.innerInk.setAttribute('d',makePath(width,height,item.seed+53,'frame',variation*.72,7));
   }
   scan();
   // Modal contents are created after page load; trace those when they appear.
