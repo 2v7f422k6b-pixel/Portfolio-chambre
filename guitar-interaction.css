@@ -18,6 +18,8 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
   opacity: 0;
 }
 #hotspots #guitar-vibration-layer.is-plucking .guitar-body-ripple {
