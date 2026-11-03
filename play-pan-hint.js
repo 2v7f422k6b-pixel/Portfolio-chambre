@@ -30,10 +30,10 @@
     #nana-play-pan-hint .pan-hint-hand-photo {display:none;}
     #nana-play-pan-hint .pan-hint-visual {z-index:2;}
     #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
-      display:block;position:fixed;bottom:-38px;left:50%;
-      width:auto;height:min(48dvh,480px);max-width:48vw;
+      display:block;position:absolute;left:50%;bottom:-24px;
+      width:auto;height:55dvh;max-width:none;max-height:none;
       object-fit:contain;z-index:1;pointer-events:none;
-      filter:drop-shadow(0 3px 5px rgba(79,32,40,.17));
+      filter:none;-webkit-backface-visibility:hidden;backface-visibility:hidden;
       animation:nana-touch-hand-swipe 3.4s ease-in-out infinite;
     }
     #nana-play-pan-hint.touch-hint .pan-hint-label{display:none;}
@@ -56,7 +56,7 @@
     }
     @media(min-width:700px) and (orientation:landscape) {
       #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
-        height:min(54dvh,450px);max-width:25vw;
+        height:55dvh;max-width:none;
       }
     }
     @media(prefers-reduced-motion:reduce) {
@@ -155,9 +155,9 @@
       '<g fill="none" opacity="0.58" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '<g fill="none" opacity="0.67" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '</svg>' +
-      '<img class="pan-hint-hand-photo" src="assets/play-swipe-hand.webp" alt="" aria-hidden="true" draggable="false">' +
       '<span class="pan-hint-label" data-no-translate></span>' +
-      '</div>';
+      '</div>' +
+      '<img class="pan-hint-hand-photo" src="assets/play-swipe-hand.webp" alt="" aria-hidden="true" draggable="false">';
     if (isTabletOrPhone()) hint.classList.add('touch-hint');
     document.body.appendChild(hint);
     updateHintLabel();
