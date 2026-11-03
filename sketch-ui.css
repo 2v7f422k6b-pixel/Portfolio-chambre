@@ -1006,7 +1006,7 @@ html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--
 }
 html body #work-desktop > .work-wallpaper > .work-bg-layer--night,
 html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--night {
- background-image:url("assets/work-wallpaper-20261102.webp")!important;
+ background-image:url("assets/work%20mode%20nuit.png")!important;
 }
 html:not([data-theme="night"]) body #work-desktop > .work-wallpaper > .work-bg-layer--day {opacity:1!important}
 html:not([data-theme="night"]) body #work-desktop > .work-wallpaper > .work-bg-layer--night {opacity:0!important}
