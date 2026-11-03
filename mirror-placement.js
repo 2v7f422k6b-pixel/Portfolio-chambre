@@ -109,8 +109,10 @@
   const style=document.createElement('style');
   style.id='wall-mirror-perspective-style';
   style.textContent=[
-    '#wall-mirror-hit:focus-visible{outline:none;stroke:#ff173b;stroke-width:4;stroke-dasharray:7 5}',
-    '@media (hover:hover){#wall-mirror-hit:hover{stroke:#ff173b;stroke-width:2;stroke-dasharray:6 5}}',
+    // Keep the mirror fully clickable without the rectangular/dashed hotspot frame.
+    '#wall-mirror-hit,#wall-mirror-hit:hover,#wall-mirror-hit:focus,#wall-mirror-hit:focus-visible,#wall-mirror-hit:active{outline:none;box-shadow:none;stroke:transparent;stroke-width:0;stroke-dasharray:none}',
+    // A gentle glow on the illustration remains for keyboard navigation.
+    'html:not(.poster-edit-mode) #nana-wall-mirror:has(#wall-mirror-hit:focus-visible) g[pointer-events="none"]{filter:drop-shadow(0 0 5px rgba(255,23,59,.65))}',
     'html.poster-edit-mode #wall-mirror-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}'
   ].join('\n');
   document.head.appendChild(style);
