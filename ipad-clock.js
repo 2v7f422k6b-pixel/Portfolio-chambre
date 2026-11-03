@@ -203,11 +203,11 @@
     const bounds = ipad.getBBox();
     if (bounds.width < 12 || bounds.height < 8) return;
     defaults = {
-      x: +(bounds.x + bounds.width * .67).toFixed(2),
-      y: +(bounds.y + bounds.height * .33).toFixed(2),
-      size: +clamp(bounds.width * .06, 6, 24).toFixed(2),
-      angle: 6,
-      skew: -25
+      x: 696.7055941360986,
+      y: 631.4392347011353,
+      size: 15.5,
+      angle: 118,
+      skew: 20
     };
     position = { ...defaults };
     try {
