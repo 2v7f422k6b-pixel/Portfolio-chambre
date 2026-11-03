@@ -141,7 +141,9 @@ function translateString(str,target=lang){
     else if(/^Déplacer .+ à (gauche|droite)$/.test(key))value=key.replace(/^Déplacer (.+) à (gauche|droite)$/,(full,word,dir)=>'Move '+(frenchToEnglish[word]||word)+' to the '+(dir==='gauche'?'left':'right'));
     else if(key.startsWith('♡ ')&&frenchToEnglish[key.slice(2)])value='♡ '+frenchToEnglish[key.slice(2)];
     else if(key.startsWith('À lire pour : '))value='Read for: '+key.slice(14).split(' · ').map(x=>frenchToEnglish[x]||x).join(' · ');
-    else if(key.startsWith('Zone ')&&key.includes('destination à définir'))value=key.replace('destination à définir','destination to be assigned');
+    else if(key.endsWith(' — activer ou désactiver le mode nuit'))value=translateString(key.slice(0,-' — activer ou désactiver le mode nuit'.length),'en')+' — toggle night mode';
+    else if(key.includes(' — ouvrir ')){const parts=key.split(' — ouvrir ');value=translateString(parts[0],'en')+' — open '+translateString(parts.slice(1).join(' — ouvrir '),'en')}
+    else if(key.startsWith('Zone ')&&key.includes(' — destination à définir')){const parts=key.split(' — destination à définir');value=parts[0].replace(/^Zone (\d+) · (.*)$/,(m,n,label)=>'Zone '+n+' · '+translateString(label,'en'))+' — destination to be assigned'}
     else if(key.startsWith('Local time: '))value=key;
   }else{
     if(/^\d+ texts?$/.test(key))value=number+' texte'+(number===1?'':'s');
@@ -151,7 +153,9 @@ function translateString(str,target=lang){
     else if(/^Move .+ to the (left|right)$/.test(key))value=key.replace(/^Move (.+) to the (left|right)$/,(full,word,dir)=>'Déplacer '+(translations[word]||word)+' à '+(dir==='left'?'gauche':'droite'));
     else if(key.startsWith('♡ ')&&translations[key.slice(2)])value='♡ '+translations[key.slice(2)];
     else if(key.startsWith('Read for: '))value='À lire pour : '+key.slice(10).split(' · ').map(x=>translations[x]||x).join(' · ');
-    else if(key.startsWith('Zone ')&&key.includes('destination to be assigned'))value=key.replace('destination to be assigned','destination à définir');
+    else if(key.endsWith(' — toggle night mode'))value=translateString(key.slice(0,-' — toggle night mode'.length),'fr')+' — activer ou désactiver le mode nuit';
+    else if(key.includes(' — open ')){const parts=key.split(' — open ');value=translateString(parts[0],'fr')+' — ouvrir '+translateString(parts.slice(1).join(' — open '),'fr')}
+    else if(key.startsWith('Zone ')&&key.includes(' — destination to be assigned')){const parts=key.split(' — destination to be assigned');value=parts[0].replace(/^Zone (\d+) · (.*)$/,(m,n,label)=>'Zone '+n+' · '+translateString(label,'fr'))+' — destination à définir'}
     else if(key.startsWith('Local time: '))value=key.replace('Local time: ','Heure locale : ');
   }
   return leading+value+trailing;
