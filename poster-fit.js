@@ -75,7 +75,7 @@
     shape: copyPoints(rec.shape), quad: copyPoints(rec.quad)
   }));
   // First alignment supplied by the user. Local browser positions take priority.
-  const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[344.9,20.7],[497.2,65.9],[496.7,242.9],[345.7,210.9]],null],[[[503.2,15],[576.2,48],[577.2,219],[503.2,200]],null],[[[1219.6,320.2],[1342.6,288.2],[1343.6,485.2],[1219.6,504.2]],null],[[[721,60.3],[820.3,38.4],[823.2,192.7],[724.6,203.2]],null],[[[351.8,221.1],[464.6,244.1],[463.1,446.9],[351.3,451.9]],null],[[[477.8,259.1],[560.8,273.6],[560,399.2],[477.7,394.3]],null],[[[588.5,235.4],[665.1,229.2],[664.5,361],[588.4,362.7]],null],[[[669.6,271.5],[764.4,264.5],[767.7,386],[669.6,390.5]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[777.1,303.6]],null],[[[762.9,334],[840.9,328],[841.4,462.5],[764.8,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[679.9,403.6],[738.4,399.5],[739.6,476],[681.3,476.3]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1295.1,37.3],[1450,10.1],[1455.7,201.1],[1294.9,218.9]],null],[[[1463,37],[1595,12],[1597,211],[1464,227]],null],[[[1352.3,241.3],[1423.3,231.3],[1426.3,366.3],[1352.3,377.3]],[[1352.3,241.3],[1423.3,231.3],[1426.3,339.3],[1362.3,344.3],[1359.3,366.3],[1352.3,367.3]]],[[[598.5,33.5],[718.6,8.1],[721.6,212.5],[598.4,224.5]],null],[[[1478.4,234.3],[1620.4,221.3],[1621.4,403.3],[1478.4,418.3]],[[1478.4,234.3],[1620.4,221.3],[1621.4,338.3],[1605.4,354.3],[1621.4,371.3],[1621.4,403.3],[1568.4,403.3],[1571.4,312.3],[1478.4,318.3]]]];
+  const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[344.9,20.7],[497.2,65.9],[496.7,242.9],[345.7,210.9]],null],[[[487.6,10.2],[560.6,43.2],[561.6,214.2],[487.6,195.2]],null],[[[1219.6,320.2],[1342.6,288.2],[1343.6,485.2],[1219.6,504.2]],null],[[[721,60.3],[820.3,38.4],[823.2,192.7],[724.6,203.2]],null],[[[351.8,221.1],[464.6,244.1],[463.1,446.9],[351.3,451.9]],null],[[[477.8,259.1],[560.8,273.6],[560,399.2],[477.7,394.3]],null],[[[588.5,235.4],[665.1,229.2],[664.5,361],[588.4,362.7]],null],[[[680.6,310.1],[775.4,303.1],[778.7,424.6],[680.6,429.1]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[777.1,303.6]],null],[[[763.1,334],[841.1,328],[841.6,462.5],[765,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[670.4,221.9],[728.9,217.8],[730.1,294.3],[671.8,294.6]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1325.9,36.4],[1480.8,9.2],[1486.5,200.2],[1325.7,218]],null],[[[1507.8,79.2],[1639.8,54.2],[1641.8,253.2],[1508.8,269.2]],null],[[[1352.3,241.3],[1423.3,231.3],[1426.3,366.3],[1352.3,377.3]],[[1352.3,241.3],[1423.3,231.3],[1426.3,339.3],[1362.3,344.3],[1359.3,366.3],[1352.3,367.3]]],[[[598.5,33.5],[718.6,8.1],[721.6,212.5],[598.4,224.5]],null],[[[1478.4,234.3],[1620.4,221.3],[1621.4,403.3],[1478.4,418.3]],[[1478.4,234.3],[1620.4,221.3],[1621.4,338.3],[1605.4,354.3],[1621.4,371.3],[1621.4,403.3],[1568.4,403.3],[1571.4,312.3],[1478.4,318.3]]]];
   posterIds.forEach((posterId, index) => {
     const [quad, shape] = firstCalibration[posterId];
     current[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
@@ -104,8 +104,9 @@
   } catch (_) { /* Browsers can disable localStorage. The default fit still works. */ }
 
   const art = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
+  const tapeLayer = node('g', { class: 'poster-tape-layer', 'pointer-events': 'none' });
   const defs = node('defs');
-  oldArtwork.after(defs, art);
+  oldArtwork.after(defs, art, tapeLayer);
   // The static layer remains as a progressive-enhancement fallback until rendering succeeds.
   function polygon(points) { return points.map(p => p.join(',')).join(' '); }
   function clip(id, points) {
@@ -133,12 +134,71 @@
     group.appendChild(wrapper);
   }
 
+
+  // Tape placement is keyed by the ORIGINAL poster numbers, so removing
+  // a poster never shifts tape to its neighbor. Values: 0=upper-left, 1=upper-right.
+  const tapeCorners = {
+    1:[0], 2:[0,1], 3:[1], 5:[0], 6:[0,1],
+    7:[1], 8:[0], 9:[1], 11:[0,1], 13:[0],
+    14:[1], 15:[0,1], 16:[1], 18:[0]
+  };
+  const tapeArt = [
+    { src:'assets/decor/scotch-1.svg', width:208, height:77 },
+    { src:'assets/decor/scotch-2.svg', width:194, height:89 }
+  ];
+  function unit(vector) {
+    const length = Math.hypot(vector[0], vector[1]) || 1;
+    return vector.map(value => value / length);
+  }
+  function renderTape(posterNumber, corners) {
+    const anchors = tapeCorners[posterNumber];
+    if (!anchors || !sources.has(posterNumber - 1)) return;
+    const [tl, tr, br, bl] = corners;
+    const right = unit([tr[0]-tl[0], tr[1]-tl[1]]);
+    const down = unit([bl[0]-tl[0], bl[1]-tl[1]]);
+    const topLength = Math.hypot(tr[0]-tl[0],tr[1]-tl[1]);
+    const height = Math.hypot(bl[0]-tl[0],bl[1]-tl[1]);
+    const widthOnWall = Math.min(45,Math.max(19,Math.min(topLength * .37,height * .28)));
+    anchors.forEach((corner, position) => {
+      const tape = tapeArt[(posterNumber + position) % tapeArt.length];
+      const angle = (corner === 0 ? 34 : -34) * Math.PI / 180;
+      // Work in the poster's own horizontal/vertical basis to match wall skew.
+      const xAxis = [
+        Math.cos(angle)*right[0] + Math.sin(angle)*down[0],
+        Math.cos(angle)*right[1] + Math.sin(angle)*down[1]
+      ];
+      const yAxis = [
+        -Math.sin(angle)*right[0] + Math.cos(angle)*down[0],
+        -Math.sin(angle)*right[1] + Math.cos(angle)*down[1]
+      ];
+      const center = corner === 0
+        ? [tl[0] + .06*topLength*right[0], tl[1] + .06*topLength*right[1]]
+        : [tr[0] - .06*topLength*right[0], tr[1] - .06*topLength*right[1]];
+      const h = widthOnWall * tape.height / tape.width;
+      const a = xAxis[0] * widthOnWall / tape.width;
+      const b = xAxis[1] * widthOnWall / tape.width;
+      const c = yAxis[0] * h / tape.height;
+      const d = yAxis[1] * h / tape.height;
+      const e = center[0] - a*tape.width/2 - c*tape.height/2;
+      const f = center[1] - b*tape.width/2 - d*tape.height/2;
+      tapeLayer.appendChild(node('image',{
+        class:'poster-handdrawn-tape', href:tape.src,
+        x:0,y:0,width:tape.width,height:tape.height,
+        preserveAspectRatio:'none',
+        transform:'matrix(' + [a,b,c,d,e,f].join(' ') + ')',
+        'data-poster-tape':posterNumber,'aria-hidden':'true',
+        'pointer-events':'none'
+      }));
+    });
+  }
+
   let overlay = null;
   let selected = 0;
   let statusLabel = null;
   function render() {
     defs.replaceChildren();
     art.replaceChildren();
+    tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
       const src = sources.get(posterIds[index]);
@@ -149,6 +209,7 @@
       triangleImage(src, rec.quad, 0, posterGroup, rec.shape, index);
       triangleImage(src, rec.quad, 1, posterGroup, rec.shape, index);
       art.appendChild(posterGroup);
+      renderTape(posterIds[index] + 1, rec.quad);
     });
     oldArtwork.style.display = 'none';
     if (!editing) return;
