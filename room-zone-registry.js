@@ -126,11 +126,13 @@
     img.src='assets/'+encodeURIComponent(zone.file);
   }
   // Small asynchronous batches help iPad browsers under load.
+  // Existing SVG hotspots already have geometry: only decode the 16 missing objects.
+  const missing=zones.filter(zone=>!zone.element);
   let i=0;
   function batch(){
-    const end=Math.min(i+3,zones.length);
-    for(;i<end;i++)loadZone(zones[i]);
-    if(i<zones.length)setTimeout(batch,90);
+    const end=Math.min(i+2,missing.length);
+    for(;i<end;i++)loadZone(missing[i]);
+    if(i<missing.length)setTimeout(batch,140);
   }
   batch();
   broadcast();
