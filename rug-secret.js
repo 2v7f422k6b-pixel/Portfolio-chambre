@@ -30,18 +30,12 @@
       transform-box:view-box;transform-origin:625px 859px;
       transform:translate(4px,7px) rotate(7deg) scale(.9);
       transition:opacity .28s ease,transform 1.05s cubic-bezier(.2,.75,.23,1)}
-    #nana-rug-secret .rug-secret-under{opacity:0;
-      transform-box:view-box;transform-origin:650px 900px;
-      transform:scale(.8);transition:opacity .3s ease,transform .6s ease}
     #nana-rug-secret.is-open .rug-nana-fold{opacity:1;transform:none}
-    #nana-rug-secret.is-open .rug-secret-under{opacity:1;transform:none;
-      transition-delay:.55s}
     #nana-rug-secret .rug-fold-night{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-day{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-night{display:block}
     @media(prefers-reduced-motion:reduce){
-      #nana-rug-secret .rug-nana-fold,
-      #nana-rug-secret .rug-secret-under{transition:none!important}}
+      #nana-rug-secret .rug-nana-fold{transition:none!important}}
   `;
   document.head.appendChild(style);
   const overlay=make('svg',{id:'nana-rug-secret',viewBox:'0 0 1670 942',
@@ -60,18 +54,9 @@
   }));
   overlay.appendChild(drawing);
 
-  // Keep the original little red key as the secret revealed by this corner.
-  const secret=make('g',{class:'rug-secret-under'});
-  secret.appendChild(make('path',{d:'M 635 889 Q 647 885 660 890 L 662 913 Q 650 917 636 913 Z',
-    fill:'#fff2fc',stroke:'#ff173b','stroke-width':'1.8'}));
-  secret.appendChild(make('path',{d:'M 644 902 A 4 4 0 1 1 651 903 L 649 908 L 654 911 L 651 915 L 647 912 L 644 915 L 641 912 L 645 908 L 646 905',
-    fill:'none',stroke:'#ff173b','stroke-width':'2.2','stroke-linejoin':'round',
-    'stroke-linecap':'round'}));
-  overlay.appendChild(secret);
   scene.appendChild(overlay);
 
-  let opened=false,toastTimer;
-  const toast=document.getElementById('toast');
+  let opened=false;
   function updateZoneLabel(){
     const zone=window.NANA_ROOM_ZONES?.find(z=>z.id==='tapis');
     if(!zone?.element)return;
@@ -84,14 +69,7 @@
     opened=!opened;
     overlay.classList.toggle('is-open',opened);
     updateZoneLabel();
-    if(opened&&toast){
-      toast.textContent=document.documentElement.lang==='en'
-        ?'A tiny red key… What could it unlock?'
-        :'Une petite clé rouge… Qu’est-ce qu’elle peut bien ouvrir ?';
-      toast.hidden=false;
-      clearTimeout(toastTimer);
-      toastTimer=setTimeout(()=>{toast.hidden=true;},4300);
-    }
+
   }
   svg.addEventListener('click',event=>{
     if(!event.target.closest?.('[data-room-zone-id="tapis"]'))return;
