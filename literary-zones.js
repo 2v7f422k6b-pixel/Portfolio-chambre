@@ -847,7 +847,7 @@
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-prev],[data-lit-next],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
     if(!target||!target.closest('#window-content .lit-app'))return;
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
@@ -870,7 +870,20 @@
       renderSouvenuesGrid();
       const next=archiveVisible()[0];
       if(next){poet=next.index;showPoet();}
-      else appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+      else {
+        appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+        const c=appRoot()?.querySelector('[data-lit-position]');
+        if(c)c.textContent='0 / 0';
+      }
+    }
+    else if(target.hasAttribute('data-lit-prev')||target.hasAttribute('data-lit-next')){
+      const visible=archiveVisible().map(x=>x.index);
+      if(!visible.length)return;
+      const offset=target.hasAttribute('data-lit-next')?1:-1;
+      const pos=visible.indexOf(poet);
+      poet=visible[(pos+offset+visible.length)%visible.length];
+      showPoet();
+      scrollToPoet();
     }
     else if(target.hasAttribute('data-lit-add'))insertFromBank(Number(target.dataset.litAdd));
     else if(target.hasAttribute('data-lit-remove')){
