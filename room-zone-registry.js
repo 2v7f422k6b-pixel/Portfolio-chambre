@@ -33,7 +33,7 @@
     ['miffy','Miffy clown','MIFFY.PNG',null],
     ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null],
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
-    ['bretzel','Vase bretzel','BRETZEL.PNG',null]
+    ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality']
   ].map(([id,label,file,selector,destination],i) => ({
     id,label,file,selector,destination,number:16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -163,6 +163,7 @@
         poly.setAttribute('points',hit.points);
         poly.setAttribute('aria-label',zone.id==='vase' ? 'Vase de coquelicots — faire tomber un pétale' : zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
         poly.setAttribute('tabindex','0');
+        if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
         if(zone.id==='vase') poly.dataset.vasePetal='';
         else if(zone.destination) poly.dataset.open=zone.destination;
