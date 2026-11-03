@@ -959,16 +959,71 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  }
 }
 
-/* Work Mode wallpapers: the new hand-drawn image for DAY;
-   keep the previous background in NIGHT. Cover preserves the image ratio
-   without modifying the desktop folders' grid or positioning. */
-html:not([data-theme="night"]) body #work-desktop,
-html:not([data-theme="night"]) body #work-desktop > .work-wallpaper {
- background:#78a8d6 url("assets/work%20mode%20jour.png") center / cover no-repeat!important;
-}
+/* Work Mode: one stationary canvas with two preloaded artwork layers.
+   Changing the theme only changes opacity, never the wallpaper's dimensions,
+   position, scrolling box or the folder grid. */
+html body #work-desktop,
 html[data-theme="night"] body #work-desktop,
+html body #work-desktop > .work-wallpaper,
 html[data-theme="night"] body #work-desktop > .work-wallpaper {
- background:#78a8d6 url("assets/work-wallpaper-20261102.webp") center / cover no-repeat!important;
+ background-color:#78a8d6!important;
+ background-image:none!important;
+ background-attachment:initial!important;
+}
+html body #work-desktop > .work-wallpaper,
+html[data-theme="night"] body #work-desktop > .work-wallpaper {
+ position:fixed!important;
+ inset:var(--menubar,42px) 0 0!important;
+ display:block!important;
+ overflow:hidden!important;
+ pointer-events:none!important;
+ z-index:0!important;
+}
+html body #work-desktop > .work-wallpaper > .work-bg-layer,
+html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer {
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ margin:0!important;
+ padding:0!important;
+ pointer-events:none!important;
+ border:0!important;
+ background-color:transparent!important;
+ background-position:center center!important;
+ background-size:cover!important;
+ background-repeat:no-repeat!important;
+ transform:none!important;
+ transition:opacity .3s ease!important;
+}
+html body #work-desktop > .work-wallpaper > .work-bg-layer--day,
+html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--day {
+ background-image:url("assets/work%20mode%20jour.png")!important;
+}
+html body #work-desktop > .work-wallpaper > .work-bg-layer--night,
+html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--night {
+ background-image:url("assets/work-wallpaper-20261102.webp")!important;
+}
+html:not([data-theme="night"]) body #work-desktop > .work-wallpaper > .work-bg-layer--day {opacity:1!important}
+html:not([data-theme="night"]) body #work-desktop > .work-wallpaper > .work-bg-layer--night {opacity:0!important}
+html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--day {opacity:0!important}
+html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--night {opacity:1!important}
+
+/* Keep exactly the same desktop geometry and scrollable viewport for both themes. */
+html body #work-desktop,
+html[data-theme="night"] body #work-desktop {
+ overflow-y:scroll!important;
+ scrollbar-gutter:stable!important;
+ overflow-anchor:none!important;
+}
+html body #work-desktop .work-desk-layout,
+html[data-theme="night"] body #work-desktop .work-desk-layout {
+ position:relative!important;
+ top:auto!important;
+ left:auto!important;
+ right:auto!important;
+ bottom:auto!important;
 }
 
 /* Single artist-drawn trash icon: remove legacy CSS shape and allow full-size PNG. */
