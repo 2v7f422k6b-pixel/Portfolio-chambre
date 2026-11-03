@@ -959,12 +959,16 @@ html body #menubar :is(.menu-left,.menu-right)>button{font-size:16px!important;l
  }
 }
 
-/* Approved illustrated Work Mode wallpaper — 2 November 2026. */
-html body #work-desktop,
+/* Work Mode wallpapers: the new hand-drawn image for DAY;
+   keep the previous background in NIGHT. Cover preserves the image ratio
+   without modifying the desktop folders' grid or positioning. */
+html:not([data-theme="night"]) body #work-desktop,
+html:not([data-theme="night"]) body #work-desktop > .work-wallpaper {
+ background:#78a8d6 url("assets/work%20mode%20jour.png") center / cover no-repeat!important;
+}
 html[data-theme="night"] body #work-desktop,
-html body #work-desktop > .work-wallpaper,
 html[data-theme="night"] body #work-desktop > .work-wallpaper {
- background:#78a8d6 url("assets/work-wallpaper-20261102.webp") center/cover no-repeat!important;
+ background:#78a8d6 url("assets/work-wallpaper-20261102.webp") center / cover no-repeat!important;
 }
 
 /* Single artist-drawn trash icon: remove legacy CSS shape and allow full-size PNG. */
