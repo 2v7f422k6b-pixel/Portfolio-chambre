@@ -13,8 +13,8 @@
   // The lamp has its OWN editor URL, independent of the poster and mirror editor.
   const editing = new URLSearchParams(location.search).get('lampEdit') === '1';
   if (editing) document.documentElement.classList.add('lamp-edit-mode');
-  // Provisional wall location: user can export precise corners once aligned.
-  const defaultQuad = [[1184,248],[1304,236],[1308,352],[1187,365]];
+  // Artist-approved permanent placement, in the 1670 × 942 bedroom coordinate system.
+  const defaultQuad = [[679.1610611167739,189.70320567843726],[754.0449185287739,177.702325716768],[756.5410471091737,254.8932494609382],[681.0331575520739,262.71496665513723]];
 
   const fromRect = (x, y, width) => {
     const height = width * H / W;
