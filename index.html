@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="mini-games.css?v=2">
   <link rel="stylesheet" href="do-nothing-club.css?v=20261103-contrast-fix">
   <link rel="stylesheet" href="heart-theme.css?v=remove-pseudo-hearts-2">
-  <link rel="stylesheet" href="sketch-ui.css?v=20261103-clean-menubar-v3">
+  <link rel="stylesheet" href="sketch-ui.css?v=20261103-fixed-nav-outside-room">
 <link rel="stylesheet" href="window-system.css?v=stabilize-2">
   <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261103-dock-compact-half-opacity">
 
@@ -598,7 +598,6 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
     </section>
-    <main id="desktop" hidden>
       <header id="menubar">
         <nav class="menu-left" aria-label="Navigation principale">
           <button id="home-menu" class="apple-symbol" aria-label="Return to mode selection" title="Choose a mode">♥</button>
@@ -616,6 +615,8 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
         <button id="mobile-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-panel"><span aria-hidden="true">☰</span></button>
         <div id="mobile-menu-panel" aria-label="Menu mobile"></div>
       </header>
+    <main id="desktop" hidden>
+
       <div id="global-search-popover" hidden><label for="global-search-input">Search my portfolio</label><input id="global-search-input" type="search" placeholder="Search artworks, projects, games…" autocomplete="off"><div id="global-search-results" aria-live="polite"></div></div>
       <div id="play-viewport" hidden>
         <div id="play-scene">
