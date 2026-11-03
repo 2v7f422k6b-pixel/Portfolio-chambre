@@ -672,3 +672,14 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "Assorted illustrations": "Illustrations en vrac",
   "Click any image to view it larger.": "Clique sur une image pour l’agrandir."
 });
+
+/* Translation for naming animations in the portfolio player. */
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "Rename video": "Renommer la vidéo",
+  "Video title": "Titre de la vidéo",
+  "Rename": "Renommer",
+  "Cancel": "Annuler",
+  "Save": "Enregistrer",
+  "Saved in this browser.": "Nom enregistré dans ce navigateur.",
+  "Please enter a title": "Saisis un titre."
+});
