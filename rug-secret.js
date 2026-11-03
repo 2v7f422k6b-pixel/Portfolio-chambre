@@ -76,9 +76,8 @@
   const flap=el('g',{class:'rug-corner-flap'});
   flap.appendChild(el('image',{'href':'assets/RUG.PNG',x:0,y:0,width:1670,height:942,
     preserveAspectRatio:'none','clip-path':'url(#nana-rug-corner-clip)'}));
-  flap.appendChild(el('path',{d:'M 980 576 Q 943 565 918 561 L 927 637',
-    fill:'none',stroke:'#ff173b','stroke-width':'2.1','stroke-linecap':'round',
-    'stroke-linejoin':'round'}));
+  // No extra outline: this stroke was drawn over the wall beneath the window
+  // even when the rug was closed. The illustrated rug already has its own lines.
   overlay.appendChild(flap);
   scene.appendChild(overlay);
 
