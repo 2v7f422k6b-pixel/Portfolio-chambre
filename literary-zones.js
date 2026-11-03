@@ -552,7 +552,7 @@
       "id": "sauvage",
       "name": "Cécile Sauvage",
       "dates": "",
-      "title": "Le Cœur tremblant, la joie en feu",
+      "title": "Le Cœur tremblant, la joue en feu",
       "kind": "Poésie",
       "kindNote": "Extrait",
       "note": "Des baisers et des sensations qui restent suspendus dans le souvenir.",
@@ -562,7 +562,7 @@
       "bg": "#ee6971",
       "ink": "#fff5ec",
       "format": "poesie",
-      "poem": "Le cœur tremblant, la joie en feu,\nJ’emporte dans mes cheveux\nTes lèvres encore tièdes.\n\nTes baisers restent suspendus\nSur mon front et mes bras nus\nComme des papillons humides."
+      "poem": "Le cœur tremblant, la joue en feu,\nJ’emporte dans mes cheveux\nTes lèvres encore tièdes.\n\nTes baisers restent suspendus\nSur mon front et mes bras nus\nComme des papillons humides."
     }
   ];
   const dictionary = [
