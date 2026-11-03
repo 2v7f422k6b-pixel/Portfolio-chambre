@@ -592,6 +592,42 @@ html[data-theme="night"] #hotspots .poster-perspective-artworks,
 html[data-theme="night"] #hotspots .poster-artworks {opacity:.80!important;}
 html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!important;filter:brightness(.7)!important;}
 </style>
+  <style id="marseille-room-layers-20261103">
+    /* Both cityscapes share the bedroom's 1670:942 canvas. Keep all four
+       images in the same scene coordinates so PNG objects and SVG hotspots
+       remain aligned when zooming, panning or switching Day / Night. */
+    #play-scene > .marseille-backdrop {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+    }
+    #play-scene > #marseille-day { z-index: 0; opacity: 1; }
+    #play-scene > #marseille-night {
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1.8s cubic-bezier(.42,0,.25,1);
+    }
+    html[data-theme="night"] #play-scene > #marseille-night { opacity: 1; }
+
+    /* Two bedroom layers sit in front of their matching Marseille views.
+       Preserve all existing transparent window openings. */
+    #play-scene > #room-img { z-index: 2; }
+    #play-scene > #room-night { z-index: 3; }
+
+    /* Existing animations and click targets stay above the complete artwork. */
+    #play-scene > #window-life { z-index: 4; }
+    #play-scene > #hotspots { z-index: 5; }
+    #play-scene > #kitty-clock { z-index: 6; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #play-scene > #marseille-night { transition: none; }
+    }
+  </style>
   </head>
 <body>
   <div id="app" class="mode-select">
@@ -641,8 +677,11 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
       <div id="global-search-popover" hidden><label for="global-search-input">Search my portfolio</label><input id="global-search-input" type="search" placeholder="Search artworks, projects, games…" autocomplete="off"><div id="global-search-results" aria-live="polite"></div></div>
       <div id="play-viewport" hidden>
         <div id="play-scene">
-          <img id="room-img" src="assets/background%20day.png" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
-          <img id="room-night" src="assets/background%20night.png" alt="" aria-hidden="true" decoding="async">
+          <!-- Marseille is a full-scene backdrop, behind the transparent bedroom artwork. -->
+          <img id="marseille-day" class="marseille-backdrop" src="assets/Marseille%20jour.PNG" alt="" aria-hidden="true" decoding="async">
+          <img id="marseille-night" class="marseille-backdrop" src="assets/Marseile%20nuit.PNG" alt="" aria-hidden="true" decoding="async">
+          <img id="room-img" src="assets/chambre%20jour.PNG" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
+          <img id="room-night" src="assets/chamrbe%20nuit.PNG" alt="" aria-hidden="true" decoding="async">
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
           <svg id="window-life" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <defs>
