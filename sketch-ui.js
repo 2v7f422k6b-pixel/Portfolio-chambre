@@ -32,6 +32,15 @@
     ['#window-shade .viewer-thumb', 'frame', 291],
     ['#window-shade .motion-reels-outline', 'frame', 301],
     ['#window-shade .motion-reels-actions button', 'frame', 311],
+    ['#window-shade .motion-reels-header', 'rule', 312],
+    ['#window-shade .motion-reels-footer', 'top-rule', 313],
+    ['#window-shade .motion-reels-drawer-top', 'rule', 314],
+    ['#window-shade .motion-reels-action-separator', 'rule', 315],
+    ['#window-shade .motion-reels-screen', 'frame', 316],
+    ['#window-shade .motion-reels-rename-current', 'frame', 317],
+    ['#window-shade .motion-rename-dialog', 'frame', 318],
+    ['#window-shade .motion-rename-dialog input', 'frame', 319],
+    ['#window-shade .motion-rename-dialog button', 'frame', 320],
     ['#window-shade .motion-reels-drawer', 'frame', 341],
     ['#window-shade .motion-reels-list button', 'frame', 351],
     ['#window-shade .project-card', 'frame', 361],
@@ -166,7 +175,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05);
+    const variation=item.element.closest('#motion-reels') ? 1.95 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
   scan();
