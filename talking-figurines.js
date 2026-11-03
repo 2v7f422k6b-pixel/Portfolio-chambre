@@ -10,35 +10,39 @@
     {
       id: 'miffy', file: 'MIFFY.PNG', index: -1,
       fr: [
-        'Je suis un lapin, pas une réponse.',
-        'J’ai vu des choses. Surtout des posters.',
-        'Ne me regarde pas, je suis en pause.',
-        'C’est une chambre ou un musée ?',
-        'Je garde les secrets. Surtout les miens.'
+        'Cette étoile n’était pas là hier.',
+        'Le miroir se souvient de quelqu’un d’autre.',
+        'J’étais là avant la chambre.',
+        'Il y a une porte que tu ne vois pas.',
+        'Ne compte pas les étoiles. Elles comptent aussi.',
+        'Tu es déjà venu ici. Pas cette fois-ci.'
       ],
       en: [
-        'I’m a rabbit, not an answer.',
-        'I’ve seen things. Mostly posters.',
-        'Don’t look at me, I’m on a break.',
-        'Is this a bedroom or a museum?',
-        'I keep secrets. Especially mine.'
+        'That star wasn’t here yesterday.',
+        'The mirror remembers someone else.',
+        'I was here before the room.',
+        'There’s a door you can’t see.',
+        'Don’t count the stars. They count too.',
+        'You’ve been here before. Not this time.'
       ]
     },
     {
       id: 'sonny', file: 'SONNY ANGEL.PNG', index: -1,
       fr: [
-        'Je veille sur cette chambre. Plus ou moins.',
-        'J’étais censé porter chance. J’ai fait une sieste.',
-        'Chut… les objets parlent quand tu pars.',
-        'Je suis peut-être une édition rare.',
-        'Je n’ai rien vu. Et pourtant…'
+        'La nuit, je change de place sans bouger.',
+        'On m’a donné des ailes pour que je reste ici.',
+        'Les objets m’appellent par un autre nom.',
+        'Je sais ce qu’il y a sous le tapis.',
+        'Quand tu pars, la chambre devient plus grande.',
+        'Quelqu’un vient ici quand tu fermes les yeux.'
       ],
       en: [
-        'I watch over this room. Sort of.',
-        'I was supposed to bring luck. I took a nap.',
-        'Shh… the objects talk when you leave.',
-        'I might be a rare edition.',
-        'I saw nothing. And yet…'
+        'At night, I move without moving.',
+        'They gave me wings so I would stay here.',
+        'The objects call me by another name.',
+        'I know what’s under the rug.',
+        'When you leave, the room grows bigger.',
+        'Someone comes here when you close your eyes.'
       ]
     }
   ];
