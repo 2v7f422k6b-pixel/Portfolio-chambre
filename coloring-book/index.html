@@ -111,7 +111,7 @@ function drawData(ctx,src){return new Promise(resolve=>{ctx.clearRect(0,0,ctx.ca
 async function restore(value){busy=true;paper=value.paper||"#ffffff";stage.style.background=paper;await Promise.all([drawData(fc,value.fill),drawData(bc,value.brush)]);busy=false;updateButtons()}
 $("undo").addEventListener("click",async()=>{if(busy||undo.length<2)return;redo.push(undo.pop());await restore(undo[undo.length-1])});
 $("redo").addEventListener("click",async()=>{if(busy||!redo.length)return;const v=redo.pop();undo.push(v);await restore(v)});
-$("reset").addEventListener("click",()=>{if(busy||!confirm("Recommencer ce coloriage ?"))return;fc.clearRect(0,0,fill.width,fill.height);bc.clearRect(0,0,brush.width,brush.height);paper="#ffffff";stage.style.background=paper;commit()});
+$("reset").addEventListener("click",()=>{if(busy||!confirm(localStorage.getItem('portfolio-language-v2')==='en'?'Start this colouring over?':'Recommencer ce coloriage ?'))return;fc.clearRect(0,0,fill.width,fill.height);bc.clearRect(0,0,brush.width,brush.height);paper="#ffffff";stage.style.background=paper;commit()});
 $("background").addEventListener("click",()=>{paper=color;stage.style.background=paper;commit()});
 function makeBarrier(im){const w=fill.width,h=fill.height,tmp=document.createElement("canvas");tmp.width=w;tmp.height=h;const c=tmp.getContext("2d",{willReadFrequently:true});c.drawImage(im,0,0,w,h);const data=c.getImageData(0,0,w,h).data,raw=new Uint8Array(w*h),dilated=new Uint8Array(w*h);
 for(let p=0,j=0;j<data.length;j+=4,p++)raw[p]=data[j+3]>50&&255-Math.min(data[j],data[j+1],data[j+2])>32?1:0;
