@@ -568,74 +568,23 @@ html body .phone-device .phone-screen .phone-status span.phone-island::before,ht
  outline-offset:3px;
 }
 
-/* GearNews ring light — use the actual Reel cover / official preview. */
-.gearnews-ring-series{width:min(650px,100%);margin:0 auto;padding:clamp(4px,1vw,12px);font-family:"Nana Trace UI",Arial,sans-serif}
-.gearnews-ring-series .gearnews-ring-kicker{font-size:clamp(12px,2vw,14px);letter-spacing:.035em;color:#ff173b;margin:0 0 8px}
-.gearnews-ring-series h2{color:#ff173b;font-size:clamp(26px,4.5vw,40px);line-height:1.15;margin:0 0 9px;letter-spacing:0}
-.gearnews-ring-series .gearnews-ring-intro{font-size:clamp(14px,2.3vw,17px);line-height:1.45;margin:0 0 19px;color:#ff173b}
-.gearnews-ring-episodes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2.2vw,22px);align-items:start}
-.gearnews-ring-series .gearnews-ring-episode{min-width:0;padding:10px;background:#fff2fc;border:2px solid #ff173b;border-radius:12px 8px 11px 7px / 8px 12px 7px 13px;box-shadow:2px 3px 0 rgba(255,23,59,.13);color:#ff173b;transform:rotate(-.35deg)}
-.gearnews-ring-series .gearnews-ring-episode:nth-child(2){border-radius:8px 13px 7px 12px / 13px 7px 12px 8px;transform:rotate(.4deg)}
-.gearnews-ring-preview{position:relative;display:block;width:100%;aspect-ratio:9/14;overflow:hidden;background:#f7d6eb;border:1.5px solid #ff173b;border-radius:7px 4px 8px 3px / 4px 8px 3px 6px;isolation:isolate}
-.gearnews-ring-thumbnail{display:block;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
-.gearnews-ring-embed{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;pointer-events:none}
-.gearnews-ring-preview.is-embedded .gearnews-ring-thumbnail{display:none}
-.gearnews-ring-preview.is-embedded .gearnews-ring-embed{display:block}
-.gearnews-ring-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:48px;height:48px;padding-left:4px;border:2px solid #fff;border-radius:50%;background:#ff173baa;color:#fff!important;font-size:20px;box-shadow:0 2px 10px #0005;pointer-events:none;text-shadow:0 1px 2px #0006}
-.gearnews-ring-preview.is-embedded .gearnews-ring-play{display:none}
-.gearnews-ring-details{display:flex;align-items:flex-start;gap:10px;padding:10px 2px 3px}
-.gearnews-ring-number{font-size:clamp(29px,4.4vw,42px);line-height:1;flex:0 0 auto;color:#ff173b}
-.gearnews-ring-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
-.gearnews-ring-copy strong{font-size:clamp(17px,2.4vw,21px);line-height:1.2}
-.gearnews-ring-copy a{font-size:clamp(12px,1.8vw,14px);color:#ff173b;text-decoration:underline;text-underline-offset:3px}
-.gearnews-ring-series .gearnews-ring-more{margin:16px 0 0;font-size:clamp(14px,2vw,16px);color:#ff173b}
-html[data-theme="night"] .gearnews-ring-series .gearnews-ring-episode{background:#653f8a}
-html[data-theme="night"] .gearnews-ring-preview{background:#4f357c}
-@media(max-width:450px){
- .gearnews-ring-episodes{gap:10px}
- .gearnews-ring-series .gearnews-ring-episode{padding:6px}
- .gearnews-ring-number{font-size:25px}
- .gearnews-ring-details{gap:6px}
- .gearnews-ring-play{width:36px;height:36px;font-size:16px}
-}
-
-/* Clean ring-light previews, with static artwork preferred over external Instagram chrome. */
-.gearnews-ring-series{width:min(620px,100%);padding:clamp(4px,1vw,10px)}
-.gearnews-ring-episodes{gap:clamp(12px,2.2vw,19px)}
-.gearnews-ring-series .gearnews-ring-episode{padding:8px 8px 10px}
-.gearnews-ring-preview{
-  position:relative;
-  aspect-ratio:428 / 754;
-  background:#a35db9;
-  border:2px solid #ff173b;
-  overflow:hidden;
-  border-radius:7px 5px 9px 4px / 5px 9px 5px 7px;
-}
-.gearnews-ring-preview .gearnews-ring-thumbnail{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center center;
-}
-.gearnews-ring-preview .gearnews-ring-embed{
-  display:none;
-  position:absolute;
-  width:142%;
-  height:126%;
-  max-width:none;
-  top:-16%;
-  left:-21%;
-  border:0;
-  background:#171022;
-  pointer-events:none;
-}
-.gearnews-ring-preview.is-embedded .gearnews-ring-embed{display:block}
-.gearnews-ring-preview.is-embedded .gearnews-ring-thumbnail{display:none}
-.gearnews-ring-preview .gearnews-ring-play{display:none!important}
-.gearnews-ring-details{padding:9px 3px 3px}
-@media(max-width:480px){
- .gearnews-ring-episodes{gap:10px}
- .gearnews-ring-series .gearnews-ring-episode{padding:5px 5px 8px}
- .gearnews-ring-details{gap:6px}
-}
+/* Ring light — locally stored covers, no Instagram embed interface. */
+.gearnews-ring-series {width:min(620px,100%);margin:0 auto;padding:clamp(4px,1vw,10px);font-family:"Nana Trace UI",Arial,sans-serif}
+.gearnews-ring-series .gearnews-ring-kicker {font-size:clamp(12px,2vw,14px);letter-spacing:.035em;color:#ff173b;margin:0 0 8px}
+.gearnews-ring-series h2 {color:#ff173b;font-size:clamp(26px,4.5vw,40px);line-height:1.15;margin:0 0 9px;letter-spacing:0}
+.gearnews-ring-series .gearnews-ring-intro {font-size:clamp(14px,2.3vw,17px);line-height:1.45;margin:0 0 19px;color:#ff173b}
+.gearnews-ring-episodes {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2.2vw,19px);align-items:start}
+.gearnews-ring-series .gearnews-ring-episode {min-width:0;padding:8px 8px 10px;background:#fff2fc;border:2px solid #ff173b;border-radius:12px 8px 11px 7px / 8px 12px 7px 13px;box-shadow:2px 3px 0 rgba(255,23,59,.13);color:#ff173b;transform:rotate(-.35deg)}
+.gearnews-ring-series .gearnews-ring-episode:nth-child(2) {border-radius:8px 13px 7px 12px / 13px 7px 12px 8px;transform:rotate(.4deg)}
+.gearnews-ring-preview {position:relative;display:block;width:100%;aspect-ratio:428 / 754;overflow:hidden;background:#a35db9;border:2px solid #ff173b;border-radius:7px 5px 9px 4px / 5px 9px 5px 7px}
+.gearnews-ring-preview .gearnews-ring-thumbnail {display:block;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+.gearnews-ring-preview:is(:hover,:focus-visible) {filter:brightness(1.05)}
+.gearnews-ring-details {display:flex;align-items:flex-start;gap:10px;padding:9px 3px 3px}
+.gearnews-ring-number {font-size:clamp(29px,4.4vw,42px);line-height:1;flex:0 0 auto;color:#ff173b}
+.gearnews-ring-copy {display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.gearnews-ring-copy strong {font-size:clamp(17px,2.4vw,21px);line-height:1.2}
+.gearnews-ring-copy a {font-size:clamp(12px,1.8vw,14px);color:#ff173b;text-decoration:underline;text-underline-offset:3px}
+.gearnews-ring-series .gearnews-ring-more {margin:16px 0 0;font-size:clamp(14px,2vw,16px);color:#ff173b}
+html[data-theme="night"] .gearnews-ring-series .gearnews-ring-episode {background:#653f8a}
+html[data-theme="night"] .gearnews-ring-preview {background:#4f357c}
+@media(max-width:480px) {.gearnews-ring-episodes{gap:10px}.gearnews-ring-series .gearnews-ring-episode{padding:5px 5px 8px}.gearnews-ring-details{gap:6px}.gearnews-ring-number{font-size:25px}}
