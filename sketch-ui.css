@@ -1369,3 +1369,55 @@ html body #desktop > #work-desktop {
     inset: 56px 0 0 0 !important;
   }
 }
+
+/* Motion: wobbly paths replace the last straight red rules and video border. */
+html body #window-shade #motion-reels :is(
+ .motion-reels-header.sketch-ui-rule,
+ .motion-reels-footer.sketch-ui-rule,
+ .motion-reels-drawer-top.sketch-ui-rule,
+ .motion-reels-action-separator.sketch-ui-rule
+) {
+  border:0!important;
+  box-shadow:none!important;
+}
+html body #window-shade #motion-reels-screen.sketch-ui-frame {
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+html body #window-shade #motion-reels-screen.sketch-ui-frame>.sketch-ui-svg {
+  display:block!important;
+  z-index:8!important;
+  pointer-events:none!important;
+}
+html body #window-shade #motion-reels .motion-reels-drawer.sketch-ui-frame{
+  border:0!important;
+}
+html body #window-shade #motion-reels :is(
+ .motion-rename-dialog,
+ .motion-rename-dialog input,
+ .motion-rename-dialog button,
+ .motion-reels-rename-current,
+ .motion-reels-rename-item
+).sketch-ui-frame{
+  position:relative!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+}
+html body #window-shade #motion-reels :is(
+ .motion-rename-dialog,
+ .motion-rename-dialog input,
+ .motion-rename-dialog button,
+ .motion-reels-rename-current,
+ .motion-reels-rename-item
+).sketch-ui-frame>.sketch-ui-svg {
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  pointer-events:none!important;
+  z-index:6!important;
+  overflow:hidden!important;
+}
