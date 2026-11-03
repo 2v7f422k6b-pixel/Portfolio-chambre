@@ -5,8 +5,20 @@
   const svg = document.getElementById('hotspots');
   if (!svg) return;
   const oldArtwork = svg.querySelector('.poster-artworks');
-  const clickable = Array.from(svg.querySelectorAll('polygon[data-type="poster"]'));
-  if (!oldArtwork || clickable.length !== 19) return;
+  // These three prints are no longer displayed in the bedroom. The gallery
+  // files and original poster numbering remain untouched.
+  const removedPosterIds = new Set([3, 16, 18]); // posters 4, 17 and 19
+  if (!oldArtwork) return;
+  const allPosters = Array.from(svg.querySelectorAll('polygon[data-type="poster"]'));
+  const clickable = allPosters.filter(el => !removedPosterIds.has(Number(el.dataset.index)));
+  const posterIds = clickable.map(el => Number(el.dataset.index));
+  if (clickable.length !== 16) return;
+  // Eliminate stale fallback SVG elements as well, including cached HTML.
+  allPosters.filter(el => removedPosterIds.has(Number(el.dataset.index))).forEach(el => el.remove());
+  oldArtwork.querySelectorAll('image').forEach(image => {
+    const match = (image.getAttribute('clip-path') || '').match(/redraw-post-(\\d+)/);
+    if (match && removedPosterIds.has(Number(match[1]))) image.remove();
+  });
 
   const NS = 'http://www.w3.org/2000/svg';
   const WIDTH = 1670, HEIGHT = 942;
@@ -57,14 +69,15 @@
   });
   const originals = clickable.map((el, index) => {
     const shape = parsePoints(el.getAttribute('points'));
-    return { shape, quad: quadFor(shape, index) };
+    return { shape, quad: quadFor(shape, posterIds[index]) };
   });
   const current = originals.map(rec => ({
     shape: copyPoints(rec.shape), quad: copyPoints(rec.quad)
   }));
   // First alignment supplied by the user. Local browser positions take priority.
   const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[331,0],[437,31],[438,237],[331,211]],null],[[[491,39],[564,72],[565,243],[491,224]],null],[[[1436.4,237.5],[1559.4,205.5],[1560.4,402.5],[1436.4,421.5]],null],[[[703.7,123],[774.8,128.3],[775.2,239.6],[706,246.6]],null],[[[352,255],[428,274],[428,408],[350,403]],null],[[[477.8,258.9],[560,282],[560,399],[477.7,394.1]],null],[[[595.7,258],[672.3,251.8],[671.7,383.6],[595.6,385.3]],null],[[[674.9,275],[769.7,268],[773,389.5],[674.9,394]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[778.8,303.6]],null],[[[762.9,334],[840.9,328],[841.4,462.5],[764.8,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[680.1,403.6],[738.6,399.5],[739.8,476],[681.5,476.3]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1307,35.1],[1425,10.1],[1426,201.1],[1307,216.1]],null],[[[1463,37],[1595,12],[1597,211],[1464,227]],null],[[[1354.6,247],[1425.6,237],[1428.6,372],[1354.6,383]],[[1354.6,247],[1425.6,237],[1428.6,345],[1364.6,350],[1361.6,372],[1354.6,373]]],[[[610.4,121.2],[717.8,108.1],[717.2,265],[610.3,272.2]],null],[[[1466.1,265],[1608.1,252],[1609.1,434],[1466.1,449]],[[1466.1,265],[1608.1,252],[1609.1,369],[1593.1,385],[1609.1,402],[1609.1,434],[1556.1,434],[1559.1,343],[1466.1,349]]]];
-  firstCalibration.forEach(([quad, shape], index) => {
+  posterIds.forEach((posterId, index) => {
+    const [quad, shape] = firstCalibration[posterId];
     current[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
   });
   function validPoints(points, length) {
@@ -74,8 +87,10 @@
   }
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (Array.isArray(saved) && saved.length === current.length) {
-      saved.forEach((rec, index) => {
+    if (Array.isArray(saved) && (saved.length === current.length || saved.length === 19)) {
+      current.forEach((_, index) => {
+        const sourceIndex = saved.length === 19 ? posterIds[index] : index;
+        const rec = saved[sourceIndex];
         if (rec && validPoints(rec.shape, originals[index].shape.length) &&
           validPoints(rec.quad, 4)) {
           current[index] = { shape: copyPoints(rec.shape), quad: copyPoints(rec.quad) };
@@ -122,7 +137,7 @@
     art.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
-      const src = sources.get(index);
+      const src = sources.get(posterIds[index]);
       if (!src) return;
       const posterGroup = node('g', {
         'clip-path': clip('poster-fit-outline-' + index, rec.shape)
@@ -150,7 +165,7 @@
     const list = document.getElementById('poster-edit-select');
     if (list) list.value = String(index);
     if (statusLabel) statusLabel.textContent =
-      'Poster ' + (index + 1) + (sources.has(index) ? ' · déplacer ou ajuster les coins' : ' · image manquante');
+      'Poster ' + (posterIds[index] + 1) + (sources.has(posterIds[index]) ? ' · déplacer ou ajuster les coins' : ' · image manquante');
     drawHandles();
   }
   function drawHandles() {
@@ -315,7 +330,7 @@
     clickable.forEach((_, i) => {
       const opt = document.createElement('option');
       opt.value = String(i);
-      opt.textContent = 'Poster ' + (i + 1) + (sources.get(i) ? '' : ' (image manquante)');
+      opt.textContent = 'Poster ' + (posterIds[i] + 1) + (sources.get(posterIds[i]) ? '' : ' (image manquante)');
       chooser.appendChild(opt);
     });
     chooser.addEventListener('change', () => select(Number(chooser.value)));
@@ -354,7 +369,7 @@
     });
     button('Copier les positions', async () => {
       const payload = current.map((rec, i) => ({
-        poster: i + 1, image: sources.get(i) || null,
+        poster: posterIds[i] + 1, image: sources.get(posterIds[i]) || null,
         corners: rec.quad, visibleShape: rec.shape
       }));
       const json = JSON.stringify(payload, null, 2);
@@ -391,7 +406,7 @@
       if (!handle && !poster && !picked) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      if (poster || picked) select(Number(poster ? poster.dataset.index : picked.getAttribute('data-poster-pick')));
+      if (poster || picked) select(poster ? posterIds.indexOf(Number(poster.dataset.index)) : Number(picked.getAttribute('data-poster-pick')));
       const corner = handle ? Number(handle.getAttribute('data-poster-handle')) : null;
       const start = position(event);
       drag = {
