@@ -544,6 +544,31 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 }
 #play-viewport #hotspots {touch-action:pan-x pan-y pinch-zoom;}
 </style>
+<style id="nana-scene-coordinate-fix-20261103">
+/* All scene layers share the exact same 1670 × 942 coordinate plane. */
+#play-scene { position:relative!important; aspect-ratio:1670 / 942!important; height:auto!important; }
+#play-scene > #room-img,
+#play-scene > #room-night,
+#play-scene > #hotspots,
+#play-scene > #window-life {
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  transform-origin:top left!important;
+}
+#play-scene > #room-img,
+#play-scene > #room-night { object-fit:fill!important; }
+#play-scene > #hotspots,
+#play-scene > #window-life { overflow:hidden; }
+#play-scene > #room-img { z-index:0!important; }
+#play-scene > #room-night { z-index:1!important; }
+#play-scene > #window-life { z-index:2!important; }
+#play-scene > #hotspots { z-index:3!important; }
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
