@@ -31,11 +31,6 @@
   height: auto;
   object-fit: contain;
 }
-.nothing-kicker {
-  margin: 8px 0;
-  font-size: 11px;
-  letter-spacing: 0.11em;
-}
 .nothing-club h2 {
   font-size: clamp(21px, 5vw, 29px);
   line-height: 1.2;
@@ -103,7 +98,24 @@
   color: #fff2fc !important;
   -webkit-text-fill-color: #fff2fc !important;
 }
-.nothing-footnote { font-size: 11px; line-height: 1.4; opacity: .85; margin: 7px 0 2px; }
+/* The certificate becomes downloadable only after a full minute of doing nothing. */
+.nothing-download[hidden] { display: none !important; }
+#window[data-window-type="do-nothing"] #nothing-download {
+  background: var(--nothing-paper) !important;
+  color: var(--nothing-ink) !important;
+  -webkit-text-fill-color: var(--nothing-ink) !important;
+  border-color: var(--nothing-ink) !important;
+}
+#window[data-window-type="do-nothing"] #nothing-download:hover,
+#window[data-window-type="do-nothing"] #nothing-download:focus-visible {
+  background: var(--nothing-ink) !important;
+  color: var(--nothing-paper) !important;
+  -webkit-text-fill-color: var(--nothing-paper) !important;
+}
+#window[data-window-type="do-nothing"] #nothing-download:disabled {
+  opacity: .6 !important;
+  cursor: default;
+}
 .nothing-certificate {
   margin: 7px auto 13px;
   padding: 12px 8px;
