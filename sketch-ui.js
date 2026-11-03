@@ -40,6 +40,18 @@
     ['#window-shade .motion-reels-screen', 'frame', 316],
     ['#window-shade .motion-reels-drawer', 'frame', 341],
     ['#window-shade .motion-reels-list button', 'frame', 351],
+    // Editorial library: only the real UI surfaces, with one outline each.
+    ['#pages-library .pages-intro', 'rule', 801],
+    ['#pages-library .pages-controls', 'rule', 811],
+    ['#pages-library .pages-tab', 'frame', 821],
+    ['#pages-library .pages-search', 'frame', 831],
+    ['#pages-library .pages-view', 'frame', 841],
+    ['#pages-library .pages-view button:first-child', 'vertical-rule', 851],
+    ['#pages-library .pages-shelf', 'rule', 861],
+    ['#pages-library .pages-shelf-total', 'frame', 871],
+    ['#pages-library .pages-cover', 'frame', 881],
+    ['#pages-library .pages-item-foot', 'top-rule', 891],
+    ['#pages-library .pages-grid-list .pages-item', 'rule', 901],
     ['#window-shade .project-card', 'frame', 361],
     ['#window-shade .project-icon', 'frame', 371],
     ['#window-shade .viewer-thumbnails', 'rule', 381],
@@ -172,7 +184,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05)));
+    const variation=item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05))));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
   scan();
