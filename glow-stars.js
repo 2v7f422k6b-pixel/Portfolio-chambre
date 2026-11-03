@@ -30,12 +30,12 @@
   layer.setAttribute('viewBox','0 0 1670 942');
   layer.setAttribute('preserveAspectRatio','none');
   layer.setAttribute('aria-hidden','true');
-  layer.setAttribute('pointer-events','none');
+  layer.setAttribute('pointer-events',edit?'auto':'none');
   const group = document.createElementNS(NS,'g');
   group.id='nana-glow-stars';
   group.setAttribute('aria-hidden','true');
-  group.setAttribute('pointer-events','none');
-  group.style.pointerEvents='none';
+  group.setAttribute('pointer-events',edit?'auto':'none');
+  group.style.pointerEvents=edit?'auto':'none';
   const points=(x,y,r,rotation)=>{
     const coords=[];
     for(let i=0;i<10;i++){
@@ -46,14 +46,16 @@
     return coords.join(' ');
   };
   const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
-  const elements=[];\n  stars.forEach(([x,y,r,angle],i)=>{
+  const elements=[];
+  stars.forEach(([x,y,r,angle],i)=>{
     const star=document.createElementNS(NS,'polygon');
     star.setAttribute('points',points(x,y,r,angle));
     star.setAttribute('class','nana-phosphor-star');
     star.style.setProperty('--twinkle-delay',(i%9)*-.7+'s');
     star.style.setProperty('--day-star-color',palette[i%palette.length]);
-    star.setAttribute('pointer-events','none');
-    group.appendChild(star);\n    elements.push(star);
+    star.setAttribute('pointer-events',edit?'all':'none');
+    group.appendChild(star);
+    elements.push(star);
   });
   // Append last for physical stickers to sit on top of posters, without stealing taps.
   layer.appendChild(group);
@@ -63,7 +65,7 @@
   const style=document.createElement('style');
   style.id='nana-glow-stars-style';
   style.textContent=`
-    #nana-glow-stars, #nana-glow-stars * {pointer-events:none!important;cursor:inherit!important}
+    html:not(.nana-stars-edit) #nana-glow-stars, html:not(.nana-stars-edit) #nana-glow-stars * {pointer-events:none!important;cursor:inherit!important}
     #nana-glow-stars .nana-phosphor-star {
       fill:var(--day-star-color);stroke:var(--day-star-color);stroke-width:.7;
       opacity:.48;filter:none;
@@ -84,6 +86,7 @@
   `;
   document.head.appendChild(style);
   if(edit){
+    document.documentElement.classList.add('nana-stars-edit');
     layer.style.setProperty('pointer-events','auto','important');
     group.style.setProperty('pointer-events','auto','important');
     const notice=document.createElement('div');
