@@ -340,13 +340,13 @@ function renderArtTiles(filtered=ART){
  const count=$('#photos-count');if(count)count.textContent=filtered.length+' works';
 }
 function openPhotos(){
- openWindow('Photos',`<div class="eyebrow">Illustration / Archive</div><h2>Original illustrations</h2><p class="section-lead">A selection of 19 illustrations, displayed from the original files. Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"><span class="count" id="photos-count"></span></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
+ openWindow('Illustrations',`<div class="eyebrow">Illustration / Archive</div><h2>Original illustrations</h2><p class="section-lead">A selection of 19 illustrations, displayed from the original files. Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"><span class="count" id="photos-count"></span></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
  renderArtTiles();
 }
 function openGallery(which,index=0){
  const items=which==='gabzilla'?GABZILLA:ART;
  currentGallery={which,index:Math.min(items.length-1,Math.max(0,index))};
- const name=which==='gabzilla'?'GABZILLA — Collaboration':'Photos — Illustration';
+ const name=which==='gabzilla'?'GABZILLA — Collaboration':'Illustrations — Illustration';
  openWindow(name,`<div class="viewer-layout"><div class="viewer-stage"><button class="viewer-btn" data-gallery-dir="-1" aria-label="Previous image">‹</button><img id="viewer-image" alt=""><button class="viewer-btn" data-gallery-dir="1" aria-label="Next image">›</button></div><div class="viewer-bottom"><p id="viewer-caption"></p><span class="viewer-number" id="viewer-number"></span></div><div class="viewer-thumbnails" id="viewer-thumbnails"></div>${which==='gabzilla'?'<p class="section-lead">An original illustration and textile collaboration. All images are shown without cropping or redrawing.</p>':''}</div>`,'gallery');
  updateGallery();
 }
