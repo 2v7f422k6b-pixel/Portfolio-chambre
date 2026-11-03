@@ -403,3 +403,51 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "Explore my world": "Explorer mon univers",
   "Tap an object to explore": "Touche un objet pour l’explorer"
 });
+
+Object.assign(window.NanaI18nExtra.enToFr,{
+  "Illustration / Archive": "Illustration / Archives",
+  "a little piece of me": "un petit bout de moi",
+  "An original illustration and textile collaboration. All images are shown without cropping or redrawing.": "Une collaboration autour de l’illustration et du textile. Toutes les images sont présentées sans recadrage ni retouche.",
+  "Motion / Video": "Animation / Vidéo",
+  "Animation, moving image and editorial video — kept separate so each type of work has room to breathe.": "Animation, images en mouvement et vidéos éditoriales : chaque forme de création a son espace.",
+  "01 / Animation": "01 / Animation",
+  "2D animation & loops": "Animation 2D et boucles",
+  "02 / Editorial video": "02 / Vidéo éditoriale",
+  "Reels & features": "Reels et reportages",
+  "Video library coming soon": "Vidéothèque bientôt disponible",
+  "No video files have been added yet. When the original videos are available, they can play here, directly in the portfolio, without a YouTube embed.": "Les vidéos originales seront ajoutées ici prochainement. Elles pourront être lues directement dans le portfolio, sans lecteur YouTube intégré.",
+  "Pages / Writing": "Pages / Écriture",
+  "Articles, music journalism and personal writing.": "Articles, journalisme musical et textes personnels.",
+  "Editorial writing": "Écriture éditoriale",
+  "Personal writing": "Écrits personnels",
+  "Article library in preparation": "Bibliothèque d’articles en préparation",
+  "Full texts will be added here only when supplied or approved for republication. In the meantime, the original publications can be explored on Gearnews.": "Les textes complets ne seront ajoutés ici que lorsqu’ils auront été fournis ou autorisés pour republication. En attendant, les articles originaux sont à retrouver sur Gearnews.",
+  "Contact / Let's talk": "Contact / Discutons",
+  "Let's work together": "Travaillons ensemble",
+  "To / lena.defirmas@gmail.com": "À / lena.defirmas@gmail.com",
+  "Portfolio / Help": "Portfolio / Aide",
+  "Contacts": "Contacts",
+  "MUSIC": "MUSIQUE",
+  "& VISUAL DESIGN": "ET CRÉATION VISUELLE",
+  "▧ &nbsp; Image viewer": "▧ &nbsp; Visionneuse d’images",
+  "☷ &nbsp; All videos": "☷ &nbsp; Toutes les vidéos",
+  "↑ &nbsp; SWIPE &nbsp; ↓": "↑ &nbsp; FAIS DÉFILER &nbsp; ↓",
+  "Collected": "Recueil de",
+  "written": "écrits",
+  "word": "mot",
+  "✳ MADE OF WORDS": "✳ FAIT DE MOTS",
+  "prrr...": "prrr...",
+  "Finder": "Finder",
+  "LET'S TALK": "DISCUTONS",
+  "17 / 17 ARTICLES": "17 / 17 ARTICLES",
+  "17 ARTICLES": "17 ARTICLES",
+  "01 / SYNTHS & MUSICAL EXPRESSION": "01 / SYNTHÉS & EXPRESSION MUSICALE"
+});
+Object.assign(window.NanaI18nExtra.frToEn,{
+  ". Neuf sont notés 10/10 ; le sixième est classé sans note affichée.": ". Nine are rated 10/10; the sixth has no visible rating.",
+  "Chargement de la présentation…": "Loading presentation…",
+  "Article rédigé à l’origine en français.": "Originally written in French.",
+  "La Princesse": "La Princesse",
+  "Clown": "Clown",
+  "Livre illustré · 66 pages": "Illustrated book · 66 pages"
+});
