@@ -232,8 +232,8 @@ function openApp(name,index){
 
 function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
-   <button class="project-card" data-open="illustration"><span class="project-preview"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"></span><strong>Illustrations</strong><small>Drawings, visual storytelling & collaborations</small></button>
-   <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Animations</strong><small>Animation & moving images</small></button>
+   <button class="project-card" data-open="illustration"><span class="project-preview"><img src="assets/project-thumb-illustrations.webp" alt="Illustration d’une femme aux cheveux violets et son pistolet à bulles" loading="lazy"></span><strong>Illustrations</strong><small>Drawings, visual storytelling & collaborations</small></button>
+   <button class="project-card" data-open="motion"><span class="project-preview"><img src="assets/project-thumb-animations.webp" alt="Animation en trois panneaux avec fleurs, nuages et basket orange" loading="lazy"></span><strong>Animations</strong><small>Animation & moving images</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
    <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
