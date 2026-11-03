@@ -13,6 +13,20 @@
   const KEY = 'nana-poster-alignment-v1';
   const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
 
+  if (editing) {
+    document.documentElement.classList.add('poster-edit-mode');
+    const style = document.createElement('style');
+    style.id = 'poster-edit-viewport-fit';
+    style.textContent = [
+      'html.poster-edit-mode #play-viewport{display:flex!important;align-items:center!important;justify-content:center!important;overflow:auto!important}',
+      'html.poster-edit-mode #play-scene{width:min(100vw,calc((100dvh - var(--menubar))*1670/942))!important;aspect-ratio:1670/942!important;height:auto!important;margin:auto!important;flex:0 0 auto!important}',
+      'html.poster-edit-mode #room-img,html.poster-edit-mode #room-night{object-fit:contain!important}',
+      'html.poster-edit-mode #hotspots polygon[data-type="poster"]{pointer-events:none!important}'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+
+
   function node(tag, attributes) {
     const el = document.createElementNS(NS, tag);
     Object.entries(attributes || {}).forEach(([name, value]) => el.setAttribute(name, String(value)));
@@ -48,6 +62,11 @@
   const current = originals.map(rec => ({
     shape: copyPoints(rec.shape), quad: copyPoints(rec.quad)
   }));
+  // First alignment supplied by the user. Local browser positions take priority.
+  const firstCalibration = [[[[228,5],[296,29],[297,143],[228,119]],[[228,5],[296,29],[297,143],[279,138],[274,99],[255,81],[228,81]]],[[[331,0],[437,31],[438,237],[331,211]],null],[[[491,39],[564,72],[565,243],[491,224]],null],[[[1436.4,237.5],[1559.4,205.5],[1560.4,402.5],[1436.4,421.5]],null],[[[703.7,123],[774.8,128.3],[775.2,239.6],[706,246.6]],null],[[[352,255],[428,274],[428,408],[350,403]],null],[[[477.8,258.9],[560,282],[560,399],[477.7,394.1]],null],[[[595.7,258],[672.3,251.8],[671.7,383.6],[595.6,385.3]],null],[[[674.9,275],[769.7,268],[773,389.5],[674.9,394]],null],[[[773.2,217.4],[846.9,211.3],[846.9,297.1],[778.8,303.6]],null],[[[762.9,334],[840.9,328],[841.4,462.5],[764.8,464.2]],null],[[[361,434],[411,437],[411,506],[361,506]],null],[[[680.1,403.6],[738.6,399.5],[739.8,476],[681.5,476.3]],null],[[[785.8,479.3],[845.2,478.1],[843.3,578.6],[785.6,579.2]],null],[[[1307,35.1],[1425,10.1],[1426,201.1],[1307,216.1]],null],[[[1463,37],[1595,12],[1597,211],[1464,227]],null],[[[1354.6,247],[1425.6,237],[1428.6,372],[1354.6,383]],[[1354.6,247],[1425.6,237],[1428.6,345],[1364.6,350],[1361.6,372],[1354.6,373]]],[[[610.4,121.2],[717.8,108.1],[717.2,265],[610.3,272.2]],null],[[[1466.1,265],[1608.1,252],[1609.1,434],[1466.1,449]],[[1466.1,265],[1608.1,252],[1609.1,369],[1593.1,385],[1609.1,402],[1609.1,434],[1556.1,434],[1559.1,343],[1466.1,349]]]];
+  firstCalibration.forEach(([quad, shape], index) => {
+    current[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
+  });
   function validPoints(points, length) {
     return Array.isArray(points) && points.length === length &&
       points.every(p => Array.isArray(p) && p.length === 2 &&
