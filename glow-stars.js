@@ -110,10 +110,10 @@
       el.addEventListener('dblclick',()=>{stars[i][2]=0;refresh();persist()});
     });
     save.onclick=()=>{persist();notice.firstElementChild.textContent='Positions enregistrées !'};
-    add.onclick=()=>{
+    const addStarAt=(x,y)=>{
       // Place each new star at a different visible location, then make it draggable.
       const count=stars.length;
-      const v=[835+(count%7)*17,420+(count%5)*19,7,0];
+      const v=[Math.max(0,Math.min(1670,x)),Math.max(0,Math.min(942,y)),7,0];
       stars.push(v);
       const el=document.createElementNS(NS,'polygon');
       el.setAttribute('class','nana-phosphor-star');
@@ -144,8 +144,15 @@
       el.addEventListener('pointercancel',finish);
       el.addEventListener('dblclick',()=>{stars[index][2]=0;el.style.display='none';persist()});
       persist();
-      notice.firstElementChild.textContent='Nouvelle étoile : glisse-la où tu veux';
+      notice.firstElementChild.textContent='Étoile ajoutée !';
     };
+    add.onclick=()=>{notice.firstElementChild.textContent='Touche un emplacement libre de la chambre';};
+    layer.addEventListener('pointerdown',e=>{
+      if(e.target.closest('.nana-phosphor-star'))return;
+      const [x,y]=coords(e);
+      addStarAt(x,y);
+      e.preventDefault();
+    });
     copy.onclick=async()=>{
       persist();
       const data=JSON.stringify({stars:stars.map(([x,y,size,angle])=>[Math.round(x*100)/100,Math.round(y*100)/100,size,angle])},null,2);
