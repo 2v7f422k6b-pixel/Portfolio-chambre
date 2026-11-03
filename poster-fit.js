@@ -116,7 +116,12 @@
     'stroke-linecap:round; stroke-linejoin:round; pointer-events:none!important;',
     'filter:drop-shadow(0 0 1.15px rgba(255,23,59,.35)); }',
     'html[data-theme="night"] #hotspots .poster-glowy-handline {',
-    'stroke:#091329; opacity:1; filter:drop-shadow(0 0 .8px rgba(9,19,41,.18)); }'
+    'stroke:#091329; opacity:1; filter:drop-shadow(0 0 .8px rgba(9,19,41,.18)); }',
+    // White glow uses the existing hand-drawn silhouette; no polygon rectangles.
+    '#hotspots .poster-glowy-handline.poster-hover-white,',
+    'html[data-theme="night"] #hotspots .poster-glowy-handline.poster-hover-white {',
+    'stroke:#fff!important; stroke-width:1.55!important; opacity:1!important;',
+    'filter:drop-shadow(0 0 2.5px rgba(255,255,255,.88))!important; }'
   ].join(' ');
   document.head.appendChild(borderStyle);
   // The static layer remains as a progressive-enhancement fallback until rendering succeeds.
@@ -272,6 +277,7 @@
       art.appendChild(posterGroup);
       art.appendChild(node('path', {
         class: 'poster-glowy-handline',
+        'data-poster-outline-index': posterIds[index],
         d: wobblyOutline(rec.shape, posterIds[index]),
         'pointer-events': 'none'
       }));
@@ -575,6 +581,43 @@
     window.addEventListener('pointerup', finish);
     window.addEventListener('pointercancel', finish);
     select(0);
+  }
+  // Only the active poster becomes white. Since borders sit directly after
+  // their own artwork, foreground posters still mask borders behind them.
+  let hoveredPoster = null;
+  let focusedPoster = null;
+  let activePoster = null;
+  function showPosterOutline() {
+    const next = hoveredPoster !== null ? hoveredPoster : focusedPoster;
+    if (activePoster === next) return;
+    const previous = art.querySelector('.poster-hover-white');
+    if (previous) previous.classList.remove('poster-hover-white');
+    activePoster = next;
+    if (next !== null) {
+      const outline = art.querySelector('[data-poster-outline-index="' + next + '"]');
+      if (outline) outline.classList.add('poster-hover-white');
+    }
+  }
+  if (!editing) {
+    svg.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch') return;
+      const polygon = event.target.closest?.('polygon[data-type="poster"]');
+      const next = polygon ? Number(polygon.dataset.index) : null;
+      if (next !== hoveredPoster) { hoveredPoster = next; showPosterOutline(); }
+    }, { passive: true });
+    svg.addEventListener('pointerleave', () => {
+      hoveredPoster = null;
+      showPosterOutline();
+    });
+    svg.addEventListener('focusin', event => {
+      const polygon = event.target.closest?.('polygon[data-type="poster"]');
+      focusedPoster = polygon ? Number(polygon.dataset.index) : null;
+      showPosterOutline();
+    });
+    svg.addEventListener('focusout', () => {
+      focusedPoster = null;
+      showPosterOutline();
+    });
   }
   render();
 })();
