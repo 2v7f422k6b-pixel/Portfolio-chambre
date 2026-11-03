@@ -803,6 +803,71 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
 }
 </style>
 
+
+<!-- Mobile Work: smaller trash and restored room return (2026-11-04) -->
+<style id="mobile-work-trash-return-20261104">
+@media (max-width:760px) {
+  /* Keep the illustrated trash small enough to leave room for navigation. */
+  html body #work-desktop .desk-extra[data-object="trash"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] {
+    top: 0 !important;
+    width: 65px !important;
+    max-width: 65px !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 0 !important;
+    margin: 12px 0 0 13px !important;
+    gap: 1px !important;
+  }
+  html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon,
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon {
+    width: 53px !important;
+    min-width: 53px !important;
+    height: 55px !important;
+    min-height: 55px !important;
+    margin: 0 auto !important;
+  }
+  html body #work-desktop .desk-extra[data-object="trash"] img.custom-trash-art,
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] img.custom-trash-art {
+    width: 53px !important;
+    max-width: 53px !important;
+    height: 55px !important;
+    object-fit: contain !important;
+  }
+  html body #work-desktop .desk-extra[data-object="trash"] > span:last-child {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    text-align: center !important;
+  }
+  /* The button belongs below the trash in the spare left-column space. */
+  html body #work-desktop #back-to-room,
+  html body #work-desktop #back-to-room.back-room,
+  html body #work-desktop #back-to-room.back-room.sketch-ui-frame {
+    display: block !important;
+    position: fixed !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 12px !important;
+    transform: none !important;
+    float: none !important;
+    clear: none !important;
+    width: 114px !important;
+    max-width: 114px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 7px 5px !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+    white-space: normal !important;
+    box-sizing: border-box !important;
+    z-index: 50 !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <div id="app" class="mode-select">
