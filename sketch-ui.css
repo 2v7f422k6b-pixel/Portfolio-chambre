@@ -1158,21 +1158,21 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
 @media(min-width:1200px){
   html body #work-desktop .work-desk-layout > .folder-grid,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
-    transform:translateY(-215px)!important;
+    transform:translateY(-95px)!important;
   }
   html body #work-desktop .desk-extra[data-object="postit"],
   html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
-    margin:-175px 0 0 2px!important;
+    margin:-80px 0 0 2px!important;
   }
 }
 @media(min-width:761px) and (max-width:1199px){
   html body #work-desktop .work-desk-layout > .folder-grid,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
-    transform:translateY(-100px)!important;
+    transform:translateY(-55px)!important;
   }
   html body #work-desktop .desk-extra[data-object="postit"],
   html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
-    margin:-70px 0 0 2px!important;
+    margin:-35px 0 0 2px!important;
   }
 }
 
