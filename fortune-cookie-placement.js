@@ -9,9 +9,9 @@
 
   const NS='http://www.w3.org/2000/svg';
   const ROOM_W=1670, ROOM_H=942, IMG_RATIO=300/283;
-  const key='nana-fortune-cookie-position-v1';
+  const key='nana-fortune-cookie-position-v2';
   const editor=new URLSearchParams(location.search).get('cookieEdit')==='1';
-  const defaults={x:1027,y:794,width:73,angle:0};
+  const defaults={x:841.88,y:763.25,width:36,angle:-21};
   const position={...defaults};
 
   try {
