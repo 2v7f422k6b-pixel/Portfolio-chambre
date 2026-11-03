@@ -12,22 +12,51 @@
 
   const style = document.createElement('style');
   style.id = 'nana-play-pan-hint-styles';
-  style.textContent = [
-    '/* Suppress the older fixed mobile swipe label. */',
-    '#app.mode-play #play-viewport::before{content:none!important;display:none!important;}',
-    '#nana-play-pan-hint{position:fixed;inset:var(--menubar,40px) 0 0;z-index:110;display:grid;place-items:center;pointer-events:none;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
-    '#nana-play-pan-hint .pan-hint-arrows{position:relative;width:112px;height:112px;border-radius:50%;background:rgba(255,247,252,.12);animation:nana-pan-appear 4.4s ease-in-out both;}',
-    '#nana-play-pan-hint .pan-hint-arrow{position:absolute;display:block;width:32px;height:32px;line-height:32px;text-align:center;color:#ff173b;font-family:Arial,sans-serif;font-size:31px;font-weight:500;text-shadow:0 0 7px rgba(255,242,252,.65);animation:nana-pan-nudge 1.2s ease-in-out infinite alternate;}',
-    '#nana-play-pan-hint .pan-hint-up{top:2px;left:40px;--tx:0px;--ty:-4px;}',
-    '#nana-play-pan-hint .pan-hint-down{bottom:2px;left:40px;--tx:0px;--ty:4px;}',
-    '#nana-play-pan-hint .pan-hint-left{left:2px;top:40px;--tx:-4px;--ty:0px;}',
-    '#nana-play-pan-hint .pan-hint-right{right:2px;top:40px;--tx:4px;--ty:0px;}',
-    '@keyframes nana-pan-nudge{from{transform:translate(0,0);opacity:.8}to{transform:translate(var(--tx),var(--ty));opacity:1}}',
-    '@keyframes nana-pan-appear{0%{opacity:0;transform:scale(.96)}10%{opacity:1;transform:scale(1)}77%{opacity:1}100%{opacity:0}}',
-    'html[data-theme="night"] #nana-play-pan-hint .pan-hint-arrows{background:rgba(233,181,255,.08);}',
-    'html[data-theme="night"] #nana-play-pan-hint .pan-hint-arrow{color:#ff173b;}',
-    '@media(prefers-reduced-motion:reduce){#nana-play-pan-hint .pan-hint-arrows,#nana-play-pan-hint .pan-hint-arrow{animation:none!important;}}'
-  ].join('\n');
+  style.textContent = `
+    #app.mode-play #play-viewport::before {content:none!important;display:none!important;}
+    #nana-play-pan-hint {
+      position:fixed; inset:var(--menubar,40px) 0 0; z-index:110;
+      display:grid;place-items:center;pointer-events:none;background:transparent!important;
+    }
+    #nana-play-pan-hint .pan-hint-visual {
+      position:relative;width:168px;height:168px;border-radius:50%;
+      background:rgba(255,250,255,.26);
+      border:2px solid rgba(255,23,59,.28);
+      box-shadow:0 2px 22px rgba(255,23,59,.12);
+      backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+      animation:nana-pan-fade 5.8s ease-in-out both;
+    }
+    #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;}
+    #nana-play-pan-hint .pan-hint-finger {
+      position:absolute;top:50%;left:50%;width:68px;height:68px;
+      overflow:visible;filter:drop-shadow(0 1px 3px rgba(255,23,59,.3));
+      animation:nana-pan-finger-swipe 3.1s ease-in-out infinite;
+    }
+    @keyframes nana-pan-finger-swipe {
+      0%,10%,100% {transform:translate(-50%,-50%) translate(0,0) rotate(-7deg);}
+      27% {transform:translate(-50%,-50%) translate(-12px,0) rotate(-7deg);}
+      42% {transform:translate(-50%,-50%) translate(12px,0) rotate(-7deg);}
+      60% {transform:translate(-50%,-50%) translate(0,0) rotate(-7deg);}
+      76% {transform:translate(-50%,-50%) translate(0,-11px) rotate(-7deg);}
+      92% {transform:translate(-50%,-50%) translate(0,9px) rotate(-7deg);}
+    }
+    @keyframes nana-pan-fade {
+      0% {opacity:0;transform:translateY(-68px) scale(.95);}
+      10% {opacity:1;transform:translateY(-68px) scale(1);}
+      82% {opacity:1;transform:translateY(-68px) scale(1);}
+      100% {opacity:0;transform:translateY(-68px) scale(1);}
+    }
+    html[data-theme="night"] #nana-play-pan-hint .pan-hint-visual {
+      background:rgba(255,242,252,.20);border-color:rgba(255,23,59,.4);
+    }
+    @media(max-width:480px) {
+      #nana-play-pan-hint .pan-hint-visual{width:154px;height:154px;}
+    }
+    @media(prefers-reduced-motion:reduce) {
+      #nana-play-pan-hint .pan-hint-visual{animation:none!important;transform:translateY(-68px);}
+      #nana-play-pan-hint .pan-hint-finger{animation:none!important;transform:translate(-50%,-50%);}
+    }
+  `;
   document.head.appendChild(style);
 
   let hint = null;
@@ -54,14 +83,17 @@
     hint.id = 'nana-play-pan-hint';
     hint.setAttribute('aria-hidden', 'true');
     hint.innerHTML =
-      '<div class="pan-hint-arrows">' +
-      '<span class="pan-hint-arrow pan-hint-up">↑</span>' +
-      '<span class="pan-hint-arrow pan-hint-down">↓</span>' +
-      '<span class="pan-hint-arrow pan-hint-left">←</span>' +
-      '<span class="pan-hint-arrow pan-hint-right">→</span>' +
+      '<div class="pan-hint-visual">' +
+      '<svg class="pan-hint-directions" viewBox="0 0 168 168" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
+      '<g fill="none" stroke="#ff173b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '</svg>' +
+      '<svg class="pan-hint-finger" viewBox="0 0 80 80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M31 53 V19 C31 13 41 13 41 19 V39 V31 C41 26 50 26 50 31 V41 V34 C50 29 59 30 59 35 V44 V39 C59 34 68 36 68 41 V56 C68 67 60 72 50 72 H40 C32 72 28 68 24 63 L14 50 C11 46 17 40 22 44 L31 53 Z" fill="#fffafc" stroke="#ff173b" stroke-width="4.8" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '</svg>' +
       '</div>';
     document.body.appendChild(hint);
-    timer = setTimeout(removeHint, 4400);
+    timer = setTimeout(removeHint, 5800);
     viewport.addEventListener('scroll', removeHint, {passive:true});
     document.addEventListener('wheel', removeHint, {passive:true});
     document.addEventListener('touchstart', removeHint, {passive:true});
