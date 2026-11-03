@@ -771,14 +771,14 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
     <audio id="audio" preload="metadata" src="assets/music/facing-sun.mp3"></audio>
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
-  <script src="app.js?v=menubar-mode-6" defer></script>
+  <script src="app.js?v=20261103-languages-5" defer></script>
   <script src="do-nothing-club.js?v=20261103" defer></script>
   <script src="literary-zones.js?v=20261103-sappho-first" defer></script>
 
   <script src="pixel-hotspots.js?v=first-click-vase-20261103-2" defer></script>
   <script src="pixel-outlines.js?v=6" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
-   <script src="coloring-addon.js?v=remove-play-dock-20261102" defer></script>
+   <script src="coloring-addon.js?v=20261103-languages-5" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
   <script src="motion-addon.js?v=6" defer></script>
   <script src="music-visuals.js?v=fewer-hearts-1" defer></script>
@@ -870,7 +870,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
 <script src="portfolio-search.js?v=click-results-fixed-2" defer></script>
 <script src="desktop-extras.js?v=3" defer></script>
 <script src="global-search.js?v=20261101-fix" defer></script>
-<script src="i18n-extra.js?v=20261103-complete-3" defer></script>
+<script src="i18n-extra.js?v=20261103-complete-5" defer></script>
 <script src="i18n.js?v=20261103-complete-3" defer></script>
 <script>
 (function(){
@@ -895,7 +895,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!impor
 /* Apply phone art after all existing styles and dynamic phone rendering. */
 (function(){function fix(){const phone=document.querySelector('.phone-device');if(!phone)return;phone.style.setProperty('border-radius','50px','important');phone.style.setProperty('overflow','hidden','important');const screen=phone.querySelector('.phone-screen');if(screen){screen.style.setProperty('border-radius','40px','important');screen.style.setProperty('overflow','hidden','important');screen.style.setProperty('clip-path','inset(0 round 40px)','important')}const icons=[['contacts','contacts'],['mail','mail'],['instagram','insta']];for(const [key,file] of icons){const b=phone.querySelector('[data-phone-app="'+key+'"] .ios-icon');if(!b)continue;b.style.setProperty('background','transparent','important');b.style.setProperty('border','0','important');b.style.setProperty('box-shadow','none','important');let img=b.querySelector('img');if(!img){b.replaceChildren();img=document.createElement('img');b.append(img)}img.src='assets/smartphone/'+file+'%20smartphone.png';img.alt='';img.className='phone-drawn-icon';img.style.cssText='width:100%!important;height:100%!important;object-fit:contain!important;display:block!important'}}document.addEventListener('click',e=>{if(e.target.closest('[data-open="phone"],[data-open="smartphone"],#special-shade'))requestAnimationFrame(fix)},true);new MutationObserver(()=>{if(document.querySelector('.phone-device:not([data-phone-art-ready])')){fix();document.querySelector('.phone-device')?.setAttribute('data-phone-art-ready','1')}}).observe(document.body,{childList:true,subtree:true});if(document.readyState!=='loading')fix();else document.addEventListener('DOMContentLoaded',fix)})();
 </script><script src="poster-fit.js?v=20261103-tape-1" defer></script><script src="mirror-placement.js?v=20261103-no-hitbox-frame" defer></script><script src="flower-lamp-placement.js?v=20261103-no-hitbox-frame" defer></script>
-<script src="fortune-cookie-placement.js?v=20261103-4" defer></script>
+<script src="fortune-cookie-placement.js?v=20261103-languages-5" defer></script>
 <script src="glow-stars.js?v=20261103-layout-99-14" defer></script>
 <script src="night-decor-dimming.js?v=20261103-opacity-ipad-4" defer></script>
 <script src="room-zone-registry.js?v=20261103-pencils-lamps-2" defer></script>
