@@ -5,8 +5,8 @@
   const scene=document.getElementById('play-scene');
   const svg=document.getElementById('hotspots');
   if(!scene||!svg)return;
-  const selector='polygon[data-open],polygon[data-type="poster"],polygon[data-mv-open],polygon[data-cat-pet]';
-  const hotspots=[...svg.querySelectorAll(selector)];
+  const selector='polygon[data-open],polygon[data-type="poster"],polygon[data-mv-open],polygon[data-cat-pet],polygon[data-vase-petal]';
+  // Zones loaded asynchronously (including the vase) must be queried at click time.
   scene.addEventListener('click',event=>{
     if(!event.isTrusted||event.detail===0)return;
     if(event.target.closest?.(selector))return; // native hotspot clicks already work
@@ -15,7 +15,7 @@
     const sceneRect=scene.getBoundingClientRect();
     if(x<sceneRect.left||x>sceneRect.right||y<sceneRect.top||y>sceneRect.bottom)return;
     let best=null,bestScore=Infinity;
-    for(const el of hotspots){
+    for(const el of svg.querySelectorAll(selector)){
       const r=el.getBoundingClientRect();
       if(!r.width||!r.height)continue;
       const dx=Math.max(r.left-x,0,x-r.right);
