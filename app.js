@@ -416,11 +416,11 @@ function phoneMail(){
 }
 function showTamagotchi(){
  closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html" allow="autoplay"></iframe>';
+ specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261103-i18n-5" allow="autoplay"></iframe>';
 }
 function showLatte(){
   closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=latte-fill-f73824c"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261103-i18n-5"></iframe>';
   $('#special-close').setAttribute('aria-label','Close Latte Lab');
 }
 function showPolaroids(){
