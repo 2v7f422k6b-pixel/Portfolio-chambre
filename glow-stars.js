@@ -1,8 +1,8 @@
 /* Hand-drawn phosphorescent wall stars. Decorative only: never blocks poster clicks. */
 (() => {
   'use strict';
-  const svg = document.getElementById('hotspots');
-  if (!svg || document.getElementById('nana-glow-stars')) return;
+  const scene = document.getElementById('play-scene');
+  if (!scene || document.getElementById('nana-glow-stars-layer')) return;
   const NS = 'http://www.w3.org/2000/svg';
   const stars = [
     [322,175,11,-12],[381,107,8,17],[452,181,13,7],[523,83,9,-16],
@@ -15,6 +15,12 @@
     [1410,255,8,19],[1490,338,11,-7],[1572,286,9,15],[1640,365,12,-12],
     [1291,428,8,11],[1372,408,10,-17],[1505,465,8,9],[1603,435,11,-12]
   ];
+  const layer = document.createElementNS(NS,'svg');
+  layer.id = 'nana-glow-stars-layer';
+  layer.setAttribute('viewBox','0 0 1670 942');
+  layer.setAttribute('preserveAspectRatio','none');
+  layer.setAttribute('aria-hidden','true');
+  layer.setAttribute('pointer-events','none');
   const group = document.createElementNS(NS,'g');
   group.id='nana-glow-stars';
   group.setAttribute('aria-hidden','true');
@@ -38,7 +44,8 @@
     group.appendChild(star);
   });
   // Append last for physical stickers to sit on top of posters, without stealing taps.
-  svg.appendChild(group);
+  layer.appendChild(group);
+  scene.appendChild(layer);
   const style=document.createElement('style');
   style.id='nana-glow-stars-style';
   style.textContent=`
