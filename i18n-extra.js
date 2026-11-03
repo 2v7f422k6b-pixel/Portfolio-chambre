@@ -630,3 +630,17 @@ Object.assign(window.NanaI18nExtra.frToEn,{
   "Impossible d’enregistrer le look": "Unable to save the outfit",
   "Fermer": "Close"
 });
+
+/* Official or established English titles of books in the reading library. */
+Object.assign(window.NanaI18nExtra.frToEn, {
+  "À l’est d’Eden": "East of Eden",
+  "Les Raisins de la colère": "The Grapes of Wrath",
+  "Les Royaumes du Nord": "Northern Lights",
+  "Dans la forêt": "Into the Forest",
+  "Les Autonautes de la cosmoroute": "Autonauts of the Cosmoroute",
+  "Orgueil et Préjugés": "Pride and Prejudice",
+  "La vie est ailleurs": "Life Is Elsewhere",
+  "L’Usage du monde": "The Way of the World",
+  "Aquarium": "Aquarium",
+  "Belle du Seigneur": "Belle du Seigneur"
+});
