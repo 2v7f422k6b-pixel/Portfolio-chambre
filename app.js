@@ -54,12 +54,10 @@ updateClocks();setInterval(updateClocks,15000);
 const THEME_KEY='nana-portfolio-theme';
 function applyTheme(theme){
  const night=theme==='night';
- // Preserve the on-screen position of the Work folder grid when changing
- // colours: no jump caused by scrollbars, text reflow or scroll anchoring.
+ // The Work wallpaper layers stay mounted in both themes. The theme switch
+ // changes only their opacity, not the layout or the scroll position.
  const workArea=document.getElementById('work-desktop');
- const folderGrid=workArea?.querySelector('.folder-grid');
- const before=workArea&&!workArea.hidden&&folderGrid
-   ?folderGrid.getBoundingClientRect():null;
+ const scrollBefore=workArea&&!workArea.hidden?workArea.scrollTop:null;
  document.documentElement.dataset.theme=night?'night':'day';
  const toggle=$('#theme-toggle');
  if(toggle){
@@ -70,14 +68,10 @@ function applyTheme(theme){
   toggle.querySelector('.theme-label').textContent=night?'Day':'Night';
  }
  try{localStorage.setItem(THEME_KEY,night?'night':'day')}catch(e){}
- if(before&&folderGrid&&workArea){
-   requestAnimationFrame(()=>{
-     if(workArea.hidden||!folderGrid.isConnected)return;
-     const after=folderGrid.getBoundingClientRect();
-     const drift=after.top-before.top;
-     if(Math.abs(drift)>0.5)workArea.scrollTop+=drift;
-   });
- }
+ // The previous rectangle-based correction itself caused a scroll jump
+ // whenever the folder heading or background recomputed during a theme change.
+ if(scrollBefore!==null&&workArea.scrollTop!==scrollBefore)
+   workArea.scrollTop=scrollBefore;
 }
 let savedTheme='day';
 try{savedTheme=localStorage.getItem(THEME_KEY)||'day'}catch(e){}
