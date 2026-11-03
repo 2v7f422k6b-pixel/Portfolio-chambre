@@ -15,23 +15,23 @@
     ['book','Livre La Princesse Clown','TALE.PNG','[data-open="book"]'],
     ['rilakkuma','Rilakkuma','RILAKKUMA.PNG','[data-open="do-nothing"]'],
     ['guitare','Guitare','GUITARE.PNG','[data-open="contact"]'],
-    ['ring-light','Ring light','RING LIGHT.PNG','[aria-label="Open Photos via the ring light"]'],
+    ['ring-light','Ring light','RING LIGHT.PNG','[aria-label="Open Photos via the ring light"]','toggle-theme'],
     ['chat','Chat','CAT.PNG','[data-cat-pet]'],
     ['instax','Instax','INSTAX.PNG','[data-open="polaroids"]'],
     ['vase','Vase','VASE.PNG',null],
-    ['guirlande','Lampe étoiles','STARS LAMP.PNG',null],
-    ['jelly','Jelly lamp','JELLY LAMP.PNG',null],
-    ['crayons-1','Crayons 1','CRAYONS 1.PNG',null],
-    ['crayons-2','Crayons 2','CRAYONS 2.PNG',null],
-    ['crayons-3','Crayons 3','CRAYONS 3.PNG',null],
+    ['guirlande','Lampe étoiles','STARS LAMP.PNG',null,'toggle-theme'],
+    ['jelly','Jelly lamp','JELLY LAMP.PNG',null,'toggle-theme'],
+    ['crayons-1','Crayons 1','CRAYONS 1.PNG',null,'coloring'],
+    ['crayons-2','Crayons 2','CRAYONS 2.PNG',null,'coloring'],
+    ['crayons-3','Crayons 3','CRAYONS 3.PNG',null,'coloring'],
     ['livres-1','Livres 1','BOOKS 1.PNG',null,'reading-room'],
     ['livres-2','Livres 2','BOOKS 2.PNG',null,'souvenues'],
     ['livres-3','Livres 3','BOOKS 3.PNG',null,'word-lab'],
-    ['lampe-bureau','Lampe de bureau','OFFICE LAMP.PNG',null],
+    ['lampe-bureau','Lampe de bureau','OFFICE LAMP.PNG',null,'toggle-theme'],
     ['ipad','iPad','IPAD.PNG',null],
     ['tapis','Tapis','RUG.PNG',null],
     ['miffy','Miffy clown','MIFFY.PNG',null],
-    ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null],
+    ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null,'toggle-theme'],
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
     ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality']
   ].map(([id,label,file,selector,destination],i) => ({
@@ -41,7 +41,14 @@
   }));
   window.NANA_ROOM_ZONES = zones;
   for (const zone of zones) {
-    if (zone.element) zone.element.dataset.roomZoneId = zone.id;
+    if (zone.element) {
+      zone.element.dataset.roomZoneId = zone.id;
+      // The ring light already has a hotspot: repurpose it rather than adding an overlapping one.
+      if (zone.destination === 'toggle-theme') {
+        zone.element.dataset.open = 'toggle-theme';
+        zone.element.setAttribute('aria-label',zone.label+' — activer ou désactiver le mode nuit');
+      }
+    }
   }
   const W=1670, H=942, NS='http://www.w3.org/2000/svg';
   const firstPoster=svg.querySelector('polygon[data-type="poster"]');
@@ -94,7 +101,17 @@
     petal.addEventListener('animationend', () => petal.remove(), {once:true});
   }
 
-  // New zones are intentionally unassigned until their destination is approved.
+  // Every illustrated lamp (including the ring light) shares the existing Day/Night toggle.
+  // Capture the action before the generic app opener; one click always flips the theme.
+  svg.addEventListener('click',event=>{
+    const lamp=event.target.closest?.('polygon[data-open="toggle-theme"]');
+    if (!lamp) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    document.getElementById('theme-toggle')?.click();
+  },true);
+
+  // Unassigned objects keep their destination-to-define tooltip.
   svg.addEventListener('click',event=>{
     const target=event.target.closest?.('polygon[data-vase-petal],polygon[data-zone-pending]');
     if(!target) return;
@@ -161,7 +178,7 @@
       if(!zone.element){
         const poly=document.createElementNS(NS,'polygon');
         poly.setAttribute('points',hit.points);
-        poly.setAttribute('aria-label',zone.id==='vase' ? 'Vase de coquelicots — faire tomber un pétale' : zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
+        poly.setAttribute('aria-label',zone.id==='vase' ? 'Vase de coquelicots — faire tomber un pétale' : zone.destination === 'toggle-theme' ? zone.label+' — activer ou désactiver le mode nuit' : zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots',coloring:'le jeu de coloriage'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
         poly.setAttribute('tabindex','0');
         if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
