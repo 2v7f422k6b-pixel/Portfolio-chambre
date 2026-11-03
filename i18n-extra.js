@@ -647,6 +647,12 @@ Object.assign(window.NanaI18nExtra.frToEn, {
 
 /* Also localize the parent popup header around the colouring iframe. */
 Object.assign(window.NanaI18nExtra.enToFr, {
+  "Search illustrations…": "Rechercher des illustrations…",
+  "Search illustrations": "Rechercher des illustrations",
+  "PROJECTS / ILLUSTRATIONS": "PROJETS / ILLUSTRATIONS"
+});
+
+Object.assign(window.NanaI18nExtra.enToFr, {
   "♥ COLORING BOOK ♥": "♥ LIVRE DE COLORIAGE ♥",
   "Coloring Book game": "Jeu de coloriage",
   "Close Coloring Book": "Fermer le livre de coloriage",
