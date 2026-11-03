@@ -25,6 +25,49 @@
       animation:nana-pan-fade 5.8s ease-in-out both;
     }
     #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;}
+
+    /* The hand belongs to touch devices only and emerges from the viewport edge. */
+    #nana-play-pan-hint .pan-hint-hand-photo {display:none;}
+    #nana-play-pan-hint .pan-hint-visual {z-index:2;}
+    #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
+      display:block;position:fixed;bottom:-38px;left:50%;
+      width:auto;height:min(48dvh,480px);max-width:48vw;
+      object-fit:contain;z-index:1;pointer-events:none;
+      filter:drop-shadow(0 3px 5px rgba(79,32,40,.17));
+      animation:nana-touch-hand-swipe 3.4s ease-in-out infinite;
+    }
+    #nana-play-pan-hint.touch-hint .pan-hint-label{display:none;}
+    #nana-play-pan-hint.touch-hint .pan-hint-visual{
+      animation:nana-pan-fade-touch 5.8s ease-in-out both;
+    }
+    @keyframes nana-pan-fade-touch {
+      0%{opacity:0;transform:translateY(0) scale(.96);}
+      10%{opacity:1;transform:translateY(0) scale(1);}
+      82%{opacity:1;transform:translateY(0) scale(1);}
+      100%{opacity:0;transform:translateY(0) scale(1);}
+    }
+    @keyframes nana-touch-hand-swipe{
+      0%,8%,100%{transform:translateX(-50%) translate(0,0);}
+      27%{transform:translateX(-50%) translate(-14px,0);}
+      43%{transform:translateX(-50%) translate(14px,0);}
+      60%{transform:translateX(-50%) translate(0,0);}
+      77%{transform:translateX(-50%) translate(0,-18px);}
+      92%{transform:translateX(-50%) translate(0,12px);}
+    }
+    @media(min-width:700px) and (orientation:landscape) {
+      #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
+        height:min(54dvh,450px);max-width:25vw;
+      }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
+        animation:none;transform:translateX(-50%);
+      }
+      #nana-play-pan-hint.touch-hint .pan-hint-visual {
+        animation:none;transform:translateY(0);
+      }
+    }
+
     #nana-play-pan-hint .pan-hint-label {
       position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
       padding:5px 10px;white-space:nowrap;text-align:center;
@@ -66,6 +109,12 @@
   `;
   document.head.appendChild(style);
 
+  function isTabletOrPhone() {
+    const ua = navigator.userAgent || '';
+    return /iPhone|iPad|iPod|Android/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
   function updateHintLabel() {
     if (!hint) return;
     const label = hint.querySelector('.pan-hint-label');
@@ -106,11 +155,10 @@
       '<g fill="none" opacity="0.58" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '<g fill="none" opacity="0.67" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '</svg>' +
-      '<svg class="pan-hint-finger" viewBox="0 0 80 80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M31 53 V19 C31 13 41 13 41 19 V39 V31 C41 26 50 26 50 31 V41 V34 C50 29 59 30 59 35 V44 V39 C59 34 68 36 68 41 V56 C68 67 60 72 50 72 H40 C32 72 28 68 24 63 L14 50 C11 46 17 40 22 44 L31 53 Z" fill="#fffafc" stroke="#ff173b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '</svg>' +
+      '<img class="pan-hint-hand-photo" src="assets/play-swipe-hand.webp" alt="" aria-hidden="true" draggable="false">' +
       '<span class="pan-hint-label" data-no-translate></span>' +
       '</div>';
+    if (isTabletOrPhone()) hint.classList.add('touch-hint');
     document.body.appendChild(hint);
     updateHintLabel();
     timer = setTimeout(removeHint, 5800);
