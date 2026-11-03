@@ -36,8 +36,8 @@
   function geometry() {
     const b = guitar.getBBox();
     const x = b.x, y = b.y, w = b.width, h = b.height;
-    const top = { x: x + w * 0.943 + 18, y: y - h * 0.012 + 6 };
-    const bottom = { x: x + w * 0.558 + 18, y: y + h * 0.610 + 38 };
+    const top = { x: x + w * 0.943 + 12, y: y - h * 0.012 + 6 };
+    const bottom = { x: x + w * 0.558 + 12, y: y + h * 0.610 + 38 };
     const body = { x: x + w * 0.43, y: y + h * 0.79 };
     return { top, bottom, body, scale: Math.min(w / 113, h / 320) };
   }
