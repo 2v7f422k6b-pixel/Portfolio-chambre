@@ -1283,3 +1283,15 @@ html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] img
     top:16px!important;
   }
 }
+
+/* Work Mode: lock desktop scrolling while leaving modal and Play scrolling intact. */
+@media(min-width:761px){
+  html body #work-desktop,
+  html[data-theme="night"] body #work-desktop {
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+    overscroll-behavior:none!important;
+    scrollbar-gutter:auto!important;
+  }
+}
+/* On small screens folders may exceed the viewport: preserve access to them. */
