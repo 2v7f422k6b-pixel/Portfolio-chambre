@@ -240,7 +240,7 @@ function openFinder(){
    <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Coloring Book, Tamagotchi, Dress-up & Latte Lab</small></button>
    <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
- openWindow('LÉNA PROJECTS',`<div class="eyebrow">WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
+ openWindow('MY PROJECTS',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Browse my illustrated, animated, written projects and more</p>${cards}`,'finder');
 }
 function openIllustrationProjects(){
  openWindow('ILLUSTRATIONS',`<div class="eyebrow">PROJECTS / ILLUSTRATIONS</div><h2>Illustrations</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
