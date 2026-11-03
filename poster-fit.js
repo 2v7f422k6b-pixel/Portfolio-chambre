@@ -156,12 +156,20 @@
   function drawHandles() {
     if (!overlay) return;
     overlay.replaceChildren();
+    // An editor-only transparent pick layer sits ABOVE other interactive room objects.
+    current.forEach((entry, index) => {
+      if (index === selected) return;
+      overlay.appendChild(node('polygon', {
+        'data-poster-pick': index,
+        points: polygon(entry.shape),
+        style: 'fill:rgba(255,23,59,.002)!important;stroke:transparent!important;pointer-events:all!important;cursor:grab;touch-action:none'
+      }));
+    });
     const rec = current[selected];
     overlay.appendChild(node('polygon', {
-      points: polygon(rec.shape), fill: 'rgba(255,23,59,.10)',
-      stroke: '#ff173b', 'stroke-width': 3,
-      'vector-effect': 'non-scaling-stroke',
-      'stroke-dasharray': '6 3', 'pointer-events': 'none'
+      'data-poster-pick': selected,
+      points: polygon(rec.shape),
+      style: 'fill:rgba(255,23,59,.09)!important;stroke:#ff173b!important;stroke-width:3;pointer-events:all!important;cursor:grab;touch-action:none'
     }));
     if (rec.shape.length === 4) {
       rec.quad.forEach((p, index) => {
@@ -186,11 +194,48 @@
       'position:fixed;z-index:99999;top:54px;left:12px;max-width:min(360px,calc(100vw - 24px));' +
       'background:#fff4fa;color:#ff173b;border:2px solid #ff173b;padding:12px;' +
       'box-shadow:3px 3px 0 #ff173b;font:14px/1.35 system-ui,sans-serif';
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:8px;touch-action:none;cursor:move;user-select:none';
     const heading = document.createElement('strong');
     heading.textContent = 'Replacer les posters';
-    heading.style.display = 'block';
-    heading.style.marginBottom = '8px';
-    panel.appendChild(heading);
+    heading.title = 'Glisser ici pour déplacer la boîte';
+    heading.style.cssText = 'flex:1;min-width:0';
+    header.appendChild(heading);
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.textContent = '− Réduire';
+    toggle.setAttribute('aria-expanded','true');
+    toggle.style.cssText = 'border:1px solid #ff173b;background:white;color:#ff173b;padding:4px 6px;font-size:12px;white-space:nowrap;cursor:pointer';
+    header.appendChild(toggle);
+    panel.appendChild(header);
+    const interior = document.createElement('div');
+    panel.appendChild(interior);
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded',String(expanded));
+      toggle.textContent = expanded ? '− Réduire' : '+ Ouvrir';
+      interior.hidden = !expanded;
+    });
+    let panelDrag = null;
+    header.addEventListener('pointerdown', event => {
+      if (event.target.closest('button')) return;
+      event.preventDefault();
+      panelDrag = {
+        x:event.clientX,y:event.clientY,
+        left:panel.getBoundingClientRect().left,
+        top:panel.getBoundingClientRect().top
+      };
+      header.setPointerCapture(event.pointerId);
+    });
+    header.addEventListener('pointermove', event => {
+      if (!panelDrag) return;
+      const left = Math.min(window.innerWidth-60,Math.max(0,panelDrag.left+event.clientX-panelDrag.x));
+      const top = Math.min(window.innerHeight-40,Math.max(0,panelDrag.top+event.clientY-panelDrag.y));
+      panel.style.left = left+'px';
+      panel.style.top = top+'px';
+    });
+    header.addEventListener('pointerup', () => {panelDrag=null});
+    header.addEventListener('pointercancel', () => {panelDrag=null});
     const chooser = document.createElement('select');
     chooser.id = 'poster-edit-select';
     chooser.setAttribute('aria-label', 'Choisir un poster');
@@ -202,14 +247,14 @@
       chooser.appendChild(opt);
     });
     chooser.addEventListener('change', () => select(Number(chooser.value)));
-    panel.appendChild(chooser);
+    interior.appendChild(chooser);
     statusLabel = document.createElement('p');
     statusLabel.style.cssText = 'margin:8px 0;font-size:12px';
-    panel.appendChild(statusLabel);
+    interior.appendChild(statusLabel);
     const help = document.createElement('p');
     help.textContent = 'En mode Play : glisse l’affiche pour la déplacer. Glisse les ronds pour ajuster ses coins.';
     help.style.cssText = 'margin:8px 0;font-size:12px';
-    panel.appendChild(help);
+    interior.appendChild(help);
     const controls = document.createElement('div');
     controls.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
     function button(label, callback) {
@@ -248,24 +293,26 @@
         const area = document.createElement('textarea');
         area.value = json;
         area.style.cssText = 'display:block;width:100%;height:95px;max-width:310px;margin-top:8px;';
-        panel.appendChild(area);
+        interior.appendChild(area);
         area.focus(); area.select();
         statusLabel.textContent = 'Copie le texte ci-dessous pour me l’envoyer.';
       }
     });
-    panel.appendChild(controls);
+    interior.appendChild(controls);
     document.body.appendChild(panel);
 
     overlay = node('g', { id: 'poster-fit-edit-handles' });
     svg.appendChild(overlay);
+    overlay.style.touchAction = 'none';
     let drag = null;
     svg.addEventListener('pointerdown', event => {
       const handle = event.target.closest('[data-poster-handle]');
       const poster = event.target.closest('polygon[data-type="poster"]');
-      if (!handle && !poster) return;
+      const picked = event.target.closest('[data-poster-pick]');
+      if (!handle && !poster && !picked) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      if (poster) select(Number(poster.dataset.index));
+      if (poster || picked) select(Number(poster ? poster.dataset.index : picked.getAttribute('data-poster-pick')));
       const corner = handle ? Number(handle.getAttribute('data-poster-handle')) : null;
       const start = position(event);
       drag = {
@@ -275,7 +322,7 @@
       };
     }, true);
     svg.addEventListener('click', event => {
-      if (event.target.closest('polygon[data-type="poster"],[data-poster-handle]')) {
+      if (event.target.closest('polygon[data-type="poster"],[data-poster-pick],[data-poster-handle]')) {
         event.preventDefault(); event.stopImmediatePropagation();
       }
     }, true);
