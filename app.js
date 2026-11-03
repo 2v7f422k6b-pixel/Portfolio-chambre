@@ -347,10 +347,9 @@ async function openWorkAbout(){
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
  host.innerHTML=filtered.map(a=>`<button class="art-tile" data-art-index="${a.index}" aria-label="View ${a.title}"><img src="${a.src}" alt="${a.title}" loading="lazy"><span>${a.title}</span></button>`).join('');
- const count=$('#photos-count');if(count)count.textContent=filtered.length+' works';
 }
 function openPhotos(){
- openWindow('Illustrations',`<div class="eyebrow">Illustration / Archive</div><h2>Original illustrations</h2><p class="section-lead">A selection of 19 illustrations, displayed from the original files. Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"><span class="count" id="photos-count"></span></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
+ openWindow('Illustrations',`<h2>Assorted illustrations</h2><p class="section-lead">Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
  renderArtTiles();
 }
 function openGallery(which,index=0){
