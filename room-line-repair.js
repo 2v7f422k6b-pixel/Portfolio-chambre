@@ -4,9 +4,11 @@
   const scene = document.getElementById('play-scene');
   if (!scene) return;
 
+  // Calibrated from the close-up: the actual red stroke starts below
+  // the star garland and runs diagonally down the blue wall.
+  // Coordinates are normalized to the original 1670 x 942 room illustration.
   const tracks = [
-    [0.541, 0.500, 0.589, 0.525],
-    [0.541, 0.500, 0.548, 0.583]
+    [0.5480, 0.5350, 0.5558, 0.6040]
   ];
   const clamp = (x, min, max) => Math.max(min, Math.min(max, x));
 
