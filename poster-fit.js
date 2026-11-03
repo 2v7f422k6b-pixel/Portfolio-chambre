@@ -216,26 +216,98 @@
       toggle.textContent = expanded ? '− Réduire' : '+ Ouvrir';
       interior.hidden = !expanded;
     });
+    // Move controls are explicit as well as draggable: dragging alone is not
+    // reliable on every browser/iPad, and the box used to obscure left posters.
+    const controlsBar = document.createElement('div');
+    controlsBar.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap';
+    const dragGrip = document.createElement('button');
+    dragGrip.type = 'button';
+    dragGrip.textContent = '✥ Déplacer la boîte';
+    dragGrip.title = 'Garde appuyé et fais glisser';
+    dragGrip.style.cssText =
+      'flex:1;min-width:135px;border:1px solid #ff173b;color:#ff173b;' +
+      'background:#fff;padding:7px 8px;font-size:12px;cursor:move;' +
+      'touch-action:none;user-select:none;-webkit-user-select:none';
+    controlsBar.appendChild(dragGrip);
+    const moveSide = document.createElement('button');
+    moveSide.type = 'button';
+    moveSide.textContent = '→ À droite';
+    moveSide.title = 'Placer la boîte sur le côté opposé';
+    moveSide.style.cssText =
+      'border:1px solid #ff173b;color:#ff173b;background:#fff;' +
+      'padding:7px 8px;font-size:12px;cursor:pointer';
+    controlsBar.appendChild(moveSide);
+    panel.insertBefore(controlsBar, interior);
+
+    const panelPositionKey = 'nana-poster-box-position-v2';
+    function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+    function setPanelPosition(left, top) {
+      // Use the viewport size instead of layout width, so the whole panel stays reachable.
+      const width = panel.getBoundingClientRect().width || 320;
+      const height = panel.getBoundingClientRect().height || 180;
+      panel.style.setProperty('left', clamp(left, 0, Math.max(0, innerWidth - width - 4)) + 'px', 'important');
+      panel.style.setProperty('top', clamp(top, 0, Math.max(0, innerHeight - Math.min(48, height))) + 'px', 'important');
+      panel.style.setProperty('right', 'auto', 'important');
+      panel.style.setProperty('bottom', 'auto', 'important');
+      const isRight = panel.getBoundingClientRect().left > innerWidth / 2 - width / 2;
+      moveSide.textContent = isRight ? '← À gauche' : '→ À droite';
+    }
+    function persistPanelPosition() {
+      try {
+        const rect = panel.getBoundingClientRect();
+        localStorage.setItem(panelPositionKey, JSON.stringify([rect.left, rect.top]));
+      } catch (_) { /* Some browsers disable local storage. */ }
+    }
+    function positionPanelOnSide(right) {
+      setPanelPosition(right ? innerWidth - panel.offsetWidth - 12 : 12, 54);
+      persistPanelPosition();
+    }
+    moveSide.addEventListener('click', () => {
+      const rect = panel.getBoundingClientRect();
+      positionPanelOnSide(rect.left + rect.width / 2 <= innerWidth / 2);
+    });
     let panelDrag = null;
-    header.addEventListener('pointerdown', event => {
-      if (event.target.closest('button')) return;
+    function beginPanelDrag(event) {
+      if (event.button !== undefined && event.button !== 0) return;
+      if (event.target.closest('button') && event.target !== dragGrip) return;
       event.preventDefault();
-      panelDrag = {
-        x:event.clientX,y:event.clientY,
-        left:panel.getBoundingClientRect().left,
-        top:panel.getBoundingClientRect().top
-      };
-      header.setPointerCapture(event.pointerId);
+      event.stopPropagation();
+      const rect = panel.getBoundingClientRect();
+      panelDrag = { id:event.pointerId, x:event.clientX, y:event.clientY, left:rect.left, top:rect.top };
+      try { event.currentTarget.setPointerCapture(event.pointerId); } catch (_) {}
+      dragGrip.style.background = '#ffe1ed';
+    }
+    function movePanelWithPointer(event) {
+      if (!panelDrag || event.pointerId !== panelDrag.id) return;
+      event.preventDefault();
+      setPanelPosition(
+        panelDrag.left + event.clientX - panelDrag.x,
+        panelDrag.top + event.clientY - panelDrag.y
+      );
+    }
+    function endPanelDrag(event) {
+      if (!panelDrag || (event.pointerId !== undefined && event.pointerId !== panelDrag.id)) return;
+      panelDrag = null;
+      dragGrip.style.background = '#fff';
+      persistPanelPosition();
+    }
+    // The entire header can be grabbed, and there is also a clearly labelled grip.
+    header.addEventListener('pointerdown', beginPanelDrag);
+    dragGrip.addEventListener('pointerdown', beginPanelDrag);
+    window.addEventListener('pointermove', movePanelWithPointer, { passive:false, capture:true });
+    window.addEventListener('pointerup', endPanelDrag, true);
+    window.addEventListener('pointercancel', endPanelDrag, true);
+    window.addEventListener('blur', () => endPanelDrag({}));
+    // Also permit keyboard control for the grip.
+    dragGrip.addEventListener('keydown', event => {
+      const deltas = { ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20] };
+      const d = deltas[event.key];
+      if (!d) return;
+      event.preventDefault();
+      const rect = panel.getBoundingClientRect();
+      setPanelPosition(rect.left+d[0],rect.top+d[1]);
+      persistPanelPosition();
     });
-    header.addEventListener('pointermove', event => {
-      if (!panelDrag) return;
-      const left = Math.min(window.innerWidth-60,Math.max(0,panelDrag.left+event.clientX-panelDrag.x));
-      const top = Math.min(window.innerHeight-40,Math.max(0,panelDrag.top+event.clientY-panelDrag.y));
-      panel.style.left = left+'px';
-      panel.style.top = top+'px';
-    });
-    header.addEventListener('pointerup', () => {panelDrag=null});
-    header.addEventListener('pointercancel', () => {panelDrag=null});
     const chooser = document.createElement('select');
     chooser.id = 'poster-edit-select';
     chooser.setAttribute('aria-label', 'Choisir un poster');
@@ -300,6 +372,13 @@
     });
     interior.appendChild(controls);
     document.body.appendChild(panel);
+    try {
+      const restored = JSON.parse(localStorage.getItem(panelPositionKey) || 'null');
+      if (Array.isArray(restored) && restored.length === 2 && restored.every(Number.isFinite)) {
+        setPanelPosition(restored[0], restored[1]);
+      }
+    } catch (_) {}
+
 
     overlay = node('g', { id: 'poster-fit-edit-handles' });
     svg.appendChild(overlay);
