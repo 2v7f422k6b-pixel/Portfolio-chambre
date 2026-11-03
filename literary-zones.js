@@ -834,6 +834,8 @@
     if(!poem.length){const status=appRoot()?.querySelector('#lit-lab-status');if(status)status.textContent='Ajoute quelques mots avant de sauvegarder ton poème.';return;}
     const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1500;
     const ctx=canvas.getContext('2d');if(!ctx)return;
+    const language=(()=>{try{return localStorage.getItem('portfolio-language-v2')==='en'?'en':'fr'}catch(_){return 'fr'}})();
+    const localized=value=>window.portfolioTranslate?.(value,language)||value;
     ctx.fillStyle='#fff5e9';ctx.fillRect(0,0,1200,1500);
     ctx.strokeStyle='#ff173b';ctx.lineWidth=4;ctx.beginPath();
     ctx.moveTo(60,66);ctx.quadraticCurveTo(620,58,1140,67);
@@ -841,21 +843,21 @@
     ctx.quadraticCurveTo(580,1440,64,1432);
     ctx.quadraticCurveTo(55,800,60,66);ctx.stroke();
     ctx.fillStyle='#ff173b';ctx.font='bold 28px Georgia,serif';
-    ctx.fillText('LE LABORATOIRE DES MOTS',114,151);
+    ctx.fillText(localized('LE LABORATOIRE DES MOTS'),114,151);
     ctx.font='italic 25px Georgia,serif';
-    ctx.fillText('Un poème trouvé dans la chambre de Léna',114,198);
+    ctx.fillText(localized('Un poème trouvé dans la chambre de Léna'),114,198);
     ctx.fillStyle='#4d2e42';ctx.font='42px Georgia,serif';
     let x=114,y=325;const max=1080;
     for(const entry of poem) {
-      const w=ctx.measureText(entry.word).width+28;
+      const word=localized(entry.word),w=ctx.measureText(word).width+28;
       if(x+w>max){x=114;y+=82;}
       if(y>1310)break;
-      ctx.fillText(entry.word,x,y);
+      ctx.fillText(word,x,y);
       x+=w+18;
     }
     ctx.fillStyle='#ff173b';ctx.font='24px Georgia,serif';
-    ctx.fillText('Nana Color Studio · poésie de hasard',114,1383);
-    const a=document.createElement('a');a.download='mon-poeme-nana-color-studio.png';
+    ctx.fillText(localized('Nana Color Studio · poésie de hasard'),114,1383);
+    const a=document.createElement('a');a.download=language==='en'?'my-poem-nana-color-studio.png':'mon-poeme-nana-color-studio.png';
     a.href=canvas.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();
     const status=appRoot()?.querySelector('#lit-lab-status');
     if(status)status.textContent='Ton poème est prêt à être enregistré en PNG.';
