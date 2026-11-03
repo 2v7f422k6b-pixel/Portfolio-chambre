@@ -137,10 +137,10 @@
   window.openMotion = function openMotionReels() {
     if (typeof window.openWindow !== 'function') return;
     pauseVideo();
-    window.openWindow('Motion — Reels', `
+    window.openWindow('Animations — Reels', `
       <div id="motion-reels" class="motion-reels">
         <header class="motion-reels-header">
-          <div><span class="motion-reels-kicker">NANA / MOTION</span><strong>Motion <span aria-hidden="true">✳</span></strong></div>
+          <div><span class="motion-reels-kicker">NANA / ANIMATIONS</span><strong>Animations <span aria-hidden="true">✳</span></strong></div>
           <div class="motion-reels-header-right"><span id="motion-reels-counter" aria-live="polite">— / —</span>
             <button type="button" id="motion-reels-library-button" class="motion-reels-outline" aria-label="Voir toutes les animations" aria-expanded="false">☷ &nbsp; All videos</button>
           </div>
