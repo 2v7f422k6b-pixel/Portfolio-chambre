@@ -5,7 +5,10 @@
   const switchButton = document.getElementById('switch-mode');
   if (!app || !switchButton) return;
 
-  const WORK_DELAY = 5 * 60 * 1000;
+  // A discreet URL flag lets the owner preview the animation immediately.
+  // Ordinary visitors retain the five-minute, foreground-only timer.
+  const TEST_MODE = new URLSearchParams(window.location.search).get('typewriterTest') === '1';
+  const WORK_DELAY = TEST_MODE ? 0 : 5 * 60 * 1000;
   const SENTENCE = 'All work and no play makes Jack a dull boy';
   const MESSAGE = Array(3).fill(SENTENCE).join(' ');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
