@@ -24,9 +24,9 @@
     ['crayons-1','Crayons 1','CRAYONS 1.PNG',null],
     ['crayons-2','Crayons 2','CRAYONS 2.PNG',null],
     ['crayons-3','Crayons 3','CRAYONS 3.PNG',null],
-    ['livres-1','Livres 1','BOOKS 1.PNG',null],
-    ['livres-2','Livres 2','BOOKS 2.PNG',null],
-    ['livres-3','Livres 3','BOOKS 3.PNG',null],
+    ['livres-1','Livres 1','BOOKS 1.PNG',null,'reading-room'],
+    ['livres-2','Livres 2','BOOKS 2.PNG',null,'souvenues'],
+    ['livres-3','Livres 3','BOOKS 3.PNG',null,'word-lab'],
     ['lampe-bureau','Lampe de bureau','OFFICE LAMP.PNG',null],
     ['ipad','iPad','IPAD.PNG',null],
     ['tapis','Tapis','RUG.PNG',null],
@@ -34,8 +34,8 @@
     ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null],
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
     ['bretzel','Vase bretzel','BRETZEL.PNG',null]
-  ].map(([id,label,file,selector],i) => ({
-    id,label,file,selector,number:16+i,
+  ].map(([id,label,file,selector,destination],i) => ({
+    id,label,file,selector,destination,number:16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
     center: null
   }));
@@ -111,10 +111,11 @@
       if(!zone.element){
         const poly=document.createElementNS(NS,'polygon');
         poly.setAttribute('points',hit.points);
-        poly.setAttribute('aria-label',zone.label+' — destination à définir');
+        poly.setAttribute('aria-label',zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
         poly.setAttribute('tabindex','0');
         poly.dataset.roomZoneId=zone.id;
-        poly.dataset.zonePending='';
+        if(zone.destination)poly.dataset.open=zone.destination;
+        else poly.dataset.zonePending='';
         // Keep existing buttons/posters on top; these are additions only.
         if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
