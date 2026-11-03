@@ -85,7 +85,7 @@
   document.head.appendChild(style);
   if(edit){
     layer.style.setProperty('pointer-events','auto','important');
-    group.style.pointerEvents='auto';
+    group.style.setProperty('pointer-events','auto','important');
     const notice=document.createElement('div');
     notice.style.cssText='position:fixed;top:175px;left:12px;z-index:99999;background:#fff2fc;color:#ff173b;border:2px solid #ff173b;padding:10px;font:14px sans-serif;max-width:270px';
     notice.innerHTML='<b>Placement des étoiles</b><p>Glisse une étoile pour la déplacer. Double-tape une étoile pour la supprimer.</p>';
@@ -99,14 +99,14 @@
     const coords=e=>{const rect=layer.getBoundingClientRect();return [(e.clientX-rect.left)*1670/rect.width,(e.clientY-rect.top)*942/rect.height];};
     let active=-1;
     elements.forEach((el,i)=>{
-      el.style.pointerEvents='all';el.style.touchAction='none';el.style.cursor='grab';
+      el.style.setProperty('pointer-events','all','important');el.style.touchAction='none';el.style.cursor='grab';
       el.addEventListener('pointerdown',e=>{active=i;el.setPointerCapture(e.pointerId);e.preventDefault()});
       el.addEventListener('pointermove',e=>{if(active!==i)return;const [x,y]=coords(e);stars[i][0]=Math.max(0,Math.min(1670,x));stars[i][1]=Math.max(0,Math.min(942,y));refresh();e.preventDefault()});
       el.addEventListener('pointerup',()=>{active=-1;persist()});
       el.addEventListener('dblclick',()=>{stars[i][2]=0;refresh();persist()});
     });
     save.onclick=()=>{persist();notice.firstElementChild.textContent='Positions enregistrées !'};
-    add.onclick=()=>{const v=[835,470,7,0];stars.push(v);const el=document.createElementNS(NS,'polygon');el.setAttribute('class','nana-phosphor-star');el.style.setProperty('--day-star-color',palette[stars.length%palette.length]);group.appendChild(el);elements.push(el);el.setAttribute('points',points(...v));el.style.pointerEvents='all';el.style.touchAction='none';el.onpointerdown=e=>{const [x,y]=coords(e);v[0]=x;v[1]=y;el.setAttribute('points',points(...v));persist()};persist();};
+    add.onclick=()=>{const v=[835,470,7,0];stars.push(v);const el=document.createElementNS(NS,'polygon');el.setAttribute('class','nana-phosphor-star');el.style.setProperty('--day-star-color',palette[stars.length%palette.length]);group.appendChild(el);elements.push(el);el.setAttribute('points',points(...v));el.style.setProperty('pointer-events','all','important');el.style.touchAction='none';el.onpointerdown=e=>{const [x,y]=coords(e);v[0]=x;v[1]=y;el.setAttribute('points',points(...v));persist()};persist();};
     reset.onclick=()=>{localStorage.removeItem(storageKey);location.reload()};
   }
 })();
