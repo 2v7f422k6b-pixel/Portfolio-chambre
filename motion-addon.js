@@ -28,8 +28,6 @@
   const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
   }[char]));
-  let renameIndex = -1;
-  let renameReturnFocus = null;
   const videoURL = file => 'assets/motion/' + encodeURIComponent(file);
   let available = [];
   let requestedFile = null;
@@ -48,62 +46,12 @@
     const host = $('#motion-reels-list');
     if (!host) return;
     host.innerHTML = available.map((item, i) => `
-      <div class="motion-reels-list-row">
-        <button type="button" class="motion-reels-choice${i === selected ? ' active' : ''}" data-motion-select="${i}" aria-current="${i === selected}">
-          <span class="motion-reels-item-number">${String(i+1).padStart(2,'0')}</span>
-          <span class="motion-reels-item-title">${escapeHTML(item.title)}</span>
-          <span aria-hidden="true">▶</span>
-        </button>
-        <button type="button" class="motion-reels-rename-item" data-motion-rename="${i}" aria-label="Rename" title="Rename">✎</button>
-      </div>
+      <button type="button" data-motion-select="${i}" class="${i === selected ? 'active' : ''}" aria-current="${i === selected}">
+        <span class="motion-reels-item-number">${String(i+1).padStart(2,'0')}</span>
+        <span class="motion-reels-item-title">${escapeHTML(item.title)}</span>
+        <span aria-hidden="true">▶</span>
+      </button>
     `).join('');
-  }
-
-  function openRenameDialog(index, trigger) {
-    if (!isOpen() || !available[index]) return;
-    const overlay = $('#motion-rename-overlay');
-    const input = $('#motion-rename-input');
-    if (!overlay || !input) return;
-    renameIndex = index;
-    renameReturnFocus = trigger || document.activeElement;
-    input.value = available[index].title;
-    input.setCustomValidity('');
-    overlay.hidden = false;
-    player()?.pause();
-    requestAnimationFrame(() => { input.focus({preventScroll:true}); input.select(); });
-  }
-
-  function closeRenameDialog() {
-    const overlay = $('#motion-rename-overlay');
-    if (overlay) overlay.hidden = true;
-    renameIndex = -1;
-    const focus = renameReturnFocus;
-    renameReturnFocus = null;
-    if (focus?.isConnected) focus.focus({preventScroll:true});
-  }
-
-  function saveRenamedVideo(event) {
-    event.preventDefault();
-    if (renameIndex < 0 || !available[renameIndex]) return;
-    const input = $('#motion-rename-input');
-    if (!input) return;
-    const title = input.value.replace(/\s+/g,' ').trim();
-    if (!title) {
-      input.setCustomValidity('Please enter a title');
-      input.reportValidity();
-      return;
-    }
-    const item = available[renameIndex];
-    item.title = title;
-    savedTitles[item.file] = title;
-    try { localStorage.setItem(RENAME_STORAGE_KEY, JSON.stringify(savedTitles)); } catch (_) {}
-    const renameButtonIndex = renameReturnFocus?.dataset.motionRename;
-    renderVideoList();
-    if (renameButtonIndex !== undefined) {
-      renameReturnFocus = $('#motion-reels-list [data-motion-rename="' + renameButtonIndex + '"]');
-    }
-    $('#motion-reels-title').textContent = available[selected].title;
-    closeRenameDialog();
   }
 
   function pauseVideo() {
@@ -239,30 +187,13 @@
           <div id="motion-reels-loading" class="motion-reels-loading" role="status">Loading animations…</div>
         </div>
         <footer class="motion-reels-footer">
-          <div class="motion-reels-label"><span class="motion-reels-deco" aria-hidden="true">♥</span><div><strong id="motion-reels-title">Original animations</strong></div><button type="button" id="motion-reels-rename-current" class="motion-reels-rename-current" aria-label="Rename" title="Rename">✎</button></div>
+          <div class="motion-reels-label"><span class="motion-reels-deco" aria-hidden="true">♥</span><div><strong id="motion-reels-title">Original animations</strong></div></div>
           <div class="motion-reels-seek"><span id="motion-reels-time">0:00</span><input type="range" id="motion-reels-progress" min="0" max="1000" value="0" step="1" aria-label="Position de lecture"><span id="motion-reels-duration">0:00</span></div>
         </footer>
         <aside id="motion-reels-drawer" class="motion-reels-drawer" hidden aria-label="Toutes les animations">
           <div class="motion-reels-drawer-top"><strong>All animations</strong><button id="motion-reels-library-close" type="button" aria-label="Fermer la liste">×</button></div>
           <div id="motion-reels-list" class="motion-reels-list"></div>
         </aside>
-        <div id="motion-rename-overlay" class="motion-rename-overlay" hidden>
-          <section class="motion-rename-dialog" role="dialog" aria-modal="true" aria-labelledby="motion-rename-heading">
-            <div class="motion-rename-dialog-top">
-              <h3 id="motion-rename-heading">Rename video</h3>
-              <button type="button" id="motion-rename-close" aria-label="Close" title="Close">×</button>
-            </div>
-            <form id="motion-rename-form">
-              <label for="motion-rename-input">Video title</label>
-              <input type="text" id="motion-rename-input" name="title" maxlength="80" autocomplete="off" required>
-              <p class="motion-rename-note">Saved in this browser.</p>
-              <div class="motion-rename-actions">
-                <button type="button" id="motion-rename-cancel">Cancel</button>
-                <button type="submit" class="motion-rename-save">Save</button>
-              </div>
-            </form>
-          </section>
-        </div>
       </div>
     `, 'motion');
     // Restrict taller window layout to Motion. The selector uses :has and cannot
@@ -334,12 +265,6 @@
 
   document.addEventListener('click', event => {
     if (!isOpen()) return;
-    if (event.target.closest('#motion-rename-close,#motion-rename-cancel')) { closeRenameDialog(); return; }
-    if (!$('#motion-rename-overlay')?.hidden) return;
-    const rename = event.target.closest('#motion-reels-list [data-motion-rename]');
-    if (rename) { openRenameDialog(Number(rename.dataset.motionRename), rename); return; }
-    const renameCurrent = event.target.closest('#motion-reels-rename-current');
-    if (renameCurrent) { openRenameDialog(selected, renameCurrent); return; }
     if (event.target.closest('#motion-reels-prev')) { navigate(-1); return; }
     if (event.target.closest('#motion-reels-next')) { navigate(1); return; }
     if (event.target.closest('#motion-reels-play,#motion-reels-center-play')) { togglePlay(); return; }
@@ -361,34 +286,7 @@
     if (event.target === player() && Date.now() - lastSwipeAt > 400) togglePlay();
   });
 
-  document.addEventListener('submit', event => {
-    if (event.target.id === 'motion-rename-form' && isOpen()) saveRenamedVideo(event);
-  });
-
-  // Escape closes only the rename dialog, not the whole desktop window.
-  document.addEventListener('keydown', event => {
-    const overlay = $('#motion-rename-overlay');
-    if (!isOpen() || !overlay || overlay.hidden) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      closeRenameDialog();
-      return;
-    }
-    if (event.key === 'Tab') {
-      const focusables = [...overlay.querySelectorAll('input,button')].filter(el => !el.disabled);
-      if (!focusables.length) return;
-      const first = focusables[0], last = focusables[focusables.length-1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault(); last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault(); first.focus();
-      }
-    }
-  }, true);
-
   document.addEventListener('input', event => {
-    if (event.target.id === 'motion-rename-input') event.target.setCustomValidity('');
     if (event.target.id === 'motion-reels-progress') {
       const video = player();
       if (video && Number.isFinite(video.duration) && video.duration > 0) {
@@ -398,7 +296,7 @@
   });
 
   document.addEventListener('keydown', event => {
-    if (!isOpen() || !$('#motion-rename-overlay')?.hidden || event.target.matches('input,textarea,select')) return;
+    if (!isOpen() || event.target.matches('input,textarea,select')) return;
     if (event.key === 'ArrowDown' || event.key === 'ArrowRight') { event.preventDefault(); navigate(1); }
     if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') { event.preventDefault(); navigate(-1); }
     if (event.key === ' ' && !event.target.closest('button')) { event.preventDefault(); togglePlay(); }
