@@ -5,14 +5,20 @@
   if (!scene || document.getElementById('nana-glow-stars-layer')) return;
   const NS = 'http://www.w3.org/2000/svg';
   // Wall-only positions: keep stickers away from Rilakkuma, bed, mirror, window, desk and posters where possible.
+  // Stickers only in gaps of the wall, away from furniture and window.
   const stars = [
-    [315,176,8,-12],[520,166,8,13],[740,184,7,18],
-    [310,320,8,5],[515,313,7,-12],[746,319,7,7],
-    [315,467,8,10],[752,449,7,19],
-    [1268,125,8,-12],[1480,88,8,-16],[1627,96,7,-8],
-    [1260,273,8,15],[1490,338,7,-7],[1635,365,8,-12],
-    [1291,425,7,11],[1603,435,7,-12]
-  ];  const layer = document.createElementNS(NS,'svg');
+    [302,166,7,10],[316,210,6,-8],[298,255,7,16],
+    [505,222,6,-9],[512,253,7,11],[505,288,6,-17],
+    [570,204,7,4],[574,267,6,12],[577,317,7,-9],
+    [738,215,6,8],[748,259,7,-15],[751,305,6,14],
+    [760,348,7,-6],[760,394,6,17],[767,448,7,-12],
+    [1244,112,7,8],[1260,159,6,-14],[1273,205,7,12],
+    [1281,256,6,-7],[1290,303,7,16],[1302,351,6,-9],
+    [1305,399,7,10],[1305,443,6,-12],
+    [1465,65,7,12],[1485,120,6,-8],[1496,173,7,15],
+    [1644,79,6,-10],[1646,136,7,8],[1647,190,6,16],
+    [1648,250,7,-13],[1647,310,6,9]
+  ]; const layer = document.createElementNS(NS,'svg');
   layer.id = 'nana-glow-stars-layer';
   layer.setAttribute('viewBox','0 0 1670 942');
   layer.setAttribute('preserveAspectRatio','none');
