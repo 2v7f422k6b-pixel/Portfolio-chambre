@@ -71,27 +71,41 @@
   }
 
   // A preview oracle until the full fortune-cookie game is illustrated.
+  // Fortunes are stored as bilingual pairs instead of relying on the
+  // generic DOM translator, so fresh messages always use the selected language.
   const fortunes=[
-    'Quelque chose de joli se cache dans un détail.',
-    'Aujourd’hui, suis une idée un peu bizarre.',
-    'Une rencontre inattendue apportera une histoire.',
-    'Tu trouveras peut-être la réponse dans un livre.',
-    'Le hasard a de très bonnes manières.',
-    'Une petite création vaut mieux qu’une grande hésitation.',
-    'Les étoiles ont oublié de te prévenir : tout peut changer.',
-    'Tu as le droit de recommencer la page.',
-    'Ton prochain détour pourrait bien être le bon.',
-    'Ce soir, laisse une place à l’imprévu.'
+    {fr:'Quelque chose de joli se cache dans un détail.',en:'Something lovely is hiding in the details.'},
+    {fr:'Aujourd’hui, suis une idée un peu bizarre.',en:'Today, follow a slightly strange idea.'},
+    {fr:'Une rencontre inattendue apportera une histoire.',en:'An unexpected encounter will bring a story.'},
+    {fr:'Tu trouveras peut-être la réponse dans un livre.',en:'You might find the answer in a book.'},
+    {fr:'Le hasard a de très bonnes manières.',en:'Chance has impeccable manners.'},
+    {fr:'Une petite création vaut mieux qu’une grande hésitation.',en:'One little creation beats a thousand doubts.'},
+    {fr:'Les étoiles ont oublié de te prévenir : tout peut changer.',en:'The stars forgot to tell you: everything can change.'},
+    {fr:'Tu as le droit de recommencer la page.',en:'You are allowed to start the page over.'},
+    {fr:'Ton prochain détour pourrait bien être le bon.',en:'Your next detour might be the right one.'},
+    {fr:'Ce soir, laisse une place à l’imprévu.',en:'Tonight, leave a little room for the unexpected.'}
   ];
-  function fortune(){
+  let currentFortune=null;
+  function currentLanguage(){
+    try{return localStorage.getItem('portfolio-language-v2')==='en'?'en':'fr'}
+    catch(_){return document.documentElement.lang==='en'?'en':'fr'}
+  }
+  function renderFortune(){
     const toast=document.getElementById('toast');
-    if(!toast)return;
-    const phrase=fortunes[Math.floor(Math.random()*fortunes.length)];
-    toast.textContent='🥠 '+phrase;
+    if(!toast||currentFortune===null)return;
+    toast.textContent='🥠 '+fortunes[currentFortune][currentLanguage()];
     toast.hidden=false;
     clearTimeout(fortune.timer);
-    fortune.timer=setTimeout(()=>{toast.hidden=true;},5200);
+    fortune.timer=setTimeout(()=>{toast.hidden=true;currentFortune=null;},6500);
   }
+  function fortune(){
+    currentFortune=Math.floor(Math.random()*fortunes.length);
+    renderFortune();
+  }
+  document.addEventListener('portfolio-language-change',()=>{
+    if(currentFortune!==null)renderFortune();
+    hit.setAttribute('aria-label',currentLanguage()==='en'?'Open a fortune cookie':'Ouvrir un fortune cookie');
+  });
 
   let panel=null, text=null, sizeInput=null, sizeLabel=null, angleInput=null, angleLabel=null;
   function updateEditor(){
