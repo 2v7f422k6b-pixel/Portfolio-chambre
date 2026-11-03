@@ -10,7 +10,8 @@
   const W = 256, H = 246;
   const roomW = 1670, roomH = 942;
   const key = 'nana-wall-lamp-perspective-v1';
-  const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
+  // The lamp has its OWN editor URL, independent of the poster and mirror editor.
+  const editing = new URLSearchParams(location.search).get('lampEdit') === '1';
   // Provisional wall location: user can export precise corners once aligned.
   const defaultQuad = [[1184,248],[1304,236],[1308,352],[1187,365]];
 
@@ -163,7 +164,7 @@
   });
   if (!editing) return;
 
-  // In edit mode moving the mirror must not trigger the dress-up interaction.
+  // In lamp-edit mode, neither click nor drag should toggle the theme.
   group.addEventListener('click',event=>{
     if(event.target===hit || event.target.closest('[data-lamp-corner]')){
       event.preventDefault();
@@ -213,13 +214,44 @@
   window.addEventListener('pointercancel',stopDrag,true);
   window.addEventListener('blur',()=>stopDrag({}));
 
-  const panel=document.getElementById('poster-edit-panel');
-  if (panel) {
+  // A dedicated panel means the lamp link never opens the mirror/poster editor.
+  const panel=document.createElement('section');
+  panel.id='wall-lamp-editor-panel';
+  panel.setAttribute('aria-label','Réglage de la lampe fleur');
+  panel.style.cssText =
+    'position:fixed;z-index:100010;top:56px;left:12px;' +
+    'width:min(310px,calc(100vw - 30px));max-height:calc(100dvh - 78px);' +
+    'overflow:auto;box-sizing:border-box;background:#fff4fa;color:#ff173b;' +
+    'border:2px solid #ff173b;padding:12px;' +
+    'box-shadow:3px 3px 0 #ff173b;font:14px/1.4 system-ui,sans-serif';
+
+  const bar=document.createElement('div');
+  bar.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:10px';
+  const title=document.createElement('strong');
+  title.textContent='LAMPE FLEUR — Réglage';
+  title.style.flex='1';
+  bar.appendChild(title);
+  const side=document.createElement('button');
+  side.type='button';
+  side.textContent='→ À droite';
+  side.style.cssText='border:1px solid #ff173b;color:#ff173b;background:#fff;padding:5px 7px;cursor:pointer;font:12px system-ui,sans-serif';
+  side.addEventListener('click',()=>{
+    const rect=panel.getBoundingClientRect();
+    const right=rect.left + rect.width/2 <= innerWidth/2;
+    const left=right ? innerWidth-rect.width-12 : 12;
+    panel.style.setProperty('left',Math.max(0,left)+'px','important');
+    side.textContent=right?'← À gauche':'→ À droite';
+  });
+  bar.appendChild(side);
+  panel.appendChild(bar);
+  document.body.appendChild(panel);
+
+  {
     const section=document.createElement('div');
     section.id='wall-lamp-editor-controls';
     section.style.cssText='margin-top:10px;padding-top:10px;border-top:1px solid #ff173b;font:12px/1.4 system-ui,sans-serif';
     const label=document.createElement('div');
-    label.textContent='Lampe fleur : glisse le centre pour déplacer ; tire les 4 ronds pour la perspective.';
+    label.textContent='Déplace la fleur par le centre. Tire sur les quatre ronds pour ajuster la perspective. En mode Play, elle allume ou éteint la lumière.';
     label.style.marginBottom='6px';
     section.append(label);
     const controls=document.createElement('div');
@@ -264,5 +296,11 @@
     });
     section.append(controls);
     panel.appendChild(section);
+  }
+  // Open the bedroom automatically from this dedicated calibration link.
+  // No change to the normal portfolio landing page.
+  const enterPlay=document.querySelector('#welcome [data-mode="play"]');
+  if (enterPlay && !document.getElementById('app')?.classList.contains('mode-play')) {
+    enterPlay.click();
   }
 })();
