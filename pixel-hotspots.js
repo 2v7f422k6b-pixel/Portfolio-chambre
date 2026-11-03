@@ -5,7 +5,7 @@
   const scene=document.getElementById('play-scene');
   const svg=document.getElementById('hotspots');
   if(!scene||!svg)return;
-  const selector='polygon[data-open],polygon[data-type="poster"],polygon[data-mv-open],polygon[data-cat-pet],polygon[data-vase-petal]';
+  const selector='polygon[data-open],polygon[data-type="poster"],polygon[data-mv-open],polygon[data-cat-pet],polygon[data-vase-petal],polygon[data-figurine-speech]';
   // Zones loaded asynchronously (including the vase) must be queried at click time.
   scene.addEventListener('click',event=>{
     if(!event.isTrusted||event.detail===0)return;
