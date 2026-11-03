@@ -10,6 +10,7 @@
     ['.welcome-top', 'rule', 69],
     ['.tile-art', 'frame', 72],
     ['#window-shade .project-card .project-icon', 'frame', 73],
+    ['#window-shade .project-card .project-preview', 'frame', 74],
     ['#window-shade .traffic button', 'frame', 75],
     ['.welcome-panel', 'frame', 71],
     ['.mode-tile', 'frame', 101],
