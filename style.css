@@ -567,3 +567,84 @@ html body .phone-device .phone-screen .phone-status span.phone-island::before,ht
  outline:2px solid currentColor;
  outline-offset:3px;
 }
+
+/* GearNews ring light series — two Instagram episodes, more to follow. */
+.gearnews-ring-series {
+  width:min(570px,100%);
+  margin:0 auto;
+  padding:clamp(4px,1vw,12px);
+  font-family:"Nana Trace UI",Arial,sans-serif;
+}
+.gearnews-ring-series .gearnews-ring-kicker {
+  font-size:clamp(12px,2vw,14px);
+  letter-spacing:.035em;
+  color:#ff173b;
+  margin:0 0 8px;
+}
+.gearnews-ring-series h2 {
+  color:#ff173b;
+  font-size:clamp(26px,4.5vw,40px);
+  line-height:1.15;
+  margin:0 0 9px;
+  letter-spacing:0;
+}
+.gearnews-ring-series .gearnews-ring-intro {
+  font-size:clamp(14px,2.3vw,17px);
+  line-height:1.45;
+  margin:0 0 19px;
+  color:#ff173b;
+}
+.gearnews-ring-episodes {display:grid;gap:14px;}
+.gearnews-ring-series .gearnews-ring-episode {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  min-height:93px;
+  padding:14px 19px;
+  background:#fff2fc;
+  border:2px solid #ff173b;
+  border-radius:14px 9px 12px 8px / 10px 13px 9px 14px;
+  box-shadow:2px 3px 0 rgba(255,23,59,.13);
+  color:#ff173b;
+  text-decoration:none;
+  transform:rotate(-.35deg);
+  transition:transform .2s ease,background-color .2s ease;
+}
+.gearnews-ring-series .gearnews-ring-episode:nth-child(2) {
+  border-radius:9px 14px 8px 12px / 14px 8px 12px 9px;
+  transform:rotate(.4deg);
+}
+.gearnews-ring-series .gearnews-ring-episode:is(:hover,:focus-visible) {
+  transform:translateY(-3px) rotate(0);
+  background:#ffe1f1;
+  box-shadow:2px 5px 0 rgba(255,23,59,.16);
+}
+.gearnews-ring-number {
+  font-size:clamp(30px,5.5vw,44px);
+  line-height:1;
+  flex:0 0 49px;
+  color:#ff173b;
+}
+.gearnews-ring-copy {display:grid;gap:3px;flex:1;min-width:0;}
+.gearnews-ring-copy strong {
+  font-size:clamp(18px,3vw,23px);
+  line-height:1.2;
+}
+.gearnews-ring-copy small {font-size:13px;opacity:.9;}
+.gearnews-ring-arrow {font-size:24px;line-height:1;}
+.gearnews-ring-series .gearnews-ring-more {
+  margin:16px 0 0;
+  font-size:clamp(14px,2vw,16px);
+  color:#ff173b;
+}
+html[data-theme="night"] .gearnews-ring-series .gearnews-ring-episode {
+  background:#653f8a;
+}
+html[data-theme="night"] .gearnews-ring-series .gearnews-ring-episode:is(:hover,:focus-visible) {
+  background:#7b48a2;
+}
+@media(max-width:550px){
+  .gearnews-ring-series .gearnews-ring-episode {padding:12px 14px;min-height:80px;gap:11px;}
+  .gearnews-ring-number {flex-basis:37px;}
+}
+
