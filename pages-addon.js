@@ -37,7 +37,7 @@
        </a>
        <div class="pages-item-meta"><span>${escapeHTML(topic)}</span><span>${escapeHTML(date)}</span></div>
        <h3><a href="${escapeHTML(safeURL(url))}" target="_blank" rel="noopener noreferrer">${escapeHTML(title)}</a></h3>
-       <p class="pages-original-language">${isFrench()?'Article rédigé à l’origine en français.':'Originally written in French.'}</p>
+       ${isFrench()?'':'<p class="pages-original-language">Originally written in French.</p>'}
        <div class="pages-item-foot"><span>${escapeHTML(s.name)}</span><a href="${escapeHTML(safeURL(url))}" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir l'article : ${escapeHTML(title)}">${archived?'Lire l’archive ↗':'Lire l’article ↗'}</a></div>
      </article>`;
   }
@@ -78,23 +78,12 @@
   function openEditorialPages(){
     if(typeof window.openWindow!=='function')return;
     sourceFilter='all';searchQuery='';displayMode='covers';
-    window.openWindow('Pages — Editorial Library',`
+    window.openWindow('My Articles',`
       <div id="pages-library" class="pages-library">
-        <div class="pages-masthead">
-          <div class="pages-edition"><span>✳</span> NANA / PORTFOLIO <span>✳</span></div>
-          <div class="pages-edition-right">VOL. 01 <span class="pages-edition-star">✦</span> WRITING ARCHIVE</div>
-        </div>
         <div class="pages-intro">
           <div class="pages-intro-copy">
-            <span class="pages-kicker">WORDS, IDEAS & CULTURE</span>
-            <h1>Collected <em>Pages.</em></h1>
+            <h1>My Articles</h1>
             <p>A selection of published writing, from music and philosophy to Japanese society and pop culture.</p>
-            <div class="pages-intro-count"><strong>17</strong><span>ARTICLES<br>4 PUBLICATIONS</span><span class="pages-intro-scribble" aria-hidden="true">✷</span></div>
-          </div>
-          <div class="pages-feature" aria-hidden="true">
-            <span class="pages-feature-caption">ISSUE 001 — SELECTED WRITING</span>
-            <div class="pages-feature-inner"><span>the<br><i>written</i><br>word<span class="pages-feature-sun">✳</span></span></div>
-            <span class="pages-feature-footer">NANA STUDIO / MARSEILLE</span>
           </div>
         </div>
         <div class="pages-controls">
@@ -112,7 +101,6 @@
         </div>
         <div class="pages-results"><span id="pages-result-count" aria-live="polite">17 / 17 ARTICLES</span><span>CURATED EDITORIAL ARCHIVE</span></div>
         <div id="pages-collections"></div>
-        <footer class="pages-footer"><span>✳ MADE OF WORDS</span><span>Original publications open in a new tab. La Ppite uses preserved web archives.</span></footer>
       </div>`,'pages-library');
     render();
   }
