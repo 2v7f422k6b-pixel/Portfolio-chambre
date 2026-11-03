@@ -451,3 +451,15 @@ Object.assign(window.NanaI18nExtra.frToEn,{
   "Clown": "Clown",
   "Livre illustré · 66 pages": "Illustrated book · 66 pages"
 });
+
+Object.assign(window.NanaI18nExtra.enToFr,{
+  "Switch to Work Mode": "Passer en mode travail",
+  "Switch to Play Mode": "Passer en mode jeu",
+  "About Me — interactive dress-up game": "À propos — jeu d’habillage interactif",
+  "About Me": "À propos",
+  "Clown Princess — Portfolio": "La Princesse Clown — Portfolio"
+});
+Object.assign(window.NanaI18nExtra.frToEn,{
+  "La Princesse Clown — Portfolio": "Clown Princess — Portfolio",
+  "À propos — jeu d’habillage interactif": "About Me — interactive dress-up game"
+});
