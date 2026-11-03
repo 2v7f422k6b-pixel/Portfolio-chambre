@@ -32,11 +32,13 @@
     }
     return coords.join(' ');
   };
-  const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];\n  stars.forEach(([x,y,r,angle],i)=>{
+  const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
+  stars.forEach(([x,y,r,angle],i)=>{
     const star=document.createElementNS(NS,'polygon');
     star.setAttribute('points',points(x,y,r,angle));
     star.setAttribute('class','nana-phosphor-star');
-    star.style.setProperty('--twinkle-delay',(i%9)*-.7+'s');\n    star.style.setProperty('--day-star-color',palette[i%palette.length]);
+    star.style.setProperty('--twinkle-delay',(i%9)*-.7+'s');
+    star.style.setProperty('--day-star-color',palette[i%palette.length]);
     star.setAttribute('pointer-events','none');
     group.appendChild(star);
   });
