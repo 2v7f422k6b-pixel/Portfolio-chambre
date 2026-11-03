@@ -16,8 +16,8 @@
    m.setAttribute('values',`${level} 0 0 0 0  0 ${level} 0 0 0  0 0 ${level} 0 0  0 0 0 1 0`);
    f.appendChild(m);defs.appendChild(f);
  };
- makeFilter('nana-night-poster',.43);
- makeFilter('nana-night-mirror',.37);
+ makeFilter('nana-night-poster',.24);
+ makeFilter('nana-night-mirror',.60);
  makeFilter('nana-night-cookie',.43);
  svg.insertBefore(defs,svg.firstChild);
  const selectors=[
