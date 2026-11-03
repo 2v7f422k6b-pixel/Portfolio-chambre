@@ -92,6 +92,27 @@
     'vector-effect':'non-scaling-stroke','stroke-dasharray':'7 5',
     'pointer-events':'none'
   });
+  // Transparent editor-only drag surface, above all other wall zones.
+  // A visible central grip provides a reliable alternative to grabbing the artwork.
+  const dragSurface = make('polygon',{
+    id:'wall-lamp-drag-surface',
+    'data-lamp-drag':'true',
+    fill:'rgba(255,255,255,0.002)',
+    stroke:'none',
+    'pointer-events':'all',
+    'aria-label':'Déplacer la lampe fleur'
+  });
+  dragSurface.style.cssText='cursor:move;touch-action:none;pointer-events:all!important;fill:rgba(255,255,255,.002)!important';
+  const dragGrip = make('circle',{
+    id:'wall-lamp-center-grip',
+    'data-lamp-drag':'true',
+    r:13,
+    fill:'#fff4fa',stroke:'#ff173b','stroke-width':3,
+    'vector-effect':'non-scaling-stroke',
+    'pointer-events':'all',
+    'aria-label':'Déplacer la lampe entière'
+  });
+  dragGrip.style.cssText='cursor:move;touch-action:none;pointer-events:all!important';
   const handles = [0,1,2,3].map(index => {
     const handle=make('circle',{
       'data-lamp-corner':index,
@@ -103,7 +124,7 @@
     handle.style.cssText='cursor:crosshair;touch-action:none;pointer-events:all';
     return handle;
   });
-  if (editing) editorLayer.append(guide,...handles);
+  if (editing) editorLayer.append(dragSurface,guide,dragGrip,...handles);
   group.append(defs,visual,hit,editorLayer);
   // The mirror is the final SVG layer so it remains clickable above room hotspots.
   svg.appendChild(group);
@@ -139,7 +160,11 @@
     }
     hit.setAttribute('d','M '+oval.map(point=>point.join(' ')).join(' L ')+' Z');
     if(editing){
+      dragSurface.setAttribute('points',pointsToString(p));
       guide.setAttribute('points',pointsToString(p));
+      const mid=center(p);
+      dragGrip.setAttribute('cx',mid[0]);
+      dragGrip.setAttribute('cy',mid[1]);
       handles.forEach((handle,index)=>{
         handle.setAttribute('cx',p[index][0]);
         handle.setAttribute('cy',p[index][1]);
@@ -167,7 +192,7 @@
 
   // In lamp-edit mode, neither click nor drag should toggle the theme.
   group.addEventListener('click',event=>{
-    if(event.target===hit || event.target.closest('[data-lamp-corner]')){
+    if(event.target===hit || event.target.closest('[data-lamp-corner],[data-lamp-drag]')){
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -176,7 +201,8 @@
   let drag=null;
   group.addEventListener('pointerdown',event=>{
     const cornerEl=event.target.closest('[data-lamp-corner]');
-    if(event.target!==hit && !cornerEl) return;
+    const dragEl=event.target.closest('[data-lamp-drag]');
+    if(event.target!==hit && !cornerEl && !dragEl) return;
     if(event.pointerType==='mouse' && event.button!==0) return;
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -252,7 +278,7 @@
     section.id='wall-lamp-editor-controls';
     section.style.cssText='margin-top:10px;padding-top:10px;border-top:1px solid #ff173b;font:12px/1.4 system-ui,sans-serif';
     const label=document.createElement('div');
-    label.textContent='Déplace la fleur par le centre. Tire sur les quatre ronds pour ajuster la perspective. En mode Play, elle allume ou éteint la lumière.';
+    label.textContent='Pour déplacer toute la lampe, glisse le rond central ou la fleur. Les quatre ronds aux angles règlent sa perspective.';
     label.style.marginBottom='6px';
     section.append(label);
     const controls=document.createElement('div');
@@ -274,6 +300,15 @@
       ]);
       render();store();
     }
+    // Arrow buttons also allow positioning on touch devices where drag may be difficult.
+    function nudge(dx,dy) {
+      state.quad=state.quad.map(point=>[point[0]+dx,point[1]+dy]);
+      render();store();
+    }
+    button('←',()=>nudge(-12,0));
+    button('↑',()=>nudge(0,-12));
+    button('↓',()=>nudge(0,12));
+    button('→',()=>nudge(12,0));
     button('− Petit',()=>scale(.91));
     button('+ Grand',()=>scale(1.1));
     button('Redresser',()=>{
