@@ -66,28 +66,131 @@ const frenchGameOriginals={
   "Double expresso": "Double espresso"
 };
 Object.assign(dictionary,{"My Polaroids — Léna":"Mes Polaroïds — Léna","Coloring Book ♡ — Portfolio":"Livre de coloriage ♡ — Portfolio","Latte Lab ♡":"Atelier latte ♡"});
+Object.assign(dictionary, {
+  "♥ COLORING BOOK ♥":"♥ LIVRE DE COLORIAGE ♥",
+  "Close Latte Lab":"Fermer l’atelier latte",
+  "Latte Lab mini-game":"Mini-jeu de l’atelier latte",
+  "Your latte":"Ton latte",
+  "Animated latte contents":"Contenu animé du latte",
+  "Draw your latte art here with a finger or pointer":"Dessine sur la mousse avec ton doigt, une souris ou un stylet",
+  "Hand-drawn pink latte mug":"Tasse rose dessinée à la main"
+});
 const reverse=Object.fromEntries(Object.entries(dictionary).map(([en,fr])=>[fr,en]));
 Object.assign(reverse,frenchGameOriginals);
 for(const [fr,en] of Object.entries(frenchGameOriginals)){
   if(dictionary[en]===undefined)dictionary[en]=fr;
 }
+
 let language='fr',busy=false;
-try{language=localStorage.getItem('portfolio-language-v2')==='en'?'en':'fr'}catch(e){}
-const originals=new WeakMap();
-function translate(root=document.body){if(!root||busy)return;busy=true;try{
-const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
-while((node=walker.nextNode())){if(node.parentElement?.closest('script,style,textarea,code'))continue;
-const value=node.nodeValue,trim=value.trim();if(!trim)continue;
-let original=originals.get(node);if(original===undefined||value.trim()!==original.trim()&&value.trim()!==dictionary[original.trim()]){original=reverse[trim]||value;originals.set(node,original)}
-const key=original.trim();let translated=language==='fr'?(dictionary[key]||original):original;
-if(language==='fr'&&translated===original){translated=translated.replace(/^Steam milk · (\d+)\/3$/,'Faire mousser · $1/3').replace(/^Keep steaming… (\d+) of 3\.$/,'Continue de faire mousser… $1 sur 3.').replace(/^pouring… (\d+) ml$/,'versement… $1 ml').replace(/^Slow and steady… (\d+) ml poured\.$/,'Doucement… $1 ml versés.').replace(/^(Oat|Whole) milk selected\. Steam it until silky!$/,(m,type)=>(type==='Oat'?'Lait d’avoine':'Lait entier')+' sélectionné. Fais-le mousser !').replace(/^Double espresso \+ 15 ml vanilla syrup \+ 160 ml (oat|whole) milk \+ (.*)\. Made by you, with love ♡$/,(m,type,art)=>'Double expresso + 15 ml de sirop de vanille + 160 ml de lait '+(type==='oat'?'d’avoine':'entier')+' + '+(art==='your original latte art'?'ton dessin original':art)+'. Préparé avec amour ♡');}
-const next=original.match(/^\s*/)[0]+translated.trim()+original.match(/\s*$/)[0];if(node.nodeValue!==next)node.nodeValue=next;
+try{language=localStorage.getItem('portfolio-language-v2')==='en'?'en':'fr'}catch(_){}
+const originalTexts=new WeakMap();
+const originalAttributes=new WeakMap();
+const translatedAttributes=['placeholder','title','aria-label','alt'];
+
+function translated(value,target=language){
+  const src=String(value);
+  const start=src.match(/^\s*/)?.[0]||'';
+  const end=src.match(/\s*$/)?.[0]||'';
+  const key=src.trim();
+  if(!key)return src;
+  // The colouring pages generate labels such as "2. Petits plaisirs"
+  // and "♡ Petits plaisirs ♡", not just the raw book titles.
+  let parts=key.match(/^(\d+\.\s+)(.+)$/);
+  if(parts)return start+parts[1]+translated(parts[2],target).trim()+end;
+  parts=key.match(/^(♡\s*)(.+?)(\s*♡)$/);
+  if(parts&&!dictionary[key]&&!reverse[key])
+    return start+parts[1]+translated(parts[2],target).trim()+parts[3]+end;
+
+  const english=reverse[key]||key;
+  let result=target==='fr'?(dictionary[english]||key):english;
+  // Interactive latte labels are rewritten by the game on each step.
+  const steam=english.match(/^Steam milk · (\d)\/3$/)||key.match(/^Faire mousser · (\d)\/3$/);
+  if(steam)result=(target==='fr'?'Faire mousser':'Steam milk')+' · '+steam[1]+'/3';
+  const keep=english.match(/^Keep steaming… (\d) of 3\.$/)||key.match(/^Continue de faire mousser… (\d) sur 3\.$/);
+  if(keep)result=target==='fr'?'Continue de faire mousser… '+keep[1]+' sur 3.':'Keep steaming… '+keep[1]+' of 3.';
+  const pour=english.match(/^pouring… (\d+) ml$/)||key.match(/^versement… (\d+) ml$/);
+  if(pour)result=(target==='fr'?'versement… ':'pouring… ')+pour[1]+' ml';
+  const steady=english.match(/^Slow and steady… (\d+) ml poured\.$/)||key.match(/^Doucement… (\d+) ml versés\.$/);
+  if(steady)result=target==='fr'?'Doucement… '+steady[1]+' ml versés.':'Slow and steady… '+steady[1]+' ml poured.';
+  const milk=english.match(/^(Oat|Whole) milk selected\. Steam it until silky!$/)||key.match(/^Lait (d’avoine|entier) sélectionné\. Fais-le mousser !$/);
+  if(milk){
+    const isOat=milk[1]==='Oat'||milk[1]==='d’avoine';
+    result=target==='fr'?(isOat?'Lait d’avoine':'Lait entier')+' sélectionné. Fais-le mousser !':(isOat?'Oat':'Whole')+' milk selected. Steam it until silky!';
+  }
+  const recipe=english.match(/^Double espresso \+ 15 ml vanilla syrup \+ 160 ml (oat|whole) milk \+ (.+)\. Made by you, with love ♡$/);
+  if(recipe&&target==='fr')result='Double expresso + 15 ml de sirop de vanille + 160 ml de lait '+(recipe[1]==='oat'?'d’avoine':'entier')+' + '+(recipe[2]==='your original latte art'?'ton dessin original':recipe[2])+'. Préparé avec amour ♡';
+  return start+result+end;
 }
-for(const el of [root,...root.querySelectorAll('*')]){for(const a of ['placeholder','aria-label','title','alt']){if(!el.hasAttribute?.(a))continue;const value=el.getAttribute(a),en=reverse[value]||value,translated=language==='fr'?(dictionary[en]||value):en;if(translated!==value)el.setAttribute(a,translated)}}
-}finally{busy=false}}
-window.addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.type!=='portfolio-language')return;language=e.data.language==='en'?'en':'fr';document.documentElement.lang=language;translate();updateTitle()});
+
+function translate(root=document.body){
+  if(!root||busy)return;
+  busy=true;
+  try{
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let node;
+    while((node=walker.nextNode())){
+      if(node.parentElement?.closest('script,style,textarea,code,[contenteditable],[translate="no"]'))continue;
+      const current=node.nodeValue;
+      if(!current.trim())continue;
+      const old=originalTexts.get(node);
+      const base=old===undefined||![old,translated(old,'fr'),translated(old,'en')].includes(current)?current:old;
+      originalTexts.set(node,base);
+      const next=translated(base,language);
+      if(current!==next)node.nodeValue=next;
+    }
+    const elements=[...(root.nodeType===1?[root]:[]),...(root.querySelectorAll?.('*')||[])];
+    for(const el of elements){
+      if(el.closest('script,style,[translate="no"]'))continue;
+      let stored=originalAttributes.get(el);
+      if(!stored){stored={};originalAttributes.set(el,stored);}
+      for(const attr of translatedAttributes){
+        if(!el.hasAttribute(attr))continue;
+        const value=el.getAttribute(attr),old=stored[attr];
+        const base=old===undefined||![old,translated(old,'fr'),translated(old,'en')].includes(value)?value:old;
+        stored[attr]=base;
+        const next=translated(base,language);
+        if(value!==next)el.setAttribute(attr,next);
+      }
+    }
+  }finally{busy=false;}
+}
 const originalTitle=document.title;
-function updateTitle(){const english=reverse[originalTitle]||originalTitle;document.title=language==='fr'?(dictionary[english]||originalTitle):english;}
-function init(){translate();updateTitle();new MutationObserver(()=>translate()).observe(document.body,{subtree:true,childList:true,characterData:true});try{parent.postMessage({type:'portfolio-language-request'},location.origin)}catch(e){}}
+function applyLanguage(next){
+  language=next==='en'?'en':'fr';
+  document.documentElement.lang=language;
+  document.title=translated(originalTitle,language);
+  translate();
+  document.dispatchEvent(new CustomEvent('portfolio-game-language-change',{detail:{language}}));
+}
+window.addEventListener('message',event=>{
+  if(event.origin!==location.origin||event.data?.type!=='portfolio-language')return;
+  applyLanguage(event.data.language);
+});
+window.addEventListener('storage',event=>{
+  if(event.key==='portfolio-language-v2')applyLanguage(event.newValue);
+});
+function init(){
+  applyLanguage(language);
+  const observer=new MutationObserver(records=>{
+    if(busy)return;
+    const roots=new Set();
+    for(const r of records){
+      if(r.type==='childList'){
+        r.addedNodes.forEach(n=>{
+          if(n.nodeType===1)roots.add(n);
+          else if(n.nodeType===3&&n.parentElement)roots.add(n.parentElement);
+        });
+      }else if(r.type==='characterData'&&r.target.parentElement)roots.add(r.target.parentElement);
+      else if(r.type==='attributes')roots.add(r.target);
+    }
+    if(!roots.size)return;
+    observer.disconnect();
+    for(const node of roots)if(node&&document.body.contains(node))translate(node);
+    observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:translatedAttributes});
+  });
+  observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:translatedAttributes});
+  try{parent.postMessage({type:'portfolio-language-request'},location.origin)}catch(_){}
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+
 })();
