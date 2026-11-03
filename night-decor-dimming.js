@@ -13,8 +13,7 @@
   for(const [selector,level] of selectors){
    svg.querySelectorAll(selector).forEach(el=>{
     if(el.hasAttribute('filter'))el.removeAttribute('filter');
-    if(night)el.style.setProperty('filter','brightness('+level+')');
-    else el.style.removeProperty('filter');
+    // SVG image opacity is reliable on iPad; CSS filter on transformed SVG images is not.\n    el.style.removeProperty('filter');\n    if(night)el.style.setProperty('opacity',String(level),'important');\n    else el.style.removeProperty('opacity');
    });
   }
  };
