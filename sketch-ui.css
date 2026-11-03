@@ -1175,3 +1175,78 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
     margin:-70px 0 0 2px!important;
   }
 }
+
+
+/* 2026-11-03: restore a single hand-traced red outline to project preview art. */
+html body #window-shade .project-card .project-preview {
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:170px!important;
+  box-sizing:border-box!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow:hidden!important;
+}
+html body #window-shade .project-card .project-preview img {
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  border:0!important;
+  border-radius:0!important;
+}
+html body #window-shade .project-card .project-preview.sketch-ui-frame > .sketch-ui-svg {
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  z-index:6!important;
+  pointer-events:none!important;
+}
+html body #window-shade .project-card .project-preview.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  fill:none!important;
+  stroke:#ff173b!important;
+  stroke-width:1.7!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+html body #window-shade .project-card .project-preview:not(.sketch-ui-frame) {
+  border:2px solid #ff173b!important;
+}
+
+/* Square cover previews for Music & Visual Design, including artist and
+   selected-work grids. No cropping: preserve every original artwork. */
+html body #window-shade .mv-app .mv-cover-art,
+html body #window-shade .mv-app .mv-work-frame {
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:1 / 1!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  display:grid!important;
+  place-items:center!important;
+}
+html body #window-shade .mv-app .mv-cover-art img,
+html body #window-shade .mv-app .mv-work-frame img {
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+}
+html body #window-shade .mv-app .mv-project-hero-art {
+  width:min(100%,300px)!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  justify-self:center!important;
+  box-sizing:border-box!important;
+}
+html body #window-shade .mv-app .mv-feature-main-art,
+html body #window-shade .mv-app .mv-feature-secondary-art {
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+}
