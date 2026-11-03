@@ -14,7 +14,7 @@ function init(){
  {title:'Dress-up',category:'Game',open:'dressup'},
  {title:'Latte Lab',category:'Game',open:'latte'},
  {title:'Tamagotchi',category:'Game',open:'tamagotchi'},
- {title:'My Polaroids',category:'Photos',open:'polaroids'},
+ {title:'My Polaroids',category:'Illustrations',open:'polaroids'},
  {title:'About',category:'About',open:'about'},
  {title:'Contact',category:'Contact',open:'contact'},
  {title:'GABZILLA',category:'Illustration',open:'gabzilla'}
