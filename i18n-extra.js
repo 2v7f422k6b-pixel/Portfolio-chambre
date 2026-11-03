@@ -666,3 +666,9 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "use the Mail application": "utiliser l’application Mail",
   "to write a message without leaving this website.": "pour m’écrire sans quitter ce site."
 });
+
+/* Concise illustrations-gallery copy. */
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "Assorted illustrations": "Illustrations en vrac",
+  "Click any image to view it larger.": "Clique sur une image pour l’agrandir."
+});
