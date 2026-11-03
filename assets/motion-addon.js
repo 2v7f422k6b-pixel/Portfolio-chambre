@@ -18,9 +18,9 @@
 
   // Overrides only the original 'Motion coming soon' window.
   window.openMotion = function openMotionGallery() {
-    window.openWindow('Motion — Animation', `
-      <div class="eyebrow">Portfolio / Motion</div>
-      <h2>Motion</h2>
+    window.openWindow('Animations — Vidéos', `
+      <div class="eyebrow">Portfolio / Animations</div>
+      <h2>Animations</h2>
       <p class="section-lead">2D animations, moving images and animated loops.</p>
       <section id="motion-viewer" class="motion-viewer" hidden aria-label="Animation player">
         <button class="soft-btn" type="button" data-motion-back>← All animations</button>
