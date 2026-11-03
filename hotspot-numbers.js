@@ -5,7 +5,6 @@
 
   const scene = document.getElementById('play-scene');
   const svg = document.getElementById('hotspots');
-  const camera = document.getElementById('instax-hotspot');
   if (!scene || !svg) return;
 
   const W = 1670, H = 942;
@@ -80,9 +79,7 @@
     const posters = polygons.filter(el => el.dataset.type === 'poster')
       .sort((a,b) => Number(a.dataset.index) - Number(b.dataset.index));
     const other = polygons.filter(el => el.dataset.type !== 'poster');
-    const all = [...posters, ...other];
-    if (camera) all.push(camera);
-    return all;
+    return [...posters, ...other];
   }
   let labels = new Map();
   function redraw() {
@@ -103,16 +100,8 @@
         ? 'Affiche ' + (Number(target.dataset.index) + 1)
         : (target.getAttribute('aria-label') || 'Zone cliquable');
       label.setAttribute('title', number + ' · ' + description);
-      let px, py;
-      if (target === camera) {
-        const r = camera.getBoundingClientRect(), s = scene.getBoundingClientRect();
-        // The Welcome screen hides the scene on initial load; avoid NaN positions.
-        px = s.width ? (r.left + r.width / 2 - s.left) / s.width * 100 : 14.4;
-        py = s.height ? (r.top + r.height / 2 - s.top) / s.height * 100 : 12.15;
-      } else {
-        const [x, y] = center(target.getAttribute('points'));
-        px = x / W * 100; py = y / H * 100;
-      }
+      const [x, y] = center(target.getAttribute('points'));
+      const px = x / W * 100, py = y / H * 100;
       label.style.left = px + '%';
       label.style.top = py + '%';
     });
