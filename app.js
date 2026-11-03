@@ -97,7 +97,7 @@ function chooseMode(mode,zoom=false){
  const reverseZoom=zoom && previousMode==='work' && mode==='play' && !reduceMotion;
  play.hidden=mode!=='play';work.hidden=mode!=='work' && !reverseZoom;
  // A previously scrolled desktop must reopen at its fixed initial position.
- if(mode==='work' && window.matchMedia('(min-width:761px)').matches)work.scrollTop=0;
+ if(mode==='work')work.scrollTop=0;
  $('#menu-mode').textContent='Accueil';
  const modeSwitch=$('#switch-mode');if(modeSwitch){modeSwitch.textContent=mode==='play'?'Passer en mode Work':'Passer en mode Play';modeSwitch.setAttribute('aria-label',modeSwitch.textContent);modeSwitch.title=modeSwitch.textContent;}
  $('#dock-finder').title='Finder';
