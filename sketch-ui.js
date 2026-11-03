@@ -4,7 +4,7 @@
   const NS = 'http://www.w3.org/2000/svg';
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
-    ['#dock', 'frame', 31],
+    // Dock uses a clean, rounded translucent background without traced outlines.
     ['.mac-window', 'frame', 57],
     ['.window-top', 'rule', 68],
     ['.welcome-top', 'rule', 69],
