@@ -106,8 +106,9 @@
       let px, py;
       if (target === camera) {
         const r = camera.getBoundingClientRect(), s = scene.getBoundingClientRect();
-        px = (r.left + r.width / 2 - s.left) / s.width * 100;
-        py = (r.top + r.height / 2 - s.top) / s.height * 100;
+        // The Welcome screen hides the scene on initial load; avoid NaN positions.
+        px = s.width ? (r.left + r.width / 2 - s.left) / s.width * 100 : 14.4;
+        py = s.height ? (r.top + r.height / 2 - s.top) / s.height * 100 : 12.15;
       } else {
         const [x, y] = center(target.getAttribute('points'));
         px = x / W * 100; py = y / H * 100;
