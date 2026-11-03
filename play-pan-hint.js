@@ -31,7 +31,7 @@
     #nana-play-pan-hint .pan-hint-visual {z-index:2;}
     #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
       display:block;position:absolute;left:50%;bottom:-24px;
-      width:auto;height:55dvh;max-width:none;max-height:none;
+      width:auto;height:calc(50dvh + 4px);max-width:none;max-height:none;
       object-fit:contain;z-index:1;pointer-events:none;
       filter:none;-webkit-backface-visibility:hidden;backface-visibility:hidden;
       animation:nana-touch-hand-swipe 3.4s ease-in-out infinite;
@@ -56,7 +56,7 @@
     }
     @media(min-width:700px) and (orientation:landscape) {
       #nana-play-pan-hint.touch-hint .pan-hint-hand-photo {
-        height:55dvh;max-width:none;
+        height:calc(50dvh + 4px);max-width:none;
       }
     }
     @media(prefers-reduced-motion:reduce) {
