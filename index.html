@@ -543,6 +543,27 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
   min-width:100% !important;
 }
 #play-viewport #hotspots {touch-action:pan-x pan-y pinch-zoom;}
+
+/* Keep the room in its own scroll box. Flex sizing could clamp its
+   vertical scroll range before the bottom of the illustration. */
+#app.mode-play #play-viewport {
+  display: block !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+#app.mode-play #play-viewport > #play-scene {
+  display: block !important;
+  width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important;
+  height: auto !important;
+  min-height: 56.40718563vw !important;
+  max-height: none !important;
+  aspect-ratio: 1670 / 942 !important;
+  margin: 0 !important;
+}
+/* Reserve a small scroll clearance for the fixed dock so the bottom can be seen. */
+#app.mode-play #play-viewport { padding-bottom: 72px !important; }
 </style>
 
 <style id="nana-night-poster-stable">
