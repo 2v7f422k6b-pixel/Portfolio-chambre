@@ -204,6 +204,7 @@ function openApp(name,index){
   case 'pages':(window.openEditorialPages||window.openPages||openPages)();break;
   case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
   case 'book':openBook();break;
+   case 'do-nothing':window.NanaDoNothing?.open();break;
   case 'reading-room':
   case 'souvenues':
   case 'word-lab':{
