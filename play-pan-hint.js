@@ -1,90 +1,80 @@
 'use strict';
 
-/* A one-time, bilingual Play Mode hint only when the room is larger than
-   the visible viewport. Kept separate from the room/hotspot layout. */
+/* A subtle, non-blocking four-direction hint on entering Play Mode.
+   Only appears when the scene overflows the available viewport. */
 (() => {
   const app = document.getElementById('app');
   const viewport = document.getElementById('play-viewport');
   const scene = document.getElementById('play-scene');
   if (!app || !viewport || !scene) return;
 
-  const STORAGE_KEY = 'nana-play-pan-hint-seen-v1';
+  const STORAGE_KEY = 'nana-play-pan-hint-seen-v2';
   let hasShown = false;
   try { hasShown = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (_) {}
 
   const style = document.createElement('style');
   style.id = 'nana-play-pan-hint-styles';
   style.textContent = [
-    '#nana-play-pan-hint{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:20px;background:rgba(38,19,55,.27);backdrop-filter:blur(2px);}',
-    '#nana-play-pan-hint .pan-hint-card{position:relative;box-sizing:border-box;width:min(410px,100%);padding:28px 29px 25px;background:#fff2fc;border:2px solid #ff173b;border-radius:12px 8px 14px 9px / 9px 13px 8px 12px;box-shadow:0 0 15px rgba(255,23,59,.17),5px 6px 0 rgba(255,23,59,.09);transform:rotate(-.35deg);color:#ff173b;font-family:"Nana Trace UI",Arial,sans-serif;text-align:center;line-height:1.4;}',
-    '#nana-play-pan-hint .pan-hint-title{margin:0 15px 12px;font-size:clamp(22px,4vw,29px);font-weight:700;line-height:1.2;}',
-    '#nana-play-pan-hint .pan-hint-text{margin:0 0 23px;font-size:clamp(15px,2.7vw,18px);line-height:1.45;}',
-    '#nana-play-pan-hint button{font:inherit;color:#ff173b;cursor:pointer;}',
-    '#nana-play-pan-hint .pan-hint-dismiss{min-width:112px;padding:9px 19px;background:transparent;border:2px solid #ff173b;border-radius:8px 12px 9px 13px / 12px 8px 12px 9px;font-size:17px;}',
-    '#nana-play-pan-hint .pan-hint-dismiss:hover,#nana-play-pan-hint .pan-hint-dismiss:focus-visible{background:rgba(255,23,59,.1);}',
-    '#nana-play-pan-hint .pan-hint-close{position:absolute;top:7px;right:10px;padding:2px 7px;border:0;background:transparent;font-size:23px;line-height:1;}',
-    '#nana-play-pan-hint button:focus-visible{outline:2px dashed #ff173b;outline-offset:4px;}',
-    'html[data-theme="night"] #nana-play-pan-hint .pan-hint-card{background:#e9b5ff;}',
-    '@media(max-width:500px){#nana-play-pan-hint .pan-hint-card{padding:26px 21px 22px;}}'
+    '/* Remove the old mobile swipe label: the arrows are the entire hint. */',
+    '#app.mode-play #play-viewport::before {content:none!important;display:none!important;}',
+    '#nana-play-pan-hint{position:fixed;inset:0;z-index:110;display:grid;place-items:center;pointer-events:none;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
+    '#nana-play-pan-hint .pan-hint-arrows{position:relative;width:96px;height:96px;border-radius:50%;background:rgba(255,247,252,.10);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);animation:nana-pan-appear 2.8s ease-in-out both;}',
+    '#nana-play-pan-hint .pan-hint-arrow{position:absolute;display:block;width:28px;height:28px;line-height:28px;text-align:center;color:rgba(255,23,59,.85);font-family:Arial,sans-serif;font-size:26px;font-weight:400;text-shadow:0 0 5px rgba(255,242,252,.4);animation:nana-pan-nudge 1.2s ease-in-out infinite alternate;}',
+    '#nana-play-pan-hint .pan-hint-up{top:4px;left:34px;--tx:0px;--ty:-4px;}',
+    '#nana-play-pan-hint .pan-hint-down{bottom:4px;left:34px;--tx:0px;--ty:4px;}',
+    '#nana-play-pan-hint .pan-hint-left{left:4px;top:34px;--tx:-4px;--ty:0px;}',
+    '#nana-play-pan-hint .pan-hint-right{right:4px;top:34px;--tx:4px;--ty:0px;}',
+    '@keyframes nana-pan-nudge{from{transform:translate(0,0);opacity:.66}to{transform:translate(var(--tx),var(--ty));opacity:1}}',
+    '@keyframes nana-pan-appear{0%{opacity:0;transform:scale(.95)}12%{opacity:1;transform:scale(1)}72%{opacity:1}100%{opacity:0}}',
+    'html[data-theme="night"] #nana-play-pan-hint .pan-hint-arrows{background:rgba(255,255,255,.05);}',
+    'html[data-theme="night"] #nana-play-pan-hint .pan-hint-arrow{color:rgba(255,194,232,.9);}',
+    '@media(prefers-reduced-motion:reduce){#nana-play-pan-hint .pan-hint-arrows,#nana-play-pan-hint .pan-hint-arrow{animation:none!important;}}'
   ].join('\n');
   document.head.appendChild(style);
 
-  let overlay = null;
-  function labels() {
-    return document.documentElement.lang === 'en'
-      ? { title: "Psst… there's more to explore!",
-          body: 'Swipe or scroll in any direction to explore the whole room.',
-          dismiss: 'Got it!',
-          close: 'Close' }
-      : { title: 'Psst… il reste des choses à découvrir !',
-          body: "Fais défiler l'écran dans toutes les directions pour explorer la chambre.",
-          dismiss: 'Compris !',
-          close: 'Fermer' };
+  let hint = null;
+  let timeoutId = null;
+  function removeHint() {
+    if (!hint) return;
+    hint.remove();
+    hint = null;
+    clearTimeout(timeoutId);
+    viewport.removeEventListener('scroll', removeHint);
+    document.removeEventListener('wheel', removeHint);
+    document.removeEventListener('touchstart', removeHint);
+    document.removeEventListener('pointerdown', removeHint);
   }
-  function updateLanguage() {
-    if (!overlay) return;
-    const copy = labels();
-    overlay.querySelector('.pan-hint-title').textContent = copy.title;
-    overlay.querySelector('.pan-hint-text').textContent = copy.body;
-    overlay.querySelector('.pan-hint-dismiss').textContent = copy.dismiss;
-    overlay.querySelector('.pan-hint-close').setAttribute('aria-label', copy.close);
-  }
-  function dismiss() {
-    if (!overlay) return;
-    overlay.remove();
-    overlay = null;
-    document.removeEventListener('keydown', onKeyDown);
-    document.getElementById('home-menu')?.focus({ preventScroll: true });
-  }
-  function onKeyDown(event) {
-    if (event.key === 'Escape') dismiss();
-  }
-  function show() {
-    if (overlay) return;
+
+  function showHint() {
+    if (hint || hasShown) return;
     hasShown = true;
     try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
-    overlay = document.createElement('div');
-    overlay.id = 'nana-play-pan-hint';
-    overlay.setAttribute('data-no-translate', '');
-    overlay.innerHTML = '<section class="pan-hint-card" role="dialog" aria-modal="true" aria-labelledby="pan-hint-heading" aria-describedby="pan-hint-description">' +
-      '<button class="pan-hint-close" type="button" aria-label="Close">×</button>' +
-      '<h2 class="pan-hint-title" id="pan-hint-heading"></h2>' +
-      '<p class="pan-hint-text" id="pan-hint-description"></p>' +
-      '<button class="pan-hint-dismiss" type="button"></button></section>';
-    document.body.appendChild(overlay);
-    updateLanguage();
-    overlay.querySelectorAll('button').forEach(button => button.addEventListener('click', dismiss));
-    overlay.addEventListener('click', event => { if (event.target === overlay) dismiss(); });
-    document.addEventListener('keydown', onKeyDown);
-    overlay.querySelector('.pan-hint-dismiss').focus({ preventScroll: true });
+    hint = document.createElement('div');
+    hint.id = 'nana-play-pan-hint';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML =
+      '<div class="pan-hint-arrows">' +
+      '<span class="pan-hint-arrow pan-hint-up">↑</span>' +
+      '<span class="pan-hint-arrow pan-hint-down">↓</span>' +
+      '<span class="pan-hint-arrow pan-hint-left">←</span>' +
+      '<span class="pan-hint-arrow pan-hint-right">→</span>' +
+      '</div>';
+    document.body.appendChild(hint);
+    timeoutId = setTimeout(removeHint, 2800);
+    viewport.addEventListener('scroll', removeHint, {passive:true});
+    document.addEventListener('wheel', removeHint, {passive:true});
+    document.addEventListener('touchstart', removeHint, {passive:true});
+    document.addEventListener('pointerdown', removeHint, {passive:true});
   }
+
   function check() {
-    if (hasShown || overlay || !app.classList.contains('mode-play') || viewport.hidden) return;
-    // Compare the actual scene dimensions, ignoring temporary zoom transforms.
+    if (hasShown || hint || !app.classList.contains('mode-play') || viewport.hidden) return;
+    // Layout size rather than transforms: the iMac zoom should not trigger the hint.
     const horizontalOverflow = scene.offsetWidth - viewport.clientWidth;
     const verticalOverflow = scene.offsetHeight - viewport.clientHeight;
-    if (horizontalOverflow > 12 || verticalOverflow > 12) show();
+    if (horizontalOverflow > 12 || verticalOverflow > 12) showHint();
   }
+
   let frame = 0;
   function scheduleCheck() {
     if (hasShown) return;
@@ -94,8 +84,10 @@
     });
   }
 
-  new MutationObserver(scheduleCheck).observe(app, { attributes: true, attributeFilter: ['class'] });
-  window.addEventListener('resize', scheduleCheck, { passive: true });
-  document.addEventListener('portfolio-language-change', updateLanguage);
+  new MutationObserver(() => {
+    if (!app.classList.contains('mode-play')) removeHint();
+    else scheduleCheck();
+  }).observe(app, {attributes:true,attributeFilter:['class']});
+  window.addEventListener('resize', scheduleCheck, {passive:true});
   scheduleCheck();
 })();
