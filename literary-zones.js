@@ -143,6 +143,23 @@
      aucune citation protégée n'est reproduite sur ce site public. */
   const souvenuesEntries = [
     {
+      "id": "sappho",
+      "name": "Sappho",
+      "dates": "",
+      "title": "Fragment attribué à Sappho",
+      "kind": "Poésie",
+      "kindNote": "Traduction et source non indiquées",
+      "note": "",
+      "status": "transcribed",
+      "source": "https://www.facebook.com/lessouvenues",
+      "section": "Archives 1/2",
+      "bg": "#faede6",
+      "ink": "#d2799a",
+      "format": "poesie",
+      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer...",
+      "babelioQuery": "Sappho poèmes"
+    },
+    {
       "id": "morrison",
       "name": "Toni Morrison",
       "dates": "1931–2019",
@@ -300,23 +317,6 @@
       "ink": "#8b5365",
       "format": "poesie",
       "babelioQuery": "May Ziadé Fleurs de rêve"
-    },
-    {
-      "id": "sappho",
-      "name": "Sappho",
-      "dates": "",
-      "title": "Fragment attribué à Sappho",
-      "kind": "Poésie",
-      "kindNote": "Traduction et source non indiquées",
-      "note": "",
-      "status": "transcribed",
-      "source": "https://www.facebook.com/lessouvenues",
-      "section": "Archives 1/2",
-      "bg": "#faede6",
-      "ink": "#d2799a",
-      "format": "poesie",
-      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer...",
-      "babelioQuery": "Sappho poèmes"
     },
     {
       "id": "estes",
