@@ -38,7 +38,7 @@
     /* A tiny, slightly crooked hand-drawn spider sneaks out as the corner lifts. */
     #nana-rug-secret .rug-spider-run{
       opacity:0;
-      transform:translate(610px,900px) scale(.45);
+      transform:translate(610px,900px) scale(.28);
       transform-origin:0 0;
       pointer-events:none;
     }
@@ -52,29 +52,28 @@
       animation:nana-spider-scuttle .13s .62s 18 alternate ease-in-out;
     }
     #nana-rug-secret .rug-spider-ink{
-      stroke:#442437;
+      stroke:#17345c;
     }
     #nana-rug-secret .rug-spider-body{
-      fill:#382235;
-      stroke:#ea4565;
+      fill:#102847;
+      stroke:#274a78;
     }
     html[data-theme="night"] #nana-rug-secret .rug-spider-ink{
-      stroke:#25172f;
+      stroke:#050506;
     }
     html[data-theme="night"] #nana-rug-secret .rug-spider-body{
-      fill:#24172e;
-      stroke:#bd86e0;
+      fill:#09090b;
+      stroke:#141418;
     }
     @keyframes nana-spider-dash{
-      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(-13deg) scale(.45)}
-      13%    {opacity:1;transform:translate(621px,891px) rotate(12deg) scale(.75)}
-      24%    {opacity:1;transform:translate(640px,875px) rotate(-12deg) scale(.88)}
-      35%    {opacity:1;transform:translate(665px,882px) rotate(10deg) scale(.87)}
-      46%    {opacity:1;transform:translate(694px,860px) rotate(-8deg) scale(.9)}
-      60%    {opacity:1;transform:translate(721px,867px) rotate(12deg) scale(.88)}
-      74%    {opacity:1;transform:translate(762px,840px) rotate(-11deg) scale(.83)}
-      88%    {opacity:1;transform:translate(804px,852px) rotate(9deg) scale(.76)}
-      100%   {opacity:0;transform:translate(850px,820px) rotate(-12deg) scale(.65)}
+      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(-10deg) scale(.28)}
+      13%    {opacity:1;transform:translate(620px,904px) rotate(12deg) scale(.42)}
+      25%    {opacity:1;transform:translate(628px,918px) rotate(-10deg) scale(.44)}
+      38%    {opacity:1;transform:translate(638px,936px) rotate(11deg) scale(.45)}
+      52%    {opacity:1;transform:translate(648px,958px) rotate(-9deg) scale(.44)}
+      68%    {opacity:1;transform:translate(660px,986px) rotate(10deg) scale(.43)}
+      84%    {opacity:1;transform:translate(673px,1018px) rotate(-8deg) scale(.40)}
+      100%   {opacity:0;transform:translate(688px,1060px) rotate(9deg) scale(.36)}
     }
     @keyframes nana-spider-scuttle{
       from{transform:rotate(-8deg) scaleX(.91)}
@@ -84,7 +83,7 @@
       #nana-rug-secret .rug-nana-fold{transition:none!important}
       #nana-rug-secret.is-open .rug-spider-run{
         animation:none!important;opacity:1;
-        transform:translate(655px,872px) scale(.82)!important;
+        transform:translate(640px,918px) scale(.42)!important;
       }
       #nana-rug-secret .rug-spider-legs{animation:none!important}
     }
@@ -128,7 +127,16 @@
   spider.appendChild(make('ellipse',{class:'rug-spider-body',cx:'4.3',
     cy:'-1.5',rx:'3.1',ry:'3.0','stroke-width':'1'}));
   spider.appendChild(make('circle',{cx:'5.2',cy:'-2.5',r:'.85',fill:'#fff0f3'}));
-  overlay.appendChild(spider);
+  // Clip only the spider (not the rug fold) at the room's lower edge,
+  // so it vanishes naturally as it scuttles off the bottom of the screen.
+  const spiderClip=make('clipPath',{id:'nana-rug-spider-clip',clipPathUnits:'userSpaceOnUse'});
+  spiderClip.appendChild(make('rect',{x:0,y:0,width:1670,height:942}));
+  const definitions=make('defs');
+  definitions.appendChild(spiderClip);
+  overlay.appendChild(definitions);
+  const spiderViewport=make('g',{'clip-path':'url(#nana-rug-spider-clip)'});
+  spiderViewport.appendChild(spider);
+  overlay.appendChild(spiderViewport);
 
   scene.appendChild(overlay);
 
