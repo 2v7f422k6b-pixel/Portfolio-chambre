@@ -50,6 +50,34 @@ footer{border-top:2px solid var(--red);display:flex;justify-content:space-betwee
 @media(max-width:850px){main{grid-template-columns:140px minmax(0,1fr)}aside:last-child{grid-column:1/-1;border-left:0;border-top:2px solid var(--red)}.rightgroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.line{margin-top:8px}}
 @media(max-width:590px){header{padding:8px 10px}h1{font-size:17px}main{display:block}aside:first-child{border-right:0;border-bottom:2px solid var(--red);padding:9px}#pages{flex-direction:row;overflow-x:auto}.page{flex-direction:column;min-width:96px;text-align:center;font-size:11px}.page img{height:55px;width:65px}.work{padding:8px}aside:last-child{padding:10px}.rightgroup{grid-template-columns:1fr 1fr;gap:11px}.controls{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:5px}.controls h2,.controls .small{grid-column:1/-1}.controls button{margin:0}.small{font-size:11px}footer{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important}}
+
+/* hand-traced coloring UI v1: one gently imperfect stroke, never a CSS rectangle */
+header,footer,aside,.line,#stage,#toast,button,.thumb-trace,.color-picker-frame,.range-trace{position:relative}
+header,footer,aside:first-child,aside:last-child,.line,#stage,#toast,
+button,.page img,input[type=color]{border-color:transparent!important}
+button,.page img,input[type=color]{outline:none}
+button:focus-visible{box-shadow:0 0 0 3px #ffced8,0 0 13px #f20b3570}
+.page.active{color:var(--red)}
+.page .thumb-trace{display:block;width:50px;height:56px;flex:none;background:white}
+.page .thumb-trace img{width:100%;height:100%;object-fit:contain;display:block}
+.color-picker-frame{display:block;width:100%;height:34px}
+.color-picker-frame input[type=color]{display:block;width:100%;height:100%}
+.range-trace{display:block;width:100%;height:22px}
+.range-trace input[type=range]{appearance:none;-webkit-appearance:none;display:block;width:100%;height:22px;margin:0;position:relative;z-index:1;background:transparent;cursor:pointer}
+.range-trace input[type=range]::-webkit-slider-runnable-track{height:4px;border:0;background:transparent}
+.range-trace input[type=range]::-moz-range-track{height:4px;border:0;background:transparent}
+.range-trace input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;margin-top:-7px;border:0;border-radius:50%;background:var(--red);box-shadow:0 0 5px #f20b3555}
+.range-trace input[type=range]::-moz-range-thumb{width:19px;height:19px;border:0;border-radius:50%;background:var(--red);box-shadow:0 0 5px #f20b3555}
+.swatch.active{outline:none!important;outline-offset:0!important}
+.trace-svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;pointer-events:none!important;z-index:3}
+.trace-svg path{stroke:var(--red);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 1.5px #f20b3545)}
+.page .thumb-trace .trace-svg path,.line>.trace-svg path{stroke-width:1.2}
+.range-trace>.trace-svg{z-index:0}
+.range-trace>.trace-svg path,.line>.trace-svg path{stroke:#f20b35}
+#toolgrid button.active>.trace-svg path{stroke:#fff}
+.swatch.active>.trace-svg path{stroke-width:3.5}
+@media(max-width:590px){.page .thumb-trace{width:65px;height:55px;flex:none}}
+
 </style>
 <link rel="stylesheet" href="../heart-theme.css?v=lena-original-1" data-lena-heart-style>
 </head>
@@ -144,5 +172,110 @@ chooseTool("fill");choosePage(0);
 </script>
 <script src="../heart-theme.js?v=lena-original-1" defer></script>
 <script src="../game-i18n.js?v=20261103-heart-fix-6"></script>
+
+<script>
+/* Subtle pen-drawn frames only; the underlying coloring canvases are untouched. */
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const registered=new WeakMap();
+const watched=[];
+const rules=[
+["header","bottom",13],["footer","top",29],
+["aside:first-child","aside-first",43],["aside:last-child","aside-last",59],
+[".line","top",67],["#stage","frame",79],["#toast","frame",83],
+["button","frame",101],[".thumb-trace","frame",131],
+[".color-picker-frame","frame",163],[".range-trace","middle",173]
+];
+const custom=document.getElementById("custom");
+if(custom&&!custom.closest(".color-picker-frame")){
+  const wrapper=document.createElement("span");
+  wrapper.className="color-picker-frame";
+  custom.parentNode.insertBefore(wrapper,custom);wrapper.appendChild(custom);
+}
+const size=document.getElementById("size");
+if(size&&!size.closest(".range-trace")){
+  const wrapper=document.createElement("span");
+  wrapper.className="range-trace";
+  size.parentNode.insertBefore(wrapper,size);wrapper.appendChild(size);
+}
+document.querySelectorAll(".page img").forEach(img=>{
+  if(img.closest(".thumb-trace"))return;
+  const wrapper=document.createElement("span");wrapper.className="thumb-trace";
+  img.parentNode.insertBefore(wrapper,img);wrapper.appendChild(img);
+});
+function rand(seed){let v=seed>>>0;return()=>{v^=v<<13;v^=v>>>17;v^=v<<5;return(v>>>0)/4294967296}}
+const r=n=>Math.round(n*10)/10;
+function stroke(w,h,kind,seed,variation){
+  const random=rand(seed),left=1.4,top=1.4,right=Math.max(left+2,w-1.4),bottom=Math.max(top+2,h-1.4);
+  let d="";
+  function segment(x0,y0,x1,y1,horiz){
+    const n=Math.max(2,Math.ceil(Math.hypot(x1-x0,y1-y0)/37));
+    for(let i=1;i<=n;i++){
+      const mid=(i-.5)/n,frac=i/n;
+      const cx=x0+(x1-x0)*mid+(horiz?0:(random()-.5)*variation*2);
+      const cy=y0+(y1-y0)*mid+(horiz?(random()-.5)*variation*2:0);
+      const ex=x0+(x1-x0)*frac+(horiz||i===n?0:(random()-.5)*variation*.6);
+      const ey=y0+(y1-y0)*frac+(!horiz||i===n?0:(random()-.5)*variation*.6);
+      d+=" Q "+r(cx)+" "+r(cy)+" "+r(ex)+" "+r(ey);
+    }
+  }
+  if(kind==="none")return"";
+  if(kind==="middle"){
+    const y=h/2;d="M "+r(left)+" "+r(y);segment(left,y,right,y,true);return d;
+  }
+  if(kind==="top"||kind==="bottom"){
+    const y=kind==="top"?2:Math.max(2,h-2);
+    d="M "+r(left)+" "+r(y);segment(left,y,right,y,true);return d;
+  }
+  if(kind==="left"||kind==="right"){
+    const x=kind==="left"?2:Math.max(2,w-2);
+    d="M "+r(x)+" "+r(top);segment(x,top,x,bottom,false);return d;
+  }
+  d="M "+r(left)+" "+r(top);
+  segment(left,top,right,top,true);segment(right,top,right,bottom,false);
+  segment(right,bottom,left,bottom,true);segment(left,bottom,left,top,false);
+  return d+" Z";
+}
+function effectiveKind(kind){
+  if(kind==="aside-first")return window.innerWidth<=590?"bottom":window.innerWidth<=850?"right":"right";
+  if(kind==="aside-last")return window.innerWidth<=590?"none":window.innerWidth<=850?"top":"left";
+  return kind;
+}
+function draw(item){
+  const w=item.el.offsetWidth,h=item.el.offsetHeight;
+  if(w<10||h<10)return;
+  const kind=effectiveKind(item.kind);
+  if(w===item.w&&h===item.h&&kind===item.lastKind)return;
+  item.w=w;item.h=h;item.lastKind=kind;
+  item.svg.setAttribute("viewBox","0 0 "+w+" "+h);
+  item.path.setAttribute("d",stroke(w,h,kind,item.seed,Math.min(1.15,Math.max(.65,Math.min(w,h)/55))));
+  item.svg.style.display=kind==="none"?"none":"block";
+}
+const resize="ResizeObserver" in window?new ResizeObserver(entries=>{
+  entries.forEach(entry=>{const item=registered.get(entry.target);if(item)draw(item)})
+}):null;
+function scan(){
+  rules.forEach(([selector,kind,seed])=>{
+    document.querySelectorAll(selector).forEach((el,i)=>{
+      if(registered.has(el))return;
+      const svg=document.createElementNS(NS,"svg");svg.classList.add("trace-svg");
+      svg.setAttribute("aria-hidden","true");svg.setAttribute("focusable","false");
+      const path=document.createElementNS(NS,"path");svg.appendChild(path);
+      el.appendChild(svg);const item={el,svg,path,kind,seed:seed+i*97,w:0,h:0,lastKind:null};
+      registered.set(el,item);watched.push(item);resize?.observe(el);draw(item);
+    });
+  });
+}
+scan();
+let queued=false;
+new MutationObserver(records=>{
+  if(!records.some(rec=>Array.from(rec.addedNodes).some(node=>node.nodeType===1&&!node.classList?.contains("trace-svg"))))return;
+  if(queued)return;queued=true;
+  requestAnimationFrame(()=>{queued=false;scan()});
+}).observe(document.body,{childList:true,subtree:true});
+window.addEventListener("resize",()=>watched.forEach(item=>{item.lastKind=null;draw(item)}),{passive:true});
+})();
+</script>
 </body>
 </html>
