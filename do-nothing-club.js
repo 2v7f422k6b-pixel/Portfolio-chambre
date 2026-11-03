@@ -38,7 +38,7 @@
     if (download) download.hidden = stage !== 'complete';
     if (stage === 'idle') {
       headline.textContent = 'The art of doing nothing.';
-      message.textContent = doneBefore ? 'Five more minutes...' : 'You have 60 seconds to accomplish absolutely nothing.';
+      message.textContent = doneBefore ? 'Still nothing on the agenda...' : 'You have 60 seconds to accomplish absolutely nothing.';
       action.textContent = 'Start doing nothing';
       action.dataset.nothingAction = 'start';
     } else if (stage === 'running') {
@@ -49,7 +49,7 @@
     } else {
       headline.textContent = 'Congratulations.';
       message.textContent = 'You have achieved absolutely nothing.';
-      action.textContent = 'Five more minutes?';
+      action.textContent = 'Do nothing again?';
       action.dataset.nothingAction = 'start';
     }
   }
