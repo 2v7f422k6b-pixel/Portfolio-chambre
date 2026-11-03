@@ -71,7 +71,7 @@
       #play-scene .nana-poppy-petal svg { width: 100%; height: auto; display: block; }
       /* Dark blue petal in Night mode, retaining the original red in Day mode. */
       html[data-theme="night"] #play-scene .nana-poppy-petal svg path:first-child {
-        fill: #14264a;
+        fill: #020235;
         stroke: #091632;
       }
       html[data-theme="night"] #play-scene .nana-poppy-petal svg path:nth-child(2) {
