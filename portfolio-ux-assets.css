@@ -104,3 +104,27 @@ html body #dock .dock-app.dock-drawn {
     height:36px!important;
   }
 }
+
+/* Dock: smooth rounded glass surface, no hand-drawn red frame (day + night). */
+html body #dock,
+html body #dock.sketch-ui-frame,
+html[data-theme="night"] body #dock,
+html[data-theme="night"] body #dock.sketch-ui-frame {
+  border:0!important;
+  outline:0!important;
+  border-radius:24px!important;
+  background-clip:padding-box!important;
+}
+/* Guard against a cached JS frame or existing SVG decoration. */
+html body #dock > svg.sketch-ui-svg,
+html body #dock.sketch-ui-frame > svg.sketch-ui-svg {
+  display:none!important;
+}
+@media (max-width:760px) {
+  html body #dock,
+  html body #dock.sketch-ui-frame,
+  html[data-theme="night"] body #dock,
+  html[data-theme="night"] body #dock.sketch-ui-frame {
+    border-radius:19px!important;
+  }
+}
