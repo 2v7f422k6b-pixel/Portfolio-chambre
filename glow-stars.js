@@ -469,7 +469,26 @@
     group.style.setProperty('pointer-events','auto','important');
     const notice=document.createElement('div');
     notice.style.cssText='position:fixed;top:175px;left:12px;z-index:99999;background:#fff2fc;color:#ff173b;border:2px solid #ff173b;padding:10px;font:14px sans-serif;max-width:270px';
-    notice.innerHTML='<b>Placement des étoiles</b><p>Glisse une étoile pour la déplacer. Double-tape une étoile pour la supprimer.</p>';
+    notice.innerHTML='<div id="nana-stars-drag-handle" style="padding:7px 8px;margin:-5px -5px 8px;background:#ff173b;color:white;cursor:move;touch-action:none;user-select:none;font-weight:bold">⠿ Placement des étoiles · déplacer</div><p>Glisse une étoile pour la déplacer. Double-tape une étoile pour la supprimer.</p>';
+    const handle=notice.querySelector('#nana-stars-drag-handle');
+    let moving=null;
+    handle.addEventListener('pointerdown',e=>{
+      if(e.button!==undefined&&e.button!==0)return;
+      const rect=notice.getBoundingClientRect();
+      moving={id:e.pointerId,dx:e.clientX-rect.left,dy:e.clientY-rect.top};
+      handle.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    handle.addEventListener('pointermove',e=>{
+      if(!moving||moving.id!==e.pointerId)return;
+      const x=Math.max(0,Math.min(window.innerWidth-notice.offsetWidth,e.clientX-moving.dx));
+      const y=Math.max(0,Math.min(window.innerHeight-notice.offsetHeight,e.clientY-moving.dy));
+      notice.style.left=x+'px';notice.style.top=y+'px';
+      e.preventDefault();
+    });
+    const stopMoving=e=>{if(moving&&moving.id===e.pointerId)moving=null;};
+    handle.addEventListener('pointerup',stopMoving);
+    handle.addEventListener('pointercancel',stopMoving);
     const save=document.createElement('button');save.textContent='Enregistrer';
     const add=document.createElement('button');add.textContent='+ Étoile';
     const reset=document.createElement('button');reset.textContent='Réinitialiser';
@@ -487,7 +506,7 @@
       el.addEventListener('pointerup',()=>{active=-1;persist()});
       el.addEventListener('dblclick',()=>{stars[i][2]=0;refresh();persist()});
     });
-    save.onclick=()=>{persist();notice.firstElementChild.textContent='Positions enregistrées !'};
+    save.onclick=()=>{persist();notice.querySelector('p').textContent='Positions enregistrées !'};
     const addStarAt=(x,y)=>{
       // Place each new star at a different visible location, then make it draggable.
       const count=stars.length;
@@ -522,9 +541,9 @@
       el.addEventListener('pointercancel',finish);
       el.addEventListener('dblclick',()=>{stars[index][2]=0;el.style.display='none';persist()});
       persist();
-      notice.firstElementChild.textContent='Étoile ajoutée !';
+      notice.querySelector('p').textContent='Étoile ajoutée !';
     };
-    add.onclick=()=>{notice.firstElementChild.textContent='Touche un emplacement libre de la chambre';};
+    add.onclick=()=>{notice.querySelector('p').textContent='Touche un emplacement libre de la chambre';};
     layer.addEventListener('pointerdown',e=>{
       if(e.target.closest('.nana-phosphor-star'))return;
       const [x,y]=coords(e);
@@ -536,7 +555,7 @@
       const data=JSON.stringify({stars:stars.map(([x,y,size,angle])=>[Math.round(x*100)/100,Math.round(y*100)/100,size,angle])},null,2);
       try {
         await navigator.clipboard.writeText(data);
-        notice.firstElementChild.textContent='Coordonnées copiées !';
+        notice.querySelector('p').textContent='Coordonnées copiées !';
       } catch (_) {
         const output=document.createElement('textarea');
         output.value=data;
@@ -544,7 +563,7 @@
         output.style.cssText='display:block;width:260px;height:110px;margin-top:6px';
         notice.appendChild(output);
         output.focus();output.select();
-        notice.firstElementChild.textContent='Sélectionne et copie le texte';
+        notice.querySelector('p').textContent='Sélectionne et copie le texte';
       }
     };
     reset.onclick=()=>{localStorage.removeItem(storageKey);location.reload()};
