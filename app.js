@@ -236,7 +236,7 @@ function openGearnewsSeries(){
  const en=document.documentElement.lang==='en';
  const label=en?'My first steps in music':'Mes premiers pas dans la musique';
  const intro=en?'A GearNews.fr series in progress. New episodes will join this little collection as they come out.':'Une série GearNews.fr en cours. Les prochains épisodes viendront rejoindre cette petite collection.';
- const first=en?'Finding the chords':'Trouver les accords';
+ const first=en?'The chords':'Les accords';
  const second=en?'Arpeggios':'Les arpèges';
  const watch=en?'Watch on Instagram':'Voir sur Instagram';
  const more=en?'More episodes to come…':'D’autres épisodes arrivent…';
