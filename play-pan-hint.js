@@ -20,10 +20,8 @@
     }
     #nana-play-pan-hint .pan-hint-visual {
       position:relative;width:158px;height:158px;border-radius:50%;
-      background:rgba(255,250,255,.17);
-      border:1px solid rgba(255,23,59,.23);
-      box-shadow:0 2px 18px rgba(255,23,59,.08);
-      backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+      background:transparent;border:0;box-shadow:none;
+      backdrop-filter:none;-webkit-backdrop-filter:none;
       animation:nana-pan-fade 5.8s ease-in-out both;
     }
     #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;}
@@ -56,7 +54,7 @@
       100% {opacity:0;transform:translateY(-68px) scale(1);}
     }
     html[data-theme="night"] #nana-play-pan-hint .pan-hint-visual {
-      background:rgba(255,242,252,.13);border-color:rgba(255,23,59,.25);
+      background:transparent;border:0;box-shadow:none;
     }
     @media(max-width:480px) {
       #nana-play-pan-hint .pan-hint-visual{width:150px;height:150px;}
@@ -105,8 +103,8 @@
     hint.innerHTML =
       '<div class="pan-hint-visual">' +
       '<svg class="pan-hint-directions" viewBox="0 0 168 168" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<g fill="none" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
-      '<g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g fill="none" opacity="0.58" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g fill="none" opacity="0.67" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '</svg>' +
       '<svg class="pan-hint-finger" viewBox="0 0 80 80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="M31 53 V19 C31 13 41 13 41 19 V39 V31 C41 26 50 26 50 31 V41 V34 C50 29 59 30 59 35 V44 V39 C59 34 68 36 68 41 V56 C68 67 60 72 50 72 H40 C32 72 28 68 24 63 L14 50 C11 46 17 40 22 44 L31 53 Z" fill="#fffafc" stroke="#ff173b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' +
