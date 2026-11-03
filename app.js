@@ -246,7 +246,6 @@ function openGearnewsSeries(){
   return `<article class="gearnews-ring-episode">
    <a class="gearnews-ring-preview" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name} — Instagram">
     <img class="gearnews-ring-thumbnail" src="${cover}" alt="${name} — GearNews.fr" loading="lazy" decoding="async">
-    <iframe class="gearnews-ring-embed" title="${name} — Instagram Reel preview" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>
    </a>
    <div class="gearnews-ring-details">
     <span class="gearnews-ring-number">${number}</span>
@@ -263,22 +262,7 @@ function openGearnewsSeries(){
    ${episode('02',second,'DfPtOh7CYOJ')}
   </div>
   <p class="gearnews-ring-more">${more}</p>
- </section>`,'gearnews-series');
- winContent.querySelectorAll('.gearnews-ring-preview').forEach(preview=>{
-  const img=preview.querySelector('.gearnews-ring-thumbnail');
-  const iframe=preview.querySelector('.gearnews-ring-embed');
-  // Local JPGs are preferred. Until they are available, tightly crop Instagram's
-  // official embedded Reel so its chrome and letterboxing are not visible.
-  const showFallback=()=>{
-   if(preview.classList.contains('is-embedded'))return;
-   preview.classList.add('is-embedded');
-   const code=preview.href.match(/\/reel\/([^/]+)\//)?.[1];
-   if(code && iframe)iframe.src='https://www.instagram.com/reel/'+code+'/embed/';
-  };
-  img.addEventListener('error',showFallback,{once:true});
-  if(img.complete && !img.naturalWidth)showFallback();
- });
-}
+ </section>`,'gearnews-series');}
 
 function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
