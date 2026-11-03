@@ -659,3 +659,10 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "Close Latte Lab": "Fermer l’atelier latte",
   "Interactive Tamagotchi": "Tamagotchi interactif"
 });
+
+/* Contacts: the sentence is now split around an inline Mail control. */
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "You can contact me directly, or": "Tu peux me contacter directement ou",
+  "use the Mail application": "utiliser l’application Mail",
+  "to write a message without leaving this website.": "pour m’écrire sans quitter ce site."
+});
