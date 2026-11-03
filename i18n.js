@@ -117,6 +117,7 @@ const originalText=new WeakMap(),originalAttr=new WeakMap();
 let lang='fr',busy=false;
 try{const saved=localStorage.getItem('portfolio-language-v2');lang=saved==='en'?'en':'fr'}catch(e){}
 const attrs=['placeholder','title','aria-label','alt'];
+const originalDocumentTitle=document.title;
 Object.assign(translations,{
 "Play Mode:":"Mode jeu :",
 "Work Mode:":"Mode travail :",
@@ -194,10 +195,10 @@ function syncDressUpFrames(){
         if(!doc?.head||doc.getElementById('nana-translated-frame'))return;
         const extraScript=doc.createElement('script');
         extraScript.id='nana-translated-frame';
-        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-1',location.href).href;
+        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-2',location.href).href;
         extraScript.addEventListener('load',()=>{
           const main=doc.createElement('script');
-          main.src=new URL('i18n.js?v=20261103-complete-1',location.href).href;
+          main.src=new URL('i18n.js?v=20261103-complete-2',location.href).href;
           doc.head.appendChild(main);
         },{once:true});
         doc.head.appendChild(extraScript);
@@ -212,9 +213,10 @@ window.addEventListener('message',event=>{
 });
 function apply(){
 document.documentElement.lang=lang;
+document.title=translateString(originalDocumentTitle,lang);
 syncDressUpFrames();
 const button=document.getElementById('language-toggle');
-if(button){button.textContent=lang==='en'?'EN · FR':'FR · EN';button.title=lang==='en'?'Langue actuelle : anglais. Passer en français':'Langue actuelle : français. Switch to English';button.setAttribute('aria-label',button.title)}
+if(button){button.textContent=lang==='en'?'EN · FR':'FR · EN';button.title=lang==='en'?'Current language: English. Switch to French':'Langue actuelle : français. Passer en anglais';button.setAttribute('aria-label',button.title)}
 update(document.body);
 document.dispatchEvent(new CustomEvent('portfolio-language-change',{detail:{language:lang}}));
 for(const frame of document.querySelectorAll('iframe')){try{frame.contentWindow?.postMessage({type:'portfolio-language',language:lang},location.origin)}catch(e){}}
