@@ -54,18 +54,18 @@
       position: absolute;
       z-index: 1200;
       box-sizing: border-box;
-      max-width: min(255px, 58vw);
-      min-width: 118px;
-      padding: 11px 15px;
+      max-width: min(188px, 47vw);
+      min-width: 86px;
+      padding: 7px 10px;
       background: #fff2fc;
       color: #ff173b;
       border: 2px solid #ff173b;
-      border-radius: 0;
-      box-shadow: 3px 4px 0 rgba(255,23,59,.16);
-      font-family: "Comic Sans MS", "Trebuchet MS", cursive;
-      font-size: clamp(12px, 1.15vw, 17px);
-      font-weight: 700;
-      line-height: 1.35;
+      border-radius: 11px 13px 10px 12px;
+      box-shadow: 2px 3px 0 rgba(255,23,59,.12);
+      font-family: "Nana Trace UI", Arial, sans-serif !important;
+      font-size: clamp(10px, .85vw, 12px);
+      font-weight: 400;
+      line-height: 1.3;
       text-align: center;
       pointer-events: none;
       transform: translate(-50%, -100%) rotate(-1deg);
@@ -75,8 +75,8 @@
     #play-scene .figurine-speech::after {
       content: '';
       position:absolute;
-      width:13px; height:13px;
-      left:calc(50% - 7px); bottom:-9px;
+      width:9px; height:9px;
+      left:calc(50% - 5px); bottom:-6px;
       background:#fff2fc;
       border-right:2px solid #ff173b;
       border-bottom:2px solid #ff173b;
@@ -86,7 +86,7 @@
       transform:translate(-50%, 0) rotate(1deg);
     }
     #play-scene .figurine-speech[data-side="below"]::after {
-      top:-9px; bottom:auto;
+      top:-6px; bottom:auto;
       border-right:0; border-bottom:0;
       border-left:2px solid #ff173b;
       border-top:2px solid #ff173b;
