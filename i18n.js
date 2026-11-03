@@ -127,22 +127,22 @@ Object.assign(translations,{
 "in the menu bar to move between them at any time.":"dans la barre de menu pour passer de l’un à l’autre à tout moment."
 });
 function translateString(str,target=lang){
-  const leading=str.match(/^\\s*/)?.[0]||'',trailing=str.match(/\\s*$/)?.[0]||'',key=str.trim();
+  const leading=str.match(/^\s*/)?.[0]||'',trailing=str.match(/\s*$/)?.[0]||'',key=str.trim();
   if(!key)return str;
   const en=frenchToEnglish[key]||key;
   let value=target==='fr'?(translations[en]??key):en;
-  const number=Number((key.match(/^\\d+/)||[])[0]);
+  const number=Number((key.match(/^\d+/)||[])[0]);
   if(target==='en'){
-    if(/^\\d+ textes?$/.test(key))value=number+' text'+(number===1?'':'s');
-    else if(/^\\d+ mots? sur la feuille\\.$/.test(key))value=number+' word'+(number===1?'':'s')+' on the page.';
-    else if(/^Ma note : \\d+\\/10$/.test(key))value=key.replace('Ma note :','My rating:');
+    if(/^\d+ textes?$/.test(key))value=number+' text'+(number===1?'':'s');
+    else if(/^\d+ mots? sur la feuille\.$/.test(key))value=number+' word'+(number===1?'':'s')+' on the page.';
+    else if(/^Ma note : \d+\/10$/.test(key))value=key.replace('Ma note :','My rating:');
     else if(key.startsWith('À lire pour : '))value='Read for: '+key.slice(14).split(' · ').map(x=>frenchToEnglish[x]||x).join(' · ');
     else if(key.startsWith('Zone ')&&key.includes('destination à définir'))value=key.replace('destination à définir','destination to be assigned');
     else if(key.startsWith('Local time: '))value=key;
   }else{
-    if(/^\\d+ texts?$/.test(key))value=number+' texte'+(number===1?'':'s');
-    else if(/^\\d+ words? on the page\\.$/.test(key))value=number+' mot'+(number===1?'':'s')+' sur la feuille.';
-    else if(/^My rating: \\d+\\/10$/.test(key))value=key.replace('My rating:','Ma note :');
+    if(/^\d+ texts?$/.test(key))value=number+' texte'+(number===1?'':'s');
+    else if(/^\d+ words? on the page\.$/.test(key))value=number+' mot'+(number===1?'':'s')+' sur la feuille.';
+    else if(/^My rating: \d+\/10$/.test(key))value=key.replace('My rating:','Ma note :');
     else if(key.startsWith('Read for: '))value='À lire pour : '+key.slice(10).split(' · ').map(x=>translations[x]||x).join(' · ');
     else if(key.startsWith('Zone ')&&key.includes('destination to be assigned'))value=key.replace('destination to be assigned','destination à définir');
     else if(key.startsWith('Local time: '))value=key.replace('Local time: ','Heure locale : ');
@@ -160,7 +160,7 @@ try{
   const stored=originalText.get(node);
   const base=stored===undefined?node.nodeValue:([stored,translateString(stored,'fr'),translateString(stored,'en')].includes(node.nodeValue)?stored:node.nodeValue);
   originalText.set(node,base);
-  const value=lang==='fr'?translateString(base):base;
+  const value=translateString(base,lang);
   if(node.nodeValue!==value)node.nodeValue=value;
  }
  const elements=[...(root.nodeType===1?[root]:[]),...(root.querySelectorAll?.('*')||[])];
@@ -168,7 +168,7 @@ try{
   for(const attr of attrs){if(!el.hasAttribute(attr))continue;let records=originalAttr.get(el);if(!records){records={};originalAttr.set(el,records)}
    const current=el.getAttribute(attr),old=records[attr];
    const base=old===undefined?current:([old,translateString(old,'fr'),translateString(old,'en')].includes(current)?old:current);
-   records[attr]=base;const value=lang==='fr'?translateString(base):base;
+   records[attr]=base;const value=translateString(base,lang);
    if(current!==value)el.setAttribute(attr,value);
   }
  }
@@ -179,7 +179,7 @@ try{
    rather than rewriting its large illustration-heavy HTML file. */
 function syncDressUpFrames(){
   for(const frame of document.querySelectorAll('iframe')){
-    if(!/\/about-me\\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
+    if(!/\/about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
     if(frame.dataset.nanaTranslationAttached)return;
     frame.dataset.nanaTranslationAttached='1';
     frame.addEventListener('load',()=>{
