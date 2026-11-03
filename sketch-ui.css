@@ -1250,3 +1250,36 @@ html body #window-shade .mv-app .mv-feature-secondary-art {
   height:auto!important;
   aspect-ratio:1 / 1!important;
 }
+
+/* Work desktop: smaller and lower illustrated trash, without moving the post-it. */
+html body #work-desktop .desk-extra[data-object="trash"],
+html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] {
+  position:relative!important;
+  top:55px!important;
+  width:90px!important;
+  max-width:90px!important;
+  min-height:98px!important;
+  padding:4px!important;
+}
+html body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon,
+html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] .desk-extra-icon {
+  width:74px!important;
+  min-width:74px!important;
+  height:79px!important;
+  min-height:79px!important;
+  margin-inline:auto!important;
+}
+html body #work-desktop .desk-extra[data-object="trash"] img.custom-trash-art,
+html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] img.custom-trash-art {
+  display:block!important;
+  width:74px!important;
+  height:79px!important;
+  max-width:74px!important;
+  object-fit:contain!important;
+}
+@media(max-width:760px){
+  html body #work-desktop .desk-extra[data-object="trash"],
+  html[data-theme="night"] body #work-desktop .desk-extra[data-object="trash"] {
+    top:16px!important;
+  }
+}
