@@ -49,7 +49,7 @@
       transform-origin:0 0;
     }
     #nana-rug-secret.is-open .rug-spider-legs{
-      animation:nana-spider-scuttle .13s .62s infinite alternate ease-in-out;
+      animation:nana-spider-scuttle .13s .62s 18 alternate ease-in-out;
     }
     #nana-rug-secret .rug-spider-ink{
       stroke:#442437;
