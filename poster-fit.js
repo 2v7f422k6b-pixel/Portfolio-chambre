@@ -16,7 +16,7 @@
   // Eliminate stale fallback SVG elements as well, including cached HTML.
   allPosters.filter(el => removedPosterIds.has(Number(el.dataset.index))).forEach(el => el.remove());
   oldArtwork.querySelectorAll('image').forEach(image => {
-    const match = (image.getAttribute('clip-path') || '').match(/redraw-post-(\\d+)/);
+    const match = (image.getAttribute('clip-path') || '').match(/redraw-post-(\d+)/);
     if (match && removedPosterIds.has(Number(match[1]))) image.remove();
   });
 
