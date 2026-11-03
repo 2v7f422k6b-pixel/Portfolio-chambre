@@ -36,15 +36,15 @@
     const b = guitar.getBBox();
     const x = b.x, y = b.y, w = b.width, h = b.height;
     const top = { x: x + w * 0.94, y: y + h * 0.09 };
-    const bottom = { x: x + w * 0.62, y: y + h * 0.74 };
+    const bottom = { x: x + w * 0.68, y: y + h * 0.74 };
     const body = { x: x + w * 0.43, y: y + h * 0.79 };
     return { top, bottom, body, scale: Math.min(w / 113, h / 320) };
   }
 
   function drawString(index, time, g) {
     const spacing = index - 2.5;
-    const start = { x: g.top.x + spacing * 0.7 * g.scale, y: g.top.y + spacing * 0.25 * g.scale };
-    const end = { x: g.bottom.x + spacing * 2.2 * g.scale, y: g.bottom.y + spacing * 0.8 * g.scale };
+    const start = { x: g.top.x + spacing * 1.4 * g.scale, y: g.top.y + spacing * 0.25 * g.scale };
+    const end = { x: g.bottom.x + spacing * 4.2 * g.scale, y: g.bottom.y + spacing * 0.8 * g.scale };
     const vx = end.x - start.x, vy = end.y - start.y;
     const length = Math.hypot(vx, vy) || 1;
     const nx = -vy / length, ny = vx / length;
