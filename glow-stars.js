@@ -46,6 +46,8 @@
   // Append last for physical stickers to sit on top of posters, without stealing taps.
   layer.appendChild(group);
   scene.appendChild(layer);
+  // Keep the decoration out of document flow and independent of the poster SVG.
+  layer.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;pointer-events:none!important;overflow:visible!important;z-index:4!important;transform:none!important;contain:layout style;';
   const style=document.createElement('style');
   style.id='nana-glow-stars-style';
   style.textContent=`
