@@ -104,6 +104,15 @@ Object.assign(translations,{
 "Retry":"Réessayer",
 "Reset":"Réinitialiser"
 });
+
+/* Merge English-first and French-first additions without rewriting artistic copy. */
+const extra=window.NanaI18nExtra||{enToFr:{},frToEn:{}};
+Object.assign(translations,extra.enToFr||{});
+const frenchToEnglish=Object.fromEntries(Object.entries(translations).map(([en,fr])=>[fr,en]));
+Object.assign(frenchToEnglish,extra.frToEn||{});
+for(const [fr,en] of Object.entries(extra.frToEn||{})){
+  if(translations[en]===undefined)translations[en]=fr;
+}
 const originalText=new WeakMap(),originalAttr=new WeakMap();
 let lang='fr',busy=false;
 try{const saved=localStorage.getItem('portfolio-language-v2');lang=saved==='en'?'en':'fr'}catch(e){}
@@ -117,33 +126,87 @@ Object.assign(translations,{
 "Switch Mode":"Changer de mode",
 "in the menu bar to move between them at any time.":"dans la barre de menu pour passer de l’un à l’autre à tout moment."
 });
-function translateString(str){const leading=str.match(/^\s*/)?.[0]||'',trailing=str.match(/\s*$/)?.[0]||'',key=str.trim();return translations[key]===undefined?str:leading+translations[key]+trailing}
+function translateString(str,target=lang){
+  const leading=str.match(/^\\s*/)?.[0]||'',trailing=str.match(/\\s*$/)?.[0]||'',key=str.trim();
+  if(!key)return str;
+  const en=frenchToEnglish[key]||key;
+  let value=target==='fr'?(translations[en]??key):en;
+  const number=Number((key.match(/^\\d+/)||[])[0]);
+  if(target==='en'){
+    if(/^\\d+ textes?$/.test(key))value=number+' text'+(number===1?'':'s');
+    else if(/^\\d+ mots? sur la feuille\\.$/.test(key))value=number+' word'+(number===1?'':'s')+' on the page.';
+    else if(/^Ma note : \\d+\\/10$/.test(key))value=key.replace('Ma note :','My rating:');
+    else if(key.startsWith('À lire pour : '))value='Read for: '+key.slice(14).split(' · ').map(x=>frenchToEnglish[x]||x).join(' · ');
+    else if(key.startsWith('Zone ')&&key.includes('destination à définir'))value=key.replace('destination à définir','destination to be assigned');
+    else if(key.startsWith('Local time: '))value=key;
+  }else{
+    if(/^\\d+ texts?$/.test(key))value=number+' texte'+(number===1?'':'s');
+    else if(/^\\d+ words? on the page\\.$/.test(key))value=number+' mot'+(number===1?'':'s')+' sur la feuille.';
+    else if(/^My rating: \\d+\\/10$/.test(key))value=key.replace('My rating:','Ma note :');
+    else if(key.startsWith('Read for: '))value='À lire pour : '+key.slice(10).split(' · ').map(x=>translations[x]||x).join(' · ');
+    else if(key.startsWith('Zone ')&&key.includes('destination to be assigned'))value=key.replace('destination to be assigned','destination à définir');
+    else if(key.startsWith('Local time: '))value=key.replace('Local time: ','Heure locale : ');
+  }
+  return leading+value+trailing;
+}
+window.portfolioTranslate=(value,target=lang)=>translateString(String(value),target);
 function update(root){
 if(busy)return;busy=true;
 try{
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
  let node;
  while((node=walker.nextNode())){
-  if(node.parentElement?.closest('script,style,textarea,code,[contenteditable],#language-toggle'))continue;
+  if(node.parentElement?.closest('script,style,textarea,code,[contenteditable],.lit-readable-excerpt,[data-no-translate],[translate="no"],#language-toggle'))continue;
   const stored=originalText.get(node);
-  const base=stored===undefined?node.nodeValue:(node.nodeValue===stored||node.nodeValue===translateString(stored)?stored:node.nodeValue);
+  const base=stored===undefined?node.nodeValue:([stored,translateString(stored,'fr'),translateString(stored,'en')].includes(node.nodeValue)?stored:node.nodeValue);
   originalText.set(node,base);
   const value=lang==='fr'?translateString(base):base;
   if(node.nodeValue!==value)node.nodeValue=value;
  }
  const elements=[...(root.nodeType===1?[root]:[]),...(root.querySelectorAll?.('*')||[])];
- for(const el of elements){if(el.closest('script,style,#language-toggle'))continue;
+ for(const el of elements){if(el.closest('script,style,.lit-readable-excerpt,[data-no-translate],[translate="no"],#language-toggle'))continue;
   for(const attr of attrs){if(!el.hasAttribute(attr))continue;let records=originalAttr.get(el);if(!records){records={};originalAttr.set(el,records)}
    const current=el.getAttribute(attr),old=records[attr];
-   const base=old===undefined?current:(current===old||current===translateString(old)?old:current);
+   const base=old===undefined?current:([old,translateString(old,'fr'),translateString(old,'en')].includes(current)?old:current);
    records[attr]=base;const value=lang==='fr'?translateString(base):base;
    if(current!==value)el.setAttribute(attr,value);
   }
  }
 }finally{busy=false}
 }
+
+/* The dress-up game has its own document. Inject the same translations there
+   rather than rewriting its large illustration-heavy HTML file. */
+function syncDressUpFrames(){
+  for(const frame of document.querySelectorAll('iframe')){
+    if(!/\/about-me\\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
+    if(frame.dataset.nanaTranslationAttached)return;
+    frame.dataset.nanaTranslationAttached='1';
+    frame.addEventListener('load',()=>{
+      try{
+        const doc=frame.contentDocument;
+        if(!doc?.head||doc.getElementById('nana-translated-frame'))return;
+        const extraScript=doc.createElement('script');
+        extraScript.id='nana-translated-frame';
+        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-1',location.href).href;
+        extraScript.addEventListener('load',()=>{
+          const main=doc.createElement('script');
+          main.src=new URL('i18n.js?v=20261103-complete-1',location.href).href;
+          doc.head.appendChild(main);
+        },{once:true});
+        doc.head.appendChild(extraScript);
+      }catch(_){}
+    },{once:true});
+  }
+}
+window.addEventListener('message',event=>{
+  if(event.origin!==location.origin||event.data?.type!=='portfolio-language')return;
+  lang=event.data.language==='en'?'en':'fr';
+  apply();
+});
 function apply(){
 document.documentElement.lang=lang;
+syncDressUpFrames();
 const button=document.getElementById('language-toggle');
 if(button){button.textContent=lang==='en'?'EN · FR':'FR · EN';button.title=lang==='en'?'Langue actuelle : anglais. Passer en français':'Langue actuelle : français. Switch to English';button.setAttribute('aria-label',button.title)}
 update(document.body);
@@ -152,8 +215,8 @@ for(const frame of document.querySelectorAll('iframe')){try{frame.contentWindow?
 }
 window.addEventListener('message',event=>{if(event.origin!==location.origin||event.data?.type!=='portfolio-language-request')return;event.source?.postMessage({type:'portfolio-language',language:lang},location.origin)});
 function init(){
-const button=document.getElementById('language-toggle');if(!button)return;
-button.addEventListener('click',()=>{lang=lang==='en'?'fr':'en';try{localStorage.setItem('portfolio-language-v2',lang)}catch(e){}apply()});
+const button=document.getElementById('language-toggle');
+if(button)button.addEventListener('click',()=>{lang=lang==='en'?'fr':'en';try{localStorage.setItem('portfolio-language-v2',lang)}catch(e){}apply()});
 apply();
 const observer=new MutationObserver(records=>{
  if(busy)return;
@@ -162,6 +225,7 @@ const observer=new MutationObserver(records=>{
  else if(r.type==='characterData')nodes.add(r.target.parentElement);
  else if(r.type==='attributes')nodes.add(r.target)}
  if(!nodes.size)return;
+ syncDressUpFrames();
  observer.disconnect();
  for(const n of nodes)if(n&&document.body.contains(n))update(n);
  observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:attrs});
