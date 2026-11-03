@@ -110,7 +110,42 @@
       el.addEventListener('dblclick',()=>{stars[i][2]=0;refresh();persist()});
     });
     save.onclick=()=>{persist();notice.firstElementChild.textContent='Positions enregistrées !'};
-    add.onclick=()=>{const v=[835,470,7,0];stars.push(v);const el=document.createElementNS(NS,'polygon');el.setAttribute('class','nana-phosphor-star');el.style.setProperty('--day-star-color',palette[stars.length%palette.length]);group.appendChild(el);elements.push(el);el.setAttribute('points',points(...v));el.style.setProperty('pointer-events','all','important');el.style.touchAction='none';el.onpointerdown=e=>{const [x,y]=coords(e);v[0]=x;v[1]=y;el.setAttribute('points',points(...v));persist()};persist();};
+    add.onclick=()=>{
+      // Place each new star at a different visible location, then make it draggable.
+      const count=stars.length;
+      const v=[835+(count%7)*17,420+(count%5)*19,7,0];
+      stars.push(v);
+      const el=document.createElementNS(NS,'polygon');
+      el.setAttribute('class','nana-phosphor-star');
+      el.style.setProperty('--day-star-color',palette[count%palette.length]);
+      el.setAttribute('points',points(...v));
+      el.style.setProperty('pointer-events','all','important');
+      el.style.touchAction='none';
+      el.style.cursor='grab';
+      group.appendChild(el);
+      elements.push(el);
+      const index=stars.length-1;
+      let dragging=false;
+      el.addEventListener('pointerdown',e=>{
+        dragging=true;
+        el.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      el.addEventListener('pointermove',e=>{
+        if(!dragging)return;
+        const [x,y]=coords(e);
+        stars[index][0]=Math.max(0,Math.min(1670,x));
+        stars[index][1]=Math.max(0,Math.min(942,y));
+        el.setAttribute('points',points(...stars[index]));
+        e.preventDefault();
+      });
+      const finish=()=>{if(dragging){dragging=false;persist();}};
+      el.addEventListener('pointerup',finish);
+      el.addEventListener('pointercancel',finish);
+      el.addEventListener('dblclick',()=>{stars[index][2]=0;el.style.display='none';persist()});
+      persist();
+      notice.firstElementChild.textContent='Nouvelle étoile : glisse-la où tu veux';
+    };
     copy.onclick=async()=>{
       persist();
       const data=JSON.stringify({stars:stars.map(([x,y,size,angle])=>[Math.round(x*100)/100,Math.round(y*100)/100,size,angle])},null,2);
