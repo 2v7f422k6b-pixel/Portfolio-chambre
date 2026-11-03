@@ -230,7 +230,7 @@ function openApp(name,index){
 
 function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
-   <button class="project-card" data-open="illustration"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"><strong>Illustration</strong><small>Drawings, visual storytelling & collaborations</small></button>
+   <button class="project-card" data-open="illustration"><span class="project-preview"><img src="assets/photos/swans-lotus.jpg" alt="Original illustration with swans and lotus flowers"></span><strong>Illustrations</strong><small>Drawings, visual storytelling & collaborations</small></button>
    <button class="project-card" data-open="motion"><span class="project-icon">✧</span><strong>Animations</strong><small>Animation & moving images</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
@@ -241,9 +241,9 @@ function openFinder(){
  openWindow('LÉNA PROJECTS',`<div class="eyebrow">WORK MODE / PROJECTS</div><h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Choose a category to explore my illustrated, moving and written worlds.</p>${cards}`,'finder');
 }
 function openIllustrationProjects(){
- openWindow('ILLUSTRATION',`<div class="eyebrow">PROJECTS / ILLUSTRATION</div><h2>Illustration</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
- <button class="project-card" data-open="photos"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"><strong>Original illustrations</strong><small>Explore the gallery</small></button>
- <button class="project-card" data-open="gabzilla"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
+ openWindow('ILLUSTRATIONS',`<div class="eyebrow">PROJECTS / ILLUSTRATIONS</div><h2>Illustrations</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
+ <button class="project-card" data-open="photos"><span class="project-preview"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"></span><strong>Original illustrations</strong><small>Explore the gallery</small></button>
+ <button class="project-card" data-open="gabzilla"><span class="project-preview"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"></span><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
  <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
  </div>`,'illustration');
 }
@@ -354,7 +354,7 @@ function openPhotos(){
 function openGallery(which,index=0){
  const items=which==='gabzilla'?GABZILLA:ART;
  currentGallery={which,index:Math.min(items.length-1,Math.max(0,index))};
- const name=which==='gabzilla'?'GABZILLA — Collaboration':'Illustrations — Illustration';
+ const name=which==='gabzilla'?'GABZILLA — Collaboration':'Illustrations';
  openWindow(name,`<div class="viewer-layout"><div class="viewer-stage"><button class="viewer-btn" data-gallery-dir="-1" aria-label="Previous image">‹</button><img id="viewer-image" alt=""><button class="viewer-btn" data-gallery-dir="1" aria-label="Next image">›</button></div><div class="viewer-bottom"><p id="viewer-caption"></p><span class="viewer-number" id="viewer-number"></span></div><div class="viewer-thumbnails" id="viewer-thumbnails"></div>${which==='gabzilla'?'<p class="section-lead">An original illustration and textile collaboration. All images are shown without cropping or redrawing.</p>':''}</div>`,'gallery');
  updateGallery();
 }
