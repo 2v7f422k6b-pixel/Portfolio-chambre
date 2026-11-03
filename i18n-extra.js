@@ -517,7 +517,7 @@ Object.assign(window.NanaI18nExtra.frToEn,{
 Object.assign(window.NanaI18nExtra.enToFr,{
   "↶ REBUILD REALITY": "↶ RECONSTRUIRE LA RÉALITÉ",
   "Browse illustrations by the flowers": "Parcourir les illustrations grâce aux fleurs",
-  "Open Photos via the ring light": "Ouvrir les photos avec la ring light",
+  "Open Illustrations via the ring light": "Ouvrir les illustrations avec la ring light",
   "Music & Visual Design navigation": "Navigation Musique et création visuelle",
   "Search artists and artworks": "Chercher des artistes et des œuvres",
   "Gallery sections": "Sections de la galerie",
