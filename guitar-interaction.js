@@ -44,8 +44,8 @@
 
   function drawString(index, time, g) {
     const spacing = index - 2.5;
-    const start = { x: g.top.x + spacing * 5.55 * g.scale, y: g.top.y };
-    const end = { x: g.bottom.x + spacing * 5.95 * g.scale, y: g.bottom.y };
+    const start = { x: g.top.x + spacing * 5.35 * g.scale, y: g.top.y };
+    const end = { x: g.bottom.x + spacing * 5.75 * g.scale, y: g.bottom.y };
     const vx = end.x - start.x, vy = end.y - start.y;
     const length = Math.hypot(vx, vy) || 1;
     const nx = -vy / length, ny = vx / length;
