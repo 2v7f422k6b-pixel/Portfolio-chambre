@@ -430,13 +430,14 @@
       "title": "Règles douloureuses",
       "kind": "Roman",
       "kindNote": "Extrait",
-      "note": "Un passage sur le corps, la douleur et l’expérience intime du traitement.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e5f1fb",
       "ink": "#df6491",
-      "format": "recit"
+      "format": "recit",
+      "poem": "J’ai décidé d’arrêter tous mes traitements. Je suis fatiguée. J’ai fini par aimer ce mince filet de sang qui s’écoule de mon corps jour après jour. Il teinte l’eau du bain d’une jolie couleur rose. Parfois, quand un petit caillot s’échappe, l’eau devient marron foncé.\n\nLa partie molle de mon ventre est chaude et me picote. Je me sens si mal que je suis souvent obligée de m’asseoir pour ne pas m’évanouir. C’est une sorte de douleur, une sorte de plaisir, une sorte de liberté que j’aime et que le traitement du docteur Phakama a essayé de me dérober. Mais cette sensation est à moi, et elle est agréable, et je la veux.\n\nLes murmures qui m’accompagnent ne me gênent pas non plus. Ils me tiennent compagnie, me chantent des chansons et me racontent des histoires qui font passer le temps. Ton silence était de toute façon bien trop assourdissant."
     },
     {
       "id": "delpastre",
@@ -445,13 +446,14 @@
       "title": "Lune",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "La lune blanche, la lune rouge : un poème fait de contrastes et de retours.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#d9edf9",
       "ink": "#324962",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Couteau de sel, lame d'argent,\nla lune est blanche à l'horizon.\nQue sais-tu de la lune ?\nLame de cuivre, goutte de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue sur le sillon noirci\nluire comme une eau vive, et sur les feuilles des tilleuls.\nFrange de sel, vague d'argent,\nLa lune est blanche à l'horizon.\nLa lune et la nuit se ressemblent.\nPlume de givre, flaque de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue au milieu de l'étang\nplonger sa face endolorie, comme un noyé, comme un pendu\npour quel supplice méconnu,\nquelle figure et quelle solitude,\nquel symbole et quelle similitude.\nCouteau de feu, face d'argent,\nla lune est blanche à l'horizon.\nLame d'acier, face de sang,\nla lune est rouge à l'horizon."
     },
     {
       "id": "real",
@@ -460,13 +462,14 @@
       "title": "Le Noir est une couleur",
       "kind": "Récit",
       "kindNote": "Extrait",
-      "note": "Une parole collective et combative, avec le désir d’avancer à pas de louves.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#ec9299",
       "ink": "#fff3eb",
-      "format": "recit"
+      "format": "recit",
+      "poem": "À pas de louves, à pas de tigresses et d’oiseaux, nous marcherons sur la lune s’il le faut, nous gagnerons l’espace qui nous revient, à nous qui sommes le baume sur les blessures, et l’eau dans le désert, parfumées, étincelantes, offertes et blessées, douces et violentes, femmes et magiciennes, princesses de nos sens et du désir des hommes."
     },
     {
       "id": "kane",
@@ -475,13 +478,14 @@
       "title": "4.48 Psychose",
       "kind": "Théâtre",
       "kindNote": "Extrait",
-      "note": "Un texte théâtral sur l’absence, l’amour, la perte et l’impossibilité de dire.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e2f0e9",
       "ink": "#255a59",
-      "format": "theatre"
+      "format": "theatre",
+      "poem": "J'ai peur de perdre celle que jamais je n'ai touchée, l'amour me tient en esclavage dans une cage de larmes, je me mords la langue qui jamais ne peut lui parler, une femme me manque qui n'est jamais née, j'embrasse une femme par-delà les ans qui disent que jamais on ne se rencontrera. Tout passe. Tout périt. Tout pâlit. Ma pensée s'éloigne avec un sourire meurtrier et laisse la discordante anxiété rugir dans mon âme. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir.\n\nUne chanson pour mon aimée, touchant à son absence, aux marées de son cœur, l'éclat de son sourire. Dans dix ans elle sera toujours morte. Pendant que je vivrai avec, que je me débrouillerai avec, pendant que des jours passeront où je n'y penserai même pas, elle sera toujours morte. Pendant que je serai une vieille dame sans abri en train d'oublier mon nom elle sera toujours morte, elle sera toujours morte, c'est terminé, putain, c'est tout, et je dois tenir toute seule.\n\nMon amour, mon amour, pourquoi m'as-tu abandonnée ? Elle est la couche où jamais je ne m'étendrai, et la vie n'a aucun sens à la lumière de ma perte. Bâtie pour la solitude, pour aimer l'absente. Trouve-moi. Libère-moi du doute corrosif, désespoir futile, horreur du repos. Je peux remplir ma place, remplir mon temps, mais rien ne peut remplir ce vide-là dans mon cœur. Ce besoin vital pour lequel je mourrais."
     },
     {
       "id": "chedid",
@@ -490,13 +494,14 @@
       "title": "Rythmes",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "La fable, le mystère de l’existence et la lumière de l’espérance.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#f9eced",
       "ink": "#94536f",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Pour mieux tenir debout\nL’homme inventa la fable\nSe vêtit de légendes\nPeupla le ciel d’idoles\nMultiplia ses panthéons\nCumula ses utopies\n\nSe voulant éternel\nIl fixa son oreille\nSur la coquille du monde\nÀ l’écoute\nD’une voix souterraine\nQui l’escorte le guide\nEt l’agrandit\n\nAlors\nDe nuits en nuits\nEt d’aubes en aubes\nTantôt le jour s’éclaire\nTantôt le jour moisit\n\n(…)\n\nToute vie\nAmorça\nLe mystère\nTout mystère\nSe voilà\nDe ténèbres\nToute ténèbre\nSe chargea\nD’espérance\nToute espérance\nFut soumise\nÀ la Vie"
     },
     {
       "id": "cleyre",
@@ -505,13 +510,14 @@
       "title": "La Vie ou la Mort",
       "kind": "Prose",
       "kindNote": "Dialogue poétique",
-      "note": "Un dialogue philosophique autour du choix de vivre et de la solidarité entre générations.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e9ddf7",
       "ink": "#403850",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Une âme qui franchissait le Portail s’arrêta à mi-chemin et dit à la Vie :\n— « Qu’as-tu à m’offrir ? »\nLa Vie répondit :\n— « De la tristesse, un incessant combat, des déceptions.\nPuis le Silence et la Nuit. »\nL’âme dit à la Mort :\n— « Et toi, qu’as-tu à m’offrir ? »\n— « Je te donnerai tout de suite ce que la Vie ne t’accordera qu’à la fin. »\nL’âme se tourna vers la Vie :\n— « Et si je vis ? Et si je me bats ? »\n— « D’autres vivront et se battront après toi.\nEt leurs combats seront plus faciles là où tu auras combattu. »\n— « Mais à quoi bon leurs luttes à eux ? »\n— « Elles rendront plus léger le fardeau de tous ceux qui naîtront ensuite à la douleur et qui la combattront à leur tour. »\n— « Mais qu’ai-je à voir avec ces autres ? Qui sont-ils donc ? »\n— « Ils sont toi. »\n— « Et ceux qui sont venus avant moi, qui sont-ils ? »\n— « Eux aussi, ils sont toi. »\n— « Le Silence et la Nuit auraient donc une fin ? »\n— « Ils finiront en chant et en lumière.\nEt la douleur s’achèvera en Paix\nPuisque la Mort meurt en moi\nTandis que tu passes de toi aux autres\nQue la lumière s’ombrage et que l’ombre s’illumine. Choisis ! »\nL’âme, en larmes, répondit :\n— « Je vivrai ! »"
     },
     {
       "id": "duras",
@@ -520,13 +526,14 @@
       "title": "Hiroshima mon amour",
       "kind": "Scénario",
       "kindNote": "Extrait",
-      "note": "Une adresse amoureuse où la douceur et la violence du sentiment se confondent.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e7f4f0",
       "ink": "#167e8b",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Je te rencontre. Je me souviens de toi. Qui es-tu ? Tu me tues. Tu me fais du bien. Comment me serais-je doutée que cette ville était faite à la taille de l’amour ? Comment me serais-je doutée que tu étais fait à la taille de mon corps même ? Tu me plais. Quel événement. Tu me plais. Quelle lenteur tout à coup. Quelle douceur. Tu ne peux pas savoir. Tu me tues. Tu me fais du bien. Tu me tues. Tu me fais du bien. J’ai le temps. Je t’en prie. Dévore-moi. Déforme-moi jusqu’à la laideur."
     },
     {
       "id": "woolf",
@@ -535,13 +542,14 @@
       "title": "Les Vagues",
       "kind": "Roman",
       "kindNote": "Extrait",
-      "note": "Le désir d’élargir la nuit et de lui faire une place pour les rêves.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#294c9c",
       "ink": "#fff6ec",
-      "format": "recit"
+      "format": "recit",
+      "poem": "J’ai voulu dilater la nuit, et y faire entrer sans cesse de plus en plus de rêves."
     },
     {
       "id": "nelson",
@@ -550,13 +558,14 @@
       "title": "Les Argonautes",
       "kind": "Essai",
       "kindNote": "Extrait",
-      "note": "Une remarque sur la matière stellaire qui compose les êtres humains.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#bbcef0",
       "ink": "#242849",
-      "format": "essai"
+      "format": "essai",
+      "poem": "D’un point de vue empirique, on est fait de poussière d’étoiles. Pourquoi est-ce qu’on n’en parle pas davantage ?"
     },
     {
       "id": "sauvage",
