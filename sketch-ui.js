@@ -24,6 +24,7 @@
     ['#window-shade .pill-link', 'frame', 211],
     ['#window-shade .soft-btn', 'frame', 223],
     ['#window-shade .send-btn', 'frame', 233],
+    ['#window-shade .mail-form .mail-field-box', 'frame', 234],
     ['#window-shade .viewer-btn', 'frame', 241],
     ['#window-shade .library-toolbar', 'frame', 251],
     ['#window-shade .about-mark', 'frame', 263],
@@ -171,7 +172,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05));
+    const variation=item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05)));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
   }
   scan();
