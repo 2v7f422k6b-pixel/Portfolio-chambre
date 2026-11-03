@@ -19,26 +19,35 @@
       display:grid;place-items:center;pointer-events:none;background:transparent!important;
     }
     #nana-play-pan-hint .pan-hint-visual {
-      position:relative;width:168px;height:168px;border-radius:50%;
-      background:rgba(255,250,255,.26);
-      border:2px solid rgba(255,23,59,.28);
-      box-shadow:0 2px 22px rgba(255,23,59,.12);
-      backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+      position:relative;width:158px;height:158px;border-radius:50%;
+      background:rgba(255,250,255,.17);
+      border:1px solid rgba(255,23,59,.23);
+      box-shadow:0 2px 18px rgba(255,23,59,.08);
+      backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
       animation:nana-pan-fade 5.8s ease-in-out both;
     }
     #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;}
+    #nana-play-pan-hint .pan-hint-label {
+      position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+      padding:5px 10px;white-space:nowrap;text-align:center;
+      color:#ff173b;background:rgba(255,250,255,.75);
+      border:1px solid rgba(255,23,59,.24);
+      border-radius:9px 12px 8px 11px / 10px 8px 11px 9px;
+      font-family:"Nana Trace UI",Arial,sans-serif;font-size:14px;
+      line-height:1.15;letter-spacing:.01em;text-shadow:none;
+    }
     #nana-play-pan-hint .pan-hint-finger {
-      position:absolute;top:50%;left:50%;width:68px;height:68px;
+      position:absolute;top:50%;left:50%;width:64px;height:64px;
       overflow:visible;filter:drop-shadow(0 1px 3px rgba(255,23,59,.3));
       animation:nana-pan-finger-swipe 3.1s ease-in-out infinite;
     }
     @keyframes nana-pan-finger-swipe {
       0%,10%,100% {transform:translate(-50%,-50%) translate(0,0) rotate(-7deg);}
-      27% {transform:translate(-50%,-50%) translate(-12px,0) rotate(-7deg);}
-      42% {transform:translate(-50%,-50%) translate(12px,0) rotate(-7deg);}
+      27% {transform:translate(-50%,-50%) translate(-20px,0) rotate(-7deg);}
+      42% {transform:translate(-50%,-50%) translate(20px,0) rotate(-7deg);}
       60% {transform:translate(-50%,-50%) translate(0,0) rotate(-7deg);}
-      76% {transform:translate(-50%,-50%) translate(0,-11px) rotate(-7deg);}
-      92% {transform:translate(-50%,-50%) translate(0,9px) rotate(-7deg);}
+      76% {transform:translate(-50%,-50%) translate(0,-18px) rotate(-7deg);}
+      92% {transform:translate(-50%,-50%) translate(0,17px) rotate(-7deg);}
     }
     @keyframes nana-pan-fade {
       0% {opacity:0;transform:translateY(-68px) scale(.95);}
@@ -47,10 +56,10 @@
       100% {opacity:0;transform:translateY(-68px) scale(1);}
     }
     html[data-theme="night"] #nana-play-pan-hint .pan-hint-visual {
-      background:rgba(255,242,252,.20);border-color:rgba(255,23,59,.4);
+      background:rgba(255,242,252,.13);border-color:rgba(255,23,59,.25);
     }
     @media(max-width:480px) {
-      #nana-play-pan-hint .pan-hint-visual{width:154px;height:154px;}
+      #nana-play-pan-hint .pan-hint-visual{width:150px;height:150px;}
     }
     @media(prefers-reduced-motion:reduce) {
       #nana-play-pan-hint .pan-hint-visual{animation:none!important;transform:translateY(-68px);}
@@ -58,6 +67,17 @@
     }
   `;
   document.head.appendChild(style);
+
+  function updateHintLabel() {
+    if (!hint) return;
+    const label = hint.querySelector('.pan-hint-label');
+    if (!label) return;
+    const isEnglish = document.documentElement.lang === 'en';
+    const isTouch = window.matchMedia('(pointer:coarse)').matches;
+    label.textContent = isTouch
+      ? (isEnglish ? 'Swipe to explore' : 'Glisse pour explorer')
+      : (isEnglish ? 'Scroll to explore' : 'Fais défiler pour explorer');
+  }
 
   let hint = null;
   let timer = null;
@@ -85,14 +105,16 @@
     hint.innerHTML =
       '<div class="pan-hint-visual">' +
       '<svg class="pan-hint-directions" viewBox="0 0 168 168" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<g fill="none" stroke="#ff173b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
-      '<g fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g fill="none" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '</svg>' +
       '<svg class="pan-hint-finger" viewBox="0 0 80 80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M31 53 V19 C31 13 41 13 41 19 V39 V31 C41 26 50 26 50 31 V41 V34 C50 29 59 30 59 35 V44 V39 C59 34 68 36 68 41 V56 C68 67 60 72 50 72 H40 C32 72 28 68 24 63 L14 50 C11 46 17 40 22 44 L31 53 Z" fill="#fffafc" stroke="#ff173b" stroke-width="4.8" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<path d="M31 53 V19 C31 13 41 13 41 19 V39 V31 C41 26 50 26 50 31 V41 V34 C50 29 59 30 59 35 V44 V39 C59 34 68 36 68 41 V56 C68 67 60 72 50 72 H40 C32 72 28 68 24 63 L14 50 C11 46 17 40 22 44 L31 53 Z" fill="#fffafc" stroke="#ff173b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' +
       '</svg>' +
+      '<span class="pan-hint-label" data-no-translate></span>' +
       '</div>';
     document.body.appendChild(hint);
+    updateHintLabel();
     timer = setTimeout(removeHint, 5800);
     viewport.addEventListener('scroll', removeHint, {passive:true});
     document.addEventListener('wheel', removeHint, {passive:true});
@@ -135,5 +157,6 @@
     attributeFilter: ['class']
   });
   window.addEventListener('resize', scheduleCheck, {passive:true});
+  document.addEventListener('portfolio-language-change', updateHintLabel);
   onModeChange();
 })();
