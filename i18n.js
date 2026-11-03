@@ -179,7 +179,7 @@ try{
    rather than rewriting its large illustration-heavy HTML file. */
 function syncDressUpFrames(){
   for(const frame of document.querySelectorAll('iframe')){
-    if(!/\/about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
+    if(!/(?:^|\/)about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
     if(frame.dataset.nanaTranslationAttached)return;
     frame.dataset.nanaTranslationAttached='1';
     frame.addEventListener('load',()=>{
