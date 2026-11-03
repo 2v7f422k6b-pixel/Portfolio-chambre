@@ -95,7 +95,8 @@
     const save=document.createElement('button');save.textContent='Enregistrer';
     const add=document.createElement('button');add.textContent='+ Étoile';
     const reset=document.createElement('button');reset.textContent='Réinitialiser';
-    [save,add,reset].forEach(b=>{b.style.cssText='margin:4px;padding:5px;background:white;border:1px solid #ff173b;color:#ff173b';notice.appendChild(b)});
+    const copy=document.createElement('button');copy.textContent='Copier les coordonnées';
+    [save,add,copy,reset].forEach(b=>{b.style.cssText='margin:4px;padding:5px;background:white;border:1px solid #ff173b;color:#ff173b';notice.appendChild(b)});
     document.body.appendChild(notice);
     const persist=()=>{localStorage.setItem(storageKey,JSON.stringify(stars));};
     const refresh=()=>{elements.forEach((el,i)=>{if(!el)return;const v=stars[i];el.setAttribute('points',points(...v));el.style.display=v[2]>0?'':'none';});};
@@ -110,6 +111,22 @@
     });
     save.onclick=()=>{persist();notice.firstElementChild.textContent='Positions enregistrées !'};
     add.onclick=()=>{const v=[835,470,7,0];stars.push(v);const el=document.createElementNS(NS,'polygon');el.setAttribute('class','nana-phosphor-star');el.style.setProperty('--day-star-color',palette[stars.length%palette.length]);group.appendChild(el);elements.push(el);el.setAttribute('points',points(...v));el.style.setProperty('pointer-events','all','important');el.style.touchAction='none';el.onpointerdown=e=>{const [x,y]=coords(e);v[0]=x;v[1]=y;el.setAttribute('points',points(...v));persist()};persist();};
+    copy.onclick=async()=>{
+      persist();
+      const data=JSON.stringify({stars:stars.map(([x,y,size,angle])=>[Math.round(x*100)/100,Math.round(y*100)/100,size,angle])},null,2);
+      try {
+        await navigator.clipboard.writeText(data);
+        notice.firstElementChild.textContent='Coordonnées copiées !';
+      } catch (_) {
+        const output=document.createElement('textarea');
+        output.value=data;
+        output.readOnly=true;
+        output.style.cssText='display:block;width:260px;height:110px;margin-top:6px';
+        notice.appendChild(output);
+        output.focus();output.select();
+        notice.firstElementChild.textContent='Sélectionne et copie le texte';
+      }
+    };
     reset.onclick=()=>{localStorage.removeItem(storageKey);location.reload()};
   }
 })();
