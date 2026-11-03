@@ -114,6 +114,11 @@ for(const [fr,en] of Object.entries(extra.frToEn||{})){
   if(translations[en]===undefined)translations[en]=fr;
 }
 const originalText=new WeakMap(),originalAttr=new WeakMap();
+/* Work Mode project finder: title and new short introduction. */
+Object.assign(translations,{
+  "MY PROJECTS":"MES PROJETS",
+  "Browse my illustrated, animated, written projects and more":"parcourir mes projets illustrés, animés, écrits et plus"
+});
 let lang='fr',busy=false;
 try{const saved=localStorage.getItem('portfolio-language-v2');lang=saved==='en'?'en':'fr'}catch(e){}
 const attrs=['placeholder','title','aria-label','alt'];
