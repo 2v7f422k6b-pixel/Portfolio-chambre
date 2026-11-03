@@ -6,7 +6,7 @@
  const selectors=[
   ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image',.24],
   ['#nana-wall-mirror image',.60],
-  ['#nana-fortune-cookie image',.43]
+  ['#nana-fortune-cookie image:not(.nana-fortune-cookie-outline)',.43]
  ];
  const apply=()=>{
   const night=document.documentElement.dataset.theme==='night';
