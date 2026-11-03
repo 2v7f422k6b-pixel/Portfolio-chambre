@@ -123,16 +123,17 @@
     if (night) scene.appendChild(canvas);
     else scene.insertBefore(canvas, scene.querySelector('.room-line-repair-night'));
 
-    if (night) {
-      canvas.style.transition = 'opacity 1.8s cubic-bezier(.42,0,.25,1)';
-      const sync = () => {
-        canvas.style.opacity = document.documentElement.dataset.theme === 'night' ? '1' : '0';
-      };
-      new MutationObserver(sync).observe(document.documentElement, {
-        attributes: true, attributeFilter: ['data-theme']
-      });
-      sync();
-    }
+    // Both day and night patches follow the same cross-fade as their image.
+    // Otherwise a blue day patch would remain visible on the night wall.
+    canvas.style.transition = 'opacity 1.8s cubic-bezier(.42,0,.25,1)';
+    const sync = () => {
+      const activeNight = document.documentElement.dataset.theme === 'night';
+      canvas.style.opacity = (night === activeNight) ? '1' : '0';
+    };
+    new MutationObserver(sync).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-theme']
+    });
+    sync();
   }
 
   for (const [id, night] of [['room-img', false], ['room-night', true]]) {
