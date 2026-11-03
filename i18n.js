@@ -105,6 +105,12 @@ Object.assign(translations,{
 "Reset":"Réinitialiser"
 });
 
+/* Match the composer's typographic ellipsis and bilingual window title exactly. */
+Object.assign(translations,{
+ 'Write your message here…':'Écris ton message ici…',
+ 'Mail — New Message':'Mail — Nouveau message'
+});
+
 /* Merge English-first and French-first additions without rewriting artistic copy. */
 const extra=window.NanaI18nExtra||{enToFr:{},frToEn:{}};
 Object.assign(translations,extra.enToFr||{});
