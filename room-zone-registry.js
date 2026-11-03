@@ -13,7 +13,7 @@
     ['tamagotchi','Tamagotchi','TAMAGOTCHI.PNG','[data-open="tamagotchi"]'],
     ['latte','Mug latte','MUG LATTE.PNG','[data-open="latte"]'],
     ['book','Livre La Princesse Clown','TALE.PNG','[data-open="book"]'],
-    ['rilakkuma','Rilakkuma','RILAKKUMA.PNG','[data-open="about"]'],
+    ['rilakkuma','Rilakkuma','RILAKKUMA.PNG','[data-open="do-nothing"]'],
     ['guitare','Guitare','GUITARE.PNG','[data-open="contact"]'],
     ['ring-light','Ring light','RING LIGHT.PNG','[aria-label="Open Photos via the ring light"]'],
     ['chat','Chat','CAT.PNG','[data-cat-pet]'],
