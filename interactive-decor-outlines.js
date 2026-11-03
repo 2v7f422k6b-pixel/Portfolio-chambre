@@ -76,18 +76,6 @@
       opacity: 0;
     }
 
-    /* Night dimming must affect the cookie picture, never its white rim.
-       A pre-existing !important image filter otherwise replaces the rim filter. */
-    html[data-theme="night"] #hotspots #nana-fortune-cookie > image.nana-fortune-cookie-outline {
-      opacity: 0 !important;
-      filter: url(#nana-fortune-cookie-edge-filter) !important;
-    }
-    html[data-theme="night"] #hotspots #nana-fortune-cookie:hover > image.nana-fortune-cookie-outline,
-    html[data-theme="night"] #hotspots #nana-fortune-cookie:focus-within > image.nana-fortune-cookie-outline,
-    html[data-theme="night"] #hotspots.hotspot-guide-on #nana-fortune-cookie > image.nana-fortune-cookie-outline,
-    html[data-theme="night"] #hotspots.hotspot-peek #nana-fortune-cookie > image.nana-fortune-cookie-outline {
-      opacity: 1 !important;
-    }
     @media (prefers-reduced-motion: reduce) {
       #hotspots .nana-decor-white-outline { transition: none; }
     }
