@@ -240,15 +240,13 @@ function openGearnewsSeries(){
  const second=en?'Arpeggios':'Les arpèges';
  const watch=en?'Watch on Instagram':'Voir sur Instagram';
  const more=en?'More episodes to come…':'D’autres épisodes arrivent…';
- // Try the reel's own image endpoint. If Instagram blocks image delivery,
- // use its official embed so the preview still comes from the actual Reel.
  const episode=(number,name,shortcode)=>{
-  const url='https://www.instagram.com/reel/'+shortcode+'/';
+  const url='https://www.instagram.com/gearnews.fr/reel/'+shortcode+'/';
+  const cover='assets/gearnews-episode-'+Number(number)+'-cover.jpg';
   return `<article class="gearnews-ring-episode">
    <a class="gearnews-ring-preview" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name} — Instagram">
-    <img class="gearnews-ring-thumbnail" src="https://www.instagram.com/p/${shortcode}/media/?size=l" alt="${name} — GearNews.fr" loading="lazy" decoding="async">
+    <img class="gearnews-ring-thumbnail" src="${cover}" alt="${name} — GearNews.fr" loading="lazy" decoding="async">
     <iframe class="gearnews-ring-embed" title="${name} — Instagram Reel preview" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    <span class="gearnews-ring-play" aria-hidden="true">▶</span>
    </a>
    <div class="gearnews-ring-details">
     <span class="gearnews-ring-number">${number}</span>
@@ -266,19 +264,19 @@ function openGearnewsSeries(){
   </div>
   <p class="gearnews-ring-more">${more}</p>
  </section>`,'gearnews-series');
- const previews=winContent.querySelectorAll('.gearnews-ring-preview');
- previews.forEach(preview=>{
+ winContent.querySelectorAll('.gearnews-ring-preview').forEach(preview=>{
   const img=preview.querySelector('.gearnews-ring-thumbnail');
   const iframe=preview.querySelector('.gearnews-ring-embed');
-  // The embed is a fallback, not an extra network request when the still loads.
-  const fallback=()=>{
+  // Local JPGs are preferred. Until they are available, tightly crop Instagram's
+  // official embedded Reel so its chrome and letterboxing are not visible.
+  const showFallback=()=>{
    if(preview.classList.contains('is-embedded'))return;
    preview.classList.add('is-embedded');
    const code=preview.href.match(/\/reel\/([^/]+)\//)?.[1];
    if(code && iframe)iframe.src='https://www.instagram.com/reel/'+code+'/embed/';
   };
-  img.addEventListener('error',fallback,{once:true});
-  if(img.complete && !img.naturalWidth)fallback();
+  img.addEventListener('error',showFallback,{once:true});
+  if(img.complete && !img.naturalWidth)showFallback();
  });
 }
 
