@@ -1,15 +1,144 @@
 (function literaryModule() {
   'use strict';
-  /* Draft content: replace these examples with Léna's own reading choices and archives. */
+  /* Source : Top 10 public de @lenastarduweb, vérifié le 3 novembre 2026.
+     Les tags d'ambiance et résumés sont des aides de navigation rédigées pour le site,
+     et non des critiques personnelles signées Léna. */
   const readingExamples = [
-    { title: 'Frankenstein', author: 'Mary Shelley', mood: 'étrange', line: 'Une créature, son créateur, et la question de ce qui nous rend humains.' },
-    { title: 'Jane Eyre', author: 'Charlotte Brontë', mood: 'intense', line: 'Une héroïne qui refuse de renoncer à elle-même.' },
-    { title: 'La Princesse de Clèves', author: 'Madame de Lafayette', mood: 'intense', line: 'Des sentiments impossibles à faire entrer dans les règles.' },
-    { title: 'Les Vagues', author: 'Virginia Woolf', mood: 'poétique', line: 'Six voix, des fragments de vie, un roman qui ressemble à une marée.' },
-    { title: 'Les Fleurs bleues', author: 'Raymond Queneau', mood: 'étrange', line: 'Un voyage loufoque à travers le temps et le langage.' },
-    { title: 'Une chambre à soi', author: 'Virginia Woolf', mood: 'poétique', line: 'Un essai essentiel sur la liberté de créer et la place des femmes dans la littérature.' }
+    {
+      "rank": 1,
+      "title": "À l’est d’Eden",
+      "author": "John Steinbeck",
+      "rating": 10,
+      "moods": [
+        "bouleversant",
+        "intense"
+      ],
+      "line": "Une grande fresque familiale dans la vallée de Salinas, entre héritage, rivalités et liberté de choisir.",
+      "url": "https://www.senscritique.com/livre/a_l_est_d_eden/80960",
+      "cover": "https://media.senscritique.com/media/000000051366/300/a_l_est_d_eden.jpg"
+    },
+    {
+      "rank": 2,
+      "title": "Les Raisins de la colère",
+      "author": "John Steinbeck",
+      "rating": 10,
+      "moods": [
+        "bouleversant",
+        "voyage"
+      ],
+      "line": "L’exode d’une famille pendant la Grande Dépression. Une histoire de solidarité et d’injustice sociale.",
+      "url": "https://www.senscritique.com/livre/les_raisins_de_la_colere/179454",
+      "cover": "https://media.senscritique.com/media/000017233178/300/les_raisins_de_la_colere.jpg"
+    },
+    {
+      "rank": 3,
+      "title": "Les Royaumes du Nord",
+      "author": "Philip Pullman",
+      "rating": 10,
+      "moods": [
+        "aventure",
+        "étrange"
+      ],
+      "line": "Lyra part vers le Grand Nord dans un monde où les âmes prennent forme animale. Un voyage entre mystère et imaginaire.",
+      "url": "https://www.senscritique.com/livre/les_royaumes_du_nord/210435",
+      "cover": "https://media.senscritique.com/media/000019133118/300/les_royaumes_du_nord.jpg"
+    },
+    {
+      "rank": 4,
+      "title": "Aquarium",
+      "author": "David Vann",
+      "rating": 10,
+      "moods": [
+        "bouleversant",
+        "intense"
+      ],
+      "line": "Un roman sur une relation mère-fille et les secrets de famille, avec une tension qui ne lâche pas.",
+      "url": "https://www.senscritique.com/livre/aquarium/12727862",
+      "cover": "https://media.senscritique.com/media/000020361439/300/aquarium.jpg"
+    },
+    {
+      "rank": 5,
+      "title": "Dans la forêt",
+      "author": "Jean Hegland",
+      "rating": 10,
+      "moods": [
+        "aventure",
+        "bouleversant"
+      ],
+      "line": "Deux sœurs apprennent à vivre dans la forêt quand le monde extérieur cesse de fonctionner.",
+      "url": "https://www.senscritique.com/livre/dans_la_foret/22541510",
+      "cover": "https://media.senscritique.com/media/000021733141/300/dans_la_foret.jpg"
+    },
+    {
+      "rank": 6,
+      "title": "Les Autonautes de la cosmoroute",
+      "author": "Carol Dunlop et Julio Cortázar",
+      "rating": null,
+      "moods": [
+        "voyage",
+        "poétique",
+        "étrange"
+      ],
+      "line": "Une expédition tendre et décalée sur l’autoroute Paris–Marseille, transformée en terrain d’exploration.",
+      "url": "https://www.senscritique.com/livre/les_autonautes_de_la_cosmoroute/11891193",
+      "cover": "https://media.senscritique.com/media/000007228227/300/les_autonautes_de_la_cosmoroute.jpg"
+    },
+    {
+      "rank": 7,
+      "title": "Orgueil et Préjugés",
+      "author": "Jane Austen",
+      "rating": 10,
+      "moods": [
+        "amour",
+        "drôle"
+      ],
+      "line": "Elizabeth Bennet et Mr Darcy se rencontrent dans une société où les apparences et les conventions font obstacle aux sentiments.",
+      "url": "https://www.senscritique.com/livre/orgueil_et_prejuges/262879",
+      "cover": "https://media.senscritique.com/media/000007027428/300/orgueil_et_prejuges.jpg"
+    },
+    {
+      "rank": 8,
+      "title": "La vie est ailleurs",
+      "author": "Milan Kundera",
+      "rating": 10,
+      "heart": true,
+      "moods": [
+        "poétique",
+        "intense",
+        "étrange"
+      ],
+      "line": "Une épopée ironique de la jeunesse et de la poésie, à travers le destin d’un jeune poète.",
+      "url": "https://www.senscritique.com/livre/la_vie_est_ailleurs/60888",
+      "cover": "https://media.senscritique.com/media/000000036970/300/la_vie_est_ailleurs.jpg"
+    },
+    {
+      "rank": 9,
+      "title": "Belle du Seigneur",
+      "author": "Albert Cohen",
+      "rating": 10,
+      "moods": [
+        "amour",
+        "intense"
+      ],
+      "line": "Un amour aussi absolu que tourmenté, au cœur d’un grand roman sur le désir et ses illusions.",
+      "url": "https://www.senscritique.com/livre/belle_du_seigneur/72039",
+      "cover": "https://media.senscritique.com/media/000018638489/300/belle_du_seigneur.jpg"
+    },
+    {
+      "rank": 10,
+      "title": "L’Usage du monde",
+      "author": "Nicolas Bouvier",
+      "rating": 10,
+      "moods": [
+        "voyage",
+        "poétique"
+      ],
+      "line": "Le récit d’une traversée du monde où les rencontres comptent autant que les paysages.",
+      "url": "https://www.senscritique.com/livre/l_usage_du_monde/419641",
+      "cover": "https://media.senscritique.com/media/000000045043/300/l_usage_du_monde.jpg"
+    }
   ];
-  /* These poets are public-domain discovery examples, NOT a recovered blog archive. */
+    /* These poets are public-domain discovery examples, NOT a recovered blog archive. */
   const poetExamples = [
     { name: 'Louise Labé', dates: 'XVIe siècle', note: 'Une voix de la Renaissance, passionnée et directe.' },
     { name: 'Marceline Desbordes-Valmore', dates: '1786–1859', note: 'Une poésie de l’émotion, de la tendresse et de la perte.' },
@@ -32,7 +161,7 @@
   };
   let current = null;
   let selectedMood = 'surprise';
-  let selection = 0;
+  let selection = -1;
   let poet = 0;
   let bank = [];
   let poem = [];
@@ -46,20 +175,44 @@
   const header = (label, intro) => `<header class="lit-header">
     <p class="lit-overline">NANA COLOR STUDIO / PETITS MONDES LITTÉRAIRES</p>
     <h2>${label}</h2><p class="lit-intro">${intro}</p></header>`;
+  const moodOptions = [
+    ['surprise','Surprends-moi !'],
+    ['bouleversant','Bouleversant'],
+    ['aventure','Aventure'],
+    ['amour','Amour'],
+    ['voyage','Voyage'],
+    ['poétique','Poétique'],
+    ['étrange','Étrange'],
+    ['intense','Intense']
+  ];
+  const profileUrl = 'https://www.senscritique.com/lenastarduweb/collection?universe=2';
+  const topUrl = 'https://www.senscritique.com/liste/top_10_livres/1875108';
+  const coverBlock = (book,small=false) => `<span class="lit-cover${small?' lit-cover-small':''}" aria-hidden="true">
+    <span class="lit-cover-fallback"><strong>${escape(book.title)}</strong><small>${escape(book.author)}</small></span>
+    <img src="${escape(book.cover)}" alt="" loading="lazy" decoding="async">
+  </span>`;
   function readingHtml() {
     return `<div class="lit-app lit-reading">
-      ${header('La libraire vous conseille', 'Un petit comptoir de librairie pour les jours où l’on ne sait pas quoi lire.')}
-      <div class="lit-notice" role="note"><strong>Version de préparation.</strong> Les titres ci-dessous sont des exemples de fonctionnement, pas encore les coups de cœur de Léna.</div>
+      ${header('La libraire vous conseille', 'Quelques livres que j’ai vraiment aimés. Tu cherches quoi, aujourd’hui ?')}
+      <div class="lit-notice" role="note">Ma sélection personnelle : les 10 livres de mon <a href="${topUrl}" target="_blank" rel="noopener noreferrer">Top 10 SensCritique</a>. Neuf sont notés 10/10 ; le sixième est classé sans note affichée.</div>
       <div class="lit-row"><span>De quoi as-tu envie ?</span>
-        <div class="lit-moods" role="group" aria-label="Ambiance de lecture">
-          ${['surprise','étrange','intense','poétique'].map(m => `<button type="button" class="lit-button" data-lit-mood="${m}" aria-pressed="${m===selectedMood}">${m==='surprise'?'Surprends-moi !':m}</button>`).join('')}
+        <div class="lit-moods" role="group" aria-label="Choisir une ambiance de lecture">
+          ${moodOptions.map(([m,label]) => `<button type="button" class="lit-button" data-lit-mood="${m}" aria-pressed="${m===selectedMood}">${label}</button>`).join('')}
         </div>
-      </div><article class="lit-card lit-book-card" id="lit-reading-result" aria-live="polite"><div class="lit-card-body"></div></article>
-      <button type="button" class="lit-button lit-primary" data-lit-random>Un autre livre, s’il te plaît</button>
-      <p class="lit-caption">Bientôt : tes vrais favoris, tes notes de libraire et tes avis personnels.</p>
+      </div>
+      <article class="lit-card lit-book-card" id="lit-reading-result" aria-live="polite"><div class="lit-card-body"></div></article>
+      <button type="button" class="lit-button lit-primary" data-lit-random>✦ Un autre livre, s’il te plaît</button>
+      <section class="lit-library" aria-label="Mes 10 livres préférés">
+        <p class="lit-micro-title">Les dix livres du rayon</p>
+        <div class="lit-shelf">${readingExamples.map(book=>`<button type="button" class="lit-shelf-book" data-lit-book="${book.rank}" aria-label="Voir la fiche : ${escape(book.title)}" aria-pressed="false">
+          ${coverBlock(book,true)}
+          <span class="lit-shelf-rank">Nº ${book.rank}</span>
+        </button>`).join('')}</div>
+      </section>
+      <p class="lit-caption">Notes : ${'<a href="'+profileUrl+'" target="_blank" rel="noopener noreferrer">mon profil SensCritique</a>'}. Les petites descriptions et les catégories d’ambiance sont rédigées pour cette bibliothèque, pas extraites de mes critiques.</p>
     </div>`;
   }
-  function souvenuesHtml() {
+    function souvenuesHtml() {
     return `<div class="lit-app lit-souvenues">
       ${header('Les Souvenues', 'Des voix de femmes à lire, retrouver et transmettre.')}
       <div class="lit-notice" role="note">Le nom du blog est authentique. Ses archives n’ont pas encore été importées : les autrices ci-dessous sont des exemples pour préparer la présentation.</div>
@@ -91,18 +244,35 @@
   function view(name) {
     return { title: titles[name] || 'Livres', html: name === 'reading-room' ? readingHtml() : name === 'souvenues' ? souvenuesHtml() : wordLabHtml() };
   }
-  function showReading() {
-    const root=appRoot(), result=root?.querySelector('#lit-reading-result .lit-card-body');
-    if(!result)return;
-    root.querySelectorAll('[data-lit-mood]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.litMood===selectedMood)));
-    const available=readingExamples.filter(book=>selectedMood==='surprise'||book.mood===selectedMood);
-    if(!available.length)return;
-    selection=(selection+1)%available.length;
-    const b=available[selection];
-    result.innerHTML=`<span class="lit-book-ribbon">FICHE DE LECTURE • DÉMO</span>
-      <h3>${escape(b.title)}</h3><p class="lit-byline">${escape(b.author)}</p><p>${escape(b.line)}</p><span class="lit-book-mood">Pour une envie ${escape(b.mood)}</span>`;
+  function drawReadingBook(book){
+    const root=appRoot(),result=root?.querySelector('#lit-reading-result .lit-card-body');
+    if(!result || !book)return;
+    selection=readingExamples.findIndex(item=>item.rank===book.rank);
+    root.querySelectorAll('[data-lit-book]').forEach(btn=>btn.setAttribute('aria-pressed',String(Number(btn.dataset.litBook)===book.rank)));
+    root.querySelectorAll('[data-lit-mood]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litMood===selectedMood)));
+    const rating=book.rating===null ? 'Dans mon Top 10 · Sans note affichée' : 'Ma note : '+book.rating+'/10';
+    result.innerHTML=`<div class="lit-featured-layout">
+      ${coverBlock(book)}
+      <div class="lit-featured-copy">
+        <span class="lit-book-ribbon">MON TOP 10 · Nº ${book.rank}</span>
+        <h3>${escape(book.title)}</h3>
+        <p class="lit-byline">${escape(book.author)}</p>
+        <p class="lit-rating">${escape(rating)}${book.heart?' · Coup de cœur':''}</p>
+        <p class="lit-book-summary">${escape(book.line)}</p>
+        <span class="lit-book-mood">À lire pour : ${book.moods.map(escape).join(' · ')}</span>
+        <a class="lit-text-link" href="${escape(book.url)}" target="_blank" rel="noopener noreferrer">Voir la fiche sur SensCritique ↗</a>
+      </div>
+    </div>`;
   }
-  function showPoet() {
+  function showReading(){
+    if(!appRoot())return;
+    const available=readingExamples.filter(book=>selectedMood==='surprise'||book.moods.includes(selectedMood));
+    if(!available.length)return;
+    const previous=readingExamples[selection];
+    const options=available.length>1 ? available.filter(book=>book.rank!==previous?.rank):available;
+    drawReadingBook(options[Math.floor(Math.random()*options.length)]);
+  }
+    function showPoet() {
     const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
     if(!result)return;
     const p=poetExamples[poet];
@@ -176,15 +346,19 @@
   }
   function activate(name) {
     current=name;
-    if(name==='reading-room'){selectedMood='surprise';selection=Math.floor(Math.random()*readingExamples.length)-1;showReading();}
+    if(name==='reading-room'){selectedMood='surprise';selection=-1;showReading();}
     if(name==='souvenues'){poet=0;showPoet();}
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-poet],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
     if(!target||!target.closest('#window-content .lit-app'))return;
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
+    else if(target.hasAttribute('data-lit-book')){
+      selectedMood='surprise';
+      drawReadingBook(readingExamples.find(b=>b.rank===Number(target.dataset.litBook)));
+    }
     else if(target.hasAttribute('data-lit-poet')){poet=Number(target.dataset.litPoet);showPoet();}
     else if(target.hasAttribute('data-lit-add'))insertFromBank(Number(target.dataset.litAdd));
     else if(target.hasAttribute('data-lit-remove')){
@@ -199,7 +373,10 @@
     else if(target.hasAttribute('data-lit-clear')){bank.push(...poem.splice(0));renderPoem();}
     else if(target.hasAttribute('data-lit-export'))exportPoem();
   });
-  document.addEventListener('dragstart',event=>{
+  document.addEventListener('error',event=>{
+    if(event.target.matches?.('#window-content .lit-cover img')) event.target.hidden=true;
+  },true);
+    document.addEventListener('dragstart',event=>{
     const tile=event.target.closest('[data-lit-drag]');
     if(!tile||!tile.closest('#window-content .lit-app'))return;
     dragItem=tile.dataset.litDrag;
