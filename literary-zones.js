@@ -149,13 +149,14 @@
       "title": "Desdemona",
       "kind": "Théâtre",
       "kindNote": "Dialogue autour d’Othello",
-      "note": "Une voix sur la mémoire, la mort et les femmes qui reprennent la parole.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.laparafe.fr/2012/01/desdemona-dialogue-autour-dothello-de-shakespeare/",
       "section": "Premières retrouvailles",
       "bg": "#f3e2f4",
       "ink": "#a34a79",
-      "format": "theatre"
+      "format": "theatre",
+      "poem": "What bless to know I will never die again. – We will never die again.\n\n« Quelle bénédiction de savoir que je ne mourrai plus jamais. – Nous ne mourrons plus jamais. »"
     },
     {
       "id": "pozzi",
@@ -253,13 +254,14 @@
       "title": "Dans la forêt",
       "kind": "Roman",
       "kindNote": "Extrait sur la lune",
-      "note": "Le fragment que tu avais choisi parle de la lune et de ce qu’on apprend en vivant près de la nature.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.senscritique.com/livre/dans_la_foret/22541510",
       "section": "Premières retrouvailles",
       "bg": "#ffefd7",
       "ink": "#35938c",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Mais j’ai appris quelque chose que l’encyclopédie ne sait pas\n— quand la lune est croissante, on peut l’atteindre\net tenir délicatement sa courbe externe dans la paume\nde la main droite. Quand elle est décroissante,\nelle remplit la paume de la main gauche."
     },
     {
       "id": "gauthier",
@@ -268,13 +270,14 @@
       "title": "Pourquoi sorcières ?",
       "kind": "Revue",
       "kindNote": "Sorcières",
-      "note": "Un manifeste sur la danse, le corps, la nature et la liberté des femmes.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://musees-occitanie.fr/assets/uploads/2021/03/dossier-de-presse-magies-compresse.pdf",
       "section": "Premières retrouvailles",
       "bg": "#fbdada",
       "ink": "#7b2348",
-      "format": "essai"
+      "format": "essai",
+      "poem": "« Pourquoi sorcières ? Parce qu’elles dansent. Elles dansent à la pleine lune. Femmes lunaires, lunatiques, atteintes – disent-ils – de folie périodique. […]\n\nPourquoi sorcières ? Parce qu’elles vivent. Parce qu’elles sont en contact direct avec la vie de leur corps, avec la vie de la nature, avec la vie du corps des autres. Les sorcières respiraient, palpaient, appelaient chaque fleur, chaque herbe, chaque plante. […]\n\nPourquoi sorcières ? Parce qu’elles jouissent. Elles éclatent, leur corps entier est désir... leur jouissance est si violente, si transgressante, si ouverte, si mortelle que les hommes n’en sont pas encore revenus »"
     },
     {
       "id": "ziade",
@@ -299,13 +302,14 @@
       "title": "Fragment attribué à Sappho",
       "kind": "Poésie",
       "kindNote": "Traduction et source non indiquées",
-      "note": "Une déclaration d’amour à la lumière et à la vie, signée « Sappho » sur la carte retrouvée.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#faede6",
       "ink": "#d2799a",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Mais je désire encor... Mon âme désolée\nGoûte encor le soleil et les fleurs printanières.\nLes bêtes vont mourir au fond de leurs tanières,\nMais je veux jusqu’au bout savourer la clarté\nEt vous aimer..."
     },
     {
       "id": "estes",
@@ -314,13 +318,14 @@
       "title": "Femmes qui courent avec les loups",
       "kind": "Essai",
       "kindNote": "Extrait sur le rire",
-      "note": "Le rire envisagé comme une énergie corporelle, joyeuse et libératrice.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#dce6f2",
       "ink": "#855929",
-      "format": "essai"
+      "format": "essai",
+      "poem": "Le rire est un aspect secret de la sexualité féminine, un aspect physique, primitif, passionné, vitalisant et donc excitant. C'est le genre de sexualité dépourvue de but, au contraire de l'excitation génitale. C'est une sexualité joyeuse, une sexualité du moment, un véritable amour sensuel qui se libère, vit, meurt et revit de par sa propre énergie. Il est sacré parce qu'il a valeur de guérison. Il est sensuel parce qu'il réveille le corps et les émotions, parce qu'il excite et fait naître des ondes de plaisir. Il n'est pas unidimensionnel, car le rire se partage. C'est la sexualité la plus sauvage de la femme."
     },
     {
       "id": "diallo",
@@ -329,13 +334,14 @@
       "title": "Abstinence",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "Un poème sur le désir, la mémoire des gestes et la difficulté de l’oubli.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#edeacc",
       "ink": "#8f2546",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Abandonner...\nLes caresses charnelles\nDe tes paumes brûlantes\nAu secours de mes délires\nDans la frénésie des corps en sursaut\n\nOublier...\nLe souvenir de ton regard enflammé\nCaressant mon souffle effréné\nLe rire fascinant de tes yeux\nEt la virilité de ton corps éveillé\n\nPour m'abstenir\nJe m'offre à ces douces heures\nCes heures immortelles\nSuspendues au souvenir têtu\nDes ultimes confidences"
     },
     {
       "id": "ziade-lacrymosa",
@@ -360,13 +366,14 @@
       "title": "Ombres roses ombres",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "Des ombres qui se répondent sur une terre et dans une eau étrangères.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#ae6070",
       "ink": "#fff0f0",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Sous un ciel étranger\nombres roses\nombres\nsur une terre étrangère\nentre roses et ombres\ndans une eau étrangère\nmon ombre"
     },
     {
       "id": "gagnon",
@@ -375,13 +382,14 @@
       "title": "Venue à l’écriture",
       "kind": "Essai",
       "kindNote": "Extrait",
-      "note": "Le corps, sa représentation et les mots qui cherchent à le dire.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#dff2fc",
       "ink": "#cb6f97",
-      "format": "essai"
+      "format": "essai",
+      "poem": "Mon corps est nuit. Opaque et liquide, il a été caché pendant des siècles. Pour compenser ce manque-à-être, les hommes l’ont élevé au rang d’objet d’art, puis ils l’ont exhibé plus que tout autre corps vivant ou inerte. Ils en ont reproduit tellement d’exemplaires qu’il en devint marchandise d’une grande industrie."
     },
     {
       "id": "koltz",
@@ -390,13 +398,14 @@
       "title": "Poème (titre non indiqué)",
       "kind": "Poésie",
       "kindNote": "Extrait sans titre sur la carte",
-      "note": "Quelques vers brefs, une rivière, des pierres et une intimité minérale.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#f9eced",
       "ink": "#dd801b",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "J’aime te sentir\nSur moi\nComme un pont écroulé\n\nMa rivière\nPolira tes pierres"
     },
     {
       "id": "miano",
@@ -405,13 +414,14 @@
       "title": "La Saison de l’ombre",
       "kind": "Roman",
       "kindNote": "Extrait sur la nuit",
-      "note": "Une nuit presque palpable, chargée de mémoire et de sensations.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 1/2",
       "bg": "#807dbe",
       "ink": "#fff4dc",
-      "format": "recit"
+      "format": "recit",
+      "poem": "La nuit tombe d'un coup, comme un fruit trop mûr. Elle s'écrase sur le marais, la rivière, les cases sur pilotis.\n\nLa nuit a une texture : celle de la pulpe du kasimangolo, dont on ne peut savourer toute la douceur sucrée qu'en suçant prudemment les piquants du noyau.\n\nLa nuit est faite pour le repos, mais elle n'est pas si tranquille. Il faut rester sur ses gardes.\n\nLa nuit a une odeur : elle sent la peau de ceux qui sont ensemble par la force des choses. Ceux qui ne se seraient jamais rencontrés, s'il n'avait pas fallu s'enfuir, courir sans savoir où pour rester en vie, trouver une vie.\n\nLa nuit sent les souvenirs que le jour éloigne parce que l'on s'occupe l'esprit à assembler les parties d'une case sur pilotis, à chasser, à piler, à écailler, à soigner le nouveau venu, à caresser la joue de l'enfant qui ne parle pas, à lui chercher un nom pour le maintenir dans la famille des hommes.\n\nLa nuit charrie les réminiscences du dernier jour de la vie d'avant, dans le monde d'antan, sur la terre natale."
     },
     {
       "id": "matlwa",
@@ -420,13 +430,14 @@
       "title": "Règles douloureuses",
       "kind": "Roman",
       "kindNote": "Extrait",
-      "note": "Un passage sur le corps, la douleur et l’expérience intime du traitement.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e5f1fb",
       "ink": "#df6491",
-      "format": "recit"
+      "format": "recit",
+      "poem": "J’ai décidé d’arrêter tous mes traitements. Je suis fatiguée. J’ai fini par aimer ce mince filet de sang qui s’écoule de mon corps jour après jour. Il teinte l’eau du bain d’une jolie couleur rose. Parfois, quand un petit caillot s’échappe, l’eau devient marron foncé.\n\nLa partie molle de mon ventre est chaude et me picote. Je me sens si mal que je suis souvent obligée de m’asseoir pour ne pas m’évanouir. C’est une sorte de douleur, une sorte de plaisir, une sorte de liberté que j’aime et que le traitement du docteur Phakama a essayé de me dérober. Mais cette sensation est à moi, et elle est agréable, et je la veux.\n\nLes murmures qui m’accompagnent ne me gênent pas non plus. Ils me tiennent compagnie, me chantent des chansons et me racontent des histoires qui font passer le temps. Ton silence était de toute façon bien trop assourdissant."
     },
     {
       "id": "delpastre",
@@ -435,13 +446,14 @@
       "title": "Lune",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "La lune blanche, la lune rouge : un poème fait de contrastes et de retours.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#d9edf9",
       "ink": "#324962",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Couteau de sel, lame d'argent,\nla lune est blanche à l'horizon.\nQue sais-tu de la lune ?\nLame de cuivre, goutte de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue sur le sillon noirci\nluire comme une eau vive, et sur les feuilles des tilleuls.\nFrange de sel, vague d'argent,\nLa lune est blanche à l'horizon.\nLa lune et la nuit se ressemblent.\nPlume de givre, flaque de sang,\nla lune est rouge à l'horizon.\nQue de fois je l'ai vue au milieu de l'étang\nplonger sa face endolorie, comme un noyé, comme un pendu\npour quel supplice méconnu,\nquelle figure et quelle solitude,\nquel symbole et quelle similitude.\nCouteau de feu, face d'argent,\nla lune est blanche à l'horizon.\nLame d'acier, face de sang,\nla lune est rouge à l'horizon."
     },
     {
       "id": "real",
@@ -450,13 +462,14 @@
       "title": "Le Noir est une couleur",
       "kind": "Récit",
       "kindNote": "Extrait",
-      "note": "Une parole collective et combative, avec le désir d’avancer à pas de louves.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#ec9299",
       "ink": "#fff3eb",
-      "format": "recit"
+      "format": "recit",
+      "poem": "À pas de louves, à pas de tigresses et d’oiseaux, nous marcherons sur la lune s’il le faut, nous gagnerons l’espace qui nous revient, à nous qui sommes le baume sur les blessures, et l’eau dans le désert, parfumées, étincelantes, offertes et blessées, douces et violentes, femmes et magiciennes, princesses de nos sens et du désir des hommes."
     },
     {
       "id": "kane",
@@ -465,13 +478,14 @@
       "title": "4.48 Psychose",
       "kind": "Théâtre",
       "kindNote": "Extrait",
-      "note": "Un texte théâtral sur l’absence, l’amour, la perte et l’impossibilité de dire.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e2f0e9",
       "ink": "#255a59",
-      "format": "theatre"
+      "format": "theatre",
+      "poem": "J'ai peur de perdre celle que jamais je n'ai touchée, l'amour me tient en esclavage dans une cage de larmes, je me mords la langue qui jamais ne peut lui parler, une femme me manque qui n'est jamais née, j'embrasse une femme par-delà les ans qui disent que jamais on ne se rencontrera. Tout passe. Tout périt. Tout pâlit. Ma pensée s'éloigne avec un sourire meurtrier et laisse la discordante anxiété rugir dans mon âme. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir. Pas d'espoir.\n\nUne chanson pour mon aimée, touchant à son absence, aux marées de son cœur, l'éclat de son sourire. Dans dix ans elle sera toujours morte. Pendant que je vivrai avec, que je me débrouillerai avec, pendant que des jours passeront où je n'y penserai même pas, elle sera toujours morte. Pendant que je serai une vieille dame sans abri en train d'oublier mon nom elle sera toujours morte, elle sera toujours morte, c'est terminé, putain, c'est tout, et je dois tenir toute seule.\n\nMon amour, mon amour, pourquoi m'as-tu abandonnée ? Elle est la couche où jamais je ne m'étendrai, et la vie n'a aucun sens à la lumière de ma perte. Bâtie pour la solitude, pour aimer l'absente. Trouve-moi. Libère-moi du doute corrosif, désespoir futile, horreur du repos. Je peux remplir ma place, remplir mon temps, mais rien ne peut remplir ce vide-là dans mon cœur. Ce besoin vital pour lequel je mourrais."
     },
     {
       "id": "chedid",
@@ -480,13 +494,14 @@
       "title": "Rythmes",
       "kind": "Poésie",
       "kindNote": "Extrait",
-      "note": "La fable, le mystère de l’existence et la lumière de l’espérance.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#f9eced",
       "ink": "#94536f",
-      "format": "poesie"
+      "format": "poesie",
+      "poem": "Pour mieux tenir debout\nL’homme inventa la fable\nSe vêtit de légendes\nPeupla le ciel d’idoles\nMultiplia ses panthéons\nCumula ses utopies\n\nSe voulant éternel\nIl fixa son oreille\nSur la coquille du monde\nÀ l’écoute\nD’une voix souterraine\nQui l’escorte le guide\nEt l’agrandit\n\nAlors\nDe nuits en nuits\nEt d’aubes en aubes\nTantôt le jour s’éclaire\nTantôt le jour moisit\n\n(…)\n\nToute vie\nAmorça\nLe mystère\nTout mystère\nSe voilà\nDe ténèbres\nToute ténèbre\nSe chargea\nD’espérance\nToute espérance\nFut soumise\nÀ la Vie"
     },
     {
       "id": "cleyre",
@@ -495,13 +510,14 @@
       "title": "La Vie ou la Mort",
       "kind": "Prose",
       "kindNote": "Dialogue poétique",
-      "note": "Un dialogue philosophique autour du choix de vivre et de la solidarité entre générations.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e9ddf7",
       "ink": "#403850",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Une âme qui franchissait le Portail s’arrêta à mi-chemin et dit à la Vie :\n— « Qu’as-tu à m’offrir ? »\nLa Vie répondit :\n— « De la tristesse, un incessant combat, des déceptions.\nPuis le Silence et la Nuit. »\nL’âme dit à la Mort :\n— « Et toi, qu’as-tu à m’offrir ? »\n— « Je te donnerai tout de suite ce que la Vie ne t’accordera qu’à la fin. »\nL’âme se tourna vers la Vie :\n— « Et si je vis ? Et si je me bats ? »\n— « D’autres vivront et se battront après toi.\nEt leurs combats seront plus faciles là où tu auras combattu. »\n— « Mais à quoi bon leurs luttes à eux ? »\n— « Elles rendront plus léger le fardeau de tous ceux qui naîtront ensuite à la douleur et qui la combattront à leur tour. »\n— « Mais qu’ai-je à voir avec ces autres ? Qui sont-ils donc ? »\n— « Ils sont toi. »\n— « Et ceux qui sont venus avant moi, qui sont-ils ? »\n— « Eux aussi, ils sont toi. »\n— « Le Silence et la Nuit auraient donc une fin ? »\n— « Ils finiront en chant et en lumière.\nEt la douleur s’achèvera en Paix\nPuisque la Mort meurt en moi\nTandis que tu passes de toi aux autres\nQue la lumière s’ombrage et que l’ombre s’illumine. Choisis ! »\nL’âme, en larmes, répondit :\n— « Je vivrai ! »"
     },
     {
       "id": "duras",
@@ -510,13 +526,14 @@
       "title": "Hiroshima mon amour",
       "kind": "Scénario",
       "kindNote": "Extrait",
-      "note": "Une adresse amoureuse où la douceur et la violence du sentiment se confondent.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#e7f4f0",
       "ink": "#167e8b",
-      "format": "recit"
+      "format": "recit",
+      "poem": "Je te rencontre. Je me souviens de toi. Qui es-tu ? Tu me tues. Tu me fais du bien. Comment me serais-je doutée que cette ville était faite à la taille de l’amour ? Comment me serais-je doutée que tu étais fait à la taille de mon corps même ? Tu me plais. Quel événement. Tu me plais. Quelle lenteur tout à coup. Quelle douceur. Tu ne peux pas savoir. Tu me tues. Tu me fais du bien. Tu me tues. Tu me fais du bien. J’ai le temps. Je t’en prie. Dévore-moi. Déforme-moi jusqu’à la laideur."
     },
     {
       "id": "woolf",
@@ -525,13 +542,14 @@
       "title": "Les Vagues",
       "kind": "Roman",
       "kindNote": "Extrait",
-      "note": "Le désir d’élargir la nuit et de lui faire une place pour les rêves.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#294c9c",
       "ink": "#fff6ec",
-      "format": "recit"
+      "format": "recit",
+      "poem": "J’ai voulu dilater la nuit, et y faire entrer sans cesse de plus en plus de rêves."
     },
     {
       "id": "nelson",
@@ -540,13 +558,14 @@
       "title": "Les Argonautes",
       "kind": "Essai",
       "kindNote": "Extrait",
-      "note": "Une remarque sur la matière stellaire qui compose les êtres humains.",
-      "status": "reference",
+      "note": "",
+      "status": "transcribed",
       "source": "https://www.facebook.com/lessouvenues",
       "section": "Archives 2/2",
       "bg": "#bbcef0",
       "ink": "#242849",
-      "format": "essai"
+      "format": "essai",
+      "poem": "D’un point de vue empirique, on est fait de poussière d’étoiles. Pourquoi est-ce qu’on n’en parle pas davantage ?"
     },
     {
       "id": "sauvage",
@@ -636,28 +655,34 @@
     </div>`;
   }
   function souvenuesHtml() {
-  return `<div class="lit-app lit-souvenues lit-archive-gallery">
-    ${header('Les Souvenues','Une anthologie de voix de femmes. Des fragments choisis et des cartes pastel retrouvées.')}
-    <div class="lit-notice" role="note">
-      24 textes issus de mes anciennes sélections, retrouvés en plusieurs séries.
-      Les œuvres contemporaines sont référencées sans reproduire leurs longs extraits.
-      <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">La page Facebook d’origine ↗</a>
-    </div>
-    <div class="lit-souvenues-toolbar">
-      <p class="lit-micro-title">La collection · <span data-lit-archive-count>24 cartes</span></p>
-      <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
-    </div>
-    <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou une œuvre</label>
-    <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Une autrice, un poème, un mot…">
-    <div class="lit-archive-filters" role="group" aria-label="Filtrer les archives">
-      ${[['toutes','Toutes'],['poesie','Poésie'],['recit','Récits'],['essai','Essais'],['theatre','Théâtre']].map(([key,label])=>
-        `<button type="button" class="lit-button" data-lit-filter="${key}" aria-pressed="${archiveFilter===key}">${label}</button>`).join('')}
-    </div>
-    <div class="lit-poets" aria-label="Galerie des cartes des Souvenues"></div>
-    <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun texte trouvé. Essaie une autre recherche.</p>
-    <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite"><div class="lit-card-body"></div></article>
-    <p class="lit-caption">Cartes pastel réinterprétées d’après les archives retrouvées. Les textes anciens peuvent se lire dans leur fiche ; les extraits contemporains restent référencés.</p>
-  </div>`;
+ return `<div class="lit-app lit-souvenues lit-archive-gallery lit-archive-reader">
+   ${header('Les Souvenues','Des textes de femmes à lire, tout simplement.')}
+   <div class="lit-reader-head">
+     <span class="lit-reader-kicker">ARCHIVES LITTÉRAIRES · 24 TEXTES RETROUVÉS</span>
+     <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte au hasard</button>
+   </div>
+   <article class="lit-card lit-poet-detail" id="lit-poet-detail" aria-live="polite" aria-label="Extrait à lire">
+     <div class="lit-card-body"></div>
+   </article>
+   <nav class="lit-reader-nav" aria-label="Parcourir les textes">
+     <button type="button" class="lit-button" data-lit-prev>← Texte précédent</button>
+     <span class="lit-reader-count" data-lit-position>1 / 24</span>
+     <button type="button" class="lit-button" data-lit-next>Texte suivant →</button>
+   </nav>
+   <section class="lit-reader-index" aria-label="Index des textes">
+     <h3 class="lit-micro-title">Choisir un texte</h3>
+     <label class="lit-archive-searchlabel" for="lit-archive-search">Chercher une autrice ou un titre</label>
+     <input id="lit-archive-search" class="lit-archive-search" data-lit-query type="search" autocomplete="off" placeholder="Autrice, titre, œuvre…">
+     <div class="lit-archive-filters" role="group" aria-label="Filtrer les textes">
+       ${[['toutes','Tous'],['poesie','Poèmes'],['recit','Récits'],['essai','Essais'],['theatre','Théâtre']].map(([key,label])=>
+         `<button type="button" class="lit-button" data-lit-filter="${key}" aria-pressed="${archiveFilter===key}">${label}</button>`).join('')}
+     </div>
+     <p class="lit-reader-indexcount" data-lit-archive-count>24 textes</p>
+     <div class="lit-poets" aria-label="Liste des textes"></div>
+     <p class="lit-archive-noresult" data-lit-noresult hidden>Aucun résultat pour cette recherche.</p>
+   </section>
+   <p class="lit-caption">Textes retranscrits à partir des archives retrouvées. Certaines graphies et traductions méritent une relecture. <a href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Ancienne page Facebook ↗</a></p>
+ </div>`;
 }
   function archiveVisible() {
   const query=archiveQuery.toLocaleLowerCase('fr').trim();
@@ -666,27 +691,21 @@
     (!query||[entry.name,entry.title,entry.kind,entry.kindNote].join(' ').toLocaleLowerCase('fr').includes(query))
   );
 }
-  function renderSouvenuesGrid() {
-  const root=appRoot(),grid=root?.querySelector('.lit-poets');
-  if(!root||!grid)return;
-  const visible=archiveVisible();
-  grid.innerHTML=visible.map(({entry:p,index:i})=>
-    `<button type="button" class="lit-card lit-poet" data-lit-poet="${i}"
-       style="--archive-bg:${p.bg};--archive-ink:${p.ink}"
-       aria-pressed="${poet===i}">
-       <span class="lit-poet-number">LES SOUVENUES · ${String(i+1).padStart(2,'0')}</span>
-       <span class="lit-poet-mark" aria-hidden="true">✳</span>
-       <span class="lit-poet-cardtext">
-         <strong>${escape(p.name)}</strong>
-         <small>${escape(p.title)}</small>
-       </span>
-       <span class="lit-poet-kind">${escape(p.kind)}</span>
-     </button>`).join('');
-  const counter=root.querySelector('[data-lit-archive-count]');
-  if(counter)counter.textContent=visible.length+' carte'+(visible.length!==1?'s':'');
-  const noresult=root.querySelector('[data-lit-noresult]');
-  if(noresult)noresult.hidden=visible.length>0;
-  root.querySelectorAll('[data-lit-filter]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litFilter===archiveFilter)));
+    function renderSouvenuesGrid() {
+ const root=appRoot(),grid=root?.querySelector('.lit-poets');
+ if(!root||!grid)return;
+ const visible=archiveVisible();
+ grid.innerHTML=visible.map(({entry:p,index:i})=>
+  `<button type="button" class="lit-index-item" data-lit-poet="${i}" aria-pressed="${poet===i}">
+    <span class="lit-index-num">${String(i+1).padStart(2,'0')}</span>
+    <span class="lit-index-copy"><strong>${escape(p.name)}</strong><small>${escape(p.title)}</small></span>
+    <span class="lit-index-arrow" aria-hidden="true">↗</span>
+  </button>`).join('');
+ const counter=root.querySelector('[data-lit-archive-count]');
+ if(counter)counter.textContent=visible.length+' texte'+(visible.length!==1?'s':'');
+ const noresult=root.querySelector('[data-lit-noresult]');
+ if(noresult)noresult.hidden=visible.length>0;
+ root.querySelectorAll('[data-lit-filter]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litFilter===archiveFilter)));
 }
   function wordLabHtml() {
     return `<div class="lit-app lit-lab">
@@ -738,37 +757,27 @@
     drawReadingBook(options[Math.floor(Math.random()*options.length)]);
   }
   function showPoet() {
-  const root=appRoot(), result=root?.querySelector('#lit-poet-detail .lit-card-body');
-  if(!result)return;
-  const p=souvenuesEntries[poet];
-  if(!p)return;
-  root.querySelectorAll('[data-lit-poet]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.litPoet)===poet)));
-  let content='';
-  if(p.aligned){
-    content=`<div class="lit-archive-poem lit-archive-aligned" lang="fr">${p.aligned.map(([left,right],i)=>
-      `<div class="lit-archive-verse${[4,8,11].includes(i)?' lit-archive-new-stanza':''}">
-        <span>${escape(left)}</span><span>${escape(right)}</span>
-      </div>`).join('')}</div>`;
-  } else if(p.poem) {
-    content=`<details class="lit-archive-expand" ${p.id==='noailles'?'open':''}>
-      <summary>${p.id==='noailles'?'Lire les vers':'Lire le texte retrouvé'}</summary>
-      <div class="lit-archive-poem">${escape(p.poem)}</div>
-    </details>`;
-  } else {
-    content=`<div class="lit-archive-reference">Cette fiche conserve la trace du texte et de son autrice, sans reproduire le long extrait contemporain qui figurait dans la publication d’origine.</div>`;
-  }
-  const original=p.source==='https://www.facebook.com/lessouvenues';
-  result.innerHTML=`<div class="lit-archive-detail-inner" style="--archive-bg:${p.bg};--archive-ink:${p.ink}">
-    <span class="lit-book-ribbon">CARTE Nº ${String(poet+1).padStart(2,'0')} · ${escape(p.kind)} · ${escape(p.section)}</span>
-    <h3>${escape(p.title)}</h3>
-    <p class="lit-byline">${escape(p.name)} ${p.dates?`<small>${escape(p.dates)}</small>`:''}</p>
-    <p class="lit-archive-source">${escape(p.kindNote)}</p>
-    <p class="lit-archive-note">${escape(p.note)}</p>
-    ${content}
-    <a class="lit-text-link" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">
-      ${original?'Retrouver les publications sur Facebook ↗':'Consulter une source de l’œuvre ↗'}
-    </a>
-  </div>`;
+ const root=appRoot(),result=root?.querySelector('#lit-poet-detail .lit-card-body');
+ if(!root||!result)return;
+ const p=souvenuesEntries[poet];
+ if(!p)return;
+ const lines=p.aligned ?
+   p.aligned.map(([left,right],index)=>([4,8,11].includes(index)?'\n':'')+left+' '+right).join('\n') :
+   (p.poem||'Texte en attente de retranscription.');
+ const countRoot=root.querySelector('[data-lit-position]');
+ const filtered=archiveVisible();
+ const position=filtered.findIndex(({index})=>index===poet)+1;
+ if(countRoot)countRoot.textContent=(position||'–')+' / '+filtered.length;
+ root.querySelectorAll('[data-lit-poet]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.litPoet)===poet)));
+ const isFb=p.source==='https://www.facebook.com/lessouvenues';
+ result.innerHTML=`<div class="lit-readable-paper">
+   <p class="lit-readable-eyebrow">LES SOUVENUES · ${escape(p.kind)} · ARCHIVE Nº ${String(poet+1).padStart(2,'0')}</p>
+   <h3 class="lit-readable-title">${escape(p.title)}</h3>
+   <p class="lit-readable-author">${escape(p.name)}</p>
+   <p class="lit-readable-origin">${escape(p.kindNote)}</p>
+   <div class="lit-readable-excerpt" lang="fr">${escape(lines)}</div>
+   <a class="lit-readable-source" href="${escape(p.source)}" target="_blank" rel="noopener noreferrer">${isFb?'Voir l’ancienne page Les Souvenues ↗':'Consulter la référence de l’œuvre ↗'}</a>
+ </div>`;
 }
   function freshBank() {
     // Avoid duplicating currently placed words in the palette.
@@ -838,7 +847,7 @@
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-prev],[data-lit-next],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
     if(!target||!target.closest('#window-content .lit-app'))return;
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
@@ -861,7 +870,20 @@
       renderSouvenuesGrid();
       const next=archiveVisible()[0];
       if(next){poet=next.index;showPoet();}
-      else appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+      else {
+        appRoot()?.querySelector('#lit-poet-detail .lit-card-body')?.replaceChildren();
+        const c=appRoot()?.querySelector('[data-lit-position]');
+        if(c)c.textContent='0 / 0';
+      }
+    }
+    else if(target.hasAttribute('data-lit-prev')||target.hasAttribute('data-lit-next')){
+      const visible=archiveVisible().map(x=>x.index);
+      if(!visible.length)return;
+      const offset=target.hasAttribute('data-lit-next')?1:-1;
+      const pos=visible.indexOf(poet);
+      poet=visible[(pos+offset+visible.length)%visible.length];
+      showPoet();
+      scrollToPoet();
     }
     else if(target.hasAttribute('data-lit-add'))insertFromBank(Number(target.dataset.litAdd));
     else if(target.hasAttribute('data-lit-remove')){
