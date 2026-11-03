@@ -562,8 +562,8 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
   aspect-ratio: 1670 / 942 !important;
   margin: 0 !important;
 }
-/* Reserve a small scroll clearance for the fixed dock so the bottom can be seen. */
-#app.mode-play #play-viewport { padding-bottom: 72px !important; }
+/* The scene ends exactly at the image edge: no empty dark band below it. */
+#app.mode-play #play-viewport { padding-bottom: 0 !important; }
 </style>
 
 <style id="nana-night-poster-stable">
