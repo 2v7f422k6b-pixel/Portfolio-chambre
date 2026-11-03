@@ -34,8 +34,60 @@
     #nana-rug-secret .rug-fold-night{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-day{display:none}
     html[data-theme="night"] #nana-rug-secret .rug-fold-night{display:block}
+
+    /* A tiny, slightly crooked hand-drawn spider sneaks out as the corner lifts. */
+    #nana-rug-secret .rug-spider-run{
+      opacity:0;
+      transform:translate(610px,900px) scale(.45);
+      transform-origin:0 0;
+      pointer-events:none;
+    }
+    #nana-rug-secret.is-open .rug-spider-run{
+      animation:nana-spider-dash 2.25s .62s both linear;
+    }
+    #nana-rug-secret .rug-spider-legs{
+      transform-origin:0 0;
+    }
+    #nana-rug-secret.is-open .rug-spider-legs{
+      animation:nana-spider-scuttle .13s .62s infinite alternate ease-in-out;
+    }
+    #nana-rug-secret .rug-spider-ink{
+      stroke:#442437;
+    }
+    #nana-rug-secret .rug-spider-body{
+      fill:#382235;
+      stroke:#ea4565;
+    }
+    html[data-theme="night"] #nana-rug-secret .rug-spider-ink{
+      stroke:#25172f;
+    }
+    html[data-theme="night"] #nana-rug-secret .rug-spider-body{
+      fill:#24172e;
+      stroke:#bd86e0;
+    }
+    @keyframes nana-spider-dash{
+      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(-13deg) scale(.45)}
+      13%    {opacity:1;transform:translate(621px,891px) rotate(12deg) scale(.75)}
+      24%    {opacity:1;transform:translate(640px,875px) rotate(-12deg) scale(.88)}
+      35%    {opacity:1;transform:translate(665px,882px) rotate(10deg) scale(.87)}
+      46%    {opacity:1;transform:translate(694px,860px) rotate(-8deg) scale(.9)}
+      60%    {opacity:1;transform:translate(721px,867px) rotate(12deg) scale(.88)}
+      74%    {opacity:1;transform:translate(762px,840px) rotate(-11deg) scale(.83)}
+      88%    {opacity:1;transform:translate(804px,852px) rotate(9deg) scale(.76)}
+      100%   {opacity:0;transform:translate(850px,820px) rotate(-12deg) scale(.65)}
+    }
+    @keyframes nana-spider-scuttle{
+      from{transform:rotate(-8deg) scaleX(.91)}
+      to{transform:rotate(8deg) scaleX(1.08)}
+    }
     @media(prefers-reduced-motion:reduce){
-      #nana-rug-secret .rug-nana-fold{transition:none!important}}
+      #nana-rug-secret .rug-nana-fold{transition:none!important}
+      #nana-rug-secret.is-open .rug-spider-run{
+        animation:none!important;opacity:1;
+        transform:translate(655px,872px) scale(.82)!important;
+      }
+      #nana-rug-secret .rug-spider-legs{animation:none!important}
+    }
   `;
   document.head.appendChild(style);
   const overlay=make('svg',{id:'nana-rug-secret',viewBox:'0 0 1670 942',
@@ -53,6 +105,30 @@
     preserveAspectRatio:'none'
   }));
   overlay.appendChild(drawing);
+
+  // Drawn in the scene's 1670×942 coordinate system so it follows the rug
+  // at every viewport size. The four crooked legs on each side wiggle as it runs.
+  const spider=make('g',{class:'rug-spider-run'});
+  const legs=make('g',{class:'rug-spider-legs rug-spider-ink',
+    fill:'none', 'stroke-width':'1.65',
+    'stroke-linejoin':'round', 'stroke-linecap':'round'});
+  [
+    'M -3 -2 Q -8 -10 -12 -8 Q -15 -7 -15 -11',
+    'M -4 -1 Q -10 -5 -15 -3',
+    'M -4 2 Q -11 2 -15 7',
+    'M -3 3 Q -8 9 -12 12',
+    'M 3 -3 Q 8 -10 12 -8 Q 15 -7 15 -11',
+    'M 4 -1 Q 11 -6 15 -2',
+    'M 4 2 Q 11 2 15 7',
+    'M 3 3 Q 8 10 12 12'
+  ].forEach(d=>legs.appendChild(make('path',{d})));
+  spider.appendChild(legs);
+  spider.appendChild(make('ellipse',{class:'rug-spider-body',cx:'-2.2',
+    cy:'0',rx:'5.4',ry:'5.1','stroke-width':'1.1'}));
+  spider.appendChild(make('ellipse',{class:'rug-spider-body',cx:'4.3',
+    cy:'-1.5',rx:'3.1',ry:'3.0','stroke-width':'1'}));
+  spider.appendChild(make('circle',{cx:'5.2',cy:'-2.5',r:'.85',fill:'#fff0f3'}));
+  overlay.appendChild(spider);
 
   scene.appendChild(overlay);
 
