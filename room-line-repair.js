@@ -98,7 +98,9 @@
       out.data[off + 3] = Math.round(255 * clamp(radius - distances[p], 0, 1));
     }
     overlay.getContext('2d').putImageData(out, x0, y0);
-    scene.appendChild(overlay);
+    // Keep the night repair above the day repair even if files load out of order.
+    if (isNight) scene.appendChild(overlay);
+    else scene.insertBefore(overlay, scene.querySelector('.room-line-repair-night'));
     if (isNight) {
       overlay.style.transition = 'opacity 1.8s cubic-bezier(.42,0,.25,1)';
       const sync = () => {
