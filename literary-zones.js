@@ -341,6 +341,7 @@
     return `<div class="lit-app lit-souvenues">
       ${header('Les Souvenues', 'Quelques poèmes, fragments et voix de femmes que j’avais réunis sur mon ancien blog.')}
       <div class="lit-notice" role="note">Six textes retrouvés dans les anciennes archives des Souvenues. Les textes anciens sont reproduits ici ; les œuvres plus récentes sont référencées avec un lien vers leur source.</div>
+      <p class="lit-souvenues-original"><a class="lit-text-link" href="https://www.facebook.com/lessouvenues" target="_blank" rel="noopener noreferrer">Retrouver Les Souvenues sur Facebook ↗</a></p>
       <div class="lit-souvenues-toolbar">
         <p class="lit-micro-title">Choisis une autrice</p>
         <button type="button" class="lit-button" data-lit-pick-poet>✦ Cueille un texte</button>
