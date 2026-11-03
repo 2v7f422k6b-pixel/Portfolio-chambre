@@ -1353,3 +1353,19 @@ html body #desktop > #work-desktop {
     top: 56px !important;
   }
 }
+
+/* Nana menu controls vertical correction — keep 46px header, lower its contents. */
+@media (min-width: 761px) {
+  html body #desktop #menubar > nav.menu-left,
+  html body #desktop #menubar > nav.menu-right {
+    /* Illustrated UI font/icons are visibly above the strip's center.
+       Move the navigation items, NOT the header, wallpaper or hotspots. */
+    transform: translateY(24px) !important;
+  }
+}
+@media (max-width: 760px) {
+  html body #desktop #menubar > nav.menu-left,
+  html body #desktop #menubar > nav.menu-right {
+    transform: translateY(10px) !important;
+  }
+}
