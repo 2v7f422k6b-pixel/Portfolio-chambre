@@ -136,6 +136,9 @@ function translateString(str,target=lang){
     if(/^\d+ textes?$/.test(key))value=number+' text'+(number===1?'':'s');
     else if(/^\d+ mots? sur la feuille\.$/.test(key))value=number+' word'+(number===1?'':'s')+' on the page.';
     else if(/^Ma note : \d+\/10$/.test(key))value=key.replace('Ma note :','My rating:');
+    else if(/^MON TOP 10 · Nº \d+$/.test(key))value=key.replace('MON TOP 10 · Nº','MY TOP 10 · NO.');
+    else if(/^Déplacer .+ à (gauche|droite)$/.test(key))value=key.replace(/^Déplacer (.+) à (gauche|droite)$/,(full,word,dir)=>'Move '+(frenchToEnglish[word]||word)+' to the '+(dir==='gauche'?'left':'right'));
+    else if(key.startsWith('♡ ')&&frenchToEnglish[key.slice(2)])value='♡ '+frenchToEnglish[key.slice(2)];
     else if(key.startsWith('À lire pour : '))value='Read for: '+key.slice(14).split(' · ').map(x=>frenchToEnglish[x]||x).join(' · ');
     else if(key.startsWith('Zone ')&&key.includes('destination à définir'))value=key.replace('destination à définir','destination to be assigned');
     else if(key.startsWith('Local time: '))value=key;
@@ -143,6 +146,9 @@ function translateString(str,target=lang){
     if(/^\d+ texts?$/.test(key))value=number+' texte'+(number===1?'':'s');
     else if(/^\d+ words? on the page\.$/.test(key))value=number+' mot'+(number===1?'':'s')+' sur la feuille.';
     else if(/^My rating: \d+\/10$/.test(key))value=key.replace('My rating:','Ma note :');
+    else if(/^MY TOP 10 · NO\. \d+$/.test(key))value=key.replace('MY TOP 10 · NO.','MON TOP 10 · Nº');
+    else if(/^Move .+ to the (left|right)$/.test(key))value=key.replace(/^Move (.+) to the (left|right)$/,(full,word,dir)=>'Déplacer '+(translations[word]||word)+' à '+(dir==='left'?'gauche':'droite'));
+    else if(key.startsWith('♡ ')&&translations[key.slice(2)])value='♡ '+translations[key.slice(2)];
     else if(key.startsWith('Read for: '))value='À lire pour : '+key.slice(10).split(' · ').map(x=>translations[x]||x).join(' · ');
     else if(key.startsWith('Zone ')&&key.includes('destination to be assigned'))value=key.replace('destination to be assigned','destination à définir');
     else if(key.startsWith('Local time: '))value=key.replace('Local time: ','Heure locale : ');
@@ -180,7 +186,7 @@ try{
 function syncDressUpFrames(){
   for(const frame of document.querySelectorAll('iframe')){
     if(!/(?:^|\/)about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||''))continue;
-    if(frame.dataset.nanaTranslationAttached)return;
+    if(frame.dataset.nanaTranslationAttached)continue;
     frame.dataset.nanaTranslationAttached='1';
     frame.addEventListener('load',()=>{
       try{
