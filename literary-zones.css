@@ -161,3 +161,159 @@ html[data-theme="night"] #window-content .lit-app .lit-poet-detail{background:#e
  #window-content .lit-wordbank{gap:8px;}
  #window-content .lit-word{font-size:17px;}
 }
+
+
+/* SensCritique reading room · real covers on a hand-traced library desk. */
+#window-content .lit-reading .lit-notice a,
+#window-content .lit-reading .lit-caption a {
+  color:inherit;
+  text-decoration:underline;
+  text-decoration-style:wavy;
+  text-underline-offset:4px;
+}
+#window-content .lit-reading .lit-featured-layout {
+  display:grid;
+  grid-template-columns:minmax(120px,205px) minmax(0,1fr);
+  gap:clamp(16px,4vw,36px);
+  align-items:start;
+}
+#window-content .lit-reading .lit-featured-copy {
+  min-width:0;
+}
+#window-content .lit-reading .lit-cover {
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  align-items:stretch;
+  justify-content:stretch;
+  width:100%;
+  aspect-ratio:3 / 4.3;
+  background:#fde5d9;
+  overflow:hidden;
+  box-shadow:2px 4px 0 rgba(255,23,59,.1);
+  text-decoration:none;
+}
+#window-content .lit-reading .lit-cover .lit-cover-fallback {
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  position:absolute;inset:0;
+  padding:12px;text-align:center;
+  background:repeating-linear-gradient(175deg,#f8e2ca 0,#f8e2ca 13px,#fcebd5 14px,#fcebd5 26px);
+}
+#window-content .lit-reading .lit-cover .lit-cover-fallback strong {
+  font-size:clamp(13px,2.4vw,18px);
+  overflow-wrap:anywhere;
+}
+#window-content .lit-reading .lit-cover .lit-cover-fallback small {
+  font-size:11px;
+  line-height:1.2;
+}
+#window-content .lit-reading .lit-cover img {
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#fff9f0;
+}
+#window-content .lit-reading .lit-cover img[hidden] {
+  display:none !important;
+}
+#window-content .lit-reading .lit-book-card {
+  padding:clamp(18px,3.4vw,34px);
+}
+#window-content .lit-reading .lit-featured-copy .lit-byline {
+  margin:0 0 12px!important;
+}
+#window-content .lit-reading .lit-featured-copy .lit-rating {
+  display:inline-block;
+  background:#ffe1ea;
+  padding:7px 12px;
+  margin:0 0 12px!important;
+  font-size:15px;
+}
+#window-content .lit-reading .lit-book-summary {
+  font-size:clamp(16px,2vw,19px);
+  line-height:1.5;
+  margin:4px 0 16px!important;
+}
+#window-content .lit-reading .lit-book-mood {
+  display:block;
+  font-size:14px;
+  line-height:1.45;
+  margin:0 0 15px;
+}
+#window-content .lit-reading .lit-featured-copy .lit-text-link {
+  display:inline-block;
+  margin:12px 0 0;
+  font-size:16px;
+}
+#window-content .lit-reading .lit-library {
+  margin-top:36px;
+}
+#window-content .lit-reading .lit-shelf {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:clamp(8px,1.5vw,16px);
+  margin:10px 0 18px;
+}
+#window-content .lit-reading .lit-shelf-book {
+  appearance:none;border:0!important;border-radius:0!important;
+  padding:8px 6px 7px;
+  background:transparent;
+  display:flex;flex-direction:column;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  min-width:0;
+  position:relative;
+}
+#window-content .lit-reading .lit-shelf-book .lit-cover {
+  width:min(100%,110px);
+}
+#window-content .lit-reading .lit-shelf-book[aria-pressed="true"] {
+  background:rgba(255,23,59,.09);
+}
+#window-content .lit-reading .lit-shelf-book:focus-visible {
+  outline:2px dotted #ff173b!important;outline-offset:2px;
+}
+#window-content .lit-reading .lit-shelf-rank {
+  font-size:12px;
+}
+html[data-theme="night"] #window-content .lit-reading .lit-featured-copy .lit-rating {
+  background:#f6d0ff;
+}
+@media(max-width:610px){
+  #window-content .lit-reading .lit-featured-layout {
+    grid-template-columns:112px minmax(0,1fr);
+    gap:14px;
+  }
+  #window-content .lit-reading .lit-featured-copy h3 {
+    font-size:24px!important;
+  }
+  #window-content .lit-reading .lit-featured-copy .lit-byline {
+    font-size:15px;
+  }
+  #window-content .lit-reading .lit-featured-copy .lit-rating {
+    padding:5px 7px;font-size:12px;
+  }
+  #window-content .lit-reading .lit-featured-copy .lit-book-summary {
+    font-size:15px;
+  }
+  #window-content .lit-reading .lit-shelf {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  #window-content .lit-reading .lit-shelf-book {
+    padding:6px 3px;
+  }
+}
+@media(max-width:370px){
+  #window-content .lit-reading .lit-featured-layout {
+    display:block;
+  }
+  #window-content .lit-reading .lit-featured-layout>.lit-cover {
+    width:140px;
+    margin:0 auto 22px;
+  }
+}
