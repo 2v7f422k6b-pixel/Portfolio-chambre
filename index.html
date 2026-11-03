@@ -523,6 +523,26 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 #book-reader [data-book-next],.mv-now-controls [data-mv-next],.mv-lightstage [data-mv-light-next]{background-image:url('assets/ux/right.png')!important}
 </style>
   <link rel="stylesheet" href="work-break-typewriter.css?v=20261103-1">
+
+<style id="room-pan-scroll-fix-20261103">
+/* Restore native two-axis exploration while keeping the image and SVG in sync. */
+#app.mode-play #play-viewport,
+#desktop #play-viewport:not([hidden]) {
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+  justify-content:flex-start !important;
+  align-items:flex-start !important;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  touch-action:pan-x pan-y pinch-zoom;
+}
+#play-viewport #play-scene {
+  flex:0 0 auto !important;
+  margin:0 !important;
+  min-width:100% !important;
+}
+#play-viewport #hotspots {touch-action:pan-x pan-y pinch-zoom;}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
