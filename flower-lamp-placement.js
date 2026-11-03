@@ -12,6 +12,7 @@
   const key = 'nana-wall-lamp-perspective-v1';
   // The lamp has its OWN editor URL, independent of the poster and mirror editor.
   const editing = new URLSearchParams(location.search).get('lampEdit') === '1';
+  if (editing) document.documentElement.classList.add('lamp-edit-mode');
   // Provisional wall location: user can export precise corners once aligned.
   const defaultQuad = [[1184,248],[1304,236],[1308,352],[1187,365]];
 
@@ -111,7 +112,7 @@
   style.textContent=[
     '#wall-lamp-hit:focus-visible{outline:none;stroke:#ff173b;stroke-width:4;stroke-dasharray:7 5}',
     '@media (hover:hover){#wall-lamp-hit:hover{stroke:#ff173b;stroke-width:2;stroke-dasharray:6 5}}',
-    'html.poster-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
+    'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
     'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 5px rgba(255,201,57,.6))}'
   ].join('\n');
   document.head.appendChild(style);
