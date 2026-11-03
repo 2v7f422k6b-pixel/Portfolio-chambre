@@ -37,7 +37,7 @@
           dismiss: 'Got it!',
           close: 'Close' }
       : { title: 'Psst… il reste des choses à découvrir !',
-          body: "Fais défiler l'écran dans toutes les directions pour explorer toute la chambre.",
+          body: "Fais défiler l'écran dans toutes les directions pour explorer la chambre.",
           dismiss: 'Compris !',
           close: 'Fermer' };
   }
