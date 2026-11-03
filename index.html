@@ -571,6 +571,47 @@ html[data-theme="night"] #hotspots .poster-perspective-artworks,
 html[data-theme="night"] #hotspots .poster-artworks {opacity:.80!important;}
 html[data-theme="night"] #hotspots #nana-fortune-cookie > image {opacity:1!important;filter:brightness(.7)!important;}
 </style>
+  <style id="nana-menubar-visibility-fix">
+    /* The menu must remain fully visible above both desktop modes.
+       Override the earlier relative-positioned menu and mismatched heights. */
+    #desktop {
+      --menubar: 46px;
+      position: fixed !important;
+      inset: 0 !important;
+      overflow: hidden !important;
+    }
+    #desktop > #menubar {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      margin: 0 !important;
+      transform: none !important;
+      height: 46px !important;
+      min-height: 46px !important;
+      max-height: 46px !important;
+      z-index: 10000 !important;
+      overflow: visible !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    #desktop > #play-viewport,
+    #desktop > #work-desktop {
+      top: 46px !important;
+    }
+    @media (max-width: 760px) {
+      #desktop { --menubar: 56px; }
+      #desktop > #menubar {
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
+      }
+      #desktop > #play-viewport,
+      #desktop > #work-desktop {
+        top: 56px !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="mode-select">
