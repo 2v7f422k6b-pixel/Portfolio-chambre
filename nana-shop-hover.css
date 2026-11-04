@@ -1,0 +1,11 @@
+/* White silhouette hover on the original transparent bag artwork. */
+@media (hover:hover) and (pointer:fine){
+ #nana-shop-bag:hover img.nana-bag-day,
+ #nana-shop-bag:hover img.nana-bag-night{
+  filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 0 4px #fff);
+ }
+}
+#nana-shop-bag:focus-visible img.nana-bag-day,
+#nana-shop-bag:focus-visible img.nana-bag-night{
+ filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+}
