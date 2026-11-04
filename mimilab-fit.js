@@ -59,8 +59,12 @@
   },{passive:true});
   if(window.visualViewport)window.visualViewport.addEventListener("resize",schedule,{passive:true});
   const rows=document.getElementById("dl-track-list");
-  if(rows&&window.MutationObserver){
-    new MutationObserver(schedule).observe(rows,{childList:true});
+  if(window.MutationObserver){
+    if(rows)new MutationObserver(schedule).observe(rows,{childList:true});
+    const player=document.getElementById("dl-playback");
+    if(player)new MutationObserver(schedule).observe(player,{attributes:true,attributeFilter:["hidden","src","controls"]});
+    const status=document.getElementById("dl-status");
+    if(status)new MutationObserver(schedule).observe(status,{childList:true,characterData:true,subtree:true});
   }
   if(document.fonts?.ready)document.fonts.ready.then(schedule).catch(()=>{});
   schedule();
