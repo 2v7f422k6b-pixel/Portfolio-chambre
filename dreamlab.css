@@ -15,3 +15,41 @@
 .dl-play-mode .dl-mode-glyph{font-size:22px;line-height:1}
 .dl-play-mode.active,.dl-play-mode[aria-pressed="true"]{background:#ffc6dc;box-shadow:inset 2px 2px 0 #fff,3px 4px 0 var(--ink);transform:translateY(-1px)}
 @media(max-width:580px){.dl-play-modes{padding:10px 8px}.dl-play-modes-heading{align-items:flex-start;flex-direction:column;gap:2px}#dl-play-mode-description{max-width:100%;text-align:left}.dl-play-mode-buttons{gap:5px}.dl-play-mode{min-height:48px;font-size:14px;padding:6px 3px;gap:4px;flex-direction:column}.dl-play-mode .dl-mode-glyph{font-size:20px}}
+
+/* DreamLab multitrack tape deck: five independent recordings. */
+.dl-track-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:16px 0 9px}
+.dl-track-heading h3{font-size:22px;margin:0;line-height:1.1}
+#dl-track-count{font-size:15px;font-weight:bold;background:#ffe0eb;border:2px solid var(--ink);padding:3px 9px;white-space:nowrap}
+.dl-track-list{display:grid;gap:9px}
+.dl-track{display:grid;grid-template-columns:minmax(180px,1fr) minmax(115px,1.1fr) auto;align-items:center;gap:13px;padding:10px 12px;border:2px solid #d889a7;background:#fffafd;box-shadow:2px 3px 0 #efb7cf;transition:border-color .13s,background .13s;min-width:0}
+.dl-track.is-selected{border-color:var(--ink);background:#ffe1ed;box-shadow:inset 3px 0 0 var(--ink),3px 3px 0 #efb7cf}
+.dl-track.is-recording{border-color:var(--ink);background:#ffcede}
+.dl-track-info{display:flex;align-items:center;gap:9px;min-width:0}
+.dl-track-number{display:grid;place-items:center;flex:none;width:30px;height:30px;border:2px solid var(--ink);background:#fff3f8;font-size:16px;font-weight:bold}
+.dl-track-label{display:flex;flex-direction:column;line-height:1.2;min-width:0;gap:4px}
+.dl-track-label strong{font-size:16px}
+.dl-track-meta{font-size:12px;opacity:.83}
+.dl-track-level{display:flex;align-items:center;gap:8px;min-width:0}
+.dl-track-level label{font-size:12px;white-space:nowrap}
+.dl-track-level input{min-width:50px;width:100%;accent-color:var(--ink)}
+.dl-track-actions{display:flex;align-items:center;gap:6px}
+.dl-track-actions button{background:#fff;border:2px solid var(--ink);color:var(--ink);padding:5px 9px;min-height:32px;font-size:13px;white-space:nowrap;border-radius:0}
+.dl-track-actions .dl-track-select[aria-pressed="true"]{background:#ff9fbe;font-weight:bold}
+.dl-track-actions .dl-track-mute[aria-pressed="true"]{background:#f19cbe}
+.dl-track-actions .dl-track-delete{font-size:16px;min-width:31px}
+.dl-track-tip{margin:13px 0 15px;font-size:13px;line-height:1.4}
+.dl-recorder audio[hidden]{display:none}
+@media(max-width:760px){
+ .dl-track{grid-template-columns:1fr auto;gap:9px 8px}
+ .dl-track-info{grid-column:1}
+ .dl-track-actions{grid-column:2;grid-row:1 / span 2;flex-wrap:wrap;justify-content:flex-end;max-width:176px}
+ .dl-track-level{grid-column:1;grid-row:2}
+}
+@media(max-width:450px){
+ .dl-track{padding:8px;gap:7px}
+ .dl-track-actions{max-width:130px}
+ .dl-track-actions button{padding:4px 6px;font-size:12px}
+ .dl-track-meta{font-size:11px}
+ .dl-track-label strong{font-size:14px}
+ .dl-track-level label{font-size:11px}
+}
