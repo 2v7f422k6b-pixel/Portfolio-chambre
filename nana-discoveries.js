@@ -91,21 +91,28 @@
   shopLink.href = 'https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html';
 
   function localize() {
-    const english = document.documentElement.lang.toLowerCase().startsWith('en');
+    // In the direct preview, rewardLang=fr or rewardLang=en can force
+    // the matching copy without changing the visitor's saved site language.
+    const forced = previewOnly ? new URLSearchParams(location.search).get('rewardLang') : null;
+    const english = forced === 'en' || (forced !== 'fr' &&
+      document.documentElement.lang.toLowerCase().startsWith('en'));
+    // Remove obsolete copy if the dialog ever contains markup from an older version.
+    dialog.querySelectorAll('.nana-discovery-kicker, .nana-discovery-count, .nana-discovery-thanks, .nana-discovery-note')
+      .forEach(element => element.remove());
     dialog.querySelector('#nana-discovery-title').innerHTML = english
       ? '<strong>my</strong> room has no secrets...'
       : '<strong>ma</strong> chambre n’a plus de secrets...';
     dialog.querySelector('#nana-discovery-description').textContent = english
       ? 'You clicked on every little corner of my room. Well done, curious soul!'
-      : 'Tu as cliqué dans tous les petits recoins de ma chambre. Bravo, petite âme curieuse !';
+      : 'Tu as exploré tous les recoins de ma chambre. Bravo, petite âme curieuse !';
     dialog.querySelector('#nana-discovery-gift-text').innerHTML = english
       ? 'A little <strong>thank you</strong> gift for your next print'
       : 'Un petit cadeau pour te dire <strong>merci</strong> sur ton prochain print';
     dialog.querySelector('#nana-discovery-shop-preposition').textContent = english ? 'at' : 'chez';
-    shopButton.textContent = english ? 'Visit Nana’s Little Shop' : 'Aller dans la boutique';
+    shopButton.textContent = english ? 'Visit Nana’s Little Shop' : 'Découvrir Nana’s Little Shop';
     copyButton.textContent = english ? 'Copy code' : 'Copier le code';
     copyButton.setAttribute('aria-label', english ? 'Copy discount code MERCI10' : 'Copier le code de réduction MERCI10');
-    continueButton.textContent = english ? 'Keep wandering' : 'Continuer à flâner';
+    continueButton.textContent = english ? 'Keep wandering' : 'Continuer à explorer';
     closeButton.setAttribute('aria-label', english ? 'Close' : 'Fermer');
   }
 
