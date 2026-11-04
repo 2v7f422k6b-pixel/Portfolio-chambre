@@ -1,0 +1,102 @@
+/* Hand-drawn congratulations dialog, styled independently of the portfolio's app windows. */
+#nana-discovery-dialog {
+  box-sizing: border-box;
+  width: min(520px, calc(100vw - 28px));
+  max-width: min(520px, calc(100vw - 28px));
+  max-height: min(88dvh, 720px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 3px solid #ff173b;
+  border-radius: 9px 18px 7px 14px / 15px 8px 17px 7px;
+  background: #fff7f4;
+  box-shadow: 5px 6px 0 rgba(255, 23, 59, .23), 0 18px 65px rgba(50, 7, 34, .22);
+  color: #ff173b;
+  font-family: "Nana Trace UI", Arial, sans-serif;
+}
+#nana-discovery-dialog::backdrop {
+  background: rgba(32, 12, 38, .58);
+  backdrop-filter: blur(3px);
+}
+#nana-discovery-dialog .nana-discovery-inside {
+  position: relative;
+  padding: clamp(25px, 6vw, 39px) clamp(18px, 6vw, 42px) 35px;
+  text-align: center;
+}
+#nana-discovery-dialog .nana-discovery-close {
+  position: absolute;
+  top: 8px;
+  right: 11px;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #ff173b;
+  border-radius: 6px 12px 4px 10px;
+  color: #ff173b;
+  background: transparent;
+  font: 26px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+#nana-discovery-dialog .nana-discovery-sparkles {
+  width: 170px;
+  max-width: 55%;
+  margin: 10px auto 8px;
+  color: #ff173b;
+  transform: rotate(-4deg);
+}
+#nana-discovery-dialog .nana-discovery-sparkles svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#nana-discovery-dialog .nana-discovery-kicker {
+  margin: 12px 0 9px;
+  font-size: 12px;
+  letter-spacing: .085em;
+}
+#nana-discovery-dialog h2 {
+  margin: 0 auto;
+  max-width: 400px;
+  color: #ff173b;
+  font-family: "Nana Trace UI", Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(28px, 5vw, 39px);
+  line-height: 1.16;
+}
+#nana-discovery-dialog #nana-discovery-description {
+  margin: 18px auto 12px;
+  max-width: 370px;
+  font-size: clamp(18px, 3.5vw, 21px);
+  line-height: 1.45;
+}
+#nana-discovery-dialog .nana-discovery-count {
+  margin: 12px auto 23px;
+  font-size: 15px;
+  opacity: .85;
+}
+#nana-discovery-dialog .nana-discovery-continue {
+  display: inline-block;
+  max-width: 100%;
+  padding: 12px 23px;
+  color: #fffaf8;
+  border: 2px solid #ff173b;
+  border-radius: 6px 13px 5px 11px / 11px 6px 12px 7px;
+  background: #ff173b;
+  font: 400 20px/1.2 "Nana Trace UI", Arial, sans-serif;
+  cursor: pointer;
+  transform: rotate(-1deg);
+}
+#nana-discovery-dialog button:focus-visible {
+  outline: 2px solid #ff173b;
+  outline-offset: 4px;
+}
+#nana-discovery-dialog .nana-discovery-continue:hover {
+  background: #fff7f4;
+  color: #ff173b;
+}
+@media (max-width: 520px) {
+  #nana-discovery-dialog .nana-discovery-inside { padding-bottom: 27px; }
+  #nana-discovery-dialog .nana-discovery-sparkles { width: 134px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #nana-discovery-dialog .nana-discovery-continue { transform: none; }
+}
