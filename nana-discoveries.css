@@ -1,12 +1,12 @@
-/* Hand-drawn congratulations dialog, styled independently of the portfolio's app windows. */
+/* Compact congratulations dialog — artist's original star assets, no scrolling. */
 #nana-discovery-dialog {
   box-sizing: border-box;
-  width: min(520px, calc(100vw - 28px));
-  max-width: min(520px, calc(100vw - 28px));
-  max-height: min(88dvh, 720px);
+  width: min(410px, calc(100vw - 20px));
+  max-width: min(410px, calc(100vw - 20px));
+  max-height: calc(100dvh - 20px);
   margin: auto;
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
   border: 3px solid #ff173b;
   border-radius: 9px 18px 7px 14px / 15px 8px 17px 7px;
   background: #fff7f4;
@@ -20,114 +20,84 @@
 }
 #nana-discovery-dialog .nana-discovery-inside {
   position: relative;
-  padding: clamp(25px, 6vw, 39px) clamp(18px, 6vw, 42px) 35px;
+  box-sizing: border-box;
+  padding: 18px 23px 15px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #nana-discovery-dialog .nana-discovery-close {
   position: absolute;
-  top: 8px;
-  right: 11px;
-  width: 35px;
-  height: 35px;
+  top: 6px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   border: 2px solid #ff173b;
-  border-radius: 6px 12px 4px 10px;
+  border-radius: 6px 10px 4px 9px;
   color: #ff173b;
   background: transparent;
-  font: 26px/1 Arial, sans-serif;
+  font: 22px/1 Arial, sans-serif;
   cursor: pointer;
 }
 #nana-discovery-dialog .nana-discovery-sparkles {
-  width: 170px;
-  max-width: 55%;
-  margin: 10px auto 8px;
-  color: #ff173b;
-  transform: rotate(-4deg);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 185px;
+  height: 40px;
+  margin: 0 auto 6px;
 }
-#nana-discovery-dialog .nana-discovery-sparkles svg {
+#nana-discovery-dialog .nana-discovery-sparkles img {
   display: block;
-  width: 100%;
-  height: auto;
+  width: 28px;
+  height: 34px;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
-#nana-discovery-dialog .nana-discovery-kicker {
-  margin: 12px 0 9px;
-  font-size: 12px;
-  letter-spacing: .085em;
-}
+#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(2),
+#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(4) {width: 22px;height: 25px;}
+#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {width: 36px;height: 39px;}
 #nana-discovery-dialog h2 {
-  margin: 0 auto;
-  max-width: 400px;
+  max-width: 340px;
+  margin: 0 auto 8px;
   color: #ff173b;
-  font-family: "Nana Trace UI", Arial, sans-serif;
-  font-weight: 400;
-  font-size: clamp(28px, 5vw, 39px);
-  line-height: 1.16;
+  font: 400 clamp(24px, 4.2vw, 29px)/1.12 "Nana Trace UI", Arial, sans-serif;
 }
+#nana-discovery-dialog h2 strong,
+#nana-discovery-dialog .nana-discovery-reward-title strong {font-weight: 800;}
 #nana-discovery-dialog #nana-discovery-description {
-  margin: 18px auto 12px;
-  max-width: 370px;
-  font-size: clamp(18px, 3.5vw, 21px);
-  line-height: 1.45;
+  margin: 0 auto 11px;
+  max-width: 340px;
+  font-size: 16px;
+  line-height: 1.26;
 }
-#nana-discovery-dialog .nana-discovery-count {
-  margin: 12px auto 23px;
-  font-size: 15px;
-  opacity: .85;
-}
-#nana-discovery-dialog .nana-discovery-continue {
-  display: inline-block;
-  max-width: 100%;
-  padding: 12px 23px;
-  color: #fffaf8;
-  border: 2px solid #ff173b;
-  border-radius: 6px 13px 5px 11px / 11px 6px 12px 7px;
-  background: #ff173b;
-  font: 400 20px/1.2 "Nana Trace UI", Arial, sans-serif;
-  cursor: pointer;
-  transform: rotate(-1deg);
-}
-#nana-discovery-dialog button:focus-visible {
-  outline: 2px solid #ff173b;
-  outline-offset: 4px;
-}
-#nana-discovery-dialog .nana-discovery-continue:hover {
-  background: #fff7f4;
-  color: #ff173b;
-}
-@media (max-width: 520px) {
-  #nana-discovery-dialog .nana-discovery-inside { padding-bottom: 27px; }
-  #nana-discovery-dialog .nana-discovery-sparkles { width: 134px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  #nana-discovery-dialog .nana-discovery-continue { transform: none; }
-}
-
-
-/* A printed thank-you voucher inside the discovery surprise. */
 #nana-discovery-dialog .nana-discovery-reward {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto 9px;
+  padding: 9px 10px 11px;
   border: 2px solid #ff173b;
   border-radius: 7px 13px 5px 10px / 11px 5px 12px 6px;
   background: #ffeaf0;
-  padding: 13px 12px 15px;
-  margin: 14px auto 21px;
-  max-width: 390px;
-}
-#nana-discovery-dialog .nana-discovery-thanks {
-  font-size: 18px;
-  line-height: 1.35;
-  margin: 1px 0 8px;
 }
 #nana-discovery-dialog .nana-discovery-discount {
   display: block;
   color: #ff173b;
-  font: 400 clamp(45px, 8vw, 62px)/1 "Nana Trace UI", Arial, sans-serif;
-  transform: rotate(-3deg);
-  margin: 5px 0;
+  font: 400 clamp(35px, 7vw, 44px)/1 "Nana Trace UI", Arial, sans-serif;
+  margin: 0;
+  transform: rotate(-2deg);
 }
 #nana-discovery-dialog .nana-discovery-reward-title {
-  margin: 11px auto 13px;
-  font-size: 17px;
-  line-height: 1.35;
+  margin: 5px auto 9px;
+  font-size: 15.5px;
+  line-height: 1.27;
 }
+#nana-discovery-dialog .nana-discovery-shop-line {display:block;margin-top:3px;}
 #nana-discovery-dialog .nana-discovery-reward-title a {
   color: #ff173b;
   text-decoration: underline;
@@ -136,61 +106,94 @@
 }
 #nana-discovery-dialog .nana-discovery-coupon {
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: stretch;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 #nana-discovery-dialog .nana-discovery-coupon code {
   display: inline-flex;
   align-items: center;
   border: 2px dashed #ff173b;
-  padding: 7px 13px;
+  padding: 5px 10px;
   background: #fffaf8;
   color: #ff173b;
-  letter-spacing: .14em;
-  font: 700 18px/1.1 Arial, sans-serif;
+  letter-spacing: .13em;
+  font: 700 16px/1.1 Arial, sans-serif;
 }
 #nana-discovery-dialog .nana-discovery-coupon button {
   border: 2px solid #ff173b;
   border-radius: 5px 9px 4px 8px;
   color: #ff173b;
   background: #fffaf8;
-  padding: 8px 12px;
+  padding: 6px 9px;
   cursor: pointer;
-  font: 400 16px/1.1 "Nana Trace UI", Arial, sans-serif;
-}
-#nana-discovery-dialog .nana-discovery-note {
-  margin: 10px 2px 0;
-  font-size: 13px;
-  line-height: 1.3;
+  font: 400 15px/1.1 "Nana Trace UI", Arial, sans-serif;
 }
 #nana-discovery-dialog .nana-discovery-shop {
   display: block;
   width: fit-content;
   max-width: 100%;
-  margin: 0 auto 11px;
-  padding: 11px 18px;
+  margin: 0 auto 4px;
+  padding: 7px 14px;
   border: 2px solid #ff173b;
   border-radius: 5px 11px 4px 9px / 9px 6px 11px 5px;
   background: #ff173b;
   color: #fffaf8;
-  font: 400 19px/1.2 "Nana Trace UI", Arial, sans-serif;
+  font: 400 17px/1.15 "Nana Trace UI", Arial, sans-serif;
   cursor: pointer;
 }
 #nana-discovery-dialog .nana-discovery-continue {
-  background: transparent;
-  color: #ff173b;
-  padding: 7px 12px;
-  font-size: 16px;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 4px 10px;
   border: 0;
-  transform: none;
-}
-#nana-discovery-dialog .nana-discovery-shop:hover {
-  background: #fffaf8;
-  color: #ff173b;
-}
-#nana-discovery-dialog .nana-discovery-continue:hover {
   background: transparent;
-  text-decoration: underline;
+  color: #ff173b;
+  font: 400 15px/1.2 "Nana Trace UI", Arial, sans-serif;
+  cursor: pointer;
+}
+#nana-discovery-dialog button:focus-visible {
+  outline: 2px solid #ff173b;
+  outline-offset: 3px;
+}
+#nana-discovery-dialog .nana-discovery-shop:hover {background:#fffaf8;color:#ff173b;}
+#nana-discovery-dialog .nana-discovery-continue:hover {text-decoration:underline;}
+@media (max-width: 430px) {
+  #nana-discovery-dialog .nana-discovery-inside {padding: 14px 14px 12px;}
+  #nana-discovery-dialog h2 {font-size: 24px;}
+  #nana-discovery-dialog #nana-discovery-description {font-size: 15px;}
+  #nana-discovery-dialog .nana-discovery-reward-title {font-size: 15px;}
+}
+@media (max-height: 560px) {
+  #nana-discovery-dialog .nana-discovery-inside {padding-top:9px;padding-bottom:8px;}
+  #nana-discovery-dialog .nana-discovery-sparkles {height:26px;margin-bottom:3px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img {height:25px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {height:28px;}
+  #nana-discovery-dialog h2 {font-size:22px;margin-bottom:5px;}
+  #nana-discovery-dialog #nana-discovery-description {font-size:14px;line-height:1.17;margin-bottom:6px;}
+  #nana-discovery-dialog .nana-discovery-reward {padding:6px 8px;margin-bottom:5px;}
+  #nana-discovery-dialog .nana-discovery-discount {font-size:32px;}
+  #nana-discovery-dialog .nana-discovery-reward-title {font-size:14px;line-height:1.16;margin:2px auto 5px;}
+  #nana-discovery-dialog .nana-discovery-shop {font-size:15px;padding:5px 9px;margin-bottom:0;}
+  #nana-discovery-dialog .nana-discovery-continue {font-size:13px;padding:3px 6px;}
+}
+@media (max-height: 400px) {
+  #nana-discovery-dialog .nana-discovery-inside {padding:6px 10px 5px;}
+  #nana-discovery-dialog .nana-discovery-sparkles {height:19px;margin-bottom:1px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img {height:18px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {height:20px;}
+  #nana-discovery-dialog h2 {font-size:19px;margin-bottom:3px;}
+  #nana-discovery-dialog #nana-discovery-description {font-size:12px;margin-bottom:4px;}
+  #nana-discovery-dialog .nana-discovery-reward {padding:4px 6px;margin-bottom:3px;}
+  #nana-discovery-dialog .nana-discovery-discount {font-size:26px;}
+  #nana-discovery-dialog .nana-discovery-reward-title {font-size:12px;margin:2px auto 3px;}
+  #nana-discovery-dialog .nana-discovery-coupon code {font-size:12px;padding:3px 6px;}
+  #nana-discovery-dialog .nana-discovery-coupon button {font-size:12px;padding:4px 6px;}
+  #nana-discovery-dialog .nana-discovery-shop {font-size:13px;padding:4px 8px;}
+  #nana-discovery-dialog .nana-discovery-continue {font-size:12px;padding:2px 4px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #nana-discovery-dialog .nana-discovery-discount {transform:none;}
 }
