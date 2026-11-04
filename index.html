@@ -8,6 +8,11 @@
   <meta name="theme-color" content="#efc8df">
   <meta name="description" content="An interactive portfolio of illustration, animation and editorial work.">
   <title>Nana — Portfolio</title>
+  <script id="nana-reward-preview-redirect">
+    if (new URLSearchParams(location.search).get('previewReward') === '1') {
+      location.replace(new URL('apercu-recompense.html', document.baseURI).href);
+    }
+  </script>
   <script id="nana-admin-preflight">
     (()=>{
       const flags=["posterEdit","lampEdit","starsEdit","cookieEdit","ipadClockEdit","zones"];
