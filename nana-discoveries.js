@@ -100,7 +100,7 @@
     dialog.querySelectorAll('.nana-discovery-kicker, .nana-discovery-count, .nana-discovery-thanks, .nana-discovery-note')
       .forEach(element => element.remove());
     dialog.querySelector('#nana-discovery-title').innerHTML = english
-      ? '<strong>my</strong> room has no secrets...'
+      ? '<strong>my</strong> room has no more secrets for you'
       : 'ma chambre n’a plus de secrets pour toi';
     dialog.querySelector('#nana-discovery-description').textContent = english
       ? 'You clicked on every little corner of my room. Well done, curious soul!'
