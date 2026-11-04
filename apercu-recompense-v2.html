@@ -4,20 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#fff7f4">
-  <title>Aperçu de la récompense — Nana Color Studio</title>
+  <title>Ma récompense — Nana Color Studio</title>
+  <link rel="stylesheet" href="nana-font.css">
+  <link rel="stylesheet" href="nana-discoveries.css?v=20261104-direct-preview-7">
   <style>
-    html,body{position:relative;width:100%;height:100%;margin:0;overflow:hidden;background:#edc6df}
-    iframe{display:block;position:fixed;inset:0;width:100%;height:100%;border:0;background:transparent}
+    html,body {margin:0;min-height:100%;background:#edc6df;overflow:hidden}
+    .preview-stage {position:fixed;inset:0;overflow:hidden;background:#f4cadf}
+    .preview-art {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .preview-room {z-index:1}
+    .preview-fallback {position:fixed;inset:0;display:grid;place-items:center;
+      color:#ff173b;font:20px/1.4 Arial,sans-serif;text-align:center;z-index:2;pointer-events:none}
+    .preview-fallback span {padding:8px 15px;border-radius:6px;background:#fff7f4da}
+    /* The real dialog is appended by nana-discoveries.js, the same script as the portfolio. */
   </style>
+  <script src="nana-discoveries.js?v=20261104-direct-preview-7" defer></script>
 </head>
 <body>
-  <!-- The live portfolio owns the one and only congratulations dialog.
-       Using an embedded live page avoids stale duplicate French markup. -->
-  <iframe
-    src="./index.html?previewReward=1&amp;rewardLang=fr&amp;rewardRevision=20261104-unique-preview"
-    title="Aperçu en français de la récompense dans ma chambre"
-    loading="eager"
-    allow="clipboard-write"
-  ></iframe>
+  <div class="preview-stage" aria-hidden="true">
+    <img class="preview-art" src="assets/Marseille%20jour.PNG" alt="">
+    <img class="preview-art preview-room" src="assets/chambre%20jour.PNG" alt="">
+  </div>
+  <div class="preview-fallback"><span>Aperçu de la récompense</span></div>
+  <!-- A minimal SVG is enough for the shared reward script to initialize.
+       previewReward=1 displays the original modal without counting any discoveries. -->
+  <svg id="hotspots" hidden aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
+  <script>
+    (function () {
+      var params=new URLSearchParams(location.search);
+      if (params.get('previewReward')!=='1') params.set('previewReward','1');
+      if (params.get('rewardLang')!=='en') params.set('rewardLang','fr');
+      history.replaceState(null,'',location.pathname+'?'+params.toString());
+    })();
+  </script>
+  <noscript>Active JavaScript pour afficher la récompense.</noscript>
 </body>
 </html>
