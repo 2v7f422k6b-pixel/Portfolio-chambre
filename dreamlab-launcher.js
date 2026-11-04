@@ -53,7 +53,7 @@
     x.setAttribute("aria-label","Close DreamLab");x.addEventListener("click",close);
     bar.append(label,x);
     const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="DreamLab — MiniLab 3";iframe.setAttribute("allow","autoplay");
-    iframe.src="dreamlab.html?v=20261104-five-tracks&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
+    iframe.src="dreamlab.html?v=20261104-compact-mood-2&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);
     overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
     document.addEventListener("keydown",esc);x.focus();
