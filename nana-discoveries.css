@@ -100,3 +100,97 @@
 @media (prefers-reduced-motion: reduce) {
   #nana-discovery-dialog .nana-discovery-continue { transform: none; }
 }
+
+
+/* A printed thank-you voucher inside the discovery surprise. */
+#nana-discovery-dialog .nana-discovery-reward {
+  border: 2px solid #ff173b;
+  border-radius: 7px 13px 5px 10px / 11px 5px 12px 6px;
+  background: #ffeaf0;
+  padding: 13px 12px 15px;
+  margin: 14px auto 21px;
+  max-width: 390px;
+}
+#nana-discovery-dialog .nana-discovery-thanks {
+  font-size: 18px;
+  line-height: 1.35;
+  margin: 1px 0 8px;
+}
+#nana-discovery-dialog .nana-discovery-discount {
+  display: block;
+  color: #ff173b;
+  font: 400 clamp(45px, 8vw, 62px)/1 "Nana Trace UI", Arial, sans-serif;
+  transform: rotate(-3deg);
+  margin: 5px 0;
+}
+#nana-discovery-dialog .nana-discovery-reward-title {
+  margin: 11px auto 13px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+#nana-discovery-dialog .nana-discovery-reward-title a {
+  color: #ff173b;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+#nana-discovery-dialog .nana-discovery-coupon {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#nana-discovery-dialog .nana-discovery-coupon code {
+  display: inline-flex;
+  align-items: center;
+  border: 2px dashed #ff173b;
+  padding: 7px 13px;
+  background: #fffaf8;
+  color: #ff173b;
+  letter-spacing: .14em;
+  font: 700 18px/1.1 Arial, sans-serif;
+}
+#nana-discovery-dialog .nana-discovery-coupon button {
+  border: 2px solid #ff173b;
+  border-radius: 5px 9px 4px 8px;
+  color: #ff173b;
+  background: #fffaf8;
+  padding: 8px 12px;
+  cursor: pointer;
+  font: 400 16px/1.1 "Nana Trace UI", Arial, sans-serif;
+}
+#nana-discovery-dialog .nana-discovery-note {
+  margin: 10px 2px 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+#nana-discovery-dialog .nana-discovery-shop {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 11px;
+  padding: 11px 18px;
+  border: 2px solid #ff173b;
+  border-radius: 5px 11px 4px 9px / 9px 6px 11px 5px;
+  background: #ff173b;
+  color: #fffaf8;
+  font: 400 19px/1.2 "Nana Trace UI", Arial, sans-serif;
+  cursor: pointer;
+}
+#nana-discovery-dialog .nana-discovery-continue {
+  background: transparent;
+  color: #ff173b;
+  padding: 7px 12px;
+  font-size: 16px;
+  border: 0;
+  transform: none;
+}
+#nana-discovery-dialog .nana-discovery-shop:hover {
+  background: #fffaf8;
+  color: #ff173b;
+}
+#nana-discovery-dialog .nana-discovery-continue:hover {
+  background: transparent;
+  text-decoration: underline;
+}
