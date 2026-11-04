@@ -1,9 +1,28 @@
-/* Nana's original transparent PNG ribbon — purely decorative overlay.
-   A pseudo-element prevents gallery img layout rules from creating an opaque strip. */
+/* Nana's original ribbon PNG, preserved without stretching or cropping. */
 #art-tiles .art-tile--for-sale{position:relative;overflow:visible;isolation:isolate}
-#art-tiles .art-tile--for-sale::after{content:"";position:absolute;left:-2%;top:-2%;width:27%;height:79%;background:url("assets/ruban_nana_transparent.png") left top / 100% 100% no-repeat;pointer-events:none;z-index:3}
+#art-tiles .art-tile--for-sale::after{
+ content:"";position:absolute;left:-3%;top:-3%;
+ width:44%;height:100%;
+ background-image:url("assets/ruban_nana_transparent.png");
+ background-position:left top;background-size:contain;background-repeat:no-repeat;
+ pointer-events:none;z-index:3
+}
 #art-tiles .art-tile--for-sale>img{display:block}
-.viewer-layout--for-sale .viewer-artwork-wrap{position:relative;display:flex;justify-content:center;align-items:center;min-width:0;max-width:calc(100% - 82px);max-height:52dvh}
-.viewer-layout--for-sale .viewer-artwork-wrap #viewer-image{display:block;max-width:100%;max-height:52dvh;min-width:0;object-fit:contain}
-.viewer-layout--for-sale .viewer-artwork-wrap::after{content:"";position:absolute;top:-1%;left:-3%;width:clamp(38px,17%,105px);height:72%;background:url("assets/ruban_nana_transparent.png") left top / 100% 100% no-repeat;pointer-events:none;z-index:2}
-@media(max-width:600px){#art-tiles .art-tile--for-sale::after{width:30%;height:70%}.viewer-layout--for-sale .viewer-artwork-wrap::after{width:21%;height:68%}}
+.viewer-layout--for-sale .viewer-artwork-wrap{
+ position:relative;display:flex;justify-content:center;align-items:center;
+ min-width:0;max-width:calc(100% - 82px);max-height:52dvh
+}
+.viewer-layout--for-sale .viewer-artwork-wrap #viewer-image{
+ display:block;max-width:100%;max-height:52dvh;min-width:0;object-fit:contain
+}
+.viewer-layout--for-sale .viewer-artwork-wrap::after{
+ content:"";position:absolute;top:-2%;left:-4%;
+ width:45%;height:100%;
+ background-image:url("assets/ruban_nana_transparent.png");
+ background-position:left top;background-size:contain;background-repeat:no-repeat;
+ pointer-events:none;z-index:2
+}
+@media(max-width:600px){
+ #art-tiles .art-tile--for-sale::after{width:48%;height:100%}
+ .viewer-layout--for-sale .viewer-artwork-wrap::after{width:48%;height:100%}
+}
