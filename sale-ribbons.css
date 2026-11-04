@@ -1,0 +1,4 @@
+/* Pink sale ribbon on every illustration card. Does not crop the artwork. */
+#art-tiles .art-tile--for-sale{position:relative;overflow:visible}
+#art-tiles .art-tile--for-sale .art-sale-ribbon{position:absolute!important;left:-2.5%;top:-2%;width:29%;height:80%;object-fit:fill!important;pointer-events:none!important;z-index:5;max-width:none;filter:none}
+@media(max-width:600px){#art-tiles .art-tile--for-sale .art-sale-ribbon{width:33%;height:72%}}
