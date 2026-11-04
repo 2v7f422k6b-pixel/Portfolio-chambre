@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#fff7f4">
+  <title>Aperçu de la récompense — tracés irréguliers — Nana Color Studio</title>
+  <link rel="stylesheet" href="nana-font.css?v=20261104">
+  <link rel="stylesheet" href="nana-discoveries.css?v=20261104-angular-wobbly-reward-11">
+  <script src="sketch-ui.js?v=20261104-angular-wobbly-reward-11" defer></script>
+  <style>
+    html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#f4cadd}
+    .preview-stage{position:fixed;inset:0;overflow:hidden}
+    .preview-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .preview-room{z-index:1}
+    .preview-shade{position:fixed;inset:0;z-index:2;background:rgba(32,12,38,.58);backdrop-filter:blur(3px)}
+    /* Static first-paint preview: visible even if scripts, embeds or browser storage fail. */
+    #nana-discovery-dialog{position:fixed;z-index:3;top:50%;left:50%;right:auto;bottom:auto;
+      transform:translate(-50%,-50%);margin:0;display:block}
+    #nana-discovery-dialog .nana-discovery-close{display:grid;place-items:center;text-decoration:none}
+    #nana-discovery-dialog .nana-discovery-shop{display:block;width:fit-content;text-decoration:none}
+    #nana-discovery-dialog .nana-discovery-continue{display:block;text-decoration:underline}
+    @media(max-height:480px){
+      #nana-discovery-dialog{max-height:none;transform:translate(-50%,-50%) scale(.78)}
+    }
+    @media(max-height:320px){
+      #nana-discovery-dialog{transform:translate(-50%,-50%) scale(.65)}
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-stage" aria-hidden="true">
+    <img class="preview-art" src="assets/Marseille%20jour.PNG" alt="">
+    <img class="preview-art preview-room" src="assets/chambre%20jour.PNG" alt="">
+  </div>
+  <div class="preview-shade" aria-hidden="true"></div>
+  <section id="nana-discovery-dialog" role="dialog" aria-modal="true"
+           aria-labelledby="nana-discovery-title" aria-describedby="nana-discovery-description">
+    <div class="nana-discovery-inside">
+      <a class="nana-discovery-close" href="./" aria-label="Fermer">×</a>
+      <div class="nana-discovery-sparkles" aria-hidden="true">
+        <img src="assets/accueil/etoile%201.png" alt="">
+        <img src="assets/accueil/etoile%202.png" alt="">
+        <img src="assets/accueil/etoile%203.png" alt="">
+      </div>
+      <h2 id="nana-discovery-title">ma chambre n’a plus de secrets <strong>pour toi</strong></h2>
+      <p id="nana-discovery-description">Tu as exploré tous les recoins de ma chambre. Bravo, petite âme curieuse !</p>
+      <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">
+        <p class="nana-discovery-reward-title" id="nana-discovery-reward-title">Un petit cadeau pour te dire <strong>merci</strong></p>
+        <strong class="nana-discovery-discount">−10 %</strong>
+        <p class="nana-discovery-purchase">sur ton prochain achat</p>
+        <p class="nana-discovery-shop-line">chez <a href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>
+        <div class="nana-discovery-coupon">
+          <code>MERCI10</code>
+          <button type="button" id="nana-preview-copy">Copier le code</button>
+        </div>
+      </section>
+      <a class="nana-discovery-shop" href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Découvrir Nana’s Little Shop</a>
+      <a class="nana-discovery-continue" href="./">Continuer à explorer</a>
+    </div>
+  </section>
+  <script>
+    const english=new URLSearchParams(location.search).get('rewardLang')==='en';
+    if(english){
+      document.documentElement.lang='en';
+      document.getElementById('nana-discovery-title').innerHTML='<strong>my</strong> room has no secrets...';
+      document.getElementById('nana-discovery-description').textContent='You clicked on every little corner of my room. Well done, curious soul!';
+      document.getElementById('nana-discovery-reward-title').innerHTML='A little <strong>thank you</strong> gift';
+      document.querySelector('.nana-discovery-purchase').textContent='on your next purchase';
+      document.querySelector('.nana-discovery-shop-line').firstChild.textContent='at ';
+      document.querySelector('.nana-discovery-shop').textContent='Visit Nana’s Little Shop';
+      document.querySelector('.nana-discovery-continue').textContent='Keep wandering';
+      document.getElementById('nana-preview-copy').textContent='Copy code';
+      document.querySelector('.nana-discovery-close').setAttribute('aria-label','Close');
+    }
+    document.getElementById('nana-preview-copy').addEventListener('click',async function(){
+      let ok=false;
+      try{await navigator.clipboard.writeText('MERCI10');ok=true}catch(_){
+        const el=document.createElement('textarea');
+        el.value='MERCI10';el.style.cssText='position:fixed;left:-9999px;top:0';
+        document.body.appendChild(el);el.select();
+        try{ok=document.execCommand('copy')}catch(_){}
+        el.remove();
+      }
+      this.textContent=ok?(english?'Copied!':'Copié !'):(english?'Select MERCI10':'Sélectionne MERCI10');
+    });
+  </script>
+</body>
+</html>
