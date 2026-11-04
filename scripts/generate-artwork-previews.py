@@ -11,7 +11,7 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
-INPUT_DIRS = (Path('assets/photos'), Path('assets/uploads'))
+INPUT_DIRS = (Path('assets/photos'), Path('assets/uploads'), Path('assets/gabzilla'))
 OUTPUT_DIR = Path('assets/previews')
 MAX_EDGE = 1200
 WEBP_QUALITY = 78
