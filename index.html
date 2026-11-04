@@ -8,6 +8,17 @@
   <meta name="theme-color" content="#efc8df">
   <meta name="description" content="An interactive portfolio of illustration, animation and editorial work.">
   <title>Nana — Portfolio</title>
+  <script id="nana-admin-preflight">
+    (()=>{
+      const flags=["posterEdit","lampEdit","starsEdit","cookieEdit","ipadClockEdit","zones"];
+      const authorized=(()=>{try{return sessionStorage.getItem("nana-admin-session-v1")==="1"}catch(_){return false}})();
+      if(authorized){document.documentElement.classList.add("nana-admin-session");return;}
+      const url=new URL(location.href);let changed=false;
+      for(const flag of flags)if(url.searchParams.has(flag)){url.searchParams.delete(flag);changed=true;}
+      if(changed)history.replaceState(null,"",url.pathname+url.search+url.hash);
+    })();
+  </script>
+  <link rel="stylesheet" href="nana-admin.css?v=20261104-1">
   <style id="phone-corners-fix">.phone-device{border-radius:50px!important;overflow:hidden!important}.phone-screen{border-radius:40px!important;overflow:hidden!important;clip-path:inset(0 round 40px)!important}.phone-wallpaper{border-radius:40px!important}.phone-app .ios-icon,.phone-app .ios-icon.mail,.phone-app .ios-icon.ig{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}.phone-app .phone-drawn-icon{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}</style>
 <link rel="stylesheet" href="style.css?v=20261103-gearnews-local-covers-2">
   <link rel="stylesheet" href="window-animations.css?v=1">
@@ -907,6 +918,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
           <button id="menu-help" data-open="help" type="button" title="Help" aria-label="Help">Help</button>
         </nav>
         <nav class="menu-right" aria-label="Outils et préférences">
+          <button id="nana-admin-trigger" type="button" aria-label="Ouvrir le petit atelier de Nana" title="Le petit atelier de Nana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M7.5 10.5V7.2C7.5 4.3 9.3 2.4 12 2.6c2.7.2 4.5 2.2 4.5 4.8v3.1"/><path d="M5.8 10.1 18.5 10.8 18 21 5.6 20.5Z"/><path d="M12 14.1v2.9"/></svg></button>
           <button id="menu-search" type="button" aria-label="Search portfolio" title="Search portfolio" aria-expanded="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
           <button id="language-toggle" type="button" aria-label="Switch language to French" title="Language / Langue">FR</button>
           <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Enable night mode" title="Toggle night mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Night</span></button>
@@ -1076,6 +1088,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
     <audio loop id="audio" preload="metadata" src="https://upload.wikimedia.org/wikipedia/commons/transcoded/9/90/Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg/Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg.mp3"></audio>
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
+  <script src="nana-site-settings.js?v=20261104-1"></script>
   <script src="app.js?v=20261104-gearnews-les-accords" defer></script>
   <script src="do-nothing-club.js?v=20261103-world-can-wait" defer></script>
   <script src="literary-zones.js?v=20261103-sappho-first" defer></script>
@@ -1182,7 +1195,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
 (function(){
  const bar=document.getElementById('menubar'),toggle=document.getElementById('mobile-menu-toggle'),panel=document.getElementById('mobile-menu-panel');
  if(!bar||!toggle||!panel)return;
- const ids=['menu-about','menu-contact','menu-help','language-toggle','theme-toggle','switch-mode'];
+ const ids=['menu-about','menu-contact','menu-help','nana-admin-trigger','language-toggle','theme-toggle','switch-mode'];
  const originals=ids.map(id=>document.getElementById(id)).filter(Boolean);
  const slots=originals.map(el=>({el,parent:el.parentNode,next:el.nextSibling}));
  const mq=window.matchMedia('(max-width:760px)');
@@ -1218,5 +1231,6 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
   <script src="nana-shop-bag.js?v=20261104" defer></script>
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
+  <script src="nana-admin.js?v=20261104-1" defer></script>
 </body>
 </html>
