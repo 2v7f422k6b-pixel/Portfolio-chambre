@@ -63,22 +63,18 @@
     '<div class="nana-discovery-inside">',
     '  <button type="button" class="nana-discovery-close" aria-label="Fermer">×</button>',
     '  <div class="nana-discovery-sparkles" aria-hidden="true">',
-    '    <svg viewBox="0 0 180 65" fill="none" xmlns="http://www.w3.org/2000/svg">',
-    '      <path d="M27 4L33 21L51 20L37 31L42 48L27 38L13 49L17 31L3 21L21 21Z" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/>',
-    '      <path d="M91 0L98 19L119 18L103 32L109 55L91 42L74 55L79 33L63 18L84 19Z" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/>',
-    '      <path d="M153 10L158 25L174 25L163 35L166 51L153 43L141 51L144 36L132 25L148 25Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>',
-    '    </svg>',
+    '    <img src="assets/accueil/etoile%201.png" alt="" loading="eager">',
+    '    <img src="assets/accueil/etoile%202.png" alt="" loading="eager">',
+    '    <img src="assets/accueil/etoile%203.png" alt="" loading="eager">',
+    '    <img src="assets/accueil/etoile%204.png" alt="" loading="eager">',
+    '    <img src="assets/accueil/etoile%205.png" alt="" loading="eager">',
     '  </div>',
-    '  <p class="nana-discovery-kicker" id="nana-discovery-kicker"></p>',
     '  <h2 id="nana-discovery-title"></h2>',
     '  <p id="nana-discovery-description"></p>',
-    '  <p class="nana-discovery-count" id="nana-discovery-count"></p>',
     '  <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">',
-    '    <p class="nana-discovery-thanks" id="nana-discovery-thanks"></p>',
     '    <strong class="nana-discovery-discount">−10 %</strong>',
-    '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>',
+    '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span><span class="nana-discovery-shop-line"><span id="nana-discovery-shop-preposition">at</span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</span></p>',
     '    <div class="nana-discovery-coupon"><code>MERCI10</code><button type="button" id="nana-discovery-copy"></button></div>',
-    '    <p class="nana-discovery-note" id="nana-discovery-note"></p>',
     '  </section>',
     '  <button type="button" class="nana-discovery-shop" id="nana-discovery-shop"></button>',
     '  <button type="button" class="nana-discovery-continue" id="nana-discovery-continue"></button>',
@@ -91,30 +87,21 @@
   const shopButton = dialog.querySelector('#nana-discovery-shop');
   const shopLink = dialog.querySelector('#nana-discovery-shop-link');
   const copyButton = dialog.querySelector('#nana-discovery-copy');
-  shopLink.href = document.getElementById('nana-shop-bag')?.href ||
-    'https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html';
+  // The reward explicitly points to the same shop prototype as the portfolio.
+  shopLink.href = 'https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html';
 
   function localize() {
     const english = document.documentElement.lang.toLowerCase().startsWith('en');
-    dialog.querySelector('#nana-discovery-kicker').textContent = english ? 'A LITTLE SURPRISE FOR YOU' : 'UNE PETITE SURPRISE POUR TOI';
-    dialog.querySelector('#nana-discovery-title').textContent = english
-      ? 'The room has no more secrets for you!'
-      : 'La chambre n’a plus de secrets pour toi !';
+    dialog.querySelector('#nana-discovery-title').innerHTML = english
+      ? '<strong>my</strong> room has no secrets...'
+      : '<strong>ma</strong> chambre n’a plus de secrets...';
     dialog.querySelector('#nana-discovery-description').textContent = english
       ? 'You clicked on every little corner of my room. Well done, curious soul!'
       : 'Tu as cliqué dans tous les petits recoins de ma chambre. Bravo, petite âme curieuse !';
-    dialog.querySelector('#nana-discovery-count').textContent = english
-      ? required.size + ' interactive spots discovered'
-      : required.size + ' zones cliquables découvertes';
-    dialog.querySelector('#nana-discovery-thanks').textContent = english
-      ? 'Thank you for exploring every little corner of my world.'
-      : 'Merci d’avoir exploré tous les recoins de mon petit univers.';
-    dialog.querySelector('#nana-discovery-gift-text').textContent = english
-      ? 'A little gift for your next print at'
-      : 'Un petit cadeau pour ton prochain print dans';
-    dialog.querySelector('#nana-discovery-note').textContent = english
-      ? 'Keep this code safe. Checkout is not open yet.'
-      : 'Garde ce code précieusement. Les commandes ne sont pas encore ouvertes.';
+    dialog.querySelector('#nana-discovery-gift-text').innerHTML = english
+      ? 'A little <strong>thank you</strong> gift for your next print'
+      : 'Un petit cadeau pour te dire <strong>merci</strong> sur ton prochain print';
+    dialog.querySelector('#nana-discovery-shop-preposition').textContent = english ? 'at' : 'chez';
     shopButton.textContent = english ? 'Visit Nana’s Little Shop' : 'Aller dans la boutique';
     copyButton.textContent = english ? 'Copy code' : 'Copier le code';
     copyButton.setAttribute('aria-label', english ? 'Copy discount code MERCI10' : 'Copier le code de réduction MERCI10');
@@ -125,10 +112,9 @@
   closeButton.addEventListener('click', () => dialog.close());
   continueButton.addEventListener('click', () => dialog.close());
   shopButton.addEventListener('click', () => {
+    // Open the user-specified shop destination, matching the inline link.
+    window.open(shopLink.href, '_blank', 'noopener,noreferrer');
     dialog.close();
-    const bag = document.getElementById('nana-shop-bag');
-    if (bag) bag.click();
-    else window.open(shopLink.href, '_blank', 'noopener,noreferrer');
   });
   copyButton.addEventListener('click', async () => {
     let success = false;
