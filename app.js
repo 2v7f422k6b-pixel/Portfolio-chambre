@@ -380,7 +380,7 @@ async function openWorkAbout(){
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
- host.innerHTML=filtered.map(a=>`<button class="art-tile art-tile--for-sale" data-art-index="${a.index}" aria-label="View ${a.title}"><img src="${a.src}" alt="${a.title}" loading="lazy"><img class="art-sale-ribbon" src="assets/ruban_nana_transparent.png" alt="" aria-hidden="true" draggable="false"><span>${a.title}</span></button>`).join('');
+ host.innerHTML=filtered.map(a=>`<button class="art-tile art-tile--for-sale" data-art-index="${a.index}" aria-label="View ${a.title}"><img src="${a.src}" alt="${a.title}" loading="lazy"><span>${a.title}</span></button>`).join('');
 }
 function openPhotos(){
  openWindow('Illustrations',`<h2>Assorted illustrations</h2><p class="section-lead">Click any image to view it larger.</p><p class="nana-script-note"><span class="nana-hand nana-hand--piece-of-me" data-nana-script="piece-of-me">a little piece of me</span></p><div class="library-toolbar"><input class="search" id="photo-search" aria-label="Search illustrations" placeholder="Search illustrations…"></div><div id="art-tiles" class="photos-grid"></div>`,'photos');
@@ -390,7 +390,7 @@ function openGallery(which,index=0){
  const items=which==='gabzilla'?GABZILLA:ART;
  currentGallery={which,index:Math.min(items.length-1,Math.max(0,index))};
  const name=which==='gabzilla'?'GABZILLA — Collaboration':'Illustrations';
- openWindow(name,`<div class="viewer-layout"><div class="viewer-stage"><button class="viewer-btn" data-gallery-dir="-1" aria-label="Previous image">‹</button><img id="viewer-image" alt=""><button class="viewer-btn" data-gallery-dir="1" aria-label="Next image">›</button></div><div class="viewer-bottom"><p id="viewer-caption"></p><span class="viewer-number" id="viewer-number"></span></div><div class="viewer-thumbnails" id="viewer-thumbnails"></div>${which==='gabzilla'?'<p class="section-lead">An original illustration and textile collaboration. All images are shown without cropping or redrawing.</p>':''}</div>`,'gallery');
+ openWindow(name,`<div class="viewer-layout ${which==='gabzilla'?'':'viewer-layout--for-sale'}"><div class="viewer-stage"><button class="viewer-btn" data-gallery-dir="-1" aria-label="Previous image">‹</button><div class="viewer-artwork-wrap"><img id="viewer-image" alt=""></div><button class="viewer-btn" data-gallery-dir="1" aria-label="Next image">›</button></div><div class="viewer-bottom"><p id="viewer-caption"></p><span class="viewer-number" id="viewer-number"></span></div><div class="viewer-thumbnails" id="viewer-thumbnails"></div>${which==='gabzilla'?'<p class="section-lead">An original illustration and textile collaboration. All images are shown without cropping or redrawing.</p>':''}</div>`,'gallery');
  updateGallery();
 }
 function updateGallery(){
