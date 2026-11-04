@@ -20,6 +20,7 @@
   );
   // Existing explorers who saw the previous congratulations can claim the new gift too.
   let celebrated = stored.celebrated === true && stored.rewardSeen === true;
+  const previewOnly = new URLSearchParams(location.search).get('previewReward') === '1';
   let pending = false;
   let previousFocus = null;
 
@@ -164,7 +165,7 @@
   }
 
   function remember(id) {
-    if (!id || !required.has(id) || celebrated || editing()) return;
+    if (previewOnly || !id || !required.has(id) || celebrated || editing()) return;
     if (!discovered.has(id)) {
       discovered.add(id);
       persist();
@@ -174,6 +175,16 @@
       // Let the final interactive object open before showing the congratulations.
       window.setTimeout(celebrate, 450);
     }
+  }
+
+  // Read-only preview: never changes exploration progress or marks the reward claimed.
+  if (previewOnly) {
+    window.setTimeout(() => {
+      localize();
+      if (!dialog.open) {
+        try { dialog.showModal(); closeButton.focus(); } catch (_) {}
+      }
+    }, 350);
   }
 
   // Capture survives custom interactions that stop propagation (lamps, rug, cookie, etc.).
