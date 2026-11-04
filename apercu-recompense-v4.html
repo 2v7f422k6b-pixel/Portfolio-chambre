@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#fff7f4">
   <title>Aperçu de la récompense corrigée — Nana Color Studio</title>
   <link rel="stylesheet" href="nana-font.css?v=20261104">
-  <link rel="stylesheet" href="nana-discoveries.css?v=20261104-static-visible-8">
+  <link rel="stylesheet" href="nana-discoveries.css?v=20261104-3stars-purchase-9">
   <style>
     html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#f4cadd}
     .preview-stage{position:fixed;inset:0;overflow:hidden}
@@ -41,17 +41,14 @@
         <img src="assets/accueil/etoile%201.png" alt="">
         <img src="assets/accueil/etoile%202.png" alt="">
         <img src="assets/accueil/etoile%203.png" alt="">
-        <img src="assets/accueil/etoile%204.png" alt="">
-        <img src="assets/accueil/etoile%205.png" alt="">
       </div>
       <h2 id="nana-discovery-title"><strong>ma</strong> chambre n’a plus de secrets...</h2>
       <p id="nana-discovery-description">Tu as exploré tous les recoins de ma chambre. Bravo, petite âme curieuse !</p>
       <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">
+        <p class="nana-discovery-reward-title" id="nana-discovery-reward-title">Un petit cadeau pour te dire <strong>merci</strong></p>
         <strong class="nana-discovery-discount">−10 %</strong>
-        <p class="nana-discovery-reward-title" id="nana-discovery-reward-title">
-          Un petit cadeau pour te dire <strong>merci</strong> sur ton prochain print
-          <span class="nana-discovery-shop-line">chez <a href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</span>
-        </p>
+        <p class="nana-discovery-purchase">sur ton prochain achat</p>
+        <p class="nana-discovery-shop-line">chez <a href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>
         <div class="nana-discovery-coupon">
           <code>MERCI10</code>
           <button type="button" id="nana-preview-copy">Copier le code</button>
@@ -62,6 +59,19 @@
     </div>
   </section>
   <script>
+    const english=new URLSearchParams(location.search).get('rewardLang')==='en';
+    if(english){
+      document.documentElement.lang='en';
+      document.getElementById('nana-discovery-title').innerHTML='<strong>my</strong> room has no secrets...';
+      document.getElementById('nana-discovery-description').textContent='You clicked on every little corner of my room. Well done, curious soul!';
+      document.getElementById('nana-discovery-reward-title').innerHTML='A little <strong>thank you</strong> gift';
+      document.querySelector('.nana-discovery-purchase').textContent='on your next purchase';
+      document.querySelector('.nana-discovery-shop-line').firstChild.textContent='at ';
+      document.querySelector('.nana-discovery-shop').textContent='Visit Nana’s Little Shop';
+      document.querySelector('.nana-discovery-continue').textContent='Keep wandering';
+      document.getElementById('nana-preview-copy').textContent='Copy code';
+      document.querySelector('.nana-discovery-close').setAttribute('aria-label','Close');
+    }
     document.getElementById('nana-preview-copy').addEventListener('click',async function(){
       let ok=false;
       try{await navigator.clipboard.writeText('MERCI10');ok=true}catch(_){
@@ -71,7 +81,7 @@
         try{ok=document.execCommand('copy')}catch(_){}
         el.remove();
       }
-      this.textContent=ok?'Copié !':'Sélectionne MERCI10';
+      this.textContent=ok?(english?'Copied!':'Copié !'):(english?'Select MERCI10':'Sélectionne MERCI10');
     });
   </script>
 </body>
