@@ -11,7 +11,7 @@
   if(!app||!viewport||!scene||!hotspots)return;
 
   const W=1670,H=942;
-  const COLS=242,ROWS=136; // Keep particle count iPad-friendly; halve rendered tile dimensions
+  const COLS=480,ROWS=272; // ~4x more small pixels; sample the entire walls, artwork and Marseille window
   const REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)');
   const INTRO_MS=5600,RESTORE_MS=4300; // Slow, dreamy breakup and reconstruction
   const style=document.createElement('style');
@@ -173,7 +173,15 @@
       const rgba=sctx.getImageData(0,0,COLS,ROWS).data;
       for(let i=0;i<pixels.length;i++){
         const k=i*4;
-        pixels[i].color='rgb('+rgba[k]+','+rgba[k+1]+','+rgba[k+2]+')';
+        const red=rgba[k],green=rgba[k+1],blue=rgba[k+2];
+        // The pale walls and bright sky used to disappear into the white canvas.
+        // Gently tint only near-white samples so those pixels stay visible.
+        if(red>235&&green>235&&blue>235){
+          pixels[i].color='rgb('+Math.round(red*.97)+','+
+            Math.round(green*.90)+','+Math.round(blue*.94)+')';
+        }else{
+          pixels[i].color='rgb('+red+','+green+','+blue+')';
+        }
       }
     }catch(e){
       // If sampling is blocked, the visual effect still functions in the site's palette.
@@ -185,6 +193,8 @@
   let active=false,animation=null,frameId=0,lastPaint=-Infinity;
   let mix=0,origin={x:.5,y:.5};
   const hover={x:0,y:0,inside:false};
+  const FINE_POINTER=window.matchMedia('(hover: hover) and (pointer: fine)');
+  const FRAME_MS=window.matchMedia('(pointer: coarse)').matches?50:40;
   function followPointer(e){
     if(!active||e.pointerType==='touch')return;
     const bounds=scene.getBoundingClientRect();
@@ -234,10 +244,9 @@
     const gridW=width/COLS;
     const gridH=height/ROWS;
     const magnitude=Math.max(0,Math.min(1,mix));
-    const hoverEnabled=hover.inside&&magnitude>.1&&!REDUCE.matches;
-    const hoverRadius=Math.min(width,height)*.16;
+    const hoverEnabled=FINE_POINTER.matches&&hover.inside&&magnitude>.1&&!REDUCE.matches;
+    const hoverRadius=Math.min(width,height)*.18;
     const hoverRadiusSq=hoverRadius*hoverRadius;
-    const hoverPush=48*magnitude*magnitude;
     const hoverX=hover.x*width,hoverY=hover.y*height;
     ctx.globalAlpha=.96;
     for(const p of pixels){
@@ -260,22 +269,21 @@
         +p.offsetX*.26+floatingX));
       const y=wrap(p.y+magnitude*(rotatedY-dy+currentY
         +p.offsetY*.25+floatingY));
-      // Half the former tile width and height, including on small screens.
-      const pixelSize=Math.max(.7,Math.min(gridW,gridH)*p.size*.5);
+      // Keep individual particles tiny, but make the 4x denser field legible.
+      const pixelSize=Math.max(.75,Math.min(gridW,gridH)*p.size*.9);
       let drawX=x*width,drawY=y*height;
       if(hoverEnabled){
         const dx=drawX-hoverX,dy=drawY-hoverY;
-        // A local, gentle push follows the mouse through the scattered cloud.
-        if(Math.abs(dx)<hoverRadius&&Math.abs(dy)<hoverRadius){
-          const distanceSq=dx*dx+dy*dy;
-          if(distanceSq<hoverRadiusSq){
-            const distance=Math.sqrt(distanceSq);
-            const influence=1-distance/hoverRadius;
-            const shift=hoverPush*influence*influence;
-            const direction=distance>0.01?Math.atan2(dy,dx):p.phase;
-            drawX+=Math.cos(direction)*shift;
-            drawY+=Math.sin(direction)*shift;
-          }
+        const distanceSq=dx*dx+dy*dy;
+        if(distanceSq<hoverRadiusSq){
+          const influence=1-distanceSq/hoverRadiusSq;
+          // Rotating about the cursor preserves density (no radial white hole).
+          // A little independent motion lets each existing pixel shimmer.
+          const turn=.16*Math.sin(t*14)*influence*magnitude;
+          const cs=Math.cos(turn),sn=Math.sin(turn);
+          const flutter=3.5*influence*magnitude;
+          drawX=hoverX+dx*cs-dy*sn+Math.sin(t*15+p.phase)*flutter;
+          drawY=hoverY+dx*sn+dy*cs+Math.cos(t*15+p.phase)*flutter;
         }
       }
       ctx.fillStyle=p.color;
@@ -292,7 +300,7 @@
     frameId=0;
     if(!active)return;
     // Keep the suspended pixel cloud alive; it never fades away or ends on a void.
-    if(!REDUCE.matches&&now-lastPaint<33){
+    if(!REDUCE.matches&&now-lastPaint<FRAME_MS){
       frameId=requestAnimationFrame(paint);
       return;
     }
