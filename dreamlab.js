@@ -66,15 +66,15 @@
     $("#dl-record").querySelector("[data-fr]").textContent=recorder&&recorder.state==="recording"?(lang==="fr"?"en cours…":"recording…"):(lang==="fr"?"enregistrer":"record");
     $$(".dl-pad").forEach((el,i)=>el.querySelector("span").textContent=lang==="fr"?pads[i].fr:pads[i].en);
     $$(".dl-knob-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?knobs[i].fr:knobs[i].en);
-    $(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
+    $$(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
     updateModeDescription();
   }
   $("#dl-language").addEventListener("click",()=>{lang=lang==="fr"?"en":"fr";translate()});
-  $(".dl-play-mode").forEach(btn=>btn.addEventListener("click",()=>{
+  $$(".dl-play-mode").forEach(btn=>btn.addEventListener("click",()=>{
     if(keyMode===btn.dataset.playMode)return;
     stopAllNotes();
     keyMode=btn.dataset.playMode;
-    $(".dl-play-mode").forEach(el=>{
+    $$(".dl-play-mode").forEach(el=>{
       const selected=el===btn;
       el.classList.toggle("active",selected);
       el.setAttribute("aria-pressed",String(selected));
@@ -88,11 +88,11 @@
       keyMode==="chord"?"one key plays a full chord.":keyMode==="arp"?"one key plays an arpeggio; hold it to repeat.":"play freely, one note at a time."
     );
   }));
-  $(".dl-mood").forEach(btn=>btn.addEventListener("click",()=>{
+  $$(".dl-mood").forEach(btn=>btn.addEventListener("click",()=>{
     stopAllNotes();
     mood=btn.dataset.mood;
     document.body.dataset.mood=mood;
-    $$(".dl-mood").forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
+    $$$(".dl-mood").forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
     $("#dl-stage-text").textContent=lang==="fr"?"un nouvel univers sonore":"a new sound world";
     scatter(6);
     say("ambiance modifiée. joue quelques notes !","mood changed. play a few notes!");
