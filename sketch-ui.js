@@ -29,6 +29,14 @@
     ['#window-shade .library-toolbar', 'frame', 251],
     ['#window-shade .about-mark', 'frame', 263],
     ['#window-shade .window-end', 'rule', 271],
+    // Reuse the site's actual hand-traced borders on the congratulations popup.
+    // Rectilinear corners and gently trembling sides, not CSS rounded rectangles.
+    ['#nana-discovery-dialog', 'frame', 1031],
+    ['#nana-discovery-dialog .nana-discovery-reward', 'frame', 1041],
+    ['#nana-discovery-dialog .nana-discovery-close', 'frame', 1051],
+    ['#nana-discovery-dialog .nana-discovery-coupon code', 'frame', 1061],
+    ['#nana-discovery-dialog .nana-discovery-coupon button', 'frame', 1071],
+    ['#nana-discovery-dialog .nana-discovery-shop', 'frame', 1081],
     ['#window-shade .viewer-stage', 'frame', 281],
     ['#window-shade .viewer-thumb', 'frame', 291],
     ['#window-shade .motion-reels-outline', 'frame', 301],
@@ -197,7 +205,7 @@
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
-    const variation=item.element.closest('#nana-do-nothing') ? 1.45 : (item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05)))));
+    const variation=item.element.closest('#nana-discovery-dialog') ? 1.55 : (item.element.closest('#nana-do-nothing') ? 1.45 : (item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05))))));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
     if (item.innerInk) item.innerInk.setAttribute('d',makePath(width,height,item.seed+53,'frame',variation*.72,7));
   }
