@@ -1,0 +1,8 @@
+/* MiniLab 3: original 3072×1732 transparent full-scene layer.
+   Preserve its coordinates relative to the 1670×942 Play scene. */
+#play-scene .nana-minilab-day {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:fill; pointer-events:none; z-index:4;
+}
+html[data-theme="night"] #play-scene .nana-minilab-day,
+#app.mode-work #play-scene .nana-minilab-day { display:none!important; }
