@@ -1,0 +1,41 @@
+name: Build safe artwork previews
+
+on:
+  push:
+    paths:
+      - .github/workflows/artwork-previews.yml
+      - scripts/generate-artwork-previews.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: artwork-previews-main
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image processing dependency
+        run: python -m pip install "Pillow>=11,<13"
+      - name: Produce display-only WebP files
+        run: python scripts/generate-artwork-previews.py
+      - name: Save previews back to the site
+        run: |
+          git add -- assets/previews
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Generate low-resolution public artwork previews"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
