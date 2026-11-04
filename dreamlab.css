@@ -367,3 +367,75 @@ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh}
 @media(prefers-reduced-motion:reduce){
   .dl-pad,.dl-play-mode,.dl-mood{transition:none!important}
 }
+
+
+/* The user's Mimilab.psd illustration is the interactive instrument.
+   All touch targets use coordinates in its native 1580 x 1000 space. */
+.dl-illustrated{justify-content:flex-start!important;min-height:0!important}
+.ml-instrument-bar{display:flex;align-items:center;justify-content:flex-end;gap:13px;flex:0 0 auto;min-height:38px;margin:0 2px 8px;position:relative;z-index:4}
+.ml-instrument-bar>.dl-minor-button{margin-right:auto}
+.ml-instrument-bar .dl-tempo{font-size:13px}
+.ml-note-name{min-width:42px;font-size:13px;text-align:center}
+.ml-instrument-bar .dl-audio-actions{display:flex;align-items:center;gap:8px;flex-direction:row}
+.ml-art-scroll{display:block;width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-color:var(--ink) #ffe9f3;scrollbar-width:thin;-webkit-overflow-scrolling:touch;flex:0 0 auto}
+.ml-artboard{position:relative;width:100%;aspect-ratio:1580 / 1000;min-width:0;isolation:isolate}
+.ml-art-image{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.ml-artboard #dl-keys{position:absolute!important;left:6.65%!important;top:53.45%!important;width:86.25%!important;height:39.2%!important;min-width:0!important;
+ display:block!important;background:transparent!important;border:0!important;overflow:visible!important;touch-action:pan-x;z-index:3}
+.ml-artboard #dl-keys .dl-key{background:transparent!important;color:transparent!important;border:0!important;
+ box-shadow:none!important;border-radius:0!important;touch-action:none;transition:background .13s}
+.ml-artboard #dl-keys .dl-key.white{height:100%!important;width:calc(100% / 15)!important;z-index:2}
+.ml-artboard #dl-keys .dl-key.black{height:63%!important;width:calc(100% / 15 * .61)!important;z-index:4}
+.ml-artboard #dl-keys .dl-key.white.pressed{background:rgba(255,89,130,.26)!important;transform:none!important}
+.ml-artboard #dl-keys .dl-key.black.pressed{background:rgba(255,242,247,.34)!important;transform:translateX(-50%)!important}
+.ml-artboard #dl-keys .dl-key kbd{display:none!important}
+.ml-artboard #dl-pads,.ml-artboard #dl-knobs,.ml-artboard #dl-faders{
+  position:absolute!important;inset:0!important;display:block!important;min-width:0!important;
+  border:0!important;padding:0!important;margin:0!important;background:none!important;
+  box-shadow:none!important;pointer-events:none!important;z-index:5}
+.ml-artboard #dl-pads .dl-pad{position:absolute!important;min-height:0!important;
+ display:block!important;aspect-ratio:auto!important;padding:0!important;min-width:0!important;
+ background:transparent!important;border:0!important;border-radius:6px!important;box-shadow:none!important;
+ touch-action:manipulation;pointer-events:auto!important;transition:background .12s,box-shadow .12s}
+.ml-artboard #dl-pads .dl-pad b,.ml-artboard #dl-pads .dl-pad span{display:none!important}
+.ml-artboard #dl-pads .dl-pad.active{background:rgba(255,255,255,.16)!important;box-shadow:inset 0 0 0 3px #ff194db0,0 0 9px 2px #f7226388!important}
+.ml-artboard #dl-pads .dl-pad:active{background:rgba(255,255,255,.25)!important}
+.ml-artboard #dl-knobs .dl-knob-cell{position:absolute!important;display:block!important;min-width:0!important;gap:0!important;pointer-events:none!important}
+.ml-artboard #dl-knobs .dl-knob-cell label{display:none!important}
+.ml-artboard #dl-knobs .dl-knob{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ border:0!important;background:transparent!important;border-radius:50%!important;box-shadow:none!important;
+ cursor:ns-resize!important;touch-action:none;pointer-events:auto!important}
+.ml-artboard #dl-knobs .dl-knob:after{content:"";position:absolute!important;left:50%!important;top:16%!important;
+ width:3px!important;height:27%!important;border-radius:3px!important;background:rgba(238,1,46,.84)!important;
+ box-shadow:0 0 0 1px #fff7!important;transform-origin:50% 145%!important;
+ transform:translateX(-50%) rotate(var(--angle,0deg))!important;opacity:.75!important;pointer-events:none!important}
+.ml-artboard #dl-knobs .dl-knob:focus-visible{outline:2px dashed var(--ink)!important;outline-offset:2px!important}
+.ml-artboard #dl-faders .dl-fader-cell{position:absolute!important;display:block!important;min-width:0!important;
+ padding:0!important;border:0!important;box-shadow:none!important;background:none!important;pointer-events:none!important}
+.ml-artboard #dl-faders .dl-fader-cell label{display:none!important}
+.ml-artboard #dl-faders .dl-fader-cell input{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ writing-mode:vertical-lr!important;direction:rtl!important;opacity:.001!important;
+ margin:0!important;cursor:ns-resize!important;pointer-events:auto!important;touch-action:none!important;z-index:2!important}
+.ml-artboard #dl-faders .ml-fader-marker{position:absolute;left:16%;width:68%;height:4%;
+ background:rgba(255,12,61,.38);border:1px solid rgba(255,5,53,.32);
+ border-radius:3px;pointer-events:none;z-index:1}
+.ml-artboard #dl-faders .dl-fader-cell:focus-within .ml-fader-marker{background:rgba(255,12,61,.68)}
+.dl-illustrated .dl-play-modes{margin-top:8px!important;margin-bottom:0!important}
+@media(min-width:1041px){
+  .dl-illustrated .ml-art-scroll{flex:0 1 auto}
+  .dl-illustrated .dl-play-modes{flex:0 0 auto}
+}
+@media(max-width:700px){
+  .ml-art-scroll{width:100%;overflow-x:auto!important;scroll-snap-type:x proximity}
+  .ml-artboard{width:620px!important;min-width:620px!important;max-width:none!important}
+  .ml-instrument-bar{gap:6px;flex-wrap:wrap;justify-content:space-between;margin-bottom:8px}
+  .ml-instrument-bar .dl-minor-button{margin-right:0}
+  .ml-artboard #dl-faders .ml-fader-marker{height:3%}
+}
+@media(max-width:380px){
+  .ml-artboard{width:575px!important;min-width:575px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .ml-artboard #dl-pads .dl-pad,.ml-artboard #dl-keys .dl-key{transition:none!important}
+}
