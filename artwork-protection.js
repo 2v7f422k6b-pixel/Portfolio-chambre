@@ -4,7 +4,7 @@
 (() => {
   'use strict';
 
-  const artworkPath = /\/assets\/(?:photos|uploads|previews\/(?:photos|uploads))\/[^?#]+\.(?:png|jpe?g|webp)$/i;
+  const artworkPath = /\/assets\/(?:photos|uploads|gabzilla|previews\/(?:photos|uploads|gabzilla))\/[^?#]+\.(?:png|jpe?g|webp)$/i;
   const isImage = element => element instanceof Element && element.matches('img, svg image');
 
   function isPortfolioArtwork(element) {
