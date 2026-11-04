@@ -101,7 +101,7 @@
       .forEach(element => element.remove());
     dialog.querySelector('#nana-discovery-title').innerHTML = english
       ? '<strong>my</strong> room has no secrets...'
-      : 'ma chambre n’a plus de secrets <strong>pour toi</strong>';
+      : 'ma chambre n’a plus de secrets pour toi';
     dialog.querySelector('#nana-discovery-description').textContent = english
       ? 'You clicked on every little corner of my room. Well done, curious soul!'
       : 'Tu as exploré tous les recoins de ma chambre. Bravo, petite âme curieuse !';
