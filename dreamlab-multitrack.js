@@ -222,7 +222,7 @@
     try{
       if(!makeMix())return;
       const link=document.createElement("a");
-      link.href=mixUrl;link.download="nana-dreamlab-mix-"+new Date().toISOString().slice(0,10)+".wav";
+      link.href=mixUrl;link.download="nana-mimilab-3-mix-"+new Date().toISOString().slice(0,10)+".wav";
       document.body.append(link);link.click();link.remove();
       status("ton mix est téléchargé !","your mix was downloaded!");
     }catch(_){status("impossible de générer le fichier WAV.","could not generate the WAV file.")}
