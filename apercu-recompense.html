@@ -5,22 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#fff7f4">
   <title>Aperçu de la récompense — Nana Color Studio</title>
-  <!-- Do not duplicate the dialog here: always preview the live portfolio component. -->
-  <meta http-equiv="refresh" content="0;url=./?previewReward=1&amp;rewardLang=fr">
   <style>
-    html,body{min-height:100%;margin:0;background:#fff7f4;color:#ff173b}
-    body{display:grid;place-items:center;padding:20px;font:18px/1.4 sans-serif;text-align:center}
-    a{color:inherit}
+    html,body{position:relative;width:100%;height:100%;margin:0;overflow:hidden;background:#edc6df}
+    iframe{display:block;position:fixed;inset:0;width:100%;height:100%;border:0;background:transparent}
   </style>
 </head>
 <body>
-  <p><a href="./?previewReward=1&amp;rewardLang=fr">Voir la récompense dans la chambre</a></p>
-  <script>
-    // One canonical implementation for French and English, including the artist's PNG stars.
-    const url=new URL('./',location.href);
-    url.searchParams.set('previewReward','1');
-    url.searchParams.set('rewardLang',new URLSearchParams(location.search).get('rewardLang')==='en'?'en':'fr');
-    location.replace(url.href);
-  </script>
+  <!-- The live portfolio owns the one and only congratulations dialog.
+       Using an embedded live page avoids stale duplicate French markup. -->
+  <iframe
+    src="./index.html?previewReward=1&amp;rewardLang=fr&amp;rewardRevision=20261104-unique-preview"
+    title="Aperçu en français de la récompense dans ma chambre"
+    loading="eager"
+    allow="clipboard-write"
+  ></iframe>
 </body>
 </html>
