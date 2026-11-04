@@ -5,61 +5,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#fff7f4">
   <title>Aperçu de la récompense — Nana Color Studio</title>
-  <link rel="stylesheet" href="nana-font.css">
-  <link rel="stylesheet" href="nana-discoveries.css?v=20261104-3">
+  <!-- Do not duplicate the dialog here: always preview the live portfolio component. -->
+  <meta http-equiv="refresh" content="0;url=./?previewReward=1&amp;rewardLang=fr">
   <style>
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#edc6df}
-    #preview-room{position:fixed;inset:0;width:100%;height:100%;border:0;pointer-events:none}
-    #preview-shade{position:fixed;inset:0;background:rgba(30,12,42,.53);backdrop-filter:blur(3px)}
-    #nana-discovery-dialog{position:fixed;z-index:10;top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);margin:0;max-height:88dvh}
-    #nana-discovery-dialog .nana-discovery-shop{display:block;text-decoration:none}
-    #nana-discovery-dialog .nana-discovery-continue{display:block;text-decoration:underline;cursor:pointer;margin:0 auto;color:#ff173b}
+    html,body{min-height:100%;margin:0;background:#fff7f4;color:#ff173b}
+    body{display:grid;place-items:center;padding:20px;font:18px/1.4 sans-serif;text-align:center}
+    a{color:inherit}
   </style>
 </head>
 <body>
-  <iframe id="preview-room" src="./" aria-hidden="true" tabindex="-1" title="La chambre Nana Color Studio en arrière-plan"></iframe>
-  <div id="preview-shade" aria-hidden="true"></div>
-  <dialog id="nana-discovery-dialog" open role="dialog" aria-modal="true" aria-labelledby="nana-discovery-title" aria-describedby="nana-discovery-description">
-    <div class="nana-discovery-inside">
-      <a class="nana-discovery-close" href="./" aria-label="Fermer" style="display:grid;place-items:center;text-decoration:none">×</a>
-      <div class="nana-discovery-sparkles" aria-hidden="true">
-        <svg viewBox="0 0 180 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M27 4L33 21L51 20L37 31L42 48L27 38L13 49L17 31L3 21L21 21Z" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/>
-          <path d="M91 0L98 19L119 18L103 32L109 55L91 42L74 55L79 33L63 18L84 19Z" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/>
-          <path d="M153 10L158 25L174 25L163 35L166 51L153 43L141 51L144 36L132 25L148 25Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <p class="nana-discovery-kicker">UNE PETITE SURPRISE POUR TOI</p>
-      <h2 id="nana-discovery-title">La chambre n’a plus de secrets pour toi !</h2>
-      <p id="nana-discovery-description">Tu as cliqué dans tous les petits recoins de ma chambre. Bravo, petite âme curieuse !</p>
-      <p class="nana-discovery-count">48 zones cliquables découvertes</p>
-      <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">
-        <p class="nana-discovery-thanks">Merci d’avoir exploré tous les recoins de mon petit univers.</p>
-        <strong class="nana-discovery-discount">−10 %</strong>
-        <p class="nana-discovery-reward-title" id="nana-discovery-reward-title">Un petit cadeau pour ton prochain print dans <a href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>
-        <div class="nana-discovery-coupon">
-          <code id="nana-preview-code">MERCI10</code>
-          <button type="button" id="nana-preview-copy">Copier le code</button>
-        </div>
-        <p class="nana-discovery-note">Garde ce code précieusement. Les commandes ne sont pas encore ouvertes.</p>
-      </section>
-      <a class="nana-discovery-shop" href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" target="_blank" rel="noopener noreferrer">Aller dans la boutique</a>
-      <a class="nana-discovery-continue" href="./">Continuer à flâner</a>
-    </div>
-  </dialog>
+  <p><a href="./?previewReward=1&amp;rewardLang=fr">Voir la récompense dans la chambre</a></p>
   <script>
-    // Decorative room behind the live HTML dialog: no discovery data is touched.
-    document.getElementById('preview-room').addEventListener('load',function(){
-      try{this.contentDocument.querySelector('[data-mode="play"]')?.click()}catch(_){}
-    });
-    document.getElementById('nana-preview-copy').addEventListener('click',async function(){
-      let ok=false;
-      try{await navigator.clipboard.writeText('MERCI10');ok=true}catch(_){
-        const el=document.createElement('textarea');el.value='MERCI10';el.style.position='fixed';el.style.left='-9999px';
-        document.body.appendChild(el);el.select();try{ok=document.execCommand('copy')}catch(_){}el.remove();
-      }
-      this.textContent=ok?'Copié !':'Sélectionne MERCI10';
-    });
+    // One canonical implementation for French and English, including the artist's PNG stars.
+    const url=new URL('./',location.href);
+    url.searchParams.set('previewReward','1');
+    url.searchParams.set('rewardLang',new URLSearchParams(location.search).get('rewardLang')==='en'?'en':'fr');
+    location.replace(url.href);
   </script>
 </body>
 </html>
