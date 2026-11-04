@@ -6,10 +6,9 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261104-fit-screen-1">
+<link rel="stylesheet" href="dreamlab.css?v=20261104-two-column-v1">
 <script src="dreamlab.js?v=20261104-iphone-audio-fix-1" defer></script>
-<script src="dreamlab-multitrack.js?v=20261104-mimilab3" defer></script>
-<script src="mimilab-fit.js?v=20261104-fit-screen-1" defer></script>
+<script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
 <body data-mood="dreamy">
 <main class="dl-app">
@@ -19,6 +18,8 @@
     <button type="button" id="dl-language" class="dl-language" aria-label="Switch language">EN</button>
   </header>
 
+  <div class="dl-workspace">
+    <div class="dl-instrument">
   <section class="dl-mood-panel" aria-labelledby="dl-mood-title">
     <h2 id="dl-mood-title" data-fr="choisis une humeur" data-en="choose a mood">choisis une humeur</h2>
     <div id="dl-moods" class="dl-moods" role="group" aria-label="Musical moods">
@@ -59,21 +60,24 @@
     <div class="dl-controller-bottom"><span data-fr="clavier : A W S E D F T G Y H U J K O L P ;" data-en="keyboard: A W S E D F T G Y H U J K O L P ;">clavier : A W S E D F T G Y H U J K O L P ;</span><span id="dl-note-name" aria-live="polite">—</span></div>
   </section>
 
-  <section class="dl-recorder" aria-labelledby="dl-rec-title">
-    <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="ton petit studio" data-en="your little studio">ton petit studio</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
+    </div>
+
+    <section class="dl-recorder dl-daw" aria-labelledby="dl-rec-title">
+    <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="mini daw" data-en="mini daw">mini daw</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
     <div class="dl-track-heading"><h3 data-fr="mes 5 pistes" data-en="my 5 tracks">mes 5 pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
     <div id="dl-track-list" class="dl-track-list" aria-label="5 pistes d'enregistrement"></div>
-    <p class="dl-track-tip" data-fr="sélectionne une piste vide et enregistre. les pistes précédentes jouent pendant ta nouvelle prise, sans être enregistrées une deuxième fois." data-en="select an empty track and record. earlier tracks play while you record the next take, without being captured again.">sélectionne une piste vide et enregistre. les pistes précédentes jouent pendant ta nouvelle prise, sans être enregistrées une deuxième fois.</p>
+    <p class="dl-track-tip" data-fr="appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante." data-en="tap rec to record a track. previous takes play automatically while you record the next.">appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante.</p>
     <div class="dl-transport">
       <button type="button" id="dl-record" class="dl-primary"><span class="dl-record-dot"></span><span data-fr="enregistrer la piste" data-en="record track">enregistrer la piste</span> <b id="dl-record-target">01</b></button>
-      <button type="button" id="dl-stop" disabled><span>■</span> <span data-fr="arrêter" data-en="stop">arrêter</span></button>
+      <button type="button" id="dl-stop" disabled hidden aria-hidden="true"><span>■</span> <span data-fr="arrêter" data-en="stop">arrêter</span></button>
       <span id="dl-timer" class="dl-timer" aria-live="off">00:00</span>
       <button type="button" id="dl-replay" disabled><span>▶</span> <span data-fr="écouter" data-en="listen">écouter</span></button>
       <button type="button" id="dl-download" class="dl-download" disabled><span>↓</span> <span data-fr="télécharger" data-en="download">télécharger</span></button>
     </div>
     <audio id="dl-playback" controls hidden></audio>
     <p class="dl-rec-note" id="dl-status" role="status" aria-live="polite" data-fr="5 pistes maximum · télécharge ton mix en WAV." data-en="up to 5 tracks · download your WAV mix.">5 pistes maximum · télécharge ton mix en WAV.</p>
-  </section>
+    </section>
+  </div>
   <footer class="dl-footer"><span>made with little things &amp; a lot of love</span><span>nana color studio · 2026</span></footer>
 </main>
 </body>
