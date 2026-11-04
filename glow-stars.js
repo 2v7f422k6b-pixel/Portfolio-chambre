@@ -604,7 +604,7 @@
   const edit = new URLSearchParams(location.search).get('starsEdit') === '1';
   const storageKey='nana-wall-stars-layout-v1';
   try {
-    const saved=edit ? JSON.parse(localStorage.getItem(storageKey)||'null') : null;
+    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
     if(Array.isArray(saved) && saved.length && saved.every(v=>Array.isArray(v)&&v.length===4&&v.every(Number.isFinite))) stars.splice(0,stars.length,...saved);
   } catch (_) {}
   const layer = document.createElementNS(NS,'svg');
