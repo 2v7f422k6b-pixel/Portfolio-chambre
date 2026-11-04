@@ -46,20 +46,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  width: 136px;
+  gap: 7px;
+  width: 140px;
   height: 40px;
   margin: 0 auto 6px;
 }
 #nana-discovery-dialog .nana-discovery-sparkles img {
   display: block;
-  width: 28px;
-  height: 34px;
+  width: 23px;
+  height: 25px;
   object-fit: contain;
   flex: 0 0 auto;
 }
-#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(2) {width: 22px;height: 25px;}
-#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {width: 36px;height: 39px;}
+#nana-discovery-dialog .nana-discovery-sparkles img:nth-child(2) {
+  width: 39px;
+  height: 40px;
+  transform: translateY(-1px);
+}
 #nana-discovery-dialog h2 {
   max-width: 340px;
   margin: 0 auto 8px;
@@ -181,7 +184,7 @@
   #nana-discovery-dialog .nana-discovery-inside {padding-top:9px;padding-bottom:8px;}
   #nana-discovery-dialog .nana-discovery-sparkles {height:26px;margin-bottom:3px;}
   #nana-discovery-dialog .nana-discovery-sparkles img {height:25px;}
-  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {height:28px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(2) {height:28px;}
   #nana-discovery-dialog h2 {font-size:22px;margin-bottom:5px;}
   #nana-discovery-dialog #nana-discovery-description {font-size:14px;line-height:1.17;margin-bottom:6px;}
   #nana-discovery-dialog .nana-discovery-reward {padding:6px 8px;margin-bottom:5px;}
@@ -196,7 +199,7 @@
   #nana-discovery-dialog .nana-discovery-inside {padding:6px 10px 5px;}
   #nana-discovery-dialog .nana-discovery-sparkles {height:19px;margin-bottom:1px;}
   #nana-discovery-dialog .nana-discovery-sparkles img {height:18px;}
-  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(3) {height:20px;}
+  #nana-discovery-dialog .nana-discovery-sparkles img:nth-child(2) {height:20px;}
   #nana-discovery-dialog h2 {font-size:19px;margin-bottom:3px;}
   #nana-discovery-dialog #nana-discovery-description {font-size:12px;margin-bottom:4px;}
   #nana-discovery-dialog .nana-discovery-reward {padding:4px 6px;margin-bottom:3px;}
@@ -213,9 +216,10 @@
   #nana-discovery-dialog .nana-discovery-discount {transform:none;}
 }
 
-/* Reward modal: exactly the same hand-traced, angular chrome as the site.
-   sketch-ui.js draws irregular SVG paths on real interactive elements.
-   No rounded radii, rigid secondary borders or duplicated square outlines. */
+/* Congratulations dialog: the fill is literally the SAME closed, irregular
+   SVG path as the red hand-traced stroke. A CSS rectangle must never show
+   outside that outline. Only switch backgrounds when sketch-ui.js has run,
+   so an unenhanced page still remains legible. */
 #nana-discovery-dialog.sketch-ui-frame,
 #nana-discovery-dialog :is(
   .nana-discovery-reward,
@@ -224,13 +228,12 @@
   .nana-discovery-coupon button,
   .nana-discovery-shop
 ).sketch-ui-frame {
-  border-color: transparent !important;
+  border: 0 !important;
   border-radius: 0 !important;
   outline: 0;
-}
-#nana-discovery-dialog.sketch-ui-frame {
-  border-radius: 0 !important;
+  background: transparent !important;
   box-shadow: none !important;
+  isolation: isolate;
 }
 #nana-discovery-dialog .sketch-ui-frame > .sketch-ui-svg,
 #nana-discovery-dialog.sketch-ui-frame > .sketch-ui-svg {
@@ -239,22 +242,40 @@
   width: 100%;
   height: 100%;
   display: block;
-  z-index: 6;
+  z-index: -1 !important;
   overflow: hidden;
   pointer-events: none !important;
 }
-#nana-discovery-dialog .sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink,
-#nana-discovery-dialog.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
-  fill: none !important;
+html body #nana-discovery-dialog .sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink,
+html body #nana-discovery-dialog.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
   stroke: #ff173b !important;
   stroke-width: 1.9px !important;
   stroke-linecap: round;
   stroke-linejoin: miter;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 1px rgba(255,23,59,.18));
+  filter: none !important;
 }
-/* Keep keyboard focus clearly visible even though the decorative edges
-   themselves are not interactive. */
+/* Matching fills never spill past the wobbly line because they use the
+   identical path geometry, rather than a separate CSS background box. */
+html body #nana-discovery-dialog.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  fill: #fff7f4 !important;
+}
+html body #nana-discovery-dialog .nana-discovery-reward.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  fill: #ffeaf0 !important;
+}
+html body #nana-discovery-dialog :is(
+  .nana-discovery-close,
+  .nana-discovery-coupon code,
+  .nana-discovery-coupon button
+).sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  fill: #fffaf8 !important;
+}
+html body #nana-discovery-dialog .nana-discovery-shop.sketch-ui-frame > .sketch-ui-svg > .sketch-ui-ink {
+  fill: #ff173b !important;
+}
+html body #nana-discovery-dialog .nana-discovery-shop.sketch-ui-frame:hover > .sketch-ui-svg > .sketch-ui-ink {
+  fill: #fffaf8 !important;
+}
 #nana-discovery-dialog button:focus-visible,
 #nana-discovery-dialog a:focus-visible {
   outline: 2px solid #ff173b !important;
