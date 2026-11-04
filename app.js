@@ -22,8 +22,8 @@ const ART = [
   ['Marseille','marseille.jpg'],
   ['Marseille Emblem','marseille-emblem.jpg'],
   ['Swans and Lotus','swans-lotus.jpg']
-].map(([title,filename],index)=>({title,src:'assets/photos/'+filename,index}));
-window.portfolioArtworkIndex = filename => ART.findIndex(art => art.src.endsWith('/'+String(filename||'')));
+].map(([title,filename],index)=>({title,filename,src:'assets/previews/photos/'+filename.replace(/\.jpe?g$/i,'.webp'),index}));
+window.portfolioArtworkIndex = filename => ART.findIndex(art => art.filename === String(filename||''));
 const GABZILLA = [
   {title:'Original illustration',src:'assets/gabzilla/illustration.jpeg'},
   {title:'Textile composition',src:'assets/gabzilla/composition.jpeg'},
@@ -278,7 +278,7 @@ function openFinder(){
 }
 function openIllustrationProjects(){
  openWindow('ILLUSTRATIONS',`<div class="eyebrow">PROJECTS / ILLUSTRATIONS</div><h2>Illustrations</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
- <button class="project-card" data-open="photos"><span class="project-preview"><img src="assets/photos/swans-lotus.jpg" alt="Swans and lotus flowers illustration"></span><strong>Original illustrations</strong><small>Explore the gallery</small></button>
+ <button class="project-card" data-open="photos"><span class="project-preview"><img src="assets/previews/photos/swans-lotus.webp" alt="Swans and lotus flowers illustration"></span><strong>Original illustrations</strong><small>Explore the gallery</small></button>
  <button class="project-card" data-open="gabzilla"><span class="project-preview"><img src="assets/gabzilla/illustration.jpeg" alt="GABZILLA textile collaboration"></span><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
  <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
  </div>`,'illustration');
