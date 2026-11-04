@@ -92,7 +92,7 @@
     stopAllNotes();
     mood=btn.dataset.mood;
     document.body.dataset.mood=mood;
-    $$$(".dl-mood").forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
+    $( ".dl-mood" ).forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
     $("#dl-stage-text").textContent=lang==="fr"?"un nouvel univers sonore":"a new sound world";
     scatter(6);
     say("ambiance modifiée. joue quelques notes !","mood changed. play a few notes!");
