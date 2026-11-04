@@ -285,3 +285,7 @@
  .dl-key-scroll .dl-keys{height:82px!important}
  .dl-rec-note{display:none!important}
 }
+
+/* Keep the iPhone sound switch and LED on one line, despite the generic top div rule. */
+.dl-controller-top > .dl-audio-actions{flex-direction:row!important;align-items:center!important;justify-content:flex-end!important}
+body{overflow-x:hidden}
