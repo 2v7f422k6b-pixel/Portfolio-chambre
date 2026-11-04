@@ -18,14 +18,15 @@
   const discovered = new Set(
     (Array.isArray(stored.discovered) ? stored.discovered : []).filter(id => required.has(id))
   );
-  let celebrated = stored.celebrated === true;
+  // Existing explorers who saw the previous congratulations can claim the new gift too.
+  let celebrated = stored.celebrated === true && stored.rewardSeen === true;
   let pending = false;
   let previousFocus = null;
 
   function persist() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        discovered: [...discovered], celebrated: celebrated
+        discovered: [...discovered], celebrated: celebrated, rewardSeen: celebrated
       }));
     } catch (_) { /* Still works for this visit if browser storage is disabled. */ }
   }
@@ -71,6 +72,14 @@
     '  <h2 id="nana-discovery-title"></h2>',
     '  <p id="nana-discovery-description"></p>',
     '  <p class="nana-discovery-count" id="nana-discovery-count"></p>',
+    '  <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">',
+    '    <p class="nana-discovery-thanks" id="nana-discovery-thanks"></p>',
+    '    <strong class="nana-discovery-discount">−10 %</strong>',
+    '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>',
+    '    <div class="nana-discovery-coupon"><code>MERCI10</code><button type="button" id="nana-discovery-copy"></button></div>',
+    '    <p class="nana-discovery-note" id="nana-discovery-note"></p>',
+    '  </section>',
+    '  <button type="button" class="nana-discovery-shop" id="nana-discovery-shop"></button>',
     '  <button type="button" class="nana-discovery-continue" id="nana-discovery-continue"></button>',
     '</div>'
   ].join('\n');
@@ -78,6 +87,11 @@
 
   const closeButton = dialog.querySelector('.nana-discovery-close');
   const continueButton = dialog.querySelector('.nana-discovery-continue');
+  const shopButton = dialog.querySelector('#nana-discovery-shop');
+  const shopLink = dialog.querySelector('#nana-discovery-shop-link');
+  const copyButton = dialog.querySelector('#nana-discovery-copy');
+  shopLink.href = document.getElementById('nana-shop-bag')?.href ||
+    'https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html';
 
   function localize() {
     const english = document.documentElement.lang.toLowerCase().startsWith('en');
@@ -91,12 +105,44 @@
     dialog.querySelector('#nana-discovery-count').textContent = english
       ? required.size + ' interactive spots discovered'
       : required.size + ' zones cliquables découvertes';
+    dialog.querySelector('#nana-discovery-thanks').textContent = english
+      ? 'Thank you for exploring every little corner of my world.'
+      : 'Merci d’avoir exploré tous les recoins de mon petit univers.';
+    dialog.querySelector('#nana-discovery-gift-text').textContent = english
+      ? 'A little gift for your next print at'
+      : 'Un petit cadeau pour ton prochain print dans';
+    dialog.querySelector('#nana-discovery-note').textContent = english
+      ? 'Keep this code safe. Checkout is not open yet.'
+      : 'Garde ce code précieusement. Les commandes ne sont pas encore ouvertes.';
+    shopButton.textContent = english ? 'Visit Nana’s Little Shop' : 'Aller dans la boutique';
+    copyButton.textContent = english ? 'Copy code' : 'Copier le code';
+    copyButton.setAttribute('aria-label', english ? 'Copy discount code MERCI10' : 'Copier le code de réduction MERCI10');
     continueButton.textContent = english ? 'Keep wandering' : 'Continuer à flâner';
     closeButton.setAttribute('aria-label', english ? 'Close' : 'Fermer');
   }
 
   closeButton.addEventListener('click', () => dialog.close());
   continueButton.addEventListener('click', () => dialog.close());
+  shopButton.addEventListener('click', () => {
+    dialog.close();
+    const bag = document.getElementById('nana-shop-bag');
+    if (bag) bag.click();
+    else window.open(shopLink.href, '_blank', 'noopener,noreferrer');
+  });
+  copyButton.addEventListener('click', async () => {
+    let success = false;
+    try { await navigator.clipboard.writeText('MERCI10'); success = true; }
+    catch (_) {
+      const input = document.createElement('textarea');
+      input.value = 'MERCI10';
+      input.style.cssText = 'position:fixed;left:-10000px;top:0';
+      document.body.appendChild(input); input.select();
+      try { success = document.execCommand('copy'); } catch (_) {}
+      input.remove();
+    }
+    const english = document.documentElement.lang.toLowerCase().startsWith('en');
+    copyButton.textContent = success ? (english ? 'Copied!' : 'Copié !') : (english ? 'Select MERCI10' : 'Sélectionne MERCI10');
+  });
   dialog.addEventListener('close', () => {
     if (previousFocus && document.contains(previousFocus)
         && previousFocus.getClientRects().length) previousFocus.focus();
