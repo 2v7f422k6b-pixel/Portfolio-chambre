@@ -439,3 +439,17 @@ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh}
 @media(prefers-reduced-motion:reduce){
   .ml-artboard #dl-pads .dl-pad,.ml-artboard #dl-keys .dl-key{transition:none!important}
 }
+
+
+/* Keep the original aspect ratio on desktop without cropping the DAW. */
+@media(min-width:1041px) and (min-height:700px){
+  .dl-illustrated{min-height:0!important;overflow:hidden!important}
+  .dl-illustrated .ml-art-scroll{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;
+  }
+  .dl-illustrated .ml-artboard{
+    width:min(100%,calc(158dvh - 505px))!important;
+    min-width:0!important;max-width:100%!important;flex:0 0 auto!important
+  }
+}
