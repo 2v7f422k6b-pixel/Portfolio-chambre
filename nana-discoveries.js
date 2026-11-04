@@ -170,9 +170,14 @@
     }
   }
 
-  // Read-only preview: never changes exploration progress or marks the reward claimed.
+  // Read-only preview: use the actual Play room behind the canonical dialog.
+  // No progress, reward claim, or visit count is changed by preview mode.
   if (previewOnly) {
     window.setTimeout(() => {
+      const app = document.getElementById('app');
+      if (app && !app.classList.contains('mode-play')) {
+        document.querySelector('[data-mode="play"]')?.click();
+      }
       localize();
       if (!dialog.open) {
         try { dialog.showModal(); closeButton.focus(); } catch (_) {}
