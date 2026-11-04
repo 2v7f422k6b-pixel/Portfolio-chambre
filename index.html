@@ -890,6 +890,39 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
 </style>
 
 <link rel="stylesheet" href="sale-ribbons.css?v=20261104">
+
+<style id="nana-synchronized-day-night-20261104">
+/* Keep later-added transparent scene objects in the same 1.8s crossfade as the bedroom PNG. */
+#play-scene .nana-minilab-day,
+#play-scene .nana-minilab-night {
+  display:block !important;
+  opacity:1;
+  transition:opacity 1.8s cubic-bezier(.42,0,.25,1);
+}
+#play-scene .nana-minilab-night { opacity:0; }
+html[data-theme="night"] #play-scene .nana-minilab-day { opacity:0; }
+html[data-theme="night"] #play-scene .nana-minilab-night { opacity:1; }
+#app.mode-work #play-scene .nana-minilab-day,
+#app.mode-work #play-scene .nana-minilab-night { display:none !important; }
+/* Added poster, mirror and cookie SVG artwork now fades with the room. */
+#play-scene #hotspots .poster-perspective-artworks,
+#play-scene #hotspots .poster-artworks,
+#play-scene #hotspots .poster-artwork,
+#play-scene #hotspots #nana-wall-mirror > g,
+#play-scene #hotspots #nana-wall-mirror > image,
+#play-scene #hotspots #nana-fortune-cookie > image {
+  transition:opacity 1.8s cubic-bezier(.42,0,.25,1);
+}
+@media (prefers-reduced-motion:reduce) {
+  #play-scene .nana-minilab-day,#play-scene .nana-minilab-night,
+  #play-scene #hotspots .poster-perspective-artworks,
+  #play-scene #hotspots .poster-artworks,
+  #play-scene #hotspots .poster-artwork,
+  #play-scene #hotspots #nana-wall-mirror > g,
+  #play-scene #hotspots #nana-wall-mirror > image,
+  #play-scene #hotspots #nana-fortune-cookie > image {transition:none;}
+}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
