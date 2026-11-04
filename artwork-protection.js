@@ -48,9 +48,9 @@
 
   const style = document.createElement('style');
   style.textContent = [
-    'img[src*="assets/photos/"],img[src*="assets/uploads/"],',
+    'img[src*="assets/photos/"],img[src*="assets/uploads/"],img[src*="assets/gabzilla/"],',
     'img[src*="assets/previews/"],svg image[href*="assets/photos/"],',
-    'svg image[href*="assets/uploads/"],svg image[href*="assets/previews/"]',
+    'svg image[href*="assets/uploads/"],svg image[href*="assets/gabzilla/"],svg image[href*="assets/previews/"]',
     '{-webkit-user-drag:none;user-select:none;-webkit-user-select:none}'
   ].join('');
   document.head.appendChild(style);
