@@ -96,15 +96,34 @@
   }));
   function createUI(){
     const pg=$("#dl-pads");
+    const illustrated=document.body.classList.contains("ml-use-art");
+    const xPct=x=>(x/1580*100)+"%";
+    const yPct=y=>(y/1000*100)+"%";
+    const padX=[365,502,643,783,922,1058,1198,1340];
+    const knobX=[557,698,836,977];
+    const faderX=[1117,1208,1301,1393];
     pads.forEach((p,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="dl-pad";b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",(i+1)+" "+p.fr);
       b.innerHTML='<b>' + String(i+1).padStart(2,"0") + '</b><span></span>';
-      b.addEventListener("click",()=>togglePad(i));pg.append(b);
+      b.addEventListener("click",()=>togglePad(i));
+      if(illustrated){
+        b.style.left=xPct(padX[i]);
+        b.style.top=yPct(355);
+        b.style.width=xPct(106);
+        b.style.height=yPct(112);
+        b.title=(i+1)+" "+p.fr;
+      }
+      pg.append(b);
     });
     const kg=$("#dl-knobs");
-    knobs.forEach(k=>{
+    knobs.forEach((k,i)=>{
       const cell=document.createElement("div");cell.className="dl-knob-cell";
+      if(illustrated){
+        const x=knobX[i%4],y=i<4?120:255;
+        cell.style.left=xPct(x-41);cell.style.top=yPct(y-42);
+        cell.style.width=xPct(82);cell.style.height=yPct(84);
+      }
       const b=document.createElement("button");b.type="button";b.className="dl-knob";b.setAttribute("role","slider");
       b.setAttribute("aria-valuemin","0");b.setAttribute("aria-valuemax","100");b.setAttribute("aria-label",k.fr);b.title=k.fr;
       let originY,originValue;
@@ -116,12 +135,21 @@
       const l=document.createElement("label");l.textContent=k.fr;cell.append(b,l);kg.append(cell);setKnob(k.id,k.value,b);
     });
     const fg=$("#dl-faders");
-    faders.forEach(f=>{
+    faders.forEach((f,i)=>{
       const cell=document.createElement("div");cell.className="dl-fader-cell";
+      if(illustrated){
+        cell.style.left=xPct(faderX[i]-28);
+        cell.style.top=yPct(107);
+        cell.style.width=xPct(56);
+        cell.style.height=yPct(195);
+      }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
-      input.addEventListener("input",()=>{settings[f.id]=+input.value;applyAudioSettings()});
-      cell.append(l,input);fg.append(cell);
+      const mark=document.createElement("span");mark.className="ml-fader-marker";mark.setAttribute("aria-hidden","true");
+      const setPosition=()=>mark.style.top=(10+(100-Number(input.value))*.72)+"%";
+      input.addEventListener("input",()=>{settings[f.id]=+input.value;applyAudioSettings();setPosition()});
+      if(illustrated){setPosition();cell.append(l,input,mark)}else cell.append(l,input);
+      fg.append(cell);
     });
     const keys=$("#dl-keys");let whites=0;
     for(let midi=48;midi<=72;midi++){
@@ -515,5 +543,6 @@
     stopAllNotes();
     if(ctx)ctx.close().catch(()=>{});
   });
+  document.body.classList.add("ml-use-art");
   createUI();translate();
 })();
