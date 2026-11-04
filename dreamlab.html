@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="DreamLab, petit synthétiseur interactif dans l'univers de Nana Color Studio.">
 <title>DreamLab — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=1">
-<script src="dreamlab.js?v=1" defer></script>
+<link rel="stylesheet" href="dreamlab.css?v=2">
+<script src="dreamlab.js?v=2" defer></script>
 </head>
 <body data-mood="dreamy">
 <main class="dl-app">
@@ -46,6 +46,17 @@
         <div class="dl-subhead"><h2 data-fr="façonne le son" data-en="shape the sound">façonne le son</h2><span class="dl-tempo">bpm <output id="dl-bpm-value">100</output></span></div>
         <div id="dl-knobs" class="dl-knobs" aria-label="8 sound controls"></div>
         <div id="dl-faders" class="dl-faders" aria-label="4 volume faders"></div>
+      </div>
+    </div>
+    <div class="dl-play-modes" aria-label="Modes de jeu">
+      <div class="dl-play-modes-heading">
+        <span data-fr="mode de jeu" data-en="play mode">mode de jeu</span>
+        <span id="dl-play-mode-description" aria-live="polite">1 touche = 1 note</span>
+      </div>
+      <div class="dl-play-mode-buttons" role="group" aria-label="Keyboard playing mode">
+        <button type="button" class="dl-play-mode active" data-play-mode="single" aria-pressed="true"><span class="dl-mode-glyph" aria-hidden="true">♪</span><span data-fr="notes" data-en="notes">notes</span></button>
+        <button type="button" class="dl-play-mode" data-play-mode="chord" aria-pressed="false"><span class="dl-mode-glyph" aria-hidden="true">♫</span><span data-fr="accords" data-en="chords">accords</span></button>
+        <button type="button" class="dl-play-mode" data-play-mode="arp" aria-pressed="false"><span class="dl-mode-glyph" aria-hidden="true">♬</span><span data-fr="arpégiateur" data-en="arpeggiator">arpégiateur</span></button>
       </div>
     </div>
     <div class="dl-keys-head"><span>25 keys · C3—C5</span><span data-fr="joue à la souris, au toucher ou au clavier" data-en="play with mouse, touch or keyboard">joue à la souris, au toucher ou au clavier</span></div>
