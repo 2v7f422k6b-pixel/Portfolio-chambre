@@ -113,3 +113,13 @@
 @media(prefers-reduced-motion:reduce){
   .dl-app #dl-moods .dl-mood{transition:none!important}
 }
+
+
+/* iOS sound unlock: discreet, square, easy to tap inside the virtual MiniLab. */
+.dl-audio-actions{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+.dl-audio-enable{font:inherit;font-size:15px;line-height:1.1;color:var(--ink);background:#fff8fb;border:2px solid var(--ink);border-radius:0;padding:9px 13px;min-height:43px;box-shadow:2px 2px 0 #f8b1cc;touch-action:manipulation}
+.dl-audio-enable[hidden]{display:none!important}
+.dl-audio-enable:active{background:#ffe0ef;box-shadow:none}
+.dl-audio-enable.is-ready{background:#ffdded}
+.dl-audio-actions .dl-controller-led{flex:none}
+@media(max-width:560px){.dl-audio-actions{gap:9px}.dl-audio-enable{font-size:13px;padding:8px 10px;min-height:43px}}
