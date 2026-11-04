@@ -245,8 +245,11 @@
     const gridH=height/ROWS;
     const magnitude=Math.max(0,Math.min(1,mix));
     const hoverEnabled=FINE_POINTER.matches&&hover.inside&&magnitude>.1&&!REDUCE.matches;
-    const hoverRadius=Math.min(width,height)*.18;
-    const hoverRadiusSq=hoverRadius*hoverRadius;
+    // A long, wandering brush-stroke instead of a circular mouse halo.
+    // The hover uses real seconds, independent from the deliberately slow cloud drift.
+    const hoverClock=now*.001;
+    const brushLength=width*.29;
+    const brushThickness=height*.13;
     const hoverX=hover.x*width,hoverY=hover.y*height;
     ctx.globalAlpha=.96;
     for(const p of pixels){
@@ -274,16 +277,26 @@
       let drawX=x*width,drawY=y*height;
       if(hoverEnabled){
         const dx=drawX-hoverX,dy=drawY-hoverY;
-        const distanceSq=dx*dx+dy*dy;
-        if(distanceSq<hoverRadiusSq){
-          const influence=1-distanceSq/hoverRadiusSq;
-          // Rotating about the cursor preserves density (no radial white hole).
-          // A little independent motion lets each existing pixel shimmer.
-          const turn=.16*Math.sin(t*14)*influence*magnitude;
-          const cs=Math.cos(turn),sn=Math.sin(turn);
-          const flutter=3.5*influence*magnitude;
-          drawX=hoverX+dx*cs-dy*sn+Math.sin(t*15+p.phase)*flutter;
-          drawY=hoverY+dx*sn+dy*cs+Math.cos(t*15+p.phase)*flutter;
+        // Fast bounds check keeps the denser 130k-pixel canvas responsive.
+        if(Math.abs(dx)<brushLength&&Math.abs(dy)<brushThickness+52){
+          // Two travelling bends give the interaction an irregular, ribbon-like
+          // silhouette rather than a circular rim around the cursor.
+          const bend=36*Math.sin(dx*.013-hoverClock*1.7)
+            +16*Math.sin(dx*.033+hoverClock*.9);
+          const along=dx/brushLength;
+          const across=(dy-bend)/brushThickness;
+          if(Math.abs(along)<1&&Math.abs(across)<1){
+            const edgeX=1-along*along,edgeY=1-across*across;
+            const influence=edgeX*edgeX*edgeY*edgeY*magnitude;
+            // Pronounced crossed currents move existing pixels in ripples,
+            // never pushing them radially outward into a blank white hole.
+            const sweepX=46*Math.sin((dy-bend)*.023+hoverClock*4.3)
+              +18*Math.cos((dx+dy)*.016-hoverClock*2.7);
+            const sweepY=33*Math.sin(dx*.025-hoverClock*3.5)
+              +12*Math.cos((dy-bend)*.04+hoverClock*3.1);
+            drawX+=sweepX*influence;
+            drawY+=sweepY*influence;
+          }
         }
       }
       ctx.fillStyle=p.color;
