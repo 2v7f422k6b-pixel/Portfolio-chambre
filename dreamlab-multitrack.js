@@ -55,12 +55,19 @@
         invalidateMix();
       });
       level.append(levelLabel,slider);
+      level.hidden=!lane.audio;
 
       const actions=el("div","dl-track-actions");
-      const choose=el("button","dl-track-select",selected===i?word("choisie","selected"):word("choisir","select"));
+      const choose=el("button","dl-track-select",recording===i?word("● en cours","● recording"):"● rec");
       choose.type="button";choose.setAttribute("aria-pressed",String(selected===i));
+      choose.setAttribute("aria-label",word("Enregistrer la piste ","Record track ")+(i+1));
       choose.disabled=!!lane.audio||recording!==-1||processing;
-      choose.addEventListener("click",()=>{selected=i;draw()});
+      choose.addEventListener("click",()=>{
+        if(choose.disabled)return;
+        selected=i;
+        draw();
+        $("dl-record").click();
+      });
 
       const mute=el("button","dl-track-mute",lane.mute?word("réactiver","unmute"):"mute");
       mute.type="button";mute.disabled=!lane.audio||recording!==-1||processing;
@@ -77,16 +84,31 @@
         selected=i;invalidateMix();draw();
         status("piste effacée. tu peux l'enregistrer à nouveau.","track deleted. you can record it again.");
       });
-      actions.append(choose,mute,del);
+      if(lane.audio)actions.append(mute,del);
+      else actions.append(choose);
       row.append(info,level,actions);list.append(row);
     });
 
     const count=lanes.filter(t=>t.audio).length;
     const audible=lanes.some(t=>t.audio&&!t.mute&&t.volume>0);
     $("dl-track-count").textContent=count+" / 5";
-    $("dl-record-target").textContent=selected<0?"—":String(selected+1).padStart(2,"0");
-    $("dl-record").disabled=selected<0||!!lanes[selected]?.audio||recording!==-1||processing;
-    $("dl-stop").disabled=recording===-1||processing;
+    const active=recording!==-1;
+    const recordBtn=$("dl-record");
+    const recordText=recordBtn.querySelector("[data-fr]");
+    if(recordText){
+      recordText.textContent=word(
+        processing?"préparation...":active?"arrêter":"enregistrer",
+        processing?"preparing...":active?"stop":"record"
+      );
+    }
+    $("dl-record-target").textContent=(active?recording:selected)<0?"—":String((active?recording:selected)+1).padStart(2,"0");
+    recordBtn.classList.toggle("is-recording",active&&!processing);
+    recordBtn.setAttribute("aria-label",word(
+      active?"Arrêter l'enregistrement":"Enregistrer la piste "+(selected+1),
+      active?"Stop recording":"Record track "+(selected+1)
+    ));
+    recordBtn.disabled=processing||(!active&&(selected<0||!!lanes[selected]?.audio));
+    $("dl-stop").disabled=!active||processing;
     $("dl-replay").disabled=!audible||recording!==-1||processing;
     $("dl-download").disabled=count===0||recording!==-1||processing;
   }
@@ -163,7 +185,12 @@
     }
   }
   $("dl-record").addEventListener("click",()=>{
-    if(processing||recording!==-1||selected<0||lanes[selected].audio)return;
+    if(processing)return;
+    if(recording!==-1){
+      $("dl-stop").click();
+      return;
+    }
+    if(selected<0||lanes[selected].audio)return;
     if(!engine.ensureAudio())return;
     if(!window.MediaRecorder){
       status("ce navigateur ne prend pas en charge l'enregistrement audio.","this browser does not support audio recording.");return;
