@@ -1,0 +1,34 @@
+/* Nana's little private editing workshop. Matches the irregular red room UI. */
+html:not(.nana-admin-session) #nana-ribbon-edit,
+html:not(.nana-admin-session) #nana-ribbon-panel { display:none!important; }
+#nana-admin-trigger { display:inline-flex!important;align-items:center!important;justify-content:center!important;width:23px;height:25px;padding:2px!important;color:#ff173b!important;border:0!important;background:transparent!important;flex-shrink:0;cursor:pointer; }
+#nana-admin-trigger svg { display:block;width:18px;height:18px;overflow:visible; }
+#nana-admin-trigger:hover,#nana-admin-trigger:focus-visible {transform:rotate(-7deg);}
+html.nana-admin-session #nana-admin-trigger {color:#c51c38!important;}
+#nana-admin-dialog { border:3px solid #ff173b;border-radius:5px 12px 4px 10px;box-shadow:7px 7px 0 #ff173b45;background:#fff3f8;color:#ff173b; width:min(565px,calc(100vw - 26px));max-height:min(80dvh,760px);padding:19px 19px 17px;overflow:auto;z-index:1000009;font-family:"Nana Trace UI",Arial,sans-serif; }
+#nana-admin-dialog::backdrop {background:#1d0b24a6;backdrop-filter:blur(3px);}
+#nana-admin-dialog * {box-sizing:border-box;}
+#nana-admin-dialog .nana-admin-top {display:flex;align-items:flex-start;justify-content:space-between;gap:14px;border-bottom:2px solid #ff173b;padding-bottom:11px;margin-bottom:12px;}
+#nana-admin-dialog .nana-admin-top h2 {font-size:clamp(19px,3vw,27px);color:#ff173b;margin:0;font-weight:700;line-height:1.2;}
+#nana-admin-dialog p {line-height:1.48;font-size:14px;margin:9px 0;}
+#nana-admin-dialog .nana-admin-close {border:2px solid #ff173b;border-radius:3px 9px 2px 7px;background:transparent;padding:0 8px;font-size:23px;line-height:31px;flex-shrink:0;color:#ff173b;}
+#nana-admin-dialog label {display:block;font-size:14px;margin:9px 0 6px;}
+#nana-admin-dialog input[type=password] {font-family:Arial,sans-serif;font-size:14px;width:100%;padding:12px 10px;background:#fff;color:#6b0d28;border:2px solid #ff173b;border-radius:6px 2px 7px 3px;}
+#nana-admin-dialog button {font:inherit;cursor:pointer;}
+#nana-admin-dialog .nana-admin-action {display:inline-block;padding:10px 13px;background:white;color:#ff173b;border:2px solid #ff173b;border-radius:5px 11px 4px 7px;text-align:left;font-size:14px;}
+#nana-admin-dialog .nana-admin-action:hover {background:#ff173b;color:white;}
+#nana-admin-dialog .nana-admin-primary {background:#ff173b;color:white;font-weight:700;}
+#nana-admin-dialog .nana-admin-primary:hover {background:#ca1538;}
+#nana-admin-dialog .nana-admin-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 20px;}
+#nana-admin-dialog .nana-admin-grid button {min-height:53px;}
+#nana-admin-dialog .nana-admin-actions {display:flex;gap:9px;flex-wrap:wrap;margin:12px 0;}
+#nana-admin-dialog .nana-admin-divider {border-top:2px dashed #ff173b55;margin-top:17px;padding-top:14px;}
+#nana-admin-dialog .nana-admin-note {background:#ffe2ec;border-left:3px solid #ff173b;padding:10px 12px;font-size:12px;line-height:1.5;margin:10px 0;}
+#nana-admin-dialog .nana-admin-error {color:#b80e25;font-size:13px;min-height:20px;}
+#nana-admin-dialog .nana-admin-status {font-size:13px;line-height:1.45;overflow-wrap:anywhere;min-height:20px;}
+#nana-admin-dialog .nana-admin-footer {margin-top:10px;font-size:12px;opacity:.84;}
+@media(max-width:620px) {
+ #nana-admin-dialog {width:calc(100vw - 18px);padding:14px;max-height:85dvh;}
+ #nana-admin-dialog .nana-admin-grid {grid-template-columns:1fr;}
+ #nana-admin-trigger {width:24px;}
+}
