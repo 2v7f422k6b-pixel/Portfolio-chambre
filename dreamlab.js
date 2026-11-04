@@ -155,7 +155,7 @@
     osc.connect(gain);o2.connect(mix);mix.connect(gain);gain.connect(output);
     osc.start(at);o2.start(at);osc.stop(end+release+.025);o2.stop(end+release+.025);
     osc.onended=()=>{try{osc.disconnect();o2.disconnect();mix.disconnect();gain.disconnect()}catch(_){}};
-    return {osc,o2,gain,attack,release,volume:g,releaseAt:end,stopAt:end+release};
+    return {osc,o2,gain,attack,release,volume:g,startAt:at,releaseAt:end,stopAt:end+release};
   }
   function noteOn(midi){
     if(activeVoices.has(midi)||!ensureAudio())return;
@@ -171,8 +171,16 @@
   }
   function noteOff(midi){
     const v=activeVoices.get(midi);if(!v||!ctx)return;
-    const t=ctx.currentTime;v.gain.gain.cancelScheduledValues(t);
-    v.gain.gain.setValueAtTime(Math.max(.0001,v.gain.gain.value),t);
+    const t=Math.max(ctx.currentTime,v.startAt+.001);
+    // Hold the actual envelope level instead of jumping to the distant
+    // pre-scheduled end value when the visitor releases a key early.
+    if(typeof v.gain.gain.cancelAndHoldAtTime==="function"){
+      v.gain.gain.cancelAndHoldAtTime(t);
+    }else{
+      const held=v.volume*Math.min(1,Math.max(.02,(t-v.startAt)/Math.max(.001,v.attack)));
+      v.gain.gain.cancelScheduledValues(t);
+      v.gain.gain.setValueAtTime(Math.max(.0001,held),t);
+    }
     v.gain.gain.exponentialRampToValueAtTime(.0001,t+v.release);
     try{v.osc.stop(t+v.release+.02);v.o2.stop(t+v.release+.02)}catch(_){}
     activeVoices.delete(midi);keyNodes.get(midi)?.classList.remove("pressed");
