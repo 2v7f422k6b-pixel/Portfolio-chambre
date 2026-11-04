@@ -15,3 +15,10 @@ html[data-theme="night"] #play-scene .nana-minilab-day,
 }
 html[data-theme="night"] #play-scene .nana-minilab-night {display:block;}
 #app.mode-work #play-scene .nana-minilab-night {display:none!important;}
+
+/* White silhouette on hover, following PNG alpha instead of its canvas rectangle. */
+#play-scene .nana-minilab-day.is-hovered,
+#play-scene .nana-minilab-night.is-hovered {
+ filter:drop-shadow(2px 0 #fff) drop-shadow(-2px 0 #fff)
+        drop-shadow(0 2px #fff) drop-shadow(0 -2px #fff);
+}
