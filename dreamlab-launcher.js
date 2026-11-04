@@ -20,12 +20,12 @@
   const trigger=document.createElement("button");
   trigger.id="nana-dreamlab-trigger";trigger.type="button";
   const sync=()=>{
-    trigger.hidden=Boolean(desktop.hidden||play.hidden||document.getElementById("welcome")&&!document.getElementById("welcome").hidden);
+    trigger.hidden=true;
     const fr=!document.documentElement.lang.toLowerCase().startsWith("en");
     trigger.textContent=fr?"✳ essayer mimilab 3":"✳ try mimilab 3";
     trigger.setAttribute("aria-label",fr?"Ouvrir mimilab 3":"Open mimilab 3");
   };
-  document.body.append(trigger);
+  trigger.hidden=true; // The MiniLab illustration is now the only entry point.
   const obs=new MutationObserver(sync);
   [desktop,play,document.documentElement].forEach(el=>obs.observe(el,{attributes:true,attributeFilter:["hidden","class","lang"]}));
   const welcome=document.getElementById("welcome");if(welcome)obs.observe(welcome,{attributes:true,attributeFilter:["hidden","class"]});
