@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f9dae8">
+<meta name="description" content="DreamLab, petit synthétiseur interactif dans l'univers de Nana Color Studio.">
+<title>DreamLab — Nana Color Studio</title>
+<link rel="stylesheet" href="dreamlab.css?v=1">
+<script src="dreamlab.js?v=1" defer></script>
+</head>
+<body data-mood="dreamy">
+<main class="dl-app">
+  <header class="dl-heading">
+    <a class="dl-back" href="index.html" aria-label="Retour au portfolio">← <span data-fr="ma chambre" data-en="my room">ma chambre</span></a>
+    <div class="dl-title"><span class="dl-small">Nana Color Studio presents</span><h1>dreamlab<span class="dl-star" aria-hidden="true">✳</span></h1><p data-fr="un petit studio pour fabriquer des rêves sonores" data-en="a tiny studio for making musical dreams">un petit studio pour fabriquer des rêves sonores</p></div>
+    <button type="button" id="dl-language" class="dl-language" aria-label="Switch language">EN</button>
+  </header>
+
+  <section class="dl-mood-panel" aria-labelledby="dl-mood-title">
+    <div class="dl-section-head"><h2 id="dl-mood-title" data-fr="choisis une humeur" data-en="choose a mood">choisis une humeur</h2><span data-fr="les sons et les couleurs changent" data-en="sounds and colors will change">les sons et les couleurs changent</span></div>
+    <div id="dl-moods" class="dl-moods" role="group" aria-label="Musical moods">
+      <button type="button" class="dl-mood active" data-mood="dreamy" aria-pressed="true"><span class="dl-mood-icon">✧</span><span data-fr="rêveuse" data-en="dreamy">rêveuse</span></button>
+      <button type="button" class="dl-mood" data-mood="melancholic" aria-pressed="false"><span class="dl-mood-icon">☾</span><span data-fr="mélancolique" data-en="melancholic">mélancolique</span></button>
+      <button type="button" class="dl-mood" data-mood="strange" aria-pressed="false"><span class="dl-mood-icon">✳</span><span data-fr="étrange" data-en="strange">étrange</span></button>
+      <button type="button" class="dl-mood" data-mood="joyful" aria-pressed="false"><span class="dl-mood-icon">♡</span><span data-fr="joyeuse" data-en="joyful">joyeuse</span></button>
+    </div>
+  </section>
+
+  <section class="dl-stage" aria-label="Illustrations réagissant à la musique">
+    <div class="dl-stage-grid" aria-hidden="true"></div>
+    <div id="dl-particles" aria-hidden="true"></div>
+    <span class="dl-stage-moon" aria-hidden="true">✳</span>
+    <div class="dl-stage-copy"><span class="dl-stage-eyebrow">little sounds, little worlds</span><p id="dl-stage-text" data-fr="joue une note pour commencer" data-en="play a note to begin">joue une note pour commencer</p></div>
+    <div class="dl-meter" id="dl-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <section class="dl-hardware" aria-label="MiniLab virtuel à 25 touches">
+    <div class="dl-controller-top"><div><span class="dl-controller-sign">nana's little synth</span><strong>mini<span>lab</span> 3</strong></div><span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span></div>
+    <div class="dl-controls">
+      <div class="dl-pad-side"><div class="dl-subhead"><h2>pads <small>01—08</small></h2><button type="button" id="dl-loop-toggle" class="dl-minor-button" aria-pressed="false"><span data-fr="lancer la boucle" data-en="start loop">lancer la boucle</span> ▶</button></div>
+        <div id="dl-pads" class="dl-pads" aria-label="8 rhythm and texture pads"></div>
+        <p class="dl-help" data-fr="active des pads pour ajouter des boucles. clique à nouveau pour les retirer." data-en="turn pads on to add loops. tap again to remove them.">active des pads pour ajouter des boucles. clique à nouveau pour les retirer.</p>
+      </div>
+      <div class="dl-knob-side">
+        <div class="dl-subhead"><h2 data-fr="façonne le son" data-en="shape the sound">façonne le son</h2><span class="dl-tempo">bpm <output id="dl-bpm-value">100</output></span></div>
+        <div id="dl-knobs" class="dl-knobs" aria-label="8 sound controls"></div>
+        <div id="dl-faders" class="dl-faders" aria-label="4 volume faders"></div>
+      </div>
+    </div>
+    <div class="dl-keys-head"><span>25 keys · C3—C5</span><span data-fr="joue à la souris, au toucher ou au clavier" data-en="play with mouse, touch or keyboard">joue à la souris, au toucher ou au clavier</span></div>
+    <div class="dl-key-scroll"><div id="dl-keys" class="dl-keys" role="group" aria-label="25-note chromatic keyboard"></div></div>
+    <div class="dl-controller-bottom"><span data-fr="clavier : A W S E D F T G Y H U J K O L P ;" data-en="keyboard: A W S E D F T G Y H U J K O L P ;">clavier : A W S E D F T G Y H U J K O L P ;</span><span id="dl-note-name" aria-live="polite">—</span></div>
+  </section>
+
+  <section class="dl-recorder" aria-labelledby="dl-rec-title">
+    <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="garde ton morceau" data-en="save your song">garde ton morceau</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
+    <div class="dl-transport">
+      <button type="button" id="dl-record" class="dl-primary"><span class="dl-record-dot"></span><span data-fr="enregistrer" data-en="record">enregistrer</span></button>
+      <button type="button" id="dl-stop" disabled><span>■</span> <span data-fr="arrêter" data-en="stop">arrêter</span></button>
+      <span id="dl-timer" class="dl-timer" aria-live="off">00:00</span>
+      <button type="button" id="dl-replay" disabled><span>▶</span> <span data-fr="écouter" data-en="listen">écouter</span></button>
+      <button type="button" id="dl-download" class="dl-download" disabled><span>↓</span> <span data-fr="télécharger" data-en="download">télécharger</span></button>
+    </div>
+    <audio id="dl-playback" controls hidden></audio>
+    <p class="dl-rec-note" id="dl-status" role="status" aria-live="polite" data-fr="les notes et les boucles seront enregistrées ensemble." data-en="notes and loops are recorded together.">les notes et les boucles seront enregistrées ensemble.</p>
+  </section>
+  <footer class="dl-footer"><span>made with little things &amp; a lot of love</span><span>nana color studio · 2026</span></footer>
+</main>
+</body>
+</html>
