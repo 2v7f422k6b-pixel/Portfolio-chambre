@@ -11,7 +11,7 @@
   if(!app||!viewport||!scene||!hotspots)return;
 
   const W=1670,H=942;
-  const COLS=242,ROWS=136; // Slightly smaller floating pixels, retaining reasonable iPad performance
+  const COLS=242,ROWS=136; // Keep particle count iPad-friendly; halve rendered tile dimensions
   const REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)');
   const INTRO_MS=5600,RESTORE_MS=4300; // Slow, dreamy breakup and reconstruction
   const style=document.createElement('style');
@@ -143,22 +143,32 @@
       });
     }
   }
+  function sampleLayer(id,alpha=1){
+    const image=document.getElementById(id);
+    if(!image?.complete||!image.naturalWidth||alpha<=0)return;
+    sctx.save();
+    sctx.globalAlpha=Math.max(0,Math.min(1,alpha));
+    // Same full-scene coordinates as the stacked images in #play-scene.
+    sctx.drawImage(image,0,0,COLS,ROWS);
+    sctx.restore();
+  }
+  function sampleOpacity(id){
+    const image=document.getElementById(id);
+    if(!image)return 0;
+    const opacity=parseFloat(getComputedStyle(image).opacity);
+    return Number.isFinite(opacity)?opacity:0;
+  }
   function sampleColors(){
-    const day=document.getElementById('room-img');
-    const night=document.getElementById('room-night');
     sctx.clearRect(0,0,COLS,ROWS);
     try{
-      if(day?.complete&&day.naturalWidth)sctx.drawImage(day,0,0,COLS,ROWS);
-      else {sctx.fillStyle='#e9b5ff';sctx.fillRect(0,0,COLS,ROWS);}
-      if(night?.complete&&night.naturalWidth){
-        const opacity=parseFloat(getComputedStyle(night).opacity);
-        if(opacity>.05){
-          sctx.save();
-          sctx.globalAlpha=Math.min(1,Math.max(0,opacity));
-          sctx.drawImage(night,0,0,COLS,ROWS);
-          sctx.restore();
-        }
-      }
+      // Background first, just like the real layer stack. Without Marseille,
+      // the room's transparent window sampled as RGB(0,0,0): a black patch.
+      sctx.fillStyle='#fffafc';
+      sctx.fillRect(0,0,COLS,ROWS);
+      sampleLayer('marseille-day');
+      sampleLayer('marseille-night',sampleOpacity('marseille-night'));
+      sampleLayer('room-img');
+      sampleLayer('room-night',sampleOpacity('room-night'));
       posterComposite();
       const rgba=sctx.getImageData(0,0,COLS,ROWS).data;
       for(let i=0;i<pixels.length;i++){
@@ -174,6 +184,20 @@
 
   let active=false,animation=null,frameId=0,lastPaint=-Infinity;
   let mix=0,origin={x:.5,y:.5};
+  const hover={x:0,y:0,inside:false};
+  function followPointer(e){
+    if(!active||e.pointerType==='touch')return;
+    const bounds=scene.getBoundingClientRect();
+    hover.inside=e.clientX>=bounds.left&&e.clientX<=bounds.right&&
+      e.clientY>=bounds.top&&e.clientY<=bounds.bottom;
+    if(hover.inside){
+      hover.x=(e.clientX-bounds.left)/Math.max(1,bounds.width);
+      hover.y=(e.clientY-bounds.top)/Math.max(1,bounds.height);
+    }
+  }
+  window.addEventListener('pointermove',followPointer,{passive:true});
+  window.addEventListener('pointerout',e=>{if(!e.relatedTarget)hover.inside=false;});
+  window.addEventListener('blur',()=>{hover.inside=false;});
   function locateOrigin(e,target){
     const zone=window.NANA_ROOM_ZONES?.find(item=>item.id==='bretzel');
     if(zone?.center){
@@ -210,6 +234,11 @@
     const gridW=width/COLS;
     const gridH=height/ROWS;
     const magnitude=Math.max(0,Math.min(1,mix));
+    const hoverEnabled=hover.inside&&magnitude>.1&&!REDUCE.matches;
+    const hoverRadius=Math.min(width,height)*.16;
+    const hoverRadiusSq=hoverRadius*hoverRadius;
+    const hoverPush=48*magnitude*magnitude;
+    const hoverX=hover.x*width,hoverY=hover.y*height;
     ctx.globalAlpha=.96;
     for(const p of pixels){
       // Each color tile starts exactly where it belongs to the real illustration.
@@ -231,11 +260,28 @@
         +p.offsetX*.26+floatingX));
       const y=wrap(p.y+magnitude*(rotatedY-dy+currentY
         +p.offsetY*.25+floatingY));
-      const pixelSize=Math.max(1.4,Math.min(gridW,gridH)*p.size);
+      // Half the former tile width and height, including on small screens.
+      const pixelSize=Math.max(.7,Math.min(gridW,gridH)*p.size*.5);
+      let drawX=x*width,drawY=y*height;
+      if(hoverEnabled){
+        const dx=drawX-hoverX,dy=drawY-hoverY;
+        // A local, gentle push follows the mouse through the scattered cloud.
+        if(Math.abs(dx)<hoverRadius&&Math.abs(dy)<hoverRadius){
+          const distanceSq=dx*dx+dy*dy;
+          if(distanceSq<hoverRadiusSq){
+            const distance=Math.sqrt(distanceSq);
+            const influence=1-distance/hoverRadius;
+            const shift=hoverPush*influence*influence;
+            const direction=distance>0.01?Math.atan2(dy,dx):p.phase;
+            drawX+=Math.cos(direction)*shift;
+            drawY+=Math.sin(direction)*shift;
+          }
+        }
+      }
       ctx.fillStyle=p.color;
       ctx.fillRect(
-        Math.round(x*width-pixelSize/2),
-        Math.round(y*height-pixelSize/2),
+        Math.round(drawX-pixelSize/2),
+        Math.round(drawY-pixelSize/2),
         pixelSize,pixelSize
       );
     }
@@ -275,6 +321,7 @@
     active=false;
     animation=null;
     mix=0;
+    hover.inside=false;
     if(frameId)cancelAnimationFrame(frameId);
     frameId=0;
     app.classList.remove('nana-reality-active');
@@ -288,6 +335,7 @@
     locateOrigin(e,target);
     sampleColors();
     active=true;
+    followPointer(e);
     mix=REDUCE.matches?1:0;
     animation=REDUCE.matches?null:{
       from:0,to:1,start:performance.now(),duration:INTRO_MS
