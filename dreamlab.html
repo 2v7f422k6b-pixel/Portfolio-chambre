@@ -7,7 +7,7 @@
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
 <link rel="stylesheet" href="dreamlab.css?v=20261104-compact-mood-2">
-<script src="dreamlab.js?v=20261104-compact-mood-2" defer></script>
+<script src="dreamlab.js?v=20261104-iphone-audio-fix-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-mimilab3" defer></script>
 </head>
 <body data-mood="dreamy">
@@ -30,7 +30,7 @@
   </section>
 
   <section class="dl-hardware" aria-label="mimilab 3, clavier virtuel à 25 touches">
-    <div class="dl-controller-top"><div><span class="dl-controller-sign">nana's little synth</span><strong>mimi<span>lab</span> 3</strong></div><span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span></div>
+    <div class="dl-controller-top"><div><span class="dl-controller-sign">nana's little synth</span><strong>mimi<span>lab</span> 3</strong></div><div class="dl-audio-actions"><button type="button" id="dl-audio-enable" class="dl-audio-enable" hidden aria-label="Activer et tester le son">♪ activer le son</button><span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span></div></div>
     <div class="dl-controls">
       <div class="dl-pad-side"><div class="dl-subhead"><h2>pads <small>01—08</small></h2><button type="button" id="dl-loop-toggle" class="dl-minor-button" aria-pressed="false"><span data-fr="lancer la boucle" data-en="start loop">lancer la boucle</span> ▶</button></div>
         <div id="dl-pads" class="dl-pads" aria-label="8 rhythm and texture pads"></div>
