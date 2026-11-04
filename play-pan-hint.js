@@ -157,7 +157,7 @@
       '</svg>' +
       '<span class="pan-hint-label" data-no-translate></span>' +
       '</div>' +
-      '<img class="pan-hint-hand-photo" src="assets/play-swipe-hand-v2.webp" alt="" aria-hidden="true" draggable="false">';
+      '<img class="pan-hint-hand-photo" src="assets/play-swipe-hand-original.webp" alt="" aria-hidden="true" draggable="false">';
     if (isTabletOrPhone()) hint.classList.add('touch-hint');
     document.body.appendChild(hint);
     updateHintLabel();
