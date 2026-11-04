@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="nana-admin.css?v=20261104-1">
   <link rel="stylesheet" href="nana-discoveries.css?v=20261104-stars-svg-fill-13">
   <style id="phone-corners-fix">.phone-device{border-radius:50px!important;overflow:hidden!important}.phone-screen{border-radius:40px!important;overflow:hidden!important;clip-path:inset(0 round 40px)!important}.phone-wallpaper{border-radius:40px!important}.phone-app .ios-icon,.phone-app .ios-icon.mail,.phone-app .ios-icon.ig{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}.phone-app .phone-drawn-icon{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}</style>
-<link rel="stylesheet" href="minilab-day-layer.css?v=20261104-night">
+<link rel="stylesheet" href="minilab-day-layer.css?v=20261104-hover">
   <link rel="stylesheet" href="style.css?v=20261103-gearnews-local-covers-2">
   <link rel="stylesheet" href="nana-shop-hover.css?v=20261104-white-outline">
   <link rel="stylesheet" href="window-animations.css?v=1">
@@ -1263,6 +1263,52 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
     nightImage.decoding = 'async';
     nightImage.onerror = () => nightImage.remove();
     scene.appendChild(nightImage);
+
+    // Hit-test the actual transparent PNG pixels, not the entire scene canvas.
+    const alphaMaps = new WeakMap();
+    for (const layer of [image, nightImage]) {
+      layer.addEventListener('load', () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = layer.naturalWidth;
+          canvas.height = layer.naturalHeight;
+          const context = canvas.getContext('2d', {willReadFrequently:true});
+          context.drawImage(layer, 0, 0);
+          alphaMaps.set(layer, context);
+        } catch (_) {}
+      });
+    }
+    const activeLayer = () => document.documentElement.dataset.theme === 'night' ? nightImage : image;
+    const hit = (event) => {
+      const layer = activeLayer();
+      const context = alphaMaps.get(layer);
+      if (!context || !layer.naturalWidth || !layer.naturalHeight) return false;
+      const rect = scene.getBoundingClientRect();
+      const x = Math.floor((event.clientX - rect.left) / rect.width * layer.naturalWidth);
+      const y = Math.floor((event.clientY - rect.top) / rect.height * layer.naturalHeight);
+      if (x < 0 || y < 0 || x >= layer.naturalWidth || y >= layer.naturalHeight) return false;
+      return context.getImageData(x, y, 1, 1).data[3] > 24;
+    };
+    scene.addEventListener('pointermove', event => {
+      const hovered = hit(event);
+      image.classList.toggle('is-hovered', hovered && activeLayer() === image);
+      nightImage.classList.toggle('is-hovered', hovered && activeLayer() === nightImage);
+      if (hovered) scene.style.cursor = 'pointer';
+      else scene.style.removeProperty('cursor');
+    });
+    scene.addEventListener('pointerleave', () => {
+      image.classList.remove('is-hovered');
+      nightImage.classList.remove('is-hovered');
+      scene.style.removeProperty('cursor');
+    });
+    scene.addEventListener('click', event => {
+      if (!hit(event)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (window.NanaDreamLab && typeof window.NanaDreamLab.open === 'function') {
+        window.NanaDreamLab.open();
+      }
+    }, true);
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
