@@ -415,57 +415,15 @@
     }
     return new Blob([bytes],{type:"audio/wav"});
   }
-  async function finishRecording(){
-    const mime=recorder?.mimeType||"audio/webm";
-    const original=new Blob(recordChunks,{type:mime});
-    if(original.size===0){say("aucun son n'a été capturé.","no sound was captured.");return}
-    try{
-      const decoded=await ctx.decodeAudioData(await original.arrayBuffer());
-      renderedBlob=encodeWave(decoded);renderedExt="wav";
-      say("ton morceau est prêt ! téléchargement au format WAV.","your song is ready! download it as a WAV.");
-    }catch(_){
-      renderedBlob=original;renderedExt=mime.includes("mp4")?"m4a":mime.includes("ogg")?"ogg":"webm";
-      say("ton morceau est prêt ! téléchargement audio disponible.","your song is ready! audio download is available.");
-    }
-    if(renderedUrl)URL.revokeObjectURL(renderedUrl);
-    renderedUrl=URL.createObjectURL(renderedBlob);
-    playback.src=renderedUrl;playback.hidden=false;
-    $("#dl-replay").disabled=false;$("#dl-download").disabled=false;
-  }
-  $("#dl-record").addEventListener("click",()=>{
-    if(!ensureAudio())return;
-    if(!window.MediaRecorder){say("l'enregistrement n'est pas compatible avec ce navigateur.","recording is not supported in this browser.");return}
-    if(recorder&&recorder.state==="recording")return;
-    if(renderedUrl){URL.revokeObjectURL(renderedUrl);renderedUrl=null}
-    renderedBlob=null;playback.pause();playback.removeAttribute("src");playback.hidden=true;
-    $("#dl-replay").disabled=true;$("#dl-download").disabled=true;recordChunks=[];
-    try{
-      const mime=chooseMime();
-      recorder=new MediaRecorder(recDest.stream,mime?{mimeType:mime}:{});
-      recorder.ondataavailable=e=>{if(e.data&&e.data.size)recordChunks.push(e.data)};
-      recorder.onstop=()=>{clearInterval(recordClock);finishRecording().catch(()=>say("erreur lors de l'export.","export failed."));translate()};
-      recorder.onerror=()=>say("l'enregistrement audio a échoué.","audio recording failed.");
-      recorder.start(250);recordStart=performance.now();updateClock();recordClock=setInterval(updateClock,500);
-      $("#dl-stop").disabled=false;$("#dl-record").disabled=true;$("#dl-record").classList.add("is-recording");
-      translate();say("enregistrement en cours. joue et active tes boucles !","recording. play notes and build your loops!");
-    }catch(_){say("impossible de démarrer l'enregistrement sur ce navigateur.","could not start recording in this browser.")}
-  });
-  $("#dl-stop").addEventListener("click",()=>{
-    if(!recorder||recorder.state!=="recording")return;
-    recorder.stop();$("#dl-stop").disabled=true;$("#dl-record").disabled=false;$("#dl-record").classList.remove("is-recording");
-    say("préparation du fichier audio…","preparing your audio file…");
-  });
-  $("#dl-replay").addEventListener("click",()=>{
-    if(!renderedUrl)return;playback.hidden=false;playback.currentTime=0;playback.play().catch(()=>{})
-  });
-  $("#dl-download").addEventListener("click",()=>{
-    if(!renderedUrl)return;
-    const a=document.createElement("a");a.href=renderedUrl;
-    a.download="nana-dreamlab-"+new Date().toISOString().slice(0,10)+"."+renderedExt;
-    document.body.append(a);a.click();a.remove();
-  });
+
+  // The five-track recorder lives in its own module so the synth/key engine
+  // can be maintained independently of recording and mixing.
+  window.NanaDreamLabEngine={
+    ensureAudio,chooseMime,encodeWave,
+    context:()=>ctx,
+    stream:()=>recDest&&recDest.stream
+  };
   window.addEventListener("pagehide",()=>{
-    if(recorder&&recorder.state==="recording")recorder.stop();
     if(isLooping)stopLoop();
     stopAllNotes();
     if(ctx)ctx.close().catch(()=>{});
