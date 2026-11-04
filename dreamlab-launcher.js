@@ -22,8 +22,8 @@
   const sync=()=>{
     trigger.hidden=Boolean(desktop.hidden||play.hidden||document.getElementById("welcome")&&!document.getElementById("welcome").hidden);
     const fr=!document.documentElement.lang.toLowerCase().startsWith("en");
-    trigger.textContent=fr?"✳ essayer dreamlab":"✳ try dreamlab";
-    trigger.setAttribute("aria-label",fr?"Ouvrir le studio musical DreamLab":"Open DreamLab music studio");
+    trigger.textContent=fr?"✳ essayer mimilab 3":"✳ try mimilab 3";
+    trigger.setAttribute("aria-label",fr?"Ouvrir mimilab 3":"Open mimilab 3");
   };
   document.body.append(trigger);
   const obs=new MutationObserver(sync);
@@ -45,15 +45,15 @@
     if(overlay)return;
     previousFocus=document.activeElement;restoreOverflow=document.body.style.overflow;
     document.body.style.overflow="hidden";
-    overlay=document.createElement("div");overlay.id="nana-dreamlab-overlay";overlay.setAttribute("role","dialog");overlay.setAttribute("aria-modal","true");overlay.setAttribute("aria-label","DreamLab");
+    overlay=document.createElement("div");overlay.id="nana-dreamlab-overlay";overlay.setAttribute("role","dialog");overlay.setAttribute("aria-modal","true");overlay.setAttribute("aria-label","mimilab 3");
     const panel=document.createElement("div");panel.id="nana-dreamlab-window";
     const bar=document.createElement("div");bar.id="nana-dreamlab-topbar";
-    const label=document.createElement("span");label.textContent="✳ dreamlab — nana color studio";
+    const label=document.createElement("span");label.textContent="✳ mimilab 3 — nana color studio";
     const x=document.createElement("button");x.type="button";x.id="nana-dreamlab-close";x.textContent="×";
-    x.setAttribute("aria-label","Close DreamLab");x.addEventListener("click",close);
+    x.setAttribute("aria-label","Fermer mimilab 3");x.addEventListener("click",close);
     bar.append(label,x);
-    const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="DreamLab — MiniLab 3";iframe.setAttribute("allow","autoplay");
-    iframe.src="dreamlab.html?v=20261104-compact-mood-2&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
+    const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="mimilab 3";iframe.setAttribute("allow","autoplay");
+    iframe.src="dreamlab.html?v=20261104-mimilab3&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);
     overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
     document.addEventListener("keydown",esc);x.focus();
