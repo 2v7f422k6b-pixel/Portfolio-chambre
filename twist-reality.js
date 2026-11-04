@@ -194,7 +194,11 @@
   let mix=0,origin={x:.5,y:.5};
   const hover={x:0,y:0,inside:false};
   const FINE_POINTER=window.matchMedia('(hover: hover) and (pointer: fine)');
-  const FRAME_MS=window.matchMedia('(pointer: coarse)').matches?50:40;
+  const COARSE=window.matchMedia('(pointer: coarse)').matches;
+  const FRAME_MS=COARSE?50:33;
+  // Keep the original sampled colors and particle positions, but render an
+  // adaptive subset: 130k expensive per-particle trig calculations stall iPads.
+  const PARTICLE_STEP=COARSE?4:2;
   function followPointer(e){
     if(!active||e.pointerType==='touch')return;
     const bounds=scene.getBoundingClientRect();
@@ -252,7 +256,8 @@
     const brushThickness=height*.13;
     const hoverX=hover.x*width,hoverY=hover.y*height;
     ctx.globalAlpha=.96;
-    for(const p of pixels){
+    for(let i=0;i<pixels.length;i+=PARTICLE_STEP){
+      const p=pixels[i];
       // Each color tile starts exactly where it belongs to the real illustration.
       // Mixed state: separate orbits, opposing currents, and gentle random drift.
       const dx=(p.x-origin.x)*1.6,dy=p.y-origin.y;
@@ -273,7 +278,7 @@
       const y=wrap(p.y+magnitude*(rotatedY-dy+currentY
         +p.offsetY*.25+floatingY));
       // Keep individual particles tiny, but make the 4x denser field legible.
-      const pixelSize=Math.max(.75,Math.min(gridW,gridH)*p.size*.9);
+      const pixelSize=Math.max(.9,Math.min(gridW,gridH)*p.size*(COARSE?1.65:1.35));
       let drawX=x*width,drawY=y*height;
       if(hoverEnabled){
         const dx=drawX-hoverX,dy=drawY-hoverY;
