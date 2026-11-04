@@ -1,0 +1,26 @@
+{
+  "max_edge": 1200,
+  "quality": 78,
+  "files": {
+    "assets/photos/bubblegum.jpg": "assets/previews/photos/bubblegum.webp",
+    "assets/photos/butterflies-grass.jpg": "assets/previews/photos/butterflies-grass.webp",
+    "assets/photos/butterfly-back.jpg": "assets/previews/photos/butterfly-back.webp",
+    "assets/photos/cherry-blossom.jpg": "assets/previews/photos/cherry-blossom.webp",
+    "assets/photos/closeup.jpg": "assets/previews/photos/closeup.webp",
+    "assets/photos/clown.jpg": "assets/previews/photos/clown.webp",
+    "assets/photos/flower-portrait.jpg": "assets/previews/photos/flower-portrait.webp",
+    "assets/photos/kitchen.jpg": "assets/previews/photos/kitchen.webp",
+    "assets/photos/lighter.jpg": "assets/previews/photos/lighter.webp",
+    "assets/photos/marseille-emblem.jpg": "assets/previews/photos/marseille-emblem.webp",
+    "assets/photos/marseille.jpg": "assets/previews/photos/marseille.webp",
+    "assets/photos/motorbike.jpg": "assets/previews/photos/motorbike.webp",
+    "assets/photos/snow-city.jpg": "assets/previews/photos/snow-city.webp",
+    "assets/photos/soap-bubbles.jpg": "assets/previews/photos/soap-bubbles.webp",
+    "assets/photos/still-life.jpg": "assets/previews/photos/still-life.webp",
+    "assets/photos/sunglasses.jpg": "assets/previews/photos/sunglasses.webp",
+    "assets/photos/swans-lotus.jpg": "assets/previews/photos/swans-lotus.webp",
+    "assets/photos/synth-portrait.jpg": "assets/previews/photos/synth-portrait.webp",
+    "assets/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.png": "assets/previews/uploads/b859150e-4254-4aa9-83b2-377d2ef6043f.webp",
+    "assets/uploads/illustration_sans_titre-6.png": "assets/previews/uploads/illustration_sans_titre-6.webp"
+  }
+}
