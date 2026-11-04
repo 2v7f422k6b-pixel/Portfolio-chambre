@@ -36,6 +36,25 @@
   let lang = new URLSearchParams(location.search).get("lang")==="en"?"en":"fr";
   let mood = "dreamy",ctx,master,synthBus,drumBus,textureBus,filter,echoSend,echoDelay,echoFeedback,recDest,noiseBuffer;
   let isLooping=false,ticker=null,nextStepTime=0,currentStep=0;
+  let keyMode="single",arpClock=null;
+  // Each key starts a root-position chord. The mood defines the chord colour.
+  // Four pitches keep a single-key gesture musically rich but approachable.
+  const chords={
+    dreamy:{intervals:[0,4,7,11],suffix:"maj7"},
+    melancholic:{intervals:[0,3,7,10],suffix:"m7"},
+    strange:{intervals:[0,3,6,9],suffix:"dim7"},
+    joyful:{intervals:[0,4,7,9],suffix:"6"}
+  };
+  const chordNotes=root=>chords[mood].intervals.map(interval=>root+interval);
+  const modeDescriptions={
+    single:{fr:"1 touche = 1 note",en:"1 key = 1 note"},
+    chord:{fr:"1 touche = 1 accord",en:"1 key = 1 chord"},
+    arp:{fr:"1 touche = 1 arpège · maintiens pour répéter",en:"1 key = 1 arpeggio · hold to repeat"}
+  };
+  function updateModeDescription(){
+    const t=modeDescriptions[keyMode];
+    $("#dl-play-mode-description").textContent=t[lang];
+  }
   let recorder=null,recordChunks=[],recordStart=0,recordClock=null,renderedBlob=null,renderedUrl=null,renderedExt="wav";
   const playback = $("#dl-playback");
   function say(fr,en){$("#dl-status").textContent=lang==="en"?en:fr}
@@ -47,10 +66,30 @@
     $("#dl-record").querySelector("[data-fr]").textContent=recorder&&recorder.state==="recording"?(lang==="fr"?"en cours…":"recording…"):(lang==="fr"?"enregistrer":"record");
     $$(".dl-pad").forEach((el,i)=>el.querySelector("span").textContent=lang==="fr"?pads[i].fr:pads[i].en);
     $$(".dl-knob-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?knobs[i].fr:knobs[i].en);
-    $$(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
+    $(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
+    updateModeDescription();
   }
   $("#dl-language").addEventListener("click",()=>{lang=lang==="fr"?"en":"fr";translate()});
-  $$(".dl-mood").forEach(btn=>btn.addEventListener("click",()=>{
+  $(".dl-play-mode").forEach(btn=>btn.addEventListener("click",()=>{
+    if(keyMode===btn.dataset.playMode)return;
+    stopAllNotes();
+    keyMode=btn.dataset.playMode;
+    $(".dl-play-mode").forEach(el=>{
+      const selected=el===btn;
+      el.classList.toggle("active",selected);
+      el.setAttribute("aria-pressed",String(selected));
+    });
+    updateModeDescription();
+    $("#dl-stage-text").textContent=lang==="fr"?
+      (keyMode==="chord"?"un accord au bout des doigts":keyMode==="arp"?"fais danser les notes":"joue une note pour commencer"):
+      (keyMode==="chord"?"a chord at your fingertips":keyMode==="arp"?"let the notes dance":"play a note to begin");
+    say(
+      keyMode==="chord"?"une touche joue un accord complet.":keyMode==="arp"?"une touche lance un arpège ; maintiens-la pour le répéter.":"joue librement, note par note.",
+      keyMode==="chord"?"one key plays a full chord.":keyMode==="arp"?"one key plays an arpeggio; hold it to repeat.":"play freely, one note at a time."
+    );
+  }));
+  $(".dl-mood").forEach(btn=>btn.addEventListener("click",()=>{
+    stopAllNotes();
     mood=btn.dataset.mood;
     document.body.dataset.mood=mood;
     $$(".dl-mood").forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
@@ -142,7 +181,7 @@
     const output=bus||synthBus;
     const wave=style||({dreamy:"sine",melancholic:"triangle",strange:"sawtooth",joyful:"triangle"}[mood]);
     const osc=ctx.createOscillator(),o2=ctx.createOscillator(),gain=ctx.createGain();
-    const attack=.006+Math.pow(settings.attack/100,2)*.4;
+    const attack=Math.min(.006+Math.pow(settings.attack/100,2)*.4,length*.40);
     const release=.045+Math.pow(settings.release/100,1.7)*1.3;
     const freq=midiToFreq(midi),end=at+length;
     osc.type=wave;osc.frequency.setValueAtTime(freq,at);
@@ -157,23 +196,10 @@
     osc.onended=()=>{try{osc.disconnect();o2.disconnect();mix.disconnect();gain.disconnect()}catch(_){}};
     return {osc,o2,gain,attack,release,volume:g,startAt:at,releaseAt:end,stopAt:end+release};
   }
-  function noteOn(midi){
-    if(activeVoices.has(midi)||!ensureAudio())return;
-    const t=ctx.currentTime+.003;
-    // Live notes use a long provisional envelope, released immediately on key-up.
-    const voice=makeTone(midi,t,20,.39);
-    activeVoices.set(midi,voice);
-    keyNodes.get(midi)?.classList.add("pressed");
-    $("#dl-activity-led").classList.add("lit");
-    $("#dl-note-name").textContent=names[midi%12]+(Math.floor(midi/12)-1);
-    $("#dl-stage-text").textContent=lang==="fr"?"une petite mélodie apparaît":"a little melody is born";
-    scatter(2);
-  }
-  function noteOff(midi){
-    const v=activeVoices.get(midi);if(!v||!ctx)return;
+  function releaseVoice(v){
+    if(!v||!ctx)return;
     const t=Math.max(ctx.currentTime,v.startAt+.001);
-    // Hold the actual envelope level instead of jumping to the distant
-    // pre-scheduled end value when the visitor releases a key early.
+    // Avoid gain jumps when a held chord or note is released early.
     if(typeof v.gain.gain.cancelAndHoldAtTime==="function"){
       v.gain.gain.cancelAndHoldAtTime(t);
     }else{
@@ -183,8 +209,94 @@
     }
     v.gain.gain.exponentialRampToValueAtTime(.0001,t+v.release);
     try{v.osc.stop(t+v.release+.02);v.o2.stop(t+v.release+.02)}catch(_){}
-    activeVoices.delete(midi);keyNodes.get(midi)?.classList.remove("pressed");
-    if(!activeVoices.size)$("#dl-activity-led").classList.remove("lit");
+  }
+  function updateKeyboardLamp(){
+    const active=[...activeVoices.values()].some(v=>v.type!=="arp"||v.held);
+    $("#dl-activity-led").classList.toggle("lit",active);
+  }
+  function sweepArps(){
+    if(!ctx)return;
+    const lookAhead=ctx.currentTime+.045;
+    const stepTime=60/tempo()/4; // sixteenth notes; follows the existing BPM knob
+    for(const [midi,v] of activeVoices){
+      if(v.type!=="arp")continue;
+      // A tap plays at least one full 4-note phrase. Holding repeats it.
+      while(v.nextTime<lookAhead&&(v.held||v.steps<v.notes.length)){
+        const note=v.notes[v.steps%v.notes.length];
+        makeTone(note,v.nextTime,Math.min(.34,stepTime*.85),.32);
+        v.steps++;
+        v.nextTime+=stepTime;
+      }
+      if(!v.held&&v.steps>=v.notes.length)activeVoices.delete(midi);
+    }
+    if(![...activeVoices.values()].some(v=>v.type==="arp")){
+      clearInterval(arpClock);arpClock=null;
+    }
+    updateKeyboardLamp();
+  }
+  function noteOn(midi){
+    const previous=activeVoices.get(midi);
+    if(previous){
+      if(previous.type==="arp"&&!previous.held)activeVoices.delete(midi);
+      else return;
+    }
+    if(!ensureAudio())return;
+    const t=ctx.currentTime+.003;
+    const rootName=names[midi%12]+(Math.floor(midi/12)-1);
+    keyNodes.get(midi)?.classList.add("pressed");
+    if(keyMode==="chord"){
+      const voices=chordNotes(midi).map(note=>makeTone(note,t,20,.18));
+      activeVoices.set(midi,{type:"chord",voices});
+      $("#dl-note-name").textContent=rootName+" "+chords[mood].suffix;
+      $("#dl-stage-text").textContent=lang==="fr"?"un accord prend forme":"a chord takes shape";
+      scatter(4);
+    }else if(keyMode==="arp"){
+      // Do not allow dozens of overlapping phrases on touch devices.
+      const existing=[...activeVoices.entries()].filter(([,entry])=>entry.type==="arp");
+      if(existing.length>=4){
+        const [oldMidi]=existing[0];activeVoices.delete(oldMidi);
+        keyNodes.get(oldMidi)?.classList.remove("pressed");
+      }
+      activeVoices.set(midi,{
+        type:"arp",notes:chordNotes(midi),held:true,steps:0,nextTime:t
+      });
+      if(!arpClock)arpClock=setInterval(sweepArps,20);
+      sweepArps();
+      $("#dl-note-name").textContent=rootName+" "+chords[mood].suffix+" ↗";
+      $("#dl-stage-text").textContent=lang==="fr"?"les notes se suivent comme des étoiles":"notes follow one another like stars";
+      scatter(4);
+    }else{
+      const voice=makeTone(midi,t,20,.39);
+      activeVoices.set(midi,{type:"single",voices:[voice]});
+      $("#dl-note-name").textContent=rootName;
+      $("#dl-stage-text").textContent=lang==="fr"?"une petite mélodie apparaît":"a little melody is born";
+      scatter(2);
+    }
+    updateKeyboardLamp();
+  }
+  function noteOff(midi){
+    const entry=activeVoices.get(midi);
+    if(!entry)return;
+    keyNodes.get(midi)?.classList.remove("pressed");
+    if(entry.type==="arp"){
+      // The minimum four-step phrase continues after a short tap.
+      entry.held=false;
+      sweepArps();
+    }else{
+      entry.voices.forEach(releaseVoice);
+      activeVoices.delete(midi);
+    }
+    updateKeyboardLamp();
+  }
+  function stopAllNotes(){
+    for(const [midi,entry] of activeVoices){
+      keyNodes.get(midi)?.classList.remove("pressed");
+      if(entry.voices)entry.voices.forEach(releaseVoice);
+    }
+    activeVoices.clear();
+    heldKeys.clear();
+    if(arpClock){clearInterval(arpClock);arpClock=null}
+    updateKeyboardLamp();
   }
   function noiseHit(at,duration,volume,highpass=1000){
     const src=ctx.createBufferSource();src.buffer=noiseBuffer;
@@ -355,7 +467,7 @@
   window.addEventListener("pagehide",()=>{
     if(recorder&&recorder.state==="recording")recorder.stop();
     if(isLooping)stopLoop();
-    for(const midi of [...activeVoices.keys()])noteOff(midi);
+    stopAllNotes();
     if(ctx)ctx.close().catch(()=>{});
   });
   createUI();translate();
