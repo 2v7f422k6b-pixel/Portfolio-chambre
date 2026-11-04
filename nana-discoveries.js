@@ -66,14 +66,14 @@
     '    <img src="assets/accueil/etoile%201.png" alt="" loading="eager">',
     '    <img src="assets/accueil/etoile%202.png" alt="" loading="eager">',
     '    <img src="assets/accueil/etoile%203.png" alt="" loading="eager">',
-    '    <img src="assets/accueil/etoile%204.png" alt="" loading="eager">',
-    '    <img src="assets/accueil/etoile%205.png" alt="" loading="eager">',
     '  </div>',
     '  <h2 id="nana-discovery-title"></h2>',
     '  <p id="nana-discovery-description"></p>',
     '  <section class="nana-discovery-reward" aria-labelledby="nana-discovery-reward-title">',
+    '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span></p>',
     '    <strong class="nana-discovery-discount">−10 %</strong>',
-    '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span><span class="nana-discovery-shop-line"><span id="nana-discovery-shop-preposition">at</span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</span></p>',
+    '    <p class="nana-discovery-purchase" id="nana-discovery-purchase"></p>',
+    '    <p class="nana-discovery-shop-line"><span id="nana-discovery-shop-preposition">at</span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>',
     '    <div class="nana-discovery-coupon"><code>MERCI10</code><button type="button" id="nana-discovery-copy"></button></div>',
     '  </section>',
     '  <button type="button" class="nana-discovery-shop" id="nana-discovery-shop"></button>',
@@ -106,8 +106,11 @@
       ? 'You clicked on every little corner of my room. Well done, curious soul!'
       : 'Tu as exploré tous les recoins de ma chambre. Bravo, petite âme curieuse !';
     dialog.querySelector('#nana-discovery-gift-text').innerHTML = english
-      ? 'A little <strong>thank you</strong> gift for your next print'
-      : 'Un petit cadeau pour te dire <strong>merci</strong> sur ton prochain print';
+      ? 'A little <strong>thank you</strong> gift'
+      : 'Un petit cadeau pour te dire <strong>merci</strong>';
+    dialog.querySelector('#nana-discovery-purchase').textContent = english
+      ? 'on your next purchase'
+      : 'sur ton prochain achat';
     dialog.querySelector('#nana-discovery-shop-preposition').textContent = english ? 'at' : 'chez';
     shopButton.textContent = english ? 'Visit Nana’s Little Shop' : 'Découvrir Nana’s Little Shop';
     copyButton.textContent = english ? 'Copy code' : 'Copier le code';
