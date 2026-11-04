@@ -123,3 +123,165 @@
 .dl-audio-enable.is-ready{background:#ffdded}
 .dl-audio-actions .dl-controller-led{flex:none}
 @media(max-width:560px){.dl-audio-actions{gap:9px}.dl-audio-enable{font-size:13px;padding:8px 10px;min-height:43px}}
+
+
+/* mimilab 3 — compact studio, all controls visible without page scrolling.
+   The graphic surfaces remain replaceable when Nana redraws the instrument. */
+.dl-app{padding:5px 0 8px!important;max-width:1140px}
+.dl-heading{margin:0 0 7px!important;align-items:center!important;gap:7px!important}
+.dl-back,.dl-language{padding:5px 9px!important;font-size:13px!important;box-shadow:2px 2px 0 #ee9dbb!important}
+.dl-small{font-size:10px!important}
+.dl-title h1{font-size:clamp(32px,4vw,53px)!important;margin:0 0 4px!important;line-height:.95!important}
+.dl-title p{font-size:12px!important}
+.dl-app .dl-mood-panel{padding:4px 7px!important;min-height:38px!important;margin:0 0 7px!important;gap:8px!important}
+.dl-app .dl-mood-panel>h2{font-size:16px!important}
+.dl-app #dl-moods{gap:5px!important}
+.dl-app #dl-moods .dl-mood{height:29px!important;min-height:29px!important;padding:3px 5px!important;font-size:13px!important}
+.dl-app #dl-moods .dl-mood .dl-mood-icon{font-size:15px!important}
+.dl-hardware{padding:9px 12px 8px!important;margin-bottom:8px!important;box-shadow:3px 3px 0 #e9a4c3!important}
+.dl-hardware:after{inset:4px!important}
+.dl-controller-top{padding:0 2px 6px!important}
+.dl-controller-top strong{font-size:24px!important;letter-spacing:-.06em!important}
+.dl-controller-sign{font-size:10px!important}
+.dl-controller-led{width:11px!important;height:11px!important}
+.dl-audio-actions{gap:8px!important}
+.dl-audio-enable{min-height:31px!important;padding:4px 8px!important;font-size:12px!important}
+.dl-controls{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)!important;gap:12px!important;margin-bottom:8px!important}
+.dl-subhead{min-height:22px!important;margin-bottom:4px!important}
+.dl-subhead h2{font-size:16px!important}
+.dl-subhead small,.dl-tempo{font-size:11px!important}
+.dl-minor-button{font-size:10px!important;padding:3px 6px!important;min-height:23px!important}
+.dl-pads{gap:4px!important}
+.dl-pad{height:36px!important;min-height:36px!important;aspect-ratio:auto!important;
+ border-width:2px!important;flex-direction:row!important;align-items:center!important;
+ padding:3px 5px!important;gap:5px!important;justify-content:space-between!important}
+.dl-pad b{font-size:12px!important}
+.dl-pad span{font-size:11px!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.dl-help{display:none!important}
+.dl-knobs{gap:3px!important;padding:3px 0 5px!important}
+.dl-knob-cell{gap:3px!important}
+.dl-knob-cell label{font-size:10px!important}
+.dl-knob{width:26px!important;height:26px!important;border-width:2px!important}
+.dl-knob:after{top:3px!important;height:8px!important;transform-origin:50% 11px!important}
+.dl-faders{padding:5px 7px!important;gap:7px!important;margin-top:4px!important}
+.dl-fader-cell{gap:5px!important}
+.dl-fader-cell label{font-size:11px!important}
+.dl-play-modes{padding:5px 7px 6px!important;margin:0 0 6px!important;box-shadow:2px 2px 0 #e6a0bc!important}
+.dl-play-modes-heading{margin-bottom:4px!important;font-size:11px!important}
+.dl-play-modes-heading>span:first-child{font-size:15px!important}
+.dl-play-mode-buttons{gap:5px!important}
+.dl-play-mode{min-height:27px!important;height:27px!important;padding:2px 6px!important;font-size:13px!important;
+ flex-direction:row!important;gap:5px!important;box-shadow:none!important}
+.dl-play-mode .dl-mode-glyph{font-size:15px!important}
+.dl-keys-head,.dl-controller-bottom{font-size:10px!important;padding:2px 0!important}
+.dl-keys{height:112px!important;min-width:100%!important;width:100%!important}
+.dl-key-scroll{overflow-x:hidden!important}
+.dl-key{padding-bottom:6px!important}
+.dl-key kbd{font-size:9px!important}
+.dl-recorder{padding:9px 12px 10px!important;margin:0 0 5px!important;box-shadow:3px 3px 0 #e9a4c3!important}
+.dl-recorder .dl-section-head{margin:0 0 4px!important}
+.dl-recorder .dl-section-head h2{font-size:19px!important}
+.dl-recorder .dl-section-head>span{font-size:11px!important}
+.dl-track-heading{margin:2px 0 5px!important}
+.dl-track-heading h3{font-size:16px!important}
+#dl-track-count{font-size:11px!important;padding:2px 6px!important}
+.dl-track-list{gap:4px!important}
+.dl-track{grid-template-columns:minmax(110px,1fr) minmax(95px,.9fr) auto!important;
+ gap:7px!important;min-height:31px!important;padding:3px 7px!important;box-shadow:1px 1px 0 #efb7cf!important}
+.dl-track-info{gap:6px!important}
+.dl-track-number{width:23px!important;height:23px!important;font-size:12px!important}
+.dl-track-label{gap:1px!important}
+.dl-track-label strong{font-size:12px!important}
+.dl-track-meta{font-size:10px!important}
+.dl-track-level{gap:4px!important}
+.dl-track-level label{font-size:10px!important}
+.dl-track-actions{gap:3px!important}
+.dl-track-actions button{padding:2px 5px!important;min-height:25px!important;font-size:11px!important}
+.dl-track-actions .dl-track-delete{min-width:24px!important;font-size:14px!important}
+.dl-track-tip{display:none!important}
+.dl-transport{gap:6px!important;margin-top:7px!important}
+.dl-transport button{min-height:32px!important;padding:4px 9px!important;font-size:12px!important;box-shadow:2px 2px 0 #f6bdd2!important}
+.dl-timer{font-size:15px!important;min-width:50px!important}
+.dl-rec-note{min-height:0!important;font-size:11px!important;margin:6px 0 0!important;line-height:1.2!important}
+.dl-footer{display:none!important}
+@media(max-width:760px){
+ .dl-app{width:calc(100% - 12px)!important;padding:4px 0 6px!important}
+ .dl-heading{grid-template-columns:1fr 2fr 1fr!important;gap:4px!important;margin:0 0 5px!important}
+ .dl-title{grid-column:auto!important;grid-row:auto!important}
+ .dl-back{grid-row:auto!important}
+ .dl-language{grid-column:auto!important;grid-row:auto!important}
+ .dl-small,.dl-title p{display:none!important}
+ .dl-title h1{font-size:clamp(24px,7vw,35px)!important;margin:0!important;white-space:nowrap!important}
+ .dl-star{margin-left:3px!important}
+ .dl-back,.dl-language{font-size:11px!important;padding:5px 7px!important}
+ .dl-app .dl-mood-panel{padding:4px 5px!important;gap:5px!important;min-height:0!important;margin-bottom:6px!important;flex-wrap:nowrap!important}
+ .dl-app .dl-mood-panel>h2{font-size:12px!important}
+ .dl-app #dl-moods{flex-basis:auto!important;gap:3px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ .dl-app #dl-moods .dl-mood{font-size:11px!important;height:29px!important;min-height:29px!important;padding:2px!important;gap:2px!important}
+ .dl-app #dl-moods .dl-mood .dl-mood-icon{font-size:12px!important}
+ .dl-hardware{padding:7px 8px 5px!important;margin-bottom:6px!important}
+ .dl-controller-top{padding-bottom:4px!important}
+ .dl-controller-top strong{font-size:19px!important}
+ .dl-controller-sign{display:none!important}
+ .dl-controls{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)!important;gap:7px!important;margin-bottom:5px!important}
+ .dl-subhead{min-height:20px!important;margin-bottom:3px!important}
+ .dl-subhead h2{font-size:13px!important}
+ .dl-minor-button{font-size:9px!important;padding:2px 3px!important}
+ .dl-pad{height:34px!important;min-height:34px!important;justify-content:center!important;padding:2px!important}
+ .dl-pad span{display:none!important}
+ .dl-pad b{font-size:13px!important}
+ .dl-knobs{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px 2px!important;padding:0 0 4px!important}
+ .dl-knob{width:23px!important;height:23px!important}
+ .dl-knob:after{top:2px!important;height:7px!important;transform-origin:50% 10px!important}
+ .dl-knob-cell{gap:2px!important}
+ .dl-knob-cell label{font-size:9px!important}
+ .dl-faders{padding:3px!important;gap:3px!important;margin-top:1px!important}
+ .dl-fader-cell{flex-direction:column!important;gap:0!important}
+ .dl-fader-cell label{font-size:9px!important}
+ .dl-fader-cell input{width:100%!important;min-width:0!important;height:17px!important}
+ .dl-play-modes{padding:4px!important;margin-bottom:3px!important}
+ .dl-play-modes-heading{margin:0 0 3px!important;flex-direction:row!important;align-items:center!important;font-size:10px!important}
+ .dl-play-modes-heading>span:first-child{font-size:12px!important}
+ #dl-play-mode-description{max-width:65%!important;text-align:right!important;font-size:9px!important;line-height:1!important}
+ .dl-play-mode{height:27px!important;min-height:27px!important;flex-direction:row!important;gap:3px!important;font-size:11px!important;padding:2px!important}
+ .dl-play-mode .dl-mode-glyph{font-size:12px!important}
+ .dl-keys-head,.dl-controller-bottom{font-size:9px!important;padding:2px 0!important}
+ .dl-keys-head span:last-child,.dl-controller-bottom span:first-child{display:none!important}
+ .dl-keys{height:97px!important;min-width:100%!important}
+ .dl-key kbd{font-size:8px!important}
+ .dl-recorder{padding:6px!important;margin-bottom:3px!important}
+ .dl-recorder .dl-section-head{margin-bottom:2px!important}
+ .dl-recorder .dl-section-head h2{font-size:15px!important}
+ .dl-recorder .dl-section-head>span{display:none!important}
+ .dl-track-heading{margin:0 0 3px!important}
+ .dl-track-heading h3{font-size:13px!important}
+ #dl-track-count{font-size:10px!important}
+ .dl-track-list{gap:3px!important}
+ .dl-track{display:grid!important;grid-template-columns:minmax(70px,1.1fr) minmax(45px,.9fr) auto!important;
+    gap:4px!important;padding:2px 4px!important;min-height:29px!important}
+ .dl-track-info{grid-column:auto!important;grid-row:auto!important;gap:3px!important}
+ .dl-track-level{grid-column:auto!important;grid-row:auto!important;gap:3px!important}
+ .dl-track-actions{grid-column:auto!important;grid-row:auto!important;flex-wrap:nowrap!important;max-width:none!important;gap:2px!important}
+ .dl-track-number{width:20px!important;height:20px!important;font-size:10px!important}
+ .dl-track-label strong{font-size:10px!important}
+ .dl-track-meta{font-size:9px!important}
+ .dl-track-level label{display:none!important}
+ .dl-track-actions button{font-size:9px!important;min-height:23px!important;padding:2px 4px!important}
+ .dl-track-actions .dl-track-delete{min-width:20px!important;font-size:13px!important}
+ .dl-transport{margin-top:5px!important;gap:4px!important;justify-content:space-between!important}
+ .dl-transport button{font-size:10px!important;min-height:30px!important;padding:4px 5px!important}
+ .dl-timer{font-size:12px!important;min-width:39px!important}
+ .dl-rec-note{font-size:10px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:4px 0 0!important}
+ .dl-recorder audio:not([hidden]){max-height:32px!important;margin:4px 0 0!important}
+}
+@media(max-width:360px){
+ .dl-app #dl-moods .dl-mood .dl-mood-icon{display:none!important}
+ .dl-track-actions .dl-track-select{font-size:9px!important}
+ .dl-audio-enable{padding:3px 5px!important;font-size:10px!important}
+}
+@media(max-height:730px){
+ .dl-app .dl-mood-panel{margin-bottom:4px!important}
+ .dl-hardware{margin-bottom:4px!important}
+ .dl-key-scroll .dl-keys{height:82px!important}
+ .dl-rec-note{display:none!important}
+}
