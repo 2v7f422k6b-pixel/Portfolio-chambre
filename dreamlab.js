@@ -80,9 +80,6 @@
       el.setAttribute("aria-pressed",String(selected));
     });
     updateModeDescription();
-    $("#dl-stage-text").textContent=lang==="fr"?
-      (keyMode==="chord"?"un accord au bout des doigts":keyMode==="arp"?"fais danser les notes":"joue une note pour commencer"):
-      (keyMode==="chord"?"a chord at your fingertips":keyMode==="arp"?"let the notes dance":"play a note to begin");
     say(
       keyMode==="chord"?"une touche joue un accord complet.":keyMode==="arp"?"une touche lance un arpège ; maintiens-la pour le répéter.":"joue librement, note par note.",
       keyMode==="chord"?"one key plays a full chord.":keyMode==="arp"?"one key plays an arpeggio; hold it to repeat.":"play freely, one note at a time."
@@ -93,7 +90,6 @@
     mood=btn.dataset.mood;
     document.body.dataset.mood=mood;
     $$( ".dl-mood" ).forEach(el=>{const selected=el===btn;el.classList.toggle("active",selected);el.setAttribute("aria-pressed",String(selected))});
-    $("#dl-stage-text").textContent=lang==="fr"?"un nouvel univers sonore":"a new sound world";
     scatter(6);
     say("ambiance modifiée. joue quelques notes !","mood changed. play a few notes!");
   }));
@@ -248,7 +244,6 @@
       const voices=chordNotes(midi).map(note=>makeTone(note,t,20,.18));
       activeVoices.set(midi,{type:"chord",voices});
       $("#dl-note-name").textContent=rootName+" "+chords[mood].suffix;
-      $("#dl-stage-text").textContent=lang==="fr"?"un accord prend forme":"a chord takes shape";
       scatter(4);
     }else if(keyMode==="arp"){
       // Do not allow dozens of overlapping phrases on touch devices.
@@ -263,13 +258,11 @@
       if(!arpClock)arpClock=setInterval(sweepArps,20);
       sweepArps();
       $("#dl-note-name").textContent=rootName+" "+chords[mood].suffix+" ↗";
-      $("#dl-stage-text").textContent=lang==="fr"?"les notes se suivent comme des étoiles":"notes follow one another like stars";
       scatter(4);
     }else{
       const voice=makeTone(midi,t,20,.39);
       activeVoices.set(midi,{type:"single",voices:[voice]});
       $("#dl-note-name").textContent=rootName;
-      $("#dl-stage-text").textContent=lang==="fr"?"une petite mélodie apparaît":"a little melody is born";
       scatter(2);
     }
     updateKeyboardLamp();
@@ -370,16 +363,6 @@
       setTimeout(()=>span.remove(),2100);
     }
   }
-  let level=0;
-  setInterval(()=>{
-    level=Math.max(0,level-.11);
-    if(activeVoices.size)level=Math.min(1,level+.25);
-    if(isLooping&&padOn.some(Boolean))level=Math.min(1,level+.26);
-    $$("#dl-meter i").forEach((bar,i)=>{
-      const h=8+Math.max(0,level)*(9+((i*17)%30));
-      bar.style.height=Math.round(h)+"px";
-    });
-  },130);
   document.addEventListener("keydown",e=>{
     if(e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;
     if(e.target.closest("input,select,textarea,[contenteditable],button"))return;
