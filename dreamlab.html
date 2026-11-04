@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261104-two-column-v1">
-<script src="dreamlab.js?v=20261104-iphone-audio-fix-1" defer></script>
+<link rel="stylesheet" href="dreamlab.css?v=20261104-art-1">
+<script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
 <body data-mood="dreamy">
@@ -31,17 +31,24 @@
     <div id="dl-particles" aria-hidden="true"></div>
   </section>
 
-  <section class="dl-hardware" aria-label="mimilab 3, clavier virtuel à 25 touches">
-    <div class="dl-controller-top"><div><span class="dl-controller-sign">nana's little synth</span><strong>mimi<span>lab</span> 3</strong></div><div class="dl-audio-actions"><button type="button" id="dl-audio-enable" class="dl-audio-enable" hidden aria-label="Activer et tester le son">♪ activer le son</button><span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span></div></div>
-    <div class="dl-controls">
-      <div class="dl-pad-side"><div class="dl-subhead"><h2>pads <small>01—08</small></h2><button type="button" id="dl-loop-toggle" class="dl-minor-button" aria-pressed="false"><span data-fr="lancer la boucle" data-en="start loop">lancer la boucle</span> ▶</button></div>
-        <div id="dl-pads" class="dl-pads" aria-label="8 rhythm and texture pads"></div>
-        <p class="dl-help" data-fr="active des pads pour ajouter des boucles. clique à nouveau pour les retirer." data-en="turn pads on to add loops. tap again to remove them.">active des pads pour ajouter des boucles. clique à nouveau pour les retirer.</p>
+
+  <section class="dl-hardware dl-illustrated" aria-label="mimilab 3, clavier dessiné interactif à 25 touches">
+    <div class="ml-instrument-bar">
+      <button type="button" id="dl-loop-toggle" class="dl-minor-button" aria-pressed="false"><span data-fr="lancer la boucle" data-en="start loop">lancer la boucle</span> ▶</button>
+      <span class="dl-tempo">bpm <output id="dl-bpm-value">101</output></span>
+      <span id="dl-note-name" class="ml-note-name" aria-live="polite">—</span>
+      <div class="dl-audio-actions">
+        <button type="button" id="dl-audio-enable" class="dl-audio-enable" hidden aria-label="Activer et tester le son">♪ activer le son</button>
+        <span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span>
       </div>
-      <div class="dl-knob-side">
-        <div class="dl-subhead"><h2 data-fr="façonne le son" data-en="shape the sound">façonne le son</h2><span class="dl-tempo">bpm <output id="dl-bpm-value">100</output></span></div>
-        <div id="dl-knobs" class="dl-knobs" aria-label="8 sound controls"></div>
-        <div id="dl-faders" class="dl-faders" aria-label="4 volume faders"></div>
+    </div>
+    <div class="ml-art-scroll" aria-label="Instrument illustré ; défile horizontalement sur petit écran">
+      <div class="ml-artboard">
+        <img class="ml-art-image" src="assets/mimilab-illustration.webp?v=1" alt="Mimilab 3 dessiné à la main en rose, bleu et rouge" draggable="false">
+        <div id="dl-keys" class="dl-keys" role="group" aria-label="25 touches chromatiques interactives"></div>
+        <div id="dl-pads" class="dl-pads" role="group" aria-label="8 pads interactifs"></div>
+        <div id="dl-knobs" class="dl-knobs" role="group" aria-label="8 potentiomètres rotatifs"></div>
+        <div id="dl-faders" class="dl-faders" role="group" aria-label="4 curseurs de volume"></div>
       </div>
     </div>
     <div class="dl-play-modes" aria-label="Modes de jeu">
@@ -55,9 +62,6 @@
         <button type="button" class="dl-play-mode" data-play-mode="arp" aria-pressed="false"><span class="dl-mode-glyph" aria-hidden="true">♬</span><span data-fr="arpégiateur" data-en="arpeggiator">arpégiateur</span></button>
       </div>
     </div>
-    <div class="dl-keys-head"><span>25 keys · C3—C5</span><span data-fr="joue à la souris, au toucher ou au clavier" data-en="play with mouse, touch or keyboard">joue à la souris, au toucher ou au clavier</span></div>
-    <div class="dl-key-scroll"><div id="dl-keys" class="dl-keys" role="group" aria-label="25-note chromatic keyboard"></div></div>
-    <div class="dl-controller-bottom"><span data-fr="clavier : A W S E D F T G Y H U J K O L P ;" data-en="keyboard: A W S E D F T G Y H U J K O L P ;">clavier : A W S E D F T G Y H U J K O L P ;</span><span id="dl-note-name" aria-live="polite">—</span></div>
   </section>
 
     </div>
