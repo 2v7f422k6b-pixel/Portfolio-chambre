@@ -68,6 +68,7 @@
     $$(".dl-knob-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?knobs[i].fr:knobs[i].en);
     $$(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
     updateModeDescription();
+    refreshMobileAudioButton();
   }
   $("#dl-language").addEventListener("click",()=>{lang=lang==="fr"?"en":"fr";translate()});
   $$(".dl-play-mode").forEach(btn=>btn.addEventListener("click",()=>{
@@ -144,23 +145,126 @@
     if(name==="tempo")$("#dl-bpm-value").textContent=tempo();
   }
   function tempo(){return Math.round(65+settings.tempo*1.0)}
-  function ensureAudio(){
-    if(ctx){if(ctx.state==="suspended")ctx.resume().catch(()=>{});return true}
-    const AC=window.AudioContext||window.webkitAudioContext;
-    if(!AC){say("ce navigateur ne prend pas en charge Web Audio.","this browser does not support Web Audio.");return false}
-    ctx=new AC();
-    master=ctx.createGain();synthBus=ctx.createGain();drumBus=ctx.createGain();textureBus=ctx.createGain();
-    filter=ctx.createBiquadFilter();filter.type="lowpass";
-    synthBus.connect(filter);filter.connect(master);drumBus.connect(master);textureBus.connect(master);
-    echoSend=ctx.createGain();echoDelay=ctx.createDelay(1);echoFeedback=ctx.createGain();
-    filter.connect(echoSend);textureBus.connect(echoSend);echoSend.connect(echoDelay);echoDelay.connect(master);
-    echoDelay.connect(echoFeedback);echoFeedback.connect(echoDelay);echoDelay.delayTime.value=.32;echoFeedback.gain.value=.19;
-    // The same stereo master feeds both speakers and the local recorder.
-    master.connect(ctx.destination);recDest=ctx.createMediaStreamDestination();master.connect(recDest);
-    noiseBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.8),ctx.sampleRate);
-    const d=noiseBuffer.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1);
-    applyAudioSettings();return true;
+  // iOS defaults Web Audio to an ambient session, which the Ring/Silent
+  // switch may mute. Music is the primary activity here: opt into playback.
+  const isIOSDevice=(()=>{
+    const nav=window.navigator||{};
+    return /iPad|iPhone|iPod/.test(nav.userAgent||"") ||
+      (nav.platform==="MacIntel" && (nav.maxTouchPoints||0)>1);
+  })();
+  function choosePlaybackSession(){
+    try {
+      const session=window.navigator && window.navigator.audioSession;
+      if(session && session.type!=="playback")session.type="playback";
+    }catch(_){}
   }
+  function cyclePlaybackSession(){
+    // WebKit sometimes retains a stale ambient audio category after returning
+    // from the background. Explicitly cycle to force the output route to update.
+    try{
+      const session=window.navigator && window.navigator.audioSession;
+      if(!session)return;
+      session.type="ambient";
+      setTimeout(()=>{try{session.type="playback"}catch(_){}},0);
+    }catch(_){}
+  }
+  function refreshMobileAudioButton(){
+    const button=$("#dl-audio-enable");
+    if(!button)return;
+    button.hidden=!isIOSDevice;
+    const running=Boolean(ctx && ctx.state==="running");
+    button.classList.toggle("is-ready",running);
+    button.textContent=running?
+      (lang==="fr"?"♪ tester le son":"♪ test sound"):
+      (lang==="fr"?"♪ activer le son":"♪ enable sound");
+    button.setAttribute("aria-label",running?
+      (lang==="fr"?"Tester le son du mimilab 3":"Test mimilab 3 sound"):
+      (lang==="fr"?"Activer le son du mimilab 3":"Enable mimilab 3 sound"));
+  }
+  function unlockAudioContext(){
+    if(!ctx||ctx.state==="closed")return;
+    if(ctx.state==="running"){refreshMobileAudioButton();return}
+    // Start a one-frame silent source and call resume() *inside* the actual
+    // touch/pointer handler. iOS does not reliably unlock deferred resumes.
+    try{
+      const silent=ctx.createBufferSource();
+      silent.buffer=ctx.createBuffer(1,1,ctx.sampleRate);
+      const gain=ctx.createGain();gain.gain.value=0;
+      silent.connect(gain);gain.connect(ctx.destination);
+      silent.onended=()=>{try{silent.disconnect();gain.disconnect()}catch(_){}};
+      silent.start(0);
+    }catch(_){}
+    try{
+      const result=ctx.resume();
+      if(result && typeof result.then==="function"){
+        result.then(refreshMobileAudioButton).catch(()=>refreshMobileAudioButton());
+      }
+    }catch(_){}
+  }
+  function ensureAudio(){
+    choosePlaybackSession();
+    if(ctx && ctx.state!=="closed"){
+      if(ctx.state!=="running")unlockAudioContext();
+      return true;
+    }
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC){
+      say("ce navigateur ne prend pas en charge Web Audio.","this browser does not support Web Audio.");
+      return false;
+    }
+    try{
+      ctx=new AC();
+      master=ctx.createGain();synthBus=ctx.createGain();drumBus=ctx.createGain();textureBus=ctx.createGain();
+      filter=ctx.createBiquadFilter();filter.type="lowpass";
+      synthBus.connect(filter);filter.connect(master);drumBus.connect(master);textureBus.connect(master);
+      echoSend=ctx.createGain();echoDelay=ctx.createDelay(1);echoFeedback=ctx.createGain();
+      filter.connect(echoSend);textureBus.connect(echoSend);echoSend.connect(echoDelay);echoDelay.connect(master);
+      echoDelay.connect(echoFeedback);echoFeedback.connect(echoDelay);
+      echoDelay.delayTime.value=.32;echoFeedback.gain.value=.19;
+      master.connect(ctx.destination);
+      recDest=ctx.createMediaStreamDestination();master.connect(recDest);
+      noiseBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.8),ctx.sampleRate);
+      const data=noiseBuffer.getChannelData(0);
+      for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+      ctx.onstatechange=refreshMobileAudioButton;
+      applyAudioSettings();
+      unlockAudioContext();
+      refreshMobileAudioButton();
+      return true;
+    }catch(_){
+      ctx=null;
+      say("impossible d'activer le son. essaie d'ouvrir la page dans safari.",
+          "could not start audio. try opening the page in Safari.");
+      refreshMobileAudioButton();
+      return false;
+    }
+  }
+  $("#dl-audio-enable").addEventListener("click",()=>{
+    const wasRunning=Boolean(ctx&&ctx.state==="running");
+    if(!ensureAudio())return;
+    if(wasRunning)cyclePlaybackSession();
+    else choosePlaybackSession();
+    // Audible C4, played on the same live synth output (and never muted by
+    // the iPhone's silent switch when audioSession playback is available).
+    makeTone(60,ctx.currentTime+.015,.62,.75);
+    say("si tu entends la note, le son est activé. sinon monte le volume de ton iPhone.",
+        "if you hear the note, sound is enabled. otherwise turn up your iPhone volume.");
+    refreshMobileAudioButton();
+  });
+  document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden && ctx){
+      choosePlaybackSession();
+      if(ctx.state!=="running")unlockAudioContext();
+    }
+  });
+  // A direct touch following an iOS interruption is also a valid gesture
+  // for resuming the existing engine without recreating the song.
+  document.addEventListener("pointerdown",()=>{
+    if(ctx && ctx.state!=="running"){
+      choosePlaybackSession();
+      unlockAudioContext();
+    }
+  },{capture:true,passive:true});
   function applyAudioSettings(){
     if(!ctx)return;
     const t=ctx.currentTime;
