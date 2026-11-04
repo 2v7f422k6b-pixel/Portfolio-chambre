@@ -6,3 +6,12 @@
 }
 html[data-theme="night"] #play-scene .nana-minilab-day,
 #app.mode-work #play-scene .nana-minilab-day { display:none!important; }
+
+/* Night illustration uses the exact same full-scene coordinate system. */
+#play-scene .nana-minilab-night {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:fill; pointer-events:none; z-index:4;
+  display:none;
+}
+html[data-theme="night"] #play-scene .nana-minilab-night {display:block;}
+#app.mode-work #play-scene .nana-minilab-night {display:none!important;}
