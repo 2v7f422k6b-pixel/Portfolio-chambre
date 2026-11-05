@@ -8,7 +8,7 @@
 <title>mimilab 3 — Nana Color Studio</title>
 <link rel="stylesheet" href="dreamlab.css?v=20261105-ipad-keys-v8">
 <script src="dreamlab.js?v=20261105-ipad-keys-v8" defer></script>
-<script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
+<script src="dreamlab-multitrack.js?v=20261105-guided-daw-v2" defer></script>
 </head>
 <body data-mood="dreamy">
 <main class="dl-app">
@@ -68,9 +68,10 @@
 
     <section class="dl-recorder dl-daw" aria-labelledby="dl-rec-title">
     <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="mimi daw" data-en="mimi daw">mimi daw</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
-    <div class="dl-track-heading"><h3 data-fr="mes 5 pistes" data-en="my 5 tracks">mes 5 pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
+    <div class="dl-track-heading"><h3 data-fr="mes pistes" data-en="my tracks">mes 5 pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
     <div id="dl-track-list" class="dl-track-list" aria-label="5 pistes d'enregistrement"></div>
-    <p class="dl-track-tip" data-fr="appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante." data-en="tap rec to record a track. previous takes play automatically while you record the next.">appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante.</p>
+    <p class="dl-track-tip" data-fr="joue quelques notes pour commencer. les pistes précédentes jouent pendant une nouvelle prise." data-en="play a few notes to begin. previous tracks play during a new take.">appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante.</p>
+    <div id="dl-daw-extra" class="dl-daw-extra"></div>
     <div class="dl-transport">
       <button type="button" id="dl-record" class="dl-primary"><span class="dl-record-dot"></span><span data-fr="enregistrer la piste" data-en="record track">enregistrer la piste</span> <b id="dl-record-target">01</b></button>
       <button type="button" id="dl-stop" disabled hidden aria-hidden="true"><span>■</span> <span data-fr="arrêter" data-en="stop">arrêter</span></button>
@@ -79,7 +80,7 @@
       <button type="button" id="dl-download" class="dl-download" disabled><span>↓</span> <span data-fr="télécharger" data-en="download">télécharger</span></button>
     </div>
     <audio id="dl-playback" controls hidden></audio>
-    <p class="dl-rec-note" id="dl-status" role="status" aria-live="polite" data-fr="5 pistes maximum · télécharge ton mix en WAV." data-en="up to 5 tracks · download your WAV mix.">5 pistes maximum · télécharge ton mix en WAV.</p>
+    <p class="dl-rec-note" id="dl-status" role="status" aria-live="polite" data-fr="prête à enregistrer · 5 pistes maximum." data-en="ready to record · up to 5 tracks.">5 pistes maximum · télécharge ton mix en WAV.</p>
     </section>
   </div>
   <footer class="dl-footer"><span>made with little things &amp; a lot of love</span><span>nana color studio · 2026</span></footer>
