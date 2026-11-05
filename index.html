@@ -550,6 +550,9 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 /* Prevent the oversized source PNG from creating a third, offset stroke. */
 #window-shade #window-close .window-close-art{display:none!important;}
 #window-shade #window-close::before,#window-shade #window-close::after{width:21px!important;height:2px!important;}
+/* The artist's own PNG is the ONLY close symbol: no CSS-drawn lines. */
+#window-shade #window-close .window-close-art{display:block!important;visibility:visible!important;opacity:1!important;}
+#window-shade #window-close::before,#window-shade #window-close::after{content:none!important;display:none!important;background:none!important;}
 </style>
 
 <style id="handdrawn-navigation-arrows">
