@@ -169,7 +169,35 @@
       const pitch=midi%12;const black=[1,3,6,8,10].includes(pitch);
       const b=document.createElement("button");b.type="button";b.className="dl-key "+(black?"black":"white");
       b.dataset.midi=midi;b.setAttribute("aria-label",names[pitch]+(Math.floor(midi/12)-1));
-      if(black){b.style.left=((whites/15)*100)+"%";b.style.transform="translateX(-50%)"}
+      if(illustrated){
+        // Each hand-drawn key has its own measured boundaries in IMG_5026 (1536×922).
+        // Do not stretch a uniform grid across the keyboard: the original is irregular.
+        const whiteEdges=[220,298,374,450,525,601,677,752,828,904,980,1057,1132,1207,1282,1363];
+        const blackRects=[[269,308],[360,403],[491,534],[580,625],[668,713],[797,841],[884,927],[1023,1068],[1110,1153],[1199,1240]];
+        const applyRect=(left,top,width,height)=>{
+          b.style.setProperty("left",xPct(left),"important");
+          b.style.setProperty("top",yPct(top),"important");
+          b.style.setProperty("width",xPct(width),"important");
+          b.style.setProperty("height",yPct(height),"important");
+          b.style.setProperty("transform","none","important");
+        };
+        if(black){
+          const idx=[1,3,6,8,10].indexOf(pitch)+5*Math.floor((midi-48)/12);
+          const [left,right]=blackRects[idx];
+          applyRect(left,490,right-left,205);
+          b.style.setProperty("clip-path","polygon(3% 0%,96% 0%,100% 98%,5% 100%)");
+        }else{
+          const left=whiteEdges[whites],right=whiteEdges[whites+1],width=right-left;
+          const overlaps=blackRects.filter(([a,z])=>a<right&&z>left);
+          const upperLeft=overlaps.reduce((v,[a,z])=>a<=left+width*.45?Math.max(v,z):v,left);
+          const upperRight=overlaps.reduce((v,[a,z])=>a>left+width*.45?Math.min(v,a):v,right);
+          applyRect(left,490,width,320);
+          const X=v=>((v-left)/width*100).toFixed(2)+"%";
+          const Y=(205/320*100).toFixed(2)+"%";
+          b.style.setProperty("clip-path",`polygon(${X(upperLeft)} 0%,${X(upperRight)} 0%,${X(upperRight)} ${Y},100% ${Y},100% 100%,0% 100%,0% ${Y},${X(upperLeft)} ${Y})`);
+          whites++;
+        }
+      }else if(black){b.style.left=((whites/15)*100)+"%";b.style.transform="translateX(-50%)"}
       else{b.style.left=((whites/15)*100)+"%";whites++}
       const legend=physical[midi-48];if(legend&&midi<65){const k=document.createElement("kbd");k.textContent=legend.toUpperCase();b.append(k)}
       b.addEventListener("pointerdown",e=>{if(e.button!==0&&e.pointerType==="mouse")return;e.preventDefault();b.setPointerCapture(e.pointerId);noteOn(midi)});
