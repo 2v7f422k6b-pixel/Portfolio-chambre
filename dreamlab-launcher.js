@@ -53,7 +53,7 @@
     x.setAttribute("aria-label","Fermer mimilab 3");x.addEventListener("click",close);
     const language=document.createElement("button");language.type="button";language.id="nana-dreamlab-language";language.textContent=document.documentElement.lang.toLowerCase().startsWith("en")?"FR":"EN";language.setAttribute("aria-label","Changer la langue");language.addEventListener("click",()=>{const inner=panel.querySelector("iframe");const btn=inner?.contentDocument?.getElementById("dl-language");if(btn){btn.click();language.textContent=inner.contentDocument.documentElement.lang==="en"?"FR":"EN";}});const actions=document.createElement("div");actions.id="nana-dreamlab-actions";actions.append(language,x);bar.append(label,actions);
     const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="mimilab 3";iframe.setAttribute("allow","autoplay");
-    iframe.src="dreamlab.html?v=20261105-irregular-red-tabs&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
+    iframe.src="dreamlab.html?v=20261105-clean-faders-alignment&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);
     overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
     document.addEventListener("keydown",esc);x.focus();
