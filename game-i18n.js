@@ -102,6 +102,10 @@ Object.assign(dictionary, {
   "Close enlarged photo": "Fermer la photo agrandie",
   "A little note to write on the back.": "Une petite note à écrire au dos."
 });
+Object.assign(dictionary, {
+  "Design your own latte art!": "Crée ton dessin sur la mousse !",
+  "heart": "cœur"
+});
 const reverse=Object.fromEntries(Object.entries(dictionary).map(([en,fr])=>[fr,en]));
 Object.assign(reverse,frenchGameOriginals);
 for(const [fr,en] of Object.entries(frenchGameOriginals)){
@@ -148,8 +152,10 @@ function translated(value,target=language){
     const isOat=milk[1]==='Oat'||milk[1]==='d’avoine';
     result=target==='fr'?(isOat?'Lait d’avoine':'Lait entier')+' sélectionné. Fais-le mousser !':(isOat?'Oat':'Whole')+' milk selected. Steam it until silky!';
   }
-  const recipe=english.match(/^Double espresso \+ 15 ml vanilla syrup \+ 160 ml (oat|whole) milk \+ (.+)\. Made by you, with love ♡$/);
+  const recipe=english.match(/^Double espresso \+ 15 ml vanilla syrup \+ 160 ml (oat|whole) milk \+ (.+)\. Made by you, with love [♥♡]$/);
   if(recipe&&target==='fr')result='Double expresso + 15 ml de sirop de vanille + 160 ml de lait '+(recipe[1]==='oat'?'d’avoine':'entier')+' + '+(recipe[2]==='your original latte art'?'ton dessin original':recipe[2])+'. Préparé avec amour ♡';
+  const frenchRecipe=key.match(/^Double expresso \+ 15 ml de sirop de vanille \+ 160 ml de lait (d’avoine|entier) \+ (.+)\. Préparé avec amour [♥♡]$/);
+  if(frenchRecipe&&target==='en')result='Double espresso + 15 ml vanilla syrup + 160 ml '+(frenchRecipe[1]==='d’avoine'?'oat':'whole')+' milk + '+(frenchRecipe[2]==='ton dessin original'?'your original latte art':frenchRecipe[2])+'. Made by you, with love ♡';
   return start+result+end;
 }
 
@@ -175,6 +181,7 @@ function translateHeartLabel(el){
   for(const node of el.childNodes){
     if(node.nodeType===3)slots[slots.length-1].push(node);
     else if(node.nodeType===1&&node.classList.contains('lena-heart'))slots.push([]);
+    else if(node.nodeType===1&&node.matches('svg.latte-trace-svg[aria-hidden="true"]'))continue;
     else return false; // Never disturb SVGs, nested controls, or other markup.
   }
   const current=slots.map(nodes=>nodes.map(n=>n.nodeValue).join('')).join('♥');
@@ -182,8 +189,12 @@ function translateHeartLabel(el){
   const base=past&&[past.source,past.fr,past.en].some(v=>heartKey(v)===heartKey(current))
     ?past.source:current;
   const k=heartKey(base);
-  const fr=heartToFrench.get(k),en=heartToEnglish.get(k);
-  if(fr===undefined||en===undefined)return false;
+  // Runtime receipts contain quantities, milk choices and the visitor's name.
+  // They need the same dynamic translation as ordinary text, after the heart
+  // decorator has split them into separate nodes.
+  const fr=heartToFrench.get(k)??translated(base,'fr');
+  const en=heartToEnglish.get(k)??translated(base,'en');
+  if(heartKey(fr)===heartKey(en))return false;
   inlineHeartSources.set(el,{source:base,fr,en});
   const target=language==='fr'?fr:en;
   const pieces=target.split(inlineHeartSymbol);
