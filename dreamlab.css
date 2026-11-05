@@ -542,3 +542,14 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-artboard #dl-faders .ml-fader-marker{display:none!important}
 .ml-artboard #dl-faders .dl-fader-cell{cursor:ns-resize!important}
 @media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.65vw,10px)!important}.ml-mood-display{font-size:clamp(5px,1.5vw,9px)!important}.ml-pad-caption{font-size:clamp(5px,1.25vw,8px)!important}}
+
+/* Correct placement and touch targets on the four hand-drawn buttons. */
+.ml-drawn-mode{z-index:20!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:clamp(6px,1.05vw,12px)!important;letter-spacing:-.02em!important;overflow:visible!important;}
+.ml-mood-prompt{position:absolute;z-index:10;display:flex;align-items:center;justify-content:center;color:#f10b39;font-family:NanaTrace,cursive!important;font-size:clamp(5px,.95vw,11px);white-space:nowrap;pointer-events:none;}
+.ml-mood-display{font-size:clamp(6px,1.1vw,12px)!important;}
+.ml-artboard #dl-pads .dl-pad.active,.ml-artboard #dl-pads .dl-pad:active{background:rgba(255,255,255,.18)!important;box-shadow:none!important;outline:none!important;border-radius:0!important;}
+.ml-knob-caption{font-size:clamp(6px,1.03vw,12px)!important;}
+.ml-draggable-fader{touch-action:none!important;pointer-events:auto!important;cursor:ns-resize!important;z-index:12!important;}
+.ml-draggable-fader input{pointer-events:none!important;}
+.ml-draggable-fader:after{content:"";position:absolute;left:7%;width:86%;height:13%;top:var(--fader-position,40%);transform:translateY(-50%);background:#e9003a;border-radius:2px;box-shadow:0 1px 0 #c80035;pointer-events:none;}
+@media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.4vw,9px)!important}.ml-knob-caption{font-size:clamp(5px,1.35vw,9px)!important}.ml-mood-prompt{font-size:clamp(5px,1.3vw,8px)!important}}
