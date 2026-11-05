@@ -97,11 +97,11 @@
   function createUI(){
     const pg=$("#dl-pads");
     const illustrated=document.body.classList.contains("ml-use-art");
-    const xPct=x=>(x/1580*100)+"%";
-    const yPct=y=>(y/1000*100)+"%";
-    const padX=[365,502,643,783,922,1058,1198,1340];
-    const knobX=[557,698,836,977];
-    const faderX=[1099,1180,1260,1342];
+    const xPct=x=>(x/1536*100)+"%";
+    const yPct=y=>(y/922*100)+"%";
+    const padX=[435,554,673,790,908,1026,1145,1262];
+    const knobX=[601,717,835,954];
+    const faderX=[1068,1146,1224,1303];
     pads.forEach((p,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="dl-pad";b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",(i+1)+" "+p.fr);
@@ -109,9 +109,9 @@
       b.addEventListener("click",()=>togglePad(i));
       if(illustrated){
         b.style.left=xPct(padX[i]);
-        b.style.top=yPct(355);
-        b.style.width=xPct(106);
-        b.style.height=yPct(112);
+        b.style.top=yPct(336);
+        b.style.width=xPct(85);
+        b.style.height=yPct(89);
         b.title=(i+1)+" "+p.fr;
       }
       pg.append(b);
@@ -120,7 +120,7 @@
     knobs.forEach((k,i)=>{
       const cell=document.createElement("div");cell.className="dl-knob-cell";
       if(illustrated){
-        const x=knobX[i%4],y=i<4?120:255;
+        const x=knobX[i%4],y=i<4?136:253;
         cell.style.left=xPct(x-41);cell.style.top=yPct(y-42);
         cell.style.width=xPct(82);cell.style.height=yPct(84);
       }
@@ -138,10 +138,10 @@
     faders.forEach((f,i)=>{
       const cell=document.createElement("div");cell.className="dl-fader-cell";
       if(illustrated){
-        cell.style.left=xPct(faderX[i]-32);
-        cell.style.top=yPct(140);
-        cell.style.width=xPct(64);
-        cell.style.height=yPct(142);
+        cell.style.left=xPct(faderX[i]-29);
+        cell.style.top=yPct(129);
+        cell.style.width=xPct(58);
+        cell.style.height=yPct(126);
       }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
