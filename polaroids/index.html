@@ -70,7 +70,7 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
 .viewer-indicator{margin:8px 0 0;text-align:center;font-size:12px}
 @media(max-width:600px){
  .page{padding:10px}
- .board{height:65dvh;min-height:540px;max-height:none}
+ .board{height:65dvh;min-height:780px;max-height:none}
  .card{width:clamp(116px,32vw,155px);height:clamp(177px,49vw,230px)}
  .subtitle{max-width:270px}
  header{align-items:center}
@@ -115,7 +115,7 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
   } catch (_) {}
   const original=Array.isArray(window.LENA_POLAROIDS)?window.LENA_POLAROIDS.filter(x=>x&&x.src):[];
   const demo=!original.length;
-  const photos=demo?Array.from({length:5},(_,i)=>({
+  const photos=demo?Array.from({length:7},(_,i)=>({
     title:'Photo '+String(i+1).padStart(2,'0'),
     date:'',note:'A little note to write on the back.',src:null
   })):original;
@@ -123,9 +123,9 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
   const viewerCard=document.getElementById('viewer-card');
   document.getElementById('pending').hidden=!demo;
   const small=window.matchMedia('(max-width: 600px)');
-  const desktopPositions=[[9,10,-8],[27,36,7],[46,9,-3],[63,38,9],[78,14,-7],[34,15,11],[56,56,-5]];
-  const mobilePositions=[[6,4,-8],[53,9,6],[13,32,-6],[53,46,8],[7,59,-3],[48,60,10]];
-  let activePhoto=0,zCounter=5;
+  const desktopPositions=[[4,5,-8],[27,7,7],[50,4,-3],[75,8,9],[13,36,-7],[39,35,11],[65,36,-5]];
+  const mobilePositions=[[6,3,-8],[53,6,6],[8,25,-6],[53,28,8],[6,48,-3],[53,51,10],[29,68,-5]];
+  let activePhoto=0,zCounter=10;
   const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   function pose(i){
     const candidates=small.matches?mobilePositions:desktopPositions;
