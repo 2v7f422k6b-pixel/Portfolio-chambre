@@ -712,3 +712,15 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  .ml-artboard #dl-keys{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;box-sizing:border-box!important;padding:0!important;margin:0!important;}
  .ml-artboard #dl-keys .dl-key{box-sizing:border-box!important;padding:0!important;margin:0!important;}
 }
+
+/* Guided mimi DAW — compact tracks, original illustrated palette */
+.dl-track-list{display:flex;flex-direction:column;gap:8px}
+.dl-track{min-height:62px;cursor:pointer}
+.dl-track.is-selected{outline:2px dashed #c52844;outline-offset:2px}
+.dl-track-info{flex:1;min-width:0}
+.dl-waveform{display:block;width:100%;max-width:320px;height:32px;margin-top:3px}
+.dl-track-actions{display:flex;align-items:center;gap:7px}
+.dl-track-volume{width:75px;accent-color:#c52844}
+.dl-daw-extra{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.dl-daw-extra button{font:inherit;color:#b5213c;background:#fff6f8;border:2px solid #c52844;padding:7px 11px;cursor:pointer;border-radius:2px}
+@media(max-width:600px){.dl-track{flex-wrap:wrap}.dl-track-actions{margin-left:auto}.dl-waveform{max-width:220px}.dl-transport{position:sticky;bottom:0;z-index:5;background:#f9dae8;padding:8px}}
