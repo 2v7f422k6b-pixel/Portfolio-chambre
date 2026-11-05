@@ -139,9 +139,9 @@
       const cell=document.createElement("div");cell.className="dl-fader-cell";
       if(illustrated){
         cell.style.left=xPct(faderX[i]-29);
-        cell.style.top=yPct(129);
+        cell.style.top=yPct(85);
         cell.style.width=xPct(58);
-        cell.style.height=yPct(126);
+        cell.style.height=yPct(155);
       }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
@@ -158,8 +158,8 @@
         };
         cell.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;cell.setPointerCapture(e.pointerId);setDrag(e);e.preventDefault()});
         cell.addEventListener("pointermove",e=>{if(cell.hasPointerCapture(e.pointerId)){setDrag(e);e.preventDefault()}});
-        input.addEventListener("input",()=>cell.style.setProperty("--fader-position",(12+(100-Number(input.value))*.64)+"%"));
-        cell.style.setProperty("--fader-position",(12+(100-f.value)*.64)+"%");
+        input.addEventListener("input",()=>cell.style.setProperty("--fader-position",(8+(100-Number(input.value))*.84)+"%"));
+        cell.style.setProperty("--fader-position",(8+(100-f.value)*.84)+"%");
       }
       if(illustrated){setPosition();cell.append(l,input)}else cell.append(l,input);
       fg.append(cell);
