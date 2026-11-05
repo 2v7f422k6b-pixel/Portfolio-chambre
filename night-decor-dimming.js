@@ -4,7 +4,7 @@
  const svg=document.getElementById('hotspots');
  if(!svg)return;
  const selectors=[
-  ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image',.24],
+  ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image',.78],
   ['#nana-wall-mirror image',.60],
   ['#nana-fortune-cookie image:not(.nana-fortune-cookie-outline)',.43]
  ];
