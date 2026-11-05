@@ -516,3 +516,9 @@ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh}
   .dl-transport button{font-size:11px!important;min-height:25px!important;padding:2px 5px!important;}
   .dl-timer{font-size:12px!important;min-width:35px!important;}
 }
+
+/* Single studio header lives in the parent window; no duplicate title/back/language. */
+.dl-heading{display:none!important}
+.dl-app{padding-top:4px!important}
+/* Nana's handwritten UI font consistently across every studio control. */
+html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:NanaTrace,"Comic Sans MS",cursive!important}
