@@ -594,4 +594,4 @@ html[data-theme="night"] .gearnews-ring-preview {background:#4f357c}
 #special-shade.polaroids-floating {padding:0;background:#17191c26;backdrop-filter:none;}
 html[data-theme="night"] #special-shade.polaroids-floating {background:#090b102b;}
 #special-shade.polaroids-floating #special-host {width:100vw;height:100dvh;max-width:none;max-height:none;display:block;}
-#special-shade.polaroids-floating #special-close {z-index:100;}
+#special-shade.polaroids-floating #special-close {z-index:100;top:max(58px,env(safe-area-inset-top));}
