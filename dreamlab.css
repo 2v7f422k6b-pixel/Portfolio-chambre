@@ -842,3 +842,18 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
   -webkit-touch-callout:none!important;
 }
 .dl-app input[type="range"],.dl-app button{touch-action:manipulation}
+
+/* Portrait iPad fix: never use the landscape two-column layout.
+   Instrument first, recorder second, with intrinsic keyboard height. */
+@media (orientation:portrait){
+  body{height:auto!important;min-height:100dvh!important;overflow-y:auto!important}
+  .dl-app{height:auto!important;min-height:100dvh!important;width:calc(100% - 24px)!important;max-width:860px!important;padding:8px 0 22px!important}
+  .dl-workspace{display:flex!important;flex-direction:column!important;align-items:stretch!important;height:auto!important;min-height:0!important;gap:12px!important}
+  .dl-instrument{display:flex!important;flex-direction:column!important;order:0!important;height:auto!important;min-height:0!important;width:100%!important;flex:none!important}
+  .dl-hardware.dl-illustrated{display:flex!important;flex-direction:column!important;height:auto!important;min-height:0!important;justify-content:flex-start!important}
+  .dl-illustrated .ml-art-scroll{display:block!important;flex:none!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:0!important;margin:0!important;overflow:hidden!important}
+  .dl-illustrated .ml-art-scroll>.ml-artboard{display:block!important;position:relative!important;width:100%!important;max-width:100%!important;min-width:0!important;height:auto!important;aspect-ratio:1536 / 922!important;transform:none!important}
+  .dl-illustrated .ml-artboard>.ml-art-image{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important}
+  .dl-daw.dl-recorder{order:1!important;width:100%!important;height:auto!important;min-height:0!important;align-self:auto!important;flex:none!important}
+  .dl-daw .dl-transport{margin-top:12px!important}
+}
