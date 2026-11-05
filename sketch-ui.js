@@ -9,12 +9,13 @@
     ['#nana-admin-dialog .nana-admin-action', 'frame', 1103],
     // Dock uses a clean, rounded translucent background without traced outlines.
     ['.mac-window', 'frame', 57],
-    ['.window-top', 'rule', 68],
+    ['.nana-window-bar', 'rule', 68],
+    ['#special-window:not(:has(.phone-device)):not(:has(.tama-frame)):not(:has(iframe[src*="polaroids"]))', 'frame', 69],
+    ['#nana-dreamlab-window', 'frame', 70],
     ['.welcome-top', 'rule', 69],
     ['.tile-art', 'frame', 72],
     ['#window-shade .project-card .project-icon', 'frame', 73],
     ['#window-shade .project-card .project-preview', 'frame', 74],
-    ['#window-shade .traffic button', 'frame', 75],
     ['.welcome-panel', 'frame', 71],
     ['.mode-tile', 'frame', 101],
     ['.back-room', 'frame', 149],
@@ -36,7 +37,6 @@
     // Rectilinear corners and gently trembling sides, not CSS rounded rectangles.
     ['#nana-discovery-dialog', 'frame', 1031],
     ['#nana-discovery-dialog .nana-discovery-reward', 'frame', 1041],
-    ['#nana-discovery-dialog .nana-discovery-close', 'frame', 1051],
     ['#nana-discovery-dialog .nana-discovery-coupon code', 'frame', 1061],
     ['#nana-discovery-dialog .nana-discovery-coupon button', 'frame', 1071],
     ['#nana-discovery-dialog .nana-discovery-shop', 'frame', 1081],
@@ -91,8 +91,7 @@
     ['#window-shade .atelier-about-copy .info-box', 'frame', 541],
     // Coloring modal in the main document; the iframe handles its own drawn controls.
     ['.coloring-overlay .coloring-panel', 'frame', 981],
-    ['.coloring-overlay .coloring-panel-head', 'rule', 991],
-    ['.coloring-overlay .coloring-panel-head button', 'frame', 1001]
+    ['.mv-lightbox', 'frame', 991]
   ];
   let serial = 0;
   const redrawn = new WeakMap();
@@ -224,3 +223,4 @@
   mutation.observe(document.body,{childList:true,subtree:true});
   if(!observer)window.addEventListener('resize',()=>items.forEach(draw),{passive:true});
 })();
+

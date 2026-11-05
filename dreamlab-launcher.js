@@ -64,13 +64,14 @@
     overlay=document.createElement("div");overlay.id="nana-dreamlab-overlay";overlay.setAttribute("role","dialog");overlay.setAttribute("aria-modal","true");overlay.setAttribute("aria-label","mimilab 3");
     const panel=document.createElement("div");panel.id="nana-dreamlab-window";
     const bar=document.createElement("div");bar.id="nana-dreamlab-topbar";
-    const label=document.createElement("span");label.textContent="mimilab 3 — nana color studio";
+    const label=document.createElement("span");label.textContent="Mimilab 3";
     const x=document.createElement("button");x.type="button";x.id="nana-dreamlab-close";
     const closeArt=document.createElement("img");
     closeArt.src="assets/portfolio-ux/IMG_5035.png";closeArt.alt="";closeArt.setAttribute("aria-hidden","true");
     x.append(closeArt);
     x.setAttribute("aria-label",document.documentElement.lang.startsWith("en")?"Close mimilab 3":"Fermer mimilab 3");x.addEventListener("click",close);
-    const language=document.createElement("button");language.type="button";language.id="nana-dreamlab-language";language.textContent=document.documentElement.lang.toLowerCase().startsWith("en")?"FR":"EN";language.setAttribute("aria-label",document.documentElement.lang.startsWith("en")?"Switch to French":"Passer en anglais");language.addEventListener("click",()=>{const inner=panel.querySelector("iframe");const btn=inner?.contentDocument?.getElementById("dl-language");if(btn){btn.click();const english=inner.contentDocument.documentElement.lang==="en";language.textContent=english?"FR":"EN";language.setAttribute("aria-label",english?"Switch to French":"Passer en anglais");x.setAttribute("aria-label",english?"Close mimilab 3":"Fermer mimilab 3");}});const actions=document.createElement("div");actions.id="nana-dreamlab-actions";actions.append(language,x);bar.append(label,actions);
+    bar.append(label,x);
+    window.NanaWindowChrome?.decorate(bar,label,x);
     const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="mimilab 3";iframe.setAttribute("allow","autoplay");
     iframe.src="dreamlab.html?v=20261105-stability-1&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);

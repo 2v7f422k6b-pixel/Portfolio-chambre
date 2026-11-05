@@ -244,6 +244,7 @@ function closeWindow(){
 }
 let polaroidAudio=null;
 function closeSpecial(){
+ $('#special-close').setAttribute('aria-label','Close');
  specialShade.classList.remove('tamagotchi-open');
  specialShade.classList.remove('polaroids-floating');
  if(polaroidAudio){polaroidAudio.close().catch(()=>{});polaroidAudio=null;}
@@ -468,12 +469,13 @@ function openPages(){
  openWindow('Pages',`<div class="eyebrow">Pages / Writing</div><h2>Pages</h2><p class="section-lead">Articles, music journalism and personal writing.</p><div class="info-list"><div class="info-box"><small>Editorial writing</small><strong>Gearnews.fr</strong></div><div class="info-box"><small>Stories</small><strong>Personal writing</strong></div></div><div class="empty-state"><span class="empty-icon">▤</span><h3>Article library in preparation</h3><p>Full texts will be added here only when supplied or approved for republication. In the meantime, the original publications can be explored on Gearnews.</p><a class="pill-link" href="https://www.gearnews.fr/" rel="noopener noreferrer" target="_blank">Visit Gearnews.fr ↗</a></div>`,'pages');
 }
 function openAbout(){
+ $('#special-title').textContent='Dress-up';
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
  specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=10" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- $('#special-close').setAttribute('aria-label','Close About Me');
+ $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
 }
 function openBook(){
@@ -491,7 +493,8 @@ function openHelp(){
 }
 
 function showPhone(){
- closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
+ $('#special-title').textContent='Phone';
+ closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  specialHost.innerHTML=`<div class="phone-device" aria-label="Interactive iPhone"><div class="phone-screen"><div class="phone-wallpaper"></div><div class="phone-status"><time id="phone-time"></time><svg class="phone-island-svg" width="91" height="25" viewBox="0 0 91 25" aria-hidden="true" focusable="false" style="display:block;flex:0 0 91px;width:91px;height:25px;overflow:visible"><path d="M12.5 0 H78.5 A12.5 12.5 0 0 1 78.5 25 H12.5 A12.5 12.5 0 0 1 12.5 0 Z" fill="#241d2c"/></svg><span aria-hidden="true">▂ ▰</span></div><div class="phone-app-row"><button class="phone-app" data-phone-app="contacts"><span class="ios-icon" aria-hidden="true"><img class="phone-drawn-icon" src="assets/smartphone/contacts%20smartphone.png" alt="" draggable="false"></span><span>Contacts</span></button><button class="phone-app" data-phone-app="mail"><span class="ios-icon mail" aria-hidden="true"><img class="phone-drawn-icon" src="assets/smartphone/mail%20smartphone.png" alt="" draggable="false"></span><span>Mail</span></button><button class="phone-app" data-phone-app="instagram"><span class="ios-icon ig" aria-hidden="true"><img class="phone-drawn-icon" src="assets/smartphone/insta%20smartphone.png" alt="" draggable="false"></span><span>Instagram</span></button></div><div class="phone-home-line"></div><div class="phone-page" id="phone-page" hidden></div></div></div>`;
  updateClocks();
 }
@@ -517,21 +520,24 @@ function phoneMail(){
  kb.append(end);
 }
 function showTamagotchi(){
+ $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261105-transparent-frame-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
-  closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
+  $('#special-title').textContent='Latte Lab';
+  closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
   specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261105-latte-fr-2"></iframe>';
-  $('#special-close').setAttribute('aria-label','Close Latte Lab');
+  $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
+ $('#special-title').textContent='My Polaroids';
  closeWindow();closeSpecial();
  specialShade.classList.add('polaroids-floating');
  try {const Audio=window.AudioContext||window.webkitAudioContext;if(Audio){polaroidAudio=new Audio();polaroidAudio.resume().catch(()=>{});}}catch(_){}
  specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261105-floating-prints-1" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- $('#special-close').setAttribute('aria-label','Close the Polaroid gallery');
+ $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
 }
 window.addEventListener('message',event=>{
@@ -598,8 +604,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('#theme-toggle')){applyTheme(document.documentElement.dataset.theme==='night'?'day':'night');return}
  if(e.target.closest('#switch-mode,#dock-roomswap')){switchMode();return}
  if(e.target.closest('#back-to-room')){chooseMode('play',true);return}
- if(e.target.closest('#window-close,#window-minimize')){closeWindow(true);return}
- if(e.target.closest('#window-maximize')){win.classList.toggle('expanded');return}
+ if(e.target.closest('#window-close')){closeWindow(true);return}
  if(e.target.closest('#special-close')){closeSpecial();return}
  if(e.target.id==='window-shade'){
   // On touch screens, an opening tap can finish over the newly displayed backdrop.
@@ -694,7 +699,7 @@ updatePlayer();
   if(e.target.closest('#home-menu,#menu-mode'))lastOpen=null;
   const opener=e.target.closest('[data-open]');
   if(opener)lastOpen=opener.dataset.open;
-  if(e.target.closest('#window-close,#window-minimize,#special-close')||e.target===shade||e.target===specialShade)lastOpen=null;
+  if(e.target.closest('#window-close,#special-close')||e.target===shade||e.target===specialShade)lastOpen=null;
   setTimeout(save,100);
  },true);
  document.addEventListener('nana-dreamlab-open',()=>{lastOpen='mimilab';save()});

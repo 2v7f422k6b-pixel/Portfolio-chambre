@@ -2,6 +2,10 @@
    Poetry and excerpts stay in their original published language. */
 window.NanaI18nExtra = {
   enToFr: {
+  "Phone": "Téléphone",
+  "Image viewer": "Visionneuse d’images",
+  "Break": "Pause",
+  "Nana’s little workshop": "Le petit atelier de Nana",
   "Illustration incoming": "Illustration à venir",
   "Little games to create, explore and take a break. Click a card to start.": "Des petits jeux pour créer, explorer et faire une pause. Clique sur une carte pour commencer.",
   "Play, compose and download your music with the keyboard and mini DAW.": "Joue, compose et télécharge ta musique avec le clavier et le mini DAW.",

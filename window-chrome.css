@@ -1,0 +1,75 @@
+/* The same compact header on portfolio windows, games and secondary dialogs. */
+@font-face{font-family:NanaWindow;src:url('assets/fonts/NanaTraceUI-Regular.woff2') format('woff2');font-display:swap}
+:root{--nana-titlebar-height:46px}
+html body :is(#window,#special-window,#nana-dreamlab-window,#coloring-overlay,#nana-admin-dialog,#nana-discovery-dialog,#work-break-nudge,.mv-lightbox,#viewer,#player) .nana-window-bar{
+  box-sizing:border-box!important;position:relative!important;inset:auto!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  gap:8px!important;width:100%!important;height:var(--nana-titlebar-height)!important;
+  min-height:var(--nana-titlebar-height)!important;max-height:var(--nana-titlebar-height)!important;
+  flex:0 0 var(--nana-titlebar-height)!important;padding:0 8px 0 12px!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:#ffe7e9!important;color:#ff173b!important;
+  box-shadow:none!important;transform:none!important;overflow:hidden!important;
+  font:16px/1.2 NanaWindow,'Comic Sans MS',cursive!important;letter-spacing:0!important;text-align:left!important;
+}
+html body .nana-window-bar::before,html body .nana-window-bar::after{content:none!important;display:none!important}
+html body .nana-window-bar .nana-window-heart{
+  display:block!important;width:19px!important;height:19px!important;flex:0 0 19px!important;
+  object-fit:contain!important;margin:0!important;pointer-events:none!important;
+}
+html body :is(#window,#special-window,#nana-dreamlab-window,#coloring-overlay,#nana-admin-dialog,#nana-discovery-dialog,#work-break-nudge,.mv-lightbox,#viewer,#player) .nana-window-bar .nana-window-title{
+  order:0!important;display:block!important;flex:0 1 auto!important;min-width:0!important;
+  margin:0 auto 0 0!important;padding:0!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important;text-align:left!important;text-transform:none!important;color:#ff173b!important;
+  font:inherit!important;letter-spacing:0!important;font-weight:400!important;
+}
+.nana-window-title::after{content:attr(data-extension)}
+html body :is(#window,#special-window,#nana-dreamlab-window,#coloring-overlay,#nana-admin-dialog,#nana-discovery-dialog,#work-break-nudge,.mv-lightbox,#viewer,#player) .nana-window-bar .nana-window-close{
+  box-sizing:border-box!important;position:relative!important;inset:auto!important;order:1!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 36px!important;
+  width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;
+  max-width:36px!important;max-height:36px!important;padding:0!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  clip-path:none!important;transform:none!important;cursor:pointer!important;overflow:visible!important;
+}
+html body .nana-window-close::before,html body .nana-window-close::after{content:none!important;display:none!important}
+html body .nana-window-close>.sketch-ui-svg{display:none!important}
+html body .nana-window-close>.nana-close-art{
+  display:block!important;position:static!important;inset:auto!important;transform:none!important;
+  width:32px!important;height:32px!important;min-width:0!important;min-height:0!important;
+  max-width:none!important;max-height:none!important;object-fit:contain!important;pointer-events:none!important;
+}
+html body .nana-window-close:hover{filter:drop-shadow(0 0 2px #ff173b70)}
+html body .nana-window-close:focus-visible{outline:2px solid #ff173b!important;outline-offset:1px!important}
+html body .nana-window-bar.sketch-ui-rule>.sketch-ui-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;pointer-events:none!important;z-index:2}
+html body .nana-window-bar .sketch-ui-ink{stroke:#ff173b!important;fill:none!important;stroke-width:1.5!important}
+/* This title bar replaces both the old floating close button and iframe chrome. */
+html body #app #special-shade #special-close{position:relative!important;inset:auto!important;display:flex!important}
+html body #special-window{position:relative;display:flex;flex-direction:column;max-width:100%;max-height:var(--nana-window-available-height);min-width:0;min-height:0;overflow:hidden}
+html body #special-window:has(.phone-device){min-width:min(280px,100%)}
+html body #special-window>#special-host{flex:0 1 auto;min-height:0}
+html body #special-shade.polaroids-floating #special-window{width:100%;height:var(--nana-window-available-height)}
+html body #special-shade:not(.polaroids-floating):not(.tamagotchi-open) #special-window:not(:has(.phone-device)){background:#fffdf7}
+html body #special-host>iframe{border-radius:0!important;box-shadow:none!important}
+/* Inner game controls remain available; only duplicated window chrome is hidden. */
+html.nana-embedded-latte .bar{display:none!important}
+html.nana-embedded-latte .window{border:0!important;box-shadow:none!important}
+html.nana-embedded-latte .window>.latte-trace-svg{display:none!important}
+html.nana-embedded-tamagotchi .hit.close{display:none!important}
+html.nana-embedded-dressup .top .brand,html.nana-embedded-dressup .top #close{display:none!important}
+html.nana-embedded-dressup .top{background:transparent!important;border:0!important;box-shadow:none!important;justify-content:flex-end!important}
+html.nana-embedded-dressup .frame{border:0!important;border-radius:0!important;box-shadow:none!important}
+/* Small dialogs keep their title bar visible while their content scrolls. */
+html body #nana-discovery-dialog[open]{display:flex;flex-direction:column;overflow:hidden!important}
+html body #nana-discovery-dialog>.nana-discovery-inside{min-height:0;overflow-y:auto}
+html body #nana-admin-dialog>.nana-window-bar{position:sticky!important;top:0!important;z-index:10}
+html body #work-break-nudge .wb-card{padding:0 0 20px;transform:none;max-height:var(--nana-window-available-height)}
+html body #work-break-nudge .wb-card>.nana-window-bar{position:sticky!important;top:0!important;z-index:10}
+html body #work-break-nudge .wb-card>.wb-heading{margin-top:16px}
+@media(max-width:760px){html body .nana-window-bar{font-size:14px!important}}
+
+html body .nana-window-title .lena-heart{display:none!important}
+html body #player{flex-direction:column;gap:0;padding:0!important;overflow:hidden}
+html body #player .nana-player-content{display:flex;align-items:center;gap:12px;width:100%;padding:12px;box-sizing:border-box}
+html body :is(#nana-dreamlab-window,#special-window).sketch-ui-frame{border-color:transparent!important}
+html body :is(#nana-dreamlab-window,#special-window).sketch-ui-frame>.sketch-ui-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+html body #special-window:is(:has(.phone-device),:has(.tama-frame),:has(iframe[src*="polaroids"]))>.sketch-ui-svg{display:none!important}
