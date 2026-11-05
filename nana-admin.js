@@ -96,8 +96,24 @@
     }
     return result;
   }
-  function downloadSettings() {
-    const payload={version:1,exportedAt:new Date().toISOString(),repository:REPO,settings:readSettings()};
+  async function downloadSettings() {
+    let photos=photoDraft;
+    try {
+      if(!photos) {
+        const saved=localStorage.getItem(PHOTO_DRAFT);
+        if(saved) photos=JSON.parse(saved);
+      }
+      if(!photos) {
+        const response=await fetch('content/polaroids.json',{cache:'no-store'});
+        if(!response.ok) throw new Error('Chargement des photos impossible.');
+        photos=(await response.json()).photos;
+      }
+      if(!Array.isArray(photos)) throw new Error('Format des photos invalide.');
+    } catch(error) {
+      alert('Export interrompu : '+error.message+' Les photos doivent être incluses dans la sauvegarde.');
+      return;
+    }
+    const payload={version:1,exportedAt:new Date().toISOString(),repository:REPO,settings:readSettings(),polaroids:{photos}};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
@@ -265,9 +281,9 @@
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
       '<div class="nana-admin-divider"><strong>Enregistrer et publier</strong>' +
-      '<p class="nana-admin-note">Chaque éditeur sauvegarde d’abord les positions dans ce navigateur. Exporte-les en sauvegarde, ou publie-les avec une autorisation GitHub pour les rendre visibles par tous.</p>' +
+      '<p class="nana-admin-note">Les réglages et les photos sont d’abord sauvegardés dans ce navigateur. Exporte-les ensemble en sauvegarde, ou publie-les avec une autorisation GitHub pour les rendre visibles par tous.</p>' +
       '<div class="nana-admin-actions">' +
-      '<button class="nana-admin-action" id="nana-admin-export">Exporter les réglages (.json)</button>' +
+      '<button class="nana-admin-action" id="nana-admin-export">Exporter réglages et photos (.json)</button>' +
       '<button class="nana-admin-action nana-admin-primary" id="nana-admin-publish-toggle">Publier sur le site</button>' +
       '</div><div id="nana-admin-publish-box" hidden>' +
       '<p>Utilise un jeton d’accès personnel GitHub <strong>fine-grained</strong>, limité à <strong>Portfolio-chambre</strong>, autorisation <strong>Contents: Read and write</strong>. Ne saisis jamais ton mot de passe GitHub.</p>' +
