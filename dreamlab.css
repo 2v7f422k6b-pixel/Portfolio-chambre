@@ -597,3 +597,14 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-artboard #dl-faders .ml-draggable-fader::before{display:none!important;}
 .ml-artboard #dl-faders .ml-draggable-fader::after{z-index:4!important;}
 @media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.15vw,8px)!important}.ml-mood-prompt{font-size:clamp(4px,1vw,7px)!important}}
+
+/* Hand-drawn mini DAW and enlarged, borderless Mimilab illustration. */
+.dl-hardware{border:0!important;box-shadow:none!important;background:transparent!important;padding:0!important;margin:0!important;}
+.dl-hardware::after{display:none!important;}
+.dl-illustrated .ml-art-scroll{border:0!important;padding:0!important;}
+.dl-illustrated .ml-artboard{max-width:100%!important;}
+.dl-daw{border:3px solid #f10b39!important;border-radius:0!important;clip-path:polygon(0.25% 0%,99.5% .3%,100% 99.6%,.2% 100%,0% 1%)!important;box-shadow:3px 4px 0 #e9a4c3!important;}
+.dl-daw button,.dl-daw .dl-track,.dl-daw .dl-track-number,.dl-daw #dl-track-count{border-radius:0!important;clip-path:polygon(1% 0%,98% 1%,100% 95%,2% 100%,0% 5%)!important;}
+/* Draw one clean fader bed with four rails; cover original painted fader squares. */
+.ml-artboard #dl-faders::before{left:67.3%!important;top:9.4%!important;width:25.1%!important;height:24.4%!important;background:#ff97c2!important;background-image:linear-gradient(#ed0038,#ed0038),linear-gradient(#ed0038,#ed0038),linear-gradient(#ed0038,#ed0038),linear-gradient(#ed0038,#ed0038)!important;background-size:1.1% 78%,1.1% 78%,1.1% 78%,1.1% 78%!important;background-position:12% 50%,37% 50%,62% 50%,87% 50%!important;background-repeat:no-repeat!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{width:85%!important;height:9%!important;background:#f50035!important;}
