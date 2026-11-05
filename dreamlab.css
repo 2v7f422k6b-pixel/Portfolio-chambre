@@ -739,3 +739,16 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
   .dl-app{width:calc(100% - 40px)!important;max-width:1600px!important}
   .dl-workspace{grid-template-columns:minmax(0,2.15fr) minmax(330px,1fr)!important;gap:16px!important}
 }
+
+/* Landscape tablet: give the illustrated keyboard most of the viewport.
+   No transform scaling: hit targets remain aligned with the drawing. */
+@media (orientation:landscape) and (min-width:900px) and (pointer:coarse){
+  .dl-app{width:calc(100vw - 20px)!important;max-width:none!important;margin:0 auto!important}
+  .dl-workspace{grid-template-columns:minmax(0,1fr) 290px!important;gap:10px!important}
+  .dl-instrument,.dl-hardware{width:100%!important;max-width:none!important}
+  .dl-hardware{padding-left:5px!important;padding-right:5px!important}
+  .dl-illustrated .ml-art-scroll{width:100%!important;max-width:none!important}
+  .dl-illustrated .ml-art-scroll>.ml-artboard{width:100%!important;max-width:none!important;aspect-ratio:1536 / 922!important;transform:none!important}
+  .dl-daw{width:290px!important;min-width:0!important;padding:10px!important}
+  .dl-transport{flex-wrap:wrap!important}
+}
