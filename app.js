@@ -67,8 +67,10 @@ function applyTheme(theme){
  try {
    const transition=(document.startViewTransition?document.startViewTransition.bind(document):roomSnapshotTransition)(async()=>{
      applyThemeInstant(target);
-     // Theme observers update SVG sources and decorative layers on animation frames.
-     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+     // View Transitions suspend rendering while this callback runs. Waiting for
+     // animation frames here can hit the browser timeout and skip the fade.
+     // A task lets theme MutationObservers settle without waiting for a paint.
+     await new Promise(resolve=>setTimeout(resolve,0));
      const scene=document.getElementById('play-scene');
      if(scene) {
        const images=[...scene.querySelectorAll('img')];
@@ -95,9 +97,12 @@ function roomSnapshotTransition(update) {
  const snapshot=scene.cloneNode(true);
  const originals=[scene,...scene.querySelectorAll('*')],copies=[snapshot,...snapshot.querySelectorAll('*')];
  const properties=['opacity','filter','fill','fill-opacity','stroke','stroke-opacity','stroke-width','color','background-color','background-image','box-shadow','text-shadow','visibility','display','mix-blend-mode','stop-color','stop-opacity'];
- originals.forEach((original,index)=>{
-   const copy=copies[index],style=getComputedStyle(original);
-   for(const property of properties)copy.style.setProperty(property,style.getPropertyValue(property),'important');
+ const frozenStyles=originals.map(original=>{
+   const style=getComputedStyle(original);
+   return properties.map(property=>style.getPropertyValue(property));
+ });
+ copies.forEach((copy,index)=>{
+   properties.forEach((property,p)=>copy.style.setProperty(property,frozenStyles[index][p],'important'));
    copy.style.setProperty('transition','none','important');
    copy.style.setProperty('animation','none','important');
  });
@@ -114,7 +119,7 @@ function roomSnapshotTransition(update) {
  snapshot.style.setProperty('transform','scale('+(rect.width/scene.offsetWidth)+','+(rect.height/scene.offsetHeight)+')','important');
  layer.appendChild(snapshot);document.body.appendChild(layer);
  const finished=Promise.resolve().then(update).then(()=>{
-   const animation=layer.animate([{opacity:1},{opacity:0}],{duration:1000,easing:'ease-in-out',fill:'forwards'});
+   const animation=layer.animate([{opacity:1},{opacity:0}],{duration:1800,easing:'cubic-bezier(.42,0,.25,1)',fill:'forwards'});
    return animation.finished;
  }).finally(()=>layer.remove());
  return {finished};
