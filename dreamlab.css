@@ -857,3 +857,13 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
   .dl-daw.dl-recorder{order:1!important;width:100%!important;height:auto!important;min-height:0!important;align-self:auto!important;flex:none!important}
   .dl-daw .dl-transport{margin-top:12px!important}
 }
+
+/* Portrait embedded popup: enforce a single column regardless of iframe media-query quirks. */
+html.dl-force-portrait,html.dl-force-portrait body{overflow-x:hidden!important}
+html.dl-force-portrait .dl-app{width:calc(100% - 18px)!important;max-width:100%!important;height:auto!important;min-height:0!important}
+html.dl-force-portrait .dl-workspace{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;overflow:visible!important;height:auto!important}
+html.dl-force-portrait .dl-instrument{display:flex!important;position:relative!important;order:0!important;width:100%!important;height:auto!important;min-height:0!important;visibility:visible!important;opacity:1!important;transform:none!important}
+html.dl-force-portrait .dl-hardware.dl-illustrated{display:block!important;width:100%!important;height:auto!important;min-height:0!important;overflow:visible!important}
+html.dl-force-portrait .dl-illustrated .ml-art-scroll{display:block!important;width:100%!important;height:auto!important;overflow:hidden!important}
+html.dl-force-portrait .dl-illustrated .ml-art-scroll>.ml-artboard{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1580 / 1000!important;transform:none!important}
+html.dl-force-portrait .dl-daw.dl-recorder{order:1!important;width:100%!important;min-width:0!important;height:auto!important;min-height:0!important}
