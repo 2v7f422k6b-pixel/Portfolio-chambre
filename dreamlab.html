@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-original-layers">
-<script src="dreamlab.js?v=20261105-original-layers" defer></script>
+<link rel="stylesheet" href="dreamlab.css?v=20261105-geometry-fix">
+<script src="dreamlab.js?v=20261105-geometry-fix" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
 <body data-mood="dreamy">
@@ -117,13 +117,13 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const board=document.querySelector('.ml-artboard');if(!board)return;
  const put=(tag,cls,x,y,w,h,fr,en,fn)=>{
-  const el=document.createElement(tag);el.className=cls;el.style.cssText='left:'+(x/1580*100)+'%;top:'+(y/1000*100)+'%;width:'+(w/1580*100)+'%;height:'+(h/1000*100)+'%;';
+  const el=document.createElement(tag);el.className=cls;el.style.cssText='left:'+(x/1536*100)+'%;top:'+(y/922*100)+'%;width:'+(w/1580*100)+'%;height:'+(h/1000*100)+'%;';
   el.dataset.fr=fr;el.dataset.en=en;el.textContent=document.documentElement.lang==='en'?en:fr;
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
  const modes=[['chord','chords','chords'],['arp','arp','arp'],['single','notes','notes'],['loop','loop','loop']];
- const positions=[[111,69],[211,69],[111,149],[211,149]];
- const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],76,42,fr,en,()=>{
+ const positions=[[241,116],[324,116],[241,176],[324,176]];
+ const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],58,37,fr,en,()=>{
   if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
   document.querySelector('.dl-play-mode[data-play-mode="'+mode+'"]')?.click();
  }));
@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   buttons.forEach(b=>b.textContent=english?b.dataset.en:b.dataset.fr);
  }
  const knobs=[['filtre','filter'],['réson.','reson.'],['attaque','attack'],['relâche','release'],['écho','echo'],['vibrato','vibrato'],['tempo','tempo'],['éclat','sparkle']];
- const knobXs=[557,698,836,977];knobs.forEach(([fr,en],i)=>put('span','ml-control-caption ml-knob-caption',knobXs[i%4]-52,i<4?168:303,104,31,fr,en));
+ const knobXs=[601,717,835,954];knobs.forEach(([fr,en],i)=>put('span','ml-control-caption ml-knob-caption',knobXs[i%4]-41,i<4?165:282,82,24,fr,en));
  const pads=[['kick','kick'],['clap','clap'],['charley','hi-hat'],['basse','bass'],['arpège','arp'],['nappe','pad'],['éclat','sparkle'],['percu','perc']];
- const padXs=[365,502,643,783,922,1058,1198,1340];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],429,106,29,fr,en));
+ const padXs=[435,554,673,790,908,1026,1145,1262];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],391,86,25,fr,en));
  const moods=['dreamy','melancholic','strange','joyful'];
- const display=put('span','ml-mood-display',348,84,136,39,'rêveuse','dreamy');
- put('span','ml-mood-prompt',348,149,136,27,'choose your mood','choose your mood');
- const cycle=put('button','ml-mood-cycle',383,257,74,74,'','',()=>{
+ const display=put('span','ml-mood-display',433,127,96,32,'rêveuse','dreamy');
+ put('span','ml-mood-prompt',418,183,126,23,'humeur','mood');
+ const cycle=put('button','ml-mood-cycle',451,227,55,58,'','',()=>{
   const current=document.querySelector('.dl-mood.active')?.dataset.mood;
   const next=moods[(moods.indexOf(current)+1)%moods.length];
   document.querySelector('.dl-mood[data-mood="'+next+'"]')?.click();refreshMood();
