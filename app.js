@@ -244,6 +244,7 @@ function closeWindow(){
 }
 let polaroidAudio=null;
 function closeSpecial(){
+ specialShade.classList.remove('tamagotchi-open');
  specialShade.classList.remove('polaroids-floating');
  if(polaroidAudio){polaroidAudio.close().catch(()=>{});polaroidAudio=null;}
  specialShade.hidden=true;
@@ -533,8 +534,8 @@ function phoneMail(){
  kb.append(end);
 }
 function showTamagotchi(){
- closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261103-i18n-5" allow="autoplay"></iframe>';
+ closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
+ specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261105-transparent-frame-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
   closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';

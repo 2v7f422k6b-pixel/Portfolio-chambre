@@ -617,3 +617,10 @@ html.nana-room-theme-transition #play-scene *::after {
  ::view-transition-old(nana-room-scene),
  ::view-transition-new(nana-room-scene){animation:none!important;}
 }
+
+/* The illustrated egg supplies its own outline and close button. */
+#special-shade.tamagotchi-open #special-host,
+#special-shade.tamagotchi-open iframe.tama-frame {
+ background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important;border-radius:0!important;
+}
+#special-shade.tamagotchi-open #special-close {display:none!important;}
