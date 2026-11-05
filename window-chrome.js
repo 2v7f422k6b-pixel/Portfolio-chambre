@@ -84,7 +84,7 @@
         decorate(viewer, doc.getElementById('viewer-label'), doc.getElementById('viewer-close'));
         if (viewer && !doc.getElementById('nana-embedded-trace')) {
           const trace = doc.createElement('script'); trace.id = 'nana-embedded-trace';
-          trace.src = new URL('sketch-ui.js?v=20261105-unified-1', base).href;
+          trace.src = new URL('sketch-ui.js?v=20261105-all-lines-1', base).href;
           doc.head.append(trace);
         }
       } catch (_) { /* Cross-origin media never receives DOM modifications. */ }

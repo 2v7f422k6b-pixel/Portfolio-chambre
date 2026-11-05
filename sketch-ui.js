@@ -1,7 +1,10 @@
 /* Hand-traced chrome: soft, deterministic strokes, never applied to artwork. */
 (() => {
   'use strict';
+  if (window.NanaSketchUI) return;
+  window.NanaSketchUI = {version:'20261105-all-lines-1'};
   const NS = 'http://www.w3.org/2000/svg';
+  const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
     ['#nana-admin-dialog .nana-photo-editor', 'frame', 1101],
@@ -93,6 +96,45 @@
     ['.coloring-overlay .coloring-panel', 'frame', 981],
     ['.mv-lightbox', 'frame', 991]
   ];
+  // Audited interface components. Read their actual border sides so responsive
+  // separators remain on the correct edge. Never traverse artwork or canvases.
+  const remaining = [
+    '#menubar', '#menubar button:not(.nana-window-close)', '.welcome-foot',
+    '.dock-tooltip', '#toast', '#work-desktop .desk-extra',
+    '#window-content .search', '#window-content .info-box', '#window-content .empty-state',
+    '#window-content .gearnews-ring-episode', '#window-content .gearnews-ring-preview',
+    '#window-content .mini-game-placeholder', '#window-content .library-toolbar',
+    '.book-reader-header', '.book-reader-footer', '.book-reader-actions button',
+    '.book-reader-loader button', '.book-side-arrow', '.book-meter',
+    '#pages-library .pages-masthead', '#pages-library .pages-kicker', '#pages-library .pages-feature',
+    '#pages-library .pages-footer', '#pages-library .pages-view button',
+    '.mv-brand-icon', '.mv-sidebar-foot', '.mv-square', '.mv-feature',
+    '.mv-feature-main-art', '.mv-feature-secondary-art', '.mv-primary-action',
+    '.mv-bottom-picture', '.mv-now-controls button', '.mv-project-hero', '.mv-project-hero-art',
+    '.mv-fav-outline', '.mv-list-header', '.mv-empty', '.mv-lightstage figure', '.mv-light-arrow',
+    '.mv-lightcaption', '.mv-mobile-nav', '.mv-mobile-nav button',
+    '.motion-reels-center-play', '.motion-reels-loading', '.motion-reels-empty', '.motion-reels-drawer-top button',
+    '.lit-reader-index', '.lit-archive-search', '.lit-index-item',
+    '#player', '#player .player-buttons button',
+    '.phone-bar', '.phone-fields label', '.phone-contact-card', '.phone-compose input',
+    '.phone-compose textarea', '.phone-keyrow button',
+    '#nana-admin-dialog', '#nana-admin-dialog input:not([type=range]):not([type=file])',
+    '#nana-admin-dialog textarea', '#nana-admin-dialog select',
+    '#nana-admin-dialog .nana-admin-divider', '#nana-admin-dialog .nana-admin-note',
+    '#work-break-nudge .wb-card', '#work-break-nudge .wb-actions button',
+    '#nana-discovery-dialog .nana-discovery-continue',
+    // Dress-up document: panel edges, inventory controls and profile separators.
+    '.frame .panel', '.frame .action', '.frame .tab', '.frame .item', '.frame .preset',
+    '.frame .identity', '.frame .line', '.frame .meter', '.frame .quest',
+    '.frame .stage-foot', '.frame .tabs', '.frame .smallnote', '.frame .toast',
+    // Studio controls; the drawn keyboard, pads, faders and waveform are content.
+    '.dl-daw .dl-track', '.dl-daw .dl-track-number', '.dl-daw button', '#dl-track-count',
+    '.dl-daw .dl-track-head', '.dl-daw .dl-section-head', '.dl-daw .dl-track-list',
+    '.dl-back', '.dl-language', '.dl-audio-enable'
+  ].join(',');
+  targets.push(['.dl-daw','frame',1201]);
+  targets.push(['#pages-library .pages-cover-lines','double-frame',1202]);
+  targets.push(['#window-content .lit-index-item','frame',1203]);
   let serial = 0;
   const redrawn = new WeakMap();
 
@@ -111,6 +153,8 @@
   // Short quadratic sections preserve crisp corners while keeping each
   // horizontal and vertical stroke slightly different, like a stylus trace.
   function makePath(width, height, seed, kind, variation, inset = 0) {
+    if (kind.startsWith('edges:')) return kind.slice(6).split(',').map((side,i) =>
+      makePath(width,height,seed+i*73,{top:'top-rule',right:'vertical-rule',bottom:'rule',left:'left-rule'}[side],variation,inset)).join(' ');
     const random = rng(seed);
     const pad = 1.5 + inset;
     const left = pad, top = pad;
@@ -136,8 +180,8 @@
           + ' ' + round(endX) + ' ' + round(endY);
       }
     }
-    if (kind === 'vertical-rule') {
-      const x = Math.max(1,width-2.6);
+    if (kind === 'vertical-rule' || kind === 'left-rule') {
+      const x = kind === 'left-rule' ? 2 : Math.max(1,width-2.6);
       d = 'M ' + round(x) + ' ' + round(top);
       edge(x,top,x,bottom,false);
       return d;
@@ -163,7 +207,28 @@
   }
 
   function attach(element, kind, seed) {
-    if (redrawn.has(element)) return;
+    const previous = redrawn.get(element);
+    if (previous) {
+      // Dynamic button labels and translated content can replace the SVG child.
+      if (previous.svg && previous.svg.parentNode !== element) {
+        element.appendChild(previous.svg);
+        previous.previousWidth=0; draw(previous);
+      }
+      return;
+    }
+    const nativeField = element.matches('input,textarea,select');
+    const nativeBackground = nativeField ? getComputedStyle(element).backgroundImage : null;
+    element.style.setProperty('border-color','transparent','important');
+    element.style.setProperty('border-image','none','important');
+    element.style.setProperty('outline','none','important');
+    element.classList.add('nana-traced-ui');
+    if (nativeField) {
+      // Native fields cannot render SVG children. Paint the same path behind the
+      // text, preserving their dimensions, focus, selection and form behavior.
+      element.classList.add('sketch-ui-field');
+      const item={element,svg:null,kind,seed,nativeBackground,previousWidth:0,previousHeight:0};
+      redrawn.set(element,item);return item;
+    }
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
@@ -183,44 +248,94 @@
     svg.style.display='block';
     element.appendChild(svg);
     if(getComputedStyle(element).position==='static')element.style.position='relative';
-    element.classList.add(kind === 'rule' || kind === 'top-rule' || kind === 'vertical-rule' ? 'sketch-ui-rule' : 'sketch-ui-frame');
+    element.classList.add(kind.includes('rule') || kind.startsWith('edges:') ? 'sketch-ui-rule' : 'sketch-ui-frame');
     const item = {element, svg, ink, innerInk, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
   }
 
-  const items = [];
+  let items = [];
   const observer = 'ResizeObserver' in window ? new ResizeObserver(entries => {
     for (const entry of entries) { const item = redrawn.get(entry.target); if (item) draw(item); }
   }) : null;
   function scan(){
+    items=items.filter(item=>{if(item.element.isConnected)return true;observer?.unobserve(item.element);return false;});
     for(const [selector,kind,base] of targets){
       document.querySelectorAll(selector).forEach((element,index)=>{
         const item=attach(element,kind,base+index*131+(++serial*7));
         if(item){items.push(item);observer?.observe(element);draw(item);}
       });
     }
+    document.querySelectorAll(remaining).forEach((element,index)=>{
+      if(redrawn.has(element)){attach(element);return;}
+      if(element.closest('.nana-window-close,svg,.ml-artboard') || !element.getClientRects().length)return;
+      const style=getComputedStyle(element);
+      const hasImage=style.borderImageSource!=='none';
+      const sides=['top','right','bottom','left'].filter(side=>{
+        const suffix=side[0].toUpperCase()+side.slice(1);
+        const color=style['border'+suffix+'Color'];
+        return parseFloat(style['border'+suffix+'Width'])>0 && style['border'+suffix+'Style']!=='none' &&
+          (hasImage || (color!=='transparent' && color!=='rgba(0, 0, 0, 0)'));
+      });
+      if(!sides.length)return;
+      const item=attach(element,sides.length===4?'frame':'edges:'+sides.join(','),1501+index*43);
+      if(item){items.push(item);observer?.observe(element);draw(item);}
+    });
+    document.querySelectorAll('iframe').forEach(connectFrame);
   }
   function draw(item) {
     const width=item.element.offsetWidth,height=item.element.offsetHeight;
-    if(width<18||height<12)return;
+    if(width<8||height<4)return;
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
+    if(!item.svg){
+      const path=makePath(width,height,item.seed,item.kind,1.15);
+      const image='<svg xmlns="'+NS+'" width="'+width+'" height="'+height+'" viewBox="0 0 '+width+' '+height+'"><path d="'+path+'" fill="none" stroke="#ff173b" stroke-width="1.5"/></svg>';
+      const background='url("data:image/svg+xml,'+encodeURIComponent(image)+'")';
+      item.element.style.setProperty('background-image',background+(item.nativeBackground==='none'?'':','+item.nativeBackground),'important');
+      item.element.style.setProperty('background-size','100% 100%','important');
+      item.element.style.setProperty('background-origin','border-box','important');
+      item.element.style.setProperty('background-clip','border-box','important');
+      item.element.style.setProperty('background-repeat','no-repeat','important');
+      return;
+    }
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
     const variation=item.element.closest('#nana-discovery-dialog') ? 1.55 : (item.element.closest('#nana-do-nothing') ? 1.45 : (item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05))))));
     item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
     if (item.innerInk) item.innerInk.setAttribute('d',makePath(width,height,item.seed+53,'frame',variation*.72,7));
+  }
+  const frames=new WeakSet();
+  function connectFrame(frame){
+    if(frames.has(frame)||!/(?:about-me\.html|dreamlab\.html|(?:latte|coloring-book|polaroids)\/index\.html)(?:[?#]|$)/.test(frame.getAttribute('src')||''))return;
+    frames.add(frame);
+    const install=()=>{
+      try{
+        const doc=frame.contentDocument;
+        if(!doc?.head||doc.URL==='about:blank')return;
+        if(!doc.getElementById('nana-complete-lines-style')){
+          const css=doc.createElement('link');css.id='nana-complete-lines-style';css.rel='stylesheet';
+          css.href=new URL('sketch-lines.css?v=20261105-all-lines-1',scriptBase).href;doc.head.append(css);
+        }
+        // Latte and coloring already own complete hand-traced drawing engines.
+        if(!/(?:about-me\.html|dreamlab\.html|polaroids\/index\.html)(?:[?#]|$)/.test(frame.getAttribute('src')||''))return;
+        if(!frame.contentWindow.NanaSketchUI&&!doc.getElementById('nana-complete-lines-script')){
+          const script=doc.createElement('script');script.id='nana-complete-lines-script';script.src=scriptBase;doc.head.append(script);
+        }
+      }catch(_){/* Never style an external video or other cross-origin document. */}
+    };
+    frame.addEventListener('load',install);install();
   }
   scan();
   // Modal contents are created after page load; trace those when they appear.
   let queued=false;
   const mutation=new MutationObserver(records=>{
     // Our own SVG insertion is not a reason to rescan the whole document.
-    if(!records.some(record=>[...record.addedNodes].some(node=>node.nodeType===1 && !node.classList?.contains('sketch-ui-svg'))))return;
+    if(!records.some(record=>(record.type==='attributes' && (record.attributeName!=='class' || record.target.matches(remaining+',#app,#menubar,#window-shade,#special-shade'))) || [...record.addedNodes].some(node=>node.nodeType===1 && !node.closest?.('svg')) || [...record.removedNodes].some(node=>node.classList?.contains('sketch-ui-svg'))))return;
     if(queued)return;queued=true;
     requestAnimationFrame(()=>{queued=false;scan();});
   });
-  mutation.observe(document.body,{childList:true,subtree:true});
+  mutation.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','open','aria-pressed','class']});
+  window.addEventListener('resize',()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;scan();});}},{passive:true});
   if(!observer)window.addEventListener('resize',()=>items.forEach(draw),{passive:true});
 })();
 

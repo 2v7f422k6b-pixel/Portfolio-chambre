@@ -1,0 +1,36 @@
+/* Only interface strokes. Original artwork, the book pages and instrument
+   illustration never receive filters, distortion or regenerated contours. */
+html body .nana-traced-ui{border-color:transparent!important;border-image:none!important;outline:none!important;border-radius:0!important}
+html body .nana-traced-ui>.sketch-ui-svg{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  display:block!important;pointer-events:none!important;overflow:visible;z-index:5;
+}
+html body .nana-traced-ui>.sketch-ui-svg>.sketch-ui-ink{
+  stroke:#ff173b;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:miter;
+  vector-effect:non-scaling-stroke;pointer-events:none;
+}
+html body .nana-traced-ui:focus-visible>.sketch-ui-svg>.sketch-ui-ink{stroke-width:2.5;filter:drop-shadow(0 0 2px #ff173b70)}
+html body .sketch-ui-field:focus-visible{filter:drop-shadow(0 0 2px #ff173b80)}
+html body .nana-window-close:focus-visible{outline:none!important;filter:drop-shadow(0 0 3px #ff173b)}
+/* Remove old straight rims and pseudo-frame duplicates on the audited surfaces. */
+html body :is(#player,.desk-extra,.info-box,.empty-state,.book-reader-actions button,.book-side-arrow,.mv-feature,.mv-primary-action,.mv-now-controls button,.mv-list-header,.mv-empty,.mv-lightbox,.wb-card,.nana-admin-note,.dl-daw,.dl-track).nana-traced-ui{box-shadow:none!important}
+html body .dl-daw.nana-traced-ui::before{display:none!important}
+html body .dl-daw .nana-traced-ui{clip-path:none!important;box-shadow:none!important}
+html body .dl-daw .dl-track.is-selected{background:#ffe0ea!important}
+html body #pages-library .pages-cover-lines.nana-traced-ui::after{display:none!important}
+html body .nana-window-bar.nana-traced-ui::before,html body .nana-window-bar.nana-traced-ui::after{display:none!important}
+/* Decorative straight grids are also replaced with small, unequal pen curves. */
+html body #pages-library .pages-intro{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='54' height='80'%3E%3Cpath d='M 1 0 Q 2 13 1 27 Q 0 43 1 54 Q 2 68 1 80 M 28 0 Q 27 11 28 25 Q 29 39 28 53 Q 27 68 28 80' stroke='%23ff173b' stroke-opacity='.07' fill='none'/%3E%3C/svg%3E")!important}
+html body .mv-feature::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40'%3E%3Cpath d='M 0 1 Q 14 2 27 1 Q 40 0 54 1 Q 68 2 80 1 M 0 21 Q 15 20 29 21 Q 42 22 56 21 Q 69 20 80 21' stroke='white' stroke-opacity='.1' fill='none'/%3E%3C/svg%3E")!important}
+html body :is(#window-content,#player,#nana-admin-dialog,#nana-discovery-dialog,.frame) a{text-decoration-style:wavy;text-decoration-thickness:1px}
+/* Native focus rings in games are straight rectangles; use their existing
+   traced outline with an extra glow so keyboard focus stays easy to see. */
+html body :is(.latte-traced,.coloring-panel,.nana-traced-ui):focus-visible{outline:none!important;filter:drop-shadow(0 0 2px #ff173b80)}
+html body .frame :is(.panel,.action,.tab,.item,.preset,.toast).nana-traced-ui{box-shadow:none!important}
+/* The DAW volume control keeps its native keyboard and pointer behavior. */
+.dl-daw .dl-track-volume{appearance:none;-webkit-appearance:none;background:transparent;height:22px}
+.dl-daw .dl-track-volume::-webkit-slider-runnable-track{height:8px;border:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='8' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 4 Q14 3 26 4 Q40 5 52 4 Q67 3 78 4 Q89 5 99 4' fill='none' stroke='%23ff173b' stroke-width='2'/%3E%3C/svg%3E") center/100% 8px no-repeat}
+.dl-daw .dl-track-volume::-moz-range-track{height:8px;border:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='8' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 4 Q14 3 26 4 Q40 5 52 4 Q67 3 78 4 Q89 5 99 4' fill='none' stroke='%23ff173b' stroke-width='2'/%3E%3C/svg%3E") center/100% 8px no-repeat}
+.dl-daw .dl-track-volume::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:14px;height:14px;margin-top:-3px;border:0;border-radius:45% 55% 48% 52%;background:#ff173b}
+.dl-daw .dl-track-volume::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:45% 55% 48% 52%;background:#ff173b}
+.dl-daw .dl-track-volume:focus-visible{outline:none;filter:drop-shadow(0 0 2px #ff173b80)}
