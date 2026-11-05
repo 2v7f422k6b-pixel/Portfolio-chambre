@@ -471,7 +471,8 @@ html[data-theme="night"]{
  box-shadow:inset 1px 1px 0 #fff8,inset -2px -2px 0 #39456126;
  display:grid;place-items:center;font:20px/1 "Courier New",monospace;
 }
-.traffic .red::before{content:"×"}
+.traffic .red:not(#window-close)::before{content:"×"}
+#window-close::before,#window-close::after{content:none!important;display:none!important}
 .traffic .yellow::before{content:"−"}
 .traffic .green::before{content:"□"}
 .traffic .dot:hover{background:var(--retro-pink)}
