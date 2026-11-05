@@ -616,3 +616,15 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-artboard #dl-faders .ml-draggable-fader::after{content:""!important;width:90%!important;height:9%!important;background:#f50035!important;border:1px solid #d90032!important;clip-path:polygon(0 8%,20% 1%,52% 4%,83% 0,100% 10%,98% 91%,74% 99%,39% 96%,3% 100%)!important;box-shadow:none!important;}
 /* Draw four rails behind the movable irregular red rectangles. */
 .ml-artboard #dl-faders{background-image:linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a)!important;background-repeat:no-repeat!important;background-size:.28% 19%,.28% 19%,.28% 19%,.28% 19%!important;background-position:71.1% 20%,76.8% 20%,82.6% 20%,88.3% 20%!important;}
+
+/* 2026-11-05: match illustrated controls to their actual PSD coordinates. */
+.ml-drawn-mode{background:transparent!important;outline:none!important;text-decoration:none!important;line-height:1!important;font-size:clamp(5px,.88vw,10px)!important;}
+.ml-drawn-mode.selected{background:transparent!important;text-decoration:none!important;}
+.ml-mood-display{color:#fff!important;text-shadow:0 0 1px #fff!important;font-size:clamp(7px,1.25vw,14px)!important;line-height:1!important;}
+.ml-mood-prompt{color:#ed0038!important;font-size:clamp(5px,.92vw,10px)!important;white-space:nowrap!important;letter-spacing:-.05em!important;}
+/* Remove all artificial fader background patches and rails. Original source
+   illustration is left untouched until the four flattened handles can be erased
+   from the image itself. */
+.ml-artboard #dl-faders::before,.ml-artboard #dl-faders .ml-draggable-fader::before{content:none!important;display:none!important;}
+.ml-artboard #dl-faders{background:none!important;background-image:none!important;}
+@media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.1vw,8px)!important}.ml-mood-display{font-size:clamp(7px,1.55vw,11px)!important}.ml-mood-prompt{font-size:clamp(5px,1.13vw,8px)!important}}
