@@ -573,3 +573,11 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  pointer-events:none;
 }
 .ml-artboard #dl-faders .ml-draggable-fader input{pointer-events:none!important;}
+
+/* Hand-drawn, irregular bright-red rectangular fader caps (not iridescent). */
+.ml-artboard #dl-faders .ml-draggable-fader::after{
+ width:94%!important;height:10%!important;border-radius:0!important;
+ background:#f50035!important;border:2px solid #d90032!important;
+ clip-path:polygon(1% 7%,19% 2%,44% 5%,69% 0%,98% 6%,100% 31%,97% 72%,100% 96%,74% 99%,47% 95%,23% 100%,0% 94%,3% 62%,0% 30%)!important;
+ box-shadow:none!important;transform:translate(-50%,-50%) rotate(-1deg)!important;
+}
