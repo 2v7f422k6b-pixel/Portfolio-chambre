@@ -141,7 +141,7 @@
         cell.style.left=xPct(faderX[i]-29);
         cell.style.top=yPct(112);
         cell.style.width=xPct(58);
-        cell.style.height=yPct(120);
+        cell.style.height=yPct(145);
       }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
@@ -152,14 +152,14 @@
         cell.classList.add("ml-draggable-fader");
         const setDrag=(e)=>{
           const box=cell.getBoundingClientRect();
-          const fraction=Math.max(0,Math.min(1,((e.clientY-box.top)/box.height-.18)/.64));
+          const fraction=Math.max(0,Math.min(1,((e.clientY-box.top)/box.height-.15)/.73));
           input.value=String(Math.round((1-fraction)*100));
           input.dispatchEvent(new Event("input",{bubbles:true}));
         };
         cell.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;cell.setPointerCapture(e.pointerId);setDrag(e);e.preventDefault()});
         cell.addEventListener("pointermove",e=>{if(cell.hasPointerCapture(e.pointerId)){setDrag(e);e.preventDefault()}});
-        input.addEventListener("input",()=>cell.style.setProperty("--fader-position",(18+(100-Number(input.value))*.64)+"%"));
-        cell.style.setProperty("--fader-position",(18+(100-f.value)*.64)+"%");
+        input.addEventListener("input",()=>cell.style.setProperty("--fader-position",(15+(100-Number(input.value))*.73)+"%"));
+        cell.style.setProperty("--fader-position",(15+(100-f.value)*.73)+"%");
       }
       if(illustrated){setPosition();cell.append(l,input)}else cell.append(l,input);
       fg.append(cell);
