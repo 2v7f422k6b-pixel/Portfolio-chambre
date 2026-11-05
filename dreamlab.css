@@ -704,3 +704,11 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-artboard #dl-keys .dl-key.white,.ml-artboard #dl-keys .dl-key.black{height:auto;min-height:0!important;border:0!important;border-radius:0!important;}
 .ml-artboard #dl-keys .dl-key.white.pressed{background:rgba(255,89,130,.33)!important;transform:none!important;}
 .ml-artboard #dl-keys .dl-key.black.pressed{background:rgba(255,240,246,.48)!important;transform:none!important;}
+
+/* iPad: the drawing and 25 individually positioned keys MUST share the same 1536×922 coordinate plane. */
+@media(min-width:701px) and (max-width:1366px){
+ .dl-illustrated .ml-art-scroll>.ml-artboard{aspect-ratio:1536 / 922!important;height:auto!important;}
+ .dl-illustrated .ml-artboard>.ml-art-image{inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;}
+ .ml-artboard #dl-keys{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;box-sizing:border-box!important;padding:0!important;margin:0!important;}
+ .ml-artboard #dl-keys .dl-key{box-sizing:border-box!important;padding:0!important;margin:0!important;}
+}
