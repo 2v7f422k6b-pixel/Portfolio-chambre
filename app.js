@@ -59,13 +59,13 @@ function applyTheme(theme){
  const root=document.documentElement;
  if(roomThemeTransition){queuedRoomTheme=target;return;}
  const visible=app?.classList.contains('mode-play');
- if(root.dataset.theme===target||!visible||!document.startViewTransition||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+ if(root.dataset.theme===target||!visible||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
    applyThemeInstant(target);return;
  }
  // Capture the whole composed room, rather than fading each nested layer.
  root.classList.add('nana-room-theme-transition');
  try {
-   const transition=document.startViewTransition(async()=>{
+   const transition=(document.startViewTransition?document.startViewTransition.bind(document):roomSnapshotTransition)(async()=>{
      applyThemeInstant(target);
      // Theme observers update SVG sources and decorative layers on animation frames.
      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
@@ -87,6 +87,37 @@ function applyTheme(theme){
    root.classList.remove('nana-room-theme-transition');roomThemeTransition=null;
    applyThemeInstant(target);
  }
+}
+function roomSnapshotTransition(update) {
+ const scene=document.getElementById('play-scene'),viewport=document.getElementById('play-viewport');
+ if(!scene||!viewport){const finished=Promise.resolve().then(update);return {finished};}
+ const rect=scene.getBoundingClientRect(),view=viewport.getBoundingClientRect();
+ const snapshot=scene.cloneNode(true);
+ const originals=[scene,...scene.querySelectorAll('*')],copies=[snapshot,...snapshot.querySelectorAll('*')];
+ const properties=['opacity','filter','fill','fill-opacity','stroke','stroke-opacity','stroke-width','color','background-color','background-image','box-shadow','text-shadow','visibility','display','mix-blend-mode','stop-color','stop-opacity'];
+ originals.forEach((original,index)=>{
+   const copy=copies[index],style=getComputedStyle(original);
+   for(const property of properties)copy.style.setProperty(property,style.getPropertyValue(property),'important');
+   copy.style.setProperty('transition','none','important');
+   copy.style.setProperty('animation','none','important');
+ });
+ const layer=document.createElement('div');layer.className='nana-room-theme-snapshot';
+ layer.setAttribute('aria-hidden','true');layer.inert=true;
+ layer.style.cssText='position:fixed;pointer-events:none;overflow:hidden;z-index:39;left:'+view.left+'px;top:'+view.top+'px;width:'+view.width+'px;height:'+view.height+'px;';
+ snapshot.style.setProperty('position','absolute','important');
+ snapshot.style.setProperty('left',(rect.left-view.left)+'px','important');
+ snapshot.style.setProperty('top',(rect.top-view.top)+'px','important');
+ snapshot.style.setProperty('width',scene.offsetWidth+'px','important');
+ snapshot.style.setProperty('height',scene.offsetHeight+'px','important');
+ snapshot.style.setProperty('margin','0','important');
+ snapshot.style.setProperty('transform-origin','0 0','important');
+ snapshot.style.setProperty('transform','scale('+(rect.width/scene.offsetWidth)+','+(rect.height/scene.offsetHeight)+')','important');
+ layer.appendChild(snapshot);document.body.appendChild(layer);
+ const finished=Promise.resolve().then(update).then(()=>{
+   const animation=layer.animate([{opacity:1},{opacity:0}],{duration:1000,easing:'ease-in-out',fill:'forwards'});
+   return animation.finished;
+ }).finally(()=>layer.remove());
+ return {finished};
 }
 function applyThemeInstant(theme){
  const night=theme==='night';
