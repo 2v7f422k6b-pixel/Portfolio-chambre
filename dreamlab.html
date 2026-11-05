@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-handdrawn-refine">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-mimi-daw-fader-clean">
 <script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -67,7 +67,7 @@
     </div>
 
     <section class="dl-recorder dl-daw" aria-labelledby="dl-rec-title">
-    <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="mini daw" data-en="mini daw">mini daw</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
+    <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="mimi daw" data-en="mimi daw">mimi daw</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
     <div class="dl-track-heading"><h3 data-fr="mes 5 pistes" data-en="my 5 tracks">mes 5 pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
     <div id="dl-track-list" class="dl-track-list" aria-label="5 pistes d'enregistrement"></div>
     <p class="dl-track-tip" data-fr="appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante." data-en="tap rec to record a track. previous takes play automatically while you record the next.">appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante.</p>
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   el.dataset.fr=fr;el.dataset.en=en;el.textContent=document.documentElement.lang==='en'?en:fr;
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
- const modes=[['chord','chords','chords'],['arp','harp','harp'],['single','notes','notes'],['loop','loop','loop']];
+ const modes=[['chord','chords','chords'],['arp','arp','arp'],['single','notes','notes'],['loop','loop','loop']];
  const positions=[[164,106],[266,106],[164,190],[266,190]];
  const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],82,46,fr,en,()=>{
   if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
