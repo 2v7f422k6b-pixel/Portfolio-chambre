@@ -581,3 +581,19 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  clip-path:polygon(1% 7%,19% 2%,44% 5%,69% 0%,98% 6%,100% 31%,97% 72%,100% 96%,74% 99%,47% 95%,23% 100%,0% 94%,3% 62%,0% 30%)!important;
  box-shadow:none!important;transform:translate(-50%,-50%) rotate(-1deg)!important;
 }
+
+/* Final alignment: labels centered INSIDE the four white drawn buttons. */
+.ml-drawn-mode{font-size:clamp(5px,.85vw,10px)!important;text-decoration:none!important;}
+.ml-drawn-mode.selected{background:transparent!important;text-decoration:underline!important;text-underline-offset:1px!important;}
+.ml-mood-display{font-size:clamp(5px,.9vw,10px)!important;}
+.ml-mood-prompt{font-size:clamp(4px,.74vw,8px)!important;letter-spacing:-.04em!important;}
+/* One seamless repaint hides all four original PSD caps, instead of four visible patches. */
+.ml-artboard #dl-faders::before{
+ content:"";position:absolute;z-index:0;pointer-events:none;
+ left:67.1%;top:10.1%;width:24.3%;height:22.5%;background:#ff97c2;
+ background-image:linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a),linear-gradient(#e9003a,#e9003a);
+ background-repeat:no-repeat;background-size:1.5% 76%,1.5% 76%,1.5% 76%,1.5% 76%;background-position:12% center,36% center,60% center,84% center;
+}
+.ml-artboard #dl-faders .ml-draggable-fader::before{display:none!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{z-index:4!important;}
+@media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.15vw,8px)!important}.ml-mood-prompt{font-size:clamp(4px,1vw,7px)!important}}
