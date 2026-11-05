@@ -535,6 +535,9 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 #window-shade #window-close{background-image:url('assets/ux/close.png')!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;}
 #window-shade #window-maximize{background-image:url('assets/ux/grand.png')!important}
 #window-shade #window-minimize{background-image:url('assets/ux/reduire.png')!important}
+/* Use the actual PNG element instead of relying on the old background sprite crop. */
+#window-shade #window-close{position:relative!important;background-image:none!important;overflow:visible!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+#window-shade #window-close .window-close-art{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;opacity:1!important;visibility:visible!important;pointer-events:none!important;}
 </style>
 
 <style id="handdrawn-navigation-arrows">
@@ -1120,7 +1123,7 @@ html[data-theme="night"] #play-scene .nana-minilab-night { opacity:1; }
           <button id="dock-shop" type="button" title="Shop" aria-label="Shop" onclick="document.getElementById('nana-shop-bag')?.click()"><span class="dock-app shop dock-drawn"><img class="dock-art" src="assets/dock/IMG_5002.png" alt="" aria-hidden="true" draggable="false"></span><span class="dock-tooltip">Shop</span></button>
         </nav>
     </main>
-    <div id="window-shade" hidden><section id="window" class="mac-window" role="dialog" aria-modal="true" aria-labelledby="window-title"><div class="window-top"><div class="traffic"><button id="window-close" class="dot red" aria-label="Close window" title="Close"></button><button id="window-minimize" class="dot yellow" aria-label="Minimize window" title="Minimize"></button><button id="window-maximize" class="dot green" aria-label="Expand window" title="Expand"></button></div><div id="window-title">Portfolio</div><span class="window-end" aria-hidden="true"></span></div><div id="window-content" class="window-content"></div></section></div>
+    <div id="window-shade" hidden><section id="window" class="mac-window" role="dialog" aria-modal="true" aria-labelledby="window-title"><div class="window-top"><div class="traffic"><button id="window-close" class="dot red" aria-label="Close window" title="Close"><img src="assets/ux/close.png" alt="" aria-hidden="true" class="window-close-art"></button><button id="window-minimize" class="dot yellow" aria-label="Minimize window" title="Minimize"></button><button id="window-maximize" class="dot green" aria-label="Expand window" title="Expand"></button></div><div id="window-title">Portfolio</div><span class="window-end" aria-hidden="true"></span></div><div id="window-content" class="window-content"></div></section></div>
     <div id="special-shade" hidden><button id="special-close" aria-label="Close" title="Close">×</button><div id="special-host"></div></div>
     <div id="player" class="player" hidden>
       <div class="player-icon">♫</div><div class="player-info"><strong>Gymnopédie n° 1</strong><span>Erik Satie · Robin Alciatore / Musopen</span><div class="player-progress"><input id="player-seek" type="range" min="0" max="100" value="0" aria-label="Seek in song"><div id="player-times"><span id="elapsed">0:00</span><span id="duration">–:––</span></div></div></div>
