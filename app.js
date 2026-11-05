@@ -282,6 +282,7 @@ function openApp(name,index){
   case 'social':openSocialProjects();break;
   case 'interactive':openInteractiveProjects();break;
   case 'mini-games':openMiniGames();break;
+  case 'mimilab':closeWindow();window.NanaDreamLab?.open();break;
   case 'dressup':openAbout();break;
   case 'photos':openPhotos();break;
   case 'gearnews-series':openGearnewsSeries();break;
@@ -347,7 +348,7 @@ function openFinder(){
    <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
    <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
-   <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Coloring Book, Tamagotchi, Dress-up & Latte Lab</small></button>
+   <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Music, coloring, poetry & little games</small></button>
    <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
   </div>`;
  openWindow('MY PROJECTS',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Browse my illustrated, animated, written projects and more</p>${cards}`,'finder');
@@ -368,44 +369,26 @@ function openSocialProjects(){
  </div>`,'social');
 }
 function openMiniGames(){
- openWindow('MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
-  <div class="eyebrow">WORK MODE / MINI GAMES</div>
-  <h2 id="mini-games-heading">Mini Games</h2>
-  <p class="mini-games-intro">Four little games to explore, color and play with. Click a card to start</p>
-  <div class="mini-game-grid">
-    <button class="mini-game-card" type="button" data-open="coloring" aria-label="Play Coloring Book">
-      <span class="mini-game-preview"><img src="assets/mini-games/mini-game-coloring.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/coloring-book/fleurs.jpg'"></span>
-      <span class="mini-game-name">Coloring Book</span>
-      <span class="mini-game-description">Color five of my drawings using the paint bucket and freehand brush.</span>
-      <span class="mini-game-cta">Play</span>
-    </button>
-    <button class="mini-game-card" type="button" data-open="tamagotchi" aria-label="Play Tamagotchi">
-      <span class="mini-game-preview mini-game-preview--tama"><img src="assets/mini-games/mini-game-tamagotchi.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='tamagotchi/tamagotchi.png'"></span>
-      <span class="mini-game-name">Tamagotchi</span>
-      <span class="mini-game-description">Take care of a tiny digital companion in my little room.</span>
-      <span class="mini-game-cta">Play</span>
-    </button>
-    <button class="mini-game-card" type="button" data-open="latte" aria-label="Play Latte Lab">
-      <span class="mini-game-preview mini-game-preview--latte" aria-hidden="true"><img src="assets/mini-games/mini-game-latte.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
-      <span class="mini-game-name">Latte Lab</span>
-      <span class="mini-game-description">Make your own tiny coffee and finish it with a foam heart.</span>
-      <span class="mini-game-cta">Play</span>
-    </button>
-    <button class="mini-game-card" type="button" data-open="dressup" aria-label="Play Dress-up">
-      <span class="mini-game-preview mini-game-preview--dressup" aria-hidden="true"><img src="assets/mini-games/mini-game-dressup.webp" alt="" loading="lazy" onerror="this.style.display='none'"></span>
-      <span class="mini-game-name">Dress-up Game</span>
-      <span class="mini-game-description">Explore my illustrated wardrobe and dress the character.</span>
-      <span class="mini-game-cta">Play</span>
-    </button>
-  </div>
-  <p class="mini-games-footnote">Illustrated and coded with care</p>
+ const fr=!document.documentElement.lang.toLowerCase().startsWith('en');
+ const games=[["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends soin d’un petit compagnon numérique.","Take care of a tiny digital companion."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["dressup","Jeu d’habillage","Dress-up Game","Explore ma garde-robe et habille le personnage.","Explore my illustrated wardrobe and dress the character."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
+ openWindow(fr?'MINI-JEUX':'MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
+  <div class="eyebrow">${fr?'MODE WORK / MINI-JEUX':'WORK MODE / MINI GAMES'}</div>
+  <h2 id="mini-games-heading">${fr?'Mini-jeux':'Mini Games'}</h2>
+  <p class="mini-games-intro">${fr?'Des petits jeux pour créer, explorer et faire une pause. Clique sur une carte pour commencer.':'Little games to create, explore and take a break. Click a card to start.'}</p>
+  <div class="mini-game-grid">${games.map(([id,nameFr,nameEn,descriptionFr,descriptionEn])=>`
+    <button class="mini-game-card" type="button" data-open="${id}">
+      <span class="mini-game-preview mini-game-placeholder">${fr?'Illustration à venir':'Illustration incoming'}</span>
+      <span class="mini-game-name">${fr?nameFr:nameEn}</span>
+      <span class="mini-game-description">${fr?descriptionFr:descriptionEn}</span>
+      <span class="mini-game-cta">${fr?'Jouer':'Play'}</span>
+    </button>`).join('')}</div>
  </section>`,'mini-games');
 }
 function openInteractiveProjects(){
  openWindow('INTERACTIVE',`<div class="eyebrow">PROJECTS / INTERACTIVE</div><h2>Little worlds to explore</h2><p class="section-lead">Interactive storytelling, games and playful experiments.</p>
  <div class="project-grid">
  <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Turn the pages of the illustrated book</small></button>
- <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>See all four playable games</small></button>
+ <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Explore all the mini games</small></button>
  <button class="project-card" data-open="polaroids"><span class="project-icon">▧</span><strong>My Polaroids</strong><small>Move, turn and explore my instant photographs</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
