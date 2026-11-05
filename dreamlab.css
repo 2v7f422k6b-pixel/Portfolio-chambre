@@ -628,3 +628,17 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-artboard #dl-faders::before,.ml-artboard #dl-faders .ml-draggable-fader::before{content:none!important;display:none!important;}
 .ml-artboard #dl-faders{background:none!important;background-image:none!important;}
 @media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.1vw,8px)!important}.ml-mood-display{font-size:clamp(7px,1.55vw,11px)!important}.ml-mood-prompt{font-size:clamp(5px,1.13vw,8px)!important}}
+
+/* 2026-11-05: clean uploaded artwork has four bare red rails; no masking at all. */
+.ml-artboard #dl-faders,.ml-artboard #dl-faders::before{background:none!important;background-image:none!important;box-shadow:none!important;}
+.ml-artboard #dl-faders::before,.ml-artboard #dl-faders::after{content:none!important;display:none!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::before{content:none!important;display:none!important;}
+.ml-artboard #dl-faders .ml-draggable-fader{background:transparent!important;touch-action:none!important;overflow:visible!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{
+ content:""!important;display:block!important;position:absolute!important;z-index:4!important;
+ left:50%!important;top:var(--fader-position,40%)!important;
+ width:76%!important;height:12%!important;transform:translate(-50%,-50%)!important;
+ border:1px solid #d8002f!important;border-radius:0!important;background:#f00038!important;
+ clip-path:polygon(1% 9%,21% 1%,45% 4%,70% 0%,98% 7%,100% 40%,97% 94%,74% 99%,45% 95%,20% 100%,0% 92%,3% 53%)!important;
+ box-shadow:none!important;pointer-events:none!important;
+}
