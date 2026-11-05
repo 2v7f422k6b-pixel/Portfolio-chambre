@@ -6,6 +6,7 @@
   const lanes=Array.from({length:5},()=>({audio:null,volume:85,mute:false}));
   let selected=0,recorder=null,recording=-1,processing=false,unloading=false;
   let chunks=[],clock=null,started=0,monitor=[],mixBlob=null,mixUrl=null;
+  let undoTake=null, playTimer=null;
   const player=$("dl-playback");
   const en=()=>document.documentElement.lang==="en";
   const word=(fr,english)=>en()?english:fr;
@@ -28,89 +29,77 @@
     if(text!==undefined)node.textContent=text;
     return node;
   }
+  function waveform(buffer){
+    const canvas=el("canvas","dl-waveform");canvas.width=320;canvas.height=42;
+    canvas.setAttribute("aria-hidden","true");
+    const ctx=canvas.getContext("2d"),samples=buffer.getChannelData(0);
+    ctx.strokeStyle="#c52844";ctx.lineWidth=2;ctx.beginPath();
+    for(let x=0;x<320;x++){
+      const a=Math.floor(x*samples.length/320),b=Math.min(samples.length,Math.floor((x+1)*samples.length/320));
+      let peak=0;for(let k=a;k<b;k+=Math.max(1,Math.floor((b-a)/10)))peak=Math.max(peak,Math.abs(samples[k]));
+      const h=Math.max(1,peak*19);ctx.moveTo(x,21-h);ctx.lineTo(x,21+h);
+    }
+    ctx.stroke();return canvas;
+  }
   function draw(){
-    const list=$("dl-track-list");
-    list.replaceChildren();
+    const list=$("dl-track-list");list.replaceChildren();
+    const count=lanes.filter(t=>t.audio).length;
+    const active=recording!==-1;
+    const visible=Math.min(5,Math.max(1,count+(count<5?1:0)));
     lanes.forEach((lane,i)=>{
+      if(i>=visible&&!lane.audio&&recording!==i)return;
       const row=el("div","dl-track"+(selected===i?" is-selected":"")+(recording===i?" is-recording":""));
-      row.setAttribute("role","group");
-      row.setAttribute("aria-label",word("Piste ","Track ")+(i+1));
+      row.setAttribute("role","group");row.setAttribute("aria-label",word("Piste ","Track ")+(i+1));
+      row.tabIndex=0;
+      row.addEventListener("click",e=>{if(e.target.closest("button,input"))return;if(!active&&!processing){selected=i;draw()}});
+      row.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!active&&!processing){e.preventDefault();selected=i;draw()}});
       const info=el("div","dl-track-info");
       const number=el("span","dl-track-number",String(i+1).padStart(2,"0"));
       const labels=el("div","dl-track-label");
-      const name=el("strong","",word("piste ","track ")+(i+1));
-      const detail=el("span","dl-track-meta",recording===i?word("● en cours","● recording"):
-        lane.audio?time(lane.audio.duration):word("vide","empty"));
-      labels.append(name,detail);info.append(number,labels);
-
-      const level=el("div","dl-track-level");
-      const levelLabel=el("label","",word("vol. ","vol. ")+lane.volume+"%");
-      const slider=el("input");
-      slider.type="range";slider.min="0";slider.max="100";slider.step="1";slider.value=String(lane.volume);
-      slider.disabled=!lane.audio||recording!==-1||processing;
-      slider.setAttribute("aria-label",word("Volume de la piste ","Volume for track ")+(i+1));
-      slider.addEventListener("input",()=>{
-        lane.volume=Number(slider.value);
-        levelLabel.textContent="vol. "+lane.volume+"%";
-        invalidateMix();
-      });
-      level.append(levelLabel,slider);
-      level.hidden=!lane.audio;
-
+      labels.append(el("strong","",word("piste ","track ")+(i+1)),
+        el("span","dl-track-meta",recording===i?word("● enregistrement…","● recording…"):lane.audio?time(lane.audio.duration):word("joue quelques notes pour commencer","play a few notes to begin")));
+      info.append(number,labels);
+      if(lane.audio)info.append(waveform(lane.audio));
       const actions=el("div","dl-track-actions");
-      const choose=el("button","dl-track-select",recording===i?word("● en cours","● recording"):"● rec");
-      choose.type="button";choose.setAttribute("aria-pressed",String(selected===i));
-      choose.setAttribute("aria-label",word("Enregistrer la piste ","Record track ")+(i+1));
-      choose.disabled=!!lane.audio||recording!==-1||processing;
-      choose.addEventListener("click",()=>{
-        if(choose.disabled)return;
-        selected=i;
-        draw();
-        $("dl-record").click();
-      });
-
-      const mute=el("button","dl-track-mute",lane.mute?word("réactiver","unmute"):"mute");
-      mute.type="button";mute.disabled=!lane.audio||recording!==-1||processing;
-      mute.setAttribute("aria-pressed",String(lane.mute));
-      mute.addEventListener("click",()=>{lane.mute=!lane.mute;invalidateMix();draw()});
-
-      const del=el("button","dl-track-delete","×");
-      del.type="button";del.disabled=!lane.audio||recording!==-1||processing;
-      del.title=word("effacer la piste","delete track");
-      del.setAttribute("aria-label",word("Effacer piste ","Delete track ")+(i+1));
-      del.addEventListener("click",()=>{
-        if(!window.confirm(word("Effacer la piste ","Delete track ")+(i+1)+" ?"))return;
-        lane.audio=null;lane.volume=85;lane.mute=false;
-        selected=i;invalidateMix();draw();
-        status("piste effacée. tu peux l'enregistrer à nouveau.","track deleted. you can record it again.");
-      });
-      if(lane.audio)actions.append(mute,del);
-      else actions.append(choose);
-      row.append(info,level,actions);list.append(row);
+      if(lane.audio){
+        const mute=el("button","dl-track-mute",lane.mute?word("réactiver","unmute"):word("couper","mute"));
+        mute.type="button";mute.disabled=active||processing;mute.setAttribute("aria-pressed",String(lane.mute));
+        mute.addEventListener("click",()=>{lane.mute=!lane.mute;invalidateMix();draw()});
+        const volume=el("input","dl-track-volume");volume.type="range";volume.min="0";volume.max="100";volume.value=String(lane.volume);
+        volume.disabled=active||processing;volume.setAttribute("aria-label",word("Volume piste ","Track volume ")+(i+1));
+        volume.addEventListener("input",()=>{lane.volume=Number(volume.value);invalidateMix()});
+        const del=el("button","dl-track-delete","×");del.type="button";del.disabled=active||processing;
+        del.setAttribute("aria-label",word("Supprimer piste ","Delete track ")+(i+1));
+        del.addEventListener("click",()=>{undoTake={index:i,audio:lane.audio,volume:lane.volume,mute:lane.mute};lane.audio=null;lane.volume=85;lane.mute=false;selected=i;invalidateMix();draw();status(word("piste supprimée","track deleted"),word("piste supprimée","track deleted"))});
+        actions.append(mute,volume,del);
+      }
+      row.append(info,actions);list.append(row);
     });
-
-    const count=lanes.filter(t=>t.audio).length;
-    const audible=lanes.some(t=>t.audio&&!t.mute&&t.volume>0);
     $("dl-track-count").textContent=count+" / 5";
-    const active=recording!==-1;
-    const recordBtn=$("dl-record");
-    const recordText=recordBtn.querySelector("[data-fr]");
-    if(recordText){
-      recordText.textContent=word(
-        processing?"préparation...":active?"arrêter":"enregistrer",
-        processing?"preparing...":active?"stop":"record"
-      );
-    }
-    $("dl-record-target").textContent=(active?recording:selected)<0?"—":String((active?recording:selected)+1).padStart(2,"0");
+    const recordBtn=$("dl-record"),recordText=recordBtn.querySelector("[data-fr]");
+    if(recordText)recordText.textContent=word(processing?"préparation…":active?"arrêter":"enregistrer",processing?"preparing…":active?"stop":"record");
+    $("dl-record-target").textContent=active?String(recording+1).padStart(2,"0"):"";
     recordBtn.classList.toggle("is-recording",active&&!processing);
-    recordBtn.setAttribute("aria-label",word(
-      active?"Arrêter l'enregistrement":"Enregistrer la piste "+(selected+1),
-      active?"Stop recording":"Record track "+(selected+1)
-    ));
     recordBtn.disabled=processing||(!active&&(selected<0||!!lanes[selected]?.audio));
     $("dl-stop").disabled=!active||processing;
-    $("dl-replay").disabled=!audible||recording!==-1||processing;
-    $("dl-download").disabled=count===0||recording!==-1||processing;
+    $("dl-replay").disabled=!lanes.some(t=>t.audio&&!t.mute&&t.volume>0)||active||processing;
+    $("dl-download").disabled=count===0||active||processing;
+    const extra=$("dl-daw-extra");
+    if(extra){
+      extra.replaceChildren();
+      if(undoTake){
+        const undo=el("button","dl-daw-undo",word("annuler la suppression","undo delete"));
+        undo.onclick=()=>{const t=lanes[undoTake.index];Object.assign(t,{audio:undoTake.audio,volume:undoTake.volume,mute:undoTake.mute});selected=undoTake.index;undoTake=null;invalidateMix();draw();status("piste restaurée.","track restored.")};extra.append(undo);
+      }
+      if(!active&&!processing&&count){
+        const redo=el("button","dl-daw-redo",word("refaire","redo"));
+        redo.onclick=()=>{const i=selected>=0&&lanes[selected].audio?selected:lanes.findIndex(t=>t.audio);if(i<0)return;undoTake={index:i,...lanes[i]};lanes[i].audio=null;selected=i;invalidateMix();draw();status("prête à refaire la piste.","ready to redo the track.")};extra.append(redo);
+        if(count<5){
+          const add=el("button","dl-daw-add",word("+ ajouter une piste","+ add a track"));
+          add.onclick=()=>{selected=firstEmpty();draw();status("prête à enregistrer. les pistes précédentes joueront pendant la prise.","ready to record. previous tracks will play during your take.")};extra.append(add);
+        }
+      }
+    }
   }
   function stopMonitoring(){
     for(const {source,gain} of monitor){
@@ -174,7 +163,7 @@
       if(!audio.length||!audio.duration)throw Error("Empty decoded audio");
       lanes[index].audio=audio;
       lanes[index].volume=85;lanes[index].mute=false;
-      invalidateMix();selected=firstEmpty();
+      invalidateMix();undoTake=null;selected=firstEmpty();
       if(selected===-1)status("tes 5 pistes sont prêtes ! écoute puis télécharge ton mix.","all 5 tracks are ready! listen and download your mix.");
       else status("piste "+(index+1)+" enregistrée. tu peux ajouter la suivante.","track "+(index+1)+" saved. you can add another.");
     }catch(_){
@@ -254,7 +243,9 @@
       status("ton mix est téléchargé !","your mix was downloaded!");
     }catch(_){status("impossible de générer le fichier WAV.","could not generate the WAV file.")}
   });
-  $("dl-language").addEventListener("click",draw);
+  $("dl-language").addEventListener("click",()=>setTimeout(draw,0));
+  player.addEventListener("play",()=>status("écoute du morceau…","playing your song…"));
+  player.addEventListener("ended",()=>status("prête à enregistrer.","ready to record."));
   window.addEventListener("pagehide",()=>{
     unloading=true;clearClock();stopMonitoring();
     if(recorder&&recorder.state==="recording")recorder.stop();
