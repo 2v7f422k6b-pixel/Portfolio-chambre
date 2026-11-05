@@ -101,7 +101,7 @@
     const yPct=y=>(y/1000*100)+"%";
     const padX=[365,502,643,783,922,1058,1198,1340];
     const knobX=[557,698,836,977];
-    const faderX=[1117,1208,1301,1393];
+    const faderX=[1099,1180,1260,1342];
     pads.forEach((p,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="dl-pad";b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",(i+1)+" "+p.fr);
@@ -138,10 +138,10 @@
     faders.forEach((f,i)=>{
       const cell=document.createElement("div");cell.className="dl-fader-cell";
       if(illustrated){
-        cell.style.left=xPct(faderX[i]-28);
-        cell.style.top=yPct(107);
-        cell.style.width=xPct(56);
-        cell.style.height=yPct(195);
+        cell.style.left=xPct(faderX[i]-32);
+        cell.style.top=yPct(140);
+        cell.style.width=xPct(64);
+        cell.style.height=yPct(142);
       }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
