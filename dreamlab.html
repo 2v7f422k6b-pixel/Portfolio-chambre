@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-psd-integrated-v2">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-psd-controls-v3">
 <script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
  const modes=[['chord','accords','chords'],['arp','arpège','arp'],['single','notes','notes'],['loop','boucle','loop']];
- const positions=[[163,118],[265,118],[163,209],[265,209]];
- const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],83,44,fr,en,()=>{
+ const positions=[[163,110],[265,110],[163,198],[265,198]];
+ const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],83,43,fr,en,()=>{
   if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
   document.querySelector('.dl-play-mode[data-play-mode="'+mode+'"]')?.click();
  }));
@@ -138,7 +138,8 @@ document.addEventListener('DOMContentLoaded',()=>{
  const pads=[['kick','kick'],['clap','clap'],['charley','hi-hat'],['basse','bass'],['arpège','arp'],['nappe','pad'],['éclat','sparkle'],['percu','perc']];
  const padXs=[365,502,643,783,922,1058,1198,1340];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],429,106,29,fr,en));
  const moods=['dreamy','melancholic','strange','joyful'];
- const display=put('span','ml-mood-display',351,149,140,49,'rêveuse','dreamy');
+ const display=put('span','ml-mood-display',354,163,130,34,'rêveuse','dreamy');
+ put('span','ml-mood-prompt',354,116,130,29,'choose your mood','choose your mood');
  const cycle=put('button','ml-mood-cycle',383,257,74,74,'','',()=>{
   const current=document.querySelector('.dl-mood.active')?.dataset.mood;
   const next=moods[(moods.indexOf(current)+1)%moods.length];
