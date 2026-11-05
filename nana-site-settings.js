@@ -1,6 +1,7 @@
 /* Published placement settings. Updated only by an authorized GitHub commit.
    These values are public display data, never passwords or access tokens. */
 window.NANA_PUBLISHED_SETTINGS = {
+  "nana-poster-collection-v1": {"hidden":[0,8],"added":[]},
   "nana-poster-alignment-v1": [
     {
       "shape": [
