@@ -6,9 +6,15 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=portrait-keyboard-restore-v8">
+<link rel="stylesheet" href="dreamlab.css?v=portrait-iframe-v9">
 <script src="dreamlab.js?v=20261105-ipad-keys-v8" defer></script>
 <script src="dreamlab-multitrack.js?v=20261105-guided-daw-v2" defer></script>
+<script>
+(function(){
+ function sync(){document.documentElement.classList.toggle('dl-force-portrait',window.innerHeight>window.innerWidth);}
+ window.addEventListener('resize',sync);window.addEventListener('orientationchange',sync);sync();
+})();
+</script>
 </head>
 <body data-mood="dreamy">
 <main class="dl-app">
