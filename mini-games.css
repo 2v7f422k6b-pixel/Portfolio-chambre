@@ -52,7 +52,7 @@
 #window-content .mini-game-description{font-size:13px;line-height:1.45;flex:1}
 #window-content .mini-game-cta{
  display:block;width:100%;text-align:center;padding:8px;
- color:white!important;background:var(--mini-red);border:1px solid var(--mini-red);
+ color:var(--mini-red)!important;background:#fff1f6!important;border:1px solid var(--mini-red);
  font-size:15px
 }
 #window-content .mini-games-footnote{text-align:center;font-size:13px;margin:20px 0 0}
@@ -76,3 +76,19 @@
 #window-content .mini-game-mug{display:flex;align-items:center;justify-content:center;position:relative;width:94px;height:78px;border:4px solid var(--mini-red);border-top-width:8px;border-radius:0 0 28px 28px;font:normal 39px Georgia,serif}
 #window-content .mini-game-mug::after{content:"";position:absolute;left:calc(100% + 1px);top:12px;width:22px;height:32px;border:4px solid var(--mini-red);border-left:0;border-radius:0 16px 16px 0}
 @media(max-width:450px){#window-content .mini-game-mug{width:63px;height:54px;font-size:27px}#window-content .mini-game-mug::after{width:12px;height:21px;top:9px}}
+
+/* Readable paper buttons in every theme and interaction state. */
+#window-content .mini-games-section .mini-game-card,
+#window-content .mini-games-section .mini-game-card:is(:hover,:focus-visible,:active){
+ background:#fffafc!important;background-image:none!important;color:var(--mini-red)!important;
+}
+#window-content .mini-games-section .mini-game-cta{
+ background:#fff1f6!important;color:var(--mini-red)!important;
+}
+#window-content .mini-games-section .mini-game-placeholder{
+ aspect-ratio:1.65;padding:18px;text-align:center;font-size:clamp(14px,2vw,20px);
+ background:#fff1f6!important;color:var(--mini-red)!important;
+}
+@media(max-width:450px){
+ #window-content .mini-games-section .mini-game-placeholder{aspect-ratio:1;height:118px;padding:10px;font-size:14px}
+}
