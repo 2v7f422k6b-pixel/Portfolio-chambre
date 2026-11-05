@@ -594,3 +594,64 @@ window.addEventListener('message',e=>{
 });
 $('#player-seek').addEventListener('change',e=>{if(Number.isFinite(audio.duration))audio.currentTime=audio.duration*Number(e.target.value)/100});
 updatePlayer();
+
+
+/* Restore the current room after a browser refresh (tab-scoped). */
+(()=>{
+ const KEY='nana-room-refresh-v1';
+ let lastOpen=null, restoring=false;
+ const read=()=>{try{return JSON.parse(sessionStorage.getItem(KEY)||'null')}catch(_){return null}};
+ const save=()=>{
+  if(restoring)return;
+  try{
+   const old=read()||{};
+   const visibleWindow=!shade.hidden || !specialShade.hidden;
+   const state={
+    mode:currentMode,theme:document.documentElement.dataset.theme,
+    lang:document.documentElement.lang,
+    x:play.scrollLeft,y:play.scrollTop,
+    open:visibleWindow?lastOpen:null,
+    gallery:visibleWindow && currentGallery?{type:currentGallery.type,index:currentGallery.index}:null
+   };
+   sessionStorage.setItem(KEY,JSON.stringify(state));
+  }catch(_){}
+ };
+ document.addEventListener('click',e=>{
+  if(e.target.closest('#home-menu,#menu-mode'))lastOpen=null;
+  const opener=e.target.closest('[data-open]');
+  if(opener)lastOpen=opener.dataset.open;
+  if(e.target.closest('#window-close,#window-minimize,#special-close,#window-shade,#special-shade'))lastOpen=null;
+  setTimeout(save,100);
+ },true);
+ window.addEventListener('pagehide',save);
+ document.addEventListener('scroll',e=>{if(e.target===play)save()},true);
+ const observer=new MutationObserver(()=>save());
+ observer.observe(app,{attributes:true,attributeFilter:['class']});
+ observer.observe(shade,{attributes:true,attributeFilter:['hidden']});
+ observer.observe(specialShade,{attributes:true,attributeFilter:['hidden']});
+ const previous=read();
+ if(!previous || !['play','work'].includes(previous.mode))return;
+ restoring=true;
+ const restore=()=>{
+  try{
+   chooseMode(previous.mode,false);
+   if(previous.theme && document.documentElement.dataset.theme!==previous.theme)applyTheme(previous.theme);
+   if(previous.lang && document.documentElement.lang!==previous.lang){
+    const languageButton=document.querySelector('[data-lang="'+previous.lang+'"]');
+    if(languageButton)languageButton.click();
+   }
+   if(previous.open && /^(finder|illustration|social|interactive|mini-games|dressup|photos|gearnews-series|gabzilla|motion|pages|about|music|polaroids|phone|tamagotchi|latte)$/.test(previous.open)){
+    lastOpen=previous.open;openApp(previous.open);
+   }else if(previous.gallery && previous.gallery.type==='art'){
+    openGallery('art',Number(previous.gallery.index)||0);
+   }
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    play.scrollLeft=Number(previous.x)||0;
+    play.scrollTop=Number(previous.y)||0;
+    restoring=false;save();
+   }));
+  }catch(_){restoring=false}
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restore,{once:true});
+ else restore();
+})();
