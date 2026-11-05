@@ -453,3 +453,14 @@ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh}
     min-width:0!important;max-width:100%!important;flex:0 0 auto!important
   }
 }
+
+/* 2026-11-05: Always show the entire illustrated Mimilab on narrow screens.
+   Preserve the native 1580:1000 ratio and hotspot percentages. */
+@media(max-width:700px){
+  .dl-illustrated .ml-art-scroll{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:visible!important;scroll-snap-type:none!important;}
+  .dl-illustrated .ml-artboard{width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important;aspect-ratio:1580 / 1000!important;flex:none!important;}
+  .dl-illustrated .ml-art-image{width:100%!important;height:100%!important;object-fit:contain!important;}
+  .dl-illustrated{min-width:0!important;overflow:visible!important;}
+  .dl-instrument,.dl-workspace{min-width:0!important;}
+  .dl-illustrated .ml-instrument-bar{min-width:0!important;}
+}
