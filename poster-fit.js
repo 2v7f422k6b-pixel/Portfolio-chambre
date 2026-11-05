@@ -23,6 +23,10 @@
   const NS = 'http://www.w3.org/2000/svg';
   const WIDTH = 1670, HEIGHT = 942;
   const KEY = 'nana-poster-alignment-v1';
+  const COLLECTION_KEY = 'nana-poster-collection-v1';
+  const BASE_COUNT = clickable.length;
+  const hiddenPosters = new Set();
+  let refreshChooser = () => {};
   const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
 
   if (editing) {
@@ -102,6 +106,35 @@
       });
     }
   } catch (_) { /* Browsers can disable localStorage. The default fit still works. */ }
+
+  // Additions are independent from the original 15-poster alignment format.
+  function addPosterRecord(entry) {
+    if(!entry || !Number.isInteger(entry.id) || entry.id<19 || posterIds.includes(entry.id) ||
+       !validPoints(entry.shape,4) || !validPoints(entry.quad,4) ||
+       typeof entry.src!=='string' || !/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(entry.src)) return false;
+    const hit=node('polygon',{'data-type':'poster','data-index':entry.id,points:polygon(entry.shape),tabindex:0,'aria-label':'Poster '+(entry.id+1)});
+    svg.appendChild(hit);clickable.push(hit);posterIds.push(entry.id);sources.set(entry.id,entry.src);
+    originals.push({shape:copyPoints(entry.shape),quad:copyPoints(entry.quad)});
+    current.push({shape:copyPoints(entry.shape),quad:copyPoints(entry.quad)});
+    return true;
+  }
+  try {
+    const collection=JSON.parse(localStorage.getItem(COLLECTION_KEY)||'null');
+    if(collection) {
+      for(const id of collection.hidden||[])if(Number.isInteger(id))hiddenPosters.add(id);
+      for(const entry of collection.added||[])addPosterRecord(entry);
+    }
+  } catch (_) {}
+  function openAddedPoster(event) {
+    const hit=event.target.closest?.('polygon[data-type="poster"]');
+    if(editing||!hit||Number(hit.dataset.index)<19)return;
+    if(event.type==='keydown'&&!['Enter',' '].includes(event.key))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    const src=sources.get(Number(hit.dataset.index));
+    if(src && typeof window.openWindow==='function')window.openWindow('Poster','<img src="'+src+'" alt="Poster" style="display:block;max-width:100%;max-height:75dvh;object-fit:contain;margin:auto">');
+  }
+  svg.addEventListener('click',openAddedPoster,true);
+  svg.addEventListener('keydown',openAddedPoster,true);
 
   const art = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
   const tapeLayer = node('g', { class: 'poster-tape-layer', 'pointer-events': 'none' });
@@ -267,6 +300,10 @@
     tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
+      const hidden=hiddenPosters.has(posterIds[index]);
+      clickable[index].style.display=hidden?'none':'';
+      clickable[index].setAttribute('data-type',hidden?'poster-hidden':'poster');
+      if(hidden)return;
       const src = sources.get(posterIds[index]);
       if (!src) return;
       const posterGroup = node('g', {
@@ -288,7 +325,17 @@
     drawHandles();
   }
   function store() {
-    try { localStorage.setItem(KEY, JSON.stringify(current)); } catch (_) {}
+    try {
+      const collection={hidden:[...hiddenPosters],added:current.slice(BASE_COUNT).map((rec,i)=>({
+        id:posterIds[BASE_COUNT+i],src:sources.get(posterIds[BASE_COUNT+i]),shape:rec.shape,quad:rec.quad
+      }))};
+      localStorage.setItem(COLLECTION_KEY,JSON.stringify(collection));
+      localStorage.setItem(KEY, JSON.stringify(current.slice(0,BASE_COUNT)));
+      return true;
+    } catch (_) {
+      if(statusLabel)statusLabel.textContent='Sauvegarde impossible : le navigateur manque de place. Exporte les réglages avant de quitter.';
+      return false;
+    }
   }
   function position(event) {
     const rect = svg.getBoundingClientRect();
@@ -303,6 +350,7 @@
     if (list) list.value = String(index);
     if (statusLabel) statusLabel.textContent =
       'Poster ' + (posterIds[index] + 1) + (sources.has(posterIds[index]) ? ' · déplacer ou ajuster les coins' : ' · image manquante');
+    refreshChooser();
     drawHandles();
   }
   function drawHandles() {
@@ -310,7 +358,7 @@
     overlay.replaceChildren();
     // An editor-only transparent pick layer sits ABOVE other interactive room objects.
     current.forEach((entry, index) => {
-      if (index === selected) return;
+      if (index === selected || hiddenPosters.has(posterIds[index])) return;
       overlay.appendChild(node('polygon', {
         'data-poster-pick': index,
         points: polygon(entry.shape),
@@ -318,6 +366,7 @@
       }));
     });
     const rec = current[selected];
+    if(!rec || hiddenPosters.has(posterIds[selected]))return;
     overlay.appendChild(node('polygon', {
       'data-poster-pick': selected,
       points: polygon(rec.shape),
@@ -464,12 +513,18 @@
     chooser.id = 'poster-edit-select';
     chooser.setAttribute('aria-label', 'Choisir un poster');
     chooser.style.cssText = 'width:100%;color:#7e1b35;background:white;padding:5px;border:1px solid #ff173b;';
-    clickable.forEach((_, i) => {
-      const opt = document.createElement('option');
-      opt.value = String(i);
-      opt.textContent = 'Poster ' + (posterIds[i] + 1) + (sources.get(posterIds[i]) ? '' : ' (image manquante)');
-      chooser.appendChild(opt);
-    });
+    refreshChooser=()=>{
+      chooser.replaceChildren();
+      clickable.forEach((_,i)=>{
+        const opt=document.createElement('option');opt.value=String(i);
+        opt.textContent='Poster '+(posterIds[i]+1)+(hiddenPosters.has(posterIds[i])?' (supprimé)':'')+(sources.has(posterIds[i])?'':' (image manquante)');
+        chooser.appendChild(opt);
+      });
+      chooser.value=String(selected);
+      const remove=document.getElementById('poster-delete-selected');
+      if(remove)remove.textContent=hiddenPosters.has(posterIds[selected])?'Restaurer ce poster':'Supprimer ce poster';
+    };
+    refreshChooser();
     chooser.addEventListener('change', () => select(Number(chooser.value)));
     interior.appendChild(chooser);
     statusLabel = document.createElement('p');
@@ -491,6 +546,34 @@
       controls.appendChild(b);
       return b;
     }
+    const upload=document.createElement('input');upload.type='file';upload.accept='image/jpeg,image/png,image/webp';upload.hidden=true;interior.appendChild(upload);
+    const addButton=button('Ajouter un poster',()=>upload.click());
+    const removeButton=button('Supprimer ce poster',()=>{
+      const id=posterIds[selected];
+      if(hiddenPosters.has(id))hiddenPosters.delete(id);else hiddenPosters.add(id);
+      store();refreshChooser();render();
+    });
+    removeButton.id='poster-delete-selected';
+    upload.addEventListener('change',async()=>{
+      const file=upload.files?.[0];if(!file)return;addButton.disabled=true;
+      try {
+        if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error('Choisis une image JPEG, PNG ou WebP.');
+        const bitmap=await createImageBitmap(file);const scale=Math.min(1,1024/Math.max(bitmap.width,bitmap.height));
+        const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+        const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+        const ratio=bitmap.height/bitmap.width;bitmap.close();
+        const width=110,height=Math.min(220,Math.max(50,width*ratio));
+        const shape=[[850,100],[960,100],[960,100+height],[850,100+height]];
+        const id=Math.max(18,...posterIds)+1;
+        if(!addPosterRecord({id,src:canvas.toDataURL('image/jpeg',.85),shape,quad:shape}))throw new Error('Impossible d’ajouter cette image.');
+        selected=current.length-1;refreshChooser();render();select(selected);
+        if(store())statusLabel.textContent='Poster ajouté : déplace-le et ajuste ses coins, puis exporte ou publie depuis l’atelier.';
+      } catch(error){statusLabel.textContent=error.message||'Ajout impossible.';}
+      finally{upload.value='';addButton.disabled=false;}
+    });
+    button('Enregistrer les modifications',()=>{
+      if(store())statusLabel.textContent='Brouillon enregistré. Retourne à l’atelier pour exporter ou publier.';
+    });
     button('Réinitialiser ce poster', () => {
       current[selected] = {
         shape: copyPoints(originals[selected].shape),
@@ -499,6 +582,7 @@
       store(); render();
     });
     button('Tout réinitialiser', () => {
+      hiddenPosters.clear();refreshChooser();
       originals.forEach((rec, i) => {
         current[i] = { shape: copyPoints(rec.shape), quad: copyPoints(rec.quad) };
       });
@@ -523,6 +607,8 @@
       }
     });
     interior.appendChild(controls);
+    const hint=document.createElement('p');hint.textContent='Exporte ou publie depuis l’atelier pour rendre tes ajouts et suppressions visibles par tous.';hint.style.cssText='font-size:12px;margin:8px 0';interior.appendChild(hint);
+    panel.style.maxHeight='calc(100dvh - 70px)';panel.style.overflowY='auto';
     document.body.appendChild(panel);
     try {
       const restored = JSON.parse(localStorage.getItem(panelPositionKey) || 'null');

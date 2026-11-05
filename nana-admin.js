@@ -9,6 +9,7 @@
   const TOOL_FLAGS = ['posterEdit','lampEdit','starsEdit','cookieEdit','ipadClockEdit','zones'];
   const SETTINGS = [
     'nana-poster-alignment-v1',
+    'nana-poster-collection-v1',
     'nana-wall-mirror-perspective-v1',
     'nana-wall-lamp-perspective-v1',
     'nana-wall-stars-layout-v1',
