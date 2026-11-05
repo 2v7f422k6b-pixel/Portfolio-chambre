@@ -139,9 +139,9 @@
       const cell=document.createElement("div");cell.className="dl-fader-cell";
       if(illustrated){
         cell.style.left=xPct(faderX[i]-29);
-        cell.style.top=yPct(85);
+        cell.style.top=yPct(112);
         cell.style.width=xPct(58);
-        cell.style.height=yPct(155);
+        cell.style.height=yPct(120);
       }
       const l=document.createElement("label");l.textContent=f.fr;
       const input=document.createElement("input");input.type="range";input.min="0";input.max="100";input.value=f.value;input.setAttribute("aria-label",f.fr);
