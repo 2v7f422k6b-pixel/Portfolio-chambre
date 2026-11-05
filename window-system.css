@@ -1,25 +1,41 @@
 /* Window system stabilization — 2026-11-01
    This layer only governs window geometry and scrolling, not illustration styles.
    Keep window chrome and the desktop dock independently clickable. */
-:root{--nana-window-top-safe:54px;--nana-window-bottom-safe:12px}
-html body #window-shade:not([hidden]){
+:root{
+  --nana-window-top-safe:58px;
+  --nana-window-bottom-safe:max(12px,env(safe-area-inset-bottom));
+  --nana-window-viewport-bottom:100dvh;
+  --nana-window-side-gap:12px;
+  --nana-window-available-height:max(0px,calc(var(--nana-window-viewport-bottom) - var(--nana-window-top-safe) - var(--nana-window-bottom-safe)));
+}
+/* All window families share the space below the actual navigation bar.
+   window-bounds.js updates the two measured values after rotation/keyboard resize. */
+html body #app #window-shade:not([hidden]),
+html body #app #special-shade:not([hidden]),
+html body #coloring-overlay:not([hidden]),
+html body #nana-dreamlab-overlay{
   box-sizing:border-box!important;
-  padding:var(--nana-window-top-safe) 12px var(--nana-window-bottom-safe)!important;
+  inset:0 0 auto!important;
+  width:100%!important;
+  height:var(--nana-window-viewport-bottom)!important;
+  min-height:0!important;
+  padding:var(--nana-window-top-safe) var(--nana-window-side-gap) var(--nana-window-bottom-safe)!important;
   align-items:center!important;
   overflow:hidden!important;
 }
-html body #window-shade:not([hidden]) > #window{
+html body #app #window-shade:not([hidden]) > #window{
   box-sizing:border-box!important;
   min-width:0!important;
-  max-width:calc(100vw - 24px)!important;
-  max-height:calc(100dvh - var(--nana-window-top-safe) - var(--nana-window-bottom-safe))!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:var(--nana-window-available-height)!important;
   display:flex!important;
   flex-direction:column!important;
   overflow:hidden!important;
 }
-html body #window-shade:not([hidden]) > #window.expanded{
-  width:calc(100vw - 24px)!important;
-  height:calc(100dvh - var(--nana-window-top-safe) - var(--nana-window-bottom-safe))!important;
+html body #app #window-shade:not([hidden]) > #window.expanded{
+  width:100%!important;
+  height:var(--nana-window-available-height)!important;
 }
 html body #window-shade #window > .window-top{
   flex:0 0 auto!important;
@@ -42,12 +58,75 @@ html body #special-shade[hidden]{
 html body #window-shade:not([hidden]) > #window{
   pointer-events:auto!important;
 }
-@media(max-width:650px){
-  :root{--nana-window-top-safe:50px;--nana-window-bottom-safe:8px}
-  html body #window-shade:not([hidden]){padding-inline:6px!important}
-  html body #window-shade:not([hidden]) > #window{
-    max-width:calc(100vw - 12px)!important;
-  }
+@media(max-width:760px){
+  :root{--nana-window-top-safe:64px;--nana-window-bottom-safe:max(8px,env(safe-area-inset-bottom));--nana-window-side-gap:6px}
+}
+
+/* Special windows keep a separate, always reachable close control. */
+html body #app #special-shade{
+  --nana-special-close-space:44px;
+  --nana-special-height:max(0px,calc(var(--nana-window-available-height) - var(--nana-special-close-space)));
+}
+html body #app #special-shade:not([hidden]){
+  padding-top:calc(var(--nana-window-top-safe) + var(--nana-special-close-space))!important;
+}
+html body #app #special-shade.tamagotchi-open{--nana-special-close-space:0px}
+html body #app #special-shade #special-close{
+  top:var(--nana-window-top-safe)!important;
+  right:max(12px,env(safe-area-inset-right))!important;
+}
+html body #app #special-shade #special-host{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:var(--nana-special-height)!important;
+}
+html body #app #special-host > iframe{
+  display:block;
+  box-sizing:border-box;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:var(--nana-special-height)!important;
+}
+html body #app #special-shade.polaroids-floating #special-host,
+html body #app #special-shade.polaroids-floating #special-host > iframe{
+  height:var(--nana-special-height)!important;
+}
+html body #app #special-host > .tama-frame{
+  width:min(590px,94vw,calc(var(--nana-special-height) * 1312 / 1199))!important;
+}
+html body #app #special-host > .phone-device{
+  width:min(335px,84vw,calc(var(--nana-special-height) * 335 / 725))!important;
+}
+
+/* Embedded studios have their own title bars; constrain the outer panel,
+   letting its iframe handle long content instead of clipping the header. */
+html body #coloring-overlay > .coloring-panel,
+html body #nana-dreamlab-overlay > #nana-dreamlab-window{
+  box-sizing:border-box!important;
+  min-height:0!important;
+  min-width:0!important;
+  max-width:100%!important;
+  max-height:var(--nana-window-available-height)!important;
+}
+html body #nana-dreamlab-overlay{z-index:2147479000!important}
+html body #nana-dreamlab-topbar{flex:0 0 auto}
+html body #coloring-overlay .coloring-panel > iframe{
+  flex:1 1 0!important;
+  min-height:0!important;
+  height:auto!important;
+}
+
+/* Native dialogs also stay inside the same usable area. */
+html body :is(#nana-admin-dialog,#nana-discovery-dialog)[open]{
+  box-sizing:border-box!important;
+  position:fixed!important;
+  top:var(--nana-window-top-safe)!important;
+  bottom:calc(100dvh - var(--nana-window-viewport-bottom) + var(--nana-window-bottom-safe))!important;
+  margin-block:auto!important;
+  max-height:var(--nana-window-available-height)!important;
+  overflow-y:auto!important;
 }
 
 /* Hand-traced content frames: one border only, no doubled geometric outline. */
@@ -84,3 +163,4 @@ html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame::before,
 html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame::after{
   border:0!important;
 }
+
