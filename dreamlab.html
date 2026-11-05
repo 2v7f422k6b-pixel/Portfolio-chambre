@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-revert-scale">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-unified-board-v2">
 <script src="dreamlab.js?v=20261105-geometry-fix" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -117,7 +117,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const board=document.querySelector('.ml-artboard');if(!board)return;
  const put=(tag,cls,x,y,w,h,fr,en,fn)=>{
-  const el=document.createElement(tag);el.className=cls;el.style.cssText='left:'+(x/1536*100)+'%;top:'+(y/922*100)+'%;width:'+(w/1580*100)+'%;height:'+(h/1000*100)+'%;';
+  const el=document.createElement(tag);el.className=cls;el.style.cssText='left:'+(x/1536*100)+'%;top:'+(y/922*100)+'%;width:'+(w/1536*100)+'%;height:'+(h/922*100)+'%;';
   el.dataset.fr=fr;el.dataset.en=en;el.textContent=document.documentElement.lang==='en'?en:fr;
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
