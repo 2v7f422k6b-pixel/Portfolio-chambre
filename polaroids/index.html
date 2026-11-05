@@ -78,6 +78,47 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
  .front-bottom{min-height:26px}
 }
 @media(prefers-reduced-motion:reduce){.card-inner{transition:none}button{transition:none}}
+
+/* Instant prints float over the bedroom, without gallery chrome. */
+html,body {background:transparent;}
+.page {padding:64px 4vw 52px;gap:0;background:transparent;}
+header .title-line,header .subtitle {display:none;}
+header {height:0;}
+.reset {position:fixed;bottom:14px;left:18px;z-index:100;padding:5px 8px;font-size:12px;background:#fffaf0e8;border:0;box-shadow:none;}
+.board {width:100%;height:calc(100dvh - 116px);min-height:400px;max-height:none;flex:none;overflow:visible;border:0;box-shadow:none;background:none;}
+.board:before,.board:after {display:none;}
+.card {width:clamp(135px,18vw,210px);height:auto;aspect-ratio:176/258;filter:drop-shadow(3px 10px 9px #0006);}
+.card.dragging {filter:drop-shadow(8px 18px 12px #0007);}
+.face {background:#f6f1e5;border-color:#e4ddcc;box-shadow:inset 0 0 10px #bfac8622;}
+.front-bottom {color:#43372e;min-height:30px;}
+.photo {background:#292a2b;border:0;}
+.photo>img {filter:sepia(.18) saturate(.78) contrast(.93) brightness(1.04);}
+.photo::before {content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,#29201730 100%),linear-gradient(110deg,#edc89e12,#91a9b912);box-shadow:inset 0 0 13px #32281d25;}
+.photo::after {content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23000' filter='url(%23n)' opacity='.45' d='M0 0h140v140H0z'/%3E%3C/svg%3E");}
+.board .card {animation:print-arrive .65s ease-out var(--arrival,0s) both;}
+.board .photo>img {animation:print-develop 5.5s ease-in-out var(--arrival,0s) both;}
+.board .photo::before {animation:print-darkroom 5.5s ease-in-out var(--arrival,0s) both;}
+@keyframes print-arrive {from{opacity:0;translate:0 -28px;}to{opacity:1;translate:0 0;}}
+@keyframes print-develop {0%,10%{opacity:0;filter:sepia(.3) saturate(.1) contrast(.7) brightness(.45);}40%{opacity:.35;}100%{opacity:1;filter:sepia(.18) saturate(.78) contrast(.93) brightness(1.04);}}
+@keyframes print-darkroom {0%,12%{background:#292a2b;}100%{background:radial-gradient(ellipse at center,transparent 40%,#29201730 100%),linear-gradient(110deg,#edc89e12,#91a9b912);}}
+.instructions {position:fixed;bottom:15px;left:50%;transform:translateX(-50%);z-index:90;color:#fff8ed;font-size:12px;text-shadow:0 1px 4px #000;max-width:70vw;text-align:center;}
+.pending {display:none;}
+.enlarge {opacity:.65;border:0;background:transparent;color:#493f34;}
+.enlarge:hover {opacity:1;background:transparent;box-shadow:none;}
+dialog {background:transparent;border:0;box-shadow:none;color:#fff8ed;overflow:visible;}
+dialog::backdrop {background:#16161677;backdrop-filter:none;}
+.viewer-bar button,.viewer-controls button {background:#faf5e9;color:#493f34;border:0;}
+.viewer-card {filter:drop-shadow(3px 12px 14px #0008);}
+@media(max-width:600px){
+ .page{padding:64px 5vw 65px;}
+ .board{height:940px;min-height:940px;}
+ .card{width:clamp(124px,37vw,180px);height:auto;}
+ .instructions{display:none;}
+ .reset{bottom:10px;left:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .board .card,.board .photo>img,.board .photo::before{animation:none;}
+}
 </style>
 </head>
 <body>
@@ -123,8 +164,8 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
   const viewerCard=document.getElementById('viewer-card');
   document.getElementById('pending').hidden=!demo;
   const small=window.matchMedia('(max-width: 600px)');
-  const desktopPositions=[[4,5,-8],[27,7,7],[50,4,-3],[75,8,9],[13,36,-7],[39,35,11],[65,36,-5]];
-  const mobilePositions=[[6,3,-8],[53,6,6],[8,25,-6],[53,28,8],[6,48,-3],[53,51,10],[29,68,-5]];
+  const desktopPositions=[[1,4,-8],[33,8,7],[65,1,-3],[98,7,9],[14,95,-7],[49,94,8],[85,97,-5]];
+  const mobilePositions=[[2,1,-8],[96,4,6],[4,31,-6],[97,34,8],[1,64,-3],[96,66,10],[48,98,-5]];
   let activePhoto=0,zCounter=10;
   const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   function pose(i){
@@ -148,7 +189,7 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
   }
   function placeCard(card,i){
     const [x,y,r]=pose(i);
-    card.style.left=x+'%';card.style.top=y+'%';card.style.setProperty('--r',r+'deg');
+    card.style.left=(Math.max(0,board.clientWidth-card.offsetWidth)*x/100)+'px';card.style.top=(Math.max(0,board.clientHeight-card.offsetHeight)*y/100)+'px';card.style.setProperty('--r',r+'deg');
     card.classList.remove('flipped');
   }
   function flip(card){
@@ -165,7 +206,7 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
       card.setAttribute('aria-label','Polaroid '+(i+1)+'. Tap to turn over; drag to move.');
       card.dataset.index=i;
       card.innerHTML=paper(photo,i);
-      placeCard(card,i);
+      card.style.setProperty('--arrival',(i*.38)+'s');
       card.style.zIndex=String(i+2);
       card.querySelector('.enlarge').addEventListener('click',e=>{e.stopPropagation();show(i)});
       let gesture=null;
@@ -198,6 +239,8 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
       card.addEventListener('pointercancel',endPointer);
       card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){if(e.target!==card)return;e.preventDefault();flip(card)}});
       board.appendChild(card);
+      placeCard(card,i);
+      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(()=>{try{parent.postMessage({type:'nana-polaroid-arrival'},location.origin)}catch(_){}},i*380);
     });
   }
   function show(i){
@@ -227,6 +270,8 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
     zCounter=photos.length+5;
     board.querySelectorAll('.card').forEach((card,i)=>{placeCard(card,i);card.style.zIndex=String(i+2)});
   });
+  window.addEventListener('resize',()=>board.querySelectorAll('.card').forEach((card,i)=>placeCard(card,i)));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!viewer.open)parent.postMessage({type:'nana-polaroid-close'},location.origin);});
   mount();
 })();
 </script>

@@ -170,7 +170,10 @@ function closeWindow(){
  win.classList.remove('expanded');
  winContent.innerHTML='';
 }
+let polaroidAudio=null;
 function closeSpecial(){
+ specialShade.classList.remove('polaroids-floating');
+ if(polaroidAudio){polaroidAudio.close().catch(()=>{});polaroidAudio=null;}
  specialShade.hidden=true;
  specialShade.style.pointerEvents='none';
  specialHost.innerHTML='';
@@ -468,11 +471,26 @@ function showLatte(){
 }
 function showPolaroids(){
  closeWindow();closeSpecial();
- specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261105-seven-slots-2" loading="eager" style="display:block;width:min(1080px,95vw);height:min(780px,89dvh);border:2px solid #ff173b;border-radius:0;background:#fff8f6;box-shadow:0 0 14px #ff173b55"></iframe>';
+ specialShade.classList.add('polaroids-floating');
+ try {const Audio=window.AudioContext||window.webkitAudioContext;if(Audio){polaroidAudio=new Audio();polaroidAudio.resume().catch(()=>{});}}catch(_){}
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261105-floating-prints-1" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close the Polaroid gallery');
  $('#special-close').focus({preventScroll:true});
 }
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||!specialShade.classList.contains('polaroids-floating')||event.source!==specialHost.querySelector('iframe')?.contentWindow)return;
+ if(event.data?.type==='nana-polaroid-close'){closeSpecial();return;}
+ if(event.data?.type!=='nana-polaroid-arrival'||!polaroidAudio||polaroidAudio.state!=='running')return;
+ const ctx=polaroidAudio,t=ctx.currentTime,duration=.19;
+ const buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*duration),ctx.sampleRate),data=buffer.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(.65+.35*Math.sin(i*.013));
+ const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
+ source.buffer=buffer;filter.type='bandpass';filter.frequency.setValueAtTime(1800,t);filter.frequency.exponentialRampToValueAtTime(650,t+duration);filter.Q.value=.65;
+ gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.075,t+.015);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);
+ source.connect(filter);filter.connect(gain);gain.connect(ctx.destination);source.start(t);source.stop(t+duration);
+ source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};
+});
 function showMusic(autoplay=false){
  player.hidden=false;
  if(autoplay)toggleMusic(true);

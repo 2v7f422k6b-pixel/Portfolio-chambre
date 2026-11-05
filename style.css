@@ -589,3 +589,9 @@ html body .phone-device .phone-screen .phone-status span.phone-island::before,ht
 html[data-theme="night"] .gearnews-ring-series .gearnews-ring-episode {background:#653f8a}
 html[data-theme="night"] .gearnews-ring-preview {background:#4f357c}
 @media(max-width:480px) {.gearnews-ring-episodes{gap:10px}.gearnews-ring-series .gearnews-ring-episode{padding:5px 5px 8px}.gearnews-ring-details{gap:6px}.gearnews-ring-number{font-size:25px}}
+
+/* Polaroid prints sit directly above the illustrated bedroom. */
+#special-shade.polaroids-floating {padding:0;background:#17191c26;backdrop-filter:none;}
+html[data-theme="night"] #special-shade.polaroids-floating {background:#090b102b;}
+#special-shade.polaroids-floating #special-host {width:100vw;height:100dvh;max-width:none;max-height:none;display:block;}
+#special-shade.polaroids-floating #special-close {z-index:100;}
