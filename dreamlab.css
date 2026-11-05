@@ -834,3 +834,11 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  }
  .dl-daw.dl-recorder{height:100%!important;min-height:0!important}
 }
+
+/* Prevent accidental iPad long-press text selection while playing the instrument. */
+.dl-app .dl-hardware,.dl-app .dl-daw,
+.dl-app .dl-hardware *, .dl-app .dl-daw *{
+  -webkit-user-select:none!important;user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+.dl-app input[type="range"],.dl-app button{touch-action:manipulation}
