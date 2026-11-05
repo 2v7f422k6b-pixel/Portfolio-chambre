@@ -553,3 +553,9 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-draggable-fader input{pointer-events:none!important;}
 .ml-draggable-fader:after{content:"";position:absolute;left:7%;width:86%;height:13%;top:var(--fader-position,40%);transform:translateY(-50%);background:#e9003a;border-radius:2px;box-shadow:0 1px 0 #c80035;pointer-events:none;}
 @media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.4vw,9px)!important}.ml-knob-caption{font-size:clamp(5px,1.35vw,9px)!important}.ml-mood-prompt{font-size:clamp(5px,1.3vw,8px)!important}}
+
+/* Calibrated from 2026-11-05 iPhone screenshot: PSD's upper-left 2x2 buttons. */
+.ml-drawn-mode{font-size:clamp(5px,.85vw,10px)!important;white-space:nowrap!important;text-align:center!important;padding:0!important;line-height:1!important;}
+.ml-mood-display{font-size:clamp(5px,1.05vw,12px)!important;}
+.ml-mood-prompt{font-size:clamp(5px,.95vw,11px)!important;}
+@media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.25vw,8px)!important}.ml-mood-display{font-size:clamp(5px,1.35vw,9px)!important}.ml-mood-prompt{font-size:clamp(5px,1.15vw,8px)!important}}
