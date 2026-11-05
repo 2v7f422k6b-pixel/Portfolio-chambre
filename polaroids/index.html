@@ -133,9 +133,16 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
     if(i<candidates.length)return p;
     return [Math.max(2,Math.min(80,p[0]+(i%3)*4)),Math.max(2,Math.min(73,p[1]-(i%3)*9)),p[2]];
   }
+  function photoCropStyle(photo) {
+    const crop=photo.crop;
+    if(!crop) return '';
+    const number=(value,fallback,min,max)=>Number.isFinite(Number(value))?Math.max(min,Math.min(max,Number(value))):fallback;
+    const x=number(crop.x,50,0,100),y=number(crop.y,50,0,100),zoom=number(crop.zoom,1,1,3);
+    return 'object-fit:'+(crop.fit==='contain'?'contain':'cover')+';object-position:'+x+'% '+y+'%;transform:scale('+zoom+');transform-origin:'+x+'% '+y+'%;';
+  }
   function paper(photo,i,large=false){
     const picture=photo.src
-      ? '<img draggable="false" loading="'+(large?'eager':'lazy')+'" src="'+esc(photo.src)+'" alt="'+esc(photo.alt||photo.title||'Instant photograph')+'">'
+      ? '<img draggable="false" loading="'+(large?'eager':'lazy')+'" src="'+esc(photo.src)+'" alt="'+esc(photo.alt||photo.title||'Instant photograph')+'" style="'+photoCropStyle(photo)+'">'
       : '<div class="photo-placeholder"><img src="../assets/heart-lena.svg" alt=""><span>Photo to add</span></div>';
     return '<div class="card-inner"><div class="face front"><div class="photo">'+picture+'</div><div class="front-bottom"><span class="photo-number">'+esc(photo.date||photo.title||'Photo '+(i+1))+'</span>'+(large?'':'<button class="enlarge" type="button" aria-label="Enlarge photo '+(i+1)+'">↗</button>')+'</div></div><div class="face back"><img src="../assets/heart-lena.svg" alt=""><div class="back-title">'+esc(photo.title||'A little memory')+'</div><div class="back-note">'+esc(photo.note||'A little note to be added.')+'</div><div class="back-date">'+esc(photo.date||'')+'</div></div></div>';
   }

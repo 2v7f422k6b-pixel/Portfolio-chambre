@@ -179,6 +179,13 @@
     } catch(error) {status.textContent=error.message||'La publication a échoué.';}
     finally {button.disabled=false;}
   }
+  function photoCropStyle(photo) {
+    const crop=photo.crop;
+    if(!crop) return '';
+    const number=(value,fallback,min,max)=>Number.isFinite(Number(value))?Math.max(min,Math.min(max,Number(value))):fallback;
+    const x=number(crop.x,50,0,100),y=number(crop.y,50,0,100),zoom=number(crop.zoom,1,1,3);
+    return 'object-fit:'+(crop.fit==='contain'?'contain':'cover')+';object-position:'+x+'% '+y+'%;transform:scale('+zoom+');transform-origin:'+x+'% '+y+'%;';
+  }
   const PHOTO_DRAFT = 'nana-polaroids-draft-v1';
   let photoDraft = null;
   async function editPolaroids() {
@@ -202,7 +209,28 @@
       const list = dialog.querySelector('#nana-photo-list'); list.replaceChildren();
       photoDraft.forEach((photo, index) => {
         const card=document.createElement('div'); card.className='nana-photo-editor';
-        const image=document.createElement('img'); image.src=photo.src.startsWith('../')?photo.src.slice(3):photo.src; image.alt=photo.alt||photo.title||'Photo'; card.append(image);
+        const preview=document.createElement('div'); preview.className='nana-photo-crop-preview';
+        const image=document.createElement('img'); image.src=photo.src.startsWith('../')?photo.src.slice(3):photo.src; image.alt=photo.alt||photo.title||'Photo'; preview.append(image); card.append(preview);
+        const crop=photo.crop?{...photo.crop}:{fit:'contain',zoom:1,x:50,y:50};
+        const cropFields=document.createElement('fieldset'); cropFields.className='nana-photo-crop-controls';
+        const legend=document.createElement('legend'); legend.textContent='Recadrer dans le polaroïd'; cropFields.append(legend);
+        const fitLabel=document.createElement('label'); fitLabel.textContent='Affichage';
+        const fit=document.createElement('select');
+        for(const [value,text] of [['contain','Photo entière'],['cover','Remplir le cadre']]) { const option=document.createElement('option');option.value=value;option.textContent=text;fit.append(option); }
+        fit.value=crop.fit==='contain'?'contain':'cover';fitLabel.append(fit);cropFields.append(fitLabel);
+        const sliders=[];
+        function updateCrop() { photo.crop={...crop};image.style.cssText=photoCropStyle(photo);status.textContent='Recadrage modifié : enregistre le brouillon, puis publie-le.'; }
+        fit.addEventListener('change',()=>{crop.fit=fit.value;updateCrop();save();});
+        for(const [key,title,min,max,step] of [['zoom','Zoom',1,3,0.01],['x','Position horizontale',0,100,1],['y','Position verticale',0,100,1]]) {
+          const label=document.createElement('label');label.textContent=title;
+          const output=document.createElement('output');const slider=document.createElement('input');slider.type='range';slider.min=min;slider.max=max;slider.step=step;slider.value=crop[key]??(key==='zoom'?1:50);
+          const refresh=()=>{output.value=Math.round(Number(slider.value)*(key==='zoom'?100:1))+' %';};refresh();
+          slider.addEventListener('input',()=>{crop[key]=Number(slider.value);refresh();updateCrop();});
+          slider.addEventListener('change',save);label.append(output,slider);cropFields.append(label);sliders.push({key,slider,refresh});
+        }
+        const reset=document.createElement('button');reset.type='button';reset.className='nana-admin-action';reset.textContent='Réinitialiser le recadrage';
+        reset.onclick=()=>{Object.assign(crop,{fit:'contain',zoom:1,x:50,y:50});fit.value='contain';for(const item of sliders){item.slider.value=crop[item.key];item.refresh();}updateCrop();save();};
+        cropFields.append(reset);card.append(cropFields);image.style.cssText=photoCropStyle(photo);
         for (const [key,label] of [['title','Titre'],['date','Date'],['note','Texte au dos'],['alt','Description de la photo (accessibilité)']]) {
           const field=document.createElement('label'); field.textContent=label;
           const input=document.createElement(key==='note'?'textarea':'input'); input.value=photo[key]||'';
