@@ -650,3 +650,20 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-mood-display,.ml-mood-prompt{display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;overflow:hidden!important;}
 .ml-artboard #dl-faders .ml-draggable-fader::after{height:11%!important;width:82%!important;}
 
+
+/* 2026-11-05 — enlarge the complete instrument as ONE coordinate plane.
+   The image, keys, pads, faders and labels scale together; no independent offsets. */
+.dl-illustrated .ml-art-scroll{overflow:hidden!important;}
+.dl-illustrated .ml-art-scroll>.ml-artboard{
+  transform:scale(1.085)!important;
+  transform-origin:50% 50%!important;
+  aspect-ratio:1536 / 922!important;
+}
+/* Keep lettering legible without changing individual label coordinates. */
+.ml-artboard .ml-drawn-mode{font-size:clamp(6px,1.02vw,11px)!important;}
+.ml-artboard .ml-control-caption{font-size:clamp(6px,.9vw,11px)!important;}
+@media(max-width:700px){
+ .dl-illustrated .ml-art-scroll>.ml-artboard{transform:scale(1.075)!important;}
+ .ml-artboard .ml-drawn-mode{font-size:clamp(5px,1.35vw,9px)!important;}
+ .ml-artboard .ml-control-caption{font-size:clamp(5px,1.15vw,8px)!important;}
+}
