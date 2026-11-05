@@ -17,6 +17,14 @@
 #nana-dreamlab-actions{display:flex;align-items:center;gap:6px;margin-left:auto}#nana-dreamlab-language{font:inherit;color:#f10b39;background:#fff;border:2px solid #f10b39;border-radius:0;cursor:pointer;min-width:36px;min-height:30px;padding:2px 5px}#nana-dreamlab-close{font:inherit;color:#f10b39;background:#fff;border:2px solid #f10b39;border-radius:0;cursor:pointer;min-width:32px;min-height:30px}
 #nana-dreamlab-iframe{display:block;width:100%;height:100%;border:0;background:#ffedf6;flex:1}
 @media(max-width:760px){#nana-dreamlab-trigger{right:12px;bottom:69px;font-size:13px;padding:8px 11px}#nana-dreamlab-overlay{padding:0}#nana-dreamlab-window{height:100dvh;width:100%;border:0;box-shadow:none}#nana-dreamlab-topbar{padding:6px 10px}}
+
+@media (orientation:landscape) and (min-width:900px){
+ #nana-dreamlab-window{
+   height:min(calc(100dvh - 24px),calc(min(1240px,100vw - 30px) * .61))!important;
+   max-height:calc(100dvh - 24px)!important;
+ }
+ #nana-dreamlab-iframe{min-height:0!important}
+}
 `;
   document.head.append(style);
   const trigger=document.createElement("button");
