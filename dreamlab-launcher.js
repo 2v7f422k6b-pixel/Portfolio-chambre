@@ -6,7 +6,7 @@
   const style=document.createElement("style");
   style.id="nana-dreamlab-launcher-style";
   style.textContent=`
-#nana-dreamlab-trigger{position:fixed;bottom:78px;right:18px;z-index:95;padding:11px 15px;max-width:160px;color:#fa123b;background:#fff0f8;border:3px solid #fa123b;border-radius:0;box-shadow:4px 4px 0 #fa123b55;font-family:"NanaTraceUI","Comic Sans MS",cursive;font-size:15px;font-weight:bold;line-height:1.05;cursor:pointer;transform:rotate(-2deg)}
+@font-face{font-family:NanaTraceStudio;src:url("assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");font-display:swap}#nana-dreamlab-topbar,#nana-dreamlab-topbar *{font-family:NanaTraceStudio,"Comic Sans MS",cursive!important;font-style:normal!important;font-weight:400!important}#nana-dreamlab-trigger{position:fixed;bottom:78px;right:18px;z-index:95;padding:11px 15px;max-width:160px;color:#fa123b;background:#fff0f8;border:3px solid #fa123b;border-radius:0;box-shadow:4px 4px 0 #fa123b55;font-family:"NanaTraceUI","Comic Sans MS",cursive;font-size:15px;font-weight:bold;line-height:1.05;cursor:pointer;transform:rotate(-2deg)}
 #nana-dreamlab-trigger:hover{background:#ffd5e6;transform:rotate(1deg)}
 #nana-dreamlab-trigger[hidden]{display:none!important}
 #nana-dreamlab-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(30,7,33,.75);display:grid;place-items:center;padding:15px}
@@ -53,7 +53,7 @@
     x.setAttribute("aria-label","Fermer mimilab 3");x.addEventListener("click",close);
     const language=document.createElement("button");language.type="button";language.id="nana-dreamlab-language";language.textContent=document.documentElement.lang.toLowerCase().startsWith("en")?"FR":"EN";language.setAttribute("aria-label","Changer la langue");language.addEventListener("click",()=>{const inner=panel.querySelector("iframe");const btn=inner?.contentDocument?.getElementById("dl-language");if(btn){btn.click();language.textContent=inner.contentDocument.documentElement.lang==="en"?"FR":"EN";}});const actions=document.createElement("div");actions.id="nana-dreamlab-actions";actions.append(language,x);bar.append(label,actions);
     const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="mimilab 3";iframe.setAttribute("allow","autoplay");
-    iframe.src="dreamlab.html?v=20261105-clean-header-font&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
+    iframe.src="dreamlab.html?v=20261105-drawn-controls&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);
     overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
     document.addEventListener("keydown",esc);x.focus();
