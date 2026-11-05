@@ -148,6 +148,19 @@
       const mark=document.createElement("span");mark.className="ml-fader-marker";mark.setAttribute("aria-hidden","true");
       const setPosition=()=>mark.style.top=(10+(100-Number(input.value))*.72)+"%";
       input.addEventListener("input",()=>{settings[f.id]=+input.value;applyAudioSettings();setPosition()});
+      if(illustrated){
+        cell.classList.add("ml-draggable-fader");
+        const setDrag=(e)=>{
+          const box=cell.getBoundingClientRect();
+          const fraction=Math.max(0,Math.min(1,(e.clientY-box.top)/box.height));
+          input.value=String(Math.round((1-fraction)*100));
+          input.dispatchEvent(new Event("input",{bubbles:true}));
+        };
+        cell.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;cell.setPointerCapture(e.pointerId);setDrag(e);e.preventDefault()});
+        cell.addEventListener("pointermove",e=>{if(cell.hasPointerCapture(e.pointerId)){setDrag(e);e.preventDefault()}});
+        input.addEventListener("input",()=>cell.style.setProperty("--fader-position",(12+(100-Number(input.value))*.64)+"%"));
+        cell.style.setProperty("--fader-position",(12+(100-f.value)*.64)+"%");
+      }
       if(illustrated){setPosition();cell.append(l,input)}else cell.append(l,input);
       fg.append(cell);
     });
