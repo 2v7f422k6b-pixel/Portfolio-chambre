@@ -52,7 +52,43 @@ updateClocks();setInterval(updateClocks,15000);
 // Night mode crossfades between the two user-approved bedroom artworks.
 // Hotspots and the live clock remain in exactly the same UI coordinates.
 const THEME_KEY='nana-portfolio-theme';
+let roomThemeTransition=null;
+let queuedRoomTheme=null;
 function applyTheme(theme){
+ const target=theme==='night'?'night':'day';
+ const root=document.documentElement;
+ if(roomThemeTransition){queuedRoomTheme=target;return;}
+ const visible=app?.classList.contains('mode-play');
+ if(root.dataset.theme===target||!visible||!document.startViewTransition||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   applyThemeInstant(target);return;
+ }
+ // Capture the whole composed room, rather than fading each nested layer.
+ root.classList.add('nana-room-theme-transition');
+ try {
+   const transition=document.startViewTransition(async()=>{
+     applyThemeInstant(target);
+     // Theme observers update SVG sources and decorative layers on animation frames.
+     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+     const scene=document.getElementById('play-scene');
+     if(scene) {
+       const images=[...scene.querySelectorAll('img')];
+       const urls=new Set([...scene.querySelectorAll('image')].map(el=>el.getAttribute('href')).filter(Boolean));
+       for(const url of urls){const image=new Image();image.src=url;images.push(image);}
+       await Promise.all(images.map(image=>image.decode?image.decode().catch(()=>{}):Promise.resolve()));
+     }
+   });
+   roomThemeTransition=transition;
+   transition.finished.catch(()=>{}).finally(()=>{
+     roomThemeTransition=null;root.classList.remove('nana-room-theme-transition');
+     const next=queuedRoomTheme;queuedRoomTheme=null;
+     if(next&&next!==root.dataset.theme)applyTheme(next);
+   });
+ } catch(_){
+   root.classList.remove('nana-room-theme-transition');roomThemeTransition=null;
+   applyThemeInstant(target);
+ }
+}
+function applyThemeInstant(theme){
  const night=theme==='night';
  // The Work wallpaper layers stay mounted in both themes. The theme switch
  // changes only their opacity, not the layout or the scroll position.

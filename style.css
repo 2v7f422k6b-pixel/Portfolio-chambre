@@ -595,3 +595,25 @@ html[data-theme="night"] .gearnews-ring-preview {background:#4f357c}
 html[data-theme="night"] #special-shade.polaroids-floating {background:#090b102b;}
 #special-shade.polaroids-floating #special-host {width:100vw;height:100dvh;max-width:none;max-height:none;display:block;}
 #special-shade.polaroids-floating #special-close {z-index:100;top:max(58px,env(safe-area-inset-top));}
+
+/* One composite room crossfade prevents nested opacity ramps and SVG source flashes. */
+html.nana-room-theme-transition {view-transition-name:none;}
+html.nana-room-theme-transition #play-viewport {view-transition-name:nana-room-scene;}
+html.nana-room-theme-transition #play-scene,
+html.nana-room-theme-transition #play-scene *,
+html.nana-room-theme-transition #play-scene::before,
+html.nana-room-theme-transition #play-scene::after,
+html.nana-room-theme-transition #play-scene *::before,
+html.nana-room-theme-transition #play-scene *::after {
+ transition:none!important;animation-play-state:paused!important;
+}
+::view-transition-group(nana-room-scene) {animation-duration:1s;animation-timing-function:ease-in-out;}
+::view-transition-image-pair(nana-room-scene) {isolation:isolate;}
+::view-transition-old(nana-room-scene) {animation:none;mix-blend-mode:normal;}
+::view-transition-new(nana-room-scene) {animation:nana-composed-room-fade 1s ease-in-out both;mix-blend-mode:normal;}
+@keyframes nana-composed-room-fade {from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+ ::view-transition-group(nana-room-scene),
+ ::view-transition-old(nana-room-scene),
+ ::view-transition-new(nana-room-scene){animation:none!important;}
+}
