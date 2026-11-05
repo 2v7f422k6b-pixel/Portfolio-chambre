@@ -75,6 +75,33 @@ Object.assign(dictionary, {
   "Draw your latte art here with a finger or pointer":"Dessine sur la mousse avec ton doigt, une souris ou un stylet",
   "Hand-drawn pink latte mug":"Tasse rose dessinée à la main"
 });
+Object.assign(dictionary, {
+  "An improvised haircut": "La coup de cheveux improvisée",
+  "I cut my own hair that day.": "Je me suis coupé les cheveux moi-même ce jour là.",
+  "The girl in the bucket hat": "La fille au bob",
+  "My first Polaroid photo": "Ma première photo polaroïd",
+  "By the sea": "Près de la mer",
+  "Near Marseille, with friends!": "Près de Marseille, avec des amis !",
+  "Like a star": "Comme une star",
+  "Backstage at Hip-Hop Symphonique...": "Dans les coulisses du Hip-Hop Symphonique...",
+  "A budding guitarist": "Guitariste en herbe",
+  "With my guitar, Baby :)": "Avec ma guitare qui s'appelle Baby :)",
+  "Léna drawing": "Léna qui dessine",
+  "Drawing (as usual)": "Je dessine (comme d'hab')",
+  "A black-and-white portrait": "Portrait en noir et blanc",
+  "The best photo of me, taken by Jacques-Henri Heim https://hanslucas.com/jhheim/photo": "La plus belle photo de moi par Jacques-Henri Heim https://hanslucas.com/jhheim/photo",
+  "Photo of Léna de Firmas with short hair": "Photo de Léna de Firmas avec une coupe de cheveux courte",
+  "Photo of Léna de Firmas wearing a bucket hat": "Photo de Léna de Firmas avec un bob",
+  "Photo of Léna de Firmas by the sea": "Photo de Léna de Firmas près de la mer",
+  "Photo of Léna de Firmas at Hip-Hop Symphonique": "Photo de Léna de Firmas au hip-hop symphonique",
+  "Photo of Léna de Firmas with a guitar": "Photo de Léna de Firmas avec une guitare",
+  "Photo of Léna de Firmas drawing": "Photo de Léna de Firmas qui dessine",
+  "Photo of Léna de Firmas by Jacques-Henri Heim": "Photo de Léna de Firmas par Jacques-Henri Heim",
+  "Show front ↻": "Voir le recto ↻",
+  "Enlarged Polaroid": "Polaroïd agrandi",
+  "Close enlarged photo": "Fermer la photo agrandie",
+  "A little note to write on the back.": "Une petite note à écrire au dos."
+});
 const reverse=Object.fromEntries(Object.entries(dictionary).map(([en,fr])=>[fr,en]));
 Object.assign(reverse,frenchGameOriginals);
 for(const [fr,en] of Object.entries(frenchGameOriginals)){
