@@ -468,7 +468,7 @@ function showLatte(){
 }
 function showPolaroids(){
  closeWindow();closeSpecial();
- specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261103-illustrations-1" loading="eager" style="display:block;width:min(1080px,95vw);height:min(780px,89dvh);border:2px solid #ff173b;border-radius:0;background:#fff8f6;box-shadow:0 0 14px #ff173b55"></iframe>';
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261105-editor-1" loading="eager" style="display:block;width:min(1080px,95vw);height:min(780px,89dvh);border:2px solid #ff173b;border-radius:0;background:#fff8f6;box-shadow:0 0 14px #ff173b55"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close the Polaroid gallery');
  $('#special-close').focus({preventScroll:true});

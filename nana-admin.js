@@ -137,6 +137,7 @@
       const existing=await fetch(endpoint,{headers,cache:'no-store'});
       if(!existing.ok)throw new Error('GitHub refuse l’accès au dépôt ('+existing.status+'). Vérifie le jeton et ses droits Contents.');
       const old=await existing.json();
+      await publishPolaroids(headers,status);
       const settings=readSettings();
       const update=await fetch(endpoint,{
         method:'PUT',
@@ -154,13 +155,100 @@
       }
       const result=await update.json();
       window.NANA_PUBLISHED_SETTINGS=settings;
-      status.textContent='Réglages envoyés à GitHub. La mise en ligne suivra le déploiement GitHub Pages.';
+      status.textContent='Photos, textes et réglages envoyés à GitHub. La mise en ligne suivra le déploiement GitHub Pages.';
       if(result?.commit?.html_url) {
         const a=document.createElement('a');a.href=result.commit.html_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Voir le commit GitHub';
         status.append(' ',a);
       }
     } catch(error) {status.textContent=error.message||'La publication a échoué.';}
     finally {button.disabled=false;}
+  }
+  const PHOTO_DRAFT = 'nana-polaroids-draft-v1';
+  let photoDraft = null;
+  async function editPolaroids() {
+    if (!photoDraft) {
+      try {
+        const saved = localStorage.getItem(PHOTO_DRAFT);
+        const response = saved ? null : await fetch('content/polaroids.json', {cache:'no-store'});
+        if (response && !response.ok) throw new Error('Chargement des photos impossible.');
+        photoDraft = saved ? JSON.parse(saved) : (await response.json()).photos;
+        if (!Array.isArray(photoDraft)) throw new Error('Format des photos invalide.');
+      } catch (error) { alert(error.message); return; }
+    }
+    dialog.innerHTML = heading() + '<h3>Polaroïds</h3><p>Ajoute tes photos et écris au dos. Enregistre le brouillon, puis utilise « Publier sur le site » dans l’atelier pour les rendre visibles par tous.</p><label>Ajouter des photos<input id="nana-photo-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div id="nana-photo-list"></div><p id="nana-photo-status" role="status"></p><div class="nana-admin-actions"><button class="nana-admin-action" id="nana-photo-save">Enregistrer le brouillon</button><button class="nana-admin-action" id="nana-photo-back">Retour à l’atelier</button></div>';
+    wireClose();
+    const status = dialog.querySelector('#nana-photo-status');
+    function save() {
+      try { localStorage.setItem(PHOTO_DRAFT, JSON.stringify(photoDraft)); status.textContent='Brouillon enregistré dans ce navigateur. Il reste à le publier.'; return true; }
+      catch (_) { status.textContent='Le navigateur manque de place. Garde cette fenêtre ouverte et publie depuis l’atelier.'; return false; }
+    }
+    function render() {
+      const list = dialog.querySelector('#nana-photo-list'); list.replaceChildren();
+      photoDraft.forEach((photo, index) => {
+        const card=document.createElement('div'); card.className='nana-photo-editor';
+        const image=document.createElement('img'); image.src=photo.src.startsWith('../')?photo.src.slice(3):photo.src; image.alt=photo.alt||photo.title||'Photo'; card.append(image);
+        for (const [key,label] of [['title','Titre'],['date','Date'],['note','Texte au dos'],['alt','Description de la photo (accessibilité)']]) {
+          const field=document.createElement('label'); field.textContent=label;
+          const input=document.createElement(key==='note'?'textarea':'input'); input.value=photo[key]||'';
+          input.addEventListener('input',()=>{photo[key]=input.value; status.textContent='Modifications à enregistrer.';});
+          input.addEventListener('change',save);
+          field.append(input); card.append(field);
+        }
+        const controls=document.createElement('div'); controls.className='nana-admin-actions';
+        for (const [label,offset] of [['Monter',-1],['Descendre',1],['Supprimer',0]]) {
+          const button=document.createElement('button'); button.className='nana-admin-action'; button.textContent=label;
+          button.disabled=offset!==0 && !photoDraft[index+offset];
+          button.onclick=()=>{if(offset) [photoDraft[index],photoDraft[index+offset]]=[photoDraft[index+offset],photoDraft[index]]; else photoDraft.splice(index,1); render(); save();};
+          controls.append(button);
+        }
+        card.append(controls); list.append(card);
+      });
+      if(!photoDraft.length) list.textContent='Aucune photo pour le moment.';
+    }
+    dialog.querySelector('#nana-photo-upload').onchange=async event=>{
+      const input=event.target; input.disabled=true;
+      for(const file of input.files) {
+        try {
+          if(!/^image\/(jpeg|png|webp)$/.test(file.type)) throw new Error('Choisis une photo JPEG, PNG ou WebP.');
+          const bitmap=await createImageBitmap(file);
+          const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
+          const canvas=document.createElement('canvas'); canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
+          const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+          photoDraft.push({src:canvas.toDataURL('image/jpeg',0.88),title:file.name.replace(/\.[^.]+$/,''),date:'',note:'',alt:''});
+          render(); save();
+        } catch(error) { status.textContent=error.message||'Impossible de lire cette photo.'; }
+      }
+      input.value='';input.disabled=false;
+    };
+    dialog.querySelector('#nana-photo-save').onclick=save;
+    dialog.querySelector('#nana-photo-back').onclick=()=>{save();showTools();};
+    render();
+  }
+  async function publishPolaroids(headers, status) {
+    let photos=photoDraft;
+    if(!photos) { const raw=localStorage.getItem(PHOTO_DRAFT); if(raw) photos=JSON.parse(raw); }
+    if(!photos) return;
+    const endpoint='https://api.github.com/repos/'+REPO+'/contents/';
+    async function put(path, content, message) {
+      const existing=await fetch(endpoint+path,{headers,cache:'no-store'});
+      if(!existing.ok && existing.status!==404) throw new Error('Accès aux photos refusé ('+existing.status+').');
+      const old=existing.ok?await existing.json():null;
+      const response=await fetch(endpoint+path,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({message,content,branch:'main',...(old?{sha:old.sha}:{})})});
+      if(!response.ok) throw new Error('Publication des photos refusée ('+response.status+'). Le brouillon est conservé.');
+    }
+    const published=[];
+    for(const [index,photo] of photos.entries()) {
+      const copy={...photo};
+      if(copy.src.startsWith('data:image/jpeg;base64,')) {
+        status.textContent='Envoi de la photo '+(index+1)+' / '+photos.length+'…';
+        const path='assets/polaroids/'+crypto.randomUUID()+'.jpg';
+        await put(path,copy.src.split(',')[1],'Add a Polaroid photograph'); copy.src='../'+path;
+      }
+      published.push(copy);
+    }
+    await put('content/polaroids.json',encodedBase64(JSON.stringify({photos:published},null,2)+'\n'),'Publish Polaroid photos and captions');
+    photoDraft=published;
+    try { localStorage.removeItem(PHOTO_DRAFT); } catch (_) {}
   }
   function showTools() {
     dialog.innerHTML = heading() +
@@ -172,6 +260,7 @@
       '<button class="nana-admin-action" data-tool="cookieEdit">Fortune cookie</button>' +
       '<button class="nana-admin-action" data-tool="ipadClockEdit">Horloge de l’iPad</button>' +
       '<button class="nana-admin-action" data-tool="ribbons">Rubans des illustrations</button>' +
+      '<button class="nana-admin-action" data-tool="polaroids">Polaroïds : photos et textes</button>' +
       '<button class="nana-admin-action" data-tool="zones">Zones cliquables</button>' +
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
@@ -191,6 +280,7 @@
     dialog.querySelectorAll('[data-tool]').forEach(button=>{
       button.addEventListener('click',()=>{
         const action=button.dataset.tool;
+        if(action==='polaroids') { editPolaroids(); return; }
         if(action==='ribbons') {
           dialog.close();
           if(!document.querySelector('#art-tiles .art-tile--for-sale'))

@@ -107,8 +107,12 @@ dialog::backdrop{background:#32121a99;backdrop-filter:blur(3px)}
 </dialog>
 <script src="photos.js"></script>
 <script>
-(() => {
+(async () => {
   "use strict";
+  try {
+    const response=await fetch("../content/polaroids.json", {cache:"no-store"});
+    if(response.ok) { const data=await response.json(); if(Array.isArray(data.photos)) window.LENA_POLAROIDS=data.photos; }
+  } catch (_) {}
   const original=Array.isArray(window.LENA_POLAROIDS)?window.LENA_POLAROIDS.filter(x=>x&&x.src):[];
   const demo=!original.length;
   const photos=demo?Array.from({length:5},(_,i)=>({

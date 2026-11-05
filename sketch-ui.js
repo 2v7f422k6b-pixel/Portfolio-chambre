@@ -4,6 +4,9 @@
   const NS = 'http://www.w3.org/2000/svg';
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['#nana-admin-dialog .nana-photo-editor', 'frame', 1101],
+    ['#nana-admin-dialog .nana-photo-editor label', 'frame', 1102],
+    ['#nana-admin-dialog .nana-admin-action', 'frame', 1103],
     // Dock uses a clean, rounded translucent background without traced outlines.
     ['.mac-window', 'frame', 57],
     ['.window-top', 'rule', 68],
