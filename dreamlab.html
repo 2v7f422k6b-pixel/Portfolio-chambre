@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=portrait-iframe-v9">
+<link rel="stylesheet" href="dreamlab.css?v=portrait-dom-fix-v11">
 <script src="dreamlab.js?v=20261105-ipad-keys-v8" defer></script>
 <script src="dreamlab-multitrack.js?v=20261105-guided-daw-v2" defer></script>
 <script>
@@ -160,6 +160,38 @@ document.addEventListener('DOMContentLoaded',()=>{
  const watcher=new MutationObserver(sync);document.querySelectorAll('.dl-play-mode,#dl-loop-toggle').forEach(el=>watcher.observe(el,{attributes:true,attributeFilter:['aria-pressed']}));
  document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(sync,0));sync();
 });
+</script>
+<script>
+/* Explicit portrait layout: avoid iPad iframe viewport / CSS media-query mismatches. */
+(function(){
+ function fixPortrait(){
+  var portrait=window.innerHeight>window.innerWidth;
+  var workspace=document.querySelector('.dl-workspace');
+  var instrument=document.querySelector('.dl-instrument');
+  var daw=document.querySelector('.dl-recorder');
+  if(!workspace||!instrument||!daw)return;
+  document.documentElement.classList.toggle('dl-force-portrait',portrait);
+  if(portrait){
+   workspace.style.setProperty('display','flex','important');
+   workspace.style.setProperty('flex-direction','column','important');
+   workspace.style.setProperty('width','100%','important');
+   workspace.style.setProperty('height','auto','important');
+   instrument.style.setProperty('display','block','important');
+   instrument.style.setProperty('width','100%','important');
+   instrument.style.setProperty('height','auto','important');
+   instrument.style.setProperty('order','0','important');
+   daw.style.setProperty('width','100%','important');
+   daw.style.setProperty('order','1','important');
+   if(workspace.firstElementChild!==instrument)workspace.prepend(instrument);
+   document.documentElement.scrollLeft=0;document.body.scrollLeft=0;
+  }else{
+   for(var el of [workspace,instrument,daw])for(var prop of ['display','flex-direction','width','height','order'])el.style.removeProperty(prop);
+  }
+ }
+ document.addEventListener('DOMContentLoaded',fixPortrait);
+ window.addEventListener('resize',fixPortrait);
+ window.addEventListener('orientationchange',fixPortrait);
+})();
 </script>
 </body>
 </html>
