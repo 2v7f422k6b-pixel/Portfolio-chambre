@@ -642,3 +642,10 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  clip-path:polygon(1% 9%,21% 1%,45% 4%,70% 0%,98% 7%,100% 40%,97% 94%,74% 99%,45% 95%,20% 100%,0% 92%,3% 53%)!important;
  box-shadow:none!important;pointer-events:none!important;
 }
+
+/* Coordinate system of the new IMG_5026.png (1536 x 922): same plane for image and all controls. */
+.ml-artboard{aspect-ratio:1536 / 922!important;}
+.ml-artboard #dl-keys{left:14.15%!important;top:52.9%!important;width:74.8%!important;height:34.8%!important;}
+.ml-drawn-mode{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;line-height:1!important;white-space:nowrap!important;}
+.ml-mood-display,.ml-mood-prompt{display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;overflow:hidden!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{height:11%!important;width:82%!important;}
