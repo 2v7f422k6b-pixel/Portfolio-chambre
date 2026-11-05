@@ -547,6 +547,9 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 #window-shade #window-close::before,#window-shade #window-close::after{content:""!important;display:block!important;position:absolute!important;left:50%!important;top:50%!important;width:21px!important;height:2px!important;background:#e90036!important;border:0!important;border-radius:0!important;opacity:1!important;visibility:visible!important;z-index:20!important;pointer-events:none!important;transform-origin:center!important;}
 #window-shade #window-close::before{transform:translate(-50%,-50%) rotate(45deg)!important;}
 #window-shade #window-close::after{transform:translate(-50%,-50%) rotate(-45deg)!important;}
+/* Prevent the oversized source PNG from creating a third, offset stroke. */
+#window-shade #window-close .window-close-art{display:none!important;}
+#window-shade #window-close::before,#window-shade #window-close::after{width:21px!important;height:2px!important;}
 </style>
 
 <style id="handdrawn-navigation-arrows">
