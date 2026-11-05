@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-clean-header-font">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-drawn-controls">
 <script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -111,6 +111,35 @@
   const tracks=document.getElementById('dl-track-list');
   if(tracks)new MutationObserver(()=>setTimeout(fit,0)).observe(tracks,{childList:true,subtree:true});
 })();
+</script>
+
+<script id="nana-illustrated-control-labels">
+document.addEventListener('DOMContentLoaded',()=>{
+ const board=document.querySelector('.ml-artboard');if(!board)return;
+ const put=(tag,cls,x,y,w,h,fr,en,fn)=>{
+  const el=document.createElement(tag);el.className=cls;el.style.cssText='left:'+(x/1580*100)+'%;top:'+(y/1000*100)+'%;width:'+(w/1580*100)+'%;height:'+(h/1000*100)+'%;';
+  el.dataset.fr=fr;el.dataset.en=en;el.textContent=document.documentElement.lang==='en'?en:fr;
+  if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
+ };
+ const modes=[['chord','accords','chords'],['arp','arpège','arp'],['single','notes','notes'],['loop','boucle','loop']];
+ const positions=[[164,118],[264,118],[164,212],[264,212]];
+ const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],92,56,fr,en,()=>{
+  if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
+  document.querySelector('.dl-play-mode[data-play-mode="'+mode+'"]')?.click();
+ }));
+ function sync(){const active=document.querySelector('.dl-play-mode[aria-pressed="true"]')?.dataset.playMode;
+  buttons.forEach((b,i)=>{const on=modes[i][0]===active;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
+  buttons[3].classList.toggle('selected',document.getElementById('dl-loop-toggle')?.getAttribute('aria-pressed')==='true');
+  const english=document.documentElement.lang==='en';board.querySelectorAll('.ml-control-caption[data-fr]').forEach(el=>el.textContent=english?el.dataset.en:el.dataset.fr);
+  buttons.forEach(b=>b.textContent=english?b.dataset.en:b.dataset.fr);
+ }
+ const knobs=[['filtre','filter'],['réson.','reson.'],['attaque','attack'],['relâche','release'],['écho','echo'],['vibrato','vibrato'],['tempo','tempo'],['éclat','sparkle']];
+ const knobXs=[557,698,836,977];knobs.forEach(([fr,en],i)=>put('span','ml-control-caption ml-knob-caption',knobXs[i%4]-52,i<4?168:303,104,31,fr,en));
+ const pads=[['kick','kick'],['clap','clap'],['charley','hi-hat'],['basse','bass'],['arpège','arp'],['nappe','pad'],['éclat','sparkle'],['percu','perc']];
+ const padXs=[365,502,643,783,922,1058,1198,1340];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],388,106,46,fr,en));
+ const watcher=new MutationObserver(sync);document.querySelectorAll('.dl-play-mode,#dl-loop-toggle').forEach(el=>watcher.observe(el,{attributes:true,attributeFilter:['aria-pressed']}));
+ document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(sync,0));sync();
+});
 </script>
 </body>
 </html>
