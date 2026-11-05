@@ -148,7 +148,7 @@
       const mark=document.createElement("span");mark.className="ml-fader-marker";mark.setAttribute("aria-hidden","true");
       const setPosition=()=>mark.style.top=(10+(100-Number(input.value))*.72)+"%";
       input.addEventListener("input",()=>{settings[f.id]=+input.value;applyAudioSettings();setPosition()});
-      if(illustrated){setPosition();cell.append(l,input,mark)}else cell.append(l,input);
+      if(illustrated){setPosition();cell.append(l,input)}else cell.append(l,input);
       fg.append(cell);
     });
     const keys=$("#dl-keys");let whites=0;
