@@ -724,3 +724,18 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .dl-daw-extra{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .dl-daw-extra button{font:inherit;color:#b5213c;background:#fff6f8;border:2px solid #c52844;padding:7px 11px;cursor:pointer;border-radius:2px}
 @media(max-width:600px){.dl-track{flex-wrap:wrap}.dl-track-actions{margin-left:auto}.dl-waveform{max-width:220px}.dl-transport{position:sticky;bottom:0;z-index:5;background:#f9dae8;padding:8px}}
+
+/* Larger MiniLab in landscape, without stretching the illustrated key layout.
+   Keep DAW to the right; portrait/mobile rules stay unchanged. */
+@media (orientation:landscape) and (min-width:900px) and (pointer:coarse){
+  .dl-app{width:calc(100% - 32px)!important;max-width:1600px!important}
+  .dl-workspace{display:grid!important;grid-template-columns:minmax(0,2.15fr) minmax(310px,1fr)!important;gap:12px!important;align-items:stretch!important}
+  .dl-instrument{min-width:0!important}
+  .dl-illustrated .ml-art-scroll{width:100%!important;max-width:none!important}
+  .dl-illustrated .ml-art-scroll>.ml-artboard{width:100%!important;max-width:none!important;transform:none!important}
+  .dl-daw{min-width:0!important}
+}
+@media (orientation:landscape) and (min-width:1200px) and (pointer:fine){
+  .dl-app{width:calc(100% - 40px)!important;max-width:1600px!important}
+  .dl-workspace{grid-template-columns:minmax(0,2.15fr) minmax(330px,1fr)!important;gap:16px!important}
+}
