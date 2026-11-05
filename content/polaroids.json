@@ -1,1 +1,53 @@
-{"photos": []}
+{
+  "photos": [
+    {
+      "title": "La coup de cheveux improvisée ",
+      "date": "15/10/2026",
+      "note": "Je me suis coupé les cheveux moi-même ce jour là.",
+      "alt": "Photo de Léna de Firmas avec une coupe de cheveux courte",
+      "src": "../assets/polaroids/7a73dbad9c5159586bd1.jpg"
+    },
+    {
+      "title": "La fille au bob",
+      "date": "10/08/2018",
+      "note": "Ma première photo polaroïd",
+      "alt": "Photo de Léna de Firmas avec un bob",
+      "src": "../assets/polaroids/dfa0b1c095c2ba9d9743.jpg"
+    },
+    {
+      "title": "Près de la mer",
+      "date": "26/09/2026",
+      "note": "Près de Marseille, avec des amis !",
+      "alt": "Photo de Léna de Firmas près de la mer",
+      "src": "../assets/polaroids/a1b9c4cd930d31015e22.jpg"
+    },
+    {
+      "title": "Comme une star",
+      "date": "28/11/2021",
+      "note": "Dans les coulisses ddu Hip-Hop Symphonique...",
+      "alt": "Photo de Léna de Firmas au hip-hop symphonique",
+      "src": "../assets/polaroids/caf682fc221e379439db.jpg"
+    },
+    {
+      "title": "Guitariste en herbe",
+      "date": "07/08/2019",
+      "note": "Avec ma guitare qui s'appelle Baby :)",
+      "alt": "Photo de Léna de Firmas avec une guitare",
+      "src": "../assets/polaroids/90b9391ffdfa40c9108a.jpg"
+    },
+    {
+      "title": "Léna qui dessine",
+      "date": "05/08/2020",
+      "note": "Je dessine (comme d'hab')",
+      "alt": "Photo de Léna de Firmas qui dessine",
+      "src": "../assets/polaroids/2a67e6953c4a19e876c4.jpg"
+    },
+    {
+      "title": "Portrait en noir et blanc",
+      "date": "22/02/2019",
+      "note": "La plus belle photo de moi par Jacques-Henri Heim https://hanslucas.com/jhheim/photo",
+      "alt": "Photo de Léna de Firmas par Jacques-Henri Heim",
+      "src": "../assets/polaroids/d0430a6c879b717eaef4.jpg"
+    }
+  ]
+}
