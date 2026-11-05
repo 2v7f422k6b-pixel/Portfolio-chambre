@@ -538,6 +538,9 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 /* Use the actual PNG element instead of relying on the old background sprite crop. */
 #window-shade #window-close{position:relative!important;background-image:none!important;overflow:visible!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 #window-shade #window-close .window-close-art{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;opacity:1!important;visibility:visible!important;pointer-events:none!important;}
+/* The original UX PNGs are large transparent drawings: crop the source at the same size as the other two window icons. */
+#window-shade #window-close{overflow:hidden!important;isolation:isolate!important;}
+#window-shade #window-close .window-close-art{position:absolute!important;left:calc(50% + 3px)!important;top:50%!important;width:135px!important;height:135px!important;max-width:none!important;max-height:none!important;min-width:135px!important;min-height:135px!important;object-fit:fill!important;transform:translate(-50%,-50%)!important;}
 </style>
 
 <style id="handdrawn-navigation-arrows">
