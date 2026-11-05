@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-drawn-controls">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-psd-integrated-v2">
 <script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
  const modes=[['chord','accords','chords'],['arp','arpège','arp'],['single','notes','notes'],['loop','boucle','loop']];
- const positions=[[164,118],[264,118],[164,212],[264,212]];
- const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],92,56,fr,en,()=>{
+ const positions=[[163,118],[265,118],[163,209],[265,209]];
+ const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],83,44,fr,en,()=>{
   if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
   document.querySelector('.dl-play-mode[data-play-mode="'+mode+'"]')?.click();
  }));
@@ -136,7 +136,19 @@ document.addEventListener('DOMContentLoaded',()=>{
  const knobs=[['filtre','filter'],['réson.','reson.'],['attaque','attack'],['relâche','release'],['écho','echo'],['vibrato','vibrato'],['tempo','tempo'],['éclat','sparkle']];
  const knobXs=[557,698,836,977];knobs.forEach(([fr,en],i)=>put('span','ml-control-caption ml-knob-caption',knobXs[i%4]-52,i<4?168:303,104,31,fr,en));
  const pads=[['kick','kick'],['clap','clap'],['charley','hi-hat'],['basse','bass'],['arpège','arp'],['nappe','pad'],['éclat','sparkle'],['percu','perc']];
- const padXs=[365,502,643,783,922,1058,1198,1340];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],388,106,46,fr,en));
+ const padXs=[365,502,643,783,922,1058,1198,1340];pads.forEach(([fr,en],i)=>put('span','ml-control-caption ml-pad-caption',padXs[i],429,106,29,fr,en));
+ const moods=['dreamy','melancholic','strange','joyful'];
+ const display=put('span','ml-mood-display',351,149,140,49,'rêveuse','dreamy');
+ const cycle=put('button','ml-mood-cycle',383,257,74,74,'','',()=>{
+  const current=document.querySelector('.dl-mood.active')?.dataset.mood;
+  const next=moods[(moods.indexOf(current)+1)%moods.length];
+  document.querySelector('.dl-mood[data-mood="'+next+'"]')?.click();refreshMood();
+  const audio=document.getElementById('dl-audio-enable');if(audio&&!audio.hidden)audio.click();
+ });
+ cycle.setAttribute('aria-label','Changer d’humeur / Change mood');
+ function refreshMood(){const active=document.querySelector('.dl-mood.active');if(!active)return;const label=active.querySelector('[data-fr][data-en]');if(!label)return;display.textContent=label.dataset[document.documentElement.lang==='en'?'en':'fr'];}
+ document.querySelectorAll('.dl-mood').forEach(b=>b.addEventListener('click',refreshMood));
+ document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(refreshMood,0));refreshMood();
  const watcher=new MutationObserver(sync);document.querySelectorAll('.dl-play-mode,#dl-loop-toggle').forEach(el=>watcher.observe(el,{attributes:true,attributeFilter:['aria-pressed']}));
  document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(sync,0));sync();
 });
