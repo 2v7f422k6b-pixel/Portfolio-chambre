@@ -667,3 +667,27 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  .ml-artboard .ml-drawn-mode{font-size:clamp(5px,1.35vw,9px)!important;}
  .ml-artboard .ml-control-caption{font-size:clamp(5px,1.15vw,8px)!important;}
 }
+
+/* Fine alignment, 2026-11-05: keep all coordinates on the 1536×922 board. */
+.ml-artboard .ml-drawn-mode{font-size:clamp(4px,.65vw,8px)!important;letter-spacing:-.04em!important;}
+.ml-artboard .ml-mood-display{font-size:clamp(5px,.82vw,10px)!important;letter-spacing:-.06em!important;text-shadow:none!important;}
+.ml-artboard .ml-mood-prompt{font-size:clamp(7px,1.3vw,14px)!important;letter-spacing:0!important;overflow:visible!important;}
+/* Knob tick rotates around the precise centre of its circular touch area. */
+.ml-artboard #dl-knobs .dl-knob:after{
+ left:50%!important;top:50%!important;width:2px!important;height:29%!important;
+ transform-origin:50% 100%!important;
+ transform:translate(-50%,-100%) rotate(var(--angle,0deg))!important;
+ opacity:.95!important;box-shadow:none!important;
+}
+/* Visible draggable cap on every fader, above the transparent input. */
+.ml-artboard #dl-faders .ml-draggable-fader{pointer-events:auto!important;touch-action:none!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{
+ z-index:10!important;width:86%!important;height:9%!important;
+ background:#f00038!important;opacity:1!important;
+}
+.ml-artboard #dl-faders .ml-draggable-fader input{pointer-events:none!important;}
+@media(max-width:700px){
+ .ml-artboard .ml-drawn-mode{font-size:clamp(4px,.94vw,7px)!important;}
+ .ml-artboard .ml-mood-display{font-size:clamp(5px,1.1vw,8px)!important;}
+ .ml-artboard .ml-mood-prompt{font-size:clamp(7px,1.6vw,12px)!important;}
+}
