@@ -2,6 +2,25 @@
    Poetry and excerpts stay in their original published language. */
 window.NanaI18nExtra = {
   enToFr: {
+  "Illustration incoming": "Illustration à venir",
+  "Little games to create, explore and take a break. Click a card to start.": "Des petits jeux pour créer, explorer et faire une pause. Clique sur une carte pour commencer.",
+  "Play, compose and download your music with the keyboard and mini DAW.": "Joue, compose et télécharge ta musique avec le clavier et le mini DAW.",
+  "Take care of a tiny digital companion.": "Prends soin d’un petit compagnon numérique.",
+  "Do Nothing Club": "Le club du rien",
+  "Take a minute to rest. The world can wait.": "Offre-toi une minute de pause. Le monde peut attendre.",
+  "Word Lab": "Le Laboratoire des mots",
+  "Arrange words and download your poem.": "Assemble des mots et télécharge ton poème.",
+  "Music, coloring, poetry & little games": "Musique, coloriage, poésie et petits jeux",
+  "Explore all the mini games": "Découvre tous les mini-jeux",
+  "Work Mode desktop": "Bureau du mode Work",
+  "Desktop folders": "Dossiers du bureau",
+  "Portfolio applications": "Applications du portfolio",
+  "Open Music & Visual Design": "Ouvrir Musique et visuels",
+  "Back to home": "Retour à l’accueil",
+  "Minimize window": "Réduire la fenêtre",
+  "Minimize": "Réduire",
+  "Expand window": "Agrandir la fenêtre",
+  "Expand": "Agrandir",
   "Explore my universe": "Explorer mon univers",
   "Discover my projects": "Découvrir mes projets",
   "Tap the objects to explore · Open the iMac to enter Work Mode": "Touche les objets pour explorer · Ouvre l’iMac pour passer en mode travail",
@@ -682,4 +701,36 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "Save": "Enregistrer",
   "Saved in this browser.": "Nom enregistré dans ce navigateur.",
   "Please enter a title": "Saisis un titre."
+});
+
+
+/* French-authored variants in the current mini-game catalogue. */
+Object.assign(window.NanaI18nExtra.frToEn, {
+  "MODE WORK / MINI-JEUX": "WORK MODE / MINI GAMES",
+  "Colorie cinq de mes dessins au pinceau ou au pot de peinture.": "Color five of my drawings using the paint bucket and freehand brush.",
+  "Prépare ton café et dessine un cœur dans la mousse.": "Make your own tiny coffee and finish it with a foam heart.",
+  "Explore ma garde-robe et habille le personnage.": "Explore my illustrated wardrobe and dress the character."
+});
+
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "Color five of my drawings using the paint bucket and freehand brush.": "Colorie cinq de mes dessins au pinceau ou au pot de peinture.",
+  "Make your own tiny coffee and finish it with a foam heart.": "Prépare ton café et dessine un cœur dans la mousse.",
+  "Explore my illustrated wardrobe and dress the character.": "Explore ma garde-robe et habille le personnage."
+});
+
+Object.assign(window.NanaI18nExtra.enToFr, {
+  "Main navigation": "Navigation principale",
+  "Tools and preferences": "Outils et préférences",
+  "Interactive objects in the bedroom": "Objets interactifs dans la chambre",
+  "Enter Work Mode through the iMac": "Entrer en mode Work depuis l’iMac",
+  "Open the GABZILLA collaboration": "Ouvrir la collaboration GABZILLA",
+  "Play Gymnopédie n° 1 on the Marshall speaker": "Écouter Gymnopédie n° 1 sur l’enceinte Marshall",
+  "Open Music & Visual Design by tapping the CDs on the shelf": "Ouvrir Musique et visuels en touchant les CD sur l’étagère",
+  "Open the interactive iPhone": "Ouvrir l’iPhone interactif",
+  "Play with the Tamagotchi": "Jouer avec le Tamagotchi",
+  "Make a latte by clicking the pink mug": "Préparer un latte en cliquant sur le mug rose",
+  "Pet the sleeping cat": "Caresser le chat endormi",
+  "Rilakkuma — Do Nothing Club": "Rilakkuma — Le club du rien",
+  "Watch my GearNews music series via the ring light": "Regarder ma série musicale GearNews depuis la ring light",
+  "Open my Polaroid gallery via the Instax camera": "Ouvrir mes Polaroïds depuis l’appareil Instax"
 });

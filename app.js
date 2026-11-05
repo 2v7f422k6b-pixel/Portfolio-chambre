@@ -678,14 +678,14 @@ updatePlayer();
  const save=()=>{
   if(restoring)return;
   try{
-   const old=read()||{};
-   const visibleWindow=!shade.hidden || !specialShade.hidden;
+   const studioOpen=!!document.getElementById("nana-dreamlab-overlay");
+   const visibleWindow=!shade.hidden || !specialShade.hidden || studioOpen;
    const state={
     mode:currentMode,theme:document.documentElement.dataset.theme,
     lang:document.documentElement.lang,
     x:play.scrollLeft,y:play.scrollTop,
-    open:visibleWindow?lastOpen:null,
-    gallery:visibleWindow && currentGallery?{type:currentGallery.type,index:currentGallery.index}:null
+    open:studioOpen?"mimilab":visibleWindow?lastOpen:null,
+    gallery:!shade.hidden && currentWindow==='gallery' && currentGallery?{type:currentGallery.which,index:currentGallery.index}:null
    };
    sessionStorage.setItem(KEY,JSON.stringify(state));
   }catch(_){}
@@ -694,9 +694,11 @@ updatePlayer();
   if(e.target.closest('#home-menu,#menu-mode'))lastOpen=null;
   const opener=e.target.closest('[data-open]');
   if(opener)lastOpen=opener.dataset.open;
-  if(e.target.closest('#window-close,#window-minimize,#special-close,#window-shade,#special-shade'))lastOpen=null;
+  if(e.target.closest('#window-close,#window-minimize,#special-close')||e.target===shade||e.target===specialShade)lastOpen=null;
   setTimeout(save,100);
  },true);
+ document.addEventListener('nana-dreamlab-open',()=>{lastOpen='mimilab';save()});
+ document.addEventListener('nana-dreamlab-close',()=>{lastOpen=null;save()});
  window.addEventListener('pagehide',save);
  document.addEventListener('scroll',e=>{if(e.target===play)save()},true);
  const observer=new MutationObserver(()=>save());
@@ -711,13 +713,13 @@ updatePlayer();
    chooseMode(previous.mode,false);
    if(previous.theme && document.documentElement.dataset.theme!==previous.theme)applyTheme(previous.theme);
    if(previous.lang && document.documentElement.lang!==previous.lang){
-    const languageButton=document.querySelector('[data-lang="'+previous.lang+'"]');
+    const languageButton=document.getElementById('language-toggle');
     if(languageButton)languageButton.click();
    }
-   if(previous.open && /^(finder|illustration|social|interactive|mini-games|dressup|photos|gearnews-series|gabzilla|motion|pages|about|music|polaroids|phone|tamagotchi|latte)$/.test(previous.open)){
+   if(previous.gallery && ['art','gabzilla'].includes(previous.gallery.type)){
+    openGallery(previous.gallery.type,Number(previous.gallery.index)||0);
+   }else if(previous.open && /^(finder|illustration|social|interactive|mini-games|mimilab|dressup|photos|gearnews-series|gabzilla|motion|pages|about|music|polaroids|phone|tamagotchi|latte)$/.test(previous.open)){
     lastOpen=previous.open;openApp(previous.open);
-   }else if(previous.gallery && previous.gallery.type==='art'){
-    openGallery('art',Number(previous.gallery.index)||0);
    }
    requestAnimationFrame(()=>requestAnimationFrame(()=>{
     play.scrollLeft=Number(previous.x)||0;
@@ -726,6 +728,7 @@ updatePlayer();
    }));
   }catch(_){restoring=false}
  };
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restore,{once:true});
+ if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',restore,{once:true});
  else restore();
 })();
+

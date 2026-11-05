@@ -6,20 +6,15 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=portrait-dom-fix-v11">
-<script src="dreamlab.js?v=20261105-ipad-keys-v8" defer></script>
-<script src="dreamlab-multitrack.js?v=20261105-guided-daw-v2" defer></script>
-<script>
-(function(){
- function sync(){document.documentElement.classList.toggle('dl-force-portrait',window.innerHeight>window.innerWidth);}
- window.addEventListener('resize',sync);window.addEventListener('orientationchange',sync);sync();
-})();
-</script>
+<link rel="stylesheet" href="dreamlab.css?v=20261105-stability-1">
+<script src="dreamlab.js?v=20261105-stability-1" defer></script>
+<script src="dreamlab-multitrack.js?v=20261105-stability-1" defer></script>
+<script src="mimilab-fit.js?v=20261105-stability-1" defer></script>
 </head>
 <body data-mood="dreamy">
 <main class="dl-app">
   <header class="dl-heading">
-    <a class="dl-back" href="index.html" aria-label="Retour au portfolio">← <span data-fr="ma chambre" data-en="my room">ma chambre</span></a>
+    <a class="dl-back" href="index.html" aria-label="Retour au portfolio" data-fr-aria="Retour au portfolio" data-en-aria="Back to portfolio">← <span data-fr="ma chambre" data-en="my room">ma chambre</span></a>
     <div class="dl-title"><span class="dl-small">Nana Color Studio presents</span><h1>mimilab 3<span class="dl-star" aria-hidden="true">✳</span></h1><p data-fr="un petit studio pour fabriquer des rêves sonores" data-en="a tiny studio for making musical dreams">un petit studio pour fabriquer des rêves sonores</p></div>
     <button type="button" id="dl-language" class="dl-language" aria-label="Switch language">EN</button>
   </header>
@@ -30,7 +25,7 @@
     <h2 id="dl-mood-title" data-fr="choisis une humeur" data-en="choose a mood">choisis une humeur</h2>
     <div id="dl-moods" class="dl-moods" role="group" aria-label="Musical moods">
       <button type="button" class="dl-mood active" data-mood="dreamy" aria-pressed="true"><span class="dl-mood-icon">✧</span><span data-fr="rêveuse" data-en="dreamy">rêveuse</span></button>
-      <button type="button" class="dl-mood" data-mood="melancholic" aria-pressed="false"><span class="dl-mood-icon">☾</span><span data-fr="spleen" data-en="melancholic">spleen</span></button>
+      <button type="button" class="dl-mood" data-mood="melancholic" aria-pressed="false"><span class="dl-mood-icon">☾</span><span data-fr="spleen" data-en="wistful">spleen</span></button>
       <button type="button" class="dl-mood" data-mood="strange" aria-pressed="false"><span class="dl-mood-icon">✳</span><span data-fr="étrange" data-en="strange">étrange</span></button>
       <button type="button" class="dl-mood" data-mood="joyful" aria-pressed="false"><span class="dl-mood-icon">♡</span><span data-fr="joyeuse" data-en="joyful">joyeuse</span></button>
     </div>
@@ -38,7 +33,7 @@
   </section>
 
 
-  <section class="dl-hardware dl-illustrated" aria-label="mimilab 3, clavier dessiné interactif à 25 touches">
+  <section class="dl-hardware dl-illustrated" aria-label="mimilab 3, clavier dessiné interactif à 25 touches" data-fr-aria="mimilab 3, clavier dessiné interactif à 25 touches" data-en-aria="mimilab 3, hand-drawn interactive 25-key keyboard">
     <div class="ml-instrument-bar">
       <button type="button" id="dl-loop-toggle" class="dl-minor-button" aria-pressed="false"><span data-fr="lancer la boucle" data-en="start loop">lancer la boucle</span> ▶</button>
       <span class="dl-tempo">bpm <output id="dl-bpm-value">101</output></span>
@@ -48,13 +43,13 @@
         <span class="dl-controller-led" id="dl-activity-led" aria-hidden="true"></span>
       </div>
     </div>
-    <div class="ml-art-scroll" aria-label="Instrument illustré ; défile horizontalement sur petit écran">
+    <div class="ml-art-scroll" aria-label="Clavier illustré interactif" data-fr-aria="Clavier illustré interactif" data-en-aria="Interactive illustrated keyboard">
       <div class="ml-artboard">
-        <img class="ml-art-image" src="assets/IMG_5026.png?v=20261105-original-layers" alt="Mimilab 3 dessiné à la main en rose, bleu et rouge" draggable="false">
-        <div id="dl-keys" class="dl-keys" role="group" aria-label="25 touches chromatiques interactives"></div>
-        <div id="dl-pads" class="dl-pads" role="group" aria-label="8 pads interactifs"></div>
-        <div id="dl-knobs" class="dl-knobs" role="group" aria-label="8 potentiomètres rotatifs"></div>
-        <div id="dl-faders" class="dl-faders" role="group" aria-label="4 curseurs de volume"></div>
+        <img class="ml-art-image" src="assets/IMG_5026.png?v=20261105-original-layers" alt="Mimilab 3 dessiné à la main en rose, bleu et rouge" data-fr-alt="Mimilab 3 dessiné à la main en rose, bleu et rouge" data-en-alt="Hand-drawn Mimilab 3 in pink, blue and red" draggable="false">
+        <div id="dl-keys" class="dl-keys" role="group" aria-label="25 touches chromatiques interactives" data-fr-aria="25 touches chromatiques interactives" data-en-aria="25 interactive chromatic keys"></div>
+        <div id="dl-pads" class="dl-pads" role="group" aria-label="8 pads interactifs" data-fr-aria="8 pads interactifs" data-en-aria="8 interactive pads"></div>
+        <div id="dl-knobs" class="dl-knobs" role="group" aria-label="8 potentiomètres rotatifs" data-fr-aria="8 potentiomètres rotatifs" data-en-aria="8 rotary knobs"></div>
+        <div id="dl-faders" class="dl-faders" role="group" aria-label="4 curseurs de volume" data-fr-aria="4 curseurs de volume" data-en-aria="4 volume faders"></div>
       </div>
     </div>
     <div class="dl-play-modes" aria-label="Modes de jeu">
@@ -74,8 +69,8 @@
 
     <section class="dl-recorder dl-daw" aria-labelledby="dl-rec-title">
     <div class="dl-section-head"><h2 id="dl-rec-title" data-fr="mimi daw" data-en="mimi daw">mimi daw</h2><span data-fr="ta création reste sur ton appareil" data-en="your creation stays on your device">ta création reste sur ton appareil</span></div>
-    <div class="dl-track-heading"><h3 data-fr="mes pistes" data-en="my tracks">mes 5 pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
-    <div id="dl-track-list" class="dl-track-list" aria-label="5 pistes d'enregistrement"></div>
+    <div class="dl-track-heading"><h3 data-fr="mes pistes" data-en="my tracks">mes pistes</h3><span id="dl-track-count" aria-live="polite">0 / 5</span></div>
+    <div id="dl-track-list" class="dl-track-list" aria-label="5 pistes d'enregistrement" data-fr-aria="5 pistes d'enregistrement" data-en-aria="5 recording tracks"></div>
     <p class="dl-track-tip" data-fr="joue quelques notes pour commencer. les pistes précédentes jouent pendant une nouvelle prise." data-en="play a few notes to begin. previous tracks play during a new take.">appuie sur rec pour enregistrer une piste. les prises précédentes jouent automatiquement pendant la suivante.</p>
     <div id="dl-daw-extra" class="dl-daw-extra"></div>
     <div class="dl-transport">
@@ -92,33 +87,6 @@
   <footer class="dl-footer"><span>made with little things &amp; a lot of love</span><span>nana color studio · 2026</span></footer>
 </main>
 
-<script id="nana-mobile-fit-screen">
-(()=>{
-  const app=document.querySelector('.dl-app');if(!app)return;
-  let busy=false;
-  function fit(){
-    if(busy)return;busy=true;
-    requestAnimationFrame(()=>{
-      app.style.transform='none';
-      document.body.style.overflow='';
-      if(window.innerWidth<=700){
-        const available=window.visualViewport?.height||window.innerHeight;
-        const natural=app.getBoundingClientRect().height;
-        const factor=Math.min(1,Math.max(.35,(available-8)/Math.max(natural,1)));
-        app.style.transform='scale('+factor+')';
-        document.body.style.overflow='hidden';
-      }
-      busy=false;
-    });
-  }
-  window.addEventListener('resize',fit,{passive:true});
-  window.visualViewport?.addEventListener('resize',fit,{passive:true});
-  window.addEventListener('load',fit);
-  setTimeout(fit,100);setTimeout(fit,600);
-  const tracks=document.getElementById('dl-track-list');
-  if(tracks)new MutationObserver(()=>setTimeout(fit,0)).observe(tracks,{childList:true,subtree:true});
-})();
-</script>
 
 <script id="nana-illustrated-control-labels">
 document.addEventListener('DOMContentLoaded',()=>{
@@ -128,14 +96,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   el.dataset.fr=fr;el.dataset.en=en;el.textContent=document.documentElement.lang==='en'?en:fr;
   if(tag==='button'){el.type='button';el.addEventListener('click',fn)}board.append(el);return el;
  };
- const modes=[['chord','chords','chords'],['arp','arp','arp'],['single','notes','notes'],['loop','loop','loop']];
+ const modes=[['chord','accords','chords'],['arp','arp','arp'],['single','notes','notes'],['loop','boucle','loop']];
  const positions=[[241,116],[324,116],[241,176],[324,176]];
  const buttons=modes.map(([mode,fr,en],i)=>put('button','ml-drawn-mode',positions[i][0],positions[i][1],58,37,fr,en,()=>{
   if(mode==='loop'){document.getElementById('dl-loop-toggle')?.click();return}
   document.querySelector('.dl-play-mode[data-play-mode="'+mode+'"]')?.click();
  }));
  function sync(){const active=document.querySelector('.dl-play-mode[aria-pressed="true"]')?.dataset.playMode;
-  buttons.forEach((b,i)=>{const on=modes[i][0]===active;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
+  buttons.forEach((b,i)=>{const on=modes[i][0]==='loop'?document.getElementById('dl-loop-toggle')?.getAttribute('aria-pressed')==='true':modes[i][0]===active;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
   buttons[3].classList.toggle('selected',document.getElementById('dl-loop-toggle')?.getAttribute('aria-pressed')==='true');
   const english=document.documentElement.lang==='en';board.querySelectorAll('.ml-control-caption[data-fr]').forEach(el=>el.textContent=english?el.dataset.en:el.dataset.fr);
   buttons.forEach(b=>b.textContent=english?b.dataset.en:b.dataset.fr);
@@ -153,45 +121,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelector('.dl-mood[data-mood="'+next+'"]')?.click();refreshMood();
   const audio=document.getElementById('dl-audio-enable');if(audio&&!audio.hidden)audio.click();
  });
- cycle.setAttribute('aria-label','Changer d’humeur / Change mood');
+ cycle.dataset.frAria='Changer d’humeur';cycle.dataset.enAria='Change mood';cycle.setAttribute('aria-label',document.documentElement.lang==='en'?'Change mood':'Changer d’humeur');
  function refreshMood(){const active=document.querySelector('.dl-mood.active');if(!active)return;const label=active.querySelector('[data-fr][data-en]');if(!label)return;display.textContent=label.dataset[document.documentElement.lang==='en'?'en':'fr'];}
  document.querySelectorAll('.dl-mood').forEach(b=>b.addEventListener('click',refreshMood));
  document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(refreshMood,0));refreshMood();
  const watcher=new MutationObserver(sync);document.querySelectorAll('.dl-play-mode,#dl-loop-toggle').forEach(el=>watcher.observe(el,{attributes:true,attributeFilter:['aria-pressed']}));
  document.getElementById('dl-language')?.addEventListener('click',()=>setTimeout(sync,0));sync();
 });
-</script>
-<script>
-/* Explicit portrait layout: avoid iPad iframe viewport / CSS media-query mismatches. */
-(function(){
- function fixPortrait(){
-  var portrait=window.innerHeight>window.innerWidth;
-  var workspace=document.querySelector('.dl-workspace');
-  var instrument=document.querySelector('.dl-instrument');
-  var daw=document.querySelector('.dl-recorder');
-  if(!workspace||!instrument||!daw)return;
-  document.documentElement.classList.toggle('dl-force-portrait',portrait);
-  if(portrait){
-   workspace.style.setProperty('display','flex','important');
-   workspace.style.setProperty('flex-direction','column','important');
-   workspace.style.setProperty('width','100%','important');
-   workspace.style.setProperty('height','auto','important');
-   instrument.style.setProperty('display','block','important');
-   instrument.style.setProperty('width','100%','important');
-   instrument.style.setProperty('height','auto','important');
-   instrument.style.setProperty('order','0','important');
-   daw.style.setProperty('width','100%','important');
-   daw.style.setProperty('order','1','important');
-   if(workspace.firstElementChild!==instrument)workspace.prepend(instrument);
-   document.documentElement.scrollLeft=0;document.body.scrollLeft=0;
-  }else{
-   for(var el of [workspace,instrument,daw])for(var prop of ['display','flex-direction','width','height','order'])el.style.removeProperty(prop);
-  }
- }
- document.addEventListener('DOMContentLoaded',fixPortrait);
- window.addEventListener('resize',fixPortrait);
- window.addEventListener('orientationchange',fixPortrait);
-})();
 </script>
 </body>
 </html>

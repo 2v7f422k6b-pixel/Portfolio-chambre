@@ -76,8 +76,8 @@ Object.assign(dictionary, {
   "Hand-drawn pink latte mug":"Tasse rose dessinée à la main"
 });
 Object.assign(dictionary, {
-  "An improvised haircut": "La coup de cheveux improvisée",
-  "I cut my own hair that day.": "Je me suis coupé les cheveux moi-même ce jour là.",
+  "An improvised haircut": "La coupe de cheveux improvisée",
+  "I cut my own hair that day.": "Je me suis coupé les cheveux moi-même ce jour-là.",
   "The girl in the bucket hat": "La fille au bob",
   "My first Polaroid photo": "Ma première photo polaroïd",
   "By the sea": "Près de la mer",
@@ -120,6 +120,10 @@ function translated(value,target=language){
   const end=src.match(/\s*$/)?.[0]||'';
   const key=src.trim();
   if(!key)return src;
+  const colour=key.match(/^(?:Couleur|Colour) (#[0-9a-f]{3,8})$/i);
+  if(colour)return start+(target==='fr'?'Couleur ':'Colour ')+colour[1]+end;
+  const enlarge=key.match(/^(?:Enlarge photo|Agrandir la photo) (\d+)$/);
+  if(enlarge)return start+(target==='fr'?'Agrandir la photo ':'Enlarge photo ')+enlarge[1]+end;
   // The colouring pages generate labels such as "2. Petits plaisirs"
   // and "♡ Petits plaisirs ♡", not just the raw book titles.
   let parts=key.match(/^(\d+\.\s+)(.+)$/);
@@ -146,7 +150,7 @@ function translated(value,target=language){
   }
   const recipe=english.match(/^Double espresso \+ 15 ml vanilla syrup \+ 160 ml (oat|whole) milk \+ (.+)\. Made by you, with love ♡$/);
   if(recipe&&target==='fr')result='Double expresso + 15 ml de sirop de vanille + 160 ml de lait '+(recipe[1]==='oat'?'d’avoine':'entier')+' + '+(recipe[2]==='your original latte art'?'ton dessin original':recipe[2])+'. Préparé avec amour ♡';
-  return start+result.replace(/\bPhotos\b/g,'Illustrations').replace(/\bphotos\b/g,'illustrations')+end;
+  return start+result+end;
 }
 
 
@@ -270,7 +274,12 @@ function init(){
     }
     if(!roots.size)return;
     observer.disconnect();
-    for(const node of roots)if(node&&document.body.contains(node))translate(node);
+    for(const node of roots){
+      if(!node||!document.body.contains(node))continue;
+      let parent=node.parentElement,covered=false;
+      while(parent){if(roots.has(parent)){covered=true;break}parent=parent.parentElement}
+      if(!covered)translate(node);
+    }
     observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:translatedAttributes});
   });
   observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:translatedAttributes});
@@ -279,3 +288,4 @@ function init(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 
 })();
+

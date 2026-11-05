@@ -6,7 +6,7 @@
   const lanes=Array.from({length:5},()=>({audio:null,volume:85,mute:false}));
   let selected=0,recorder=null,recording=-1,processing=false,unloading=false;
   let chunks=[],clock=null,started=0,monitor=[],mixBlob=null,mixUrl=null;
-  let undoTake=null, playTimer=null;
+  let undoTake=null;
   const player=$("dl-playback");
   const en=()=>document.documentElement.lang==="en";
   const word=(fr,english)=>en()?english:fr;
@@ -14,7 +14,7 @@
     const s=Math.max(0,Math.round(sec));
     return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
   };
-  const status=(fr,english)=>$("dl-status").textContent=word(fr,english);
+  const status=(fr,english)=>{const node=$("dl-status");node.dataset.fr=fr;node.dataset.en=english;node.textContent=word(fr,english)};
   const firstEmpty=()=>lanes.findIndex(t=>!t.audio);
 
   function invalidateMix(){
@@ -52,7 +52,7 @@
       row.setAttribute("role","group");row.setAttribute("aria-label",word("Piste ","Track ")+(i+1));
       row.tabIndex=0;
       row.addEventListener("click",e=>{if(e.target.closest("button,input"))return;if(!active&&!processing){selected=i;draw()}});
-      row.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!active&&!processing){e.preventDefault();selected=i;draw()}});
+      row.addEventListener("keydown",e=>{if(e.target!==row)return;if((e.key==="Enter"||e.key===" ")&&!active&&!processing){e.preventDefault();selected=i;draw()}});
       const info=el("div","dl-track-info");
       const number=el("span","dl-track-number",String(i+1).padStart(2,"0"));
       const labels=el("div","dl-track-label");
@@ -70,14 +70,14 @@
         volume.addEventListener("input",()=>{lane.volume=Number(volume.value);invalidateMix()});
         const del=el("button","dl-track-delete","×");del.type="button";del.disabled=active||processing;
         del.setAttribute("aria-label",word("Supprimer piste ","Delete track ")+(i+1));
-        del.addEventListener("click",()=>{undoTake={index:i,audio:lane.audio,volume:lane.volume,mute:lane.mute};lane.audio=null;lane.volume=85;lane.mute=false;selected=i;invalidateMix();draw();status(word("piste supprimée","track deleted"),word("piste supprimée","track deleted"))});
+        del.addEventListener("click",()=>{undoTake={index:i,audio:lane.audio,volume:lane.volume,mute:lane.mute};lane.audio=null;lane.volume=85;lane.mute=false;selected=i;invalidateMix();draw();status("piste supprimée.","track deleted.")});
         actions.append(mute,volume,del);
       }
       row.append(info,actions);list.append(row);
     });
     $("dl-track-count").textContent=count+" / 5";
     const recordBtn=$("dl-record"),recordText=recordBtn.querySelector("[data-fr]");
-    if(recordText)recordText.textContent=word(processing?"préparation…":active?"arrêter":"enregistrer",processing?"preparing…":active?"stop":"record");
+    if(recordText){recordText.dataset.fr=processing?"préparation…":active?"arrêter":"enregistrer";recordText.dataset.en=processing?"preparing…":active?"stop":"record";recordText.textContent=word(recordText.dataset.fr,recordText.dataset.en)}
     $("dl-record-target").textContent=active?String(recording+1).padStart(2,"0"):"";
     recordBtn.classList.toggle("is-recording",active&&!processing);
     recordBtn.disabled=processing||(!active&&(selected<0||!!lanes[selected]?.audio));
@@ -89,7 +89,8 @@
       extra.replaceChildren();
       if(undoTake){
         const undo=el("button","dl-daw-undo",word("annuler la suppression","undo delete"));
-        undo.onclick=()=>{const t=lanes[undoTake.index];Object.assign(t,{audio:undoTake.audio,volume:undoTake.volume,mute:undoTake.mute});selected=undoTake.index;undoTake=null;invalidateMix();draw();status("piste restaurée.","track restored.")};extra.append(undo);
+        undo.disabled=active||processing;
+        undo.onclick=()=>{if(recording!==-1||processing)return;const t=lanes[undoTake.index];Object.assign(t,{audio:undoTake.audio,volume:undoTake.volume,mute:undoTake.mute});selected=undoTake.index;undoTake=null;invalidateMix();draw();status("piste restaurée.","track restored.")};extra.append(undo);
       }
       if(!active&&!processing&&count){
         const redo=el("button","dl-daw-redo",word("refaire","redo"));
@@ -243,7 +244,7 @@
       status("ton mix est téléchargé !","your mix was downloaded!");
     }catch(_){status("impossible de générer le fichier WAV.","could not generate the WAV file.")}
   });
-  $("dl-language").addEventListener("click",()=>setTimeout(draw,0));
+  $("dl-language").addEventListener("click",draw);
   player.addEventListener("play",()=>status("écoute du morceau…","playing your song…"));
   player.addEventListener("ended",()=>status("prête à enregistrer.","ready to record."));
   window.addEventListener("pagehide",()=>{
@@ -253,3 +254,4 @@
   });
   draw();
 })();
+

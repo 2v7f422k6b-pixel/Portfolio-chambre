@@ -211,10 +211,10 @@ function syncDressUpFrames(){
         if(!doc?.head||doc.getElementById('nana-translated-frame')||doc.getElementById('nana-native-i18n'))return;
         const extraScript=doc.createElement('script');
         extraScript.id='nana-translated-frame';
-        extraScript.src=new URL('i18n-extra.js?v=20261103-complete-3',location.href).href;
+        extraScript.src=new URL('i18n-extra.js?v=20261105-stability-1',location.href).href;
         extraScript.addEventListener('load',()=>{
           const main=doc.createElement('script');
-          main.src=new URL('i18n.js?v=20261103-complete-3',location.href).href;
+          main.src=new URL('i18n.js?v=20261105-stability-1',location.href).href;
           doc.head.appendChild(main);
         },{once:true});
         doc.head.appendChild(extraScript);
@@ -251,7 +251,12 @@ const observer=new MutationObserver(records=>{
  if(!nodes.size)return;
  syncDressUpFrames();
  observer.disconnect();
- for(const n of nodes)if(n&&document.body.contains(n))update(n);
+ for(const n of nodes){
+  if(!n||!document.body.contains(n))continue;
+  let parent=n.parentElement,covered=false;
+  while(parent){if(nodes.has(parent)){covered=true;break}parent=parent.parentElement}
+  if(!covered)update(n);
+ }
  observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:attrs});
 });
 observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:attrs});

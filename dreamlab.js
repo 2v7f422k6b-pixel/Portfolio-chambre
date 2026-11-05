@@ -57,14 +57,18 @@
   }
   let recorder=null,recordChunks=[],recordStart=0,recordClock=null,renderedBlob=null,renderedUrl=null,renderedExt="wav";
   const playback = $("#dl-playback");
-  function say(fr,en){$("#dl-status").textContent=lang==="en"?en:fr}
+  function say(fr,en){const node=$("#dl-status");node.dataset.fr=fr;node.dataset.en=en;node.textContent=lang==="en"?en:fr}
   function translate(){
     document.documentElement.lang=lang;
     $$("[data-fr][data-en]").forEach(el=>el.textContent=el.dataset[lang]);
     $("#dl-language").textContent=lang==="fr"?"EN":"FR";
     $("#dl-loop-toggle span").textContent=isLooping?(lang==="fr"?"arrêter la boucle":"stop loop"):(lang==="fr"?"lancer la boucle":"start loop");
-    $("#dl-record").querySelector("[data-fr]").textContent=recorder&&recorder.state==="recording"?(lang==="fr"?"en cours…":"recording…"):(lang==="fr"?"enregistrer":"record");
-    $$(".dl-pad").forEach((el,i)=>el.querySelector("span").textContent=lang==="fr"?pads[i].fr:pads[i].en);
+    $$("[data-fr-aria][data-en-aria]").forEach(el=>el.setAttribute("aria-label",el.dataset[lang+"Aria"]));
+    $$("[data-fr-alt][data-en-alt]").forEach(el=>el.setAttribute("alt",el.dataset[lang+"Alt"]));
+    $("#dl-language").setAttribute("aria-label",lang==="fr"?"Passer en anglais":"Switch to French");
+    $$(".dl-pad").forEach((el,i)=>{el.querySelector("span").textContent=pads[i][lang];el.setAttribute("aria-label",(i+1)+" "+pads[i][lang]);el.title=(i+1)+" "+pads[i][lang]});
+    $$(".dl-knob").forEach((el,i)=>{el.setAttribute("aria-label",knobs[i][lang]);el.title=knobs[i][lang]});
+    $$(".ml-draggable-fader input").forEach((el,i)=>el.setAttribute("aria-label",faders[i][lang]));
     $$(".dl-knob-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?knobs[i].fr:knobs[i].en);
     $$(".dl-fader-cell").forEach((el,i)=>el.querySelector("label").textContent=lang==="fr"?faders[i].fr:faders[i].en);
     updateModeDescription();
@@ -201,6 +205,9 @@
       else{b.style.left=((whites/15)*100)+"%";whites++}
       const legend=physical[midi-48];if(legend&&midi<65){const k=document.createElement("kbd");k.textContent=legend.toUpperCase();b.append(k)}
       b.addEventListener("pointerdown",e=>{if(e.button!==0&&e.pointerType==="mouse")return;e.preventDefault();b.setPointerCapture(e.pointerId);noteOn(midi)});
+      b.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.repeat){e.preventDefault();noteOn(midi)}});
+      b.addEventListener("keyup",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();noteOff(midi)}});
+      b.addEventListener("blur",()=>noteOff(midi));
       b.addEventListener("pointerup",()=>noteOff(midi));
       b.addEventListener("pointercancel",()=>noteOff(midi));
       b.addEventListener("lostpointercapture",()=>noteOff(midi));
@@ -544,7 +551,7 @@
   });
   document.addEventListener("keyup",e=>{
     const idx=physical.indexOf(e.key.toLowerCase());if(idx<0)return;
-    heldKeys.delete(e.code);noteOff(48+idx);
+    if(heldKeys.delete(e.code))noteOff(48+idx);
   });
   window.addEventListener("blur",()=>{heldKeys.clear();[...activeVoices.keys()].forEach(noteOff)});
   const padButtons=()=>$$(".dl-pad");
