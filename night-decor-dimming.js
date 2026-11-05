@@ -13,7 +13,10 @@
   for(const [selector,level] of selectors){
    svg.querySelectorAll(selector).forEach(el=>{
     if(el.hasAttribute('filter'))el.removeAttribute('filter');
-    // SVG image opacity is reliable on iPad; CSS filter on transformed SVG images is not.\n    el.style.removeProperty('filter');\n    if(night)el.style.setProperty('opacity',String(level),'important');\n    else el.style.removeProperty('opacity');
+    // SVG image opacity is reliable on iPad; CSS filter on transformed SVG images is not.
+    el.style.removeProperty('filter');
+    if(night)el.style.setProperty('opacity',String(level),'important');
+    else el.style.removeProperty('opacity');
    });
   }
  };
@@ -21,7 +24,7 @@
  const observer=new MutationObserver(()=>{
   if(pending)return;
   pending=true;
-  requestAnimationFrame(()=>{pending=false;apply()});
+  queueMicrotask(()=>{pending=false;apply()});
  });
  observer.observe(svg,{childList:true,subtree:true});
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
