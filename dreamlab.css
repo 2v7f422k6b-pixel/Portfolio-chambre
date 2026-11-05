@@ -464,3 +464,11 @@ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh}
   .dl-instrument,.dl-workspace{min-width:0!important;}
   .dl-illustrated .ml-instrument-bar{min-width:0!important;}
 }
+
+/* iPhone iframe safeguard: override legacy 575/620px keyboard and any
+   viewport-width mismatch; always fit inside the actual instrument panel. */
+@media(max-width:1040px){
+  .dl-illustrated .ml-art-scroll{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;}
+  .dl-illustrated .ml-art-scroll>.ml-artboard{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;aspect-ratio:1580 / 1000!important;height:auto!important;transform:none!important;}
+  .dl-illustrated .ml-artboard>.ml-art-image{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;}
+}
