@@ -559,3 +559,17 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 .ml-mood-display{font-size:clamp(5px,1.05vw,12px)!important;}
 .ml-mood-prompt{font-size:clamp(5px,.95vw,11px)!important;}
 @media(max-width:700px){.ml-drawn-mode{font-size:clamp(5px,1.25vw,8px)!important}.ml-mood-display{font-size:clamp(5px,1.35vw,9px)!important}.ml-mood-prompt{font-size:clamp(5px,1.15vw,8px)!important}}
+
+/* Replacement for flattened PSD fader handles: opaque pink track masks
+   the old painted squares, with one iridescent draggable red thumb. */
+.ml-artboard #dl-faders .ml-draggable-fader{isolation:isolate;overflow:visible!important;touch-action:none!important;}
+.ml-artboard #dl-faders .ml-draggable-fader::before{content:"";position:absolute;z-index:0;inset:-4% -10%;background:#ff97c2;pointer-events:none;}
+.ml-artboard #dl-faders .ml-draggable-fader::after{
+ content:"";position:absolute;z-index:3;left:50%;top:var(--fader-position,40%);
+ transform:translate(-50%,-50%);width:90%;height:13%;box-sizing:border-box;
+ border:1.5px solid #ef0035;border-radius:1px;
+ background:linear-gradient(115deg,#ff063c 0%,#ff6680 21%,#ff124b 41%,#ffb5d0 52%,#f50037 68%,#b90036 85%,#ff325c 100%);
+ box-shadow:0 1px 0 #a50028,0 0 3px #ff2d65,inset 0 1px 1px #ffd1df;
+ pointer-events:none;
+}
+.ml-artboard #dl-faders .ml-draggable-fader input{pointer-events:none!important;}
