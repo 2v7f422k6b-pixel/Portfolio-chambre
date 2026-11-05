@@ -5,7 +5,7 @@
  if(!svg)return;
  const selectors=[
   ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image', 1],
-  ['#nana-wall-mirror image',.60],
+  ['#nana-wall-mirror image',1],
   ['#nana-fortune-cookie image:not(.nana-fortune-cookie-outline)',1]
  ];
  const apply=()=>{
