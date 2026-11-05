@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f9dae8">
 <meta name="description" content="Mimilab 3, le petit studio musical interactif de Nana Color Studio.">
 <title>mimilab 3 — Nana Color Studio</title>
-<link rel="stylesheet" href="dreamlab.css?v=20261105-fit-entire-keyboard">
+<link rel="stylesheet" href="dreamlab.css?v=20261105-one-screen">
 <script src="dreamlab.js?v=20261104-art-1" defer></script>
 <script src="dreamlab-multitrack.js?v=20261104-simple-daw-v1" defer></script>
 </head>
@@ -84,5 +84,33 @@
   </div>
   <footer class="dl-footer"><span>made with little things &amp; a lot of love</span><span>nana color studio · 2026</span></footer>
 </main>
+
+<script id="nana-mobile-fit-screen">
+(()=>{
+  const app=document.querySelector('.dl-app');if(!app)return;
+  let busy=false;
+  function fit(){
+    if(busy)return;busy=true;
+    requestAnimationFrame(()=>{
+      app.style.transform='none';
+      document.body.style.overflow='';
+      if(window.innerWidth<=700){
+        const available=window.visualViewport?.height||window.innerHeight;
+        const natural=app.getBoundingClientRect().height;
+        const factor=Math.min(1,Math.max(.35,(available-8)/Math.max(natural,1)));
+        app.style.transform='scale('+factor+')';
+        document.body.style.overflow='hidden';
+      }
+      busy=false;
+    });
+  }
+  window.addEventListener('resize',fit,{passive:true});
+  window.visualViewport?.addEventListener('resize',fit,{passive:true});
+  window.addEventListener('load',fit);
+  setTimeout(fit,100);setTimeout(fit,600);
+  const tracks=document.getElementById('dl-track-list');
+  if(tracks)new MutationObserver(()=>setTimeout(fit,0)).observe(tracks,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
