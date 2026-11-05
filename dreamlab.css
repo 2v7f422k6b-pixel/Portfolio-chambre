@@ -819,3 +819,18 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
  border-style:solid!important;
  box-shadow:inset 3px 0 0 #e9003a,2px 3px 0 #efb7cf!important;
 }
+
+/* Landscape embedded studio: center the illustration vertically in its panel
+   instead of leaving a large empty strip underneath. */
+@media (orientation:landscape) and (min-width:900px){
+ .dl-workspace{min-height:0!important;height:100%!important;align-items:stretch!important}
+ .dl-instrument{min-height:0!important;height:100%!important}
+ .dl-hardware.dl-illustrated{
+   display:flex!important;flex-direction:column!important;
+   justify-content:center!important;min-height:0!important;
+ }
+ .dl-illustrated .ml-art-scroll{
+   flex:0 1 auto!important;margin-top:auto!important;margin-bottom:auto!important;
+ }
+ .dl-daw.dl-recorder{height:100%!important;min-height:0!important}
+}
