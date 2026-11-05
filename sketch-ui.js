@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.NanaSketchUI) return;
-  window.NanaSketchUI = {version:'20261105-all-lines-1'};
+  window.NanaSketchUI = {version:'20261105-all-lines-2'};
   const NS = 'http://www.w3.org/2000/svg';
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
@@ -156,10 +156,10 @@
     if (kind.startsWith('edges:')) return kind.slice(6).split(',').map((side,i) =>
       makePath(width,height,seed+i*73,{top:'top-rule',right:'vertical-rule',bottom:'rule',left:'left-rule'}[side],variation,inset)).join(' ');
     const random = rng(seed);
-    const pad = 1.5 + inset;
+    const pad = Math.min(1.5 + inset, Math.max(.75, (Math.min(width,height)-2)/2));
     const left = pad, top = pad;
-    const right = Math.max(left + 4, width - pad);
-    const bottom = Math.max(top + 4, height - pad);
+    const right = Math.max(left + 1, width - pad);
+    const bottom = Math.max(top + 1, height - pad);
     let d = '';
     function edge(x0, y0, x1, y1, horizontal) {
       const span = Math.hypot(x1 - x0, y1 - y0);
@@ -232,6 +232,9 @@
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
+    // Scrollbars reduce the available SVG width. Do not letterbox its viewBox,
+    // otherwise a tall scrollable panel gets gaps above and below its outline.
+    svg.setAttribute('preserveAspectRatio', 'none');
     svg.classList.add('sketch-ui-svg');
     const ink = document.createElementNS(NS, 'path');
     ink.classList.add('sketch-ui-ink');
@@ -314,7 +317,7 @@
         if(!doc?.head||doc.URL==='about:blank')return;
         if(!doc.getElementById('nana-complete-lines-style')){
           const css=doc.createElement('link');css.id='nana-complete-lines-style';css.rel='stylesheet';
-          css.href=new URL('sketch-lines.css?v=20261105-all-lines-1',scriptBase).href;doc.head.append(css);
+          css.href=new URL('sketch-lines.css?v=20261105-all-lines-2',scriptBase).href;doc.head.append(css);
         }
         // Latte and coloring already own complete hand-traced drawing engines.
         if(!/(?:about-me\.html|dreamlab\.html|polaroids\/index\.html)(?:[?#]|$)/.test(frame.getAttribute('src')||''))return;

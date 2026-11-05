@@ -73,7 +73,7 @@
     bar.append(label,x);
     window.NanaWindowChrome?.decorate(bar,label,x);
     const iframe=document.createElement("iframe");iframe.id="nana-dreamlab-iframe";iframe.title="mimilab 3";iframe.setAttribute("allow","autoplay");
-    iframe.src="dreamlab.html?v=20261105-all-lines-1&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
+    iframe.src="dreamlab.html?v=20261105-all-lines-2&lang="+(document.documentElement.lang.toLowerCase().startsWith("en")?"en":"fr");
     panel.append(bar,iframe);overlay.append(panel);document.body.append(overlay);
     overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
     document.addEventListener("keydown",esc,true);x.focus();
