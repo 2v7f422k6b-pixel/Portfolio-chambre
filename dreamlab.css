@@ -799,3 +799,23 @@ html,body,button,input,select,textarea,output,kbd,.dl-app,.dl-app *{font-family:
 @media(max-width:1040px){
  .dl-daw.dl-recorder{height:auto!important;min-height:0!important;margin-bottom:18px!important}
 }
+
+/* Landscape studio alignment: DAW fills the same column height as MiniLab. */
+@media (orientation:landscape) and (min-width:900px){
+ .dl-workspace{align-items:stretch!important}
+ .dl-daw.dl-recorder{
+   align-self:stretch!important;
+   height:100%!important;
+   min-height:100%!important;
+   display:flex!important;
+   flex-direction:column!important;
+   box-sizing:border-box!important;
+ }
+ .dl-daw .dl-transport{margin-top:auto!important;padding-top:14px!important}
+ .dl-daw #dl-status{margin-top:12px!important}
+}
+.dl-daw .dl-track.is-selected{
+ outline:none!important;
+ border-style:solid!important;
+ box-shadow:inset 3px 0 0 #e9003a,2px 3px 0 #efb7cf!important;
+}
