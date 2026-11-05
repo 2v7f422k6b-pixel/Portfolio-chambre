@@ -1275,6 +1275,15 @@ html[data-theme="night"] #play-scene .nana-minilab-night { opacity:1; }
   <script src="nana-admin.js?v=20261104-1" defer></script>
 <script src="nana-discoveries.js?v=20261104-english-no-more-secrets-14" defer></script>
   <script src="dreamlab-launcher.js?v=20261104-no-floating-button-3" defer></script>
+<style id="nana-minilab-white-hover-outline">
+/* Trace the transparent MiniLab silhouette, not the rectangular image bounds. */
+#app.mode-play #play-scene .nana-minilab-day.is-hovered,
+#app.mode-play #play-scene .nana-minilab-night.is-hovered {
+  filter:drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white)
+         drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white)
+         drop-shadow(0 0 3px white) !important;
+}
+</style>
 <script id="nana-minilab-day-layer">
 (() => {
   const mount = () => {
