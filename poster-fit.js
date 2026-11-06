@@ -209,7 +209,7 @@
   function renderTape(posterNumber, corners) {
     const anchors = tapeCorners[posterNumber];
     if (!anchors || !sources.has(posterNumber - 1)) return;
-    const [tl, tr, br, bl] = corners;
+    const [tl, tr, , bl] = corners;
     const right = unit([tr[0]-tl[0], tr[1]-tl[1]]);
     const down = unit([bl[0]-tl[0], bl[1]-tl[1]]);
     const topLength = Math.hypot(tr[0]-tl[0],tr[1]-tl[1]);

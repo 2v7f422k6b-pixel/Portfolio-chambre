@@ -23,7 +23,8 @@ const ART = [
   ['Marseille Emblem','marseille-emblem.jpg'],
   ['Swans and Lotus','swans-lotus.jpg']
 ].map(([title,filename],index)=>({title,filename,src:'assets/previews/photos/'+filename.replace(/\.jpe?g$/i,'.webp'),index}));
-window.portfolioArtworkIndex = filename => ART.findIndex(art => art.filename === String(filename||''));
+window.portfolioArtworkByFile = filename => ART.find(art => art.filename === String(filename||''));
+window.portfolioArtworkIndex = filename => window.portfolioArtworkByFile(filename)?.index ?? -1;
 const GABZILLA = [
   {title:'Original illustration',src:'assets/previews/gabzilla/illustration.webp'},
   {title:'Textile composition',src:'assets/previews/gabzilla/composition.webp'},
@@ -230,9 +231,7 @@ function showToast(message){
  toastTimer=setTimeout(()=>node.hidden=true,3000);
 }
 
-let closingWindowAnimation=null;
 function closeWindow(){
- if(closingWindowAnimation){closingWindowAnimation.cancel();closingWindowAnimation=null}
  shade.hidden=true;
  shade.style.pointerEvents='none';
  win.style.pointerEvents='none';
@@ -282,6 +281,7 @@ function openApp(name,index){
   case 'social':openSocialProjects();break;
   case 'interactive':openInteractiveProjects();break;
   case 'mini-games':openMiniGames();break;
+  case 'coloring':window.NanaColoring?.open();break;
   case 'bead-box':window.NanaBeadBox?.open();break;
   case 'mimilab':closeWindow();window.NanaDreamLab?.open();break;
   case 'dressup':openAbout();break;
@@ -289,10 +289,10 @@ function openApp(name,index){
   case 'gearnews-series':openGearnewsSeries();break;
   case 'artwork':openGallery('art',index||0);break;
   case 'gabzilla':openGallery('gabzilla',0);break;
-  case 'motion':openMotion();break;
-  case 'pages':(window.openEditorialPages||window.openPages||openPages)();break;
+  case 'motion':window.openMotion?.();break;
+  case 'pages':window.openEditorialPages?.();break;
   case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
-  case 'book':openBook();break;
+  case 'book':window.openBook?.();break;
    case 'do-nothing':window.NanaDoNothing?.open();break;
   case 'reading-room':
   case 'souvenues':
@@ -345,7 +345,7 @@ function openGearnewsSeries(){
 function openFinder(){
  const cards=`<div class="project-grid atelier-project-grid">
    <button class="project-card" data-open="illustration"><span class="project-preview"><img src="assets/project-thumb-illustrations.webp" alt="Illustration d’une femme aux cheveux violets et son pistolet à bulles" loading="lazy"></span><strong>Illustrations</strong><small>Drawings, visual storytelling & collaborations</small></button>
-   <button class="project-card" data-open="motion"><span class="project-preview"><img src="assets/project-thumb-animations.webp" alt="Animation en trois panneaux avec fleurs, nuages et basket orange" loading="lazy"></span><strong>Animations</strong><small>Animation & moving images</small></button>
+   <button class="project-card" data-open="motion"><span class="project-preview"><img src="assets/project-thumb-animations.webp" alt="Animation en trois panneaux avec fleurs, nuages et basket orange" loading="lazy"></span><strong>Animations</strong><small>Swipe through original animations</small></button>
    <button class="project-card" data-open="social"><span class="project-icon">✧</span><strong>Social Media</strong><small>Creative communication & community management</small></button>
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
    <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
@@ -393,9 +393,6 @@ function openInteractiveProjects(){
  <button class="project-card" data-open="polaroids"><span class="project-icon">▧</span><strong>My Polaroids</strong><small>Move, turn and explore my instant photographs</small></button>
  <button class="project-card" data-mode="play"><span class="project-icon">⌂</span><strong>Explore the room</strong><small>Return to Play Mode</small></button>
  </div>`,'interactive');
-}
-function escapePresentation(value){
- return String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
 function safePresentationImage(value){
  if(typeof value!=='string')return '';
@@ -462,12 +459,6 @@ function updateGallery(){
  const selected=$('#viewer-thumbnails .active');if(selected)selected.scrollIntoView({block:'nearest',inline:'center'});
 }
 function changeGallery(delta){if(!currentGallery)return;const len=(currentGallery.which==='gabzilla'?GABZILLA:ART).length;currentGallery.index=(currentGallery.index+delta+len)%len;updateGallery()}
-function openMotion(){
- openWindow('Animations',`<div class="eyebrow">Animations / Video</div><h2>Animations</h2><p class="section-lead">Animation, moving image and editorial video — kept separate so each type of work has room to breathe.</p><div class="info-list"><div class="info-box"><small>01 / Animation</small><strong>2D animation & loops</strong></div><div class="info-box"><small>02 / Editorial video</small><strong>Reels & features</strong></div></div><div class="empty-state"><span class="empty-icon">▷</span><h3>Video library coming soon</h3><p>No video files have been added yet. When the original videos are available, they can play here, directly in the portfolio, without a YouTube embed.</p></div>`,'motion');
-}
-function openPages(){
- openWindow('Pages',`<div class="eyebrow">Pages / Writing</div><h2>Pages</h2><p class="section-lead">Articles, music journalism and personal writing.</p><div class="info-list"><div class="info-box"><small>Editorial writing</small><strong>Gearnews.fr</strong></div><div class="info-box"><small>Stories</small><strong>Personal writing</strong></div></div><div class="empty-state"><span class="empty-icon">▤</span><h3>Article library in preparation</h3><p>Full texts will be added here only when supplied or approved for republication. In the meantime, the original publications can be explored on Gearnews.</p><a class="pill-link" href="https://www.gearnews.fr/" rel="noopener noreferrer" target="_blank">Visit Gearnews.fr ↗</a></div>`,'pages');
-}
 function openAbout(){
  $('#special-title').textContent='Dress-up';
  // Keep the game isolated from the other portfolio apps and original room artwork.
@@ -477,9 +468,6 @@ function openAbout(){
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
-}
-function openBook(){
- openWindow('Clown Princess',`<div class="eyebrow">Writing / Illustrated book</div><h2>Clown Princess</h2><p>An illustrated storytelling project.</p><div class="empty-state"><span class="empty-icon">✧</span><h3>The illustrated book is being prepared</h3><p>The finished reading version will be added here once the original pages are ready. No text or artwork has been invented for this preview.</p></div>`,'book');
 }
 function openContacts(){
  openWindow('Contact',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p>You can contact me directly, or <button type="button" class="contact-mail-link" data-open="mail">use the Mail application</button> to write a message without leaving this website.</p><div class="contact-list"><div class="contact-row"><div class="contact-row-inner"><small>Name</small><strong>Léna de Firmas</strong></div></div><div class="contact-row"><div class="contact-row-inner"><small>Email</small><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></div></div><div class="contact-row"><div class="contact-row-inner"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div></div></div>`,'contact');
@@ -507,7 +495,7 @@ function phoneContacts(){
 }
 function phoneMail(){
  phonePage('New Message',`<form class="phone-compose" id="phone-mail-form"><div class="phone-fields"><label>From: <input type="email" name="email" required autocomplete="email" maxlength="254" placeholder="your@email.com"></label><label>Name: <input name="name" required maxlength="120" autocomplete="name" placeholder="Your name"></label><label>To: <span class="recipient">lena.defirmas@gmail.com</span></label><label>Subject: <input name="subject" required maxlength="180" placeholder="Subject"></label><textarea name="message" maxlength="10000" placeholder="Your message…" required aria-label="Message"></textarea><div class="phone-status-message" aria-live="polite"></div></div><div class="phone-keyboard" id="phone-keyboard" aria-label="On-screen keyboard"></div></form>`);
- const form=$('#phone-mail-form');const bar=$('#phone-page .phone-bar');
+ const bar=$('#phone-page .phone-bar');
  bar.lastElementChild.innerHTML='<button class="send-btn" style="padding:5px 9px;border-radius:8px" type="submit" form="phone-mail-form">↑ Send</button>';
  const kb=$('#phone-keyboard');
  for(const row of ['qwertyuiop','asdfghjkl','⇧zxcvbnm⌫']){
@@ -522,12 +510,12 @@ function phoneMail(){
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261105-transparent-frame-1" allow="autoplay"></iframe>';
+ specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-code-cleanup-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261105-latte-fr-2"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-code-cleanup-1"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
@@ -535,7 +523,7 @@ function showPolaroids(){
  closeWindow();closeSpecial();
  specialShade.classList.add('polaroids-floating');
  try {const Audio=window.AudioContext||window.webkitAudioContext;if(Audio){polaroidAudio=new Audio();polaroidAudio.resume().catch(()=>{});}}catch(_){}
- specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261105-floating-prints-1" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261106-code-cleanup-1" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
@@ -604,12 +592,12 @@ document.addEventListener('click',e=>{
  if(e.target.closest('#theme-toggle')){applyTheme(document.documentElement.dataset.theme==='night'?'day':'night');return}
  if(e.target.closest('#switch-mode,#dock-roomswap')){switchMode();return}
  if(e.target.closest('#back-to-room')){chooseMode('play',true);return}
- if(e.target.closest('#window-close')){closeWindow(true);return}
+ if(e.target.closest('#window-close')){closeWindow();return}
  if(e.target.closest('#special-close')){closeSpecial();return}
  if(e.target.id==='window-shade'){
   // On touch screens, an opening tap can finish over the newly displayed backdrop.
   // Close only when the gesture actually began on the backdrop.
-  if(e.detail===0 || lastPointerDownTarget===shade)closeWindow(true);
+  if(e.detail===0 || lastPointerDownTarget===shade)closeWindow();
   return;
  }
  if(e.target.id==='special-shade'){
@@ -640,7 +628,6 @@ document.addEventListener('click',e=>{
  const art=e.target.closest('[data-art-index]');if(art){openGallery('art',Number(art.dataset.artIndex));return}
  const hotspot=e.target.closest('#hotspots [data-type="poster"]');if(hotspot){openGallery('art',Number(hotspot.dataset.index));return}
  const open=e.target.closest('[data-open]');if(open){
-  if(open.closest('[data-open]')!==open)return;
   const name=open.dataset.open;
   if(!name)return;
   openApp(name);return
@@ -661,7 +648,7 @@ document.addEventListener('submit',e=>{
  if(e.target.matches('#desktop-mail-form,#phone-mail-form')){e.preventDefault();submitForm(e.target)}
 });
 document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow(true);else if(currentMode)returnToWelcome()}
+ if(e.key==='Escape'){if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow();else if(currentMode)returnToWelcome()}
  if(!shade.hidden && currentWindow==='gallery' && ['ArrowLeft','ArrowRight'].includes(e.key))changeGallery(e.key==='ArrowRight'?1:-1);
  if(e.key==='Enter' || e.key===' '){if(e.target.matches('#hotspots polygon')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}}
 });

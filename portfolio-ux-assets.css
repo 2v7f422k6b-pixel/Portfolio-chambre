@@ -3,8 +3,6 @@
 
 /* Existing dock handlers remain unchanged; the PNG owns each icon frame. */
 html body #dock .dock-app.dock-drawn {
-  width:52px!important;
-  height:52px!important;
   min-width:0!important;
   padding:0!important;
   overflow:hidden!important;
@@ -66,8 +64,6 @@ html body #work-desktop .desktop-folder:focus-visible .folder-tile{
   transform:translateY(-4px)!important;
 }
 @media(max-width:760px){
-  html body #dock .dock-app.dock-drawn{width:40px!important;height:40px!important}
-  html body #dock{gap:3px!important;padding:6px 8px!important}
   html body #work-desktop .desktop-folder .folder-tile,
   html body #work-desktop .mv-desktop-folder .folder-tile,
   html body #work-desktop .work-desk-layout .desktop-folder .folder-tile,

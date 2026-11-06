@@ -25,17 +25,17 @@
   </script>
   <link rel="stylesheet" href="nana-admin.css?v=20261105-photo-crop-3">
   <link rel="stylesheet" href="nana-discoveries.css?v=20261104-stars-svg-fill-13">
-  <style id="phone-corners-fix">.phone-device{border-radius:50px!important;overflow:hidden!important}.phone-screen{border-radius:40px!important;overflow:hidden!important;clip-path:inset(0 round 40px)!important}.phone-wallpaper{border-radius:40px!important}.phone-app .ios-icon,.phone-app .ios-icon.mail,.phone-app .ios-icon.ig{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}.phone-app .phone-drawn-icon{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}</style>
-<link rel="stylesheet" href="minilab-day-layer.css?v=20261106-unified-1">
-  <link rel="stylesheet" href="style.css?v=20261105-transparent-tamagotchi-1">
+
+<link rel="stylesheet" href="minilab-day-layer.css?v=20261106-code-cleanup-1">
+  <link rel="stylesheet" href="style.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="nana-shop-hover.css?v=20261106-unified-1">
   <link rel="stylesheet" href="window-animations.css?v=1">
   <link rel="stylesheet" href="cat-interaction.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=20261103-subtle-motion-2">
-  <link rel="stylesheet" href="music-visuals.css?v=strip-no-overlap-3">
-  <link rel="stylesheet" href="pages-addon.css?v=20261103-articles-handtraced-1">
-  <link rel="stylesheet" href="book-addon.css?v=20261106-book-full-edition">
-  <link rel="stylesheet" href="literary-zones.css?v=20261103-compact-reading-red">
+  <link rel="stylesheet" href="music-visuals.css?v=20261106-code-cleanup-1">
+  <link rel="stylesheet" href="pages-addon.css?v=20261106-code-cleanup-1">
+  <link rel="stylesheet" href="book-addon.css?v=20261106-code-cleanup-1">
+  <link rel="stylesheet" href="literary-zones.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="atelier-ui.css?v=2">
   <link rel="stylesheet" href="atelier-feedback.css?v=all-chrome-1">
   <link rel="preload" href="assets/fonts/NanaTraceUI-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -46,13 +46,13 @@
   <link rel="stylesheet" href="do-nothing-club.css?v=20261103-rilakkuma-handtraced">
   <link rel="stylesheet" href="guitar-interaction.css?v=20261103-1">
   <link rel="stylesheet" href="heart-theme.css?v=remove-pseudo-hearts-2">
-  <link rel="stylesheet" href="sketch-ui.css?v=20261103-rilakkuma-handtraced">
+  <link rel="stylesheet" href="sketch-ui.css?v=20261106-code-cleanup-1">
 <link rel="stylesheet" href="window-system.css?v=20261105-unified-1">
 <script src="window-bounds.js?v=20261105-below-menubar-1" defer></script>
 <link rel="stylesheet" href="window-chrome.css?v=20261105-unified-1">
 <link id="nana-complete-lines-style" rel="stylesheet" href="sketch-lines.css?v=20261105-all-lines-2">
 <script src="window-chrome.js?v=20261105-all-lines-2" defer></script>
-  <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261103-dock-rounded-no-border">
+  <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261106-code-cleanup-1">
 
   <style id="latte-frame-style">.latte-frame{display:block;width:min(860px,94vw);height:min(720px,88dvh);max-height:88dvh;border:0;background:transparent}
 /* Keep the illustrated room and its SVG hotspots in the same fixed ratio. */
@@ -150,386 +150,7 @@
     #hotspots .poster-artwork { image-rendering: auto; }
     @media (max-width: 760px) { #play-scene { width: max(900px, 100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); } }
   </style>
-  <style id="night-illustration-lighting">
-    /* Same user illustrations on both scenes; naturally dim them at night. */
-    html[data-theme="night"] #hotspots .poster-artwork {
-      filter: brightness(.77) saturate(.9);
-    }
-  
-/* Earlier contain-fit override; superseded below. */
-#play-viewport { display:flex; justify-content:center !important; align-items:center !important; overflow:hidden; }
-#play-scene { width:min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 auto !important; }
-#room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
-
-/* Immersive proportional cover: crop edges instead of stretching or letterboxing. */
-#play-viewport { display:flex !important; justify-content:center !important; align-items:center !important; overflow:hidden !important; }
-#play-scene { width:max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important; height:auto !important; aspect-ratio:1670 / 942 !important; flex:0 0 auto !important; margin:0 !important; }
-#room-img, #room-night { width:100% !important; height:100% !important; object-fit:contain !important; }
-
-/* Place the alpha-guide above all scene layers and suppress coarse SVG outlines. */
-#play-scene #pixel-outline-overlay { z-index:999 !important; }
-#hotspots.hotspot-guide-on polygon[data-open],
-#hotspots.hotspot-guide-on polygon[data-mv-open],
-#hotspots.hotspot-guide-on polygon[data-cat-pet],
-#hotspots.hotspot-peek polygon[data-open],
-#hotspots.hotspot-peek polygon[data-mv-open],
-#hotspots.hotspot-peek polygon[data-cat-pet] {stroke:transparent !important;fill:transparent !important;filter:none !important;}
-
-/* Make pixel-perfect hotspot inspection available on desktop too. */
-#hotspot-guide { display:block !important; }
-@media (min-width:761px) and (hover:hover) {
- #hotspot-guide { top:calc(var(--menubar,42px) + 12px); right:14px; }
-}
-
-/* Desktop hover must never reveal the legacy approximate SVG silhouettes. */
-#hotspots polygon[data-open]:hover,
-#hotspots polygon[data-mv-open]:hover,
-#hotspots polygon[data-cat-pet]:hover { stroke:transparent !important; fill:transparent !important; filter:none !important; }
-
-/* Chrome desktop SVG focus/hover must not draw a rectangular bounding box. */
-#hotspots polygon, #hotspots polygon:hover, #hotspots polygon:focus,
-#hotspots polygon:focus-visible, #hotspots polygon.active {
- outline:none !important; box-shadow:none !important;
-}
-
-/* Disable native SVG polygon outlines on every interaction state. The PNG overlay owns visual feedback. */
-#play-scene #hotspots polygon,
-#play-scene #hotspots polygon:hover,
-#play-scene #hotspots polygon:focus,
-#play-scene #hotspots polygon:focus-visible,
-#play-scene #hotspots polygon:active,
-#play-scene #hotspots polygon.active,
-#play-scene #hotspots polygon.touch-target,
-#play-scene #hotspots.hotspot-guide-on polygon,
-#play-scene #hotspots.hotspot-peek polygon {
- stroke:none !important; fill:transparent !important; filter:none !important;
- outline:none !important; box-shadow:none !important;
-}
-
-/* Transparent SVG fills are not reliably pointer-targetable: retain invisible painted hit regions. */
-#play-scene #hotspots polygon,
-#play-scene #hotspots polygon:hover,
-#play-scene #hotspots polygon:focus,
-#play-scene #hotspots polygon:focus-visible,
-#play-scene #hotspots polygon:active,
-#play-scene #hotspots polygon.active,
-#play-scene #hotspots polygon.touch-target,
-#play-scene #hotspots.hotspot-guide-on polygon,
-#play-scene #hotspots.hotspot-peek polygon {
- fill:rgba(255,255,255,0.001) !important;
- pointer-events:all !important;
- cursor:pointer;
-}
-
-/* Work and Play are mutually exclusive surfaces. Respect the hidden attribute
-   even when earlier responsive CSS forces display:flex or display:block. */
-#desktop #play-viewport[hidden],
-#desktop #work-desktop[hidden],
-#play-viewport[hidden],
-#work-desktop[hidden] {
- display:none !important;
- visibility:hidden !important;
- pointer-events:none !important;
-}
-#desktop.mode-work #play-viewport,
-#app.mode-work #play-viewport {
- display:none !important;
- pointer-events:none !important;
-}
-#app.mode-work #work-desktop {
- display:block !important;
- position:relative;
- isolation:isolate;
- z-index:1;
-}
-#app.mode-work #work-desktop .work-wallpaper {pointer-events:none;}
-
-/* Home previews use the exact scene backgrounds, not generic illustrations. */
-#welcome .mode-tile .tile-art{display:block;overflow:hidden;background:transparent;}
-#welcome .mode-tile .tile-art img.welcome-icon{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center;border:0;transform:none;filter:none;}
-
-/* Both home previews are full-bleed screenshots of the actual mode backgrounds. */
-#welcome .mode-options .mode-tile .tile-art{position:relative!important;display:block!important;overflow:hidden!important;}
-#welcome .mode-options .mode-tile .tile-art > img.welcome-icon{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;min-width:100%!important;min-height:100%!important;object-fit:cover!important;object-position:center!important;margin:0!important;padding:0!important;opacity:1!important;visibility:visible!important;transform:none!important;}
-
-/* Illustrated mood-picker homepage, implemented with live HTML buttons and real artwork. */
-html body #welcome{background:#d9b6ed!important;background-image:radial-gradient(ellipse at 18% 24%,#f2d6f3 0,transparent 42%),radial-gradient(ellipse at 83% 76%,#c69be8 0,transparent 43%)!important;padding:22px!important;overflow:auto!important;}
-html body #welcome::before,html body #welcome::after{content:'☆'!important;position:absolute!important;color:#ff173b!important;font-size:clamp(40px,6vw,86px)!important;opacity:.8!important;pointer-events:none!important;}
-html body #welcome::before{left:4%!important;top:9%!important}html body #welcome::after{right:5%!important;bottom:9%!important}
-html body #welcome .welcome-panel{width:min(1280px,100%)!important;max-width:1280px!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;padding:10px 14px 20px!important;border-radius:0!important;}
-html body #welcome .welcome-top{display:none!important;}
-html body #welcome .welcome-hero{padding:5px 0 18px!important;text-align:center!important;position:relative!important;}
-html body #welcome .welcome-kicker,html body #welcome .welcome-portfolio{color:#ff173b!important;letter-spacing:.015em!important;text-shadow:1px 1px 0 #fff2fc!important;font-weight:700!important;line-height:1.05!important;}
-html body #welcome .welcome-kicker{font-size:clamp(35px,6vw,78px)!important;}
-html body #welcome .welcome-portfolio{font-size:clamp(30px,4.5vw,64px)!important;margin-top:0!important;}
-html body #welcome .mode-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(14px,4vw,58px)!important;align-items:stretch!important;}
-html body #welcome .mode-tile{position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:0!important;padding:20px 12px 13px!important;background:#fff3fc!important;border:3px solid #ff173b!important;border-radius:42px 34px 44px 30px!important;box-shadow:5px 5px 0 #ff173b24!important;min-width:0!important;overflow:visible!important;text-align:center!important;transform:none!important;}
-html body #welcome .mode-tile:hover,html body #welcome .mode-tile:focus-visible{transform:translateY(-5px)!important;box-shadow:5px 9px 0 #ff173b40!important;outline:3px solid #ff173b!important;outline-offset:3px!important;}
-html body #welcome .mode-tile .tile-name{position:relative!important;z-index:2!important;order:0!important;display:block!important;background:#ffd5e9!important;color:#ff173b!important;border:2px solid #ff173b!important;border-radius:24px 31px 20px 28px!important;font-size:clamp(19px,2.6vw,35px)!important;line-height:1.1!important;padding:7px 23px!important;margin:-45px auto 9px!important;font-weight:700!important;letter-spacing:0!important;}
-html body #welcome .mode-tile .tile-art{order:1!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1.7!important;border:0!important;border-radius:23px 19px 25px 17px!important;overflow:hidden!important;background:#fff2fc!important;}
-html body #welcome .mode-tile .tile-art img.welcome-icon{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;opacity:1!important;transform:none!important;}
-html body #welcome .mode-tile .tile-desc{order:2!important;color:#ff173b!important;background:#ffe2f0!important;border:2px solid #ff173b!important;border-radius:22px 18px 25px 19px!important;font-size:clamp(13px,1.6vw,21px)!important;font-weight:700!important;letter-spacing:0!important;padding:7px 16px!important;margin:-5px 0 -26px!important;z-index:2!important;position:relative!important;}
-html body #welcome .welcome-choice-footer{text-align:center!important;margin:36px 0 4px!important;color:#ff173b!important;}
-html body #welcome #welcome-heading{font-size:clamp(24px,3vw,38px)!important;color:#ff173b!important;letter-spacing:0!important;font-weight:700!important;margin:0 0 13px!important;}
-html body #welcome .welcome-choice-hints{display:flex!important;justify-content:center!important;gap:clamp(25px,8vw,110px)!important;}
-html body #welcome .welcome-choice-hints span{color:#ff173b!important;background:#ffe2f0!important;border:2px solid #ff173b!important;border-radius:24px 30px 20px 27px!important;padding:7px 32px!important;font-size:clamp(18px,2vw,27px)!important;}
-html body #welcome .welcome-foot{display:none!important;}
-@media(max-width:680px){
- html body #welcome{padding:18px 12px!important;place-items:start center!important;}
- html body #welcome .welcome-panel{padding:0 8px 25px!important;}
- html body #welcome .welcome-hero{padding:4px 0 32px!important;}
- html body #welcome .mode-options{grid-template-columns:1fr!important;gap:42px!important;}
- html body #welcome .mode-tile .tile-name{margin-top:-35px!important;}
- html body #welcome .mode-tile .tile-art{aspect-ratio:1.9!important;}
- html body #welcome .welcome-choice-footer{margin-top:35px!important;}
-}
-
-/* Home mockup v2: organic hand-drawn clouds, irregular frames and illustrated buttons. */
-html body #welcome{background:#d8b8ed!important;background-image:radial-gradient(ellipse at 15% 5%,#eed3f3 0,transparent 50%),radial-gradient(ellipse at 83% 95%,#d2a7ed 0,transparent 53%)!important;isolation:isolate!important;overflow:auto!important;}
-html body #welcome .welcome-panel{border:none!important;outline:none!important;box-shadow:none!important;background:transparent!important;max-width:1320px!important;padding:30px 16px 22px!important;}
-html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{content:'☁'!important;position:absolute!important;font-size:clamp(100px,18vw,260px)!important;line-height:1!important;color:#fff0f9!important;text-shadow:2px 2px #ff173b,-1px -1px #ff173b!important;opacity:.86!important;z-index:-1!important;pointer-events:none!important;}
-html body #welcome .welcome-panel::before{top:5%!important;left:-12%!important;transform:rotate(-12deg)!important;}
-html body #welcome .welcome-panel::after{bottom:-4%!important;right:-10%!important;transform:rotate(12deg)!important;}
-html body #welcome .welcome-hero{padding:0 0 42px!important;}
-html body #welcome .welcome-title-cloud{position:relative!important;display:inline-flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-height:160px!important;padding:18px 64px!important;background:#fff0f9!important;border:3px solid #ff173b!important;border-radius:48% 42% 45% 39% / 55% 48% 53% 45%!important;box-shadow:8px 5px 0 #f4cce9!important;transform:rotate(-1deg)!important;}
-html body #welcome .welcome-title-cloud::before,html body #welcome .welcome-title-cloud::after{content:'☆'!important;position:absolute!important;color:#ff173b!important;font-size:38px!important;top:18px!important;}
-html body #welcome .welcome-title-cloud::before{left:17px!important;}html body #welcome .welcome-title-cloud::after{right:19px!important;}
-html body #welcome .welcome-kicker{font-size:clamp(31px,4.5vw,62px)!important;white-space:normal!important;}
-html body #welcome .welcome-portfolio{font-size:clamp(28px,3.5vw,49px)!important;}
-html body #welcome .mode-options{gap:clamp(16px,4vw,60px)!important;}
-html body #welcome .mode-tile{background:#fff0f9!important;border:3px solid #ff173b!important;border-radius:14% 9% 13% 8% / 17% 12% 15% 11%!important;padding:15px 13px 16px!important;box-shadow:5px 5px 0 #f5c5e8!important;min-height:0!important;}
-html body #welcome .mode-tile .tile-name{border:2.5px solid #ff173b!important;border-radius:49% 43% 45% 40% / 56% 52% 48% 45%!important;background:#ffd8ed!important;margin:-46px auto 12px!important;padding:11px 30px!important;transform:rotate(-2deg)!important;font-size:clamp(19px,2.5vw,32px)!important;white-space:nowrap!important;}
-html body #welcome .mode-tile.work-choice .tile-name{transform:rotate(2deg)!important;}
-html body #welcome .mode-tile .tile-art{border:0!important;border-radius:11% 8% 10% 7% / 15% 11% 13% 9%!important;aspect-ratio:1.75!important;overflow:hidden!important;}
-html body #welcome .mode-tile .tile-art img.welcome-icon{object-fit:cover!important;object-position:center!important;}
-html body #welcome .mode-tile .tile-desc{background:#ffe5f2!important;border:2.5px solid #ff173b!important;border-radius:48% 42% 46% 39% / 58% 48% 54% 45%!important;margin:-9px 0 -31px!important;padding:10px 24px!important;font-size:clamp(14px,1.7vw,21px)!important;transform:rotate(-1deg)!important;}
-html body #welcome .welcome-choice-footer{margin:58px 0 0!important;}
-html body #welcome #welcome-heading{font-size:clamp(25px,3.2vw,42px)!important;margin-bottom:16px!important;}
-html body #welcome .welcome-choice-hints{gap:clamp(18px,7vw,100px)!important;}
-html body #welcome .welcome-choice-hints button{cursor:pointer!important;background:#ffe1f0!important;color:#ff173b!important;border:3px solid #ff173b!important;border-radius:48% 43% 47% 40% / 55% 49% 54% 47%!important;padding:12px 42px!important;font:inherit!important;font-size:clamp(20px,2.2vw,30px)!important;transform:rotate(-2deg)!important;box-shadow:4px 4px 0 #f3b4df!important;}
-html body #welcome .welcome-choice-hints button:last-child{transform:rotate(2deg)!important;}
-html body #welcome .welcome-choice-hints button:hover,html body #welcome .welcome-choice-hints button:focus-visible{background:#fff2fc!important;transform:translateY(-3px)!important;}
-@media(max-width:680px){
- html body #welcome .welcome-panel{padding:12px 12px 35px!important;}
- html body #welcome .welcome-title-cloud{min-height:110px!important;padding:15px 30px!important;}
- html body #welcome .welcome-hero{padding-bottom:40px!important;}
- html body #welcome .mode-options{gap:54px!important;}
- html body #welcome .mode-tile .tile-name{margin-top:-37px!important;}
- html body #welcome .welcome-choice-footer{margin-top:54px!important;}
- html body #welcome .welcome-choice-hints button{padding:10px 20px!important;}
-}
-
-/* User-drawn welcome assets: original transparent PNGs, no CSS imitation. */
-html body #welcome .welcome-title-cloud{display:block!important;width:min(740px,90vw)!important;max-width:100%!important;min-height:0!important;margin:0 auto!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;}
-html body #welcome .welcome-title-cloud::before,html body #welcome .welcome-title-cloud::after{display:none!important;content:none!important;}
-html body #welcome .welcome-title-art{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important;}
-html body #welcome .mode-tile{position:relative!important;isolation:isolate!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:10% 7% 9%!important;overflow:visible!important;}
-html body #welcome .mode-tile .welcome-hand-frame{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;z-index:0!important;pointer-events:none!important;}
-html body #welcome .mode-tile .tile-art{position:relative!important;z-index:1!important;width:100%!important;aspect-ratio:1.7!important;border-radius:0!important;overflow:hidden!important;}
-html body #welcome .mode-tile .tile-name{z-index:2!important;margin:-5% auto 8px!important;}
-html body #welcome .mode-tile .tile-desc{z-index:2!important;margin:8px auto -3%!important;}
-html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{display:none!important;content:none!important;}
-html body #welcome .welcome-hero{padding-bottom:32px!important;}
-@media(max-width:680px){
- html body #welcome .welcome-title-cloud{width:min(520px,94vw)!important;}
- html body #welcome .mode-tile{padding:10% 7% 9%!important;}
- html body #welcome .mode-tile .tile-name{margin:-5% auto 8px!important;}
-}
-
-/* Work desktop: no rectangular hover/focus highlights around folders. */
-#work-desktop .desktop-folder:hover,
-#work-desktop .desktop-folder:focus,
-#work-desktop .desktop-folder:focus-visible,
-#work-desktop .desktop-folder:hover > *,
-#work-desktop .desktop-folder:focus-visible > * {
-  outline:none !important;
-  border-color:transparent !important;
-  box-shadow:none !important;
-  background-color:transparent;
-}
-#work-desktop .desktop-folder:hover > span:last-child,
-#work-desktop .desktop-folder:focus-visible > span:last-child {
-  border:none !important;
-  outline:none !important;
-  box-shadow:none !important;
-  background:transparent !important;
-}
-
-/* Welcome composition reset: use the actual artwork, not stacked CSS frames. */
-html body #welcome{display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(14px,3vw,34px)!important;min-height:100dvh!important;overflow:auto!important;background:#d9b6ed!important;}
-html body #welcome .welcome-panel{position:relative!important;width:min(1100px,100%)!important;max-width:1100px!important;margin:auto!important;padding:clamp(12px,2vw,24px)!important;box-sizing:border-box!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;overflow:visible!important;}
-html body #welcome .welcome-hero{padding:0!important;margin:0 auto clamp(20px,3vw,36px)!important;text-align:center!important;}
-html body #welcome .welcome-title-cloud{width:min(680px,85%)!important;margin:auto!important;padding:0!important;min-height:0!important;border:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;}
-html body #welcome .welcome-title-art{width:100%!important;height:auto!important;display:block!important;}
-html body #welcome .mode-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(18px,4vw,46px)!important;margin:0!important;padding:0!important;}
-html body #welcome .mode-tile{position:relative!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;min-width:0!important;min-height:0!important;width:100%!important;aspect-ratio:1.64!important;padding:8% 8% 10%!important;box-sizing:border-box!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;transform:none!important;}
-html body #welcome .mode-tile:hover,html body #welcome .mode-tile:focus-visible{outline:0!important;transform:translateY(-3px)!important;box-shadow:none!important;}
-html body #welcome .mode-tile .welcome-hand-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;z-index:0!important;pointer-events:none!important;}
-html body #welcome .mode-tile .tile-art{position:relative!important;display:block!important;z-index:1!important;width:85%!important;height:auto!important;aspect-ratio:1.75!important;border:0!important;border-radius:0!important;overflow:hidden!important;background:transparent!important;box-shadow:none!important;order:1!important;}
-html body #welcome .mode-tile .tile-art img.welcome-icon{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:0!important;}
-html body #welcome .mode-tile .tile-name{position:relative!important;z-index:2!important;order:0!important;margin:0 auto 5px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;font-size:clamp(19px,2.5vw,31px)!important;line-height:1.1!important;color:#ff173b!important;}
-html body #welcome .mode-tile .tile-desc{position:relative!important;z-index:2!important;order:2!important;margin:5px auto 0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;font-size:clamp(12px,1.5vw,18px)!important;line-height:1.2!important;color:#ff173b!important;}
-html body #welcome .welcome-choice-footer{margin:clamp(12px,2vw,25px) auto 0!important;text-align:center!important;}
-html body #welcome #welcome-heading{font-size:clamp(22px,3vw,34px)!important;margin:0 0 10px!important;}
-html body #welcome .welcome-choice-hints{display:flex!important;justify-content:center!important;gap:clamp(18px,5vw,65px)!important;}
-html body #welcome .welcome-choice-hints button{font-size:clamp(17px,2vw,24px)!important;padding:7px 26px!important;border:2px solid #ff173b!important;border-radius:35% 43% 38% 42% / 48% 38% 49% 41%!important;background:#fff0f9!important;color:#ff173b!important;box-shadow:none!important;transform:none!important;}
-html body #welcome .welcome-foot{display:none!important;}
-@media(max-width:680px){
- html body #welcome{align-items:flex-start!important;padding:16px 12px!important;}
- html body #welcome .welcome-panel{padding:5px!important;}
- html body #welcome .welcome-title-cloud{width:92%!important;}
- html body #welcome .welcome-hero{margin-bottom:24px!important;}
- html body #welcome .mode-options{grid-template-columns:1fr!important;gap:20px!important;max-width:440px!important;margin:auto!important;}
- html body #welcome .mode-tile{aspect-ratio:1.65!important;}
- html body #welcome .mode-tile .tile-name{font-size:24px!important;}
- html body #welcome .mode-tile .tile-desc{font-size:15px!important;}
- html body #welcome .welcome-choice-footer{margin-top:22px!important;}
-}
-
-/* Welcome adjustments Nov 2: keep only the user's hand-drawn frame and title. */
-html body #welcome .welcome-panel,
-html body #welcome .welcome-panel::before,
-html body #welcome .welcome-panel::after{border:0!important;outline:0!important;box-shadow:none!important;}
-html body #welcome .welcome-panel::before,html body #welcome .welcome-panel::after{display:none!important;content:none!important;}
-html body #welcome .welcome-mood-heading{display:block!important;text-align:center!important;color:#ff173b!important;font-size:clamp(22px,2.7vw,34px)!important;line-height:1.2!important;margin:0 0 clamp(18px,2.6vw,30px)!important;font-weight:700!important;}
-html body #welcome .welcome-hero{margin-bottom:clamp(12px,2vw,22px)!important;}
-html body #welcome .mode-tile,
-html body #welcome .mode-tile:hover,
-html body #welcome .mode-tile:focus-visible{border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;}
-html body #welcome .mode-tile .tile-name{font-size:clamp(14px,1.65vw,21px)!important;font-weight:600!important;line-height:1.1!important;margin:0 auto 5px!important;letter-spacing:0!important;white-space:nowrap!important;}
-html body #welcome .mode-tile .tile-desc{font-size:clamp(11px,1.2vw,15px)!important;line-height:1.1!important;margin:5px auto 0!important;}
-/* Colored inset beneath the drawn border; crop each scene to its irregular inner opening. */
-html body #welcome .mode-tile::before{content:''!important;display:block!important;position:absolute!important;left:10.5%!important;right:10.5%!important;top:22%!important;bottom:20%!important;background:#fff0f9!important;border-radius:9% 8% 9% 8% / 16% 14% 15% 13%!important;z-index:0!important;pointer-events:none!important;}
-html body #welcome .mode-tile .tile-art{width:78%!important;aspect-ratio:1.83!important;border-radius:9% 8% 9% 8% / 16% 14% 15% 13%!important;overflow:hidden!important;background:#fff0f9!important;z-index:1!important;}
-html body #welcome .mode-tile .tile-art img.welcome-icon{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;border:0!important;}
-html body #welcome .mode-tile .welcome-hand-frame{z-index:2!important;}
-html body #welcome .mode-tile .tile-name,html body #welcome .mode-tile .tile-desc{z-index:3!important;}
-html body #welcome .welcome-choice-footer{display:none!important;}
-@media(max-width:680px){html body #welcome .welcome-mood-heading{margin-bottom:22px!important;}html body #welcome .mode-tile .tile-name{font-size:18px!important;}html body #welcome .mode-tile .tile-desc{font-size:12px!important;}}
-
-/* Definitive removal of legacy rectangular outlines, including pseudo-frames. */
-html body #welcome,
-html body #welcome .welcome-panel,
-html body #welcome .mode-options,
-html body #welcome .mode-tile,
-html body #welcome .mode-tile:hover,
-html body #welcome .mode-tile:focus,
-html body #welcome .mode-tile:focus-visible {
- border:none!important;border-image:none!important;outline:none!important;
- box-shadow:none!important;background-clip:padding-box!important;
-}
-html body #welcome .welcome-panel::before,
-html body #welcome .welcome-panel::after,
-html body #welcome .mode-tile::after {content:none!important;display:none!important;}
-html body #welcome .mode-tile .tile-art{border:none!important;outline:none!important;box-shadow:none!important;}
-
-/* The old sketch-ui script inserts actual SVG rectangle overlays.
-   Hide those overlays ONLY on the welcome screen; preserve user's PNG artwork. */
-html body #welcome .welcome-panel > svg.sketch-ui-svg,
-html body #welcome .mode-tile > svg.sketch-ui-svg,
-html body #welcome .tile-art > svg.sketch-ui-svg,
-html body #welcome .welcome-top > svg.sketch-ui-svg,
-html body #welcome .welcome-foot > svg.sketch-ui-svg,
-html body #welcome .sketch-ui-svg {
- display:none!important;
- visibility:hidden!important;
- opacity:0!important;
-}
-html body #welcome .welcome-panel.sketch-ui-frame,
-html body #welcome .mode-tile.sketch-ui-frame,
-html body #welcome .tile-art.sketch-ui-frame{
- border:0!important;outline:0!important;box-shadow:none!important;
-}
-
-/* Three original hand-drawn stars on the welcome screen. */
-html body #welcome .welcome-panel{position:relative!important;isolation:isolate!important;}
-html body #welcome .welcome-stars{position:absolute!important;inset:0!important;pointer-events:none!important;z-index:3!important;}
-html body #welcome .welcome-stars img{position:absolute!important;display:block!important;width:clamp(36px,5vw,72px)!important;height:auto!important;object-fit:contain!important;filter:none!important;}
-html body #welcome .welcome-stars img:nth-child(1){top:5%!important;left:5%!important;transform:rotate(-13deg)!important;}
-html body #welcome .welcome-stars img:nth-child(2){top:12%!important;right:5%!important;width:clamp(29px,4vw,55px)!important;transform:rotate(14deg)!important;}
-html body #welcome .welcome-stars img:nth-child(3){bottom:7%!important;right:12%!important;width:clamp(25px,3.5vw,48px)!important;transform:rotate(-9deg)!important;}
-@media(max-width:680px){html body #welcome .welcome-stars img:nth-child(1){top:2%!important;left:0!important;}html body #welcome .welcome-stars img:nth-child(2){top:6%!important;right:0!important;}html body #welcome .welcome-stars img:nth-child(3){bottom:2%!important;right:1%!important;}}
-
-/* Precisely overlay labels on the already-painted pink and ivory bubbles. */
-html body #welcome .mode-tile{display:block!important;position:relative!important;aspect-ratio:1.65!important;padding:0!important;overflow:visible!important;min-height:0!important;}
-html body #welcome .mode-tile::before{content:none!important;display:none!important;}
-html body #welcome .mode-tile .welcome-hand-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;z-index:0!important;}
-html body #welcome .mode-tile .tile-name,html body #welcome .mode-tile .tile-desc{position:absolute!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;transform:none!important;z-index:3!important;color:#ff173b!important;text-align:center!important;white-space:nowrap!important;font-weight:600!important;}
-html body #welcome .mode-tile .tile-name{top:9%!important;left:32%!important;width:36%!important;height:14%!important;font-size:clamp(13px,1.6vw,22px)!important;}
-html body #welcome .mode-tile .tile-desc{top:82%!important;left:26%!important;width:48%!important;height:12%!important;font-size:clamp(10px,1.05vw,15px)!important;}
-html body #welcome .welcome-mood-heading{font-size:clamp(18px,2.1vw,27px)!important;margin:0 auto clamp(10px,1.6vw,20px)!important;}
-html body #welcome .mood-arrow{display:inline-block!important;margin:0 14px!important;font-size:1.35em!important;transform:translateY(3px)!important;}
-html body #welcome .welcome-panel{padding-top:clamp(16px,3vw,36px)!important;}
-html body #welcome .welcome-hero{margin-bottom:clamp(8px,1.5vw,18px)!important;}
-html body #welcome .welcome-title-cloud{width:min(610px,75%)!important;}
-html body #welcome .welcome-stars{z-index:2!important;}
-html body #welcome .welcome-star-extra{position:absolute!important;display:block!important;object-fit:contain!important;pointer-events:none!important;width:clamp(18px,3vw,40px)!important;height:auto!important;opacity:.85!important;}
-html body #welcome .welcome-stars .s4{top:26%!important;left:14%!important;}
-html body #welcome .welcome-stars .s5{top:27%!important;right:16%!important;width:26px!important;}
-html body #welcome .welcome-stars .s6{top:62%!important;left:1%!important;}
-html body #welcome .welcome-stars .s7{bottom:3%!important;left:24%!important;width:30px!important;}
-html body #welcome .welcome-stars .s8{bottom:7%!important;right:2%!important;width:35px!important;}
-@media(max-width:680px){html body #welcome .mode-tile .tile-name{font-size:clamp(15px,4vw,20px)!important;}html body #welcome .mode-tile .tile-desc{font-size:clamp(10px,2.7vw,14px)!important;}html body #welcome .welcome-title-cloud{width:90%!important;}html body #welcome .mood-arrow{margin:0 5px!important;}}
-
-/* Fine placement using the user screenshot: center in drawn labels. */
-html body #welcome .mode-tile .tile-name{top:8.5%!important;left:32%!important;width:36%!important;height:14%!important;}
-html body #welcome .mode-tile .tile-desc{top:79.5%!important;left:26%!important;width:48%!important;height:12%!important;}
-html body #welcome .welcome-stars .s9{top:43%!important;left:4%!important;width:clamp(23px,3vw,43px)!important;transform:rotate(10deg)!important;}
-html body #welcome .welcome-stars .s10{top:39%!important;right:5%!important;width:clamp(19px,2.5vw,36px)!important;transform:rotate(-14deg)!important;}
-
-/* Final artwork-based welcome details: unrotated stars and supplied arrows. */
-html body #welcome .welcome-stars img,
-html body #welcome .welcome-stars .welcome-star-extra,
-html body #welcome .welcome-stars .scatter-star{transform:none!important;rotate:0deg!important;}
-html body #welcome .welcome-stars .scatter-star{position:absolute!important;pointer-events:none!important;display:block!important;height:auto!important;opacity:.88!important;}
-html body #welcome .welcome-mood-heading{display:flex!important;align-items:center!important;justify-content:center!important;gap:clamp(10px,2vw,30px)!important;font-size:clamp(18px,2.1vw,27px)!important;}
-html body #welcome .mood-arrow-art{display:inline-block!important;object-fit:contain!important;width:clamp(30px,4vw,58px)!important;height:clamp(25px,3vw,45px)!important;flex:none!important;}
-html body #welcome .mode-tile .tile-name{top:8.8%!important;left:32%!important;width:36%!important;height:13%!important;border-radius:16px!important;font-size:clamp(13px,1.6vw,22px)!important;}
-html body #welcome .mode-tile .tile-desc{top:78.5%!important;left:27%!important;width:46%!important;height:12%!important;font-size:clamp(10px,1.05vw,15px)!important;line-height:1!important;}
-@media(max-width:680px){html body #welcome .welcome-mood-heading{gap:6px!important;font-size:19px!important;}html body #welcome .mood-arrow-art{width:34px!important;height:30px!important;}}
-
-/* Hand-placed stars: avoid the four circled areas and the subtitle bubbles. */
-html body #welcome .welcome-stars .scattered{position:absolute!important;display:block!important;height:auto!important;transform:none!important;rotate:0deg!important;pointer-events:none!important;}
-html body #welcome .welcome-stars .small-spark{opacity:.85!important;}
-html body #welcome .mood-arrow-art{width:clamp(56px,6.5vw,100px)!important;height:clamp(44px,5vw,76px)!important;}
-/* Gently arched labels using an SVG textPath created below. */
-html body #welcome .mode-tile .tile-name{font-size:clamp(13px,1.6vw,22px)!important;line-height:1!important;}
-html body #welcome .mode-tile .tile-name svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important;}
-html body #welcome .mode-tile .tile-name text{fill:#ff173b!important;font:600 22px 'Nana',cursive!important;letter-spacing:.3px!important;}
-@media(max-width:680px){html body #welcome .mood-arrow-art{width:54px!important;height:42px!important;}}
-
-/* Stars sit behind the content, with generous clear space around title and cards. */
-html body #welcome .welcome-panel{isolation:isolate!important;}
-html body #welcome .welcome-stars{z-index:0!important;pointer-events:none!important;}
-html body #welcome .welcome-hero,
-html body #welcome .welcome-mood-heading,
-html body #welcome .mode-options,
-html body #welcome .mode-tile{position:relative!important;z-index:2!important;}
-html body #welcome .welcome-stars .scattered{transform:none!important;rotate:0deg!important;pointer-events:none!important;}
-
-/* Compact desktop welcome: fit the entire selection screen without vertical scrolling. */
-@media(min-width:681px){
- html body #welcome{min-height:0!important;height:100dvh!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;}
- html body #welcome .welcome-panel{box-sizing:border-box!important;width:min(100%,1550px)!important;max-height:100dvh!important;min-height:0!important;padding:clamp(8px,1.2vh,15px) clamp(18px,2vw,34px)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:clamp(6px,1vh,12px)!important;}
- html body #welcome .welcome-hero{margin:0!important;flex:0 1 auto!important;}
- html body #welcome .welcome-title-cloud{width:min(560px,66vw,64vh)!important;margin:0 auto!important;}
- html body #welcome .welcome-mood-heading{margin:0!important;flex:none!important;}
- html body #welcome .mode-options{margin:0 auto!important;width:100%!important;max-width:1200px!important;gap:clamp(20px,3vw,44px)!important;}
- html body #welcome .mode-tile{aspect-ratio:1.65!important;max-height:39vh!important;}
-}
-/* All stars stay upright and behind the content, away from its central area. */
-html body #welcome .welcome-stars{z-index:0!important;overflow:hidden!important;}
-html body #welcome .welcome-stars .scattered{transform:none!important;rotate:0deg!important;max-width:26px!important;pointer-events:none!important;}
-html body #welcome .welcome-stars .small-spark{max-width:9px!important;}
-@media(max-width:680px){html body #welcome .welcome-stars .scattered{max-width:18px!important;}}
-
-/* Diverse upright stars, placed only when they do not touch any foreground artwork. */
-html body #welcome .welcome-stars .star-candidate{position:absolute!important;transform:none!important;rotate:0deg!important;pointer-events:none!important;max-width:none!important;}
-html body #welcome .work-choice .tile-desc{left:25.5%!important;width:46%!important;}
-
-/* Star decorations removed at the artist's request. */
-html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display:none!important;}
-</style>
+  <link rel="stylesheet" href="portfolio-layout.css?v=20261106-code-cleanup-1">
 
 
 
@@ -584,30 +205,19 @@ html body #welcome .welcome-stars,html body #welcome .welcome-star-extra{display
 #app.mode-play #play-viewport { padding-bottom: 0 !important; }
 </style>
 
-<style id="nana-night-poster-stable">
-/* Dim entire fitted poster groups, not individually transformed SVG image tiles. */
-html[data-theme="night"] #hotspots .poster-perspective-artworks { opacity:.27!important; }
-html[data-theme="night"] #hotspots .poster-artworks { opacity:.27!important; }
+<style id="nana-night-decor">
+html[data-theme="night"] #hotspots .poster-perspective-artworks,
+html[data-theme="night"] #hotspots .poster-artworks {opacity:.80!important;}
 html:not([data-theme="night"]) #hotspots .poster-perspective-artworks,
-html:not([data-theme="night"]) #hotspots .poster-artworks { opacity:1!important; }
+html:not([data-theme="night"]) #hotspots .poster-artworks {opacity:1!important;}
 #nana-glow-stars-layer {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:7!important;pointer-events:none!important;}
 #nana-glow-stars-layer .nana-phosphor-star {opacity:.85!important;}
 html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!important;}
-</style>
-<style id="nana-night-visual-adjustment">
-/* Group-level opacity works for transformed SVG fragments on iPad. */
-html[data-theme="night"] #hotspots .poster-perspective-artworks,
-html[data-theme="night"] #hotspots .poster-artworks {opacity:.58!important;}
 html[data-theme="night"] #hotspots #nana-wall-mirror > g,
-html[data-theme="night"] #hotspots #nana-wall-mirror > image {opacity:1!important;}
-html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortune-cookie-outline) {opacity:.48!important;}
+html[data-theme="night"] #hotspots #nana-wall-mirror > image,
 html:not([data-theme="night"]) #hotspots #nana-wall-mirror > g,
 html:not([data-theme="night"]) #hotspots #nana-wall-mirror > image,
 html:not([data-theme="night"]) #hotspots #nana-fortune-cookie > image:not(.nana-fortune-cookie-outline) {opacity:1!important;}
-</style>
-<style id="nana-night-visibility-fine-tune">
-html[data-theme="night"] #hotspots .poster-perspective-artworks,
-html[data-theme="night"] #hotspots .poster-artworks {opacity:.80!important;}
 html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortune-cookie-outline) {opacity:1!important;filter:brightness(.7)!important;}
 </style>
   <style id="marseille-room-layers-20261103">
@@ -646,7 +256,7 @@ html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortun
       #play-scene > #marseille-night { transition: none; }
     }
   </style>
-  
+
 <!-- Mobile Work fit: fixed canvas, compact search and fully visible folders (2026-11-04) -->
 <style id="work-mobile-fit-20261104">
 @media (max-width: 760px) {
@@ -932,13 +542,13 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
 #welcome .welcome-language button[aria-pressed="true"]{text-decoration:underline wavy;text-underline-offset:7px;font-weight:700;}
 #welcome .welcome-language button:focus-visible{outline:2px solid currentColor;outline-offset:3px;}
 </style>
-<link rel="stylesheet" href="bead-box.css?v=20261106-mobile-3">
+<link rel="stylesheet" href="bead-box.css?v=20261106-code-cleanup-1">
 </head>
 <body>
   <div id="app" class="mode-select">
     <section id="welcome" aria-labelledby="welcome-heading">
       <div class="welcome-panel">
-        
+
         <div class="welcome-hero">
           <div class="welcome-title-cloud"><img class="welcome-title-art" src="assets/accueil/titre%20accueil.png" alt="Léna de Firmas — Portfolio"></div>
         </div>
@@ -950,14 +560,14 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
         <h1 id="welcome-heading" class="welcome-mood-heading"><img class="mood-arrow-art" src="assets/accueil/fleche%20gauche.png" alt="" aria-hidden="true"> What’s your mood? <img class="mood-arrow-art" src="assets/accueil/fleche%20droite.png" alt="" aria-hidden="true"></h1>
         <div class="mode-options">
           <button class="mode-tile play-choice" data-mode="play" aria-label="Enter Play Mode">
-            
-            
+
+
             <img class="welcome-hand-frame" src="assets/accueil/accueil%20jeu.png" alt="" aria-hidden="true">
             <span class="tile-desc">Explore my universe</span>
           </button>
           <button class="mode-tile work-choice" data-mode="work" aria-label="Enter Work Mode">
-            
-            
+
+
             <img class="welcome-hand-frame" src="assets/accueil/accueil%20travail.png" alt="" aria-hidden="true">
             <span class="tile-desc">Discover my projects</span>
           </button>
@@ -1045,40 +655,40 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
           <g class="poster-artworks" pointer-events="none"><image class="poster-artwork" href="assets/previews/photos/bubblegum.webp" x="228" y="5" width="69" height="138" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-0)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/soap-bubbles.webp" x="331" y="0" width="107" height="237" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-1)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/butterflies-grass.webp" x="491" y="39" width="74" height="204" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-2)" aria-hidden="true"/>
-            
+
             <image class="poster-artwork" href="assets/previews/photos/kitchen.webp" x="792" y="63" width="49" height="115" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-4)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/cherry-blossom.webp" x="350" y="255" width="78" height="153" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-5)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/butterfly-back.webp" x="506" y="270" width="54" height="129" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-6)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/lighter.webp" x="597" y="287" width="57" height="113" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-7)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/closeup.webp" x="678" y="265" width="57" height="126" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-8)" aria-hidden="true"/>
-            
+
             <image class="poster-artwork" href="assets/previews/photos/clown.webp" x="763" y="328" width="78" height="158" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-10)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/snow-city.webp" x="690" y="410" width="45" height="66" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-12)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/still-life.webp" x="808" y="514" width="29" height="50" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-13)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/motorbike.webp" x="1307" y="10" width="119" height="206" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-14)" aria-hidden="true"/>
             <image class="poster-artwork" href="assets/previews/photos/synth-portrait.webp" x="1463" y="12" width="134" height="215" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-15)" aria-hidden="true"/>
-            
+
             <image class="poster-artwork" href="assets/previews/photos/marseille-emblem.webp" x="1306" y="289" width="29" height="49" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-17)" aria-hidden="true"/>
             </g>
           <polygon data-type="poster" data-index="0" points="228,5 296,29 297,143 279,138 274,99 255,81 228,81" aria-label="Poster 1" tabindex="0"/>
           <polygon data-type="poster" data-index="1" points="331,0 437,31 438,237 331,211" aria-label="Poster 2" tabindex="0"/>
           <polygon data-type="poster" data-index="2" points="491,39 564,72 565,243 491,224" aria-label="Poster 3" tabindex="0"/>
-          
+
           <polygon data-type="poster" data-index="4" points="792,75 840,63 841,168 792,178" aria-label="Poster 5" tabindex="0"/>
           <polygon data-type="poster" data-index="5" points="352,255 428,274 428,408 350,403" aria-label="Poster 6" tabindex="0"/>
           <polygon data-type="poster" data-index="6" points="507,270 560,282 560,399 506,395" aria-label="Poster 7" tabindex="0"/>
           <polygon data-type="poster" data-index="7" points="597,294 654,287 654,396 597,400" aria-label="Poster 8" tabindex="0"/>
           <polygon data-type="poster" data-index="8" points="678,272 735,265 735,389 678,391" aria-label="Poster 9" tabindex="0"/>
-          
+
           <polygon data-type="poster" data-index="10" points="763,334 841,328 841,486 763,486" aria-label="Poster 11" tabindex="0"/>
           <polygon data-type="poster" data-index="11" points="361,434 411,437 411,506 361,506" aria-label="Poster 12" tabindex="0"/>
           <polygon data-type="poster" data-index="12" points="690,414 735,410 735,476 690,476" aria-label="Poster 13" tabindex="0"/>
           <polygon data-type="poster" data-index="13" points="808,514 837,514 837,564 808,563" aria-label="Poster 14" tabindex="0"/>
           <polygon data-type="poster" data-index="14" points="1307,35 1425,10 1426,201 1307,216" aria-label="Poster 15" tabindex="0"/>
           <polygon data-type="poster" data-index="15" points="1463,37 1595,12 1597,211 1464,227" aria-label="Poster 16" tabindex="0"/>
-          
+
           <polygon data-type="poster" data-index="17" points="1306,291 1335,289 1335,337 1306,338" aria-label="Poster 18" tabindex="0"/>
-          
+
           <polygon class="important" data-open="work-zoom" points="1587,540 1424,540 1357,498 1353,471 1367,348 1524,329 1563,331" aria-label="Enter Work Mode through the iMac" tabindex="0"/>
           <polygon class="important" data-open="gabzilla" points="1487,688 1411,702 1364,702 1336,642 1332,538 1344,534 1450,529 1472,535 1482,554" aria-label="Open the GABZILLA collaboration" tabindex="0"/>
           <polygon data-open="music" points="266,275 189,267 165,212 193,202 265,215 269,220" aria-label="Play Gymnopédie n° 1 on the Marshall speaker" tabindex="0"/>
@@ -1107,7 +717,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
           </g>
           </svg>
 
-          
+
         </div>
         <div class="play-caption">Tap the objects to explore · Open the iMac to enter Work Mode</div>
       </div>
@@ -1115,7 +725,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
         <div class="work-wallpaper" aria-hidden="true"><div class="work-bg-layer work-bg-layer--day"></div><div class="work-bg-layer work-bg-layer--night"></div></div>
         <div class="work-desktop-label"><h2 class="nana-script-heading"><span class="nana-hand nana-hand--creative-world" data-nana-script="creative-world">Léna’s creative world</span></h2><p>Illustration · Animation · Music & Visuals · Writing · Mini Games</p></div>
         <div class="folder-grid" aria-label="Desktop folders">
-          
+
           <button data-open="photos" class="desktop-folder"><span class="folder-tile pink">✿</span><span>Illustrations</span></button>
           <button data-open="motion" class="desktop-folder"><span class="folder-tile lavender">▶</span><span>Animations</span></button>
           <button data-open="pages" class="desktop-folder"><span class="folder-tile apricot">▤</span><span>Writing & Editorial</span></button>
@@ -1147,7 +757,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261105-remove-two-posters-3"></script>
-  <script src="app.js?v=20261106-dock-labels" defer></script>
+  <script src="app.js?v=20261106-code-cleanup-1" defer></script>
   <script src="do-nothing-club.js?v=20261103-world-can-wait" defer></script>
   <script src="literary-zones.js?v=20261103-sappho-first" defer></script>
 
@@ -1156,12 +766,12 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
   <script src="room-hover.js?v=20261106-poster-visibility-1" defer></script>
   <script src="pixel-outlines.js?v=20261106-occlusion-1" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
-   <script src="coloring-addon.js?v=20261105-unified-1" defer></script>
+   <script src="coloring-addon.js?v=20261106-code-cleanup-1" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
-  <script src="motion-addon.js?v=20261103-final-titles-2" defer></script>
-  <script src="music-visuals.js?v=fewer-hearts-1" defer></script>
-  <script src="pages-addon.js?v=20261103-my-articles-1" defer></script>
-  <script src="book-addon.js?v=20261106-book-full-edition" defer></script>
+  <script src="motion-addon.js?v=20261106-code-cleanup-1" defer></script>
+  <script src="music-visuals.js?v=20261106-code-cleanup-1" defer></script>
+  <script src="pages-addon.js?v=20261106-code-cleanup-1" defer></script>
+  <script src="book-addon.js?v=20261106-code-cleanup-1" defer></script>
 
   <script id="touch-hotspots-script">
   (() => {
@@ -1244,12 +854,12 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
   </script>
   <script src="heart-theme.js?v=two-hearts-all-pages-1" defer></script>
   <script src="sketch-ui.js?v=20261106-bead-box-1" defer></script>
-<script src="portfolio-catalog.js?v=media-tags-1" defer></script>
-<script src="portfolio-search.js?v=click-results-fixed-2" defer></script>
+<script src="portfolio-catalog.js?v=20261106-code-cleanup-1" defer></script>
+<script src="portfolio-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="desktop-extras.js?v=3" defer></script>
-<script src="global-search.js?v=20261103-work-plurals-1" defer></script>
+<script src="global-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="i18n-extra.js?v=20261106-book-full-edition" defer></script>
-<script src="i18n.js?v=20261106-book-justifie" defer></script>
+<script src="i18n.js?v=20261106-code-cleanup-1" defer></script>
 <script>
 (function(){
  const bar=document.getElementById('menubar'),toggle=document.getElementById('mobile-menu-toggle'),panel=document.getElementById('mobile-menu-panel');
@@ -1269,11 +879,8 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
 </script>
 
 
-<script>
-/* Apply phone art after all existing styles and dynamic phone rendering. */
-(function(){function fix(){const phone=document.querySelector('.phone-device');if(!phone)return;phone.style.setProperty('border-radius','50px','important');phone.style.setProperty('overflow','hidden','important');const screen=phone.querySelector('.phone-screen');if(screen){screen.style.setProperty('border-radius','40px','important');screen.style.setProperty('overflow','hidden','important');screen.style.setProperty('clip-path','inset(0 round 40px)','important')}const icons=[['contacts','contacts'],['mail','mail'],['instagram','insta']];for(const [key,file] of icons){const b=phone.querySelector('[data-phone-app="'+key+'"] .ios-icon');if(!b)continue;b.style.setProperty('background','transparent','important');b.style.setProperty('border','0','important');b.style.setProperty('box-shadow','none','important');let img=b.querySelector('img');if(!img){b.replaceChildren();img=document.createElement('img');b.append(img)}img.src='assets/smartphone/'+file+'%20smartphone.png';img.alt='';img.className='phone-drawn-icon';img.style.cssText='width:100%!important;height:100%!important;object-fit:contain!important;display:block!important'}}document.addEventListener('click',e=>{if(e.target.closest('[data-open="phone"],[data-open="smartphone"],#special-shade'))requestAnimationFrame(fix)},true);new MutationObserver(()=>{if(document.querySelector('.phone-device:not([data-phone-art-ready])')){fix();document.querySelector('.phone-device')?.setAttribute('data-phone-art-ready','1')}}).observe(document.body,{childList:true,subtree:true});if(document.readyState!=='loading')fix();else document.addEventListener('DOMContentLoaded',fix)})();
-</script><script src="poster-fit.js?v=20261106-unified-1" defer></script><script src="mirror-placement.js?v=20261106-continuous-mirror-3" defer></script><script src="flower-lamp-placement.js?v=20261106-wall-light-1" defer></script>
-<script src="fortune-cookie-placement.js?v=20261106-occlusion-1" defer></script>
+<script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-code-cleanup-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
+<script src="fortune-cookie-placement.js?v=20261106-code-cleanup-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261105-above-posters-15" defer></script>
 <script src="night-decor-dimming.js?v=20261105-opaque-mirror-10" defer></script>
@@ -1292,7 +899,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
   <script src="nana-admin.js?v=20261105-poster-collection-1" defer></script>
 <script src="nana-discoveries.js?v=20261104-english-no-more-secrets-14" defer></script>
-  <script src="dreamlab-launcher.js?v=20261105-all-lines-2" defer></script>
+  <script src="dreamlab-launcher.js?v=20261106-code-cleanup-1" defer></script>
 
 <script id="nana-minilab-day-layer">
 (() => {

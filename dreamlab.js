@@ -55,8 +55,6 @@
     const t=modeDescriptions[keyMode];
     $("#dl-play-mode-description").textContent=t[lang];
   }
-  let recorder=null,recordChunks=[],recordStart=0,recordClock=null,renderedBlob=null,renderedUrl=null,renderedExt="wav";
-  const playback = $("#dl-playback");
   function say(fr,en){const node=$("#dl-status");node.dataset.fr=fr;node.dataset.en=en;node.textContent=lang==="en"?en:fr}
   function translate(){
     document.documentElement.lang=lang;
@@ -554,11 +552,6 @@
     if(heldKeys.delete(e.code))noteOff(48+idx);
   });
   window.addEventListener("blur",()=>{heldKeys.clear();[...activeVoices.keys()].forEach(noteOff)});
-  const padButtons=()=>$$(".dl-pad");
-  function updateClock(){
-    const seconds=Math.floor((performance.now()-recordStart)/1000);
-    $("#dl-timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");
-  }
   function chooseMime(){
     if(!window.MediaRecorder)return "";
     return ["audio/webm;codecs=opus","audio/mp4","audio/ogg;codecs=opus","audio/webm"].find(x=>MediaRecorder.isTypeSupported(x))||"";

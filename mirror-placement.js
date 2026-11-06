@@ -14,10 +14,6 @@
   // Coordinates approved by the artist, in the 1670 × 942 room grid.
   const defaultQuad = [[1322.9421302303758,212.60360032394615],[1434.095914604014,201.2034456191082],[1438.4527009202245,315.53787883400656],[1322.9421302303758,325.7088107239462]];
 
-  const fromRect = (x, y, width) => {
-    const height = width * H / W;
-    return [[x,y],[x+width,y],[x+width,y+height],[x,y+height]];
-  };
   const copy = points => points.map(p => [p[0], p[1]]);
   const valid = points =>
     Array.isArray(points) && points.length === 4 &&

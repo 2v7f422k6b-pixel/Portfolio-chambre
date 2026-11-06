@@ -31,8 +31,7 @@
 #pages-library .pages-tab span{opacity:.65;font-weight:400;margin-left:4px}
 #pages-library .pages-tab.selected,#pages-library .pages-tab[aria-pressed="true"]{background:#edbcd5;box-shadow:inset 2px 2px 0 #574a7140;transform:translate(1px,1px)}
 #pages-library .pages-tools{padding:0 25px 13px;display:flex;gap:12px;justify-content:space-between;align-items:center}
-#pages-library .pages-search{display:flex;align-items:center;gap:7px;min-width:140px;max-width:360px;flex:1;border:1px solid var(--pages-line);padding:7px 10px;background:#fff}
-#pages-library .pages-search>span{font-size:22px;line-height:.65}
+#pages-library .pages-search{display:flex;align-items:center;min-width:140px;flex:1;border:1px solid var(--pages-line)}
 #pages-library .pages-search input{border:0;outline:0;width:100%;background:transparent;min-width:0;font-size:12px;color:var(--pages-ink)}
 #pages-library .pages-search:focus-within{outline:2px solid #b577a9;outline-offset:2px}
 #pages-library .pages-view{display:flex;border:1px solid var(--pages-line);background:white}
@@ -48,7 +47,7 @@
 #pages-library .pages-shelf-total{font-size:10px;border:1px solid #cab5ca;padding:6px 8px;white-space:nowrap}
 #pages-library .pages-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 #pages-library .pages-item{min-width:0;display:flex;flex-direction:column}
-#pages-library .pages-cover{height:205px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:13px 15px;text-decoration:none!important;color:#382d50!important;border:1px solid #44375e;box-shadow:4px 4px 0 #b7a8b7aa;transition:transform .16s,box-shadow .16s}
+#pages-library .pages-cover{height:205px;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:13px 15px;text-decoration:none!important;color:#382d50!important;border:1px solid #44375e;box-shadow:4px 4px 0 #b7a8b7aa;transition:transform .16s,box-shadow .16s}
 #pages-library .pages-cover:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:6px 8px 0 #b7a8b7aa}
 #pages-library .pages-cover-top,#pages-library .pages-cover-bottom{z-index:1;display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.09em;font-weight:800}
 #pages-library .pages-cover-center{position:absolute;inset:40px 17px 30px;display:grid;place-items:center;overflow:hidden}

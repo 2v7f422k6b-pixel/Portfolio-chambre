@@ -49,7 +49,7 @@ html[data-theme="night"] #nana-phone-charm{filter:brightness(.72);}
 
 @keyframes bead-swing{0%,100%{transform:rotate(0)}20%{transform:rotate(7deg)}40%{transform:rotate(-5deg)}60%{transform:rotate(3deg)}80%{transform:rotate(-1deg)}}
 .bead-swing{animation:bead-swing 1.5s ease-in-out;}
-@media(max-width:680px){.bead-layout{grid-template-columns:1fr;gap:24px;}.bead-box-lid{height:48px;}#bead-charm{height:330px;}.bead-trays{padding:8px;gap:8px;}.bead-tray>svg:not(.sketch-ui-svg){max-height:65px;}#bead-workshop .bead-intro{font-size:18px;}#window[data-window-type="bead-box"] .window-content{padding:16px!important;}.bead-footer{position:sticky;bottom:-16px;background:#fff8e9;padding:12px 0;margin-bottom:0;}#bead-workshop .bead-control{padding:10px;}}
+@media(max-width:680px){.bead-layout{grid-template-columns:1fr;gap:24px;}.bead-box-lid{height:48px;}.bead-trays{padding:8px;gap:8px;}.bead-tray>svg:not(.sketch-ui-svg){max-height:65px;}#window[data-window-type="bead-box"] .window-content{padding:16px!important;}.bead-footer{position:sticky;bottom:-16px;background:#fff8e9;padding:12px 0;margin-bottom:0;}}
 @media(prefers-reduced-motion:reduce){.bead-swing{animation:none;}}
 /* Compact phone layout: one scroll area, no controls over the bead trays. */
 #bead-word-input{font-size:16px!important;}

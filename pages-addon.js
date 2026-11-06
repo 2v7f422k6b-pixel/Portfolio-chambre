@@ -104,7 +104,7 @@
       </div>`,'pages-library');
     render();
   }
-  // app.js defines openPages globally. Override only this app entry, not the main click routing.
+  // Publish the editorial entry point used by app.js and existing integrations.
   document.addEventListener('portfolio-language-change',()=>{if(document.getElementById('pages-library'))render()});
   window.openEditorialPages=openEditorialPages;
   window.openPages=openEditorialPages;

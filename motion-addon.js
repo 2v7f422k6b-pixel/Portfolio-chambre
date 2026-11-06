@@ -310,19 +310,10 @@
 
   // Avoid audio continuing after the Mac window is closed, minimized or changed.
   document.addEventListener('click', event => {
-    if (isOpen() && event.target.closest('#window-close,#window-minimize,#home-menu,#switch-mode,#dock-roomswap,#back-to-room,[data-open]')) {
+    if (isOpen() && event.target.closest('#window-close,#home-menu,#switch-mode,#dock-roomswap,#back-to-room,[data-open]')) {
       // Do not stop for buttons inside the reels: they use data-motion-* instead.
       pauseVideo();
     }
   }, true);
 
-  // Keep Finder's original behavior and its Motion shortcut intact.
-  const previousFinder = window.openFinder;
-  if (typeof previousFinder === 'function') {
-    window.openFinder = function (...args) {
-      previousFinder(...args);
-      const subtitle = document.querySelector('.project-card[data-open="motion"] small');
-      if (subtitle) subtitle.textContent = 'Swipe through original animations';
-    };
-  }
 })();

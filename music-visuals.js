@@ -51,7 +51,7 @@
   const ALL_WORKS = ARTISTS.flatMap(a=>a.works);
   const $ = selector => document.querySelector(selector);
   const escapeHTML = value => String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  let page='home', activeArtist='pyrene', currentWork=0, category='all', query='', lightbox=null;
+  let page='home', activeArtist='pyrene', currentWork=0, query='', lightbox=null;
   const FAV_KEY='nana-music-visuals-favorites';
   let favorites=[];
   try { const parsed=JSON.parse(localStorage.getItem(FAV_KEY)||'[]');if(Array.isArray(parsed))favorites=parsed.filter(id=>ARTISTS.some(a=>a.id===id)); } catch(_) {}
@@ -85,7 +85,7 @@
   }
   function openMusicVisuals(){
     if(typeof window.openWindow!=='function')return;
-    page='home';activeArtist='pyrene';query='';category='all';lightbox=null;currentWork=0;
+    page='home';activeArtist='pyrene';query='';lightbox=null;currentWork=0;
     window.openWindow('Music & Visual Design',`<div id="mv-root" class="mv-app" aria-label="Music & Visual Design">
       <aside class="mv-sidebar" aria-label="Music & Visual Design navigation">
         <div class="mv-brand"><span class="mv-brand-icon">♫</span><span>MUSIC<br><b>& VISUAL DESIGN</b></span></div>

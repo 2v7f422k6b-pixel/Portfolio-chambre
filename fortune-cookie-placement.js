@@ -169,7 +169,7 @@
       y:(event.clientY-rect.top)*ROOM_H/rect.height
     };
   }
-  let active=null,suppressClick=false;
+  let active=null;
   if(editor){
     panel=document.createElement('div');
     panel.id='fortune-cookie-editor';
@@ -238,7 +238,7 @@
       if(event.button!==0 && event.pointerType==='mouse')return;
       event.preventDefault();event.stopPropagation();
       const p=screenToRoom(event);
-      active={pointerId:event.pointerId,x:p.x,y:p.y,initialX:position.x,initialY:position.y,moved:false};
+      active={pointerId:event.pointerId,x:p.x,y:p.y,initialX:position.x,initialY:position.y};
       hit.style.cursor='grabbing';
       try{hit.setPointerCapture(event.pointerId);}catch(_){}
     });
@@ -246,7 +246,6 @@
       if(!active || active.pointerId!==event.pointerId)return;
       const p=screenToRoom(event);
       const dx=p.x-active.x,dy=p.y-active.y;
-      if(Math.abs(dx)+Math.abs(dy)>2)active.moved=true;
       position.x=active.initialX+dx;
       position.y=active.initialY+dy;
       render();
@@ -254,7 +253,6 @@
     });
     const release=event=>{
       if(!active || active.pointerId!==event.pointerId)return;
-      suppressClick=active.moved;
       active=null;hit.style.cursor='grab';save();
       event.preventDefault();event.stopPropagation();
     };
@@ -272,7 +270,7 @@
   }
   hit.addEventListener('click',event=>{
     event.preventDefault();event.stopPropagation();
-    if(editor){suppressClick=false;return;}
+    if(editor)return;
     fortune();
   });
   render();

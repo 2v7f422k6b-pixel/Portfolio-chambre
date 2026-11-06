@@ -22,12 +22,13 @@ style.textContent=[
 ].join("\n");
 document.head.append(style);
 const overlay=document.createElement("div");overlay.className="coloring-overlay";overlay.id="coloring-overlay";overlay.hidden=true;
-overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">Coloring Book</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html?v=20261103-one-localized-title-1" loading="lazy"></iframe></section>';
+overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="true" aria-labelledby="coloring-title"><div class="coloring-panel-head"><span id="coloring-title">Coloring Book</span><button type="button" id="coloring-close" aria-label="Close Coloring Book">×</button></div><iframe title="Coloring Book game" src="coloring-book/index.html?v=20261106-code-cleanup-1" loading="lazy"></iframe></section>';
 document.body.append(overlay);
 let previousFocus=null;
 function syncTitle(){let lang="fr";try{lang=localStorage.getItem("portfolio-language-v2")==="en"?"en":"fr"}catch(_){}document.getElementById("coloring-title").textContent=lang==="fr"?"Coloriage":"Coloring Book";document.getElementById("coloring-close").setAttribute("aria-label",lang==="fr"?"Fermer le livre de coloriage":"Close Coloring Book")}
 function open(){previousFocus=document.activeElement;syncTitle();overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
 function close(){if(overlay.hidden)return;overlay.hidden=true;if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true})}
+window.NanaColoring={open,close};
 document.addEventListener("click",function(e){const trigger=e.target.closest('[data-open="coloring"]');if(!trigger)return;e.preventDefault();e.stopImmediatePropagation();open()},true);
 document.getElementById("coloring-close").addEventListener("click",close);
 let backdropPointerStarted=false;

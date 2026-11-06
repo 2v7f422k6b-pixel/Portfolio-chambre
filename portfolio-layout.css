@@ -1,0 +1,1088 @@
+/* Portfolio layout and artwork presentation.
+   Loaded at its original cascade position; component styles keep their own files. */
+/* Same user illustrations on both scenes; naturally dim them at night. */
+html[data-theme="night"] #hotspots .poster-artwork {
+  filter: brightness(0.77) saturate(0.9);
+}
+
+/* Earlier contain-fit override; superseded below. */
+#play-viewport {
+  display: flex;
+  overflow: hidden;
+}
+#play-scene {
+  width: min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important;
+}
+
+/* Immersive proportional cover: crop edges instead of stretching or letterboxing. */
+#play-viewport {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+#play-scene {
+  width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important;
+  height: auto !important;
+  aspect-ratio: 1670 / 942 !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+#room-img,
+#room-night {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* Place the alpha-guide above all scene layers and suppress coarse SVG outlines. */
+#play-scene #pixel-outline-overlay {
+  z-index: 999 !important;
+}
+#hotspots.hotspot-guide-on polygon[data-open],
+#hotspots.hotspot-guide-on polygon[data-mv-open],
+#hotspots.hotspot-guide-on polygon[data-cat-pet],
+#hotspots.hotspot-peek polygon[data-open],
+#hotspots.hotspot-peek polygon[data-mv-open],
+#hotspots.hotspot-peek polygon[data-cat-pet] {
+  stroke: transparent !important;
+  fill: transparent !important;
+  filter: none !important;
+}
+
+/* Make pixel-perfect hotspot inspection available on desktop too. */
+#hotspot-guide {
+  display: block !important;
+}
+@media (min-width: 761px) and (hover: hover) {
+  #hotspot-guide {
+    top: calc(var(--menubar, 42px) + 12px);
+    right: 14px;
+  }
+}
+
+/* Desktop hover must never reveal the legacy approximate SVG silhouettes. */
+#hotspots polygon[data-open]:hover,
+#hotspots polygon[data-mv-open]:hover,
+#hotspots polygon[data-cat-pet]:hover {
+  stroke: transparent !important;
+  fill: transparent !important;
+  filter: none !important;
+}
+
+/* Chrome desktop SVG focus/hover must not draw a rectangular bounding box. */
+#hotspots polygon,
+#hotspots polygon:hover,
+#hotspots polygon:focus,
+#hotspots polygon:focus-visible,
+#hotspots polygon.active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable native SVG polygon outlines on every interaction state. The PNG overlay owns visual feedback. */
+#play-scene #hotspots polygon,
+#play-scene #hotspots polygon:hover,
+#play-scene #hotspots polygon:focus,
+#play-scene #hotspots polygon:focus-visible,
+#play-scene #hotspots polygon:active,
+#play-scene #hotspots polygon.active,
+#play-scene #hotspots polygon.touch-target,
+#play-scene #hotspots.hotspot-guide-on polygon,
+#play-scene #hotspots.hotspot-peek polygon {
+  stroke: none !important;
+  fill: transparent !important;
+  filter: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Transparent SVG fills are not reliably pointer-targetable: retain invisible painted hit regions. */
+#play-scene #hotspots polygon,
+#play-scene #hotspots polygon:hover,
+#play-scene #hotspots polygon:focus,
+#play-scene #hotspots polygon:focus-visible,
+#play-scene #hotspots polygon:active,
+#play-scene #hotspots polygon.active,
+#play-scene #hotspots polygon.touch-target,
+#play-scene #hotspots.hotspot-guide-on polygon,
+#play-scene #hotspots.hotspot-peek polygon {
+  fill: rgba(255, 255, 255, 0.001) !important;
+  pointer-events: all !important;
+  cursor: pointer;
+}
+
+/* Work and Play are mutually exclusive surfaces. Respect the hidden attribute
+   even when earlier responsive CSS forces display:flex or display:block. */
+#desktop #play-viewport[hidden],
+#desktop #work-desktop[hidden],
+#play-viewport[hidden],
+#work-desktop[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+#desktop.mode-work #play-viewport,
+#app.mode-work #play-viewport {
+  display: none !important;
+  pointer-events: none !important;
+}
+#app.mode-work #work-desktop {
+  display: block !important;
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+}
+#app.mode-work #work-desktop .work-wallpaper {
+  pointer-events: none;
+}
+
+/* Home previews use the exact scene backgrounds, not generic illustrations. */
+#welcome .mode-tile .tile-art {
+  display: block;
+  overflow: hidden;
+  background: transparent;
+}
+#welcome .mode-tile .tile-art img.welcome-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  border: 0;
+  transform: none;
+  filter: none;
+}
+
+/* Both home previews are full-bleed screenshots of the actual mode backgrounds. */
+#welcome .mode-options .mode-tile .tile-art {
+  position: relative !important;
+  display: block !important;
+  overflow: hidden !important;
+}
+#welcome .mode-options .mode-tile .tile-art > img.welcome-icon {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* Illustrated mood-picker homepage, implemented with live HTML buttons and real artwork. */
+html body #welcome {
+  padding: 22px !important;
+}
+html body #welcome::before,
+html body #welcome::after {
+  content: "☆" !important;
+  position: absolute !important;
+  color: #ff173b !important;
+  font-size: clamp(40px, 6vw, 86px) !important;
+  opacity: 0.8 !important;
+  pointer-events: none !important;
+}
+html body #welcome::before {
+  left: 4% !important;
+  top: 9% !important;
+}
+html body #welcome::after {
+  right: 5% !important;
+  bottom: 9% !important;
+}
+html body #welcome .welcome-panel {
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+}
+html body #welcome .welcome-top {
+  display: none !important;
+}
+html body #welcome .welcome-hero {
+  position: relative !important;
+}
+html body #welcome .welcome-kicker,
+html body #welcome .welcome-portfolio {
+  color: #ff173b !important;
+  letter-spacing: 0.015em !important;
+  text-shadow: 1px 1px 0 #fff2fc !important;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+}
+html body #welcome .welcome-portfolio {
+  margin-top: 0 !important;
+}
+html body #welcome .mode-options {
+  align-items: stretch !important;
+}
+html body #welcome .mode-tile {
+  gap: 0 !important;
+  text-align: center !important;
+}
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus-visible {
+  outline-offset: 3px !important;
+}
+html body #welcome .mode-tile .tile-name {
+  display: block !important;
+}
+html body #welcome .mode-tile .tile-art img.welcome-icon {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html body #welcome .mode-tile .tile-desc {
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+html body #welcome .welcome-choice-footer {
+  color: #ff173b !important;
+}
+html body #welcome #welcome-heading {
+  color: #ff173b !important;
+  letter-spacing: 0 !important;
+  font-weight: 700 !important;
+}
+html body #welcome .welcome-choice-hints span {
+  color: #ff173b !important;
+  background: #ffe2f0 !important;
+  border: 2px solid #ff173b !important;
+  border-radius: 24px 30px 20px 27px !important;
+  padding: 7px 32px !important;
+  font-size: clamp(18px, 2vw, 27px) !important;
+}
+@media (max-width: 680px) {
+  html body #welcome {
+    place-items: start center !important;
+  }
+  html body #welcome .welcome-hero {
+    padding: 4px 0 32px !important;
+  }
+  html body #welcome .mode-tile .tile-art {
+    aspect-ratio: 1.9 !important;
+  }
+}
+
+/* Home mockup v2: organic hand-drawn clouds, irregular frames and illustrated buttons. */
+html body #welcome {
+  background-image:
+    radial-gradient(ellipse at 15% 5%, #eed3f3 0, transparent 50%),
+    radial-gradient(ellipse at 83% 95%, #d2a7ed 0, transparent 53%) !important;
+  isolation: isolate !important;
+}
+html body #welcome .welcome-panel {
+  padding: 30px 16px 22px !important;
+}
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after {
+  position: absolute !important;
+  font-size: clamp(100px, 18vw, 260px) !important;
+  line-height: 1 !important;
+  color: #fff0f9 !important;
+  text-shadow:
+    2px 2px #ff173b,
+    -1px -1px #ff173b !important;
+  opacity: 0.86 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+html body #welcome .welcome-panel::before {
+  top: 5% !important;
+  left: -12% !important;
+  transform: rotate(-12deg) !important;
+}
+html body #welcome .welcome-panel::after {
+  bottom: -4% !important;
+  right: -10% !important;
+  transform: rotate(12deg) !important;
+}
+html body #welcome .welcome-title-cloud {
+  position: relative !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: rotate(-1deg) !important;
+}
+html body #welcome .welcome-title-cloud::before,
+html body #welcome .welcome-title-cloud::after {
+  position: absolute !important;
+  color: #ff173b !important;
+  font-size: 38px !important;
+  top: 18px !important;
+}
+html body #welcome .welcome-title-cloud::before {
+  left: 17px !important;
+}
+html body #welcome .welcome-title-cloud::after {
+  right: 19px !important;
+}
+html body #welcome .welcome-kicker {
+  font-size: clamp(31px, 4.5vw, 62px) !important;
+  white-space: normal !important;
+}
+html body #welcome .welcome-portfolio {
+  font-size: clamp(28px, 3.5vw, 49px) !important;
+}
+html body #welcome .mode-tile .tile-name {
+  transform: rotate(-2deg) !important;
+}
+html body #welcome .mode-tile.work-choice .tile-name {
+  transform: rotate(2deg) !important;
+}
+html body #welcome .mode-tile .tile-desc {
+  transform: rotate(-1deg) !important;
+}
+html body #welcome .welcome-choice-footer {
+  margin: 58px 0 0 !important;
+}
+html body #welcome #welcome-heading {
+  margin-bottom: 16px !important;
+}
+html body #welcome .welcome-choice-hints button {
+  cursor: pointer !important;
+  font: inherit !important;
+  transform: rotate(-2deg) !important;
+}
+html body #welcome .welcome-choice-hints button:last-child {
+  transform: rotate(2deg) !important;
+}
+html body #welcome .welcome-choice-hints button:hover,
+html body #welcome .welcome-choice-hints button:focus-visible {
+  background: #fff2fc !important;
+  transform: translateY(-3px) !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-title-cloud {
+    min-height: 110px !important;
+    padding: 15px 30px !important;
+  }
+  html body #welcome .welcome-hero {
+    padding-bottom: 40px !important;
+  }
+  html body #welcome .mode-tile .tile-name {
+    margin-top: -37px !important;
+  }
+  html body #welcome .welcome-choice-hints button {
+    padding: 10px 20px !important;
+  }
+}
+
+/* User-drawn welcome assets: original transparent PNGs, no CSS imitation. */
+html body #welcome .welcome-title-cloud {
+  display: block !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+}
+html body #welcome .welcome-title-cloud::before,
+html body #welcome .welcome-title-cloud::after {
+  display: none !important;
+  content: none !important;
+}
+html body #welcome .welcome-title-art {
+  object-fit: contain !important;
+}
+html body #welcome .mode-tile {
+  isolation: isolate !important;
+}
+html body #welcome .mode-tile .welcome-hand-frame {
+  display: block !important;
+}
+html body #welcome .welcome-hero {
+  padding-bottom: 32px !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-title-cloud {
+    width: min(520px, 94vw) !important;
+  }
+  html body #welcome .mode-tile {
+    padding: 10% 7% 9% !important;
+  }
+  html body #welcome .mode-tile .tile-name {
+    margin: -5% auto 8px !important;
+  }
+}
+
+/* Work desktop: no rectangular hover/focus highlights around folders. */
+#work-desktop .desktop-folder:hover,
+#work-desktop .desktop-folder:focus,
+#work-desktop .desktop-folder:focus-visible,
+#work-desktop .desktop-folder:hover > *,
+#work-desktop .desktop-folder:focus-visible > * {
+  outline: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+#work-desktop .desktop-folder:hover > span:last-child,
+#work-desktop .desktop-folder:focus-visible > span:last-child {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Welcome composition reset: use the actual artwork, not stacked CSS frames. */
+html body #welcome {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(14px, 3vw, 34px) !important;
+  min-height: 100dvh !important;
+  overflow: auto !important;
+  background: #d9b6ed !important;
+}
+html body #welcome .welcome-panel {
+  width: min(1100px, 100%) !important;
+  max-width: 1100px !important;
+  margin: auto !important;
+  padding: clamp(12px, 2vw, 24px) !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  overflow: visible !important;
+}
+html body #welcome .welcome-hero {
+  padding: 0 !important;
+  margin: 0 auto clamp(20px, 3vw, 36px) !important;
+  text-align: center !important;
+}
+html body #welcome .welcome-title-cloud {
+  margin: auto !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+html body #welcome .welcome-title-art {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+html body #welcome .mode-options {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(18px, 4vw, 46px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html body #welcome .mode-tile {
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus-visible {
+  outline: 0 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: none !important;
+}
+html body #welcome .mode-tile .welcome-hand-frame {
+  pointer-events: none !important;
+}
+html body #welcome .mode-tile .tile-art {
+  position: relative !important;
+  display: block !important;
+  height: auto !important;
+  order: 1 !important;
+}
+html body #welcome .mode-tile .tile-art img.welcome-icon {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+}
+html body #welcome .mode-tile .tile-name {
+  position: relative !important;
+  z-index: 2 !important;
+  order: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #ff173b !important;
+}
+html body #welcome .mode-tile .tile-desc {
+  position: relative !important;
+  z-index: 2 !important;
+  order: 2 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  color: #ff173b !important;
+}
+html body #welcome .welcome-choice-footer {
+  margin: clamp(12px, 2vw, 25px) auto 0 !important;
+  text-align: center !important;
+}
+html body #welcome #welcome-heading {
+  font-size: clamp(22px, 3vw, 34px) !important;
+  margin: 0 0 10px !important;
+}
+html body #welcome .welcome-choice-hints {
+  display: flex !important;
+  justify-content: center !important;
+  gap: clamp(18px, 5vw, 65px) !important;
+}
+html body #welcome .welcome-choice-hints button {
+  font-size: clamp(17px, 2vw, 24px) !important;
+  padding: 7px 26px !important;
+  border: 2px solid #ff173b !important;
+  border-radius: 35% 43% 38% 42% / 48% 38% 49% 41% !important;
+  background: #fff0f9 !important;
+  color: #ff173b !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+html body #welcome .welcome-foot {
+  display: none !important;
+}
+@media (max-width: 680px) {
+  html body #welcome {
+    align-items: flex-start !important;
+    padding: 16px 12px !important;
+  }
+  html body #welcome .welcome-panel {
+    padding: 5px !important;
+  }
+  html body #welcome .welcome-hero {
+    margin-bottom: 24px !important;
+  }
+  html body #welcome .mode-options {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    max-width: 440px !important;
+    margin: auto !important;
+  }
+  html body #welcome .mode-tile {
+    aspect-ratio: 1.65 !important;
+  }
+  html body #welcome .welcome-choice-footer {
+    margin-top: 22px !important;
+  }
+}
+
+/* Welcome adjustments Nov 2: keep only the user's hand-drawn frame and title. */
+html body #welcome .welcome-panel,
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after {
+  display: none !important;
+  content: none !important;
+}
+html body #welcome .welcome-mood-heading {
+  text-align: center !important;
+  color: #ff173b !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+html body #welcome .mode-tile,
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html body #welcome .mode-tile .tile-name {
+  font-weight: 600 !important;
+  margin: 0 auto 5px !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+}
+html body #welcome .mode-tile .tile-desc {
+  margin: 5px auto 0 !important;
+}
+/* Colored inset beneath the drawn border; crop each scene to its irregular inner opening. */
+html body #welcome .mode-tile::before {
+  position: absolute !important;
+  left: 10.5% !important;
+  right: 10.5% !important;
+  top: 22% !important;
+  bottom: 20% !important;
+  background: #fff0f9 !important;
+  border-radius: 9% 8% 9% 8% / 16% 14% 15% 13% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+html body #welcome .mode-tile .tile-art {
+  width: 78% !important;
+  aspect-ratio: 1.83 !important;
+  border-radius: 9% 8% 9% 8% / 16% 14% 15% 13% !important;
+  overflow: hidden !important;
+  background: #fff0f9 !important;
+  z-index: 1 !important;
+}
+html body #welcome .mode-tile .tile-art img.welcome-icon {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border: 0 !important;
+}
+html body #welcome .welcome-choice-footer {
+  display: none !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-mood-heading {
+    margin-bottom: 22px !important;
+  }
+  html body #welcome .mode-tile .tile-name {
+    font-size: 18px !important;
+  }
+  html body #welcome .mode-tile .tile-desc {
+    font-size: 12px !important;
+  }
+}
+
+/* Definitive removal of legacy rectangular outlines, including pseudo-frames. */
+html body #welcome,
+html body #welcome .welcome-panel,
+html body #welcome .mode-options,
+html body #welcome .mode-tile,
+html body #welcome .mode-tile:hover,
+html body #welcome .mode-tile:focus,
+html body #welcome .mode-tile:focus-visible {
+  border: none !important;
+  border-image: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-clip: padding-box !important;
+}
+html body #welcome .welcome-panel::before,
+html body #welcome .welcome-panel::after,
+html body #welcome .mode-tile::after {
+  content: none !important;
+  display: none !important;
+}
+html body #welcome .mode-tile .tile-art {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* The old sketch-ui script inserts actual SVG rectangle overlays.
+   Hide those overlays ONLY on the welcome screen; preserve user's PNG artwork. */
+html body #welcome .welcome-panel > svg.sketch-ui-svg,
+html body #welcome .mode-tile > svg.sketch-ui-svg,
+html body #welcome .tile-art > svg.sketch-ui-svg,
+html body #welcome .welcome-top > svg.sketch-ui-svg,
+html body #welcome .welcome-foot > svg.sketch-ui-svg,
+html body #welcome .sketch-ui-svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+html body #welcome .welcome-panel.sketch-ui-frame,
+html body #welcome .mode-tile.sketch-ui-frame,
+html body #welcome .tile-art.sketch-ui-frame {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Three original hand-drawn stars on the welcome screen. */
+html body #welcome .welcome-panel {
+  position: relative !important;
+}
+html body #welcome .welcome-stars {
+  position: absolute !important;
+  inset: 0 !important;
+}
+html body #welcome .welcome-stars img {
+  position: absolute !important;
+  display: block !important;
+  width: clamp(36px, 5vw, 72px) !important;
+  height: auto !important;
+  object-fit: contain !important;
+  filter: none !important;
+}
+html body #welcome .welcome-stars img:nth-child(1) {
+  top: 5% !important;
+  left: 5% !important;
+  transform: rotate(-13deg) !important;
+}
+html body #welcome .welcome-stars img:nth-child(2) {
+  top: 12% !important;
+  right: 5% !important;
+  width: clamp(29px, 4vw, 55px) !important;
+  transform: rotate(14deg) !important;
+}
+html body #welcome .welcome-stars img:nth-child(3) {
+  bottom: 7% !important;
+  right: 12% !important;
+  width: clamp(25px, 3.5vw, 48px) !important;
+  transform: rotate(-9deg) !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-stars img:nth-child(1) {
+    top: 2% !important;
+    left: 0 !important;
+  }
+  html body #welcome .welcome-stars img:nth-child(2) {
+    top: 6% !important;
+    right: 0 !important;
+  }
+  html body #welcome .welcome-stars img:nth-child(3) {
+    bottom: 2% !important;
+    right: 1% !important;
+  }
+}
+
+/* Precisely overlay labels on the already-painted pink and ivory bubbles. */
+html body #welcome .mode-tile {
+  display: block !important;
+  position: relative !important;
+  aspect-ratio: 1.65 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  min-height: 0 !important;
+}
+html body #welcome .mode-tile::before {
+  content: none !important;
+  display: none !important;
+}
+html body #welcome .mode-tile .welcome-hand-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  z-index: 0 !important;
+}
+html body #welcome .mode-tile .tile-name,
+html body #welcome .mode-tile .tile-desc {
+  position: absolute !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  z-index: 3 !important;
+  color: #ff173b !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  font-weight: 600 !important;
+}
+html body #welcome .welcome-mood-heading {
+  margin: 0 auto clamp(10px, 1.6vw, 20px) !important;
+}
+html body #welcome .mood-arrow {
+  display: inline-block !important;
+  margin: 0 14px !important;
+  font-size: 1.35em !important;
+  transform: translateY(3px) !important;
+}
+html body #welcome .welcome-panel {
+  padding-top: clamp(16px, 3vw, 36px) !important;
+}
+html body #welcome .welcome-hero {
+  margin-bottom: clamp(8px, 1.5vw, 18px) !important;
+}
+html body #welcome .welcome-title-cloud {
+  width: min(610px, 75%) !important;
+}
+html body #welcome .welcome-star-extra {
+  position: absolute !important;
+  display: block !important;
+  object-fit: contain !important;
+  pointer-events: none !important;
+  width: clamp(18px, 3vw, 40px) !important;
+  height: auto !important;
+  opacity: 0.85 !important;
+}
+html body #welcome .welcome-stars .s4 {
+  top: 26% !important;
+  left: 14% !important;
+}
+html body #welcome .welcome-stars .s5 {
+  top: 27% !important;
+  right: 16% !important;
+  width: 26px !important;
+}
+html body #welcome .welcome-stars .s6 {
+  top: 62% !important;
+  left: 1% !important;
+}
+html body #welcome .welcome-stars .s7 {
+  bottom: 3% !important;
+  left: 24% !important;
+  width: 30px !important;
+}
+html body #welcome .welcome-stars .s8 {
+  bottom: 7% !important;
+  right: 2% !important;
+  width: 35px !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .mode-tile .tile-name {
+    font-size: clamp(15px, 4vw, 20px) !important;
+  }
+  html body #welcome .mode-tile .tile-desc {
+    font-size: clamp(10px, 2.7vw, 14px) !important;
+  }
+  html body #welcome .welcome-title-cloud {
+    width: 90% !important;
+  }
+  html body #welcome .mood-arrow {
+    margin: 0 5px !important;
+  }
+}
+
+/* Fine placement using the user screenshot: center in drawn labels. */
+html body #welcome .welcome-stars .s9 {
+  top: 43% !important;
+  left: 4% !important;
+  width: clamp(23px, 3vw, 43px) !important;
+  transform: rotate(10deg) !important;
+}
+html body #welcome .welcome-stars .s10 {
+  top: 39% !important;
+  right: 5% !important;
+  width: clamp(19px, 2.5vw, 36px) !important;
+  transform: rotate(-14deg) !important;
+}
+
+/* Final artwork-based welcome details: unrotated stars and supplied arrows. */
+html body #welcome .welcome-stars img,
+html body #welcome .welcome-stars .welcome-star-extra,
+html body #welcome .welcome-stars .scatter-star {
+  transform: none !important;
+  rotate: 0deg !important;
+}
+html body #welcome .welcome-stars .scatter-star {
+  position: absolute !important;
+  pointer-events: none !important;
+  display: block !important;
+  height: auto !important;
+  opacity: 0.88 !important;
+}
+html body #welcome .welcome-mood-heading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(10px, 2vw, 30px) !important;
+  font-size: clamp(18px, 2.1vw, 27px) !important;
+}
+html body #welcome .mood-arrow-art {
+  display: inline-block !important;
+  object-fit: contain !important;
+  flex: none !important;
+}
+html body #welcome .mode-tile .tile-name {
+  top: 8.8% !important;
+  left: 32% !important;
+  width: 36% !important;
+  height: 13% !important;
+  border-radius: 16px !important;
+}
+html body #welcome .mode-tile .tile-desc {
+  top: 78.5% !important;
+  left: 27% !important;
+  width: 46% !important;
+  height: 12% !important;
+  font-size: clamp(10px, 1.05vw, 15px) !important;
+  line-height: 1 !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-mood-heading {
+    gap: 6px !important;
+    font-size: 19px !important;
+  }
+}
+
+/* Hand-placed stars: avoid the four circled areas and the subtitle bubbles. */
+html body #welcome .welcome-stars .scattered {
+  position: absolute !important;
+  display: block !important;
+  height: auto !important;
+}
+html body #welcome .welcome-stars .small-spark {
+  opacity: 0.85 !important;
+}
+html body #welcome .mood-arrow-art {
+  width: clamp(56px, 6.5vw, 100px) !important;
+  height: clamp(44px, 5vw, 76px) !important;
+}
+/* Gently arched labels using an SVG textPath created below. */
+html body #welcome .mode-tile .tile-name {
+  font-size: clamp(13px, 1.6vw, 22px) !important;
+  line-height: 1 !important;
+}
+html body #welcome .mode-tile .tile-name svg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+html body #welcome .mode-tile .tile-name text {
+  fill: #ff173b !important;
+  font:
+    600 22px "Nana",
+    cursive !important;
+  letter-spacing: 0.3px !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .mood-arrow-art {
+    width: 54px !important;
+    height: 42px !important;
+  }
+}
+
+/* Stars sit behind the content, with generous clear space around title and cards. */
+html body #welcome .welcome-panel {
+  isolation: isolate !important;
+}
+html body #welcome .welcome-stars {
+  pointer-events: none !important;
+}
+html body #welcome .welcome-hero,
+html body #welcome .welcome-mood-heading,
+html body #welcome .mode-options,
+html body #welcome .mode-tile {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Compact desktop welcome: fit the entire selection screen without vertical scrolling. */
+@media (min-width: 681px) {
+  html body #welcome {
+    min-height: 0 !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  html body #welcome .welcome-panel {
+    box-sizing: border-box !important;
+    width: min(100%, 1550px) !important;
+    max-height: 100dvh !important;
+    min-height: 0 !important;
+    padding: clamp(8px, 1.2vh, 15px) clamp(18px, 2vw, 34px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: clamp(6px, 1vh, 12px) !important;
+  }
+  html body #welcome .welcome-hero {
+    margin: 0 !important;
+    flex: 0 1 auto !important;
+  }
+  html body #welcome .welcome-title-cloud {
+    width: min(560px, 66vw, 64vh) !important;
+    margin: 0 auto !important;
+  }
+  html body #welcome .welcome-mood-heading {
+    margin: 0 !important;
+    flex: none !important;
+  }
+  html body #welcome .mode-options {
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    gap: clamp(20px, 3vw, 44px) !important;
+  }
+  html body #welcome .mode-tile {
+    aspect-ratio: 1.65 !important;
+    max-height: 39vh !important;
+  }
+}
+/* All stars stay upright and behind the content, away from its central area. */
+html body #welcome .welcome-stars {
+  z-index: 0 !important;
+  overflow: hidden !important;
+}
+html body #welcome .welcome-stars .scattered {
+  transform: none !important;
+  rotate: 0deg !important;
+  max-width: 26px !important;
+  pointer-events: none !important;
+}
+html body #welcome .welcome-stars .small-spark {
+  max-width: 9px !important;
+}
+@media (max-width: 680px) {
+  html body #welcome .welcome-stars .scattered {
+    max-width: 18px !important;
+  }
+}
+
+/* Diverse upright stars, placed only when they do not touch any foreground artwork. */
+html body #welcome .welcome-stars .star-candidate {
+  position: absolute !important;
+  transform: none !important;
+  rotate: 0deg !important;
+  pointer-events: none !important;
+  max-width: none !important;
+}
+html body #welcome .work-choice .tile-desc {
+  left: 25.5% !important;
+  width: 46% !important;
+}
+
+/* Star decorations removed at the artist's request. */
+html body #welcome .welcome-stars,
+html body #welcome .welcome-star-extra {
+  display: none !important;
+}
+
+/* The phone markup owns the original PNG icons; styling requires no DOM observer. */
+html body #app #special-host .phone-device {
+  border-radius: 50px !important;
+  overflow: hidden !important;
+}
+html body #app #special-host .phone-screen {
+  border-radius: 40px !important;
+  overflow: hidden !important;
+  clip-path: inset(0 round 40px) !important;
+}
+html body #app #special-host .phone-app .ios-icon {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+html body #app #special-host .phone-app .phone-drawn-icon {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}

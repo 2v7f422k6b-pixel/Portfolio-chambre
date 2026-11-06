@@ -19,4 +19,3 @@ html[data-theme="night"] #play-scene .nana-minilab-night {display:block;}
 /* Hover feedback is drawn separately by room-hover.js / pixel-outlines.js. */
 
 /* Hard-disable the old corner launcher even if an older script is cached. */
-#nana-dreamlab-trigger {display:none!important;visibility:hidden!important;}

@@ -16,10 +16,6 @@
   // Artist-approved permanent placement, in the 1670 × 942 bedroom coordinate system.
   const defaultQuad = [[679.1610611167739,189.70320567843726],[754.0449185287739,177.702325716768],[756.5410471091737,254.8932494609382],[681.0331575520739,262.71496665513723]];
 
-  const fromRect = (x, y, width) => {
-    const height = width * H / W;
-    return [[x,y],[x+width,y],[x+width,y+height],[x,y+height]];
-  };
   const copy = points => points.map(p => [p[0], p[1]]);
   const valid = points =>
     Array.isArray(points) && points.length === 4 &&

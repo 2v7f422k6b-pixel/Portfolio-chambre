@@ -71,7 +71,7 @@
 .mv-tint-yellow{background:linear-gradient(135deg,#fff7b2,#fbe0ec)}
 .mv-tint-aqua{background:linear-gradient(135deg,#caeff0,#f6d4dd)}
 .mv-tint-night{background:linear-gradient(135deg,#d5d6f3,#edd1e8)}
-.mv-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(113px,1fr);gap:12px;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:8px;scrollbar-width:thin}
+.mv-strip{overscroll-behavior-x:contain;padding-bottom:8px}
 .mv-strip .mv-work-card{width:140px;max-width:calc((100vw - 70px)/2)}
 .mv-work-card{padding:0;border:0;background:transparent;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;color:#624b73}
 .mv-work-frame{height:138px;width:100%;border:1px solid #e3c9da;border-radius:10px;display:grid;place-items:center;padding:6px;overflow:hidden;transition:transform .15s,box-shadow .15s}

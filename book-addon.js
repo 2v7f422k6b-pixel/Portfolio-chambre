@@ -180,7 +180,6 @@ function openBook(){
  loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
 window.openBook=openBook;
-function addFinder(){const grid=$('#window-content .project-grid');if(!grid||grid.querySelector('[data-open="book"]'))return;const b=document.createElement('button');b.type='button';b.className='project-card';b.dataset.open='book';b.innerHTML='<span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Livre illustré · 74 pages</small>';grid.appendChild(b);}
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-book-prev]')){turn(-1);return;}
  if(e.target.closest('[data-book-next]')){turn(1);return;}
@@ -195,5 +194,4 @@ document.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-st
 document.addEventListener('keydown',e=>{if(!$('#book-reader')||!$('#book-assembly')||$('#book-assembly').hidden)return;if(e.key==='ArrowRight'){e.preventDefault();turn(1);}if(e.key==='ArrowLeft'){e.preventDefault();turn(-1);}});
 let wasSmall=isSmall();
 window.addEventListener('resize',()=>{if(!pdf||!$('#book-reader'))return;sizeSpread();const small=isSmall();if(small!==wasSmall){wasSmall=small;busy=false;draw(small?position:(position<=1?1:position%2===0?position:position-1));}});
-document.addEventListener('DOMContentLoaded',()=>{const el=$('#window-content');if(el)new MutationObserver(addFinder).observe(el,{childList:true});});
 })();
