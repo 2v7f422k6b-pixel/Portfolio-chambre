@@ -233,6 +233,7 @@ document.title=translateString(originalDocumentTitle,lang);
 syncDressUpFrames();
 const button=document.getElementById('language-toggle');
 if(button){button.textContent=lang==='en'?'EN · FR':'FR · EN';button.title=lang==='en'?'Current language: English. Switch to French':'Langue actuelle : français. Passer en anglais';button.setAttribute('aria-label',button.title)}
+document.querySelectorAll('[data-welcome-language]').forEach(control=>control.setAttribute('aria-pressed',String(control.dataset.welcomeLanguage===lang)));
 update(document.body);
 document.dispatchEvent(new CustomEvent('portfolio-language-change',{detail:{language:lang}}));
 for(const frame of document.querySelectorAll('iframe')){try{frame.contentWindow?.postMessage({type:'portfolio-language',language:lang},location.origin)}catch(e){}}
@@ -240,7 +241,9 @@ for(const frame of document.querySelectorAll('iframe')){try{frame.contentWindow?
 window.addEventListener('message',event=>{if(event.origin!==location.origin||event.data?.type!=='portfolio-language-request')return;event.source?.postMessage({type:'portfolio-language',language:lang},location.origin)});
 function init(){
 const button=document.getElementById('language-toggle');
-if(button)button.addEventListener('click',()=>{lang=lang==='en'?'fr':'en';try{localStorage.setItem('portfolio-language-v2',lang)}catch(e){}apply()});
+function selectLanguage(next){lang=next;try{localStorage.setItem('portfolio-language-v2',lang)}catch(e){}apply()}
+if(button)button.addEventListener('click',()=>selectLanguage(lang==='en'?'fr':'en'));
+document.querySelectorAll('[data-welcome-language]').forEach(control=>control.addEventListener('click',()=>selectLanguage(control.dataset.welcomeLanguage)));
 apply();
 const observer=new MutationObserver(records=>{
  if(busy)return;
