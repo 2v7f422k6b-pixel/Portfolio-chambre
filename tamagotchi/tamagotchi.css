@@ -1,3 +1,4 @@
+@font-face{font-family:'Pixelify Sans';src:url('../assets/fonts/PixelifySans-Regular.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent;color-scheme:light}
 body{display:grid;place-items:center;overflow:hidden}
@@ -24,7 +25,7 @@ button:focus-visible{outline:2px solid #ff001e;outline-offset:-2px}
 .actions button:hover{background:transparent}
 .stats,#notice{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
-#mood{position:absolute;left:0;top:5%;width:47%;height:23%;display:flex;align-items:center;justify-content:center;padding:2% 6.7% 2% 2%;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%2050%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M6%201%20H84%20V5%20H89%20V26%20L98%2043%20L89%2037%20V45%20H84%20V49%20H6%20V45%20H1%20V5%20H6%20Z%22%20fill%3D%22%23fff0f7%22%20fill-opacity%3D%22.76%22%20stroke%3D%22%23550003%22%20stroke-width%3D%221.2%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;color:#783222;text-align:center;white-space:pre-line;font:bold clamp(6px,1.75cqw,13px)/1.25 monospace;pointer-events:none}
+#mood{position:absolute;left:0;top:5%;width:47%;height:23%;display:flex;align-items:center;justify-content:center;padding:2% 6.7% 2% 2%;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%2050%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M6%201%20H84%20V5%20H89%20V26%20L98%2043%20L89%2037%20V45%20H84%20V49%20H6%20V45%20H1%20V5%20H6%20Z%22%20fill%3D%22%23fff0f7%22%20fill-opacity%3D%22.76%22%20stroke%3D%22%23550003%22%20stroke-width%3D%221.2%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;color:#783222;text-align:center;white-space:pre-line;font:400 clamp(7px,2cqw,15px)/1.15 'Pixelify Sans',monospace;pointer-events:none}
 .device-controls{position:absolute;inset:0;z-index:2;pointer-events:none}
 .device-controls button{position:absolute;top:82%;width:13.5%;height:10.4%;border:0;background:transparent;color:#ff001e;font:bold clamp(18px,5cqw,40px)/1 monospace;cursor:pointer;touch-action:manipulation;pointer-events:auto;border-radius:50%}
 #previous{left:25.5%}#confirm{left:43.3%;top:83%}#next{left:61.2%}
