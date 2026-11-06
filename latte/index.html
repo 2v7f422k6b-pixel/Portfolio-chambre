@@ -48,7 +48,9 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .action.secondary{background:var(--paper);margin-top:10px}
 .milk-options{display:flex;gap:9px;margin:9px 0 14px}
 .milk-options button{border:1.5px solid var(--red);background:var(--paper);padding:11px 9px;flex:1;box-shadow:var(--glow);font-size:13px}
-.milk-options button.selected{background:var(--pink);box-shadow:inset 0 0 0 2px var(--red)}
+.milk-options button[data-milk="Oat"]{background:#e7c999}
+.milk-options button[data-milk="Whole"]{background:#fffdf2}
+.milk-options button.selected{font-weight:bold;text-decoration:underline;text-underline-offset:4px;box-shadow:inset 0 0 0 2px var(--red)}
 .meter{height:16px;border:1.5px solid var(--red);display:flex;gap:3px;padding:3px;margin:12px 0 10px}
 .meter i{flex:1;background:transparent;transition:background .2s}
 .meter i.active{background:var(--red)}
@@ -152,14 +154,6 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
   .station.latte-traced{border-bottom-color:transparent}
 }
 
-.milk-drop{display:block;width:24px;height:28px;border-radius:57% 43% 53% 47%;margin:0 auto 6px;transform:rotate(15deg)}
-.milk-drop.oat{background:radial-gradient(at 35% 30%,#f4deb4,#c6a271)}
-.milk-drop.whole{background:radial-gradient(at 35% 30%,#fffef8,#e1ddd0)}
-.milk-preview{width:115px;margin:0 auto 6px}
-.milk-preview svg{display:block;width:100%}
-.milk-surface{fill:#e7c999;transition:fill .25s}
-.milk-preview[data-kind="Whole"] .milk-surface{fill:#fffdf2}
-.milk-bubbles{opacity:.2;transition:opacity .25s}
 .message-field textarea{resize:vertical;min-height:84px;max-height:145px}
 .send-status{font-size:14px;line-height:1.5;margin:12px 0 0}
 </style>
@@ -222,11 +216,8 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
         <h2 class="step-title">Steam the milk</h2>
         <p class="description">Choose your milk, then tap the steam button three times to make lovely microfoam.</p>
         <div class="milk-options" role="group" aria-label="Milk type">
-          <button type="button" data-milk="Oat" class="selected" aria-pressed="true"><span class="milk-drop oat" aria-hidden="true"></span>Oat milk ♡</button>
-          <button type="button" data-milk="Whole" aria-pressed="false"><span class="milk-drop whole" aria-hidden="true"></span>Whole milk ♡</button>
-        </div>
-        <div class="milk-preview" data-kind="Oat" id="milk-preview" aria-hidden="true">
-          <svg viewBox="0 0 140 75"><path d="M13 29 Q7 61 42 65 L98 65 Q128 61 126 29" fill="#ffe0e6" stroke="#ff173b" stroke-width="1.6"/><path class="milk-surface" d="M13 30 C10 9 126 8 126 30 C127 49 13 52 13 30Z"/><path d="M126 32 C151 25 146 58 121 52" fill="none" stroke="#ff173b" stroke-width="1.6"/><g class="milk-bubbles" fill="none" stroke="#fffdf4" stroke-width="1.3"><circle cx="40" cy="26" r="4"/><circle cx="54" cy="31" r="2.3"/><circle cx="70" cy="24" r="3"/><circle cx="88" cy="33" r="4.5"/><circle cx="100" cy="25" r="2.2"/></g></svg>
+          <button type="button" data-milk="Oat" class="selected" aria-pressed="true">Oat milk ♡</button>
+          <button type="button" data-milk="Whole" aria-pressed="false">Whole milk ♡</button>
         </div>
         <div class="meter" aria-label="Milk steaming progress" id="steam-meter"><i></i><i></i><i></i></div>
         <button class="action" type="button" id="steam-btn">Steam milk · 0/3</button>
@@ -273,7 +264,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
     </section>
   </div>
 </div>
-<script src="./game.js?v=20261106-cafe-1"></script>
+<script src="./game.js?v=20261106-milk-buttons-2"></script>
 <script src="../heart-theme.js?v=lena-original-1" defer></script>
 <script src="../game-i18n.js?v=20261106-cafe-1"></script>
 <script src="./handdrawn-ui.js?v=20261106-cafe-1"></script>

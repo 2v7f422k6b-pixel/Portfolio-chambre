@@ -32,7 +32,6 @@
       const on=el.dataset.milk===kind;
       el.classList.toggle('selected',on);el.setAttribute('aria-pressed',String(on));
     });
-    $('#milk-preview').dataset.kind=kind;
     $('#milk-light').setAttribute('stop-color',kind==='Oat'?'#ecce9f':'#f6e8cf');
     $('#milk-dark').setAttribute('stop-color',kind==='Oat'?'#bb9066':'#cfaf8c');
     $('#cream-ring').setAttribute('stroke',kind==='Oat'?'#f3deba':'#fff6e6');
@@ -49,7 +48,6 @@
     steam++;
     $$('#steam-meter i').forEach((el,i) => el.classList.toggle('active',i<steam));
     $('#steam-btn').textContent='Steam milk · '+steam+'/3';
-    $('.milk-bubbles').style.opacity=String(.2+steam*.26);
     if(steam===3){$('#steam-btn').disabled=true;goto(3);}
   });
   function updatePour() {
@@ -189,7 +187,7 @@
     ['espresso','milk','cream-ring','vanilla-swirl'].forEach(id=>$('#'+id).setAttribute('opacity','0'));
     $('#pour').value='0';$('#pour-count').textContent='0 ml';
     $('#steam-btn').disabled=false;$('#steam-btn').textContent='Steam milk · 0/3';
-    $$('#steam-meter i').forEach(el=>el.classList.remove('active'));$('.milk-bubbles').style.opacity='.2';
+    $$('#steam-meter i').forEach(el=>el.classList.remove('active'));
     chooseMilk('Oat');size=12;$('#brush-size').value='12';$('#size-label').textContent='12';
     tool='foam';$$('[data-tool]').forEach(el=>{const on=el.dataset.tool==='foam';el.classList.toggle('active',on);el.setAttribute('aria-pressed',String(on));});
     form.reset();$('#visitor-message').readOnly=false;$('#visitor-name').readOnly=false;
