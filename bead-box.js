@@ -61,41 +61,37 @@ function centerLetters(root){
  }
 }
 document.fonts?.ready.then(()=>centerLetters(document));
-// The drawn string and bead positions share one asymmetric curve. A future
-// hand-drawn string can replace these control points without changing saved slots.
-const STRING_START=[220,105];
-const STRING_CURVES=[
- [185,104,160,126,143,155],
- [125,186,129,207,117,239],
- [103,271,111,309,130,341],
- [151,377,176,420,220,422],
- [258,425,290,395,311,359],
- [335,320,338,279,328,241],
- [318,207,327,183,300,149],
- [280,124,250,105,220,105]
-];
-const STRING_PATH=`M${STRING_START.join(' ')} `+STRING_CURVES.map(c=>'C'+c.join(' ')).join(' ');
+// Original 1600 × 2400 PNG layers share the same placement, without redrawing.
+// Hidden centerline measured from IMG_5260.png. The clasp area above y=1055
+// in the source canvas is reserved, so bead slots never touch the strap.
+const CHARM_ART={scale:.23,x:-10.575,y:-27.72};
+const CHARM_BEAD_SCALE=.62;
+const STRING_GUIDE=[[165.38,214.93],[164.56,218.28],[163.76,221.63],[162.61,224.84],[161.92,228.24],[161.23,231.64],[160.15,234.88],[159.39,238.25],[158.35,241.5],[157.54,244.85],[156.64,248.16],[155.74,251.47],[154.92,254.82],[154.1,258.17],[153.42,261.56],[152.49,264.87],[151.66,268.21],[150.88,271.57],[150.2,274.97],[149.5,278.37],[149.04,281.86],[148.39,285.28],[147.9,288.76],[147.66,292.35],[147.2,295.84],[146.98,299.43],[146.74,303.02],[146.51,306.61],[146.51,310.29],[146.51,313.98],[146.51,317.47],[146.74,321.06],[146.98,324.65],[147.31,328.2],[147.66,331.74],[148.13,335.23],[148.79,338.64],[149.04,342.22],[149.73,345.62],[150.2,349.11],[150.66,352.61],[151.11,356.1],[151.57,359.6],[152.26,363.0],[152.95,366.39],[153.64,369.79],[154.35,373.19],[155.17,376.53],[156.15,379.81],[156.96,383.16],[158.11,386.37],[159.39,389.52],[160.71,392.66],[161.92,395.84],[163.76,398.77],[165.38,401.78],[167.22,404.71],[169.03,407.64],[171.14,410.45],[173.1,413.32],[175.05,416.2],[177.17,419.01],[179.61,421.68],[181.9,424.42],[184.41,426.93],[187.28,428.89],[190.29,430.52],[193.53,431.59],[196.93,432.28],[200.33,432.97],[203.92,433.2],[207.32,433.43],[210.81,433.43],[214.12,432.51],[217.32,431.36],[220.21,429.43],[222.16,426.55],[223.31,423.34],[224.48,420.14],[226.08,417.12],[227.24,413.92],[227.7,410.42],[227.94,406.83],[227.94,403.15],[228.16,399.56],[228.16,395.87],[228.4,392.28],[228.62,388.69],[228.87,385.11],[228.86,381.61],[228.15,378.22],[227.17,374.94],[226.1,371.7],[225.18,368.4],[224.26,365.09],[223.8,361.6],[223.1,358.2],[222.64,354.7],[222.18,351.21],[221.94,347.63],[221.5,344.13],[221.04,340.63],[220.58,337.14],[219.88,333.74],[219.42,330.24],[218.96,326.75],[218.74,323.16],[218.28,319.67],[218.04,316.08],[217.65,312.61],[217.58,309.09],[217.36,305.5],[217.12,301.91],[216.66,298.41],[216.2,294.92],[215.98,291.33],[216.2,287.74],[216.2,284.25],[215.98,280.66],[215.74,277.07],[215.06,273.67],[214.6,270.17],[213.9,266.77],[213.22,263.37],[212.76,259.88],[212.52,256.29],[212.06,252.8],[211.83,249.21],[211.14,245.81],[210.21,242.51],[209.3,239.2],[208.61,235.8],[207.92,232.4],[207.43,228.92],[207.0,225.41],[206.78,221.82],[206.12,218.41],[205.62,214.93]];
 const STRING_SLOTS=(()=>{
- const points=[{x:STRING_START[0],y:STRING_START[1],distance:0}];
- let start=STRING_START;
- for(const [x1,y1,x2,y2,x3,y3] of STRING_CURVES){
-  for(let step=1;step<=32;step++){
-   const t=step/32,u=1-t;
-   const x=u*u*u*start[0]+3*u*u*t*x1+3*u*t*t*x2+t*t*t*x3;
-   const y=u*u*u*start[1]+3*u*u*t*y1+3*u*t*t*y2+t*t*t*y3;
-   const previous=points[points.length-1];
-   points.push({x,y,distance:previous.distance+Math.hypot(x-previous.x,y-previous.y)});
-  }
-  start=[x3,y3];
+ const distances=[0];
+ for(let i=1;i<STRING_GUIDE.length;i++){
+  const a=STRING_GUIDE[i-1],b=STRING_GUIDE[i];
+  distances.push(distances[i-1]+Math.hypot(b[0]-a[0],b[1]-a[1]));
  }
- const total=points[points.length-1].distance;
+ const length=distances[distances.length-1];
  return Array.from({length:MAX},(_,slot)=>{
-  const distance=total*(.045+.91*slot/(MAX-1));
-  const i=points.findIndex(p=>p.distance>=distance),a=points[i-1],b=points[i];
-  const t=(distance-a.distance)/(b.distance-a.distance);
-  return {x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+  const distance=length*slot/(MAX-1);
+  const i=Math.max(1,distances.findIndex(d=>d>=distance));
+  const a=STRING_GUIDE[i-1],b=STRING_GUIDE[i];
+  const t=(distance-distances[i-1])/(distances[i]-distances[i-1]);
+  return {x:a[0]+(b[0]-a[0])*t,y:a[1]+(b[1]-a[1])*t};
  });
 })();
+function onString(point){
+ // A drop on the strap or its clasp must not snap onto the first bead slot.
+ if(point.y<205)return false;
+ return STRING_GUIDE.some((b,i)=>{
+  if(!i)return false;
+  const a=STRING_GUIDE[i-1],dx=b[0]-a[0],dy=b[1]-a[1];
+  const t=Math.max(0,Math.min(1,((point.x-a[0])*dx+(point.y-a[1])*dy)/(dx*dx+dy*dy)));
+  return Math.hypot(point.x-a[0]-t*dx,point.y-a[1]-t*dy)<=25;
+ });
+}
 function slotPoint(slot){return STRING_SLOTS[slot];}
 function nearestSlot(point,exclude=-1){
  const used=new Set(beads.filter((_,i)=>i!==exclude).map(b=>b.slot));
@@ -106,9 +102,9 @@ function nearestSlot(point,exclude=-1){
 function charmMarkup(interactive=false){
  const nodes=beads.map((b,i)=>{
   const p=slotPoint(b.slot),label=b.type==='letter'?t().letter+' '+b.letter:t().names[TYPES.indexOf(b.type)];
-  return `<g transform="translate(${p.x} ${p.y})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label} · ${i+1}"`:''}><circle r="23" fill="transparent"/>${bead(b.type,b.letter,b.variant)}</g>`;
+  return `<g transform="translate(${p.x} ${p.y})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label} · ${i+1}"`:''}><circle r="15" fill="transparent"/><g transform="scale(${CHARM_BEAD_SCALE})">${bead(b.type,b.letter,b.variant)}</g></g>`;
  }).join('');
- return `<path d="M220 105 C209 87 195 66 197 45 C198 25 211 21 225 28 C244 37 248 53 240 72 C235 85 226 96 220 105" fill="none" stroke="#ff79bc" stroke-width="4.5" stroke-linecap="round"/><path class="bead-string" d="${STRING_PATH}" fill="none" stroke="#ff79bc" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="220" cy="105" r="9" fill="#f8b2d4" stroke="#ff173b" stroke-width="2"/>${nodes}<path d="M216 422 C211 429 211 439 219 442 C228 443 230 431 224 423" fill="none" stroke="#ff173b" stroke-width="3"/><g transform="translate(220 465)">${bead('rabbit')}</g>`;
+ return `<g class="bead-charm-art" transform="translate(${CHARM_ART.x} ${CHARM_ART.y}) scale(${CHARM_ART.scale})" pointer-events="none"><image class="bead-string-art" href="assets/beads/IMG_5260.png" width="1600" height="2400"/><image class="bead-strap-art" href="assets/beads/IMG_5259.png" width="1600" height="2400"/></g>${nodes}<g transform="translate(204.48 465.43)" pointer-events="none">${bead('rabbit')}</g>`;
 }
 function announce(message){const live=document.querySelector('#bead-status');if(live)live.textContent=message;}
 function refresh(message=''){
@@ -133,7 +129,7 @@ function panel(){const w=t();return `<section id="bead-workshop" data-no-transla
  <div class="bead-trays">${TYPES.map((type,i)=>`<section class="bead-tray" aria-label="${w.names[i]}"><h3>${w.names[i]}</h3><div class="bead-choices">${ART[type].map((art,variant)=>`<button type="button" class="bead-choice" data-add-bead="${type}" data-variant="${variant}" aria-label="${w.names[i]} ${variant+1}"><svg viewBox="-25 -25 50 50" aria-hidden="true">${bead(type,'',variant)}</svg></button>`).join('')}</div></section>`).join('')}</div>
  <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" autocapitalize="characters" placeholder="NANA"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
  </div>
- <div class="bead-making"><h2>${w.yours}</h2><svg id="bead-charm" viewBox="0 0 440 515" role="group" aria-label="${w.yours}"></svg><p class="bead-hint">${w.hint}</p>
+ <div class="bead-making"><h2>${w.yours}</h2><svg id="bead-charm" viewBox="110 0 220 515" role="group" aria-label="${w.yours}"></svg><p class="bead-hint">${w.hint}</p>
  <div class="bead-pendants"><span>${w.pendant}</span><svg width="44" height="55" viewBox="-38 -38 76 76" role="img" aria-label="${language()==='fr'?'Lapin rose':'Pink bunny'}">${bead('rabbit')}</svg><button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
  <div class="bead-bottom"><div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button></div>
  <div class="bead-purchase"><button class="bead-control bead-attach" type="button" data-bead-action="shop"><svg class="bead-shop-icon" viewBox="167 157 164 194" aria-hidden="true" focusable="false"><image href="assets/dock/IMG_5002.png" width="500" height="500"/></svg><span>${w.buy}</span></button><p class="bead-note">${w.buyNote}</p></div></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
@@ -141,7 +137,7 @@ function open(){cancelDrag();window.openWindow(t().title,panel(),'bead-box');ref
 function stagePoint(x,y){
  const stage=document.querySelector('#bead-charm'),matrix=stage?.getScreenCTM();if(!matrix)return null;
  const p=new DOMPoint(x,y).matrixTransform(matrix.inverse());
- return p.x>=40&&p.x<=400&&p.y>=75&&p.y<=440?p:null;
+ return onString(p)?p:null;
 }
 function cancelDrag(){if(!drag)return;drag.ghost?.remove();try{drag.source.releasePointerCapture(drag.id);}catch(_){}drag=null;document.querySelector('#bead-charm')?.classList.remove('bead-drop-ready');}
 document.addEventListener('pointerdown',e=>{
@@ -240,7 +236,7 @@ window.NanaBeadBox={open};
 function updateRoomCharm(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
  let charm=document.querySelector('#nana-phone-charm');
- if(!charm){charm=document.createElementNS('http://www.w3.org/2000/svg','g');charm.id='nana-phone-charm';charm.setAttribute('data-open','bead-box');charm.setAttribute('role','button');charm.setAttribute('tabindex','0');charm.setAttribute('transform','translate(1153 805) rotate(8) scale(.16) translate(-220 -24)');svg.appendChild(charm);charm.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});}
+ if(!charm){charm=document.createElementNS('http://www.w3.org/2000/svg','g');charm.id='nana-phone-charm';charm.setAttribute('data-open','bead-box');charm.setAttribute('role','button');charm.setAttribute('tabindex','0');charm.setAttribute('transform','translate(1153 805) rotate(8) scale(.16) translate(-272 -12)');svg.appendChild(charm);charm.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});}
  charm.setAttribute('aria-label',t().roomCharm);charm.style.display=attached&&beads.length?'':'none';charm.innerHTML=attached&&beads.length?'<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup():'';centerLetters(charm);
 }
 function mount(){

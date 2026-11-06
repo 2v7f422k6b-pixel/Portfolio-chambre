@@ -23,7 +23,7 @@
 #bead-workshop .bead-save{background:#ffd1e6;margin-left:auto;}
 .bead-stage-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
 #bead-count{font-size:13px;white-space:nowrap;}
-#bead-charm{display:block;width:100%;height:350px;overflow:visible;transform-origin:50% 15%;user-select:none;-webkit-user-select:none;}
+#bead-charm{display:block;width:100%;height:420px;overflow:visible;transform-origin:60% 3%;user-select:none;-webkit-user-select:none;}
 #bead-charm [role="button"]{cursor:pointer;touch-action:manipulation;}
 #bead-empty{text-align:center;font-size:14px!important;}
 .bead-hint,.bead-note,#bead-selection{font-size:13px!important;margin:10px 0!important;}
@@ -95,7 +95,7 @@ html body #bead-workshop :is(p,h2,h3,label,span,button,input){color:#ff173b!impo
  #bead-workshop .bead-choices{gap:2px;justify-content:center;}
  #bead-workshop .bead-choice{width:44px;height:44px;padding:1px;}
  #bead-workshop .bead-making{min-width:0;}
- #bead-charm{height:auto;aspect-ratio:440/515;}
+ #bead-charm{height:auto;aspect-ratio:220/515;}
  #bead-workshop .bead-word>div{flex-wrap:wrap;gap:0;}
  #bead-workshop .bead-word input{flex-basis:100%;}
  #bead-workshop .bead-word .bead-control{width:100%;}

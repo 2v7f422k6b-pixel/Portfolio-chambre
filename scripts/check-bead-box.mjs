@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
-const source=fs.readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,panel,bead,add,nearestSlot,slotPoint,getBeads:()=>beads};');
+const source=fs.readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,panel,bead,add,nearestSlot,slotPoint,onString,charmMarkup,getBeads:()=>beads};');
 function setup(lang='fr',saved={}){
  const events={},memory={value:JSON.stringify(saved)};
  const stage={getScreenCTM:()=>({inverse:()=>({})}),classList:{toggle(){},remove(){}}};
@@ -22,12 +22,13 @@ const fixture=setup(),{api,events,context,stage}=fixture;
 for(const pointerType of ['mouse','touch','pen']){
  const source={dataset:{addBead:'flower',variant:'5'},hasAttribute:()=>false,setPointerCapture(){},releasePointerCapture(){}};
  const target={closest:()=>source};
+ const drop=api.slotPoint(5);
  events.pointerdown({target,isPrimary:true,button:0,pointerId:1,clientX:0,clientY:0,pointerType});
  context.document.querySelector=sel=>sel==='#bead-charm'?stage:null;
- events.pointermove({pointerId:1,clientX:300,clientY:260,preventDefault(){}});
+ events.pointermove({pointerId:1,clientX:drop.x,clientY:drop.y,preventDefault(){}});
  // End over the string; refresh is skipped in this unit harness.
  context.document.querySelector=(()=>{let count=0;return sel=>sel==='#bead-charm'&&count++<2?stage:null;})();
- events.pointerup({pointerId:1,clientX:300,clientY:260,preventDefault(){}});
+ events.pointerup({pointerId:1,clientX:drop.x,clientY:drop.y,preventDefault(){}});
  context.document.querySelector=()=>null;
 }
 assert.equal(api.getBeads().length,3);assert.equal(new Set(api.getBeads().map(b=>b.slot)).size,3);
@@ -53,3 +54,20 @@ const legacy=setup('fr',{beads:[{type:'letter',letter:'A',variant:0},{type:'lett
 assert(JSON.parse(legacy.memory.value).beads.every(b=>b.colorAssigned));
 assert.deepEqual(Array.from(setup('fr',JSON.parse(legacy.memory.value)).api.getBeads(),b=>b.variant),Array.from(legacy.api.getBeads(),b=>b.variant));
 console.log('Letter backgrounds OK: four random variants, stable render/reload, legacy migration, no color picker.');
+
+// Both drawings remain present on an empty string; only the lower string accepts drops.
+const emptyCharm=setup().api;
+for(const name of ['IMG_5259.png','IMG_5260.png'])assert(emptyCharm.charmMarkup().includes(name));
+assert(!emptyCharm.charmMarkup().includes('<path'));
+for(let slot=0;slot<20;slot++)assert(emptyCharm.onString(emptyCharm.slotPoint(slot)));
+for(const [x,y] of [[272,12],[230,90],[195,175],[195,193],[320,320],[0,0]]){
+ assert.equal(emptyCharm.onString({x,y}),false,'No bead drop on the strap, clasp or outside the string');
+}
+const blocked=setup();
+const sourceButton={dataset:{addBead:'star',variant:'0'},hasAttribute:()=>false,setPointerCapture(){},releasePointerCapture(){}};
+blocked.events.pointerdown({target:{closest:()=>sourceButton},isPrimary:true,button:0,pointerId:2,clientX:0,clientY:0});
+blocked.context.document.querySelector=sel=>sel==='#bead-charm'?blocked.stage:null;
+blocked.events.pointermove({pointerId:2,clientX:195,clientY:175,preventDefault(){}});
+blocked.events.pointerup({pointerId:2,clientX:195,clientY:175,preventDefault(){}});
+assert.equal(blocked.api.getBeads().length,0);
+console.log('Original drawings OK: persistent strap, string-only drops and unchanged saved slots.');
