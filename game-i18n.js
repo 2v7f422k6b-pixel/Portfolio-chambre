@@ -106,6 +106,24 @@ Object.assign(dictionary, {
   "Design your own latte art!": "Crée ton dessin sur la mousse !",
   "heart": "cœur"
 });
+Object.assign(dictionary, {
+  "Nana’s Little Café": "Nana’s Little Café",
+  "Oat milk": "Lait d’avoine",
+  "Whole milk": "Lait entier",
+  "RECIPE NOTE ♥ 36–40 ml espresso + 15 ml vanilla syrup + as much steamed milk as you like.": "RECETTE ♥ 36 à 40 ml d’expresso + 15 ml de sirop de vanille + la quantité de lait que tu veux.",
+  "Choose how much milk you like, then continue whenever you’re ready.": "Choisis la quantité de lait qui te plaît, puis passe à la suite quand tu veux.",
+  "Choose the amount of milk": "Choisir la quantité de lait",
+  "Finish my latte ♡": "Terminer mon latte ♡",
+  "This little latte is a way to say hello. Send it to me with a note, signed or anonymous.": "Ce petit latte, c’est une façon de me faire coucou. Envoie-le-moi avec un petit mot, signé ou anonyme.",
+  "A little message for Léna (optional)": "Un petit message pour Léna (facultatif)",
+  "What would you like to tell me?": "Qu’aimerais-tu me dire ?",
+  "Your name or nickname (optional)": "Ton prénom ou pseudo (facultatif)",
+  "You can stay anonymous": "Tu peux rester anonyme",
+  "Send my latte to Léna ♡": "Envoyer mon latte à Léna ♡",
+  "Sending your latte…": "Envoi de ton latte…",
+  "Your latte and note have been sent to Léna ♡": "Ton latte et ton petit mot ont été envoyés à Léna ♡",
+  "Your latte could not be sent. Your note is still here — please try again.": "Ton latte n’a pas pu être envoyé. Ton message est toujours là, tu peux réessayer."
+});
 const reverse=Object.fromEntries(Object.entries(dictionary).map(([en,fr])=>[fr,en]));
 Object.assign(reverse,frenchGameOriginals);
 for(const [fr,en] of Object.entries(frenchGameOriginals)){
@@ -299,4 +317,5 @@ function init(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 
 })();
+
 

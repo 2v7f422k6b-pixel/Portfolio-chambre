@@ -515,7 +515,7 @@ function showTamagotchi(){
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-code-cleanup-1"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-cafe-1"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
@@ -723,4 +723,5 @@ updatePlayer();
  if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',restore,{once:true});
  else restore();
 })();
+
 

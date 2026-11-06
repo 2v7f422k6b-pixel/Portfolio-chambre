@@ -4,10 +4,10 @@
   const NS='http://www.w3.org/2000/svg';
   const targets=[
     ['.window','frame',11],['.bar','bottom',23],['.bar button','frame',37],
-    ['.station','station',41],['.saucer-label','frame',53],
+    ['.station','station',41],
     ['.progress','bottom',67],['button.action','frame',79],
     ['.milk-options button','frame',83],['.meter','frame',97],
-    ['.tip','left',101],['.status','top-dashed',113],
+    ['.tip','left',101],
     ['.art-tools button','frame',127],['.latte-input-shell','frame',139]
   ];
   const observed=new WeakMap(),all=[];
@@ -37,8 +37,8 @@
     if(kind==='station')kind=window.matchMedia('(max-width:650px)').matches?'bottom':'right';
     const l=1.6,t=1.6,r=Math.max(l+4,width-1.6),b=Math.max(t+4,height-1.6);
     if(kind==='track')return edge(9,height/2,width-9,height/2,'M 9 '+round(height/2));
-    if(kind==='bottom'||kind==='top-dashed'){
-      const y=kind==='bottom'?height-2:2;
+    if(kind==='bottom'){
+      const y=height-2;
       return edge(l,y,r,y,'M '+l+' '+round(y));
     }
     if(kind==='left'||kind==='right'){
@@ -75,7 +75,6 @@
     svg.setAttribute('focusable','false');
     svg.setAttribute('preserveAspectRatio','none');
     const ink=document.createElementNS(NS,'path');
-    if(kind==='top-dashed')ink.setAttribute('stroke-dasharray','5 5');
     svg.appendChild(ink);
     el.classList.add('latte-traced');
     el.appendChild(svg);
@@ -92,7 +91,7 @@
       shell.appendChild(input);
       attach(shell,'track',181+i*37);
     });
-    document.querySelectorAll('.art-name input').forEach(input=>{
+    document.querySelectorAll('.message-field input,.message-field textarea').forEach(input=>{
       if(input.closest('.latte-input-shell'))return;
       const shell=document.createElement('span');
       shell.className='latte-input-shell';
@@ -122,3 +121,4 @@
   mo.observe(document.body,{childList:true,subtree:true});
   window.addEventListener('resize',()=>all.forEach(item=>redraw(item,true)),{passive:true});
 })();
+
