@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
-const source=fs.readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,panel,add,nearestSlot,slotPoint,getBeads:()=>beads};');
+const source=fs.readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,panel,bead,add,nearestSlot,slotPoint,getBeads:()=>beads};');
 function setup(lang='fr',saved={}){
  const events={},memory={value:JSON.stringify(saved)};
  const stage={getScreenCTM:()=>({inverse:()=>({})}),classList:{toggle(){},remove(){}}};
  const context={window:{addEventListener(){}},Date,DOMPoint:class{constructor(x,y){this.x=x;this.y=y;}matrixTransform(){return this;}},localStorage:{getItem:()=>memory.value,setItem:(k,v)=>memory.value=v},document:{readyState:'loading',documentElement:{lang},addEventListener:(name,fn)=>events[name]=fn,querySelector:()=>null,elementFromPoint:()=>null,createElement:()=>({style:{},setAttribute(){},remove(){}}),body:{appendChild(){}}}};
+ let randomIndex=0;context.Math=Object.create(Math);context.Math.random=()=>((randomIndex++%4)+0.5)/4;
  vm.runInNewContext(source,context);
  return {api:context.window.NanaBeadBox,context,events,memory,stage};
 }
@@ -34,3 +35,21 @@ api.add(Array.from({length:17},()=>({type:'heart',variant:0})));assert.equal(api
 api.add([{type:'star',variant:0}]);assert.equal(api.getBeads().length,20);assert.equal(api.nearestSlot({x:220,y:260}),-1);
 const restored=setup('en',JSON.parse(fixture.memory.value));assert.equal(restored.api.getBeads().length,20);assert.equal(new Set(restored.api.getBeads().map(b=>b.slot)).size,20);
 console.log('Bead box OK: categories, removals, letters, mouse/touch/pen drops, capacity and saved positions.');
+
+// Letter colors are chosen once per addition, never by the rendering function.
+const letters=setup();letters.api.add([..."NANA"].map(letter=>({type:'letter',letter})));
+assert.deepEqual(Array.from(letters.api.getBeads(),b=>b.variant),[0,1,2,3]);
+assert(letters.api.getBeads().every(b=>b.colorAssigned));
+const savedLetters=JSON.parse(letters.memory.value);
+const loadedLetters=setup('en',savedLetters);
+assert.deepEqual(Array.from(loadedLetters.api.getBeads(),b=>b.variant),[0,1,2,3]);
+for(const b of loadedLetters.api.getBeads()){
+ const rendered=loadedLetters.api.bead(b.type,b.letter,b.variant);
+ assert(rendered.includes('assets/beads/IMG_521'));assert(rendered.includes('<text'));
+ assert.equal(rendered,loadedLetters.api.bead(b.type,b.letter,b.variant));
+}
+assert(!letters.api.panel().includes('data-add-bead="letter"'));
+const legacy=setup('fr',{beads:[{type:'letter',letter:'A',variant:0},{type:'letter',letter:'B',variant:0}]});
+assert(JSON.parse(legacy.memory.value).beads.every(b=>b.colorAssigned));
+assert.deepEqual(Array.from(setup('fr',JSON.parse(legacy.memory.value)).api.getBeads(),b=>b.variant),Array.from(legacy.api.getBeads(),b=>b.variant));
+console.log('Letter backgrounds OK: four random variants, stable render/reload, legacy migration, no color picker.');
