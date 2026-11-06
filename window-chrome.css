@@ -73,3 +73,26 @@ html body #player .nana-player-content{display:flex;align-items:center;gap:12px;
 html body :is(#nana-dreamlab-window,#special-window).sketch-ui-frame{border-color:transparent!important}
 html body :is(#nana-dreamlab-window,#special-window).sketch-ui-frame>.sketch-ui-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
 html body #special-window:is(:has(.phone-device),:has(.tama-frame),:has(iframe[src*="polaroids"]))>.sketch-ui-svg{display:none!important}
+
+/* Floating photographs are deliberately exempt from shared window chrome. */
+html body #app #special-shade.polaroids-floating #special-window{
+ background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important;
+ width:100%!important;height:var(--nana-window-available-height)!important;overflow:visible!important;
+}
+html body #app #special-shade.polaroids-floating #special-titlebar{
+ position:absolute!important;top:10px!important;right:12px!important;left:auto!important;bottom:auto!important;
+ width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important;
+ padding:0!important;margin:0!important;background:transparent!important;overflow:visible!important;z-index:100;
+}
+html body #app #special-shade.polaroids-floating #special-titlebar>:not(#special-close){display:none!important}
+html body #app #special-shade.polaroids-floating #special-close{
+ width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;
+ background:#fff!important;border:0!important;border-radius:0!important;
+}
+html body #app #special-shade.polaroids-floating #special-host,
+html body #app #special-shade.polaroids-floating #special-host>iframe{
+ background:transparent!important;width:100%!important;height:100%!important;max-height:none!important;flex:1 1 auto!important;
+}
+html body #app #special-shade.polaroids-floating #special-window::before,
+html body #app #special-shade.polaroids-floating #special-window::after,
+html body #app #special-shade.polaroids-floating #special-window>.sketch-ui-svg{display:none!important}
