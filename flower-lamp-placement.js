@@ -134,7 +134,7 @@
     // No rectangular/dashed SVG hitbox on hover, click or focus.
     '#wall-lamp-hit,#wall-lamp-hit:hover,#wall-lamp-hit:focus,#wall-lamp-hit:focus-visible,#wall-lamp-hit:active{outline:none;box-shadow:none;stroke:transparent;stroke-width:0;stroke-dasharray:none}',
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
-    'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 5px rgba(255,201,57,.6))}'
+    'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 8px rgba(255,244,171,.85)) drop-shadow(0 0 20px rgba(255,211,93,.55))}'
   ].join('\n');
   document.head.appendChild(style);
 
@@ -142,7 +142,10 @@
     const p=state.quad;
     const first=[p[0],p[1],p[3]];
     const second=[p[1],p[2],p[3]];
-    triangles[0].area.setAttribute('points',pointsToString(first));
+    // Overlap the shared diagonal slightly to close the antialiasing seam.
+    const center=first.reduce((c,p)=>[c[0]+p[0]/3,c[1]+p[1]/3],[0,0]);
+    const overlap=first.map(p=>{const dx=p[0]-center[0],dy=p[1]-center[1],d=Math.hypot(dx,dy)||1;return [p[0]+dx/d*.6,p[1]+dy/d*.6];});
+    triangles[0].area.setAttribute('points',pointsToString(overlap));
     triangles[1].area.setAttribute('points',pointsToString(second));
     const a0=(p[1][0]-p[0][0])/W, b0=(p[1][1]-p[0][1])/W;
     const c0=(p[3][0]-p[0][0])/H, d0=(p[3][1]-p[0][1])/H;

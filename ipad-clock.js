@@ -64,8 +64,10 @@
       String(date.getMinutes()).padStart(2, '0');
   }
   updateTime();
-  const timer = setInterval(updateTime, 15000);
-  window.addEventListener('pagehide', () => clearInterval(timer), { once: true });
+  let timer = setInterval(updateTime, 15000);
+  window.addEventListener('pagehide', () => clearInterval(timer));
+  window.addEventListener('pageshow', () => { updateTime(); clearInterval(timer); timer = setInterval(updateTime, 15000); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updateTime(); });
 
   let position = null;
   let defaults = null;
@@ -198,10 +200,7 @@
   // Its box gives the clock a responsive placement without manual screen coordinates.
   function initializeFromIpad() {
     if (position) return;
-    const ipad = hotspots.querySelector('polygon[data-room-zone-id="ipad"]');
-    if (!ipad) return;
-    const bounds = ipad.getBBox();
-    if (bounds.width < 12 || bounds.height < 8) return;
+    // Published coordinates are independent of async hit-zone loading and visibility.
     defaults = {
       x: 696.7055941360986,
       y: 631.4392347011353,
