@@ -2,10 +2,10 @@
 (() => {
 'use strict';
 const KEY='nana-bead-charm-v1', MAX=20, TYPES=['star','heart','flower'];
-const ART={"star":[{"src":"assets/beads/IMG_5133.png","box":[23,39,840,836]},{"src":"assets/beads/IMG_5134.png","box":[76,31,762,808]},{"src":"assets/beads/IMG_5135.png","box":[52,140,813,778]},{"src":"assets/beads/IMG_5136.png","box":[78,52,832,908]}],"flower":[{"src":"assets/beads/IMG_5139.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5140.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5141.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5142.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5143.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5144.png","box":[107,232,725,651]}],"heart":[{"src":"assets/beads/IMG_5145.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5146.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5147.png","box":[82,138,704,675]},{"src":"assets/beads/IMG_5148.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5149.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5150.png","box":[82,138,704,675]}],"rabbit":[{"src":"assets/beads/IMG_5132.png","box":[306,67,461,901]}],"letter":[{"src":"assets/beads/IMG_5211.png","box":[81,144,804,816]},{"src":"assets/beads/IMG_5212.png","box":[71,134,841,766]},{"src":"assets/beads/IMG_5213.png","box":[91,51,818,790]},{"src":"assets/beads/IMG_5214.png","box":[95,54,820,792]}]};
+const ART={"star":[{"src":"assets/beads/IMG_5133.png","box":[23,39,840,836]},{"src":"assets/beads/IMG_5134.png","box":[76,31,762,808]},{"src":"assets/beads/IMG_5135.png","box":[52,140,813,778]},{"src":"assets/beads/IMG_5136.png","box":[78,52,832,908]}],"flower":[{"src":"assets/beads/IMG_5139.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5140.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5141.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5142.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5143.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5144.png","box":[107,232,725,651]}],"heart":[{"src":"assets/beads/IMG_5145.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5146.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5147.png","box":[82,138,704,675]},{"src":"assets/beads/IMG_5148.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5149.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5150.png","box":[82,138,704,675]}],"rabbit":[{"src":"assets/beads/IMG_5132.png","box":[306,67,461,901]}],"letter":[{"src":"assets/beads/IMG_5211.png","box":[81,148,733,702]},{"src":"assets/beads/IMG_5212.png","box":[78,134,726,703]},{"src":"assets/beads/IMG_5213.png","box":[94,144,714,696]},{"src":"assets/beads/IMG_5214.png","box":[99,147,715,697]}]};
 const words={
- fr:{title:'Boîte à perles',intro:'Choisis tes perles, compose ton bijou.',box:'La boîte à perles',yours:'Ton bijou',hint:'Glisse les perles sur le fil. Touche une perle pour la retirer.',names:['Étoiles','Cœurs','Fleurs'],word:'Un prénom, un mot…',thread:'Enfiler',letter:'Lettre',left:'Avant',right:'Après',remove:'Retirer',undo:'Annuler',reset:'Recommencer',save:'Garder mon bijou',swing:'Faire danser',pendant:'Pendentif',empty:'Ton fil attend ses premières perles.',full:'Le fil est plein ! Retire une perle pour en ajouter une autre.',added:'Perle ajoutée',removed:'Perle retirée',saved:'Ton bijou est prêt à être enregistré.',failed:'Le téléchargement a échoué. Réessaie.',count:'perles',selected:'Perle sélectionnée',local:'Ton bijou est conservé sur cet appareil.',choose:'Sélectionne une perle sur le bijou.',exporting:'Préparation…',attach:'Accrocher au téléphone',detach:'Décrocher du téléphone',roomCharm:'Modifier le bijou du téléphone',buy:'Je veux le même !',buyNote:'Commander mon bijou fait main par Léna'},
- en:{title:'Bead Box',intro:'Pick your beads, make your charm.',box:'The bead box',yours:'Your charm',hint:'Drag beads onto the string. Tap a bead to remove it.',names:['Stars','Hearts','Flowers'],word:'A name, a word…',thread:'Thread',letter:'Letter',left:'Earlier',right:'Later',remove:'Remove',undo:'Undo',reset:'Start again',save:'Keep my charm',swing:'Make it dance',pendant:'Pendant',empty:'Your string is waiting for its first beads.',full:'The string is full! Remove a bead to add another.',added:'Bead added',removed:'Bead removed',saved:'Your charm is ready to save.',failed:'Download failed. Please try again.',count:'beads',selected:'Selected bead',local:'Your charm is saved on this device.',choose:'Select a bead on your charm.',exporting:'Preparing…',attach:'Attach to phone',detach:'Detach from phone',roomCharm:'Edit the phone charm',buy:'I want one too!',buyNote:'Order my charm, handmade by Léna'}
+ fr:{title:'Boîte à perles',intro:'Choisis tes perles, compose ton bijou.',box:'La boîte à perles',yours:'Ton bijou',hint:'Glisse les perles sur le fil. Touche une perle pour la retirer.',names:['Étoiles','Cœurs','Fleurs'],word:'Un prénom, un mot…',thread:'Enfiler',letter:'Lettre',left:'Avant',right:'Après',remove:'Retirer',undo:'Annuler',reset:'Recommencer',save:'Garder mon bijou',swing:'Faire danser',pendant:'Pendentif',empty:'Ton fil attend ses premières perles.',full:'Le fil est plein ! Retire une perle pour en ajouter une autre.',added:'Perle ajoutée',removed:'Perle retirée',saved:'Ton bijou est prêt à être enregistré.',failed:'Le téléchargement a échoué. Réessaie.',count:'perles',selected:'Perle sélectionnée',choose:'Sélectionne une perle sur le bijou.',exporting:'Préparation…',attach:'Accrocher au téléphone',detach:'Décrocher du téléphone',roomCharm:'Modifier le bijou du téléphone',buy:"J’en veux un",buyNote:'Commander mon bijou fait main par Léna'},
+ en:{title:'Bead Box',intro:'Pick your beads, make your charm.',box:'The bead box',yours:'Your charm',hint:'Drag beads onto the string. Tap a bead to remove it.',names:['Stars','Hearts','Flowers'],word:'A name, a word…',thread:'Thread',letter:'Letter',left:'Earlier',right:'Later',remove:'Remove',undo:'Undo',reset:'Start again',save:'Keep my charm',swing:'Make it dance',pendant:'Pendant',empty:'Your string is waiting for its first beads.',full:'The string is full! Remove a bead to add another.',added:'Bead added',removed:'Bead removed',saved:'Your charm is ready to save.',failed:'Download failed. Please try again.',count:'beads',selected:'Selected bead',choose:'Select a bead on your charm.',exporting:'Preparing…',attach:'Attach to phone',detach:'Detach from phone',roomCharm:'Edit the phone charm',buy:'I want one',buyNote:'Order my charm, handmade by Léna'}
 };
 
 const language=()=>document.documentElement.lang.startsWith('en')?'en':'fr';
@@ -39,16 +39,64 @@ function bead(type,letter='',variant=0){
  const art=variants[Math.abs(variant)%variants.length],size=type==='rabbit'?70:36;
  return `<svg x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" viewBox="${art.box.join(' ')}" preserveAspectRatio="xMidYMid meet" overflow="visible"><image href="${art.src}" width="1000" height="1000"/></svg>${type==='letter'?`<text class="bead-letter" x="0" y="0" text-anchor="start" fill="#ff173b" font-family="Nana Trace UI,Arial,sans-serif" font-size="24" pointer-events="none">${cleanWord(letter).slice(0,1)||'A'}</text>`:''}`;
 }
-// Center the visible ink, not the font's advance width or line metrics.
+// SVG getBBox includes font line metrics in browsers. Canvas gives the actual
+// glyph ink bounds; combine these with the tightly cropped bead artwork.
+let letterMetrics;
 function centerLetters(root){
  for(const text of root?.querySelectorAll?.('text.bead-letter')||[]){
   text.setAttribute('x','0');text.setAttribute('y','0');
+  letterMetrics??=document.createElement?.('canvas')?.getContext?.('2d');
+  if(letterMetrics){
+   letterMetrics.font='24px "Nana Trace UI",Arial,sans-serif';
+   letterMetrics.textAlign='left';letterMetrics.textBaseline='alphabetic';
+   const m=letterMetrics.measureText(text.textContent);
+   if([m.actualBoundingBoxLeft,m.actualBoundingBoxRight,m.actualBoundingBoxAscent,m.actualBoundingBoxDescent].every(Number.isFinite)){
+    text.setAttribute('x',String((m.actualBoundingBoxLeft-m.actualBoundingBoxRight)/2));
+    text.setAttribute('y',String((m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2));
+    continue;
+   }
+  }
   const box=text.getBBox();
   if(box.width>0&&box.height>0){text.setAttribute('x',String(-box.x-box.width/2));text.setAttribute('y',String(-box.y-box.height/2));}
  }
 }
 document.fonts?.ready.then(()=>centerLetters(document));
-function slotPoint(slot){const a=-Math.PI/2-.325-(Math.PI*2-.65)*slot/(MAX-1);return {x:220+104*Math.cos(a),y:260+158*Math.sin(a)};}
+// The drawn string and bead positions share one asymmetric curve. A future
+// hand-drawn string can replace these control points without changing saved slots.
+const STRING_START=[220,105];
+const STRING_CURVES=[
+ [185,104,160,126,143,155],
+ [125,186,129,207,117,239],
+ [103,271,111,309,130,341],
+ [151,377,176,420,220,422],
+ [258,425,290,395,311,359],
+ [335,320,338,279,328,241],
+ [318,207,327,183,300,149],
+ [280,124,250,105,220,105]
+];
+const STRING_PATH=`M${STRING_START.join(' ')} `+STRING_CURVES.map(c=>'C'+c.join(' ')).join(' ');
+const STRING_SLOTS=(()=>{
+ const points=[{x:STRING_START[0],y:STRING_START[1],distance:0}];
+ let start=STRING_START;
+ for(const [x1,y1,x2,y2,x3,y3] of STRING_CURVES){
+  for(let step=1;step<=32;step++){
+   const t=step/32,u=1-t;
+   const x=u*u*u*start[0]+3*u*u*t*x1+3*u*t*t*x2+t*t*t*x3;
+   const y=u*u*u*start[1]+3*u*u*t*y1+3*u*t*t*y2+t*t*t*y3;
+   const previous=points[points.length-1];
+   points.push({x,y,distance:previous.distance+Math.hypot(x-previous.x,y-previous.y)});
+  }
+  start=[x3,y3];
+ }
+ const total=points[points.length-1].distance;
+ return Array.from({length:MAX},(_,slot)=>{
+  const distance=total*(.045+.91*slot/(MAX-1));
+  const i=points.findIndex(p=>p.distance>=distance),a=points[i-1],b=points[i];
+  const t=(distance-a.distance)/(b.distance-a.distance);
+  return {x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+ });
+})();
+function slotPoint(slot){return STRING_SLOTS[slot];}
 function nearestSlot(point,exclude=-1){
  const used=new Set(beads.filter((_,i)=>i!==exclude).map(b=>b.slot));
  let best=-1,distance=Infinity;
@@ -60,7 +108,7 @@ function charmMarkup(interactive=false){
   const p=slotPoint(b.slot),label=b.type==='letter'?t().letter+' '+b.letter:t().names[TYPES.indexOf(b.type)];
   return `<g transform="translate(${p.x} ${p.y})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label} · ${i+1}"`:''}><circle r="23" fill="transparent"/>${bead(b.type,b.letter,b.variant)}</g>`;
  }).join('');
- return `<path d="M220 105 C160 25 215 7 238 35 C258 63 229 94 220 105 M220 104 C70 100 65 412 220 423 C375 412 370 100 220 104" fill="none" stroke="#ff79bc" stroke-width="5" stroke-linecap="round"/><path d="M221 104 C175 35 214 22 231 39" fill="none" stroke="#ffe4f0" stroke-width="2"/><circle cx="220" cy="105" r="9" fill="#f8b2d4" stroke="#ff173b" stroke-width="2"/>${nodes}<path d="M216 424 Q208 440 220 444 Q232 440 224 424" fill="none" stroke="#ff173b" stroke-width="3"/><g transform="translate(220 465)">${bead('rabbit')}</g>`;
+ return `<path d="M220 105 C209 87 195 66 197 45 C198 25 211 21 225 28 C244 37 248 53 240 72 C235 85 226 96 220 105" fill="none" stroke="#ff79bc" stroke-width="4.5" stroke-linecap="round"/><path class="bead-string" d="${STRING_PATH}" fill="none" stroke="#ff79bc" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="220" cy="105" r="9" fill="#f8b2d4" stroke="#ff173b" stroke-width="2"/>${nodes}<path d="M216 422 C211 429 211 439 219 442 C228 443 230 431 224 423" fill="none" stroke="#ff173b" stroke-width="3"/><g transform="translate(220 465)">${bead('rabbit')}</g>`;
 }
 function announce(message){const live=document.querySelector('#bead-status');if(live)live.textContent=message;}
 function refresh(message=''){
@@ -80,15 +128,15 @@ function add(items,point=null){
 }
 function remove(index){if(!beads[index])return;snapshot();beads.splice(index,1);persist();refresh(t().removed);}
 function panel(){const w=t();return `<section id="bead-workshop" data-no-translate aria-label="${w.title}">
- <p class="bead-intro">${w.intro}</p>
  <div class="bead-layout"><div class="bead-supplies">
+ <p class="bead-intro">${w.intro}</p>
  <div class="bead-trays">${TYPES.map((type,i)=>`<section class="bead-tray" aria-label="${w.names[i]}"><h3>${w.names[i]}</h3><div class="bead-choices">${ART[type].map((art,variant)=>`<button type="button" class="bead-choice" data-add-bead="${type}" data-variant="${variant}" aria-label="${w.names[i]} ${variant+1}"><svg viewBox="-25 -25 50 50" aria-hidden="true">${bead(type,'',variant)}</svg></button>`).join('')}</div></section>`).join('')}</div>
  <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" autocapitalize="characters" placeholder="NANA"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
- <p class="bead-note">${w.local}</p></div>
+ </div>
  <div class="bead-making"><h2>${w.yours}</h2><svg id="bead-charm" viewBox="0 0 440 515" role="group" aria-label="${w.yours}"></svg><p class="bead-hint">${w.hint}</p>
  <div class="bead-pendants"><span>${w.pendant}</span><svg width="44" height="55" viewBox="-38 -38 76 76" role="img" aria-label="${language()==='fr'?'Lapin rose':'Pink bunny'}">${bead('rabbit')}</svg><button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
- <div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button></div>
- <div class="bead-purchase"><button class="bead-control bead-attach" type="button" data-bead-action="shop">${w.buy}</button><p class="bead-note">${w.buyNote}</p></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
+ <div class="bead-bottom"><div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button></div>
+ <div class="bead-purchase"><button class="bead-control bead-attach" type="button" data-bead-action="shop"><svg class="bead-shop-icon" viewBox="167 157 164 194" aria-hidden="true" focusable="false"><image href="assets/dock/IMG_5002.png" width="500" height="500"/></svg><span>${w.buy}</span></button><p class="bead-note">${w.buyNote}</p></div></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
 function open(){cancelDrag();window.openWindow(t().title,panel(),'bead-box');refresh();}
 function stagePoint(x,y){
  const stage=document.querySelector('#bead-charm'),matrix=stage?.getScreenCTM();if(!matrix)return null;
@@ -204,3 +252,4 @@ function mount(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();
+

@@ -2,9 +2,9 @@
 #window[data-window-type="bead-box"] .window-content{background:#fff8e9!important;padding:20px!important;}
 #bead-workshop{color:#ff173b;font-family:inherit;}
 #bead-workshop *{box-sizing:border-box;}
-#bead-workshop h2{font-family:inherit;color:#ff173b!important;font-size:24px!important;letter-spacing:0!important;margin:0 0 12px;}
+#bead-workshop h2{font-family:inherit;color:#ff173b!important;font-size:22px!important;line-height:1.4;letter-spacing:0!important;margin:0 0 20px;}
 #bead-workshop p{color:#ff173b!important;}
-#bead-workshop .bead-intro{font-size:22px;line-height:1.4;margin-bottom:20px;}
+#bead-workshop .bead-intro{font-size:22px;line-height:1.4;margin:0 0 20px;}
 .bead-layout{display:grid;grid-template-columns:1.12fr 1fr;gap:28px;align-items:start;}
 .bead-box-lid{height:90px;background:#ffc9e7;display:flex;justify-content:space-around;align-items:center;font-size:34px;position:relative;margin-bottom:9px;}
 .bead-trays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;background:#ffb8db;padding:12px;}
@@ -17,8 +17,8 @@
 #bead-workshop .bead-tray:hover{background:#ffe9f2;}
 .bead-word{margin-top:20px;}
 .bead-word label{display:block;margin-bottom:8px;}
-.bead-word>div{display:flex;gap:10px;}
-#bead-word-input{font:inherit;min-width:0;width:100%;padding:10px;border:0;background:#fff0f6;color:#ff173b;outline-offset:3px;}
+.bead-word>div{display:flex;gap:0;background:#fff0f6;}
+#bead-word-input{font:inherit;flex:1 1 0;min-width:0;width:100%;padding:10px;border:0;background:transparent;color:#ff173b;outline-offset:3px;}
 #bead-workshop .bead-control{position:relative;background:#fff1f7;border:0;border-radius:0;padding:10px 14px;min-height:44px;white-space:nowrap;}
 #bead-workshop .bead-save{background:#ffd1e6;margin-left:auto;}
 .bead-stage-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
@@ -32,7 +32,8 @@
 #bead-workshop .bead-pendant{border:0;background:transparent;width:44px;height:44px;padding:4px;}
 .bead-pendant svg{width:100%;height:100%;}
 .bead-pendant[aria-pressed="true"]{background:#ffd3e7!important;}
-.bead-footer{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.bead-bottom{display:grid;grid-template-columns:1.12fr 1fr;gap:28px;align-items:start;margin-top:22px;}
+.bead-footer{display:flex;flex-wrap:wrap;gap:10px;margin:0;}
 #bead-status{min-height:1.5em;margin:12px 0 0!important;font-size:14px!important;}
 #nana-bead-box-shelf{cursor:pointer;}
 html[data-theme="night"] #nana-bead-box-shelf .bead-shelf-art{filter:url(#bead-box-night-colors);}
@@ -54,13 +55,13 @@ html[data-theme="night"] #nana-phone-charm{filter:brightness(.72);}
  #window[data-window-type="bead-box"] #window-content{padding:12px!important;}
  #bead-workshop{width:100%;min-width:0;font-size:16px;-webkit-text-size-adjust:100%;}
  #bead-workshop .bead-layout{grid-template-columns:minmax(0,1fr);gap:18px;}
- #bead-workshop h2{font-size:20px!important;}
+ #bead-workshop h2{font-size:16px!important;margin:0 0 14px;}
  #bead-workshop .bead-intro{font-size:16px;margin:0 0 14px;}
  #bead-workshop .bead-trays{padding:6px;gap:6px;}
  #bead-workshop .bead-box-lid{height:38px;}
  #bead-workshop .bead-tray{padding:6px 3px;}
  #bead-workshop .bead-tray span{font-size:12px;overflow-wrap:anywhere;}
- #bead-workshop .bead-footer{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;margin:18px 0 0;}
+ #bead-workshop .bead-footer{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;margin:0;}
  #bead-workshop .bead-control{white-space:normal;overflow-wrap:anywhere;font-size:14px;padding:8px;}
  #bead-workshop .bead-save{margin-left:0;}
  #bead-charm{height:280px;max-width:100%;}
@@ -82,7 +83,10 @@ html[data-theme="night"] #nana-phone-charm{filter:brightness(.72);}
 html body #bead-workshop :is(p,h2,h3,label,span,button,input){color:#ff173b!important;}
 #bead-workshop button:disabled{opacity:1;cursor:default;background:#fff8e9;}
 #bead-workshop input::placeholder{color:#ff173b!important;opacity:1;}
-#bead-workshop .bead-purchase{margin-top:12px;}
+#bead-workshop .bead-purchase{margin:0;text-align:right;}
+#bead-workshop [data-bead-action="shop"]{display:inline-flex;justify-content:center;align-items:center;gap:8px;}
+#bead-workshop .bead-shop-icon{display:block;flex:none;width:20px;height:24px;pointer-events:none;}
+#bead-workshop .bead-purchase .bead-note{margin:8px 0 0!important;}
 @media(max-width:680px){
  #bead-workshop .bead-layout{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:10px;}
  #bead-workshop .bead-trays{padding:5px;gap:8px;}
@@ -92,7 +96,10 @@ html body #bead-workshop :is(p,h2,h3,label,span,button,input){color:#ff173b!impo
  #bead-workshop .bead-choice{width:44px;height:44px;padding:1px;}
  #bead-workshop .bead-making{min-width:0;}
  #bead-charm{height:auto;aspect-ratio:440/515;}
- #bead-workshop .bead-word>div{flex-wrap:wrap;gap:6px;}
+ #bead-workshop .bead-word>div{flex-wrap:wrap;gap:0;}
+ #bead-workshop .bead-word input{flex-basis:100%;}
+ #bead-workshop .bead-word .bead-control{width:100%;}
+ #bead-workshop .bead-bottom{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:10px;margin-top:18px;}
  #bead-workshop .bead-word input{width:100%;padding:8px;}
  #bead-workshop .bead-hint{font-size:12px!important;}
  #bead-workshop .bead-pendants{gap:4px;font-size:13px;}
@@ -102,7 +109,7 @@ html body #bead-workshop :is(p,h2,h3,label,span,button,input){color:#ff173b!impo
 html body #app #window-shade #bead-word-input:focus{outline:none!important;box-shadow:none!important;}
 #bead-workshop .bead-word>div:focus-within{background:#ffe2ef;}
 #bead-workshop .bead-word>div:focus-within>.sketch-ui-svg .sketch-ui-ink{stroke-width:2!important;}
-#bead-workshop .bead-letter,.bead-drag-ghost .bead-letter,#nana-phone-charm .bead-letter{font-family:"Nana Trace UI",Arial,sans-serif!important;font-size:24px!important;dominant-baseline:auto;}
+#bead-workshop .bead-letter,.bead-drag-ghost .bead-letter,#nana-phone-charm .bead-letter{font-family:"Nana Trace UI",Arial,sans-serif!important;font-size:24px!important;font-weight:400!important;letter-spacing:0!important;text-anchor:start;dominant-baseline:auto;}
 html body #app #window-shade:not([hidden]).bead-keyboard-open{
  inset:var(--bead-keyboard-top) 0 auto!important;
  height:var(--bead-keyboard-height)!important;
@@ -114,3 +121,4 @@ html body #app #window-shade:not([hidden]).bead-keyboard-open>#window[data-windo
  height:100%!important;max-height:100%!important;
 }
 html body #app #window-shade.bead-keyboard-open #window-content{overflow-anchor:none;scroll-behavior:auto!important;}
+
