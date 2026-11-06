@@ -543,6 +543,17 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
 #welcome .welcome-language button:focus-visible{outline:2px solid currentColor;outline-offset:3px;}
 </style>
 <link rel="stylesheet" href="bead-box.css?v=20261106-code-cleanup-1">
+<style>
+html body #welcome .welcome-panel{position:relative!important}
+#postcard-shop-preview{position:absolute;right:3%;top:3%;width:clamp(135px,14vw,205px);z-index:5;display:block;text-decoration:none;transform:rotate(3deg);transform-origin:50% 90%;transition:transform .4s ease}
+#postcard-shop-preview svg{display:block;width:100%;height:auto;overflow:visible}
+#postcard-shop-preview:hover,#postcard-shop-preview:focus-visible{transform:rotate(-3deg) translateY(-4px)}
+#postcard-shop-preview:focus-visible{outline:2px solid #ff173b;outline-offset:8px}
+.rack-cards{transform-origin:120px 165px;transition:transform .6s ease}
+#postcard-shop-preview:hover .rack-cards{transform:translateX(3px) skewY(-2deg)}
+@media(max-width:900px){html body #welcome{overflow:auto!important;height:auto!important;min-height:100dvh!important}html body #welcome .welcome-panel{max-height:none!important}#postcard-shop-preview{position:relative;top:auto;right:auto;width:145px;margin:10px auto 0} }
+@media(prefers-reduced-motion:reduce){#postcard-shop-preview,.rack-cards{transition:none}}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -572,6 +583,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
             <span class="tile-desc">Discover my projects</span>
           </button>
         </div>
+        <a id="postcard-shop-preview" href="https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html" aria-label="Découvrir Nana’s Little Shop" target="_blank" rel="noopener noreferrer"><img src="assets/IMG_5108.png" alt="Nana’s Little Shop" style="display:block;width:100%;height:auto"></a>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
     </section>
@@ -960,6 +972,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
 })();
 </script>
 <script src="bead-box.js?v=20261106-shop-6" defer></script>
+<script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
 </body>
 </html>
 
