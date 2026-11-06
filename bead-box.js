@@ -1,42 +1,33 @@
-/* A tactile, local-only phone-charm workshop. All bead shapes are code-native. */
+/* A tactile, local-only phone-charm workshop. Original PNG artwork drawn by Léna. */
 (() => {
 'use strict';
 const KEY='nana-bead-charm-v1', MAX=20;
-const TYPES=['pink','glass','star','heart','letter','lilac','link'];
-const colors={pink:'#f7a6d4',glass:'#a2ddf5',star:'#ffe782',heart:'#ff456c',letter:'#fff3d2',lilac:'#c7a5ed'};
+const TYPES=['star','heart','flower'];
+const ART={"star":[{"src":"assets/beads/IMG_5133.png","box":[23,39,840,836]},{"src":"assets/beads/IMG_5134.png","box":[76,31,762,808]},{"src":"assets/beads/IMG_5135.png","box":[52,140,813,778]},{"src":"assets/beads/IMG_5136.png","box":[78,52,832,908]}],"flower":[{"src":"assets/beads/IMG_5139.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5140.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5141.png","box":[109,177,759,752]},{"src":"assets/beads/IMG_5142.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5143.png","box":[107,232,725,651]},{"src":"assets/beads/IMG_5144.png","box":[107,232,725,651]}],"heart":[{"src":"assets/beads/IMG_5145.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5146.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5147.png","box":[82,138,704,675]},{"src":"assets/beads/IMG_5148.png","box":[109,205,621,687]},{"src":"assets/beads/IMG_5149.png","box":[67,176,714,665]},{"src":"assets/beads/IMG_5150.png","box":[82,138,704,675]}],"rabbit":[{"src":"assets/beads/IMG_5132.png","box":[306,67,461,901]}]};
+const embeddedArt=new Map();
 const words={
- fr:{title:'Boîte à perles',intro:'Choisis tes perles, compose ton bijou.',box:'La boîte à perles',yours:'Ton bijou',hint:'Touche une perle du bijou pour la déplacer ou la retirer.',names:['Perle rose','Perle transparente','Étoile','Cœur','Perle lettre','Perle lilas','Maillon pastel'],word:'Un prénom, un mot…',thread:'Enfiler',letter:'Lettre',left:'Avant',right:'Après',remove:'Retirer',undo:'Annuler',reset:'Recommencer',save:'Garder mon bijou',swing:'Faire danser',pendant:'Pendentif',empty:'Ton fil attend ses premières perles.',full:'Le fil est plein ! Retire une perle pour en ajouter une autre.',added:'Perle ajoutée',removed:'Perle retirée',saved:'Ton bijou est prêt à être enregistré.',failed:'Le téléchargement a échoué. Réessaie.',count:'perles',selected:'Perle sélectionnée',local:'Ton bijou est conservé sur cet appareil.',choose:'Sélectionne une perle sur le bijou.',exporting:'Préparation…',attach:'Accrocher au téléphone',detach:'Décrocher du téléphone',roomCharm:'Modifier le bijou du téléphone',buy:'Je veux le même !',buyNote:'Commander mon bijou fait main par Léna'},
- en:{title:'Bead Box',intro:'Pick your beads, make your charm.',box:'The bead box',yours:'Your charm',hint:'Tap a bead on your charm to move or remove it.',names:['Pink bead','Transparent bead','Star','Heart','Letter bead','Lilac bead','Pastel link'],word:'A name, a word…',thread:'Thread',letter:'Letter',left:'Earlier',right:'Later',remove:'Remove',undo:'Undo',reset:'Start again',save:'Keep my charm',swing:'Make it dance',pendant:'Pendant',empty:'Your string is waiting for its first beads.',full:'The string is full! Remove a bead to add another.',added:'Bead added',removed:'Bead removed',saved:'Your charm is ready to save.',failed:'Download failed. Please try again.',count:'beads',selected:'Selected bead',local:'Your charm is saved on this device.',choose:'Select a bead on your charm.',exporting:'Preparing…',attach:'Attach to phone',detach:'Detach from phone',roomCharm:'Edit the phone charm',buy:'I want one too!',buyNote:'Order my charm, handmade by Léna'}
+ fr:{title:'Boîte à perles',intro:'Choisis tes perles, compose ton bijou.',box:'La boîte à perles',yours:'Ton bijou',hint:'Touche une perle du bijou pour la déplacer ou la retirer.',names:['Étoile','Cœur','Fleur'],word:'Un prénom, un mot…',thread:'Enfiler',letter:'Lettre',left:'Avant',right:'Après',remove:'Retirer',undo:'Annuler',reset:'Recommencer',save:'Garder mon bijou',swing:'Faire danser',pendant:'Pendentif',empty:'Ton fil attend ses premières perles.',full:'Le fil est plein ! Retire une perle pour en ajouter une autre.',added:'Perle ajoutée',removed:'Perle retirée',saved:'Ton bijou est prêt à être enregistré.',failed:'Le téléchargement a échoué. Réessaie.',count:'perles',selected:'Perle sélectionnée',local:'Ton bijou est conservé sur cet appareil.',choose:'Sélectionne une perle sur le bijou.',exporting:'Préparation…',attach:'Accrocher au téléphone',detach:'Décrocher du téléphone',roomCharm:'Modifier le bijou du téléphone',buy:'Je veux le même !',buyNote:'Commander mon bijou fait main par Léna'},
+ en:{title:'Bead Box',intro:'Pick your beads, make your charm.',box:'The bead box',yours:'Your charm',hint:'Tap a bead on your charm to move or remove it.',names:['Star','Heart','Flower'],word:'A name, a word…',thread:'Thread',letter:'Letter',left:'Earlier',right:'Later',remove:'Remove',undo:'Undo',reset:'Start again',save:'Keep my charm',swing:'Make it dance',pendant:'Pendant',empty:'Your string is waiting for its first beads.',full:'The string is full! Remove a bead to add another.',added:'Bead added',removed:'Bead removed',saved:'Your charm is ready to save.',failed:'Download failed. Please try again.',count:'beads',selected:'Selected bead',local:'Your charm is saved on this device.',choose:'Select a bead on your charm.',exporting:'Preparing…',attach:'Attach to phone',detach:'Detach from phone',roomCharm:'Edit the phone charm',buy:'I want one too!',buyNote:'Order my charm, handmade by Léna'}
 };
 const language=()=>document.documentElement.lang.startsWith('en')?'en':'fr';
 const t=()=>words[language()];
-const cleanLetter=value=>(String(value||'A').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,1)||'A');
 let beads=[],pendant='heart',selected=-1,history=[],busy=false,attached=false;
-try{const saved=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(saved?.beads)){beads=saved.beads.filter(b=>TYPES.includes(b?.type)).slice(0,MAX).map(b=>({type:b.type,letter:cleanLetter(b.letter),variant:Number.isInteger(b.variant)?Math.abs(b.variant)%7:0}));pendant=['star','rabbit'].includes(saved.pendant)?saved.pendant:'heart';attached=saved.attached===true;}}catch(_){}
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(saved?.beads)){beads=saved.beads.filter(b=>TYPES.includes(b?.type)).slice(0,MAX).map(b=>({type:b.type,variant:Number.isInteger(b.variant)?Math.abs(b.variant)%ART[b.type].length:0}));pendant=['star','rabbit'].includes(saved.pendant)?saved.pendant:'heart';attached=saved.attached===true;}}catch(_){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({beads,pendant,attached}));}catch(_){}};
 function snapshot(){history.push(JSON.stringify({beads,pendant,attached}));if(history.length>40)history.shift();}
-const pastels=['#f5b5db','#b7e5e1','#e8df80','#bcdf96','#c5b1e5','#a9cbe9','#f3b59d'];
-let shade=0;
-function bead(type,letter='A',variant=0){
- const c=['star','link'].includes(type)?pastels[variant%pastels.length]:colors[type]||colors.pink;
- const outline='stroke="#ff3159" stroke-width="1.8" stroke-linejoin="round"';
- let shape;
- if(type==='rabbit')return `<g stroke="#dd9dac" stroke-width=".8" stroke-linejoin="round"><ellipse cy="-30" rx="4" ry="5" fill="none"/><ellipse cx="-8" cy="-19" rx="5" ry="13" transform="rotate(-17 -8 -19)" fill="#f8d7e0"/><ellipse cx="8" cy="-19" rx="5" ry="13" transform="rotate(17 8 -19)" fill="#f8d7e0"/><path d="M-9 -28 -5 -13 M9 -28 5 -13" stroke="#eeb5c9" stroke-width="3"/><ellipse cy="16" rx="10" ry="14" fill="#f8d7e0"/><ellipse cx="-11" cy="12" rx="5" ry="7" fill="#f8d7e0"/><ellipse cx="11" cy="12" rx="5" ry="7" fill="#f8d7e0"/><ellipse cx="-6" cy="29" rx="6" ry="7" fill="#f8d7e0"/><ellipse cx="6" cy="29" rx="6" ry="7" fill="#f8d7e0"/><ellipse cy="-3" rx="15" ry="14" fill="#f8d7e0"/><circle cx="-6" cy="-4" r="3" fill="#262027"/><circle cx="6" cy="-4" r="3" fill="#262027"/><circle cx="-7" cy="-5" r=".9" fill="white"/><circle cx="5" cy="-5" r=".9" fill="white"/><path d="M-2 2 Q0 5 2 2" fill="#d894aa"/></g>`;
- if(type==='link')return `<rect x="-12" y="-21" width="24" height="42" rx="11" fill="none" stroke="${c}" stroke-width="10"/><path d="M-12 6 V-8 Q-12 -20 -2 -21" fill="none" stroke="white" stroke-width="2" opacity=".65"/>`;
-
- if(type==='heart')shape=`<path d="M0 17 C-5 12 -23 0 -18 -11 C-14 -21 -3 -18 0 -11 C5 -20 18 -19 20 -9 C23 2 7 14 0 17Z" fill="${c}" ${outline}/>`;
- else if(type==='star')shape=`<path d="M0 -22 6 -7 22 -6 10 4 14 20 0 12 -14 20 -10 4 -22 -6 -6 -7Z" fill="${c}" ${outline}/><path d="M0 -14 4 -4 14 -3 6 3 9 13 0 8 -9 13 -6 3 -14 -3 -4 -4Z" fill="${variant%2?'#f6bddf':'#fff0f6'}"/>`;
- else if(type==='letter')shape=`<path d="M-17 -18 Q0 -20 18 -17 L19 17 Q0 20 -18 17Z" fill="${c}" ${outline}/><text x="0" y="8" text-anchor="middle" fill="#f3264f" font-family="Courier New,monospace" font-weight="bold" font-size="25">${cleanLetter(letter)}</text>`;
- else shape=`<path d="M-19 0 C-20 -24 20 -26 20 0 C20 25 -20 24 -19 0Z" fill="${c}" ${outline}/>${type==='glass'?'<path d="M-10 -16 9 16 M-3 -19 16 10" stroke="#fff" stroke-width="3" opacity=".65"/>':''}`;
- return shape+(type==='letter'?'':'<ellipse cx="-6" cy="-10" rx="5" ry="3" fill="white" opacity=".85" transform="rotate(-24 -6 -10)"/><circle cx="0" cy="-14" r="2" fill="#f66d9b" opacity=".6"/>');
+function bead(type,unused='',variant=0){
+ const variants=ART[type];if(!variants)return '';
+ const art=variants[Math.abs(variant)%variants.length],size=type==='rabbit'?70:44;
+ const href=embeddedArt.get(art.src)||art.src;
+ return `<svg x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" viewBox="${art.box.join(' ')}" preserveAspectRatio="xMidYMid meet" overflow="visible"><image href="${href}" width="1000" height="1000"/></svg>`;
 }
 function charmMarkup(interactive=false){
  const count=Math.max(14,beads.length),step=(Math.PI*2-.65)/(count-1);
  const nodes=beads.map((b,i)=>{
   const angle=-Math.PI/2-.325-step*i;
   const x=220+104*Math.cos(angle),y=260+158*Math.sin(angle);
-  const label=t().names[TYPES.indexOf(b.type)]+(b.type==='letter'?' '+b.letter:'')+' '+(i+1);
-  return `<g transform="translate(${x.toFixed(2)} ${y.toFixed(2)})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label}" aria-pressed="${selected===i}"`:''}><circle r="25" fill="transparent"/>${interactive&&selected===i?'<circle r="25" fill="none" stroke="#ff3159" stroke-width="2" stroke-dasharray="3 4"/>':''}${`<g transform="scale(${Math.min(1,14/Math.max(1,beads.length)).toFixed(3)})">${bead(b.type,b.letter,b.variant)}</g>`}</g>`;
+  const label=t().names[TYPES.indexOf(b.type)]+' '+(i+1);
+  return `<g transform="translate(${x.toFixed(2)} ${y.toFixed(2)})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label}" aria-pressed="${selected===i}"`:''}><circle r="25" fill="transparent"/>${interactive&&selected===i?'<circle r="25" fill="none" stroke="#ff3159" stroke-width="2" stroke-dasharray="3 4"/>':''}${`<g transform="scale(${Math.min(1,14/Math.max(1,beads.length)).toFixed(3)})">${bead(b.type,'',b.variant)}</g>`}</g>`;
  }).join('');
  return `<path d="M220 105 C160 25 215 7 238 35 C258 63 229 94 220 105 M220 104 C70 100 65 412 220 423 C375 412 370 100 220 104" fill="none" stroke="#ff79bc" stroke-width="5" stroke-linecap="round"/><path d="M221 104 C175 35 214 22 231 39" fill="none" stroke="#ffe4f0" stroke-width="2"/><circle cx="220" cy="105" r="9" fill="#f8b2d4" stroke="#ff3159" stroke-width="2"/>${nodes}<path d="M216 424 Q208 440 220 444 Q232 440 224 424" fill="none" stroke="#ff3159" stroke-width="3"/><g transform="translate(220 465) scale(${pendant==='rabbit'?1:1.25})">${bead(pendant)}</g>`;
 }
@@ -67,20 +58,27 @@ function panel(){const w=t();return `<section id="bead-workshop" data-no-transla
  <p class="bead-intro">${w.intro}</p>
  <div class="bead-layout"><div class="bead-supplies"><h2>${w.box}</h2>
  <div class="bead-box-lid" aria-hidden="true"><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('heart')}</svg><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('star')}</svg><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('heart')}</svg></div>
- <div class="bead-trays">${TYPES.map((type,i)=>`<button type="button" class="bead-tray" data-add-bead="${type}" aria-label="${w.names[i]}"><svg viewBox="0 0 130 80" aria-hidden="true">${[[30,26,-12],[70,26,8],[105,50,17],[45,60,-9]].map(([x,y,r],n)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(.85)">${bead(type,['N','A','N','A'][n],n)}</g>`).join('')}</svg><span>${w.names[i]}</span></button>`).join('')}</div>
- <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="NANA" aria-label="${w.word}"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
- <p class="bead-note">${w.local}<br>${language()==='fr'?'Le lapin rose est un pendentif unique : un seul par création. Les étoiles et maillons alternent les couleurs pastel.':'The pink bunny is a unique pendant: one per creation. Stars and links alternate pastel colours.'}</p></div>
+ <div class="bead-trays">${TYPES.map((type,i)=>ART[type].map((art,variant)=>`<button type="button" class="bead-tray" data-add-bead="${type}" data-variant="${variant}" aria-label="${w.names[i]} ${variant+1}"><svg viewBox="-30 -30 60 60" aria-hidden="true">${bead(type,'',variant)}</svg><span>${w.names[i]} ${variant+1}</span></button>`).join('')).join('')}</div>
+ <p class="bead-note">${w.local}<br>${language()==='fr'?'Le lapin rose est un pendentif unique : un seul par création. Toutes les perles sont dessinées par Léna.':'The pink bunny is a unique pendant: one per creation. All beads are drawn by Léna.'}</p></div>
  <div class="bead-making"><div class="bead-stage-heading"><h2>${w.yours}</h2><span id="bead-count"></span></div>
  <svg id="bead-charm" viewBox="0 0 440 515" role="group" aria-label="${w.yours}"></svg>
  <p id="bead-empty">${w.empty}</p><p class="bead-hint">${w.hint}</p>
  <p id="bead-selection"></p><div class="bead-editing">${[['left','← '+w.left],['right',w.right+' →'],['remove',w.remove]].map(([id,label])=>`<button type="button" class="bead-control" data-bead-edit="${id}">${label}</button>`).join('')}</div>
- <div class="bead-pendants"><span>${w.pendant}</span>${['heart','star','rabbit'].map(type=>`<button type="button" class="bead-pendant" data-pendant="${type}" aria-label="${type==='rabbit'?(language()==='fr'?'Lapin rose · un seul par création':'Pink bunny · one per creation'):w.names[type==='heart'?3:2]}"><svg viewBox="-30 -30 60 60" aria-hidden="true">${bead(type)}</svg></button>`).join('')}<button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
+ <div class="bead-pendants"><span>${w.pendant}</span>${['heart','star','rabbit'].map(type=>`<button type="button" class="bead-pendant" data-pendant="${type}" aria-label="${type==='rabbit'?(language()==='fr'?'Lapin rose · un seul par création':'Pink bunny · one per creation'):w.names[TYPES.indexOf(type)]}"><svg viewBox="-38 -38 76 76" aria-hidden="true">${bead(type)}</svg></button>`).join('')}<button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
  <div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button><button class="bead-control bead-save" type="button" data-bead-action="save">${w.save}</button></div><div class="bead-purchase"><button class="bead-control bead-attach" type="button" data-bead-action="shop">${w.buy}</button><p class="bead-note">${w.buyNote}</p></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
 function open(){window.openWindow(t().title,panel(),'bead-box');refresh();}
 async function download(){
  if(busy||!beads.length)return;busy=true;refresh(t().exporting);
  let url;
  try{
+  const sources=[...new Set([...beads.map(b=>ART[b.type][b.variant%ART[b.type].length].src),ART[pendant][0].src])];
+  await Promise.all(sources.map(async src=>{
+   if(embeddedArt.has(src))return;
+   const response=await fetch(src);if(!response.ok)throw Error('Artwork download');
+   const blob=await response.blob();
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
+   embeddedArt.set(src,data);
+  }));
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1200" viewBox="0 0 440 528"><rect width="440" height="528" fill="#fff8e9"/>${charmMarkup()}<text x="220" y="520" text-anchor="middle" font-family="monospace" font-size="9" fill="#f3264f">Nana Color Studio</text></svg>`;
   url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
   const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});
@@ -92,12 +90,11 @@ async function download(){
 document.addEventListener('click',e=>{
  const root=e.target.closest('#bead-workshop');if(!root)return;
  const addButton=e.target.closest('[data-add-bead]'),item=e.target.closest('[data-bead-index]'),edit=e.target.closest('[data-bead-edit]'),pend=e.target.closest('[data-pendant]'),action=e.target.closest('[data-bead-action]');
- if(addButton){const value=document.querySelector('#bead-word-input').value;add([{type:addButton.dataset.addBead,letter:cleanLetter(value),variant:shade++%pastels.length}]);}
+ if(addButton){add([{type:addButton.dataset.addBead,variant:Number(addButton.dataset.variant)}]);}
  else if(item){selected=Number(item.dataset.beadIndex);refresh();}
  else if(edit&&selected>=0){snapshot();const kind=edit.dataset.beadEdit;if(kind==='remove'){beads.splice(selected,1);selected=-1;}else{const to=selected+(kind==='left'?-1:1);if(to>=0&&to<beads.length){[beads[to],beads[selected]]=[beads[selected],beads[to]];selected=to;}}persist();refresh();}
  else if(pend){snapshot();pendant=pend.dataset.pendant;persist();refresh();}
  else if(action){switch(action.dataset.beadAction){
-  case 'word':{const value=document.querySelector('#bead-word-input').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(value)add([...value].map(letter=>({type:'letter',letter})));break;}
   case 'undo':if(history.length){const prev=JSON.parse(history.pop());beads=prev.beads;pendant=prev.pendant;attached=prev.attached;selected=-1;persist();refresh();}break;
   case 'reset':snapshot();beads=[];attached=false;selected=-1;persist();refresh();break;
   case 'save':download();break;
@@ -108,7 +105,6 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{
  const item=e.target.closest('[data-bead-index]');if(item&&['Enter',' '].includes(e.key)){e.preventDefault();item.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
- if(e.target.id==='bead-word-input'&&e.key==='Enter'){e.preventDefault();document.querySelector('[data-bead-action="word"]').click();}
 });
 document.addEventListener('portfolio-language-change',()=>{
  const shelf=document.querySelector('#nana-bead-box-shelf');if(shelf)shelf.setAttribute('aria-label',t().title);

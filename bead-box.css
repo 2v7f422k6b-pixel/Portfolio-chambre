@@ -10,7 +10,7 @@
 .bead-trays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;background:#ffb8db;padding:12px;}
 #bead-workshop button{font:inherit;color:#f3264f;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 #bead-workshop .bead-tray{border:0;background:#ffdaeb;padding:8px 5px;min-width:0;position:relative;}
-.bead-tray>svg:not(.sketch-ui-svg){display:block;width:100%;height:auto;pointer-events:none;}
+.bead-tray>svg:not(.sketch-ui-svg){display:block;width:100%;height:64px;pointer-events:none;}
 .bead-tray span{font-size:13px;display:block;min-height:32px;line-height:1.2;}
 #bead-workshop button:disabled{opacity:.4;cursor:default;}
 #bead-workshop button:focus-visible,#bead-workshop input:focus-visible,#bead-charm [role="button"]:focus-visible{outline:2px solid #ee2150;outline-offset:4px;}
