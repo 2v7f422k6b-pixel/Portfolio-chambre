@@ -126,6 +126,14 @@ html[data-theme="night"] #hotspots .nana-fortune-cookie-night-shade { opacity: .
   cursor: pointer;
 }
 
+/* A hidden welcome screen must leave layout, painting and hit testing entirely.
+   Its responsive display:flex !important otherwise overrides the global [hidden]
+   rule, leaving the fixed language switch visible behind Work/Play on iPad. */
+html body #welcome[hidden],
+html body #desktop[hidden] {
+  display: none !important;
+}
+
 /* Work and Play are mutually exclusive surfaces. Respect the hidden attribute
    even when earlier responsive CSS forces display:flex or display:block. */
 #desktop #play-viewport[hidden],
@@ -1100,4 +1108,5 @@ html body #app #special-host .phone-app .phone-drawn-icon {
   height: 100% !important;
   object-fit: contain !important;
 }
+
 

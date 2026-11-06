@@ -931,8 +931,10 @@ html[data-theme="night"] body #work-desktop > .work-wallpaper {
 }
 html body #work-desktop > .work-wallpaper,
 html[data-theme="night"] body #work-desktop > .work-wallpaper {
- position:fixed!important;
- inset:var(--menubar,42px) 0 0!important;
+ /* Follow the Work surface, including its zoom animation and viewport resize.
+    A separate fixed layer can retain a narrower viewport on iPad. */
+ position:absolute!important;
+ inset:0!important;
  display:block!important;
  overflow:hidden!important;
  pointer-events:none!important;
@@ -1236,6 +1238,7 @@ html body #desktop {
   --menubar: 46px !important;
   position: fixed !important;
   inset: 0 !important;
+  width: 100vw !important;
   overflow: hidden !important;
 }
 html body #app > #menubar,
@@ -1245,6 +1248,9 @@ html body #desktop > #menubar {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
+  /* Use the same viewport width as the desktop and illustrated room, rather
+     than relying on WebKit's independently sized left/right fixed layer. */
+  width: 100vw !important;
   height: 46px !important;
   min-height: 46px !important;
   max-height: 46px !important;
@@ -1405,3 +1411,4 @@ html body #window[data-window-type="do-nothing"] .nothing-button.sketch-ui-frame
 html body #window[data-window-type="do-nothing"] .nothing-progress-fill {
   clip-path:polygon(0 4%,33% 0,67% 5%,100% 0,100% 100%,67% 96%,33% 100%,0 95%);
 }
+
