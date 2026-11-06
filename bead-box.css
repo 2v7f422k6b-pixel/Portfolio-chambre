@@ -36,7 +36,11 @@
 #bead-status{min-height:1.5em;margin:12px 0 0!important;font-size:14px!important;}
 #nana-bead-box-shelf{cursor:pointer;}
 #nana-bead-box-shelf .bead-shelf-art{stroke:#ff3159;stroke-width:1.5;stroke-linejoin:round;}
-html[data-theme="night"] #nana-bead-box-shelf .bead-shelf-art{filter:brightness(.32) saturate(.75);}
+html[data-theme="night"] #nana-bead-box-shelf .bead-shelf-art{stroke:#020235;}
+html[data-theme="night"] #bead-box-shelf-ink path:not([fill="none"]){fill:#0879b7;}
+html[data-theme="night"] #bead-box-shelf-ink path[fill="#f4afce"]{fill:#07568c;}
+html[data-theme="night"] #bead-box-shelf-ink path[fill="#ff456c"]{fill:#084779;}
+html[data-theme="night"] #bead-box-shelf-ink path[fill="#fff2d4"]{fill:#5b9cbe;}
 #nana-bead-box-shelf .bead-shelf-outline{opacity:0;transition:opacity .15s;}
 #nana-bead-box-shelf:hover .bead-shelf-outline,#nana-bead-box-shelf:focus-visible .bead-shelf-outline,#hotspots.hotspot-guide-on #nana-bead-box-shelf .bead-shelf-outline{opacity:1;}
 #nana-phone-charm{cursor:pointer;}
