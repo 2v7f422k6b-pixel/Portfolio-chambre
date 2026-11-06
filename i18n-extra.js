@@ -228,7 +228,7 @@ window.NanaI18nExtra = {
   "Une petite librairie": "An little bookshop",
   "CONTE ILLUSTRÉ · ÉDITION PROVISOIRE": "ILLUSTRATED TALE · PREVIEW EDITION",
   "La Princesse Clown": "The Clown Princess",
-  "Acheter le PDF ↗": "Buy the PDF ↗",
+  "Acheter le livre en PDF": "Buy the book as a PDF",
   "Ouverture du livre…": "Opening the book…",
   "Préparation des 74 pages": "Preparing 74 pages",
   "♡ Un conte de Léna de Firmas": "♡ A tale by Léna de Firmas",
