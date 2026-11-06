@@ -554,6 +554,33 @@ html body #welcome .welcome-panel{position:relative!important}
 @media(max-width:900px){html body #welcome{overflow:auto!important;height:auto!important;min-height:100dvh!important}html body #welcome .welcome-panel{max-height:none!important}#postcard-shop-preview{position:relative;top:auto;right:auto;width:145px;margin:10px auto 0} }
 @media(prefers-reduced-motion:reduce){#postcard-shop-preview,.rack-cards{transition:none}}
 </style>
+
+<style id="device-windows-close-only">
+/* Illustrated devices only: retain the existing close handler and PNG,
+   with no title-bar surface, heart, title or traced divider. */
+html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-frame)) > #special-titlebar {
+  justify-content:flex-end!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-frame)) > #special-titlebar > :is(.nana-window-heart,.sketch-ui-svg) {
+  display:none!important;
+}
+html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-frame)) #special-title {
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip-path:inset(50%)!important;
+  white-space:nowrap!important;
+}
+html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-frame)) #special-close {
+  display:flex!important;
+  pointer-events:auto!important;
+}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
