@@ -515,7 +515,7 @@ function showTamagotchi(){
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-saucer-large-3"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-saucer-center-4"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
