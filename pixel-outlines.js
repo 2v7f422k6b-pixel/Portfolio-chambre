@@ -9,6 +9,14 @@
   // Close the mask only; the visible edge still follows the supplied drawing.
   const gapRadii = {'BAMBI LAMP.PNG': 6, 'INSTAX.PNG': 12, 'GUITARE.PNG': 20,
     'CRAYONS 3.PNG': 12, 'BOOKS 1.PNG': 8, 'BOOKS 2.PNG': 8, 'BOOKS 3.PNG': 8};
+  // Contact lines follow the three sloping shelf tops in the 1670 × 942 drawing.
+  // Only visual feedback is cropped; artwork and interactive masks stay intact.
+  const shelfTops = [[0, 76.5, 338, 167.2], [0, 238.5, 338, 287.7], [0, 387.5, 338, 406.2]];
+  const shelfFor = new Map([
+    ...['BOOKS 3.PNG', 'BRETZEL.PNG', 'MIFFY.PNG', 'INSTAX.PNG'].map(file => [file, 0]),
+    ...['BOOKS 2.PNG', 'BAMBI LAMP.PNG', 'MARSHALL.PNG', 'CDS.PNG'].map(file => [file, 1]),
+    ...['BOOKS 1.PNG', 'SONNY ANGEL.PNG', 'JELLY LAMP.PNG'].map(file => [file, 2])
+  ]);
   const layers = new Map();
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
@@ -56,7 +64,10 @@
       image.decoding = 'async';
       image.onload = () => {
         try {
-          const layer = hover.silhouette(image, undefined, {lineArt: true, gapRadius: gapRadii[file] ?? 2});
+          const layer = hover.silhouette(image, undefined, {
+            lineArt: true, gapRadius: gapRadii[file] ?? 2,
+            supportLine: shelfTops[shelfFor.get(file)] ?? null
+          });
           if (layer) {layer.outline.dataset.roomOutline = file; layers.set(file, layer);}
         } catch (error) {console.warn('Could not prepare room outline', file, error);}
         active--; schedule(); pump();

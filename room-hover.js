@@ -108,7 +108,28 @@
     }
     return expanded;
   }
-  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}, {lineArt = false, gapRadius = 2} = {}) {
+  // Bake raster halos in local mask coordinates. A shared SVG blur on translated
+  // <image> nodes can clip the room's right/bottom edges on iPad/WebKit.
+  function softenEdge(edge, w, h) {
+    const radius = Math.ceil(glow * 3), kernel = [];
+    let total = 0;
+    for (let d = -radius; d <= radius; d++) {
+      const weight = Math.exp(-d * d / (2 * glow * glow));
+      kernel.push(weight); total += weight;
+    }
+    for (let k = 0; k < kernel.length; k++) kernel[k] /= total;
+    const rows = new Float32Array(w * h), blurred = new Float32Array(w * h);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      for (let d = -radius; d <= radius; d++) if (x + d >= 0 && x + d < w)
+        rows[y * w + x] += edge[y * w + x + d] * kernel[d + radius];
+    }
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      for (let d = -radius; d <= radius; d++) if (y + d >= 0 && y + d < h)
+        blurred[y * w + x] += rows[(y + d) * w + x] * kernel[d + radius];
+    }
+    return blurred;
+  }
+  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}, {lineArt = false, gapRadius = 2, supportLine = null} = {}) {
     const canvas = document.createElement('canvas');
     canvas.width = Math.ceil(box.width); canvas.height = Math.ceil(box.height);
     const ctx = canvas.getContext('2d', {willReadFrequently: true});
@@ -122,7 +143,9 @@
       }
     }
     if (maxX < 0) return null;
-    const pad = Math.max(8, gapRadius + 4), w = maxX - minX + 1 + pad * 2, h = maxY - minY + 1 + pad * 2;
+    const pad = Math.max(width + Math.ceil(glow * 3) + 1, gapRadius + 4);
+    const w = maxX - minX + 1 + pad * 2, h = maxY - minY + 1 + pad * 2;
+    const x = box.x + minX - pad, y = box.y + minY - pad;
     const sourceMask = new Uint8Array(w * h);
     for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
       if (raw[(y * canvas.width + x) * 4 + 3] <= 25) continue;
@@ -170,16 +193,33 @@
     if (lineArt) {
       const outer = expandMask(alpha, w, h, width);
       const supported = expandMask(sourceMask, w, h, width + 1);
+      const edge = new Uint8Array(w * h);
+      const aboveSupport = (i, inset) => {
+        if (!supportLine) return true;
+        const [x1, y1, x2, y2] = supportLine;
+        const floor = y1 + (x + i % w - x1) * (y2 - y1) / (x2 - x1);
+        return y + Math.floor(i / w) < floor - inset;
+      };
+      for (let i = 0; i < alpha.length; i++) {
+        if (outer[i] && !alpha[i] && supported[i] && aboveSupport(i, width + 1)) edge[i] = 1;
+      }
+      const halo = softenEdge(edge, w, h);
       pixels.fill(0);
       for (let i = 0; i < alpha.length; i++) {
-        if (outer[i] && !alpha[i] && supported[i]) pixels.fill(255, i * 4, i * 4 + 4);
+        // Both the white line and its halo stop above the shelf. The filled
+        // mask is unchanged, so the same objects remain clickable to the base.
+        const opacity = !alpha[i] && aboveSupport(i, 1)
+          ? Math.round(255 * Math.min(1, edge[i] + halo[i])) : 0;
+        if (opacity) {
+          pixels.fill(255, i * 4, i * 4 + 3);
+          pixels[i * 4 + 3] = opacity;
+        }
       }
       ctx.putImageData(new ImageData(pixels, w, h), 0, 0);
     }
-    const x = box.x + minX - pad, y = box.y + minY - pad;
     const outline = element('image', {
       href: lineArt ? canvas.toDataURL() : filledHref, x, y, width: w, height: h,
-      class: 'room-hover-outline', filter: lineArt ? 'url(#nana-room-hover-stroke)' : 'url(#nana-room-hover-ring)'
+      class: 'room-hover-outline', filter: lineArt ? 'none' : 'url(#nana-room-hover-ring)'
     });
     overlay.append(outline);
     // Release the temporary drawing buffer after encoding the small mask.

@@ -67,7 +67,8 @@ test('empty layers never produce a visible rectangle',()=>{
 
 function renderedMask(layer) {
   const rendered = JSON.parse(layer.outline.attrs.href.split(',').slice(1).join(','));
-  return (x,y) => rendered.pixels[((y-layer.y)*rendered.width+x-layer.x)*4+3];
+  return (x,y) => x < layer.x || y < layer.y || x >= layer.x + rendered.width || y >= layer.y + rendered.height
+    ? 0 : rendered.pixels[((y-layer.y)*rendered.width+x-layer.x)*4+3];
 }
 test('the displayed mask fills a character with internal details before drawing its exterior ring',()=>{
   const hover=engine();
@@ -119,7 +120,7 @@ test('line-art halos contain no pixels on interior features or either side of th
   for(let y=208;y<=247;y++)for(let x=108;x<=147;x++)assert.equal(opacity(x,y),0);
   assert.equal(opacity(104,225),255);
   assert.equal(opacity(105,225),0);
-  assert.equal(layer.outline.attrs.filter,'url(#nana-room-hover-stroke)');
+  assert.equal(layer.outline.attrs.filter,'none');
   assert.ok(hover.contains(layer,125,225));
 });
 test('wide interruptions close the silhouette without drawing a new line across the gap',()=>{
@@ -133,7 +134,7 @@ test('wide interruptions close the silhouette without drawing a new line across 
   assert.ok(hover.contains(layer,38,50));
   assert.equal(opacity(37,30),0);
   assert.equal(opacity(39,30),0);
-  assert.equal(opacity(38,71),0);
+  assert.ok(opacity(38,71)<16);
   assert.equal(opacity(10,71),255);
 });
 test('art cropped at the room edge still has a filled interior and no invented cut line',()=>{
@@ -147,4 +148,29 @@ test('art cropped at the room edge still has a filled interior and no invented c
   assert.equal(opacity(41,35),0);
   assert.equal(opacity(80,30),0);
   assert.equal(opacity(4,30),255);
+});
+test('right and bottom room contours include their halo without a position-dependent SVG filter',()=>{
+  const hover=engine();
+  const layer=hover.silhouette(picture(60,60,(x,y)=>x>=10&&x<=40&&y>=10&&y<=40),
+    {x:1600,y:880,width:60,height:60},{lineArt:true});
+  const opacity=renderedMask(layer);
+  assert.equal(layer.outline.attrs.filter,'none');
+  assert.equal(opacity(1641,905),255);
+  assert.equal(opacity(1625,921),255);
+  assert.ok(opacity(1644,905)>0 && opacity(1644,905)<255);
+  assert.ok(opacity(1625,924)>0 && opacity(1625,924)<255);
+  assert.equal(opacity(1625,905),0);
+});
+test('shelf contact removes the bottom line and halo while preserving sides and the hit area',()=>{
+  const hover=engine(), image=picture(80,80,(x,y)=>x>=10&&x<=60&&y>=10&&y<=50+x/5);
+  const box={x:100,y:200,width:80,height:80};
+  const uncut=hover.silhouette(image,box,{lineArt:true});
+  const cut=hover.silhouette(image,box,{lineArt:true,supportLine:[100,250,180,266]});
+  const opacity=renderedMask(cut);
+  assert.deepEqual([...cut.alpha],[...uncut.alpha]);
+  assert.equal(opacity(109,230),255);
+  assert.equal(opacity(130,209),255);
+  for(let y=200;y<280;y++)for(let x=100;x<180;x++) {
+    if(y>=250+(x-100)/5-1) assert.equal(opacity(x,y),0,`shelf spill at ${x},${y}`);
+  }
 });
