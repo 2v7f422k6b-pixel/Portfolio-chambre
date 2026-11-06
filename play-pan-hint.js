@@ -24,7 +24,7 @@
       backdrop-filter:none;-webkit-backdrop-filter:none;
       animation:nana-pan-fade 5.8s ease-in-out both;
     }
-    #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;}
+    #nana-play-pan-hint .pan-hint-directions {display:block;width:100%;height:100%;filter:brightness(0) invert(1);}
 
     /* The hand belongs to touch devices only and emerges from the viewport edge. */
     #nana-play-pan-hint .pan-hint-hand-photo {display:none;}
