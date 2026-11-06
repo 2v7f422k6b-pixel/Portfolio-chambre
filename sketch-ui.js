@@ -7,6 +7,10 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['#bead-workshop .bead-control', 'frame', 1201],
+    ['#bead-workshop .bead-tray', 'frame', 1202],
+    ['#bead-workshop .bead-box-lid', 'frame', 1203],
+    ['#bead-workshop .bead-word > div', 'frame', 1204],
     ['#nana-admin-dialog .nana-photo-editor', 'frame', 1101],
     ['#nana-admin-dialog .nana-photo-editor label', 'frame', 1102],
     ['#nana-admin-dialog .nana-admin-action', 'frame', 1103],

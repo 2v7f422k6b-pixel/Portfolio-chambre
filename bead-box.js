@@ -1,0 +1,128 @@
+/* A tactile, local-only phone-charm workshop. All bead shapes are code-native. */
+(() => {
+'use strict';
+const KEY='nana-bead-charm-v1', MAX=20;
+const TYPES=['pink','glass','star','heart','letter','lilac'];
+const colors={pink:'#f7a6d4',glass:'#a2ddf5',star:'#ffe782',heart:'#ff456c',letter:'#fff3d2',lilac:'#c7a5ed'};
+const words={
+ fr:{title:'Boîte à perles',intro:'Choisis tes perles, compose ton bijou.',box:'La boîte à perles',yours:'Ton bijou',hint:'Touche une perle du bijou pour la déplacer ou la retirer.',names:['Perle rose','Perle transparente','Étoile','Cœur','Perle lettre','Perle lilas'],word:'Un prénom, un mot…',thread:'Enfiler',letter:'Lettre',left:'Avant',right:'Après',remove:'Retirer',undo:'Annuler',reset:'Recommencer',save:'Garder mon bijou',swing:'Faire danser',pendant:'Pendentif',empty:'Ton fil attend ses premières perles.',full:'Le fil est plein ! Retire une perle pour en ajouter une autre.',added:'Perle ajoutée',removed:'Perle retirée',saved:'Ton bijou est prêt à être enregistré.',failed:'Le téléchargement a échoué. Réessaie.',count:'perles',selected:'Perle sélectionnée',local:'Ton bijou est conservé sur cet appareil.',choose:'Sélectionne une perle sur le bijou.',exporting:'Préparation…',attach:'Accrocher au téléphone',detach:'Décrocher du téléphone',roomCharm:'Modifier le bijou du téléphone'},
+ en:{title:'Bead Box',intro:'Pick your beads, make your charm.',box:'The bead box',yours:'Your charm',hint:'Tap a bead on your charm to move or remove it.',names:['Pink bead','Transparent bead','Star','Heart','Letter bead','Lilac bead'],word:'A name, a word…',thread:'Thread',letter:'Letter',left:'Earlier',right:'Later',remove:'Remove',undo:'Undo',reset:'Start again',save:'Keep my charm',swing:'Make it dance',pendant:'Pendant',empty:'Your string is waiting for its first beads.',full:'The string is full! Remove a bead to add another.',added:'Bead added',removed:'Bead removed',saved:'Your charm is ready to save.',failed:'Download failed. Please try again.',count:'beads',selected:'Selected bead',local:'Your charm is saved on this device.',choose:'Select a bead on your charm.',exporting:'Preparing…',attach:'Attach to phone',detach:'Detach from phone',roomCharm:'Edit the phone charm'}
+};
+const language=()=>document.documentElement.lang.startsWith('en')?'en':'fr';
+const t=()=>words[language()];
+const cleanLetter=value=>(String(value||'A').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,1)||'A');
+let beads=[],pendant='heart',selected=-1,history=[],busy=false,attached=false;
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(saved?.beads)){beads=saved.beads.filter(b=>TYPES.includes(b?.type)).slice(0,MAX).map(b=>({type:b.type,letter:cleanLetter(b.letter)}));pendant=saved.pendant==='star'?'star':'heart';attached=saved.attached===true;}}catch(_){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({beads,pendant,attached}));}catch(_){}};
+function snapshot(){history.push(JSON.stringify({beads,pendant,attached}));if(history.length>40)history.shift();}
+function bead(type,letter='A'){
+ const c=colors[type]||colors.pink;
+ const outline='stroke="#ff3159" stroke-width="1.8" stroke-linejoin="round"';
+ let shape;
+ if(type==='heart')shape=`<path d="M0 17 C-5 12 -23 0 -18 -11 C-14 -21 -3 -18 0 -11 C5 -20 18 -19 20 -9 C23 2 7 14 0 17Z" fill="${c}" ${outline}/>`;
+ else if(type==='star')shape=`<path d="M0 -22 6 -7 22 -6 10 4 14 20 0 12 -14 20 -10 4 -22 -6 -6 -7Z" fill="${c}" ${outline}/>`;
+ else if(type==='letter')shape=`<path d="M-17 -18 Q0 -20 18 -17 L19 17 Q0 20 -18 17Z" fill="${c}" ${outline}/><text x="0" y="8" text-anchor="middle" fill="#f3264f" font-family="Courier New,monospace" font-weight="bold" font-size="25">${cleanLetter(letter)}</text>`;
+ else shape=`<path d="M-19 0 C-20 -24 20 -26 20 0 C20 25 -20 24 -19 0Z" fill="${c}" ${outline}/>${type==='glass'?'<path d="M-10 -16 9 16 M-3 -19 16 10" stroke="#fff" stroke-width="3" opacity=".65"/>':''}`;
+ return shape+(type==='letter'?'':'<ellipse cx="-6" cy="-10" rx="5" ry="3" fill="white" opacity=".85" transform="rotate(-24 -6 -10)"/><circle cx="0" cy="-14" r="2" fill="#f66d9b" opacity=".6"/>');
+}
+function charmMarkup(interactive=false){
+ const count=Math.max(14,beads.length),step=(Math.PI*2-.65)/(count-1);
+ const nodes=beads.map((b,i)=>{
+  const angle=-Math.PI/2-.325-step*i;
+  const x=220+104*Math.cos(angle),y=260+158*Math.sin(angle);
+  const label=t().names[TYPES.indexOf(b.type)]+(b.type==='letter'?' '+b.letter:'')+' '+(i+1);
+  return `<g transform="translate(${x.toFixed(2)} ${y.toFixed(2)})" ${interactive?`data-bead-index="${i}" role="button" tabindex="0" aria-label="${label}" aria-pressed="${selected===i}"`:''}><circle r="25" fill="transparent"/>${interactive&&selected===i?'<circle r="25" fill="none" stroke="#ff3159" stroke-width="2" stroke-dasharray="3 4"/>':''}${`<g transform="scale(${Math.min(1,14/Math.max(1,beads.length)).toFixed(3)})">${bead(b.type,b.letter)}</g>`}</g>`;
+ }).join('');
+ return `<path d="M220 105 C160 25 215 7 238 35 C258 63 229 94 220 105 M220 104 C70 100 65 412 220 423 C375 412 370 100 220 104" fill="none" stroke="#ff79bc" stroke-width="5" stroke-linecap="round"/><path d="M221 104 C175 35 214 22 231 39" fill="none" stroke="#ffe4f0" stroke-width="2"/><circle cx="220" cy="105" r="9" fill="#f8b2d4" stroke="#ff3159" stroke-width="2"/>${nodes}<path d="M216 424 Q208 440 220 444 Q232 440 224 424" fill="none" stroke="#ff3159" stroke-width="3"/><g transform="translate(220 465) scale(1.25)">${bead(pendant)}</g>`;
+}
+function announce(message){const live=document.querySelector('#bead-status');if(live)live.textContent=message;}
+function refresh(message=''){
+ updateRoomCharm();
+ const stage=document.querySelector('#bead-charm');if(!stage)return;
+ stage.innerHTML=charmMarkup(true);
+ document.querySelector('#bead-count').textContent=`${beads.length} / ${MAX} ${t().count}`;
+ document.querySelector('#bead-empty').hidden=beads.length>0;
+ document.querySelectorAll('[data-bead-edit]').forEach(b=>b.disabled=selected<0);
+ document.querySelector('[data-bead-edit="left"]').disabled=selected<=0;
+ document.querySelector('[data-bead-edit="right"]').disabled=selected<0||selected>=beads.length-1;
+ document.querySelector('[data-bead-action="undo"]').disabled=!history.length;
+ document.querySelector('[data-bead-action="reset"]').disabled=!beads.length;
+ document.querySelector('[data-bead-action="save"]').disabled=!beads.length||busy;
+ const attachButton=document.querySelector('[data-bead-action="attach"]');attachButton.disabled=!beads.length;attachButton.textContent=attached?t().detach:t().attach;
+ document.querySelector('#bead-selection').textContent=selected<0?t().choose:`${t().selected} : ${selected+1}`;
+ document.querySelectorAll('[data-pendant]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pendant===pendant)));
+ if(message)announce(message);
+}
+function add(items){
+ if(beads.length+items.length>MAX){announce(t().full);return;}
+ snapshot();beads.push(...items);selected=-1;persist();refresh(t().added);
+}
+function panel(){const w=t();return `<section id="bead-workshop" data-no-translate aria-label="${w.title}">
+ <p class="bead-intro">${w.intro}</p>
+ <div class="bead-layout"><div class="bead-supplies"><h2>${w.box}</h2>
+ <div class="bead-box-lid" aria-hidden="true"><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('heart')}</svg><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('star')}</svg><svg width="38" height="42" viewBox="-25 -25 50 50">${bead('heart')}</svg></div>
+ <div class="bead-trays">${TYPES.map((type,i)=>`<button type="button" class="bead-tray" data-add-bead="${type}" aria-label="${w.names[i]}"><svg viewBox="0 0 130 80" aria-hidden="true">${[[30,26,-12],[70,26,8],[105,50,17],[45,60,-9]].map(([x,y,r],n)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(.85)">${bead(type,['N','A','N','A'][n])}</g>`).join('')}</svg><span>${w.names[i]}</span></button>`).join('')}</div>
+ <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="NANA" aria-label="${w.word}"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
+ <p class="bead-note">${w.local}</p></div>
+ <div class="bead-making"><div class="bead-stage-heading"><h2>${w.yours}</h2><span id="bead-count"></span></div>
+ <svg id="bead-charm" viewBox="0 0 440 515" role="group" aria-label="${w.yours}"></svg>
+ <p id="bead-empty">${w.empty}</p><p class="bead-hint">${w.hint}</p>
+ <p id="bead-selection"></p><div class="bead-editing">${[['left','← '+w.left],['right',w.right+' →'],['remove',w.remove]].map(([id,label])=>`<button type="button" class="bead-control" data-bead-edit="${id}">${label}</button>`).join('')}</div>
+ <div class="bead-pendants"><span>${w.pendant}</span>${['heart','star'].map(type=>`<button type="button" class="bead-pendant" data-pendant="${type}" aria-label="${w.names[type==='heart'?3:2]}"><svg viewBox="-30 -30 60 60" aria-hidden="true">${bead(type)}</svg></button>`).join('')}<button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
+ <div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button><button class="bead-control bead-save" type="button" data-bead-action="save">${w.save}</button></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
+function open(){window.openWindow(t().title,panel(),'bead-box');refresh();}
+async function download(){
+ if(busy||!beads.length)return;busy=true;refresh(t().exporting);
+ let url;
+ try{
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1200" viewBox="0 0 440 528"><rect width="440" height="528" fill="#fff8e9"/>${charmMarkup()}<text x="220" y="520" text-anchor="middle" font-family="monospace" font-size="9" fill="#f3264f">Nana Color Studio</text></svg>`;
+  url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});
+  const canvas=document.createElement('canvas');canvas.width=1000;canvas.height=1200;canvas.getContext('2d').drawImage(image,0,0,1000,1200);
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('PNG export');
+  const png=URL.createObjectURL(blob),a=document.createElement('a');a.href=png;a.download='nana-mon-bijou.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(png),30000);announce(t().saved);
+ }catch(_){announce(t().failed);}finally{if(url)URL.revokeObjectURL(url);busy=false;refresh();}
+}
+document.addEventListener('click',e=>{
+ const root=e.target.closest('#bead-workshop');if(!root)return;
+ const addButton=e.target.closest('[data-add-bead]'),item=e.target.closest('[data-bead-index]'),edit=e.target.closest('[data-bead-edit]'),pend=e.target.closest('[data-pendant]'),action=e.target.closest('[data-bead-action]');
+ if(addButton){const value=document.querySelector('#bead-word-input').value;add([{type:addButton.dataset.addBead,letter:cleanLetter(value)}]);}
+ else if(item){selected=Number(item.dataset.beadIndex);refresh();}
+ else if(edit&&selected>=0){snapshot();const kind=edit.dataset.beadEdit;if(kind==='remove'){beads.splice(selected,1);selected=-1;}else{const to=selected+(kind==='left'?-1:1);if(to>=0&&to<beads.length){[beads[to],beads[selected]]=[beads[selected],beads[to]];selected=to;}}persist();refresh();}
+ else if(pend){snapshot();pendant=pend.dataset.pendant;persist();refresh();}
+ else if(action){switch(action.dataset.beadAction){
+  case 'word':{const value=document.querySelector('#bead-word-input').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(value)add([...value].map(letter=>({type:'letter',letter})));break;}
+  case 'undo':if(history.length){const prev=JSON.parse(history.pop());beads=prev.beads;pendant=prev.pendant;attached=prev.attached;selected=-1;persist();refresh();}break;
+  case 'reset':snapshot();beads=[];attached=false;selected=-1;persist();refresh();break;
+  case 'save':download();break;
+  case 'attach':snapshot();attached=!attached;persist();refresh();if(attached)document.querySelector('#window-close').click();break;
+  case 'swing':{const s=document.querySelector('#bead-charm');s.classList.remove('bead-swing');void s.getBoundingClientRect();s.classList.add('bead-swing');break;}
+ }}
+});
+document.addEventListener('keydown',e=>{
+ const item=e.target.closest('[data-bead-index]');if(item&&['Enter',' '].includes(e.key)){e.preventDefault();item.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
+ if(e.target.id==='bead-word-input'&&e.key==='Enter'){e.preventDefault();document.querySelector('[data-bead-action="word"]').click();}
+});
+document.addEventListener('portfolio-language-change',()=>{
+ const shelf=document.querySelector('#nana-bead-box-shelf');if(shelf)shelf.setAttribute('aria-label',t().title);
+ updateRoomCharm();if(document.querySelector('#bead-workshop'))open();
+});
+window.NanaBeadBox={open};
+function updateRoomCharm(){
+ const svg=document.querySelector('#hotspots');if(!svg)return;
+ let charm=document.querySelector('#nana-phone-charm');
+ if(!charm){charm=document.createElementNS('http://www.w3.org/2000/svg','g');charm.id='nana-phone-charm';charm.setAttribute('data-open','bead-box');charm.setAttribute('role','button');charm.setAttribute('tabindex','0');charm.setAttribute('transform','translate(1153 805) rotate(8) scale(.16) translate(-220 -24)');svg.appendChild(charm);charm.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});}
+ charm.setAttribute('aria-label',t().roomCharm);
+ charm.style.display=attached&&beads.length?'':'none';
+ charm.innerHTML=attached&&beads.length?'<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup():'';
+}
+
+function mount(){
+ const svg=document.querySelector('#hotspots');if(!svg)return;
+ const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(277 126)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
+ g.innerHTML='<g class="bead-shelf-art"><g id="bead-box-shelf-ink"><path d="M1 8 38 1 54 11 17 19Z" fill="#ffcae5"/><path d="M1 8 17 19 54 11 53 29 17 37 2 25Z" fill="#f6a7cd"/><path d="M17 19 17 37 M3 13 16 24 52 16" fill="none"/><path d="M25 27 31 26 31 31 25 32Z" fill="#fff2d4"/><path d="M22 8 C18 2 11 7 21 13 C33 9 29 2 22 8Z" fill="#ff456c"/></g></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/>';
+ svg.appendChild(g);updateRoomCharm();
+ g.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+})();
