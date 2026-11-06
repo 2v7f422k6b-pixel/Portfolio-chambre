@@ -2,7 +2,7 @@
    Original English strings are retained so switching never stacks translations. */
 (()=>{
 const translations={
-'Pick your adventure':'Au programme',
+'What’s your mood?':'Dans quel mood es-tu ?',
 'Choose your mood':'Choisis ton univers','Browse selected projects':'Découvrir mes projets','Explore my world':'Explorer mon univers','Made with care':'Fait avec amour',
 'Work':'Travail','Play':'Jouer','Work Mode':'Mode travail','Play Mode':'Mode jeu','Switch Mode':'Changer de mode','About Me':'À propos','Help':'Aide','Contact':'Contact',
 'Night':'Nuit','Day':'Jour','Portfolio':'Portfolio','Léna’s creative world ♡':'L’univers créatif de Léna ♡',
