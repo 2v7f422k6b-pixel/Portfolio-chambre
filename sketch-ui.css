@@ -1049,11 +1049,10 @@ html[data-theme="night"] body #work-desktop .work-desk-layout > .desk-extras {
 
 
 /* Final Work desk spacing and controls — identical in Day/Night, 3 Nov 2026. */
-/* Move the full folder column and the post-it/trash column up together.
-   Using the same transform under both themes preserves the alignment. */
+/* Folders stay in normal flow below search; only the decorative column rises. */
 html body #work-desktop .work-desk-layout > .folder-grid,
 html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
-  transform:translateY(-26px)!important;
+  transform:none!important;
 }
 html body #work-desktop .work-desk-layout > .desk-extras,
 html[data-theme="night"] body #work-desktop .work-desk-layout > .desk-extras {
@@ -1079,8 +1078,6 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
   display:none!important;
 }
 @media(max-width:540px){
-  html body #work-desktop .work-desk-layout > .folder-grid,
-  html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid,
   html body #work-desktop .work-desk-layout > .desk-extras,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .desk-extras {
     transform:translateY(-12px)!important;
@@ -1088,12 +1085,11 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
 }
 
 /* Anchor Work desktop Post-it and folders near top of page, independent of theme. */
-/* The heading and search stay centered. Only the left Post-it and right
-   folder column rise toward the menu bar; the trash keeps its own place. */
+/* The heading and search stay centered. Only the Post-it rises toward the menu. */
 @media(min-width:1200px){
   html body #work-desktop .work-desk-layout > .folder-grid,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
-    transform:translateY(-95px)!important;
+    transform:none!important;
   }
   html body #work-desktop .desk-extra[data-object="postit"],
   html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
@@ -1103,7 +1099,7 @@ html[data-theme="night"] body #work-desktop #work-search-input.sketch-ui-frame >
 @media(min-width:761px) and (max-width:1199px){
   html body #work-desktop .work-desk-layout > .folder-grid,
   html[data-theme="night"] body #work-desktop .work-desk-layout > .folder-grid {
-    transform:translateY(-55px)!important;
+    transform:none!important;
   }
   html body #work-desktop .desk-extra[data-object="postit"],
   html[data-theme="night"] body #work-desktop .desk-extra[data-object="postit"] {
