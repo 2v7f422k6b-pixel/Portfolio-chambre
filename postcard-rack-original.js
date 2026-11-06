@@ -3,7 +3,8 @@
 'use strict';
 const rack=document.getElementById('postcard-shop-preview');
 if(!rack)return;
-const sources=['assets/IMG_5109.png','assets/IMG_5108.png'];
+// Rear structure first; front retaining bars last.
+const sources=['assets/IMG_5108.png','assets/IMG_5109.png'];
 Promise.all(sources.map(src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=resolve;img.onerror=reject;img.src=src;}))).then(()=>{
 const NS='http://www.w3.org/2000/svg';
 const svg=document.createElementNS(NS,'svg');
