@@ -1201,7 +1201,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-eve
       if (!isTouch(event)) return;
       touching = true;
       clearTimeout(releaseTimer);
-      svg.classList.add('hotspot-peek');
+      // Touch feedback stays on the touched object; only the guide reveals all zones.
       mark(event.target);
     }, { passive: true });
 
