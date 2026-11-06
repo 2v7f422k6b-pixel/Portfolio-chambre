@@ -482,7 +482,7 @@ html body #window-shade[hidden],
 html body #special-shade[hidden]{display:none!important;pointer-events:none!important;visibility:hidden!important}
 
 /* Hand-traced details inside dynamically opened portfolio windows. */
-html body #window-shade :is(.viewer-stage,.viewer-thumb,.motion-reels-outline,.motion-reels-actions button,.motion-reels-center-play,.motion-reels-screen,.motion-reels-drawer,.motion-reels-list button,.project-icon).sketch-ui-frame,
+html body #window-shade :is(.viewer-stage,.viewer-thumb,.motion-reels-outline,.motion-reels-actions button,.motion-reels-screen,.motion-reels-drawer,.motion-reels-list button,.project-icon).sketch-ui-frame,
 html body :is(#global-search-popover,#global-search-input,#work-search-input).sketch-ui-frame{
  position:relative!important;border-color:transparent!important;outline:0!important;border-radius:0!important;
  box-shadow:none!important;
