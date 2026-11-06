@@ -41,3 +41,7 @@ html body #work-break-nudge .wb-actions button{min-height:44px;padding:10px 18px
 html body #work-break-nudge .wb-go .lena-heart{display:none!important}
 html body #work-break-nudge .wb-machine-original .wb-written{color:#ff0033!important;font-weight:600!important;opacity:1!important}
 html body #work-break-nudge .wb-machine-original .wb-caret{background:#ff0033!important;opacity:1}
+
+/* Half of the stroke is outside the matching clip: retain a clear inner outline. */
+html body #work-break-nudge :is(.wb-card,.wb-actions button)>.sketch-ui-svg>.sketch-ui-ink{stroke:#ff173b!important;stroke-width:3px!important;fill:none!important;filter:none!important}
+html body #work-break-nudge .wb-card>.sketch-ui-svg{z-index:11!important}
