@@ -532,14 +532,25 @@ window.addEventListener('message',event=>{
  if(event.origin!==location.origin||!specialShade.classList.contains('polaroids-floating')||event.source!==specialHost.querySelector('iframe')?.contentWindow)return;
  if(event.data?.type==='nana-polaroid-close'){closeSpecial();return;}
  if(event.data?.type!=='nana-polaroid-arrival'||!polaroidAudio||polaroidAudio.state!=='running')return;
- const ctx=polaroidAudio,t=ctx.currentTime,duration=.19;
- const buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*duration),ctx.sampleRate),data=buffer.getChannelData(0);
- for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(.65+.35*Math.sin(i*.013));
- const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
- source.buffer=buffer;filter.type='bandpass';filter.frequency.setValueAtTime(1800,t);filter.frequency.exponentialRampToValueAtTime(650,t+duration);filter.Q.value=.65;
- gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.075,t+.015);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);
- source.connect(filter);filter.connect(gain);gain.connect(ctx.destination);source.start(t);source.stop(t+duration);
- source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};
+ // Two dry mechanical transients: shutter opening, then closing.
+ const ctx=polaroidAudio,t=ctx.currentTime;
+ function shutter(at,duration,volume,frequency){
+  const buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*duration),ctx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++){
+   const seconds=i/ctx.sampleRate;
+   data[i]=((Math.random()*2-1)*.7+Math.sin(2*Math.PI*frequency*seconds)*.3)*Math.exp(-seconds*110);
+  }
+  const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
+  source.buffer=buffer;filter.type='highpass';filter.frequency.value=700;
+  gain.gain.setValueAtTime(volume,at);
+  gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  source.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
+  source.start(at);source.stop(at+duration);
+  source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};
+ }
+ shutter(t,.035,.28,2100);
+ shutter(t+.065,.055,.38,1350);
 });
 function showMusic(autoplay=false){
  player.hidden=false;
