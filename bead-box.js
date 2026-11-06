@@ -127,7 +127,7 @@ function updateRoomCharm(){
 function mount(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
  const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(278 112)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
- g.innerHTML='<defs><clipPath id="bead-shelf-support-clip"><path d="M-8 -10 H60 V55.2 L-8 36.9Z"/></clipPath><filter id="bead-box-night-colors" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 .034 0 0 .008 0 .66 0 0 .008 0 .7 0 0 .208 0 0 0 1 0"/></filter></defs><g clip-path="url(#bead-shelf-support-clip)"><g class="bead-shelf-art"><image id="bead-box-shelf-ink" href="assets/IMG_5128.png" x="-5" y="-1" width="62" height="62"/></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/></g>';
+ g.innerHTML='<defs><clipPath id="bead-shelf-support-clip"><path d="M-8 -10 H60 V55.2 L-8 36.9Z"/></clipPath><filter id="bead-box-night-colors" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 .034 0 0 .008 0 .66 0 0 .008 0 .7 0 0 .208 0 0 0 1 0"/></filter></defs><g clip-path="url(#bead-shelf-support-clip)"><g class="bead-shelf-art"><image id="bead-box-shelf-ink" href="assets/IMG_5128.png" x="-2" y="3.2" width="58" height="58"/></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/></g>';
  svg.appendChild(g);updateRoomCharm();
  g.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});
 }
