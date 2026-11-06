@@ -108,25 +108,8 @@
   // Drawn in the scene's 1670×942 coordinate system so it follows the rug
   // at every viewport size. The four crooked legs on each side wiggle as it runs.
   const spider=make('g',{class:'rug-spider-run'});
-  const legs=make('g',{class:'rug-spider-legs rug-spider-ink',
-    fill:'none', 'stroke-width':'1.65',
-    'stroke-linejoin':'round', 'stroke-linecap':'round'});
-  [
-    'M -3 -2 Q -8 -10 -12 -8 Q -15 -7 -15 -11',
-    'M -4 -1 Q -10 -5 -15 -3',
-    'M -4 2 Q -11 2 -15 7',
-    'M -3 3 Q -8 9 -12 12',
-    'M 3 -3 Q 8 -10 12 -8 Q 15 -7 15 -11',
-    'M 4 -1 Q 11 -6 15 -2',
-    'M 4 2 Q 11 2 15 7',
-    'M 3 3 Q 8 10 12 12'
-  ].forEach(d=>legs.appendChild(make('path',{d})));
-  spider.appendChild(legs);
-  spider.appendChild(make('ellipse',{class:'rug-spider-body',cx:'-2.2',
-    cy:'0',rx:'5.4',ry:'5.1','stroke-width':'1.1'}));
-  spider.appendChild(make('ellipse',{class:'rug-spider-body',cx:'4.3',
-    cy:'-1.5',rx:'3.1',ry:'3.0','stroke-width':'1'}));
-  spider.appendChild(make('circle',{cx:'5.2',cy:'-2.5',r:'.85',fill:'#fff0f3'}));
+  spider.appendChild(make('image',{class:'rug-spider-day',href:'assets/drawn-ui/araignee_jour.png',x:-16,y:-14,width:32,height:28}));
+  spider.appendChild(make('image',{class:'rug-spider-night',href:'assets/drawn-ui/araignee_nuit.png',x:-16,y:-14,width:32,height:28}));
   // Clip only the spider (not the rug fold) at the room's lower edge,
   // so it vanishes naturally as it scuttles off the bottom of the screen.
   const spiderClip=make('clipPath',{id:'nana-rug-spider-clip',clipPathUnits:'userSpaceOnUse'});

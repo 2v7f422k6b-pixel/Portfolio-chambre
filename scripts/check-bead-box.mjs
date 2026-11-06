@@ -46,7 +46,7 @@ const loadedLetters=setup('en',savedLetters);
 assert.deepEqual(Array.from(loadedLetters.api.getBeads(),b=>b.variant),[0,1,2,3]);
 for(const b of loadedLetters.api.getBeads()){
  const rendered=loadedLetters.api.bead(b.type,b.letter,b.variant);
- assert(rendered.includes('assets/beads/IMG_521'));assert(rendered.includes('<text'));
+ assert(rendered.includes('assets/beads/IMG_521'));assert(rendered.includes('class="bead-letter"'));assert(!rendered.includes('<text'));
  assert.equal(rendered,loadedLetters.api.bead(b.type,b.letter,b.variant));
 }
 assert(!letters.api.panel().includes('data-add-bead="letter"'));

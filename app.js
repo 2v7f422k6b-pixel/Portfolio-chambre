@@ -464,7 +464,7 @@ function openAbout(){
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=10" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261106-lena-drawings" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
@@ -510,12 +510,12 @@ function phoneMail(){
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light;aspect-ratio:987/1295;width:min(540px,94vw,calc(80dvh * 987 / 1295))" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-pixel-font-7" allow="autoplay"></iframe>';
+ specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light;aspect-ratio:987/1295;width:min(540px,94vw,calc(80dvh * 987 / 1295))" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-lena-drawings" allow="autoplay"></iframe>';
 }
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-progress-hearts-5"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-lena-drawings"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
@@ -523,7 +523,7 @@ function showPolaroids(){
  closeWindow();closeSpecial();
  specialShade.classList.add('polaroids-floating');
  try {const Audio=window.AudioContext||window.webkitAudioContext;if(Audio){polaroidAudio=new Audio();polaroidAudio.resume().catch(()=>{});}}catch(_){}
- specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261106-code-cleanup-1" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261106-lena-drawings" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});

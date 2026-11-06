@@ -34,7 +34,8 @@
     });
     $('#milk-light').setAttribute('stop-color',kind==='Oat'?'#ecce9f':'#f6e8cf');
     $('#milk-dark').setAttribute('stop-color',kind==='Oat'?'#bb9066':'#cfaf8c');
-    $('#cream-ring').setAttribute('stroke',kind==='Oat'?'#f3deba':'#fff6e6');
+    $('#milk').style.filter=kind==='Oat'?'none':'brightness(1.12) saturate(.65)';
+    $('#cream-ring').style.filter=kind==='Oat'?'none':'brightness(1.08)';
   }
   $('#espresso-btn').addEventListener('click',() => {
     $('#espresso').setAttribute('opacity','1');goto(1);

@@ -152,7 +152,7 @@
     hint.innerHTML =
       '<div class="pan-hint-visual">' +
       '<svg class="pan-hint-directions" viewBox="0 0 168 168" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<g fill="none" opacity="0.58" stroke="#ff173b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
+      '<g opacity="0.58"><image href="assets/drawn-ui/aide_deplacement_haut.png" x="67" y="10" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_bas.png" x="67" y="113" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_gauche.png" x="10" y="67" width="45" height="34"/><image href="assets/drawn-ui/aide_deplacement_droite.png" x="113" y="67" width="45" height="34"/></g>' +
       '<g fill="none" opacity="0.67" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M84 50 V18 M68 34 L84 18 L100 34"/><path d="M84 118 V150 M68 134 L84 150 L100 134"/><path d="M50 84 H18 M34 68 L18 84 L34 100"/><path d="M118 84 H150 M134 68 L150 84 L134 100"/></g>' +
       '</svg>' +
       '<span class="pan-hint-label" data-no-translate></span>' +

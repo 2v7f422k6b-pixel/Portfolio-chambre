@@ -98,7 +98,7 @@
     iframe.title = "mimilab 3";
     iframe.setAttribute("allow", "autoplay");
     iframe.src =
-      "dreamlab.html?v=20261106-code-cleanup-1&lang=" +
+      "dreamlab.html?v=20261106-lena-drawings&lang=" +
       (document.documentElement.lang.toLowerCase().startsWith("en")
         ? "en"
         : "fr");

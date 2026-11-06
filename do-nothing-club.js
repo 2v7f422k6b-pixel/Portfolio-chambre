@@ -134,63 +134,18 @@
       const red = '#ff173b', paper = '#fff2fc', pink = '#ffe2ee';
       ctx.fillStyle = paper;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = red;
-      ctx.lineWidth = 6;
-      ctx.lineJoin = 'round';
-      // Genuinely hand-traced outlines: many tiny organic deviations,
-      // never large waves or geometric straight segments.
-      const tracedRect = (x, y, w, h, wobble, seed, fill = false) => {
-        let state = seed >>> 0;
-        const random = () => {
-          state ^= state << 13;
-          state ^= state >>> 17;
-          state ^= state << 5;
-          return (state >>> 0) / 4294967296;
-        };
-        const edge = (x0, y0, x1, y1, horizontal) => {
-          const sections = Math.max(2, Math.ceil(Math.hypot(x1-x0, y1-y0) / 68));
-          for (let i = 1; i <= sections; i++) {
-            const mid = (i - .5) / sections;
-            const end = i / sections;
-            const offset = (random() - .5) * wobble * 2;
-            const slightEnd = i === sections ? 0 : (random() - .5) * wobble * .7;
-            ctx.quadraticCurveTo(
-              x0 + (x1-x0) * mid + (horizontal ? 0 : offset),
-              y0 + (y1-y0) * mid + (horizontal ? offset : 0),
-              x0 + (x1-x0) * end + (horizontal ? 0 : slightEnd),
-              y0 + (y1-y0) * end + (horizontal ? slightEnd : 0)
-            );
-          }
-        };
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        edge(x,y,x+w,y,true);
-        edge(x+w,y,x+w,y+h,false);
-        edge(x+w,y+h,x,y+h,true);
-        edge(x,y+h,x,y,false);
-        ctx.closePath();
-        if (fill) ctx.fill();
-        else ctx.stroke();
-      };
-      tracedRect(42,42,1516,1036,3.2,4201);
-      ctx.lineWidth = 2;
-      tracedRect(61,61,1478,998,2.5,6121);
-      const heart = (x, y, size) => {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(size, size);
-        ctx.beginPath();
-        ctx.moveTo(0, .32);
-        ctx.bezierCurveTo(-.85, -.32, -.55, -.95, 0, -.42);
-        ctx.bezierCurveTo(.55, -.95, .85, -.32, 0, .32);
-        ctx.fillStyle = red;
-        ctx.fill();
-        ctx.restore();
-      };
-      heart(123, 135, 50);
-      heart(1470, 920, 48);
-      heart(1467, 147, 29);
-      heart(140, 954, 29);
+      const loadArtwork=src=>new Promise((resolve,reject)=>{
+        const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src;
+      });
+      const [frame,ornament,heartArt]=await Promise.all([
+        loadArtwork('assets/drawn-ui/cadre_certificat.png'),
+        loadArtwork('assets/drawn-ui/ornement_certificat.png'),
+        loadArtwork('assets/heart-lena.svg')
+      ]);
+      ctx.drawImage(frame,28,28,1544,1064);
+      for(const [x,y,size] of [[123,135,70],[1470,920,68],[1467,147,42],[140,954,42]]){
+        ctx.drawImage(heartArt,x-size/2,y-size/2,size,size);
+      }
       const fontFamily = '"Nana Trace UI", "NanaTraceUI", "Comic Sans MS", cursive';
       const centered = (value, y, size, maxWidth = 1410, color = red) => {
         ctx.textAlign = 'center';
@@ -206,7 +161,8 @@
       };
       centered('NANA COLOR STUDIO  ·  DO NOTHING CLUB', 138, 32);
       centered(fr ? 'CERTIFICAT DE FLEMME INTERSIDÉRALE' : 'CERTIFICATE OF INTERGALACTIC LAZINESS', 236, 77);
-      centered(fr ? '✳ DÉLIVRÉ SANS LE MOINDRE EFFORT ✳' : '✳ AWARDED WITHOUT THE SLIGHTEST EFFORT ✳', 323, 39);
+      centered(fr ? 'DÉLIVRÉ SANS LE MOINDRE EFFORT' : 'AWARDED WITHOUT THE SLIGHTEST EFFORT', 323, 39,1210);
+      ctx.drawImage(ornament,130,303,40,40);ctx.drawImage(ornament,1430,303,40,40);
 
       // Embed the user's Rilakkuma drawing without cropping it.
       const drawing = new Image();
@@ -220,7 +176,7 @@
         const ratio = Math.min(maxW / drawing.naturalWidth, maxH / drawing.naturalHeight);
         const w = drawing.naturalWidth * ratio, h = drawing.naturalHeight * ratio;
         ctx.fillStyle = pink;
-        tracedRect(800 - w / 2 - 9, 390 - 9, w + 18, h + 18, 2.1, 3909, true);
+        ctx.fillRect(800 - w / 2 - 9, 390 - 9, w + 18, h + 18);
         ctx.drawImage(drawing, 800 - w / 2, 390, w, h);
       }
       centered(fr ? 'CHAMPION·NE OFFICIEL·LE' : 'OFFICIAL CHAMPION', 829, 62);

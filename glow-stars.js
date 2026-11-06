@@ -618,20 +618,17 @@
   group.setAttribute('aria-hidden','true');
   group.setAttribute('pointer-events',edit?'auto':'none');
   group.style.pointerEvents=edit?'auto':'none';
-  const points=(x,y,r,rotation)=>{
-    const coords=[];
-    for(let i=0;i<10;i++){
-      const a=(i*36-90+rotation)*Math.PI/180;
-      const radius=i%2 ? r*.46 : r;
-      coords.push((x+Math.cos(a)*radius).toFixed(2)+','+(y+Math.sin(a)*radius).toFixed(2));
-    }
-    return coords.join(' ');
+  const positionStar=(el,x,y,r,rotation)=>{
+    el.setAttribute('x',x-r);el.setAttribute('y',y-r);
+    el.setAttribute('width',r*2);el.setAttribute('height',r*2);
+    el.setAttribute('transform',`rotate(${rotation} ${x} ${y})`);
+    el.setAttribute('href','assets/drawn-ui/etoile_mur.png');
   };
   const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
   const elements=[];
   stars.forEach(([x,y,r,angle],i)=>{
-    const star=document.createElementNS(NS,'polygon');
-    star.setAttribute('points',points(x,y,r,angle));
+    const star=document.createElementNS(NS,'image');
+    positionStar(star,x,y,r,angle);
     star.setAttribute('class','nana-phosphor-star');
     star.style.setProperty('--twinkle-delay',(i%9)*-.7+'s');
     star.style.setProperty('--day-star-color',palette[i%palette.length]);
@@ -649,13 +646,13 @@
   style.textContent=`
     html:not(.nana-stars-edit) #nana-glow-stars, html:not(.nana-stars-edit) #nana-glow-stars * {pointer-events:none!important;cursor:inherit!important}
     #nana-glow-stars .nana-phosphor-star {
-      fill:var(--day-star-color);stroke:var(--day-star-color);stroke-width:.7;
+
       opacity:.48;filter:none;
       transition:fill 1.1s,opacity 1.1s,filter 1.1s;
     }
     html[data-theme="night"] #nana-glow-stars .nana-phosphor-star {
-      fill:#dfffaa;stroke:#e8ffc2;opacity:.9;
-      filter:drop-shadow(0 0 3px #e4ffac) drop-shadow(0 0 7px #b9f579);
+      opacity:.9;
+      filter:brightness(0) saturate(100%) invert(18%) sepia(24%) saturate(1200%) hue-rotate(80deg);
       animation:nana-phosphor-breathe 6.8s ease-in-out infinite;
       animation-delay:var(--twinkle-delay);
     }
@@ -700,7 +697,7 @@
     [save,add,copy,reset].forEach(b=>{b.style.cssText='margin:4px;padding:5px;background:white;border:1px solid #ff173b;color:#ff173b';notice.appendChild(b)});
     document.body.appendChild(notice);
     const persist=()=>{localStorage.setItem(storageKey,JSON.stringify(stars));};
-    const refresh=()=>{elements.forEach((el,i)=>{if(!el)return;const v=stars[i];el.setAttribute('points',points(...v));el.style.display=v[2]>0?'':'none';});};
+    const refresh=()=>{elements.forEach((el,i)=>{if(!el)return;const v=stars[i];positionStar(el,...v);el.style.display=v[2]>0?'':'none';});};
     const coords=e=>{const rect=layer.getBoundingClientRect();return [(e.clientX-rect.left)*1670/rect.width,(e.clientY-rect.top)*942/rect.height];};
     let active=-1;
     elements.forEach((el,i)=>{
@@ -716,10 +713,10 @@
       const count=stars.length;
       const v=[Math.max(0,Math.min(1670,x)),Math.max(0,Math.min(942,y)),7,0];
       stars.push(v);
-      const el=document.createElementNS(NS,'polygon');
+      const el=document.createElementNS(NS,'image');
       el.setAttribute('class','nana-phosphor-star');
       el.style.setProperty('--day-star-color',palette[count%palette.length]);
-      el.setAttribute('points',points(...v));
+      positionStar(el,...v);
       el.style.setProperty('pointer-events','all','important');
       el.style.touchAction='none';
       el.style.cursor='grab';
@@ -737,7 +734,7 @@
         const [x,y]=coords(e);
         stars[index][0]=Math.max(0,Math.min(1670,x));
         stars[index][1]=Math.max(0,Math.min(942,y));
-        el.setAttribute('points',points(...stars[index]));
+        positionStar(el,...stars[index]);
         e.preventDefault();
       });
       const finish=()=>{if(dragging){dragging=false;persist();}};

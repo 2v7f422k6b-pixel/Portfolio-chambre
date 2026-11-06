@@ -56,6 +56,7 @@
     if(w<18||h<12)return;
     if(!force&&w===item.w&&h===item.h&&(item.kind!=='station'||mobile===item.mobile))return;
     item.w=w;item.h=h;item.mobile=mobile;
+    if(item.kind==='frame')return;
     item.svg.setAttribute('viewBox','0 0 '+w+' '+h);
     item.ink.setAttribute('d',makePath(w,h,item.kind,item.seed));
   }
@@ -69,13 +70,14 @@
       if(previous.svg.parentNode!==el){el.appendChild(previous.svg);redraw(previous,true);}
       return;
     }
-    const svg=document.createElementNS(NS,'svg');
+    const svg=kind==='frame'?document.createElement('span'):document.createElementNS(NS,'svg');
+    if(kind==='frame'){svg.classList.add('lena-drawn-frame');svg.style.borderImage=`url("../assets/drawn-ui/${el.matches('button')?'cadre_bouton':'cadre_fenetre'}.png") 18 / 10px / 0 stretch`;}
     svg.classList.add('latte-trace-svg');
     svg.setAttribute('aria-hidden','true');
     svg.setAttribute('focusable','false');
     svg.setAttribute('preserveAspectRatio','none');
     const ink=document.createElementNS(NS,'path');
-    svg.appendChild(ink);
+    if(kind!=='frame')svg.appendChild(ink);
     el.classList.add('latte-traced');
     el.appendChild(svg);
     const item={element:el,svg,ink,kind,seed,w:0,h:0,mobile:false};

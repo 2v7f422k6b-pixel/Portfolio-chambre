@@ -234,7 +234,13 @@
       const item={element,svg:null,kind,seed,nativeBackground,previousWidth:0,previousHeight:0};
       redrawn.set(element,item);return item;
     }
-    const svg = document.createElementNS(NS, 'svg');
+    const drawnFrame = kind === 'frame' || kind === 'double-frame';
+    const svg = drawnFrame ? document.createElement('span') : document.createElementNS(NS, 'svg');
+    if(drawnFrame){
+      const file=kind==='double-frame'?'cadre_certificat':element.matches('button,a,.soft-btn,.pill-link')?'cadre_bouton':'cadre_fenetre';
+      svg.classList.add('lena-drawn-frame');
+      svg.style.setProperty('border-image',`url("${new URL('assets/drawn-ui/'+file+'.png',scriptBase).href}") 18 / 10px / 0 stretch`);
+    }
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
     // Scrollbars reduce the available SVG width. Do not letterbox its viewBox,
@@ -243,9 +249,9 @@
     svg.classList.add('sketch-ui-svg');
     const ink = document.createElementNS(NS, 'path');
     ink.classList.add('sketch-ui-ink');
-    svg.appendChild(ink);
+    if(!drawnFrame)svg.appendChild(ink);
     const innerInk = kind === 'double-frame' ? document.createElementNS(NS, 'path') : null;
-    if (innerInk) {
+    if (innerInk && !drawnFrame) {
       innerInk.classList.add('sketch-ui-ink', 'sketch-ui-inner');
       svg.appendChild(innerInk);
     }
@@ -257,7 +263,7 @@
     element.appendChild(svg);
     if(getComputedStyle(element).position==='static')element.style.position='relative';
     element.classList.add(kind.includes('rule') || kind.startsWith('edges:') ? 'sketch-ui-rule' : 'sketch-ui-frame');
-    const item = {element, svg, ink, innerInk, kind, seed, previousWidth:0, previousHeight:0};
+    const item = {element, svg, ink, innerInk, drawnFrame, kind, seed, previousWidth:0, previousHeight:0};
     redrawn.set(element, item);
     return item;
   }
@@ -296,6 +302,11 @@
     if(width<8||height<4)return;
     if(width===item.previousWidth&&height===item.previousHeight)return;
     item.previousWidth=width;item.previousHeight=height;
+    if(item.drawnFrame)return;
+    if(!item.svg && item.kind==='frame'){
+      item.element.style.setProperty('border-image',`url("${new URL('assets/drawn-ui/cadre_bouton.png',scriptBase).href}") 18 / 10px / 0 stretch`,'important');
+      return;
+    }
     if(!item.svg){
       const path=makePath(width,height,item.seed,item.kind,1.15);
       const image='<svg xmlns="'+NS+'" width="'+width+'" height="'+height+'" viewBox="0 0 '+width+' '+height+'"><path d="'+path+'" fill="none" stroke="#ff173b" stroke-width="1.5"/></svg>';

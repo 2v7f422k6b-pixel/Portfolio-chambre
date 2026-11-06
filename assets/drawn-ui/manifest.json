@@ -1,0 +1,3516 @@
+{
+  "artist": "Léna de Firmas",
+  "description": "Découpes des cinq planches fournies par Léna. Aucun dessin généré ou retracé.",
+  "source_dimensions": [
+    2400,
+    2400
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 6,
+    "cell_width": 600,
+    "cell_height": 400
+  },
+  "assets": [
+    {
+      "file": "01_Icones_communes/fleche_gauche.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 1,
+      "column": 1,
+      "source_cell": [
+        0,
+        0,
+        600,
+        400
+      ],
+      "source_ink_bbox": [
+        179,
+        93,
+        397,
+        229
+      ],
+      "size": [
+        234,
+        152
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "3f6e77713b656e4ebc0acaa3f0de180ac6ede331cba7f7a36468f6e62c7c86c0",
+      "site_file": "assets/drawn-ui/fleche_gauche.png"
+    },
+    {
+      "file": "01_Icones_communes/fleche_droite.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 1,
+      "column": 2,
+      "source_cell": [
+        600,
+        0,
+        1200,
+        400
+      ],
+      "source_ink_bbox": [
+        786,
+        99,
+        1016,
+        231
+      ],
+      "size": [
+        246,
+        148
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "cc9432a880a0d3510dc7ec322cd60a726a1668646195dde491e2a3d46483bc69",
+      "site_file": "assets/drawn-ui/fleche_droite.png"
+    },
+    {
+      "file": "01_Icones_communes/fleche_haut.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 1,
+      "column": 3,
+      "source_cell": [
+        1200,
+        0,
+        1800,
+        400
+      ],
+      "source_ink_bbox": [
+        1432,
+        38,
+        1570,
+        271
+      ],
+      "size": [
+        154,
+        249
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f96775835873c74706376c92afefef5150e045c069080442f09f327b15c92068",
+      "site_file": "assets/drawn-ui/fleche_haut.png"
+    },
+    {
+      "file": "01_Icones_communes/fleche_bas_telecharger.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 1,
+      "column": 4,
+      "source_cell": [
+        1800,
+        0,
+        2400,
+        400
+      ],
+      "source_ink_bbox": [
+        2028,
+        35,
+        2169,
+        288
+      ],
+      "size": [
+        157,
+        269
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "7116f4f8fd320092108d276f139630584b456e94ab7b901e20c834c5aa5f1266",
+      "site_file": "assets/drawn-ui/fleche_bas_telecharger.png"
+    },
+    {
+      "file": "01_Icones_communes/fleche_lien_agrandir.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 2,
+      "column": 1,
+      "source_cell": [
+        0,
+        400,
+        600,
+        800
+      ],
+      "source_ink_bbox": [
+        197,
+        443,
+        414,
+        662
+      ],
+      "size": [
+        233,
+        235
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "779567153c89a99b0044e7c671d3c2ffb9056dafcfaefc61dd439087f3e07763",
+      "site_file": "assets/drawn-ui/fleche_lien_agrandir.png"
+    },
+    {
+      "file": "01_Icones_communes/annuler.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 2,
+      "column": 2,
+      "source_cell": [
+        600,
+        400,
+        1200,
+        800
+      ],
+      "source_ink_bbox": [
+        776,
+        488,
+        1023,
+        636
+      ],
+      "size": [
+        263,
+        164
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "2cf2be2577a13fd6b2f274fd21ceec4b1a1b027cc9d715acdeb1e54e8b018a3f",
+      "site_file": "assets/drawn-ui/annuler.png"
+    },
+    {
+      "file": "01_Icones_communes/retablir.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 2,
+      "column": 3,
+      "source_cell": [
+        1200,
+        400,
+        1800,
+        800
+      ],
+      "source_ink_bbox": [
+        1377,
+        486,
+        1615,
+        636
+      ],
+      "size": [
+        254,
+        166
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "615e49fd4282e39601925c29f9c398af04c99fadb2e28454f37e1b0552fdba4f",
+      "site_file": "assets/drawn-ui/retablir.png"
+    },
+    {
+      "file": "01_Icones_communes/retourner_recommencer.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 2,
+      "column": 4,
+      "source_cell": [
+        1800,
+        400,
+        2400,
+        800
+      ],
+      "source_ink_bbox": [
+        1976,
+        444,
+        2220,
+        672
+      ],
+      "size": [
+        260,
+        244
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "2e9ce921470987128113d3cef8a4efec1b6501f25568424b2efa17454e434766",
+      "site_file": "assets/drawn-ui/retourner_recommencer.png"
+    },
+    {
+      "file": "01_Icones_communes/chevron_gauche.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 3,
+      "column": 1,
+      "source_cell": [
+        0,
+        800,
+        600,
+        1200
+      ],
+      "source_ink_bbox": [
+        247,
+        851,
+        364,
+        1056
+      ],
+      "size": [
+        133,
+        221
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f3a468d2e28873de33a3c150cffcbafd3481205200d60fc9622f851c59bf94c7",
+      "site_file": "assets/drawn-ui/chevron_gauche.png"
+    },
+    {
+      "file": "01_Icones_communes/chevron_droit.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 3,
+      "column": 2,
+      "source_cell": [
+        600,
+        800,
+        1200,
+        1200
+      ],
+      "source_ink_bbox": [
+        832,
+        855,
+        960,
+        1057
+      ],
+      "size": [
+        144,
+        218
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "80fe7159bb21d6ad319c87a794fafea841e3642dac874f9497e55d78228e117f",
+      "site_file": "assets/drawn-ui/chevron_droit.png"
+    },
+    {
+      "file": "01_Icones_communes/lecture.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 3,
+      "column": 3,
+      "source_cell": [
+        1200,
+        800,
+        1800,
+        1200
+      ],
+      "source_ink_bbox": [
+        1369,
+        833,
+        1617,
+        1082
+      ],
+      "size": [
+        264,
+        265
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b1843df03c900d4ed139d61a59cc45e13187c3b74be48ee3ae8cf27c795e0cfd",
+      "site_file": "assets/drawn-ui/lecture.png"
+    },
+    {
+      "file": "01_Icones_communes/pause.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 3,
+      "column": 4,
+      "source_cell": [
+        1800,
+        800,
+        2400,
+        1200
+      ],
+      "source_ink_bbox": [
+        2048,
+        848,
+        2147,
+        1059
+      ],
+      "size": [
+        115,
+        227
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "14b24de9eb682561b4ee2880340a7518724d257fe379135f638cd5db91dbd578",
+      "site_file": "assets/drawn-ui/pause.png"
+    },
+    {
+      "file": "01_Icones_communes/arret.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 4,
+      "column": 1,
+      "source_cell": [
+        0,
+        1200,
+        600,
+        1600
+      ],
+      "source_ink_bbox": [
+        172,
+        1235,
+        425,
+        1487
+      ],
+      "size": [
+        269,
+        268
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "43ed54fced42a87345be7d694be7474a3414f8714256440dfc27ebaf70c07f7c",
+      "site_file": "assets/drawn-ui/arret.png"
+    },
+    {
+      "file": "01_Icones_communes/enregistrement.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 4,
+      "column": 2,
+      "source_cell": [
+        600,
+        1200,
+        1200,
+        1600
+      ],
+      "source_ink_bbox": [
+        781,
+        1241,
+        1026,
+        1484
+      ],
+      "size": [
+        261,
+        259
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "301635e4f8e6a2e85a82fa0bdc26b03382c147eb63c7f807ba723d9784251494",
+      "site_file": "assets/drawn-ui/enregistrement.png"
+    },
+    {
+      "file": "01_Icones_communes/ajouter.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 4,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1200,
+        1800,
+        1600
+      ],
+      "source_ink_bbox": [
+        1372,
+        1240,
+        1623,
+        1477
+      ],
+      "size": [
+        267,
+        253
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "2f6c2e24ceabf8199b3ec443a077b072ecffc869d6c88d58f5e343ee89904154",
+      "site_file": "assets/drawn-ui/ajouter.png"
+    },
+    {
+      "file": "01_Icones_communes/supprimer.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 4,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1200,
+        2400,
+        1600
+      ],
+      "source_ink_bbox": [
+        1977,
+        1240,
+        2215,
+        1475
+      ],
+      "size": [
+        254,
+        251
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f86008ff2ca3336c0184882a530f7471dc03dbf2430785c33d7ecb33a0dabe10",
+      "site_file": "assets/drawn-ui/supprimer.png"
+    },
+    {
+      "file": "01_Icones_communes/fermer_atelier.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 5,
+      "column": 1,
+      "source_cell": [
+        0,
+        1600,
+        600,
+        2000
+      ],
+      "source_ink_bbox": [
+        188,
+        1643,
+        415,
+        1870
+      ],
+      "size": [
+        243,
+        243
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "4f0a06500baec5f6a0d8e6c9e29f98b1e04c36424605c8e38941b6244e2297ec",
+      "site_file": "assets/drawn-ui/fermer_atelier.png"
+    },
+    {
+      "file": "01_Icones_communes/valider.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 5,
+      "column": 2,
+      "source_cell": [
+        600,
+        1600,
+        1200,
+        2000
+      ],
+      "source_ink_bbox": [
+        792,
+        1630,
+        1012,
+        1883
+      ],
+      "size": [
+        236,
+        269
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "50294724e642e629647c0463deee64e3bf110cbc781b706e48ca2e93475108c2",
+      "site_file": "assets/drawn-ui/valider.png"
+    },
+    {
+      "file": "01_Icones_communes/crayon_pinceau.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 5,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1600,
+        1800,
+        2000
+      ],
+      "source_ink_bbox": [
+        1373,
+        1630,
+        1623,
+        1884
+      ],
+      "size": [
+        266,
+        270
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "bc63dac8d6cac82af9d337b13a79f843008aa318bef1fdd779a22ff8872cd689",
+      "site_file": "assets/drawn-ui/crayon_pinceau.png"
+    },
+    {
+      "file": "01_Icones_communes/gomme.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 5,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1600,
+        2400,
+        2000
+      ],
+      "source_ink_bbox": [
+        1977,
+        1678,
+        2230,
+        1836
+      ],
+      "size": [
+        269,
+        174
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "ea8c8a0f774b6a5a524967940c921b84d5156a39458cbb57b4a01793394871a6",
+      "site_file": "assets/drawn-ui/gomme.png"
+    },
+    {
+      "file": "01_Icones_communes/pot_packaging.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 6,
+      "column": 1,
+      "source_cell": [
+        0,
+        2000,
+        600,
+        2400
+      ],
+      "source_ink_bbox": [
+        173,
+        2034,
+        425,
+        2290
+      ],
+      "size": [
+        268,
+        272
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "08ea7f0d6c9affe45bbc7f396c07a2fabdbeae38747804f0bf96e3fd51fe1ff4",
+      "site_file": "assets/drawn-ui/pot_packaging.png"
+    },
+    {
+      "file": "01_Icones_communes/fond.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 6,
+      "column": 2,
+      "source_cell": [
+        600,
+        2000,
+        1200,
+        2400
+      ],
+      "source_ink_bbox": [
+        775,
+        2031,
+        1031,
+        2289
+      ],
+      "size": [
+        272,
+        274
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "8cdc6a87ef7cf81ab7983a810e18719cd3293c7d1bd998685d52808cf582c363",
+      "site_file": "assets/drawn-ui/fond.png"
+    },
+    {
+      "file": "01_Icones_communes/vue_grille.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 6,
+      "column": 3,
+      "source_cell": [
+        1200,
+        2000,
+        1800,
+        2400
+      ],
+      "source_ink_bbox": [
+        1374,
+        2033,
+        1623,
+        2291
+      ],
+      "size": [
+        265,
+        274
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "ea9f9ce92c8385956893ac65005e6bd24fab2545873129739730fc80afbc6779",
+      "site_file": "assets/drawn-ui/vue_grille.png"
+    },
+    {
+      "file": "01_Icones_communes/vue_liste.png",
+      "source": "IMG_5284.png",
+      "sheet": 1,
+      "row": 6,
+      "column": 4,
+      "source_cell": [
+        1800,
+        2000,
+        2400,
+        2400
+      ],
+      "source_ink_bbox": [
+        1975,
+        2041,
+        2227,
+        2279
+      ],
+      "size": [
+        268,
+        254
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "80a3e9b0e4aefff67bedd87c2f23e880fc11cfb4596c1883746e0446c4a5e740",
+      "site_file": "assets/drawn-ui/vue_liste.png"
+    },
+    {
+      "file": "01_Icones_communes/loupe_typographique.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 1,
+      "column": 1,
+      "source_cell": [
+        0,
+        0,
+        600,
+        400
+      ],
+      "source_ink_bbox": [
+        181,
+        38,
+        418,
+        276
+      ],
+      "size": [
+        253,
+        254
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 189,
+          "bbox_in_cell": [
+            420,
+            168,
+            432,
+            188
+          ]
+        }
+      ],
+      "sha256": "ed89a376999807a8c2737491c659a03a21da66e1c2cab249ec796f75f70ea67f",
+      "site_file": "assets/drawn-ui/loupe_typographique.png"
+    },
+    {
+      "file": "01_Icones_communes/soleil.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 1,
+      "column": 2,
+      "source_cell": [
+        600,
+        0,
+        1200,
+        400
+      ],
+      "source_ink_bbox": [
+        765,
+        26,
+        1031,
+        290
+      ],
+      "size": [
+        282,
+        280
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 142,
+          "bbox_in_cell": [
+            51,
+            207,
+            61,
+            224
+          ]
+        }
+      ],
+      "sha256": "a9d5381552006d6a47b613d1d5520181c32fe6f25e71f452e0ca29b0d02ad1e9",
+      "site_file": "assets/drawn-ui/soleil.png"
+    },
+    {
+      "file": "01_Icones_communes/soleil_marseille.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 1,
+      "column": 3,
+      "source_cell": [
+        1200,
+        0,
+        1800,
+        400
+      ],
+      "source_ink_bbox": [
+        1366,
+        29,
+        1630,
+        289
+      ],
+      "size": [
+        280,
+        276
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 1,
+          "bbox_in_cell": [
+            55,
+            187,
+            56,
+            188
+          ]
+        },
+        {
+          "pixels": 371,
+          "bbox_in_cell": [
+            49,
+            187,
+            73,
+            210
+          ]
+        },
+        {
+          "pixels": 1,
+          "bbox_in_cell": [
+            61,
+            188,
+            62,
+            189
+          ]
+        },
+        {
+          "pixels": 1,
+          "bbox_in_cell": [
+            63,
+            188,
+            64,
+            189
+          ]
+        },
+        {
+          "pixels": 1,
+          "bbox_in_cell": [
+            50,
+            191,
+            51,
+            192
+          ]
+        }
+      ],
+      "sha256": "a4903fff0483d3685d6796cd3c9afe1343bf85d090e332f8d24f29f9ccfb1b24",
+      "site_file": "assets/drawn-ui/soleil_marseille.png"
+    },
+    {
+      "file": "01_Icones_communes/lune.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 1,
+      "column": 4,
+      "source_cell": [
+        1800,
+        0,
+        2400,
+        400
+      ],
+      "source_ink_bbox": [
+        2014,
+        28,
+        2190,
+        294
+      ],
+      "size": [
+        192,
+        282
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "88f1bc5c7192ffb15b2b72eaa599a12531ada7a066a1f7f1ab90178b370300da",
+      "site_file": "assets/drawn-ui/lune.png"
+    },
+    {
+      "file": "01_Icones_communes/enveloppe.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 2,
+      "column": 1,
+      "source_cell": [
+        0,
+        400,
+        600,
+        800
+      ],
+      "source_ink_bbox": [
+        176,
+        463,
+        427,
+        655
+      ],
+      "size": [
+        267,
+        208
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "cdb1103a11de5f1cf5ff519f0c2915e40b13be1c027ff6a3f85afacc72ff5156",
+      "site_file": "assets/drawn-ui/enveloppe.png"
+    },
+    {
+      "file": "01_Icones_communes/maison.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 2,
+      "column": 2,
+      "source_cell": [
+        600,
+        400,
+        1200,
+        800
+      ],
+      "source_ink_bbox": [
+        798,
+        450,
+        1001,
+        680
+      ],
+      "size": [
+        219,
+        246
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f4eb83015fad8854e2a2a0dfd4aa60161ee8950daf2eafe9517ea0db43c7c649",
+      "site_file": "assets/drawn-ui/maison.png"
+    },
+    {
+      "file": "01_Icones_communes/image_couverture.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 2,
+      "column": 3,
+      "source_cell": [
+        1200,
+        400,
+        1800,
+        800
+      ],
+      "source_ink_bbox": [
+        1372,
+        432,
+        1627,
+        689
+      ],
+      "size": [
+        271,
+        273
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "9edd7714f0538b5c5d6b0c4e0751f684449d753ed5a575744f66082abf39d152",
+      "site_file": "assets/drawn-ui/image_couverture.png"
+    },
+    {
+      "file": "01_Icones_communes/artistes.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 2,
+      "column": 4,
+      "source_cell": [
+        1800,
+        400,
+        2400,
+        800
+      ],
+      "source_ink_bbox": [
+        1986,
+        443,
+        2209,
+        690
+      ],
+      "size": [
+        239,
+        263
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "c6fe0774b03ca9aa175736380fe6322883bbb0f8d7b970a52c35d5f1fc9ef3ca",
+      "site_file": "assets/drawn-ui/artistes.png"
+    },
+    {
+      "file": "01_Icones_communes/fleur.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 3,
+      "column": 1,
+      "source_cell": [
+        0,
+        800,
+        600,
+        1200
+      ],
+      "source_ink_bbox": [
+        176,
+        840,
+        426,
+        1084
+      ],
+      "size": [
+        266,
+        260
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b986bd36fc5ec1a64703348511cb6ac03209a135b01663d2489a6b4e86261865",
+      "site_file": "assets/drawn-ui/fleur.png"
+    },
+    {
+      "file": "01_Icones_communes/etoile_pleine.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 3,
+      "column": 2,
+      "source_cell": [
+        600,
+        800,
+        1200,
+        1200
+      ],
+      "source_ink_bbox": [
+        787,
+        838,
+        1022,
+        1079
+      ],
+      "size": [
+        251,
+        257
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "8b6c0e719149719b681beb75ea29fc550504595cf1ebcbfe0a12404db986cc2f",
+      "site_file": "assets/drawn-ui/etoile_pleine.png"
+    },
+    {
+      "file": "01_Icones_communes/etincelle_pleine.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 3,
+      "column": 3,
+      "source_cell": [
+        1200,
+        800,
+        1800,
+        1200
+      ],
+      "source_ink_bbox": [
+        1387,
+        845,
+        1616,
+        1076
+      ],
+      "size": [
+        245,
+        247
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "3e158a67dcdea9f4d1b57b62d19f5745e96c08c74ac51f568543908dfc00e3a2",
+      "site_file": "assets/drawn-ui/etincelle_pleine.png"
+    },
+    {
+      "file": "01_Icones_communes/etincelle_vide.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 3,
+      "column": 4,
+      "source_cell": [
+        1800,
+        800,
+        2400,
+        1200
+      ],
+      "source_ink_bbox": [
+        1997,
+        849,
+        2217,
+        1081
+      ],
+      "size": [
+        236,
+        248
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 16,
+          "bbox_in_cell": [
+            182,
+            56,
+            188,
+            59
+          ]
+        }
+      ],
+      "sha256": "c2bebfe3c518da9f74271a894873db7bc37478e76482964b7060fb4c5959e132",
+      "site_file": "assets/drawn-ui/etincelle_vide.png"
+    },
+    {
+      "file": "01_Icones_communes/ornement_certificat.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 4,
+      "column": 1,
+      "source_cell": [
+        0,
+        1200,
+        600,
+        1600
+      ],
+      "source_ink_bbox": [
+        176,
+        1237,
+        426,
+        1482
+      ],
+      "size": [
+        266,
+        261
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 65,
+          "bbox_in_cell": [
+            318,
+            385,
+            330,
+            393
+          ]
+        }
+      ],
+      "sha256": "a34d5905c07006053000bb90d6ee8182c227f662d1ecec20b3c26100875d28bc",
+      "site_file": "assets/drawn-ui/ornement_certificat.png"
+    },
+    {
+      "file": "01_Icones_communes/note_musique.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 4,
+      "column": 2,
+      "source_cell": [
+        600,
+        1200,
+        1200,
+        1600
+      ],
+      "source_ink_bbox": [
+        816,
+        1234,
+        976,
+        1482
+      ],
+      "size": [
+        176,
+        264
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b540dfb6e1756edf445cb21e85468c8060ea03726a1189b581e7001d4ba68b2c",
+      "site_file": "assets/drawn-ui/note_musique.png"
+    },
+    {
+      "file": "01_Icones_communes/notes_musique.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 4,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1200,
+        1800,
+        1600
+      ],
+      "source_ink_bbox": [
+        1422,
+        1234,
+        1583,
+        1480
+      ],
+      "size": [
+        177,
+        262
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "514efeb71ab517932ede5e4c6d4ff9c2e1e9bfd2faa7ba8bc1481dece0fc07c3",
+      "site_file": "assets/drawn-ui/notes_musique.png"
+    },
+    {
+      "file": "01_Icones_communes/note_son_coupe.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 4,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1200,
+        2400,
+        1600
+      ],
+      "source_ink_bbox": [
+        2051,
+        1232,
+        2153,
+        1486
+      ],
+      "size": [
+        118,
+        270
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "57360a7e200083a891a772b9b3fb066931148304b6b4606562804a00a719f88a",
+      "site_file": "assets/drawn-ui/note_son_coupe.png"
+    },
+    {
+      "file": "01_Icones_communes/reseau_telephone.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 5,
+      "column": 1,
+      "source_cell": [
+        0,
+        1600,
+        600,
+        2000
+      ],
+      "source_ink_bbox": [
+        177,
+        1714,
+        424,
+        1809
+      ],
+      "size": [
+        263,
+        111
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "15dc454cb6927b6983980526f87ec559bfddc99bc0c635b549d98eadc19969f8",
+      "site_file": "assets/drawn-ui/reseau_telephone.png"
+    },
+    {
+      "file": "01_Icones_communes/batterie_telephone.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 5,
+      "column": 2,
+      "source_cell": [
+        600,
+        1600,
+        1200,
+        2000
+      ],
+      "source_ink_bbox": [
+        780,
+        1679,
+        1044,
+        1840
+      ],
+      "size": [
+        280,
+        177
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "06d6623df892b00d8852872ee17ef6b7ff114602940a42c56be6af1988d93b07",
+      "site_file": "assets/drawn-ui/batterie_telephone.png"
+    },
+    {
+      "file": "02_Controles_dessines/loupe_barre_du_haut.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 5,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1600,
+        1800,
+        2000
+      ],
+      "source_ink_bbox": [
+        1382,
+        1644,
+        1620,
+        1881
+      ],
+      "size": [
+        254,
+        253
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "d5a49aa279a9056298d0c8c2679feb3756a8b6a3d1199d41e101730601b8475d",
+      "site_file": "assets/drawn-ui/loupe_barre_du_haut.png"
+    },
+    {
+      "file": "02_Controles_dessines/cadenas_atelier.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 5,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1600,
+        2400,
+        2000
+      ],
+      "source_ink_bbox": [
+        2013,
+        1639,
+        2185,
+        1878
+      ],
+      "size": [
+        188,
+        255
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "485fb1ad9c47417db2a776abb6d9764fbefc6583845e431332b2343abb40ecb0",
+      "site_file": "assets/drawn-ui/cadenas_atelier.png"
+    },
+    {
+      "file": "02_Controles_dessines/loupe_recherche_work.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 6,
+      "column": 1,
+      "source_cell": [
+        0,
+        2000,
+        600,
+        2400
+      ],
+      "source_ink_bbox": [
+        176,
+        2040,
+        426,
+        2292
+      ],
+      "size": [
+        266,
+        268
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 168,
+          "bbox_in_cell": [
+            301,
+            260,
+            314,
+            280
+          ]
+        }
+      ],
+      "sha256": "46d205d1d85dfc39529137c0d00838dd2a3ba1635d5c6cec12cccd4d673df83f",
+      "site_file": "assets/drawn-ui/loupe_recherche_work.png"
+    },
+    {
+      "file": "02_Controles_dessines/fader_mobile.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 6,
+      "column": 2,
+      "source_cell": [
+        600,
+        2000,
+        1200,
+        2400
+      ],
+      "source_ink_bbox": [
+        776,
+        2101,
+        1021,
+        2202
+      ],
+      "size": [
+        261,
+        117
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "615d963ba3707d2114f5b3cebdb9ff06dc2bb2212b88898a9c38e0d1b6edb2be",
+      "site_file": "assets/drawn-ui/fader_mobile.png"
+    },
+    {
+      "file": "02_Controles_dessines/aide_deplacement_haut.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 6,
+      "column": 3,
+      "source_cell": [
+        1200,
+        2000,
+        1800,
+        2400
+      ],
+      "source_ink_bbox": [
+        1362,
+        2041,
+        1624,
+        2281
+      ],
+      "size": [
+        278,
+        256
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "3e87f91c24b42239edcabba93bab89c6f8e8e0282471c3f3e1464ed8a948e174",
+      "site_file": "assets/drawn-ui/aide_deplacement_haut.png"
+    },
+    {
+      "file": "02_Controles_dessines/aide_deplacement_bas.png",
+      "source": "IMG_5285.png",
+      "sheet": 2,
+      "row": 6,
+      "column": 4,
+      "source_cell": [
+        1800,
+        2000,
+        2400,
+        2400
+      ],
+      "source_ink_bbox": [
+        1967,
+        2042,
+        2220,
+        2284
+      ],
+      "size": [
+        269,
+        258
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "9a74c759a3ff9a6151081c746e98f6eda727f13879ed0f19048a7c5ff27bfb5d",
+      "site_file": "assets/drawn-ui/aide_deplacement_bas.png"
+    },
+    {
+      "file": "02_Controles_dessines/aide_deplacement_gauche.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 1,
+      "column": 1,
+      "source_cell": [
+        0,
+        0,
+        600,
+        400
+      ],
+      "source_ink_bbox": [
+        171,
+        32,
+        434,
+        297
+      ],
+      "size": [
+        279,
+        281
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "65f3332e20944d9b3e6f4cf784eac44b3bd3c58b899582c8704e71393fca920c",
+      "site_file": "assets/drawn-ui/aide_deplacement_gauche.png"
+    },
+    {
+      "file": "02_Controles_dessines/aide_deplacement_droite.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 1,
+      "column": 2,
+      "source_cell": [
+        600,
+        0,
+        1200,
+        400
+      ],
+      "source_ink_bbox": [
+        774,
+        35,
+        1024,
+        289
+      ],
+      "size": [
+        266,
+        270
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "e266a46862bc232562cdea46dbbbb1eab50a37a6afaa4aacf8e625a0c0b781db",
+      "site_file": "assets/drawn-ui/aide_deplacement_droite.png"
+    },
+    {
+      "file": "03_Decors_chambre/araignee_jour.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 1,
+      "column": 3,
+      "source_cell": [
+        1200,
+        0,
+        1800,
+        400
+      ],
+      "source_ink_bbox": [
+        1372,
+        29,
+        1579,
+        266
+      ],
+      "size": [
+        223,
+        253
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 310,
+          "bbox_in_cell": [
+            410,
+            150,
+            434,
+            170
+          ]
+        },
+        {
+          "pixels": 119,
+          "bbox_in_cell": [
+            395,
+            161,
+            404,
+            176
+          ]
+        }
+      ],
+      "sha256": "14c0ce5cab383b95142e478dfbe2f5f2be387cc74112de4cd169c2d7361ca449",
+      "site_file": "assets/drawn-ui/araignee_jour.png"
+    },
+    {
+      "file": "03_Decors_chambre/araignee_nuit.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 1,
+      "column": 4,
+      "source_cell": [
+        1800,
+        0,
+        2400,
+        400
+      ],
+      "source_ink_bbox": [
+        1969,
+        32,
+        2176,
+        269
+      ],
+      "size": [
+        223,
+        253
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 81,
+          "bbox_in_cell": [
+            489,
+            68,
+            497,
+            81
+          ]
+        },
+        {
+          "pixels": 310,
+          "bbox_in_cell": [
+            407,
+            153,
+            431,
+            173
+          ]
+        },
+        {
+          "pixels": 119,
+          "bbox_in_cell": [
+            392,
+            164,
+            401,
+            179
+          ]
+        }
+      ],
+      "sha256": "1e2e8ca4ccee72a68e9df7d8a18adc9840add1539e360c6068ebf1bf6c0fde1d",
+      "site_file": "assets/drawn-ui/araignee_nuit.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_mur.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 2,
+      "column": 1,
+      "source_cell": [
+        0,
+        400,
+        600,
+        800
+      ],
+      "source_ink_bbox": [
+        177,
+        439,
+        431,
+        682
+      ],
+      "size": [
+        270,
+        259
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 68,
+          "bbox_in_cell": [
+            574,
+            103,
+            581,
+            115
+          ]
+        },
+        {
+          "pixels": 83,
+          "bbox_in_cell": [
+            468,
+            200,
+            475,
+            213
+          ]
+        }
+      ],
+      "sha256": "9871adb3bf0866c5a4c5e7fb37369943cb2002c6f367047ab887db9d3827ebfb",
+      "site_file": "assets/drawn-ui/etoile_mur.png"
+    },
+    {
+      "file": "03_Decors_chambre/petale_fleur.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 2,
+      "column": 2,
+      "source_cell": [
+        600,
+        400,
+        1200,
+        800
+      ],
+      "source_ink_bbox": [
+        796,
+        441,
+        1000,
+        683
+      ],
+      "size": [
+        220,
+        258
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 60,
+          "bbox_in_cell": [
+            493,
+            157,
+            502,
+            168
+          ]
+        }
+      ],
+      "sha256": "f3e4bc282b8a8fd6e2a91c024db184e3eece2dc1d3e493e6e094f644582dfb57",
+      "site_file": "assets/drawn-ui/petale_fleur.png"
+    },
+    {
+      "file": "03_Decors_chambre/nuage_jour_01.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 2,
+      "column": 3,
+      "source_cell": [
+        1200,
+        400,
+        1800,
+        800
+      ],
+      "source_ink_bbox": [
+        1359,
+        481,
+        1704,
+        658
+      ],
+      "size": [
+        361,
+        193
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "352076eba02f670560737665a7717b1dba8a411f71c2e3894092739d0f7ebba5",
+      "site_file": "assets/drawn-ui/nuage_jour_01.png"
+    },
+    {
+      "file": "03_Decors_chambre/nuage_jour_02.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 2,
+      "column": 4,
+      "source_cell": [
+        1800,
+        400,
+        2400,
+        800
+      ],
+      "source_ink_bbox": [
+        1970,
+        454,
+        2248,
+        621
+      ],
+      "size": [
+        294,
+        183
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "1ee34fa1962b0f8335ad2285fa2d35a946502862ace70815675d018b64a483c6",
+      "site_file": "assets/drawn-ui/nuage_jour_02.png"
+    },
+    {
+      "file": "03_Decors_chambre/oiseau_01.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 3,
+      "column": 1,
+      "source_cell": [
+        0,
+        800,
+        600,
+        1200
+      ],
+      "source_ink_bbox": [
+        178,
+        939,
+        425,
+        986
+      ],
+      "size": [
+        263,
+        63
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "777f459413477794492ddccb2b2d81becb538f3bde736010d68087799c76535f",
+      "site_file": "assets/drawn-ui/oiseau_01.png"
+    },
+    {
+      "file": "03_Decors_chambre/oiseau_02.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 3,
+      "column": 2,
+      "source_cell": [
+        600,
+        800,
+        1200,
+        1200
+      ],
+      "source_ink_bbox": [
+        772,
+        934,
+        1022,
+        988
+      ],
+      "size": [
+        266,
+        70
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "9ade86028f760a04bfa273b57af73c2f7401b2937756eaf6c84a97224c4840fc",
+      "site_file": "assets/drawn-ui/oiseau_02.png"
+    },
+    {
+      "file": "03_Decors_chambre/oiseau_03.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 3,
+      "column": 3,
+      "source_cell": [
+        1200,
+        800,
+        1800,
+        1200
+      ],
+      "source_ink_bbox": [
+        1388,
+        927,
+        1618,
+        994
+      ],
+      "size": [
+        246,
+        83
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f79fd2ca373494304ecf371ca8d0996b099d67b30ee4f8b6f91efa0f9b63ada6",
+      "site_file": "assets/drawn-ui/oiseau_03.png"
+    },
+    {
+      "file": "03_Decors_chambre/oiseau_04.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 3,
+      "column": 4,
+      "source_cell": [
+        1800,
+        800,
+        2400,
+        1200
+      ],
+      "source_ink_bbox": [
+        1980,
+        934,
+        2215,
+        986
+      ],
+      "size": [
+        251,
+        68
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "46e62fac7020f74d465e8b6fc29593df30fde75f0faad49d91a618b5a0192ad1",
+      "site_file": "assets/drawn-ui/oiseau_04.png"
+    },
+    {
+      "file": "03_Decors_chambre/oiseau_05.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 4,
+      "column": 1,
+      "source_cell": [
+        0,
+        1200,
+        600,
+        1600
+      ],
+      "source_ink_bbox": [
+        171,
+        1335,
+        428,
+        1391
+      ],
+      "size": [
+        273,
+        72
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 97,
+          "bbox_in_cell": [
+            344,
+            378,
+            352,
+            391
+          ]
+        }
+      ],
+      "sha256": "28e0182e556979a74752d2488ea1d46e467a401ccc7ac838dcd526313c9a57ff",
+      "site_file": "assets/drawn-ui/oiseau_05.png"
+    },
+    {
+      "file": "03_Decors_chambre/nuage_nuit_01.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 4,
+      "column": 2,
+      "source_cell": [
+        600,
+        1200,
+        1200,
+        1600
+      ],
+      "source_ink_bbox": [
+        755,
+        1310,
+        1026,
+        1402
+      ],
+      "size": [
+        287,
+        108
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b27997bc47f104f433f807a94ecdeb75be194be303cfb48e3dcd1beaf75a4538",
+      "site_file": "assets/drawn-ui/nuage_nuit_01.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_01.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 4,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1200,
+        1800,
+        1600
+      ],
+      "source_ink_bbox": [
+        1375,
+        1238,
+        1620,
+        1480
+      ],
+      "size": [
+        261,
+        258
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "d08912c2c8cd510b7c847c09d5b1f0983a0a9b150f449ae020bef7efbd427448",
+      "site_file": "assets/drawn-ui/etoile_ciel_01.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_02.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 4,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1200,
+        2400,
+        1600
+      ],
+      "source_ink_bbox": [
+        1976,
+        1232,
+        2215,
+        1481
+      ],
+      "size": [
+        255,
+        265
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b32675d51f64d14cbbbb0cb1d7b5c4933bea34557328a1de54f698f43cf49af9",
+      "site_file": "assets/drawn-ui/etoile_ciel_02.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_03.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 5,
+      "column": 1,
+      "source_cell": [
+        0,
+        1600,
+        600,
+        2000
+      ],
+      "source_ink_bbox": [
+        176,
+        1635,
+        428,
+        1880
+      ],
+      "size": [
+        268,
+        261
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 67,
+          "bbox_in_cell": [
+            537,
+            199,
+            544,
+            210
+          ]
+        }
+      ],
+      "sha256": "5ce389a9ffdeeef3595d03340d099ab86f17c5af5b20c23926542a15e2b107b7",
+      "site_file": "assets/drawn-ui/etoile_ciel_03.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_04.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 5,
+      "column": 2,
+      "source_cell": [
+        600,
+        1600,
+        1200,
+        2000
+      ],
+      "source_ink_bbox": [
+        766,
+        1629,
+        1029,
+        1884
+      ],
+      "size": [
+        279,
+        271
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "02b72f545601d1475138d1132a2ea771c70fecd599f3408e91f7643183beb4e0",
+      "site_file": "assets/drawn-ui/etoile_ciel_04.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_05.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 5,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1600,
+        1800,
+        2000
+      ],
+      "source_ink_bbox": [
+        1393,
+        1634,
+        1614,
+        1881
+      ],
+      "size": [
+        237,
+        263
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b726d7ae4c1b0717aa3fd98154fa311e46e60dea77c35a78de566e7549e8fa09",
+      "site_file": "assets/drawn-ui/etoile_ciel_05.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_06.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 5,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1600,
+        2400,
+        2000
+      ],
+      "source_ink_bbox": [
+        1984,
+        1635,
+        2222,
+        1875
+      ],
+      "size": [
+        254,
+        256
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 28,
+          "bbox_in_cell": [
+            458,
+            353,
+            462,
+            360
+          ]
+        }
+      ],
+      "sha256": "80b7c14b5ac834271c38ceb225f2ca1f694044b13afbefb1443913ddd371b77a",
+      "site_file": "assets/drawn-ui/etoile_ciel_06.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_07.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 6,
+      "column": 1,
+      "source_cell": [
+        0,
+        2000,
+        600,
+        2400
+      ],
+      "source_ink_bbox": [
+        179,
+        2039,
+        422,
+        2279
+      ],
+      "size": [
+        259,
+        256
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 61,
+          "bbox_in_cell": [
+            437,
+            47,
+            447,
+            58
+          ]
+        }
+      ],
+      "sha256": "bcdd638952bea0b7f5faba271eb2c78f71f59702cd1a53f80d95354a6a1642f5",
+      "site_file": "assets/drawn-ui/etoile_ciel_07.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_08.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 6,
+      "column": 2,
+      "source_cell": [
+        600,
+        2000,
+        1200,
+        2400
+      ],
+      "source_ink_bbox": [
+        775,
+        2030,
+        1024,
+        2289
+      ],
+      "size": [
+        265,
+        275
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "4626b3d2ca1b58a495dc6bb7203a8e4cb0ab0d4f6883cc8fe3353a03a9704672",
+      "site_file": "assets/drawn-ui/etoile_ciel_08.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_09.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 6,
+      "column": 3,
+      "source_cell": [
+        1200,
+        2000,
+        1800,
+        2400
+      ],
+      "source_ink_bbox": [
+        1375,
+        2036,
+        1626,
+        2280
+      ],
+      "size": [
+        267,
+        260
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "3e0686350268ca3833489fab7d238578699727538d8af21336374a4bb3cbd396",
+      "site_file": "assets/drawn-ui/etoile_ciel_09.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_ciel_10.png",
+      "source": "IMG_5286.png",
+      "sheet": 3,
+      "row": 6,
+      "column": 4,
+      "source_cell": [
+        1800,
+        2000,
+        2400,
+        2400
+      ],
+      "source_ink_bbox": [
+        1976,
+        2033,
+        2215,
+        2288
+      ],
+      "size": [
+        255,
+        271
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "e440d0a9562a0df5adbceb1e23102c39bbb8eab7700623fb500bfef88965a2a4",
+      "site_file": "assets/drawn-ui/etoile_ciel_10.png"
+    },
+    {
+      "file": "03_Decors_chambre/etoile_filante_01.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 1,
+      "column": 1,
+      "source_cell": [
+        0,
+        0,
+        600,
+        400
+      ],
+      "source_ink_bbox": [
+        165,
+        37,
+        410,
+        304
+      ],
+      "size": [
+        261,
+        283
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "01ad40e7b273a04b41a31fd07e5947c8ab7378776158d3c6d3527af532648f33",
+      "site_file": "assets/drawn-ui/etoile_filante_01.png"
+    },
+    {
+      "file": "04_Latte/latte_espresso.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 1,
+      "column": 2,
+      "source_cell": [
+        600,
+        0,
+        1200,
+        400
+      ],
+      "source_ink_bbox": [
+        778,
+        36,
+        1019,
+        284
+      ],
+      "size": [
+        257,
+        264
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "a20d61add9db8e75f5db13573020dc22a82fbc9628e85263fea050baa9c11d01",
+      "site_file": "assets/drawn-ui/latte_espresso.png"
+    },
+    {
+      "file": "04_Latte/latte_vanilla-swirl.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 1,
+      "column": 3,
+      "source_cell": [
+        1200,
+        0,
+        1800,
+        400
+      ],
+      "source_ink_bbox": [
+        1376,
+        58,
+        1633,
+        262
+      ],
+      "size": [
+        273,
+        220
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "91892aae1e43326d27fddef5df001b85d44fa9dfb614b74af816690a8632d36d",
+      "site_file": "assets/drawn-ui/latte_vanilla-swirl.png"
+    },
+    {
+      "file": "04_Latte/latte_milk.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 1,
+      "column": 4,
+      "source_cell": [
+        1800,
+        0,
+        2400,
+        400
+      ],
+      "source_ink_bbox": [
+        1982,
+        34,
+        2217,
+        288
+      ],
+      "size": [
+        251,
+        270
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "92fb4232eefbd6fbf01a536653cd53db93e74da082b8af43d83d122a38a15a59",
+      "site_file": "assets/drawn-ui/latte_milk.png"
+    },
+    {
+      "file": "04_Latte/latte_cream-ring.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 2,
+      "column": 1,
+      "source_cell": [
+        0,
+        400,
+        600,
+        800
+      ],
+      "source_ink_bbox": [
+        183,
+        439,
+        416,
+        684
+      ],
+      "size": [
+        249,
+        261
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "ffd9b22d51209a222e2274486d394a1bada066a7e5617d51055f4d3ed1180aa0",
+      "site_file": "assets/drawn-ui/latte_cream-ring.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_A.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 2,
+      "column": 2,
+      "source_cell": [
+        600,
+        400,
+        1200,
+        800
+      ],
+      "source_ink_bbox": [
+        790,
+        427,
+        1010,
+        688
+      ],
+      "size": [
+        236,
+        277
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "1018450079b11289e01f739968a6498f5f1ef1757f40e8967b53a4ca31753af0",
+      "site_file": "assets/drawn-ui/lettre_A.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_B.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 2,
+      "column": 3,
+      "source_cell": [
+        1200,
+        400,
+        1800,
+        800
+      ],
+      "source_ink_bbox": [
+        1412,
+        432,
+        1585,
+        683
+      ],
+      "size": [
+        189,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "1e3b181c37e9d363491d11eee77b63f93bb22106efcc7c0710d05c5fbde59a07",
+      "site_file": "assets/drawn-ui/lettre_B.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_C.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 2,
+      "column": 4,
+      "source_cell": [
+        1800,
+        400,
+        2400,
+        800
+      ],
+      "source_ink_bbox": [
+        2004,
+        439,
+        2201,
+        690
+      ],
+      "size": [
+        213,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "ef9ce590d710e2da6cf813015671b46f450eb0f17cbc0630bfab85dd56c048d5",
+      "site_file": "assets/drawn-ui/lettre_C.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_D.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 3,
+      "column": 1,
+      "source_cell": [
+        0,
+        800,
+        600,
+        1200
+      ],
+      "source_ink_bbox": [
+        193,
+        838,
+        402,
+        1085
+      ],
+      "size": [
+        225,
+        263
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "c39e22e5ea666ed33bfb3e084106eb8d0ef1a06b8e40cace11f3babdfd4940ff",
+      "site_file": "assets/drawn-ui/lettre_D.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_E.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 3,
+      "column": 2,
+      "source_cell": [
+        600,
+        800,
+        1200,
+        1200
+      ],
+      "source_ink_bbox": [
+        818,
+        832,
+        981,
+        1087
+      ],
+      "size": [
+        179,
+        271
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b3af64c0ba76e044f929ec8bdeec6d47170bee93e4149898ca1bc7a7e52cc615",
+      "site_file": "assets/drawn-ui/lettre_E.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_F.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 3,
+      "column": 3,
+      "source_cell": [
+        1200,
+        800,
+        1800,
+        1200
+      ],
+      "source_ink_bbox": [
+        1430,
+        833,
+        1561,
+        1084
+      ],
+      "size": [
+        147,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "17afcb255578d932bb92ad912e6baad827a515c5d0c39b37995a6c98173013b9",
+      "site_file": "assets/drawn-ui/lettre_F.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_G.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 3,
+      "column": 4,
+      "source_cell": [
+        1800,
+        800,
+        2400,
+        1200
+      ],
+      "source_ink_bbox": [
+        1993,
+        842,
+        2202,
+        1084
+      ],
+      "size": [
+        225,
+        258
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "601d59605c32f5f283f3313e6553153911205691ccf9133fe56153f920608c37",
+      "site_file": "assets/drawn-ui/lettre_G.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_H.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 4,
+      "column": 1,
+      "source_cell": [
+        0,
+        1200,
+        600,
+        1600
+      ],
+      "source_ink_bbox": [
+        205,
+        1227,
+        401,
+        1484
+      ],
+      "size": [
+        212,
+        273
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "7c74fe626d8a62aa332928ebb8616dcfd3f9c89c44d47e31b5f9b2eb69355c84",
+      "site_file": "assets/drawn-ui/lettre_H.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_I.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 4,
+      "column": 2,
+      "source_cell": [
+        600,
+        1200,
+        1200,
+        1600
+      ],
+      "source_ink_bbox": [
+        877,
+        1235,
+        919,
+        1479
+      ],
+      "size": [
+        58,
+        260
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "c255e7b74168f904b7273ea697f17b071c992b3ae2f4a0d620995e4ec790dce9",
+      "site_file": "assets/drawn-ui/lettre_I.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_J.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 4,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1200,
+        1800,
+        1600
+      ],
+      "source_ink_bbox": [
+        1420,
+        1234,
+        1531,
+        1488
+      ],
+      "size": [
+        127,
+        270
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "47b5f3825986d26ece416cf8b445a8df0d545917f8837986ad17dcb08011121d",
+      "site_file": "assets/drawn-ui/lettre_J.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_K.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 4,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1200,
+        2400,
+        1600
+      ],
+      "source_ink_bbox": [
+        2001,
+        1230,
+        2180,
+        1487
+      ],
+      "size": [
+        195,
+        273
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "30e0abbc63ad7d20689bf406f1f29acae05adb578526ca361b7d6ed90e0a1201",
+      "site_file": "assets/drawn-ui/lettre_K.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_L.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 5,
+      "column": 1,
+      "source_cell": [
+        0,
+        1600,
+        600,
+        2000
+      ],
+      "source_ink_bbox": [
+        224,
+        1634,
+        381,
+        1898
+      ],
+      "size": [
+        173,
+        280
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f864884225a4f178c098abdc04d9e4501b062ae17889512f5fd1602befbd92cd",
+      "site_file": "assets/drawn-ui/lettre_L.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_M.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 5,
+      "column": 2,
+      "source_cell": [
+        600,
+        1600,
+        1200,
+        2000
+      ],
+      "source_ink_bbox": [
+        787,
+        1630,
+        1002,
+        1891
+      ],
+      "size": [
+        231,
+        277
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "66fc3301c1897269c07e0ec5e501a46e4b086769070e9be2c4d8d593a5392826",
+      "site_file": "assets/drawn-ui/lettre_M.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_N.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 5,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1600,
+        1800,
+        2000
+      ],
+      "source_ink_bbox": [
+        1407,
+        1632,
+        1584,
+        1895
+      ],
+      "size": [
+        193,
+        279
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "41668978fa1f50035100218b160e67ec9ffa6be98da42f7dfcf4c56c24139d41",
+      "site_file": "assets/drawn-ui/lettre_N.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_O.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 5,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1600,
+        2400,
+        2000
+      ],
+      "source_ink_bbox": [
+        1994,
+        1640,
+        2207,
+        1890
+      ],
+      "size": [
+        229,
+        266
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "0443d1e9c575bb60668f4f25699e178e41d28d43d57b0792e3717c47778f0800",
+      "site_file": "assets/drawn-ui/lettre_O.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_P.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 6,
+      "column": 1,
+      "source_cell": [
+        0,
+        2000,
+        600,
+        2400
+      ],
+      "source_ink_bbox": [
+        220,
+        2034,
+        373,
+        2286
+      ],
+      "size": [
+        169,
+        268
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "bad53d01e31f99f64ed7b03ee2f2005c2cdc8c87c8d3019b2f953ce28a1c19fe",
+      "site_file": "assets/drawn-ui/lettre_P.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_Q.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 6,
+      "column": 2,
+      "source_cell": [
+        600,
+        2000,
+        1200,
+        2400
+      ],
+      "source_ink_bbox": [
+        806,
+        2048,
+        993,
+        2290
+      ],
+      "size": [
+        203,
+        258
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "4676ddf54a217ac49a9fb26cbb8e3bf3faecaab08266a81b815103ce676af4e3",
+      "site_file": "assets/drawn-ui/lettre_Q.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_R.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 6,
+      "column": 3,
+      "source_cell": [
+        1200,
+        2000,
+        1800,
+        2400
+      ],
+      "source_ink_bbox": [
+        1406,
+        2039,
+        1586,
+        2287
+      ],
+      "size": [
+        196,
+        264
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "036744d165914a88b7fc6d95f2648d2334b4db16e3b189ecc0bc408c6c90e42f",
+      "site_file": "assets/drawn-ui/lettre_R.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_S.png",
+      "source": "IMG_5287.png",
+      "sheet": 4,
+      "row": 6,
+      "column": 4,
+      "source_cell": [
+        1800,
+        2000,
+        2400,
+        2400
+      ],
+      "source_ink_bbox": [
+        2010,
+        2033,
+        2194,
+        2284
+      ],
+      "size": [
+        200,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "cc492d04655182a5c7fdcf21cf5b404b40fcdef220eaef8fd5f0774f7c3a55d5",
+      "site_file": "assets/drawn-ui/lettre_S.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_T.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 1,
+      "column": 1,
+      "source_cell": [
+        0,
+        0,
+        600,
+        400
+      ],
+      "source_ink_bbox": [
+        193,
+        35,
+        411,
+        280
+      ],
+      "size": [
+        234,
+        261
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "482da32c97117fa901175a38bce68da4e2bac18f385577bdb578547fc106cbd5",
+      "site_file": "assets/drawn-ui/lettre_T.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_U.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 1,
+      "column": 2,
+      "source_cell": [
+        600,
+        0,
+        1200,
+        400
+      ],
+      "source_ink_bbox": [
+        805,
+        31,
+        985,
+        286
+      ],
+      "size": [
+        196,
+        271
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "f173f3cf3ecfb9736831cbf605897a40d108a3b6f12d5c5a06dc0cf90596ada1",
+      "site_file": "assets/drawn-ui/lettre_U.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_V.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 1,
+      "column": 3,
+      "source_cell": [
+        1200,
+        0,
+        1800,
+        400
+      ],
+      "source_ink_bbox": [
+        1389,
+        34,
+        1607,
+        285
+      ],
+      "size": [
+        234,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "344c1c59747d5393e220b732a43d79d081b5af503ed06decaa502343b1506c1c",
+      "site_file": "assets/drawn-ui/lettre_V.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_W.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 1,
+      "column": 4,
+      "source_cell": [
+        1800,
+        0,
+        2400,
+        400
+      ],
+      "source_ink_bbox": [
+        1974,
+        55,
+        2224,
+        265
+      ],
+      "size": [
+        266,
+        226
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "443a968538e2b264dcbff65ce8f1d14d2b239b497a4f2ea6a037574623a5e423",
+      "site_file": "assets/drawn-ui/lettre_W.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_X.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 2,
+      "column": 1,
+      "source_cell": [
+        0,
+        400,
+        600,
+        800
+      ],
+      "source_ink_bbox": [
+        198,
+        432,
+        401,
+        693
+      ],
+      "size": [
+        219,
+        277
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "ccbc4c788446b2216e8070efd0cb478ba9e4836d3a989efc19520cd400a1e4f9",
+      "site_file": "assets/drawn-ui/lettre_X.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_Y.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 2,
+      "column": 2,
+      "source_cell": [
+        600,
+        400,
+        1200,
+        800
+      ],
+      "source_ink_bbox": [
+        802,
+        423,
+        1000,
+        686
+      ],
+      "size": [
+        214,
+        279
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "99b2d26c720b5b3101c2f4200029850bdd4f0828ce7d80383756b231c5379fb9",
+      "site_file": "assets/drawn-ui/lettre_Y.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_Z.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 2,
+      "column": 3,
+      "source_cell": [
+        1200,
+        400,
+        1800,
+        800
+      ],
+      "source_ink_bbox": [
+        1397,
+        432,
+        1594,
+        691
+      ],
+      "size": [
+        213,
+        275
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "e989e519b21be1b2943cd345c3b1ec5dc8ee204d688d660ed3c1ef0f4282e0ab",
+      "site_file": "assets/drawn-ui/lettre_Z.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_0.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 2,
+      "column": 4,
+      "source_cell": [
+        1800,
+        400,
+        2400,
+        800
+      ],
+      "source_ink_bbox": [
+        2018,
+        440,
+        2181,
+        688
+      ],
+      "size": [
+        179,
+        264
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "09c6e83fbac93f0c82e7029917b6a5c40d666d30121bd0e64b708e6f0bbf01a2",
+      "site_file": "assets/drawn-ui/lettre_0.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_1.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 3,
+      "column": 1,
+      "source_cell": [
+        0,
+        800,
+        600,
+        1200
+      ],
+      "source_ink_bbox": [
+        209,
+        833,
+        323,
+        1083
+      ],
+      "size": [
+        130,
+        266
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "7bbd6550d1f92e14478ccb52d1e843f8f6b441071288956546c05d51409f543b",
+      "site_file": "assets/drawn-ui/lettre_1.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_2.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 3,
+      "column": 2,
+      "source_cell": [
+        600,
+        800,
+        1200,
+        1200
+      ],
+      "source_ink_bbox": [
+        810,
+        836,
+        985,
+        1081
+      ],
+      "size": [
+        191,
+        261
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "c63ce5b91283c6357c2197408478912348bf7f8e25dd9bafb894d58b8abd5713",
+      "site_file": "assets/drawn-ui/lettre_2.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_3.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 3,
+      "column": 3,
+      "source_cell": [
+        1200,
+        800,
+        1800,
+        1200
+      ],
+      "source_ink_bbox": [
+        1410,
+        827,
+        1576,
+        1078
+      ],
+      "size": [
+        182,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 108,
+          "bbox_in_cell": [
+            103,
+            391,
+            122,
+            400
+          ]
+        }
+      ],
+      "sha256": "c836ce3867232e864b30d7218c54128b0752d045d2c484ebc03edf148d14a71e",
+      "site_file": "assets/drawn-ui/lettre_3.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_4.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 3,
+      "column": 4,
+      "source_cell": [
+        1800,
+        800,
+        2400,
+        1200
+      ],
+      "source_ink_bbox": [
+        2007,
+        834,
+        2192,
+        1084
+      ],
+      "size": [
+        201,
+        266
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "b2ab3f1f755753d92ea5a0cbf02f83978caeb219e8902f9364d495c19ba3a6b5",
+      "site_file": "assets/drawn-ui/lettre_4.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_5.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 4,
+      "column": 1,
+      "source_cell": [
+        0,
+        1200,
+        600,
+        1600
+      ],
+      "source_ink_bbox": [
+        217,
+        1234,
+        374,
+        1472
+      ],
+      "size": [
+        173,
+        254
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "080cec899f791b85924a4450a445c2ab4b6de18d7810bd49db42294ea3a9c125",
+      "site_file": "assets/drawn-ui/lettre_5.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_6.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 4,
+      "column": 2,
+      "source_cell": [
+        600,
+        1200,
+        1200,
+        1600
+      ],
+      "source_ink_bbox": [
+        818,
+        1241,
+        982,
+        1481
+      ],
+      "size": [
+        180,
+        256
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "1f04c6608e8249e26368c58511c94f7cf57b4be0463844f7895c83855a40c6ee",
+      "site_file": "assets/drawn-ui/lettre_6.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_7.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 4,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1200,
+        1800,
+        1600
+      ],
+      "source_ink_bbox": [
+        1414,
+        1230,
+        1583,
+        1481
+      ],
+      "size": [
+        185,
+        267
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 83,
+          "bbox_in_cell": [
+            105,
+            0,
+            123,
+            8
+          ]
+        }
+      ],
+      "sha256": "c3a26fa9ba83e6eeaf1ef17af336fe063408a7a824417d3d8f3830ad5f583879",
+      "site_file": "assets/drawn-ui/lettre_7.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_8.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 4,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1200,
+        2400,
+        1600
+      ],
+      "source_ink_bbox": [
+        2002,
+        1232,
+        2178,
+        1479
+      ],
+      "size": [
+        192,
+        263
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "2c65d1abd5975d6d0c2a0fcc72097b73ffdc8f830f359a886ceebce60f0c4d8c",
+      "site_file": "assets/drawn-ui/lettre_8.png"
+    },
+    {
+      "file": "05_Alphabet_perles/lettre_9.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 5,
+      "column": 1,
+      "source_cell": [
+        0,
+        1600,
+        600,
+        2000
+      ],
+      "source_ink_bbox": [
+        211,
+        1632,
+        374,
+        1885
+      ],
+      "size": [
+        179,
+        269
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "52b4b5f4adf18080a2cf87e7fd8ac2feff0deba46dd74a3b41708b8a49adbf58",
+      "site_file": "assets/drawn-ui/lettre_9.png"
+    },
+    {
+      "file": "06_Cadres_dessines/cadre_fenetre.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 5,
+      "column": 2,
+      "source_cell": [
+        600,
+        1600,
+        1200,
+        2000
+      ],
+      "source_ink_bbox": [
+        775,
+        1674,
+        1026,
+        1847
+      ],
+      "size": [
+        267,
+        189
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 6,
+          "bbox_in_cell": [
+            539,
+            104,
+            541,
+            107
+          ]
+        }
+      ],
+      "sha256": "fb16ce6feba887dbb3170b4b9b5989ce496a5ab2b582d227c1ed4d2d1d2bcb27",
+      "site_file": "assets/drawn-ui/cadre_fenetre.png"
+    },
+    {
+      "file": "06_Cadres_dessines/cadre_bouton.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 5,
+      "column": 3,
+      "source_cell": [
+        1200,
+        1600,
+        1800,
+        2000
+      ],
+      "source_ink_bbox": [
+        1377,
+        1725,
+        1623,
+        1795
+      ],
+      "size": [
+        262,
+        86
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [
+        {
+          "pixels": 4,
+          "bbox_in_cell": [
+            311,
+            37,
+            313,
+            40
+          ]
+        }
+      ],
+      "sha256": "0f0daf92fd2b5dee25694d18558c88569d78d51a7cbbcaf246ee56000de7aeb0",
+      "site_file": "assets/drawn-ui/cadre_bouton.png"
+    },
+    {
+      "file": "06_Cadres_dessines/cadre_certificat.png",
+      "source": "IMG_5288.png",
+      "sheet": 5,
+      "row": 5,
+      "column": 4,
+      "source_cell": [
+        1800,
+        1600,
+        2400,
+        2000
+      ],
+      "source_ink_bbox": [
+        1976,
+        1673,
+        2225,
+        1847
+      ],
+      "size": [
+        265,
+        190
+      ],
+      "padding": 8,
+      "resampled": false,
+      "removed_isolated_marks": [],
+      "sha256": "0f06fd47df2440997b18d8cc4bacadc404b55370fe1954a66c2aa42ab579cf70",
+      "site_file": "assets/drawn-ui/cadre_certificat.png"
+    }
+  ]
+}

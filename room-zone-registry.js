@@ -104,7 +104,7 @@
       petal.style.setProperty('--petal-'+key, (value*scale)+'px');
     }
     // An irregular red petal, not a new permanent element in the illustration.
-    petal.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 31" aria-hidden="true"><path d="M14 29 C8 26 3 21 2.8 15.3 C1.9 8.7 7 2 14 2 C21 .7 25.5 7.5 25 14 C25 21 20 25 14 29Z" fill="#ec2344" stroke="#c20f2f" stroke-width="1.25"/><path d="M13.5 26 C10 21 8.5 14 11 8" fill="none" stroke="#ff6878" stroke-width="1.4" stroke-linecap="round" opacity=".75"/></svg>';
+    petal.innerHTML = '<img src="assets/drawn-ui/petale_fleur.png" alt="" style="width:100%;height:100%;object-fit:contain">';
     scene.appendChild(petal);
     petal.addEventListener('animationend', () => petal.remove(), {once:true});
   }

@@ -82,6 +82,8 @@ button:focus-visible{box-shadow:0 0 0 3px #ffced8,0 0 13px #f20b3570}
 
 </style>
 <link rel="stylesheet" href="../heart-theme.css?v=lena-original-1" data-lena-heart-style>
+<link rel="stylesheet" href="../lena-drawings.css?v=20261106-1">
+<script defer src="../lena-drawings.js?v=20261106-1"></script>
 </head>
 <body>
 <div class="app">
@@ -250,6 +252,7 @@ function draw(item){
   const kind=effectiveKind(item.kind);
   if(w===item.w&&h===item.h&&kind===item.lastKind)return;
   item.w=w;item.h=h;item.lastKind=kind;
+  if(kind==="frame")return;
   item.svg.setAttribute("viewBox","0 0 "+w+" "+h);
   item.path.setAttribute("d",stroke(w,h,kind,item.seed,Math.min(1.15,Math.max(.65,Math.min(w,h)/55))));
   item.svg.style.display=kind==="none"?"none":"block";
@@ -261,9 +264,10 @@ function scan(){
   rules.forEach(([selector,kind,seed])=>{
     document.querySelectorAll(selector).forEach((el,i)=>{
       if(registered.has(el))return;
-      const svg=document.createElementNS(NS,"svg");svg.classList.add("trace-svg");
+      const svg=kind==="frame"?document.createElement("span"):document.createElementNS(NS,"svg");svg.classList.add("trace-svg");
+      if(kind==="frame"){svg.classList.add("lena-drawn-frame");svg.style.borderImage=`url("../assets/drawn-ui/${el.matches("button")?"cadre_bouton":"cadre_fenetre"}.png") 18 / 10px / 0 stretch`;}
       svg.setAttribute("aria-hidden","true");svg.setAttribute("focusable","false");
-      const path=document.createElementNS(NS,"path");svg.appendChild(path);
+      const path=document.createElementNS(NS,"path");if(kind!=="frame")svg.appendChild(path);
       el.appendChild(svg);const item={el,svg,path,kind,seed:seed+i*97,w:0,h:0,lastKind:null};
       registered.set(el,item);watched.push(item);resize?.observe(el);draw(item);
     });

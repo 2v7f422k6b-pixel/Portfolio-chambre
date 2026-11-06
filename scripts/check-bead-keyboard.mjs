@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
-const source=readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,centerLetters};');
+const source=readFileSync(new URL('../bead-box.js',import.meta.url),'utf8').replace('window.NanaBeadBox={open};','window.NanaBeadBox={open,bead};');
 function setup(){
  const events={},visualEvents={},frames=[],style=new Map(),classes=new Map();
  const input={id:'bead-word-input',value:'NANA',getBoundingClientRect:()=>({top:620,bottom:670})};
@@ -24,24 +24,13 @@ test('pinch zoom and hardware keyboards do not trigger keyboard layout',()=>{
  const p=setup();p.events.focusin({target:p.input});p.flush();assert.equal(p.classes.get('bead-keyboard-open'),false);
  p.viewport.height=400;p.viewport.scale=2;p.visualEvents.resize();p.flush();assert.equal(p.classes.get('bead-keyboard-open'),false);
 });
-test('glyph ink ignores SVG font metrics and centers the actual painted strokes',()=>{
+test('all letters and digits use centered original PNGs without a font dependency',()=>{
  const p=setup();
- const ink={actualBoundingBoxLeft:-2,actualBoundingBoxRight:16,actualBoundingBoxAscent:19,actualBoundingBoxDescent:1};
- p.document.createElement=()=>({getContext:()=>({measureText:()=>ink})});
- const attrs={};
- const text={textContent:'A',setAttribute:(key,value)=>attrs[key]=value,getBBox(){throw new Error('SVG font box must not replace actual ink metrics');}};
- p.api.centerLetters({querySelectorAll:()=>[text]});
- assert.equal(Number(attrs.x),-9);
- assert.equal(Number(attrs.y),9);
- assert.equal(Number(attrs.x)+(-ink.actualBoundingBoxLeft+ink.actualBoundingBoxRight)/2,0);
- assert.equal(Number(attrs.y)+(-ink.actualBoundingBoxAscent+ink.actualBoundingBoxDescent)/2,0);
-});
-test('older browsers can fall back to SVG metrics',()=>{
- const p=setup();
- for(const box of [{x:2,y:-22,width:17,height:24},{x:4,y:-15,width:14,height:18}]){
-  const attrs={};const text={setAttribute:(key,value)=>attrs[key]=value,getBBox:()=>box};
-  p.api.centerLetters({querySelectorAll:()=>[text]});
-  assert.equal(Number(attrs.x)+box.x+box.width/2,0);assert.equal(Number(attrs.y)+box.y+box.height/2,0);
+ for(const letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'){
+  const html=p.api.bead('letter',letter,0);
+  assert.ok(html.includes('assets/drawn-ui/lettre_'+letter+'.png'));
+  assert.ok(html.includes('x="-11" y="-12" width="22" height="24"'));
+  assert.ok(html.includes('preserveAspectRatio="xMidYMid meet"'));
+  assert.ok(!html.includes('<text'));
  }
 });
-

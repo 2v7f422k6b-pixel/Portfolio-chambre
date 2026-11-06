@@ -569,6 +569,8 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   flex:0 0 44px!important;
 }
 </style>
+<link rel="stylesheet" href="lena-drawings.css?v=20261106-1">
+<script defer src="lena-drawings.js?v=20261106-1"></script>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -641,39 +643,38 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
               <!-- Day: two slow drifting clouds and a few hand-drawn flying birds. -->
               <g class="outside-day">
                 <g class="cloud-back">
-                  <path class="day-cloud" d="M 963 155 Q 960 147 970 143 Q 977 130 991 139 Q 1003 132 1010 147 Q 1027 145 1031 159 Q 1031 171 1017 172 L 977 172 Q 960 172 963 155 Z"/>
+                  <image class="day-cloud" href="assets/drawn-ui/nuage_jour_01.png" x="960" y="133" width="72" height="40" preserveAspectRatio="none"/>
                 </g>
                 <g class="cloud-front">
-                  <path class="day-cloud" d="M 977 225 Q 972 214 985 209 Q 994 195 1009 204 Q 1022 194 1032 208 Q 1045 205 1052 216 Q 1067 214 1070 229 Q 1071 239 1055 240 L 993 240 Q 976 239 977 225 Z"/>
+                  <image class="day-cloud" href="assets/drawn-ui/nuage_jour_02.png" x="974" y="198" width="97" height="42" preserveAspectRatio="none"/>
                 </g>
                 <g class="bird-flock">
-                  <path class="bird-wing" d="M 959 128 Q 968 116 978 128 Q 988 116 997 128"/>
-                  <path class="bird-wing" d="M 932 153 Q 939 146 945 154 Q 952 146 959 154"/>
-                  <path class="bird-wing" d="M 987 160 Q 994 151 1001 160 Q 1008 152 1015 160"/>
+                  <image class="bird-wing" href="assets/drawn-ui/oiseau_01.png" x="958" y="121" width="40" height="9" preserveAspectRatio="none"/>
+                  <image class="bird-wing" href="assets/drawn-ui/oiseau_02.png" x="931" y="149" width="29" height="7" preserveAspectRatio="none"/>
+                  <image class="bird-wing" href="assets/drawn-ui/oiseau_03.png" x="986" y="155" width="30" height="6" preserveAspectRatio="none"/>
                 </g>
                 <g class="bird-flock bird-flock--far">
-                  <path class="bird-wing" d="M 955 91 Q 961 84 968 92 Q 976 85 982 92"/>
-                  <path class="bird-wing" d="M 930 113 Q 935 107 941 113 Q 947 108 952 113"/>
+                  <image class="bird-wing" href="assets/drawn-ui/oiseau_04.png" x="954" y="87" width="29" height="6" preserveAspectRatio="none"/>
+                  <image class="bird-wing" href="assets/drawn-ui/oiseau_05.png" x="929" y="110" width="24" height="4" preserveAspectRatio="none"/>
                 </g>
               </g>
               <!-- Night: the moon and city remain part of the ORIGINAL illustration. -->
               <g class="outside-night">
-                <g class="night-cloud">
-                  <path d="M 961 215 Q 968 201 986 207 Q 999 194 1014 204 Q 1037 193 1051 212 Q 1074 212 1082 227 L 963 227 Z"/>
+                <g class="night-cloud"><image class="" href="assets/drawn-ui/nuage_nuit_01.png" x="961" y="198" width="121" height="29" preserveAspectRatio="none"/>
                 </g>
                 <g class="night-stars">
-                  <path class="night-star" d="M 1041 83 l 2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z"/>
-                  <circle class="night-star" cx="1026" cy="139" r="2.5"/>
-                  <path class="night-star" d="M 1150 89 l 1.6 4.2 4.2 1.6 -4.2 1.6 -1.6 4.2 -1.6 -4.2 -4.2 -1.6 4.2 -1.6 Z"/>
-                  <circle class="night-star" cx="1128" cy="60" r="2.2"/>
-                  <path class="night-star" d="M 1020 230 l 1.7 5 4 1.5 -4 1.5 -1.7 5 -1.7 -5 -4 -1.5 4 -1.5 Z"/>
-                  <circle class="night-star" cx="1151" cy="201" r="2.4"/>
-                  <path class="night-star" d="M 1084 262 l 1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z"/>
-                  <circle class="night-star" cx="1062" cy="176" r="1.8"/>
-                  <circle class="night-star" cx="1143" cy="279" r="2.1"/>
-                  <path class="night-star" d="M 1075 113 l 1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4 Z"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_01.png" x="1034" y="83" width="14" height="14" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_02.png" x="1023.5" y="136.5" width="5" height="5" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_03.png" x="1144.2" y="89" width="11.6" height="11.6" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_04.png" x="1125.8" y="57.8" width="4.4" height="4.4" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_05.png" x="1014.3" y="230" width="11.4" height="13" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_06.png" x="1148.6" y="198.6" width="4.8" height="4.8" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_07.png" x="1078.5" y="262" width="11" height="11" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_08.png" x="1060.2" y="174.2" width="3.6" height="3.6" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_09.png" x="1140.9" y="276.9" width="4.2" height="4.2" preserveAspectRatio="none"/>
+                  <image class="night-star" href="assets/drawn-ui/etoile_ciel_10.png" x="1070.2" y="113" width="9.6" height="9.6" preserveAspectRatio="none"/>
                 </g>
-                <path class="shooting-star" d="M 1148 117 L 1160 104"/>
+                <image class="shooting-star" href="assets/drawn-ui/etoile_filante_01.png" x="1145" y="102" width="18" height="18" preserveAspectRatio="none"/>
               </g>
             </g>
           </svg>
@@ -784,8 +785,8 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261105-remove-two-posters-3"></script>
-  <script src="app.js?v=20261106-progress-hearts-5" defer></script>
-  <script src="do-nothing-club.js?v=20261103-world-can-wait" defer></script>
+  <script src="app.js?v=20261106-lena-drawings" defer></script>
+  <script src="do-nothing-club.js?v=20261106-lena-drawings" defer></script>
   <script src="literary-zones.js?v=20261103-sappho-first" defer></script>
 
   <script src="pixel-hotspots.js?v=figurines-first-click-20261103-2" defer></script>
@@ -793,7 +794,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   <script src="room-hover.js?v=20261106-clean-specks-1" defer></script>
   <script src="pixel-outlines.js?v=20261106-shelf-ipad-2" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
-   <script src="coloring-addon.js?v=20261106-code-cleanup-1" defer></script>
+   <script src="coloring-addon.js?v=20261106-lena-drawings" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
   <script src="motion-addon.js?v=20261106-code-cleanup-1" defer></script>
   <script src="music-visuals.js?v=20261106-code-cleanup-1" defer></script>
@@ -880,7 +881,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   })();
   </script>
   <script src="heart-theme.js?v=two-hearts-all-pages-1" defer></script>
-  <script src="sketch-ui.js?v=20261106-explicit-typewriter-frame-3" defer></script>
+  <script src="sketch-ui.js?v=20261106-lena-drawings" defer></script>
 <script src="portfolio-catalog.js?v=20261106-code-cleanup-1" defer></script>
 <script src="portfolio-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="desktop-extras.js?v=3" defer></script>
@@ -909,24 +910,24 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-stable-night-decor-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
 <script src="fortune-cookie-placement.js?v=20261106-stable-night-decor-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
-<script src="glow-stars.js?v=20261105-above-posters-15" defer></script>
+<script src="glow-stars.js?v=20261106-lena-drawings" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="room-zone-registry.js?v=20261106-ring-light-1" defer></script>
+<script src="room-zone-registry.js?v=20261106-lena-drawings" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
-  <script src="rug-secret.js?v=20261103-spider-down-left-v3" defer></script>
+  <script src="rug-secret.js?v=20261106-lena-drawings" defer></script>
   <script src="twist-reality.js?v=20261104-performance-1" defer></script>
 <script src="guitar-interaction.js?v=20261103-shift-left-v3" defer></script>
   <script src="hotspot-numbers.js?v=20261103-all-objects" defer></script>
   <script src="work-break-typewriter.js?v=20261106-untranslated-keys" defer></script>
-  <script src="play-pan-hint.js?v=20261104-original-photo-clean-nail" defer></script>
+  <script src="play-pan-hint.js?v=20261106-lena-drawings" defer></script>
   <script src="artwork-protection.js?v=20261104-3" defer></script>
   <script src="nana-shop-bag.js?v=20261104" defer></script>
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
   <script src="nana-admin.js?v=conte-local-20261106" defer></script>
 <script src="nana-discoveries.js?v=20261104-english-no-more-secrets-14" defer></script>
-  <script src="dreamlab-launcher.js?v=20261106-code-cleanup-1" defer></script>
+  <script src="dreamlab-launcher.js?v=20261106-lena-drawings" defer></script>
 
 <script id="nana-minilab-day-layer">
 (() => {
@@ -986,7 +987,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   else mount();
 })();
 </script>
-<script src="bead-box.js?v=20261106-original-string" defer></script>
+<script src="bead-box.js?v=20261106-lena-drawings" defer></script>
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
 </body>
 </html>
