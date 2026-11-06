@@ -174,3 +174,41 @@ test('shelf contact removes the bottom line and halo while preserving sides and 
     if(y>=250+(x-100)/5-1) assert.equal(opacity(x,y),0,`shelf spill at ${x},${y}`);
   }
 });
+test('isolated source specks produce neither a white ring nor a glow in either raster mode',()=>{
+  for (const lineArt of [false,true]) {
+    const hover=engine();
+    const image=picture(100,80,(x,y)=>{
+      const object=x>=10&&x<=40&&y>=10&&y<=50;
+      const dot=x===65&&y===20;
+      const cluster=x>=80&&x<=81&&y>=40&&y<=41;
+      return object||dot||cluster;
+    });
+    const original=image.pixels.slice();
+    const layer=hover.silhouette(image,{x:100,y:200,width:100,height:80},{lineArt,gapRadius:12});
+    const opacity=renderedMask(layer);
+    assert.ok(hover.contains(layer,125,225));
+    for(const [x,y] of [[165,220],[180,240]]) {
+      assert.ok(!hover.contains(layer,x,y));
+      for(let dy=-5;dy<=5;dy++)for(let dx=-5;dx<=5;dx++)assert.equal(opacity(x+dx,y+dy),0);
+    }
+    assert.deepEqual(image.pixels,original,'artwork pixels must remain untouched');
+  }
+});
+test('small fragments near real strokes, diagonal lines and detached details keep their contours',()=>{
+  const hover=engine();
+  const layer=hover.silhouette(picture(100,80,(x,y)=>{
+    const object=x>=10&&x<=40&&y>=10&&y<=50;
+    const nearby=x===43&&y===25;
+    const diagonal=x>=60&&x<=66&&y===x-50;
+    const detached=x>=80&&x<=82&&y>=40&&y<=42;
+    const thin=x>=60&&x<=63&&y===60;
+    return object||nearby||diagonal||detached||thin;
+  }),{x:0,y:0,width:100,height:80},{lineArt:true});
+  const opacity=renderedMask(layer);
+  assert.ok(hover.contains(layer,43,25));
+  assert.equal(opacity(44,25),255);
+  assert.ok(hover.contains(layer,63,13));
+  assert.ok(hover.contains(layer,81,41));
+  assert.equal(opacity(83,41),255);
+  assert.ok(hover.contains(layer,61,60));
+});

@@ -84,6 +84,45 @@
   /* Close tiny gaps in line art and fill its silhouette. Crop before processing:
      avoid retaining thirty full-room canvases and re-reading pixels on hover. */
   const masks = new WeakMap();
+  // Ignore accidental dots in the feedback mask, never in the artwork itself.
+  // Keep diagonal strokes and small fragments close to a real drawn line.
+  function removeIsolatedSpecks(mask, w, h) {
+    const visited = new Uint8Array(mask.length), queue = new Int32Array(mask.length);
+    const specks = [];
+    for (let start = 0; start < mask.length; start++) {
+      if (!mask[start] || visited[start]) continue;
+      let head = 0, tail = 1;
+      let minX = start % w, maxX = minX, minY = Math.floor(start / w), maxY = minY;
+      queue[0] = start; visited[start] = 1;
+      while (head < tail) {
+        const i = queue[head++], x = i % w, y = Math.floor(i / w);
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+        for (let ny = Math.max(0, y - 1); ny <= Math.min(h - 1, y + 1); ny++) {
+          for (let nx = Math.max(0, x - 1); nx <= Math.min(w - 1, x + 1); nx++) {
+            const next = ny * w + nx;
+            if (mask[next] && !visited[next]) {visited[next] = 1; queue[tail++] = next;}
+          }
+        }
+      }
+      // At room resolution, the stray marks occupy only one to four pixels.
+      if (tail <= 4 && maxX - minX < 3 && maxY - minY < 3) {
+        specks.push({indices: queue.slice(0, tail), minX, maxX, minY, maxY});
+      }
+    }
+    // Temporarily remove all candidates so neighbouring specks cannot preserve
+    // each other. Restore fragments within eight pixels of substantial ink.
+    for (const speck of specks) for (const i of speck.indices) mask[i] = 0;
+    const keep = specks.filter(({minX, maxX, minY, maxY}) => {
+      for (let y = Math.max(0, minY - 8); y <= Math.min(h - 1, maxY + 8); y++) {
+        for (let x = Math.max(0, minX - 8); x <= Math.min(w - 1, maxX + 8); x++) {
+          if (mask[y * w + x]) return true;
+        }
+      }
+      return false;
+    });
+    for (const speck of keep) for (const i of speck.indices) mask[i] = 1;
+  }
   // Two sliding windows keep gap closing linear in the number of pixels,
   // including drawings interrupted by foreground objects or the room edge.
   function expandMask(source, w, h, radius) {
@@ -152,6 +191,8 @@
       const i = (y - minY + pad) * w + x - minX + pad;
       sourceMask[i] = 1;
     }
+    // Clean before gap closing: dilation would enlarge stray dots into halos.
+    removeIsolatedSpecks(sourceMask, w, h);
     const closedSource = sourceMask.slice();
     // A drawing cut by the room canvas (notably the guitar) has no ink along
     // that cut. Seal it for filling, but never add this artificial edge to ink.
