@@ -21,5 +21,12 @@ button:focus-visible{outline:2px solid #ff001e;outline-offset:-2px}
 #scene{inset:0;width:100%;height:100%;object-fit:fill}
 .actions{left:0;right:0;bottom:0;height:23%;gap:0}
 .actions button{color:transparent!important;font-size:0;background:transparent}
-.actions button:hover{background:#ffffff20}
+.actions button:hover{background:transparent}
 .stats,#notice{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+#mood{position:absolute;left:0;top:5%;width:47%;min-height:23%;padding:4% 8% 4% 2%;background:#fff0f7;color:#85001d;clip-path:polygon(5% 0,85% 0,85% 8%,90% 8%,90% 50%,100% 85%,90% 72%,90% 92%,85% 92%,85% 100%,5% 100%,5% 92%,0 92%,0 8%,5% 8%);text-align:center;white-space:pre-line;font:bold clamp(6px,1.75cqw,13px)/1.25 monospace;pointer-events:none}
+.device-controls{position:absolute;inset:0;z-index:2;pointer-events:none}
+.device-controls button{position:absolute;top:82%;width:13.5%;height:10.4%;border:0;background:transparent;color:#ff001e;font:bold clamp(18px,5cqw,40px)/1 monospace;cursor:pointer;touch-action:manipulation;pointer-events:auto;border-radius:50%}
+#previous{left:25.5%}#confirm{left:43.3%;top:83%}#next{left:61.2%}
+.device-controls button:hover{color:#fff}.device-controls button:active{transform:scale(.94)}
+

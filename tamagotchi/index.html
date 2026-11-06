@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mon Tamagotchi</title>
 <link rel="stylesheet" href="../nana-font.css">
-<link rel="stylesheet" href="tamagotchi.css?v=art-3">
+<link rel="stylesheet" href="tamagotchi.css?v=controls-5">
 </head>
 <body>
 <main class="device" aria-label="Mini-jeu Tamagotchi">
@@ -12,7 +12,7 @@
 
 <section class="screen" aria-label="Léna et son chat">
 <canvas id="scene" width="128" height="128" role="img" aria-label="Léna, son chat et des étoiles"></canvas>
-<div class="stats" aria-label="Jauges">
+<div id="mood" role="status" aria-live="polite"></div><div class="stats" aria-label="Jauges">
 <label><span data-fr="Faim" data-en="Food">Faim</span><meter id="hunger" min="0" max="100" value="70"></meter></label>
 <label><span data-fr="Énergie" data-en="Energy">Énergie</span><meter id="energy" min="0" max="100" value="80"></meter></label>
 <label><span data-fr="Joie" data-en="Joy">Joie</span><meter id="joy" min="0" max="100" value="90"></meter></label>
@@ -26,7 +26,11 @@
 </div>
 <div id="notice" role="status" aria-live="polite"></div>
 </section>
-<button class="hit close" aria-label="Fermer le Tamagotchi" data-fr="Fermer le Tamagotchi" data-en="Close Tamagotchi" data-label-only></button>
+<nav class="device-controls" aria-label="Commandes du Nanagotchi">
+<button id="previous" data-fr="Activité précédente" data-en="Previous activity" data-label-only aria-label="Activité précédente">←</button>
+<button id="confirm" data-fr="Faire cette activité" data-en="Do selected activity" data-label-only aria-label="Faire cette activité">♥</button>
+<button id="next" data-fr="Activité suivante" data-en="Next activity" data-label-only aria-label="Activité suivante">→</button>
+</nav><button class="hit close" aria-label="Fermer le Tamagotchi" data-fr="Fermer le Tamagotchi" data-en="Close Tamagotchi" data-label-only></button>
 </main>
-<script src="tamagotchi.js?v=expressions-4"></script>
+<script src="tamagotchi.js?v=controls-5"></script>
 </body></html>
