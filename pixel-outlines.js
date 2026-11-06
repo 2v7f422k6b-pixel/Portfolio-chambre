@@ -9,9 +9,20 @@
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
   const independent = '#nana-shop-bag,#nana-wall-mirror,#nana-wall-lamp,#nana-fortune-cookie,polygon[data-type="poster"]';
+  let maskedGuitar = null;
+  function updateOcclusion(night) {
+    const guitar = layers.get('GUITARE.PNG');
+    const bag = extra.find(item => item.bag && item.night === night)?.layer;
+    if (!guitar || !bag || maskedGuitar === bag) return;
+    hover.occlude(guitar.outline, hover.element('image', {
+      href:bag.filledHref,x:bag.x,y:bag.y,width:bag.width,height:bag.height
+    }));
+    maskedGuitar = bag;
+  }
   function draw() {
     queued = false;
     const all = hover.guide(), night = document.documentElement.dataset.theme === 'night';
+    updateOcclusion(night);
     const focused = document.activeElement;
     const focusFile = window.NANA_ROOM_ZONES?.find(zone => zone.element === focused)?.file;
     let selected = null;

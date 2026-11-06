@@ -64,7 +64,11 @@
   const inkMerge = element('feMerge');
   inkMerge.append(element('feMergeNode', {in: 'glow'}), element('feMergeNode', {in: 'white-ink'}));
   ink.append(inkMerge);
-  defs.append(ring, stroke, ink);
+  const occluder = element('filter', {id:'nana-room-occluder', x:'-50%', y:'-50%', width:'200%', height:'200%'});
+  occluder.append(element('feMorphology',{in:'SourceAlpha',operator:'dilate',radius:4,result:'solid'}),
+    element('feFlood',{'flood-color':'black',result:'black'}),
+    element('feComposite',{in:'black',in2:'solid',operator:'in'}));
+  defs.append(ring, stroke, ink, occluder);
   overlay.append(defs);
   scene.append(overlay);
   scene.style.setProperty('--room-hover-width', width);
@@ -137,6 +141,7 @@
       }
       if (inside) {alpha[i] = 255; pixels.fill(255, i * 4, i * 4 + 4);}
     }
+    const filledPixels = pixels.slice();
     // Hit-testing keeps its filled mask. The visible line-art mask uses only
     // the supplied strokes (including antialiasing), without growing an edge.
     if (lineArt) {
@@ -155,10 +160,12 @@
       href: canvas.toDataURL(), x, y, width: w, height: h,
       class: 'room-hover-outline', filter: lineArt ? 'url(#nana-room-hover-ink)' : 'url(#nana-room-hover-ring)'
     });
+    ctx.putImageData(new ImageData(filledPixels, w, h), 0, 0);
+    const filledHref = canvas.toDataURL();
     overlay.append(outline);
     // Release the temporary drawing buffer after encoding the small mask.
     canvas.width = canvas.height = 1;
-    const layer = {outline, alpha, x, y, width: w, height: h};
+    const layer = {outline, filledHref, alpha, x, y, width: w, height: h};
     masks.set(image, layer);
     return layer;
   }
@@ -167,8 +174,18 @@
     x = Math.floor(x - layer.x); y = Math.floor(y - layer.y);
     return x >= 0 && y >= 0 && x < layer.width && y < layer.height && layer.alpha[y * layer.width + x] > 25;
   }
+  let maskId = 0;
+  function occlude(target, foreground) {
+    const id = 'nana-room-occlusion-' + (++maskId);
+    const mask = element('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:W,height:H,'mask-type':'luminance'});
+    mask.append(element('rect',{x:0,y:0,width:W,height:H,fill:'white'}));
+    foreground.setAttribute('filter','url(#nana-room-occluder)');
+    mask.append(foreground); defs.append(mask);
+    target.setAttribute('mask',`url(#${id})`);
+    return foreground;
+  }
   window.NanaRoomHover = Object.freeze({
-    W, H, element, overlay, silhouette, contains,
+    W, H, element, overlay, silhouette, contains, occlude,
     maskFor: image => masks.get(image),
     ring: 'url(#nana-room-hover-ring)',
     guide: () => hotspots.matches('.hotspot-guide-on,.hotspot-peek'),

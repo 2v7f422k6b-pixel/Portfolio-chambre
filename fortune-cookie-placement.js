@@ -76,6 +76,9 @@
   group.append(outline,image,hit);
   svg.appendChild(group);
 
+  // The foreground cookie hides room outlines even when it is not hovered.
+  const blocker = window.NanaRoomHover.element('image', {href:'assets/fortune-cookie.png',preserveAspectRatio:'xMidYMid meet'});
+  window.NanaRoomHover.occlude(window.NanaRoomHover.overlay, blocker);
   function render(){
     position.width=clamp(position.width,20,220);
     position.angle=clamp(position.angle,-30,30);
@@ -89,6 +92,8 @@
       im.setAttribute('width',position.width);
       im.setAttribute('height',height);
     }
+    for (const attr of ['x','y','width','height']) blocker.setAttribute(attr,image.getAttribute(attr));
+    blocker.setAttribute('transform',group.getAttribute('transform'));
     hit.setAttribute('points',[
       [position.x,position.y],
       [position.x+position.width,position.y],
