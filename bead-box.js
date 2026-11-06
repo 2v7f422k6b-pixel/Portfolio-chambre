@@ -124,8 +124,8 @@ function updateRoomCharm(){
 
 function mount(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
- const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(277 126)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
- g.innerHTML='<g class="bead-shelf-art"><g id="bead-box-shelf-ink"><path d="M1 8 38 1 54 11 17 19Z" fill="#ffcae5"/><path d="M1 8 17 19 54 11 53 29 17 37 2 25Z" fill="#f6a7cd"/><path d="M17 19 17 37 M3 13 16 24 52 16" fill="none"/><path d="M25 27 31 26 31 31 25 32Z" fill="#fff2d4"/><path d="M22 8 C18 2 11 7 21 13 C33 9 29 2 22 8Z" fill="#ff456c"/></g></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/>';
+ const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(277 119)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
+ g.innerHTML='<g class="bead-shelf-art"><g id="bead-box-shelf-ink"><path d="M1 18 13 10 52 19 40 27Z" fill="#ffcae5"/><path d="M1 18 40 27 40 42 1 33Z" fill="#f6a7cd"/><path d="M40 27 52 19 52 34 40 42Z" fill="#ef9bc4"/><path d="M2 23 40 32 51 24" fill="none"/><path d="M18 28 24 29.5 24 34.5 18 33Z" fill="#fff2d4"/><path d="M27 17 C24 12 18 13 20 17 C21 19 25 22 26 22 C30 21 36 19 34 16 C32 13 28 14 27 17Z" fill="#ff456c"/></g></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/>';
  svg.appendChild(g);updateRoomCharm();
  g.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});
 }
