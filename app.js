@@ -172,7 +172,6 @@ function chooseMode(mode,zoom=false){
  if(mode==='work')work.scrollTop=0;
  $('#menu-mode').textContent='Accueil';
  const modeSwitch=$('#switch-mode');if(modeSwitch){modeSwitch.textContent=mode==='play'?'Passer en mode Work':'Passer en mode Play';modeSwitch.setAttribute('aria-label',modeSwitch.textContent);modeSwitch.title=modeSwitch.textContent;}
- $('#dock-finder').title='Finder';
  if(reverseZoom){
   // Work remains visible underneath while the room smoothly zooms back into place.
   play.style.zIndex='2';work.style.zIndex='1';
