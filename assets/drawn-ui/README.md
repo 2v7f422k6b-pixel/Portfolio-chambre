@@ -12,3 +12,5 @@ Ce sont les découpes originales, sans retracé, lissage ni réduction de résol
 - Les vrais contenus déjà dessinés (pièces de la chambre, dock, cœurs, croix, perles, coque et expressions du Tamagotchi) restent leurs fichiers d’origine.
 
 Le certificat exporté utilise également le cadre, les ornements et le cœur de Léna.
+
+Les PNG restent intacts : les icônes utilisent leur transparence comme masque pour hériter de la couleur du contrôle (y compris ses états). Les filtres du ciel rétablissent les couleurs originales de `window-animations.css`, et les étoiles murales retrouvent leur palette pastel le jour. Le mode nuit conserve ses couleurs spécifiques. Les illustrations déjà colorées, dont le latte et l’araignée, gardent leurs pixels d’origine.

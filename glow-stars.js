@@ -625,13 +625,26 @@
     el.setAttribute('href','assets/drawn-ui/etoile_mur.png');
   };
   const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
+  // PNGs use their own colour unless their alpha is painted with the wall palette.
+  const definitions=document.createElementNS(NS,'defs');
+  palette.forEach((color,index)=>{
+    const filter=document.createElementNS(NS,'filter');
+    filter.id='nana-wall-star-ink-'+index;
+    filter.setAttribute('color-interpolation-filters','sRGB');
+    const flood=document.createElementNS(NS,'feFlood');
+    flood.setAttribute('flood-color',color);
+    const composite=document.createElementNS(NS,'feComposite');
+    composite.setAttribute('in2','SourceAlpha');composite.setAttribute('operator','in');
+    filter.append(flood,composite);definitions.appendChild(filter);
+  });
+  layer.appendChild(definitions);
   const elements=[];
   stars.forEach(([x,y,r,angle],i)=>{
     const star=document.createElementNS(NS,'image');
     positionStar(star,x,y,r,angle);
     star.setAttribute('class','nana-phosphor-star');
     star.style.setProperty('--twinkle-delay',(i%9)*-.7+'s');
-    star.style.setProperty('--day-star-color',palette[i%palette.length]);
+    star.style.setProperty('--day-star-filter',`url(#nana-wall-star-ink-${i%palette.length})`);
     star.setAttribute('pointer-events',edit?'all':'none');
     group.appendChild(star);
     elements.push(star);
@@ -647,7 +660,7 @@
     html:not(.nana-stars-edit) #nana-glow-stars, html:not(.nana-stars-edit) #nana-glow-stars * {pointer-events:none!important;cursor:inherit!important}
     #nana-glow-stars .nana-phosphor-star {
 
-      opacity:.48;filter:none;
+      opacity:.48;filter:var(--day-star-filter);
       transition:fill 1.1s,opacity 1.1s,filter 1.1s;
     }
     html[data-theme="night"] #nana-glow-stars .nana-phosphor-star {
@@ -715,7 +728,7 @@
       stars.push(v);
       const el=document.createElementNS(NS,'image');
       el.setAttribute('class','nana-phosphor-star');
-      el.style.setProperty('--day-star-color',palette[count%palette.length]);
+      el.style.setProperty('--day-star-filter',`url(#nana-wall-star-ink-${count%palette.length})`);
       positionStar(el,...v);
       el.style.setProperty('pointer-events','all','important');
       el.style.touchAction='none';

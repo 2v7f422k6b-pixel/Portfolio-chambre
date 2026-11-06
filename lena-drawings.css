@@ -1,10 +1,12 @@
 /* Original artwork is sized inside existing controls; hit areas stay intact. */
-html body img.lena-icon{
+html body .lena-icon{
   display:inline-block!important;position:static!important;inset:auto!important;
   width:1em!important;height:1em!important;min-width:0!important;max-width:none!important;
   margin:0 .06em!important;padding:0!important;border:0!important;border-radius:0!important;
   object-fit:contain!important;vertical-align:-.12em;flex:0 0 auto;pointer-events:none;
-  box-shadow:none!important;background:none!important;transform:none!important;
+  box-shadow:none!important;background:currentColor!important;transform:none!important;
+  -webkit-mask:var(--lena-icon-art) center/contain no-repeat;
+  mask:var(--lena-icon-art) center/contain no-repeat;
 }
 html body #menu-search > .lena-icon,html body #nana-admin-trigger > .lena-icon{width:20px!important;height:20px!important}
 @media(min-width:761px) and (max-width:900px){
@@ -22,10 +24,12 @@ html body .ml-artboard #dl-faders .ml-draggable-fader::after{
   border:0!important;clip-path:none!important;border-radius:0!important;box-shadow:none!important;
 }
 html body .dl-record-dot{
-  background:transparent url('assets/drawn-ui/enregistrement.png') center/contain no-repeat!important;
+  background:currentColor!important;
+  -webkit-mask:url('assets/drawn-ui/enregistrement.png') center/contain no-repeat;
+  mask:url('assets/drawn-ui/enregistrement.png') center/contain no-repeat;
   border:0!important;border-radius:0!important;box-shadow:none!important;
 }
-html body .is-recording .dl-record-dot{background-image:url('assets/drawn-ui/arret.png')!important}
+html body .is-recording .dl-record-dot{-webkit-mask-image:url('assets/drawn-ui/arret.png');mask-image:url('assets/drawn-ui/arret.png')}
 html body .lena-drawn-frame{
   box-sizing:border-box!important;position:absolute!important;inset:0!important;
   width:100%!important;height:100%!important;pointer-events:none!important;
@@ -35,9 +39,13 @@ html body .lena-drawn-frame{
 /* CSS-only decorative glyphs in the dressing room. */
 html body .panel::before,html body .panel::after{
   content:''!important;width:16px;height:16px;padding:0!important;
-  background:var(--paper,#fff2fc) url('assets/drawn-ui/etincelle_pleine.png') center/contain no-repeat!important;
+  background:currentColor!important;
+  -webkit-mask:url('assets/drawn-ui/etincelle_pleine.png') center/contain no-repeat;
+  mask:url('assets/drawn-ui/etincelle_pleine.png') center/contain no-repeat;
 }
 html body .avatar-area::before,html body .avatar-area::after{
   content:''!important;width:23px;height:23px;
-  background:url('assets/drawn-ui/etincelle_vide.png') center/contain no-repeat!important;
+  background:currentColor!important;
+  -webkit-mask:url('assets/drawn-ui/etincelle_vide.png') center/contain no-repeat;
+  mask:url('assets/drawn-ui/etincelle_vide.png') center/contain no-repeat;
 }

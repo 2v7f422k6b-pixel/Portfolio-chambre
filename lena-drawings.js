@@ -20,11 +20,12 @@
   const skip = 'script,style,textarea,input,select,option,code,pre,noscript,svg,[contenteditable],.lena-icon,.nana-window-close,[data-nana-script]';
   const labels = {lecture:'Lire',pause:'Pause',arret:'Arrêter',enregistrement:'Enregistrer',ajouter:'Ajouter',supprimer:'Supprimer',fermer_atelier:'Fermer',valider:'Valider',annuler:'Annuler',retablir:'Rétablir'};
   function icon(name, glyph, doc=document) {
-    const img=doc.createElement('img');
-    img.src=url(name);img.className='lena-icon';img.draggable=false;
-    img.alt=labels[name]||glyph||'';
+    const img=doc.createElement('span');
+    img.className='lena-icon';
+    img.style.setProperty('--lena-icon-art',`url("${url(name)}")`);
+    img.setAttribute('role','img');
+    img.setAttribute('aria-label',labels[name]||glyph||'');
     img.dataset.lenaIcon=name;
-    img.decoding='async';
     return img;
   }
   function replaceText(node) {
@@ -40,7 +41,7 @@
       if(glyph==='×'&&!parent.closest('button,.remove,.close'))continue;
       fragment.append(node.ownerDocument.createTextNode(value.slice(start,match.index)));
       const image=icon(glyph==='+'?'ajouter':icons[glyph],glyph,node.ownerDocument);
-      if(parent.closest('[aria-label]') || (parent.closest('button,a')?.textContent||value).replace(tokens,'').trim()){image.alt='';image.setAttribute('aria-hidden','true');}
+      if(parent.closest('[aria-label]') || (parent.closest('button,a')?.textContent||value).replace(tokens,'').trim()){image.removeAttribute('aria-label');image.setAttribute('aria-hidden','true');}
       fragment.append(image);start=match.index+match[0].length;changed=true;
     }
     if(!changed)return;

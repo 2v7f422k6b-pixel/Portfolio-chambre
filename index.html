@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="minilab-day-layer.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="style.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="nana-shop-hover.css?v=20261106-unified-1">
-  <link rel="stylesheet" href="window-animations.css?v=1">
+  <link rel="stylesheet" href="window-animations.css?v=20261106-original-colors">
   <link rel="stylesheet" href="cat-interaction.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=20261103-subtle-motion-2">
   <link rel="stylesheet" href="music-visuals.css?v=20261106-code-cleanup-1">
@@ -569,8 +569,8 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   flex:0 0 44px!important;
 }
 </style>
-<link rel="stylesheet" href="lena-drawings.css?v=20261106-1">
-<script defer src="lena-drawings.js?v=20261106-1"></script>
+<link rel="stylesheet" href="lena-drawings.css?v=20261106-original-colors">
+<script defer src="lena-drawings.js?v=20261106-original-colors"></script>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -635,6 +635,11 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
           <svg id="window-life" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <defs>
+              <filter id="lena-day-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fffcff" flood-opacity=".89"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+              <filter id="lena-bird-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#233c73" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+              <filter id="lena-night-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#9bb2dc" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+              <filter id="lena-night-star-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7df" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+              <filter id="lena-shooting-star-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7dc" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
               <clipPath id="window-glass-clip" clipPathUnits="userSpaceOnUse">
                 <polygon points="994,57 1170,17 1170,477 994,475"/>
               </clipPath>
@@ -660,7 +665,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
               </g>
               <!-- Night: the moon and city remain part of the ORIGINAL illustration. -->
               <g class="outside-night">
-                <g class="night-cloud"><image class="" href="assets/drawn-ui/nuage_nuit_01.png" x="961" y="198" width="121" height="29" preserveAspectRatio="none"/>
+                <g class="night-cloud"><image class="night-cloud-art" href="assets/drawn-ui/nuage_nuit_01.png" x="961" y="198" width="121" height="29" preserveAspectRatio="none"/>
                 </g>
                 <g class="night-stars">
                   <image class="night-star" href="assets/drawn-ui/etoile_ciel_01.png" x="1034" y="83" width="14" height="14" preserveAspectRatio="none"/>
@@ -910,10 +915,10 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-stable-night-decor-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
 <script src="fortune-cookie-placement.js?v=20261106-stable-night-decor-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
-<script src="glow-stars.js?v=20261106-lena-drawings" defer></script>
+<script src="glow-stars.js?v=20261106-original-colors" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="room-zone-registry.js?v=20261106-lena-drawings" defer></script>
+<script src="room-zone-registry.js?v=20261106-original-colors" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
   <script src="rug-secret.js?v=20261106-lena-drawings" defer></script>
   <script src="twist-reality.js?v=20261104-performance-1" defer></script>

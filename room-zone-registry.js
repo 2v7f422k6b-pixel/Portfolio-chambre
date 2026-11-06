@@ -68,14 +68,10 @@
         transform-origin: center; opacity: 0;
         animation: nana-petal-fall 2.25s ease-in forwards;
       }
-      #play-scene .nana-poppy-petal svg { width: 100%; height: auto; display: block; }
-      /* Dark blue petal in Night mode, retaining the original red in Day mode. */
-      html[data-theme="night"] #play-scene .nana-poppy-petal svg path:first-child {
-        fill: #020235;
-        stroke: #091632;
-      }
-      html[data-theme="night"] #play-scene .nana-poppy-petal svg path:nth-child(2) {
-        stroke: #36537c;
+      #play-scene .nana-poppy-petal img { width:100%; height:100%; object-fit:contain; }
+      /* The original red drawing turns dark blue with the rest of the night scene. */
+      html[data-theme="night"] #play-scene .nana-poppy-petal img {
+        filter:url(#nana-petal-night-ink);
       }
       @keyframes nana-petal-fall {
         0%   { opacity: 0; transform: translate(0,0) rotate(-20deg) scale(.85); }
@@ -89,6 +85,12 @@
       }
     `;
     document.head.appendChild(style);
+    const inks=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    inks.setAttribute('width','0');inks.setAttribute('height','0');
+    inks.setAttribute('aria-hidden','true');inks.style.position='absolute';
+    inks.innerHTML='<defs><filter id="nana-petal-night-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 .20392 0 0 .00784 0 .31765 0 0 .00784 0 .27843 0 0 .20784 0 0 0 1 0"/></filter></defs>';
+    scene.appendChild(inks);
+
   }
   function dropPoppyPetal(zone) {
     if (!scene || !zone.center) return;
