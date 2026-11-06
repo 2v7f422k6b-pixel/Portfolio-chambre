@@ -124,8 +124,8 @@ function updateRoomCharm(){
 
 function mount(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
- const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(277 119)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
- g.innerHTML='<g class="bead-shelf-art"><g id="bead-box-shelf-ink"><path d="M1 18 13 10 52 19 40 27Z" fill="#ffcae5"/><path d="M1 18 40 27 40 42 1 33Z" fill="#f6a7cd"/><path d="M40 27 52 19 52 34 40 42Z" fill="#ef9bc4"/><path d="M2 23 40 32 51 24" fill="none"/><path d="M18 28 24 29.5 24 34.5 18 33Z" fill="#fff2d4"/><path d="M27 17 C24 12 18 13 20 17 C21 19 25 22 26 22 C30 21 36 19 34 16 C32 13 28 14 27 17Z" fill="#ff456c"/></g></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/>';
+ const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(278 112)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
+ g.innerHTML='<g class="bead-shelf-art"><g id="bead-box-shelf-ink"><path d="M.5 .5 Q5 3 10 5.8 L10.3 41.5 Q5 39 .6 36Z" fill="#f4afce"/><path d="M10 5.8 Q20 8 30 11.5 L51 17 Q51.6 34 51.1 52 L30 46.6 Q20 44.5 10.3 41.5Z" fill="#ffd1e4"/><path d="M.7 9 Q5 11 10.1 14 L30 19.4 51.2 25.3" fill="none"/><path d="M27 20.7 34 22.6 34.2 28.6 27.1 26.8Z" fill="#fff2d4"/><path d="M30.4 33.5 C27.5 28 21 29 23 34 C24.4 37 27.4 39.5 30.6 42 C34 40 39.5 38.7 39 35 C38.6 30.5 32.8 29.3 30.4 33.5Z" fill="#ff456c"/><path d="M3.5 2.2 3.8 37.2" fill="none" opacity=".45"/></g></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/>';
  svg.appendChild(g);updateRoomCharm();
  g.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});
 }
