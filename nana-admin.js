@@ -306,6 +306,7 @@
       '<button class="nana-admin-action" data-tool="ipadClockEdit">Horloge de l’iPad</button>' +
       '<button class="nana-admin-action" data-tool="ribbons">Rubans des illustrations</button>' +
       '<button class="nana-admin-action" data-tool="polaroids">Polaroïds : photos et textes</button>' +
+      '<button class="nana-admin-action" data-tool="conte">La Princesse Clown : composer le livre</button>' +
       '<button class="nana-admin-action" data-tool="zones">Zones cliquables</button>' +
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
@@ -326,6 +327,7 @@
       button.addEventListener('click',()=>{
         const action=button.dataset.tool;
         if(action==='polaroids') { editPolaroids(); return; }
+        if(action==='conte') { location.assign('atelier-conte/'); return; }
         if(action==='ribbons') {
           dialog.close();
           if(!document.querySelector('#art-tiles .art-tile--for-sale'))
@@ -361,3 +363,4 @@
     if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
   });
 })();
+
