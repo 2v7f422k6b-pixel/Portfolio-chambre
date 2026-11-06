@@ -23,7 +23,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .main{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:minmax(270px,1.02fr) minmax(290px,1fr)}
 .station{background:linear-gradient(160deg,#fff3f1 0%,#fffaf3 70%);position:relative;border-right:1.5px solid var(--red);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 18px 20px;overflow:hidden}
 .station h1{max-width:100%;font-size:clamp(25px,3.6vw,38px);line-height:1.1;font-weight:400;margin:8px 0 18px;letter-spacing:.025em;text-align:center}
-.cup-stage{flex:none;display:grid;place-items:center;margin:10px auto 50px;width:min(100%,350px);aspect-ratio:1;position:relative}
+.cup-stage{flex:none;display:grid;place-items:center;margin:35px auto 85px;width:min(100%,350px);aspect-ratio:1;position:relative}
 .cup-stage svg{width:100%;height:auto;display:block;overflow:visible}
 .cup-stage .cup-art{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1;touch-action:none;opacity:0;pointer-events:none;cursor:crosshair}
 .cup-stage .cup-art.visible{opacity:1}
@@ -72,14 +72,14 @@ input[type=range]{width:100%;accent-color:var(--red);height:30px;margin:4px 0 9p
  .main{display:block}
  .station{min-height:0;padding:12px 14px 9px;border-right:0;border-bottom:1.5px solid var(--red)}
  .station h1{font-size:27px;margin:4px 0 8px}
- .cup-stage{width:min(65%,195px);margin:1px auto 35px}
+ .cup-stage{width:min(65%,195px);margin:25px auto 60px}
  .controls{padding:16px 17px 26px;gap:10px}
  .step-title{font-size:28px}
 }
 @media(max-height:560px) and (min-width:651px){.station{padding:12px 16px}.cup-stage{width:min(100%,265px)}.controls{padding-top:12px;gap:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 .cup-stage .latte-custom-mug,.cup-stage .latte-liquid-overlay{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-.cup-stage .latte-saucer{position:absolute;left:-22%;top:-30%;width:180%;height:auto;max-width:none;z-index:0;pointer-events:none}
+.cup-stage .latte-saucer{position:absolute;left:-39%;top:-49%;width:225%;height:auto;max-width:none;z-index:0;pointer-events:none}
 .cup-stage .latte-custom-mug{z-index:2;pointer-events:none}
 .cup-stage .latte-liquid-overlay{z-index:1;overflow:hidden;transform:none!important;transform-origin:50% 50%}
 .cup-stage .cup-art{z-index:3}
