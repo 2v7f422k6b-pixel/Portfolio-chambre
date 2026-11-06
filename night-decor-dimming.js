@@ -1,12 +1,11 @@
-/* Night dimming without SVG filter references (iPad-safe). */
+/* Poster compatibility only. Mirror and cookie own their opaque night shading;
+   do not reset their filters/opacity when unrelated SVG children change. */
 (() => {
  'use strict';
  const svg=document.getElementById('hotspots');
  if(!svg)return;
  const selectors=[
-  ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image', 1],
-  ['#nana-wall-mirror image',1],
-  ['#nana-fortune-cookie image:not(.nana-fortune-cookie-outline)',1]
+  ['.poster-artwork, .poster-perspective-artworks image, .poster-tape-layer image', 1]
  ];
  const apply=()=>{
   const night=document.documentElement.dataset.theme==='night';
@@ -30,3 +29,4 @@
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  apply();
 })();
+

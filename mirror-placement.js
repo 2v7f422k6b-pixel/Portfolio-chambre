@@ -62,6 +62,12 @@
     path.style.cssText='fill:'+part.fill+'!important;stroke:none!important;filter:none!important';
     visual.appendChild(path);return path;
   });
+  // The first path is the mirror's solid outer silhouette. Shade that exact
+  // shape without making the mirror transparent or filtering its hover ring.
+  const nightShade=make('path',{
+    class:'nana-wall-mirror-night-shade',fill:'#000',
+    'pointer-events':'none','aria-hidden':'true'
+  });
   const hit = make('path',{
     id:'wall-mirror-hit',
     'data-open':'dressup',
@@ -90,7 +96,7 @@
     return handle;
   });
   if (editing) editorLayer.append(guide,...handles);
-  group.append(defs,visual,hit,editorLayer);
+  group.append(defs,visual,nightShade,hit,editorLayer);
   // The mirror is the final SVG layer so it remains clickable above room hotspots.
   svg.appendChild(group);
   const style=document.createElement('style');
@@ -107,6 +113,7 @@
     artwork.forEach((part,index)=>{
       paths[index].setAttribute('d','M '+part.points.map(([x,y])=>interp(p,x/W,y/H).join(' ')).join(' L ')+' Z');
     });
+    nightShade.setAttribute('d',paths[0].getAttribute('d'));
     // The hit area follows the transformed oval, not a rectangular box.
     const oval=[];
     for(let i=0;i<40;i++){
@@ -235,3 +242,4 @@
     panel.appendChild(section);
   }
 })();
+

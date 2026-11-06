@@ -57,10 +57,27 @@
     document.head.appendChild(style);
   }
   const image=element('image',{
+    id:'nana-fortune-cookie-artwork',
     href:'assets/fortune-cookie.png',
     'aria-hidden':'true',
     'pointer-events':'none',
     preserveAspectRatio:'xMidYMid meet'
+  });
+  // Darken the opaque drawing, never the whole object or its white hover ring.
+  // An alpha-masked black layer avoids CSS brightness on rotated SVG images
+  // (unreliable on iPad) and keeps the original PNG and its transparency intact.
+  const defs=element('defs');
+  const nightMask=element('mask',{
+    id:'nana-fortune-cookie-night-mask',maskUnits:'userSpaceOnUse',
+    maskContentUnits:'userSpaceOnUse','mask-type':'alpha'
+  });
+  nightMask.style.maskType='alpha';
+  nightMask.appendChild(element('use',{href:'#nana-fortune-cookie-artwork'}));
+  defs.appendChild(nightMask);
+  const nightShade=element('rect',{
+    class:'nana-fortune-cookie-night-shade',
+    mask:'url(#nana-fortune-cookie-night-mask)',
+    fill:'#000','pointer-events':'none','aria-hidden':'true'
   });
   const hit=element('polygon',{
     'data-open':'fortune-cookie',
@@ -73,7 +90,7 @@
   });
   hit.style.cursor=editor?'grab':'pointer';
   hit.style.touchAction=editor?'none':'manipulation';
-  group.append(outline,image,hit);
+  group.append(defs,outline,image,nightShade,hit);
   svg.appendChild(group);
 
   // The foreground cookie hides room outlines even when it is not hovered.
@@ -86,7 +103,7 @@
     position.x=clamp(position.x,0,ROOM_W-position.width);
     position.y=clamp(position.y,0,ROOM_H-height);
     group.setAttribute('transform',`rotate(${position.angle} ${position.x+position.width/2} ${position.y+height/2})`);
-    for(const im of [outline,image]){
+    for(const im of [outline,image,nightMask,nightShade]){
       im.setAttribute('x',position.x);
       im.setAttribute('y',position.y);
       im.setAttribute('width',position.width);
@@ -279,3 +296,4 @@
     setPosition(next){if(next&&Number.isFinite(next.x)&&Number.isFinite(next.y)&&Number.isFinite(next.width)){Object.assign(position,{x:next.x,y:next.y,width:next.width,angle:Number.isFinite(next.angle)?next.angle:position.angle});render();save();}}
   };
 })();
+

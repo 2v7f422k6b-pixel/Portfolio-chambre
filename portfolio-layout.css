@@ -5,6 +5,20 @@ html[data-theme="night"] #hotspots .poster-artwork {
   filter: brightness(0.77) saturate(0.9);
 }
 
+/* Single owner for mirror/cookie night tones. Original art stays fully opaque;
+   black silhouette layers provide 60% / 70% brightness without SVG filters.
+   They participate in app.js's composite room crossfade, not a second fade.
+   Hover rings are separate siblings and must always remain white. */
+#hotspots .nana-wall-mirror-night-shade,
+#hotspots .nana-fortune-cookie-night-shade {
+  fill: #000;
+  stroke: none;
+  opacity: 0;
+  pointer-events: none;
+}
+html[data-theme="night"] #hotspots .nana-wall-mirror-night-shade { opacity: .4; }
+html[data-theme="night"] #hotspots .nana-fortune-cookie-night-shade { opacity: .3; }
+
 /* Earlier contain-fit override; superseded below. */
 #play-viewport {
   display: flex;
@@ -1086,3 +1100,4 @@ html body #app #special-host .phone-app .phone-drawn-icon {
   height: 100% !important;
   object-fit: contain !important;
 }
+

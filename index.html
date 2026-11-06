@@ -150,7 +150,7 @@
     #hotspots .poster-artwork { image-rendering: auto; }
     @media (max-width: 760px) { #play-scene { width: max(900px, 100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); } }
   </style>
-  <link rel="stylesheet" href="portfolio-layout.css?v=20261106-code-cleanup-1">
+  <link rel="stylesheet" href="portfolio-layout.css?v=20261106-stable-night-decor-1">
 
 
 
@@ -213,12 +213,6 @@ html:not([data-theme="night"]) #hotspots .poster-artworks {opacity:1!important;}
 #nana-glow-stars-layer {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:7!important;pointer-events:none!important;}
 #nana-glow-stars-layer .nana-phosphor-star {opacity:.85!important;}
 html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!important;}
-html[data-theme="night"] #hotspots #nana-wall-mirror > g,
-html[data-theme="night"] #hotspots #nana-wall-mirror > image,
-html:not([data-theme="night"]) #hotspots #nana-wall-mirror > g,
-html:not([data-theme="night"]) #hotspots #nana-wall-mirror > image,
-html:not([data-theme="night"]) #hotspots #nana-fortune-cookie > image:not(.nana-fortune-cookie-outline) {opacity:1!important;}
-html[data-theme="night"] #hotspots #nana-fortune-cookie > image:not(.nana-fortune-cookie-outline) {opacity:1!important;filter:brightness(.7)!important;}
 </style>
   <style id="marseille-room-layers-20261103">
     /* Both cityscapes share the bedroom's 1670:942 canvas. Keep all four
@@ -510,32 +504,20 @@ html[data-theme="night"] #play-scene .nana-minilab-day { opacity:0; }
 html[data-theme="night"] #play-scene .nana-minilab-night { opacity:1; }
 #app.mode-work #play-scene .nana-minilab-day,
 #app.mode-work #play-scene .nana-minilab-night { display:none !important; }
-/* Added poster, mirror and cookie SVG artwork now fades with the room. */
+/* Poster opacity changes outside the composite room transition. */
 #play-scene #hotspots .poster-perspective-artworks,
 #play-scene #hotspots .poster-artworks,
-#play-scene #hotspots .poster-artwork,
-#play-scene #hotspots #nana-wall-mirror > g,
-#play-scene #hotspots #nana-wall-mirror > image,
-#play-scene #hotspots #nana-fortune-cookie > image {
+#play-scene #hotspots .poster-artwork {
   transition:opacity 1.8s cubic-bezier(.42,0,.25,1);
 }
 @media (prefers-reduced-motion:reduce) {
   #play-scene .nana-minilab-day,#play-scene .nana-minilab-night,
   #play-scene #hotspots .poster-perspective-artworks,
   #play-scene #hotspots .poster-artworks,
-  #play-scene #hotspots .poster-artwork,
-  #play-scene #hotspots #nana-wall-mirror > g,
-  #play-scene #hotspots #nana-wall-mirror > image,
-  #play-scene #hotspots #nana-fortune-cookie > image {transition:none;}
+  #play-scene #hotspots .poster-artwork {transition:none;}
 }
 </style>
 
-<style id="nana-night-mirror-brightness">
-html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-events="none"] {
-  opacity:1!important;
-  filter:brightness(.60)!important;
-}
-</style>
 <style>
 #welcome .welcome-language{display:flex;justify-content:center;align-items:center;gap:12px;margin:0;color:#ff173b;position:fixed;top:max(12px,env(safe-area-inset-top));right:max(18px,env(safe-area-inset-right));z-index:5;}
 #welcome .welcome-language button{font:inherit;font-size:clamp(16px,2vw,21px);color:inherit;background:transparent;border:0;padding:8px 6px;min-height:44px;cursor:pointer;}
@@ -923,11 +905,11 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 </script>
 
 
-<script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-code-cleanup-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
-<script src="fortune-cookie-placement.js?v=20261106-code-cleanup-1" defer></script>
+<script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-stable-night-decor-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
+<script src="fortune-cookie-placement.js?v=20261106-stable-night-decor-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261105-above-posters-15" defer></script>
-<script src="night-decor-dimming.js?v=20261105-opaque-mirror-10" defer></script>
+<script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
 <script src="room-zone-registry.js?v=20261106-ring-light-1" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
@@ -1007,5 +989,6 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
 </body>
 </html>
+
 
 
