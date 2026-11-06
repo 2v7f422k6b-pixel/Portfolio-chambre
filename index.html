@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="minilab-day-layer.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="style.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="nana-shop-hover.css?v=20261106-unified-1">
-  <link rel="stylesheet" href="window-animations.css?v=20261106-original-colors">
+  <link rel="stylesheet" href="window-animations.css?v=20261107-night-colors-1">
   <link rel="stylesheet" href="cat-interaction.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=20261103-subtle-motion-2">
   <link rel="stylesheet" href="music-visuals.css?v=20261106-code-cleanup-1">
@@ -638,8 +638,8 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
               <filter id="lena-day-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fffcff" flood-opacity=".89"/><feComposite in2="SourceAlpha" operator="in"/></filter>
               <filter id="lena-bird-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#233c73" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
               <filter id="lena-night-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#9bb2dc" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
-              <filter id="lena-night-star-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7df" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
-              <filter id="lena-shooting-star-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7dc" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+              <filter id="lena-night-star-ink" x="-200%" y="-200%" width="500%" height="500%" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7df" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/><feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#fcefb8" flood-opacity=".76"/></filter>
+              <filter id="lena-shooting-star-ink" x="-200%" y="-200%" width="500%" height="500%" color-interpolation-filters="sRGB"><feFlood flood-color="#fff7dc" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#dbe8ff" flood-opacity="1"/></filter>
               <clipPath id="window-glass-clip" clipPathUnits="userSpaceOnUse">
                 <polygon points="994,57 1170,17 1170,477 994,475"/>
               </clipPath>
@@ -915,7 +915,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="poster-fit.js?v=20261106-code-cleanup-1" defer></script><script src="mirror-placement.js?v=20261106-stable-night-decor-1" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
 <script src="fortune-cookie-placement.js?v=20261106-stable-night-decor-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
-<script src="glow-stars.js?v=20261106-original-colors" defer></script>
+<script src="glow-stars.js?v=20261107-night-colors-1" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
 <script src="room-zone-registry.js?v=20261106-original-colors" defer></script>

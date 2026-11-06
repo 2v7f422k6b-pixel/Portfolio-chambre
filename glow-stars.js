@@ -627,7 +627,7 @@
   const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
   // PNGs use their own colour unless their alpha is painted with the wall palette.
   const definitions=document.createElementNS(NS,'defs');
-  palette.forEach((color,index)=>{
+  [...palette, '#dfffaa'].forEach((color,index)=>{
     const filter=document.createElementNS(NS,'filter');
     filter.id='nana-wall-star-ink-'+index;
     filter.setAttribute('color-interpolation-filters','sRGB');
@@ -635,7 +635,19 @@
     flood.setAttribute('flood-color',color);
     const composite=document.createElementNS(NS,'feComposite');
     composite.setAttribute('in2','SourceAlpha');composite.setAttribute('operator','in');
-    filter.append(flood,composite);definitions.appendChild(filter);
+    filter.append(flood,composite);
+    // The last ink restores the original phosphorescent night colour and halo.
+    if(index===palette.length){
+      filter.setAttribute('x','-200%');filter.setAttribute('y','-200%');
+      filter.setAttribute('width','500%');filter.setAttribute('height','500%');
+      [[3,'#e4ffac'],[7,'#b9f579']].forEach(([blur,halo])=>{
+        const shadow=document.createElementNS(NS,'feDropShadow');
+        shadow.setAttribute('dx','0');shadow.setAttribute('dy','0');
+        shadow.setAttribute('stdDeviation',blur);shadow.setAttribute('flood-color',halo);
+        filter.appendChild(shadow);
+      });
+    }
+    definitions.appendChild(filter);
   });
   layer.appendChild(definitions);
   const elements=[];
@@ -665,7 +677,7 @@
     }
     html[data-theme="night"] #nana-glow-stars .nana-phosphor-star {
       opacity:.9;
-      filter:brightness(0) saturate(100%) invert(18%) sepia(24%) saturate(1200%) hue-rotate(80deg);
+      filter:url(#nana-wall-star-ink-6);
       animation:nana-phosphor-breathe 6.8s ease-in-out infinite;
       animation-delay:var(--twinkle-delay);
     }

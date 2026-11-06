@@ -29,8 +29,8 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
 #window-life image.day-cloud {filter:url(#lena-day-cloud-ink);}
 #window-life image.bird-wing {filter:url(#lena-bird-ink);}
 #window-life .night-cloud-art {filter:url(#lena-night-cloud-ink);}
-#window-life image.night-star {filter:url(#lena-night-star-ink) drop-shadow(0 0 2.5px rgba(252,239,184,.76));}
-#window-life image.shooting-star {filter:url(#lena-shooting-star-ink) drop-shadow(0 0 3px #dbe8ff);}
+#window-life image.night-star {filter:url(#lena-night-star-ink);}
+#window-life image.shooting-star {filter:url(#lena-shooting-star-ink);}
 #window-life .cloud-back { opacity:.85; animation:window-cloud-back 28s linear infinite -11s; }
 #window-life .cloud-front { opacity:.95; animation:window-cloud-front 35s linear infinite -16s; }
 #window-life .bird-flock {
