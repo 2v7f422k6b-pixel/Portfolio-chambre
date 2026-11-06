@@ -97,3 +97,20 @@ html body #bead-workshop :is(p,h2,h3,label,span,button,input){color:#ff173b!impo
  #bead-workshop .bead-hint{font-size:12px!important;}
  #bead-workshop .bead-pendants{gap:4px;font-size:13px;}
 }
+
+/* A single hand-drawn focus frame, without iOS's extra input outline. */
+html body #app #window-shade #bead-word-input:focus{outline:none!important;box-shadow:none!important;}
+#bead-workshop .bead-word>div:focus-within{background:#ffe2ef;}
+#bead-workshop .bead-word>div:focus-within>.sketch-ui-svg .sketch-ui-ink{stroke-width:2!important;}
+#bead-workshop .bead-letter,.bead-drag-ghost .bead-letter,#nana-phone-charm .bead-letter{font-family:"Nana Trace UI",Arial,sans-serif!important;font-size:24px!important;dominant-baseline:auto;}
+html body #app #window-shade:not([hidden]).bead-keyboard-open{
+ inset:var(--bead-keyboard-top) 0 auto!important;
+ height:var(--bead-keyboard-height)!important;
+ padding:0 var(--nana-window-side-gap)!important;
+ align-items:stretch!important;
+}
+html body #app #window-shade:not([hidden]).bead-keyboard-open>#window[data-window-type="bead-box"]{
+ position:relative!important;inset:auto!important;transform:none!important;margin:0!important;
+ height:100%!important;max-height:100%!important;
+}
+html body #app #window-shade.bead-keyboard-open #window-content{overflow-anchor:none;scroll-behavior:auto!important;}

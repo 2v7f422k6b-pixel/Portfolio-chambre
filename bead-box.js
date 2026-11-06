@@ -37,8 +37,17 @@ function snapshot(){history.push(JSON.stringify({beads,attached}));if(history.le
 function bead(type,letter='',variant=0){
  const variants=ART[type];if(!variants)return '';
  const art=variants[Math.abs(variant)%variants.length],size=type==='rabbit'?70:36;
- return `<svg x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" viewBox="${art.box.join(' ')}" preserveAspectRatio="xMidYMid meet" overflow="visible"><image href="${art.src}" width="1000" height="1000"/></svg>${type==='letter'?`<text x="0" y="1" dominant-baseline="central" text-anchor="middle" fill="#ff173b" font-family="Nana Trace UI,Arial,sans-serif" font-size="24" pointer-events="none">${cleanWord(letter).slice(0,1)||'A'}</text>`:''}`;
+ return `<svg x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" viewBox="${art.box.join(' ')}" preserveAspectRatio="xMidYMid meet" overflow="visible"><image href="${art.src}" width="1000" height="1000"/></svg>${type==='letter'?`<text class="bead-letter" x="0" y="0" text-anchor="start" fill="#ff173b" font-family="Nana Trace UI,Arial,sans-serif" font-size="24" pointer-events="none">${cleanWord(letter).slice(0,1)||'A'}</text>`:''}`;
 }
+// Center the visible ink, not the font's advance width or line metrics.
+function centerLetters(root){
+ for(const text of root?.querySelectorAll?.('text.bead-letter')||[]){
+  text.setAttribute('x','0');text.setAttribute('y','0');
+  const box=text.getBBox();
+  if(box.width>0&&box.height>0){text.setAttribute('x',String(-box.x-box.width/2));text.setAttribute('y',String(-box.y-box.height/2));}
+ }
+}
+document.fonts?.ready.then(()=>centerLetters(document));
 function slotPoint(slot){const a=-Math.PI/2-.325-(Math.PI*2-.65)*slot/(MAX-1);return {x:220+104*Math.cos(a),y:260+158*Math.sin(a)};}
 function nearestSlot(point,exclude=-1){
  const used=new Set(beads.filter((_,i)=>i!==exclude).map(b=>b.slot));
@@ -56,7 +65,7 @@ function charmMarkup(interactive=false){
 function announce(message){const live=document.querySelector('#bead-status');if(live)live.textContent=message;}
 function refresh(message=''){
  updateRoomCharm();const stage=document.querySelector('#bead-charm');if(!stage)return;
- stage.innerHTML=charmMarkup(true);
+ stage.innerHTML=charmMarkup(true);centerLetters(stage);
  document.querySelector('[data-bead-action="undo"]').disabled=!history.length;
  document.querySelector('[data-bead-action="reset"]').disabled=!beads.length;
  document.querySelector('[data-bead-action="shop"]').disabled=!beads.length;
@@ -74,7 +83,7 @@ function panel(){const w=t();return `<section id="bead-workshop" data-no-transla
  <p class="bead-intro">${w.intro}</p>
  <div class="bead-layout"><div class="bead-supplies">
  <div class="bead-trays">${TYPES.map((type,i)=>`<section class="bead-tray" aria-label="${w.names[i]}"><h3>${w.names[i]}</h3><div class="bead-choices">${ART[type].map((art,variant)=>`<button type="button" class="bead-choice" data-add-bead="${type}" data-variant="${variant}" aria-label="${w.names[i]} ${variant+1}"><svg viewBox="-25 -25 50 50" aria-hidden="true">${bead(type,'',variant)}</svg></button>`).join('')}</div></section>`).join('')}</div>
- <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="NANA"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
+ <div class="bead-word"><label for="bead-word-input">${w.word}</label><div><input id="bead-word-input" maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" autocapitalize="characters" placeholder="NANA"><button type="button" class="bead-control" data-bead-action="word">${w.thread}</button></div></div>
  <p class="bead-note">${w.local}</p></div>
  <div class="bead-making"><h2>${w.yours}</h2><svg id="bead-charm" viewBox="0 0 440 515" role="group" aria-label="${w.yours}"></svg><p class="bead-hint">${w.hint}</p>
  <div class="bead-pendants"><span>${w.pendant}</span><svg width="44" height="55" viewBox="-38 -38 76 76" role="img" aria-label="${language()==='fr'?'Lapin rose':'Pink bunny'}">${bead('rabbit')}</svg><button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
@@ -98,7 +107,7 @@ document.addEventListener('pointermove',e=>{
  if(!drag||drag.id!==e.pointerId)return;
  if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
  e.preventDefault();
- if(!drag.moved){drag.moved=true;drag.ghost=document.createElement('div');drag.ghost.className='bead-drag-ghost';drag.ghost.setAttribute('aria-hidden','true');drag.ghost.innerHTML=`<svg viewBox="-25 -25 50 50">${bead(drag.item.type,drag.item.letter,drag.item.variant)}</svg>`;document.body.appendChild(drag.ghost);}
+ if(!drag.moved){drag.moved=true;drag.ghost=document.createElement('div');drag.ghost.className='bead-drag-ghost';drag.ghost.setAttribute('aria-hidden','true');drag.ghost.innerHTML=`<svg viewBox="-25 -25 50 50">${bead(drag.item.type,drag.item.letter,drag.item.variant)}</svg>`;document.body.appendChild(drag.ghost);centerLetters(drag.ghost);}
  drag.ghost.style.transform=`translate(${e.clientX-27}px,${e.clientY-27}px)`;
  document.querySelector('#bead-charm')?.classList.toggle('bead-drop-ready',Boolean(stagePoint(e.clientX,e.clientY)));
 },{passive:false});
@@ -121,7 +130,7 @@ document.addEventListener('click',e=>{
  if(choice)add([{type:choice.dataset.addBead,variant:Number(choice.dataset.variant)}]);
  else if(item)remove(Number(item.dataset.beadIndex));
  else if(action)switch(action.dataset.beadAction){
-  case 'word':{const value=cleanWord(document.querySelector('#bead-word-input').value);if(value)add([...value].map(letter=>({type:'letter',letter})));break;}
+  case 'word':{const value=cleanWord(document.querySelector('#bead-word-input').value);if(value){add([...value].map(letter=>({type:'letter',letter})));document.querySelector('#bead-word-input').blur();}break;}
   case 'undo':if(history.length){const prev=JSON.parse(history.pop());beads=prev.beads;attached=prev.attached;persist();refresh();}break;
   case 'reset':snapshot();beads=[];attached=false;persist();refresh();break;
   case 'shop':persist();document.getElementById('nana-shop-bag')?.click();break;
@@ -144,12 +153,47 @@ document.addEventListener('portfolio-language-change',()=>{
  document.querySelector('#nana-bead-box-shelf')?.setAttribute('aria-label',t().title);
  updateRoomCharm();if(document.querySelector('#bead-workshop'))open();
 });
+// iOS pans the visual viewport when its keyboard opens. Anchor this window
+// to that visible area and reveal the input using the inner scroll pane only.
+let keyboardBaseHeight=0,keyboardFrame=0;
+function syncBeadKeyboard(){
+ keyboardFrame=0;
+ const shade=document.getElementById('window-shade');
+ const input=document.getElementById('bead-word-input');
+ const viewport=window.visualViewport;
+ const focused=input&&document.activeElement===input;
+ const visibleHeight=viewport?.height||window.innerHeight;
+ const zoomed=viewport&&Math.abs(viewport.scale-1)>.01;
+ const keyboardOpen=focused&&!zoomed&&keyboardBaseHeight-visibleHeight>100;
+ shade?.classList.toggle('bead-keyboard-open',Boolean(keyboardOpen));
+ if(!keyboardOpen)return;
+ const top=viewport?.offsetTop||0;
+ const menuBottom=document.getElementById('menubar')?.getBoundingClientRect().bottom||0;
+ const safeTop=Math.max(top,menuBottom)+8;
+ shade.style.setProperty('--bead-keyboard-top',safeTop+'px');
+ shade.style.setProperty('--bead-keyboard-height',Math.max(120,top+visibleHeight-safeTop-8)+'px');
+ const pane=document.getElementById('window-content');
+ if(!pane)return;
+ const bounds=pane.getBoundingClientRect(),field=input.getBoundingClientRect();
+ if(field.bottom>bounds.bottom-12)pane.scrollTop+=field.bottom-bounds.bottom+12;
+ else if(field.top<bounds.top+12)pane.scrollTop-=bounds.top+12-field.top;
+}
+function scheduleBeadKeyboard(){if(!keyboardFrame)keyboardFrame=requestAnimationFrame(syncBeadKeyboard);}
+document.addEventListener('focusin',e=>{
+ if(e.target.id!=='bead-word-input')return;
+ keyboardBaseHeight=Math.max(window.innerHeight,document.documentElement.clientHeight,window.visualViewport?.height||0);
+ scheduleBeadKeyboard();
+});
+document.addEventListener('focusout',e=>{if(e.target.id==='bead-word-input')scheduleBeadKeyboard();});
+window.visualViewport?.addEventListener('resize',scheduleBeadKeyboard,{passive:true});
+window.visualViewport?.addEventListener('scroll',scheduleBeadKeyboard,{passive:true});
+window.addEventListener('resize',scheduleBeadKeyboard,{passive:true});
 window.NanaBeadBox={open};
 function updateRoomCharm(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
  let charm=document.querySelector('#nana-phone-charm');
  if(!charm){charm=document.createElementNS('http://www.w3.org/2000/svg','g');charm.id='nana-phone-charm';charm.setAttribute('data-open','bead-box');charm.setAttribute('role','button');charm.setAttribute('tabindex','0');charm.setAttribute('transform','translate(1153 805) rotate(8) scale(.16) translate(-220 -24)');svg.appendChild(charm);charm.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});}
- charm.setAttribute('aria-label',t().roomCharm);charm.style.display=attached&&beads.length?'':'none';charm.innerHTML=attached&&beads.length?'<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup():'';
+ charm.setAttribute('aria-label',t().roomCharm);charm.style.display=attached&&beads.length?'':'none';charm.innerHTML=attached&&beads.length?'<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup():'';centerLetters(charm);
 }
 function mount(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
