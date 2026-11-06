@@ -1,7 +1,7 @@
-/* La Princesse Clown — tactile illustrated flipbook. Original PDF is preserved. */
+/* La Princesse Clown — tactile illustrated flipbook. Approved justified-text edition, 74 pages. */
 (()=>{
 'use strict';
-const BASE='assets/books/princesse-clown/', COUNT=18, BYTES=8699536;
+const BASE='assets/books/princesse-clown/', COUNT=36, BYTES=17386944;
 const CDN='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
 const $=s=>document.querySelector(s);
 let pdfUrl=null,pending=null,pdf=null,cache=new Map(),position=0,busy=false,token=0,pageRatio=.72;
@@ -13,7 +13,7 @@ async function loadPdf(){
  pending=(async()=>{
   if(!pdfUrl){
    const chunks=new Array(COUNT);let next=0,done=0;
-   async function worker(){while(next<COUNT){const i=next++;const res=await fetch(BASE+'part-'+String(i).padStart(2,'0')+'.bin');if(!res.ok)throw Error('Impossible de charger le livre.');chunks[i]=await res.arrayBuffer();status('Chargement du livre : '+Math.round(++done/COUNT*100)+' %',done/COUNT*65);}}
+   async function worker(){while(next<COUNT){const i=next++;const res=await fetch(BASE+'part-'+String(i).padStart(2,'0')+'.bin?v=texte-justifie-20261106');if(!res.ok)throw Error('Impossible de charger le livre.');chunks[i]=await res.arrayBuffer();status('Chargement du livre : '+Math.round(++done/COUNT*100)+' %',done/COUNT*65);}}
    await Promise.all(Array.from({length:4},worker));
    const blob=new Blob(chunks,{type:'application/pdf'});
    if(blob.size!==BYTES)throw Error('Le fichier du livre est incomplet.');
@@ -38,10 +38,10 @@ function pagePair(p){
  if(isSmall())return [0,p];
  return p===1?[0,1]:[p,p+1];
 }
-function limit(p){return Math.max(1,Math.min(pdf?.numPages||66,p));}
-function nextPosition(p,dir){if(isSmall())return limit(p+dir);if(dir>0)return p===1?2:Math.min(66,p+2);return p===2?1:Math.max(1,p-2);}
+function limit(p){return Math.max(1,Math.min(pdf?.numPages||74,p));}
+function nextPosition(p,dir){if(isSmall())return limit(p+dir);if(dir>0)return p===1?2:Math.min(pdf?.numPages||74,p+2);return p===2?1:Math.max(1,p-2);}
 async function imageFor(n){
- if(n<1||n>(pdf?.numPages||66))return null;
+ if(n<1||n>(pdf?.numPages||74))return null;
  if(cache.has(n))return cache.get(n);
  const promise=(async()=>{
   const page=await pdf.getPage(n),base=page.getViewport({scale:1});
@@ -75,7 +75,7 @@ function sizeSpread(){
  book.style.aspectRatio=String(ratio);
 }
 function updateControls(){
- const total=pdf?.numPages||66;
+ const total=pdf?.numPages||74;
  const pair=pagePair(position),label=pair.filter(n=>n>0&&n<=total);
  const counter=$('#book-count');if(counter)counter.textContent='Page'+(label.length>1?'s ':' ')+label.join('–')+' / '+total;
  const prev=$('[data-book-prev]'),next=$('[data-book-next]');
@@ -171,22 +171,22 @@ function openBook(){
  '<section id="book-reader" class="book-reader" aria-label="Livre interactif La Princesse Clown">'+
  '<header class="book-reader-header"><div><small>CONTE ILLUSTRÉ · ÉDITION PROVISOIRE</small><h2>La Princesse <em>Clown</em></h2></div>'+
  '<div class="book-reader-actions"><button type="button" data-book-full disabled>↗ PDF original</button><button type="button" data-book-download disabled>↓ Télécharger</button></div></header>'+
- '<div class="book-reader-stage"><div class="book-reader-loader" id="book-loader"><span class="book-flower">♥</span><strong>Ouverture du livre…</strong><span id="book-status">Préparation des 66 pages</span><div class="book-meter"><div id="book-meter-fill"></div></div></div>'+
+ '<div class="book-reader-stage"><div class="book-reader-loader" id="book-loader"><span class="book-flower">♥</span><strong>Ouverture du livre…</strong><span id="book-status">Préparation des 74 pages</span><div class="book-meter"><div id="book-meter-fill"></div></div></div>'+
  '<div class="book-assembly" id="book-assembly" hidden><button class="book-side-arrow" data-book-prev aria-label="Page précédente">‹</button>'+
  '<div class="book-pages" id="book-pages" aria-label="Pages du livre"><div id="book-left" class="book-page book-left"><img alt="Page de gauche du livre"></div><div class="book-spine" aria-hidden="true"></div><div id="book-right" class="book-page book-right"><img alt="Page de droite du livre"></div></div>'+
  '<button class="book-side-arrow" data-book-next aria-label="Page suivante">›</button></div></div>'+
- '<footer class="book-reader-footer"><span>♡ Un conte de Léna de Firmas</span><span id="book-count" aria-live="polite">66 pages</span><span>Glisse ou clique pour tourner les pages</span></footer></section>','book');
+ '<footer class="book-reader-footer"><span>♡ Un conte de Léna de Firmas</span><span id="book-count" aria-live="polite">74 pages</span><span>Glisse ou clique pour tourner les pages</span></footer></section>','book');
  position=1;busy=false;token++;
  loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();document.querySelectorAll('#book-reader [data-book-full],#book-reader [data-book-download]').forEach(b=>b.disabled=false);}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
 window.openBook=openBook;
-function addFinder(){const grid=$('#window-content .project-grid');if(!grid||grid.querySelector('[data-open="book"]'))return;const b=document.createElement('button');b.type='button';b.className='project-card';b.dataset.open='book';b.innerHTML='<span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Livre illustré · 66 pages</small>';grid.appendChild(b);}
+function addFinder(){const grid=$('#window-content .project-grid');if(!grid||grid.querySelector('[data-open="book"]'))return;const b=document.createElement('button');b.type='button';b.className='project-card';b.dataset.open='book';b.innerHTML='<span class="book-finder-cover">♡<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Livre illustré · 74 pages</small>';grid.appendChild(b);}
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-book-prev]')){turn(-1);return;}
  if(e.target.closest('[data-book-next]')){turn(1);return;}
  if(e.target.closest('[data-book-retry]')){openBook();return;}
  if(e.target.closest('[data-book-full]')){if(pdfUrl)window.open(pdfUrl,'_blank','noopener');return;}
- if(e.target.closest('[data-book-download]')){if(!pdfUrl)return;const a=document.createElement('a');a.href=pdfUrl;a.download='La_Princesse_Clown_lecture.pdf';document.body.appendChild(a);a.click();a.remove();return;}
+ if(e.target.closest('[data-book-download]')){if(!pdfUrl)return;const a=document.createElement('a');a.href=pdfUrl;a.download='La_Princesse_Clown_texte_justifie.pdf';document.body.appendChild(a);a.click();a.remove();return;}
  if(e.target.closest('#book-right')&&Date.now()>suppressClickUntil)turn(1);
  if(e.target.closest('#book-left')&&Date.now()>suppressClickUntil)turn(-1);
 });

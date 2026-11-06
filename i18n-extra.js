@@ -231,9 +231,9 @@ window.NanaI18nExtra = {
   "↗ PDF original": "↗ Original PDF",
   "↓ Télécharger": "↓ Download",
   "Ouverture du livre…": "Opening the book…",
-  "Préparation des 66 pages": "Preparing 66 pages",
+  "Préparation des 74 pages": "Preparing 74 pages",
   "♡ Un conte de Léna de Firmas": "♡ A tale by Léna de Firmas",
-  "66 pages": "66 pages",
+  "74 pages": "74 pages",
   "Glisse ou clique pour tourner les pages": "Swipe or click to turn the pages",
   "Réessayer": "Try again",
   "Ce fichier ne peut pas être lu sur cet appareil. Tu peux passer à la vidéo suivante.": "This file can’t be played on this device. You can skip to the next video.",
@@ -471,7 +471,7 @@ Object.assign(window.NanaI18nExtra.frToEn,{
   "Article rédigé à l’origine en français.": "Originally written in French.",
   "La Princesse": "La Princesse",
   "Clown": "Clown",
-  "Livre illustré · 66 pages": "Illustrated book · 66 pages"
+  "Livre illustré · 74 pages": "Illustrated book · 74 pages"
 });
 
 Object.assign(window.NanaI18nExtra.enToFr,{

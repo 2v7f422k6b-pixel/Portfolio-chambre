@@ -351,7 +351,7 @@ function openFinder(){
    <button class="project-card" data-open="pages"><span class="project-icon">✎</span><strong>Editorial</strong><small>Articles, music & culture</small></button>
    <button class="project-card" data-open="interactive"><span class="project-icon">✦</span><strong>Interactive</strong><small>Illustrated stories and playful web experiments</small></button>
    <button class="project-card" data-open="mini-games"><span class="project-icon">✦</span><strong>Mini Games</strong><small>Music, coloring, poetry & little games</small></button>
-   <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 66 pages</small></button>
+   <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Interactive illustrated book · 74 pages</small></button>
   </div>`;
  openWindow('MY PROJECTS',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--little-bit" data-nana-script="little-bit">A little bit of everything I create.</span></h2><p class="section-lead">Browse my illustrated, animated, written projects and more</p>${cards}`,'finder');
 }
@@ -359,7 +359,7 @@ function openIllustrationProjects(){
  openWindow('ILLUSTRATIONS',`<div class="eyebrow">PROJECTS / ILLUSTRATIONS</div><h2>Illustrations</h2><p class="section-lead">Illustrated stories, artworks and visual collaborations.</p><div class="project-grid">
  <button class="project-card" data-open="photos"><span class="project-preview"><img src="assets/previews/photos/swans-lotus.webp" alt="Swans and lotus flowers illustration"></span><strong>Original illustrations</strong><small>Explore the gallery</small></button>
  <button class="project-card" data-open="gabzilla"><span class="project-preview"><img src="assets/previews/gabzilla/illustration.webp" alt="GABZILLA textile collaboration"></span><strong>GABZILLA</strong><small>Illustration · Textile collaboration</small></button>
- <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 66 pages</small></button>
+ <button class="project-card" data-open="book"><span class="book-finder-cover">✧<small>La Princesse Clown</small></span><strong>La Princesse Clown</strong><small>Illustrated book · 74 pages</small></button>
  </div>`,'illustration');
 }
 function openSocialProjects(){
