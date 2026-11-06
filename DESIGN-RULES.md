@@ -20,9 +20,10 @@ Le moteur partagé est `sketch-ui.js`, stylé dans `sketch-ui.css`. Il dessine d
 
 ## Contours blancs des objets de la chambre
 
-Les contours de survol sont définis une seule fois dans `room-hover.js` : blanc pur, épaisseur de 2 unités de scène, halo de 2 unités, apparition/disparition en 150 ms (sans transition si le visiteur réduit les animations). Les silhouettes suivent les dessins existants, sans rectangle ni modification des illustrations.
+Les contours de survol sont définis une seule fois dans `room-hover.js` : blanc pur, tracés fournis légèrement épaissis de 0,35 unité de chaque côté (2 unités de scène pour les silhouettes d’images pleines), halo de 2,4 unités, apparition/disparition en 150 ms (sans transition si le visiteur réduit les animations). Les silhouettes suivent les dessins existants, sans rectangle ni modification des illustrations.
 
-- Les objets PNG, le sac et le Mimilab passent par `pixel-outlines.js` et le filtre partagé `nana-room-hover-ring`.
+- Les PNG de tracés rouges passent par `pixel-outlines.js` avec `lineArt: true` et le filtre `nana-room-hover-ink` : on recolore les traits existants, renforce leur opacité et les épaissit légèrement sans soustraire leur centre. Aucun double trait autour de l’encre originale. Le masque rempli sert uniquement au calcul des zones interactives.
+- Les images pleines (sac et Mimilab) utilisent le filtre partagé `nana-room-hover-ring`.
 - Le miroir, la lampe murale et le fortune cookie réutilisent ce même filtre sur leur illustration transformée.
 - Les posters gardent leur chemin irrégulier, avec la même épaisseur et le filtre de halo partagé `nana-room-hover-stroke`.
 - Les effets jour/nuit assombrissent uniquement les illustrations : le blanc du survol reste blanc.

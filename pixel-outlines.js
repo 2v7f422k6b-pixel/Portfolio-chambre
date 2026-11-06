@@ -41,7 +41,7 @@
       image.decoding = 'async';
       image.onload = () => {
         try {
-          const layer = hover.silhouette(image);
+          const layer = hover.silhouette(image, undefined, {lineArt: true});
           if (layer) {layer.outline.dataset.roomOutline = file; layers.set(file, layer);}
         } catch (error) {console.warn('Could not prepare room outline', file, error);}
         active--; schedule(); pump();

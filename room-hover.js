@@ -5,7 +5,7 @@
   const scene = document.getElementById('play-scene');
   const hotspots = document.getElementById('hotspots');
   if (!scene || !hotspots) return;
-  const W = 1670, H = 942, width = 2, glow = 2, duration = 150;
+  const W = 1670, H = 942, width = 2, glow = 2.4, duration = 150;
   const NS = 'http://www.w3.org/2000/svg';
   function element(tag, attrs = {}) {
     const node = document.createElementNS(NS, tag);
@@ -44,7 +44,27 @@
   const strokeMerge = element('feMerge');
   strokeMerge.append(element('feMergeNode', {in: 'glow'}), element('feMergeNode', {in: 'SourceGraphic'}));
   stroke.append(strokeMerge);
-  defs.append(ring, stroke);
+  // The original room PNGs are red line drawings, not filled cutouts.
+  // Recolour and slightly thicken the ink itself; never subtract its centre.
+  const ink = element('filter', {
+    id: 'nana-room-hover-ink', x: '-50%', y: '-50%', width: '200%', height: '200%',
+    'color-interpolation-filters': 'sRGB'
+  });
+  const solidInk = element('feComponentTransfer', {in: 'SourceAlpha', result: 'solid-ink'});
+  // The imported pencil strokes are translucent. Strengthen their opacity
+  // before thickening so they remain legible against either room theme.
+  solidInk.append(element('feFuncA', {type: 'linear', slope: '3', intercept: '0'}));
+  ink.append(
+    solidInk,
+    element('feMorphology', {in: 'solid-ink', operator: 'dilate', radius: '.35', result: 'bold-ink'}),
+    element('feFlood', {'flood-color': '#fff', result: 'ink'}),
+    element('feComposite', {in: 'ink', in2: 'bold-ink', operator: 'in', result: 'white-ink'}),
+    element('feGaussianBlur', {in: 'white-ink', stdDeviation: glow, result: 'glow'})
+  );
+  const inkMerge = element('feMerge');
+  inkMerge.append(element('feMergeNode', {in: 'glow'}), element('feMergeNode', {in: 'white-ink'}));
+  ink.append(inkMerge);
+  defs.append(ring, stroke, ink);
   overlay.append(defs);
   scene.append(overlay);
   scene.style.setProperty('--room-hover-width', width);
@@ -76,7 +96,7 @@
   /* Close tiny gaps in line art and fill its silhouette. Crop before processing:
      avoid retaining thirty full-room canvases and re-reading pixels on hover. */
   const masks = new WeakMap();
-  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}) {
+  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}, {lineArt = false} = {}) {
     const canvas = document.createElement('canvas');
     canvas.width = Math.ceil(box.width); canvas.height = Math.ceil(box.height);
     const ctx = canvas.getContext('2d', {willReadFrequently: true});
@@ -117,12 +137,23 @@
       }
       if (inside) {alpha[i] = 255; pixels.fill(255, i * 4, i * 4 + 4);}
     }
+    // Hit-testing keeps its filled mask. The visible line-art mask uses only
+    // the supplied strokes (including antialiasing), without growing an edge.
+    if (lineArt) {
+      pixels.fill(0);
+      for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
+        const from = (y * canvas.width + x) * 4;
+        const to = ((y - minY + pad) * w + x - minX + pad) * 4;
+        pixels[to] = pixels[to + 1] = pixels[to + 2] = 255;
+        pixels[to + 3] = raw[from + 3];
+      }
+    }
     canvas.width = w; canvas.height = h;
     ctx.putImageData(new ImageData(pixels, w, h), 0, 0);
     const x = box.x + minX - pad, y = box.y + minY - pad;
     const outline = element('image', {
       href: canvas.toDataURL(), x, y, width: w, height: h,
-      class: 'room-hover-outline', filter: 'url(#nana-room-hover-ring)'
+      class: 'room-hover-outline', filter: lineArt ? 'url(#nana-room-hover-ink)' : 'url(#nana-room-hover-ring)'
     });
     overlay.append(outline);
     // Release the temporary drawing buffer after encoding the small mask.

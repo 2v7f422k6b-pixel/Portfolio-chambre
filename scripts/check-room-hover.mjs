@@ -21,10 +21,10 @@ function engine() {
   const document = {head: new Node('head'), getElementById: id => elements.get(id),
     createElementNS: (_,tag) => new Node(tag), createElement(tag) {
       if(tag !== 'canvas') return new Node(tag);
-      const canvas = {width:0,height:0,toDataURL:()=> 'data:image/png;base64,test'};
-      let input;
+      const canvas = {width:0,height:0,toDataURL:()=> 'data:application/json,' + JSON.stringify({width:canvas.width,height:canvas.height,pixels:[...output]})};
+      let input, output;
       canvas.getContext = () => ({drawImage:image=>{input=image},
-        getImageData:()=>({data:input.pixels}), putImageData(){}});
+        getImageData:()=>({data:input.pixels}), putImageData:image=>{output=image.data}});
       return canvas;
     }};
   const window = {};
@@ -63,4 +63,22 @@ test('objects touching the image edge do not wrap to another row or lose their e
 });
 test('empty layers never produce a visible rectangle',()=>{
   assert.equal(engine().silhouette(picture(30,30,()=>false),{x:0,y:0,width:30,height:30}),null);
+});
+
+test('open red strokes are recoloured once, without generating white edges on both sides',()=>{
+  const hover=engine(), image=picture(40,40,(x,y)=>x===20&&y>=5&&y<=30);
+  const layer=hover.silhouette(image,{x:0,y:0,width:40,height:40},{lineArt:true});
+  const rendered=JSON.parse(layer.outline.attrs.href.split(',').slice(1).join(','));
+  const opacity=(x,y)=>rendered.pixels[((y-layer.y)*rendered.width+x-layer.x)*4+3];
+  assert.equal(opacity(20,15),255);
+  assert.equal(opacity(19,15),0);
+  assert.equal(opacity(21,15),0);
+  assert.equal(layer.outline.attrs.filter,'url(#nana-room-hover-ink)');
+});
+test('line-art display preserves empty interiors while hit-testing still fills them',()=>{
+  const hover=engine();
+  const layer=hover.silhouette(picture(40,40,(x,y)=>x>=5&&x<=30&&y>=5&&y<=30&&(x<=7||x>=28||y<=7||y>=28)),{x:0,y:0,width:40,height:40},{lineArt:true});
+  const rendered=JSON.parse(layer.outline.attrs.href.split(',').slice(1).join(','));
+  assert.equal(rendered.pixels[((18-layer.y)*rendered.width+18-layer.x)*4+3],0);
+  assert.ok(hover.contains(layer,18,18));
 });
