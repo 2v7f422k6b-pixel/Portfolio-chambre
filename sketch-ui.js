@@ -7,6 +7,8 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['#work-break-nudge .wb-card', 'frame', 1301],
+    ['#work-break-nudge .wb-actions button', 'frame', 1311],
     ['#bead-workshop .bead-control', 'frame', 1201],
     ['#bead-workshop .bead-tray', 'frame', 1202],
     ['#bead-workshop .bead-box-lid', 'frame', 1203],
@@ -125,7 +127,6 @@
     '#nana-admin-dialog', '#nana-admin-dialog input:not([type=range]):not([type=file])',
     '#nana-admin-dialog textarea', '#nana-admin-dialog select',
     '#nana-admin-dialog .nana-admin-divider', '#nana-admin-dialog .nana-admin-note',
-    '#work-break-nudge .wb-card', '#work-break-nudge .wb-actions button',
     '#nana-discovery-dialog .nana-discovery-continue',
     // Dress-up document: panel edges, inventory controls and profile separators.
     '.frame .panel', '.frame .action', '.frame .tab', '.frame .item', '.frame .preset',
