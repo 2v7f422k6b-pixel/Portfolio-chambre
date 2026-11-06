@@ -1,0 +1,17 @@
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:transparent;color-scheme:light}
+body{display:grid;place-items:center;overflow:hidden}
+.device{position:relative;width:min(100vw,calc(100dvh * 1312 / 1199));aspect-ratio:1312/1199;container-type:inline-size}
+.shell{display:block;width:100%;height:100%;user-select:none;pointer-events:none}
+.clip-defs{position:absolute}
+.screen{position:absolute;left:20.58%;top:27.69%;width:59.45%;height:51.71%;background:#ffa4c8;clip-path:url(#screen-clip);color:#ff001e;font-family:'Nana Trace UI',system-ui,sans-serif}
+#scene{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.stats{position:absolute;top:4%;left:27%;width:46%;display:flex;gap:5%;font:500 clamp(6px,1.2cqw,15px)/1.1 system-ui,sans-serif}
+.stats label{flex:1;min-width:0;text-align:center}
+.stats meter{display:block;width:100%;height:5px;margin-top:3px;accent-color:#ff001e}
+.actions{position:absolute;left:12%;right:12%;bottom:0%;height:10%;display:flex;align-items:stretch}
+.actions button{flex:1;min-width:0;padding:0;border:0;background:transparent;color:#ff001e;font:inherit;font-size:clamp(8px,1.5cqw,22px);cursor:pointer;touch-action:manipulation}
+.actions button:hover,.actions button:active{color:white}
+button:focus-visible{outline:2px solid #ff001e;outline-offset:-2px}
+#notice{position:absolute;left:20%;width:60%;bottom:16%;text-align:center;font:500 clamp(7px,1.5cqw,18px)/1.1 system-ui,sans-serif;pointer-events:none}
+.close{position:absolute;left:70.7%;top:20.5%;width:6.5%;height:6.5%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation}

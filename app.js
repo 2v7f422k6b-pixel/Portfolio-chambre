@@ -510,7 +510,7 @@ function phoneMail(){
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-code-cleanup-1" allow="autoplay"></iframe>';
+ specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-pixel-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
