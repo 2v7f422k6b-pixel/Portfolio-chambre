@@ -308,7 +308,12 @@
     }
     item.svg.setAttribute('viewBox','0 0 '+width+' '+height);
     const variation=item.element.closest('#nana-discovery-dialog') ? 1.55 : (item.element.closest('#nana-do-nothing') ? 1.45 : (item.element.closest('#pages-library') ? 0.8 : (item.element.closest('#motion-reels') ? 0.65 : (item.element.closest('.mail-form') ? 0.75 : (item.element.closest('.mv-app') ? 1.25 : (item.element.id==='dock' ? .85 : 1.05))))));
-    item.ink.setAttribute('d',makePath(width,height,item.seed,item.kind,variation));
+    const outlinePath=makePath(width,height,item.seed,item.kind,variation);
+    item.ink.setAttribute('d',outlinePath);
+    // Keep the typewriter window and button fills within their actual drawn outline.
+    if(item.element.matches('#work-break-nudge .wb-card,#work-break-nudge .wb-actions button')){
+      item.element.style.clipPath='path("'+outlinePath+'")';
+    }
     if (item.innerInk) item.innerInk.setAttribute('d',makePath(width,height,item.seed+53,'frame',variation*.72,7));
   }
   const frames=new WeakSet();
