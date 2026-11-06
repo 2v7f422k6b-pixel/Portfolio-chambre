@@ -20,10 +20,10 @@ Le moteur partagé est `sketch-ui.js`, stylé dans `sketch-ui.css`. Il dessine d
 
 ## Contours blancs des objets de la chambre
 
-Les contours de survol sont définis une seule fois dans `room-hover.js` : blanc pur, tracés fournis légèrement épaissis de 0,35 unité de chaque côté (2 unités de scène pour les silhouettes d’images pleines), halo de 2,4 unités, apparition/disparition en 150 ms (sans transition si le visiteur réduit les animations). Les silhouettes suivent les dessins existants, sans rectangle ni modification des illustrations.
+Les contours de survol sont définis une seule fois dans `room-hover.js` : blanc pur, contour extérieur de 2 unités de scène, halo de 2,4 unités, apparition/disparition en 150 ms (sans transition si le visiteur réduit les animations). Les silhouettes suivent les dessins existants, sans rectangle ni modification des illustrations.
 
-- Les PNG de tracés rouges passent par `pixel-outlines.js` avec `lineArt: true` et le filtre `nana-room-hover-ink` : on recolore les traits existants, renforce leur opacité et les épaissit légèrement sans soustraire leur centre. Aucun double trait autour de l’encre originale. Le masque rempli sert uniquement au calcul des zones interactives.
-- Les images pleines (sac et Mimilab) utilisent le filtre partagé `nana-room-hover-ring`.
+- Les PNG de tracés rouges passent par `pixel-outlines.js` : leurs ouvertures sont fermées et leur silhouette est remplie avant de calculer le bord extérieur. On soustrait tout l’intérieur du masque et on ne conserve que le bord proche des traits fournis, avec le halo partagé `nana-room-hover-stroke` : aucune ligne nouvelle à travers un objet au premier plan. Les dessins interrompus ont un rayon de fermeture adapté dans `gapRadii`. Les yeux, vêtements, cordes et autres détails gardent leurs traits et couleurs d’origine. Ne jamais recolorer tous les traits du dessin en blanc.
+- Les images pleines (sac et Mimilab) utilisent le même masque rempli et le même filtre partagé `nana-room-hover-ring`.
 - Le miroir, la lampe murale et le fortune cookie réutilisent ce même filtre sur leur illustration transformée.
 - Les posters gardent leur chemin irrégulier, avec la même épaisseur et le filtre de halo partagé `nana-room-hover-stroke`.
 - Les effets jour/nuit assombrissent uniquement les illustrations : le blanc du survol reste blanc.

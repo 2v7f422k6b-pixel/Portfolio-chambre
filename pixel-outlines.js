@@ -5,6 +5,10 @@
   const hover = window.NanaRoomHover;
   if (!scene || !svg || !hover) return;
   const files = ['IMAC.PNG','TSHIRT GABZILLA.PNG','MARSHALL.PNG','CDS.PNG','IPHONE.PNG','TAMAGOTCHI.PNG','MUG LATTE.PNG','TALE.PNG','RILAKKUMA.PNG','GUITARE.PNG','RING LIGHT.PNG','CAT.PNG','INSTAX.PNG','VASE.PNG','STARS LAMP.PNG','JELLY LAMP.PNG','CRAYONS 1.PNG','CRAYONS 2.PNG','CRAYONS 3.PNG','BOOKS 1.PNG','BOOKS 2.PNG','BOOKS 3.PNG','OFFICE LAMP.PNG','IPAD.PNG','RUG.PNG','MIFFY.PNG','BAMBI LAMP.PNG','SONNY ANGEL.PNG','BRETZEL.PNG'];
+  // These source tracings have wider interruptions where objects overlap.
+  // Close the mask only; the visible edge still follows the supplied drawing.
+  const gapRadii = {'BAMBI LAMP.PNG': 6, 'INSTAX.PNG': 12, 'GUITARE.PNG': 20,
+    'CRAYONS 3.PNG': 12, 'BOOKS 1.PNG': 8, 'BOOKS 2.PNG': 8, 'BOOKS 3.PNG': 8};
   const layers = new Map();
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
@@ -52,7 +56,7 @@
       image.decoding = 'async';
       image.onload = () => {
         try {
-          const layer = hover.silhouette(image, undefined, {lineArt: true});
+          const layer = hover.silhouette(image, undefined, {lineArt: true, gapRadius: gapRadii[file] ?? 2});
           if (layer) {layer.outline.dataset.roomOutline = file; layers.set(file, layer);}
         } catch (error) {console.warn('Could not prepare room outline', file, error);}
         active--; schedule(); pump();

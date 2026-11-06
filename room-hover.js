@@ -44,31 +44,11 @@
   const strokeMerge = element('feMerge');
   strokeMerge.append(element('feMergeNode', {in: 'glow'}), element('feMergeNode', {in: 'SourceGraphic'}));
   stroke.append(strokeMerge);
-  // The original room PNGs are red line drawings, not filled cutouts.
-  // Recolour and slightly thicken the ink itself; never subtract its centre.
-  const ink = element('filter', {
-    id: 'nana-room-hover-ink', x: '-50%', y: '-50%', width: '200%', height: '200%',
-    'color-interpolation-filters': 'sRGB'
-  });
-  const solidInk = element('feComponentTransfer', {in: 'SourceAlpha', result: 'solid-ink'});
-  // The imported pencil strokes are translucent. Strengthen their opacity
-  // before thickening so they remain legible against either room theme.
-  solidInk.append(element('feFuncA', {type: 'linear', slope: '3', intercept: '0'}));
-  ink.append(
-    solidInk,
-    element('feMorphology', {in: 'solid-ink', operator: 'dilate', radius: '.35', result: 'bold-ink'}),
-    element('feFlood', {'flood-color': '#fff', result: 'ink'}),
-    element('feComposite', {in: 'ink', in2: 'bold-ink', operator: 'in', result: 'white-ink'}),
-    element('feGaussianBlur', {in: 'white-ink', stdDeviation: glow, result: 'glow'})
-  );
-  const inkMerge = element('feMerge');
-  inkMerge.append(element('feMergeNode', {in: 'glow'}), element('feMergeNode', {in: 'white-ink'}));
-  ink.append(inkMerge);
   const occluder = element('filter', {id:'nana-room-occluder', x:'-50%', y:'-50%', width:'200%', height:'200%'});
   occluder.append(element('feMorphology',{in:'SourceAlpha',operator:'dilate',radius:4,result:'solid'}),
     element('feFlood',{'flood-color':'black',result:'black'}),
     element('feComposite',{in:'black',in2:'solid',operator:'in'}));
-  defs.append(ring, stroke, ink, occluder);
+  defs.append(ring, stroke, occluder);
   overlay.append(defs);
   scene.append(overlay);
   scene.style.setProperty('--room-hover-width', width);
@@ -104,7 +84,31 @@
   /* Close tiny gaps in line art and fill its silhouette. Crop before processing:
      avoid retaining thirty full-room canvases and re-reading pixels on hover. */
   const masks = new WeakMap();
-  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}, {lineArt = false} = {}) {
+  // Two sliding windows keep gap closing linear in the number of pixels,
+  // including drawings interrupted by foreground objects or the room edge.
+  function expandMask(source, w, h, radius) {
+    const rows = new Uint8Array(w * h), expanded = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) {
+      let count = 0;
+      for (let x = 0; x <= radius && x < w; x++) count += !!source[y * w + x];
+      for (let x = 0; x < w; x++) {
+        rows[y * w + x] = count > 0;
+        if (x >= radius) count -= !!source[y * w + x - radius];
+        if (x + radius + 1 < w) count += !!source[y * w + x + radius + 1];
+      }
+    }
+    for (let x = 0; x < w; x++) {
+      let count = 0;
+      for (let y = 0; y <= radius && y < h; y++) count += rows[y * w + x];
+      for (let y = 0; y < h; y++) {
+        expanded[y * w + x] = count > 0;
+        if (y >= radius) count -= rows[(y - radius) * w + x];
+        if (y + radius + 1 < h) count += rows[(y + radius + 1) * w + x];
+      }
+    }
+    return expanded;
+  }
+  function silhouette(image, box = {x: 0, y: 0, width: W, height: H}, {lineArt = false, gapRadius = 2} = {}) {
     const canvas = document.createElement('canvas');
     canvas.width = Math.ceil(box.width); canvas.height = Math.ceil(box.height);
     const ctx = canvas.getContext('2d', {willReadFrequently: true});
@@ -118,13 +122,29 @@
       }
     }
     if (maxX < 0) return null;
-    const pad = 8, w = maxX - minX + 1 + pad * 2, h = maxY - minY + 1 + pad * 2;
-    const solid = new Uint8Array(w * h);
+    const pad = Math.max(8, gapRadius + 4), w = maxX - minX + 1 + pad * 2, h = maxY - minY + 1 + pad * 2;
+    const sourceMask = new Uint8Array(w * h);
     for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
       if (raw[(y * canvas.width + x) * 4 + 3] <= 25) continue;
       const i = (y - minY + pad) * w + x - minX + pad;
-      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) solid[i + dy * w + dx] = 1;
+      sourceMask[i] = 1;
     }
+    const closedSource = sourceMask.slice();
+    // A drawing cut by the room canvas (notably the guitar) has no ink along
+    // that cut. Seal it for filling, but never add this artificial edge to ink.
+    function sealCut(start, step, length) {
+      let first = -1, last = -1;
+      for (let n = 0; n < length; n++) if (sourceMask[start + n * step]) {
+        if (first < 0) first = n;
+        last = n;
+      }
+      for (let n = first; n >= 0 && n <= last; n++) closedSource[start + n * step] = 1;
+    }
+    if (minX === 0) sealCut(pad * w + pad, w, maxY - minY + 1);
+    if (maxX === canvas.width - 1) sealCut(pad * w + w - pad - 1, w, maxY - minY + 1);
+    if (minY === 0) sealCut(pad * w + pad, 1, maxX - minX + 1);
+    if (maxY === canvas.height - 1) sealCut((h - pad - 1) * w + pad, 1, maxX - minX + 1);
+    const solid = expandMask(closedSource, w, h, gapRadius);
     const outside = new Uint8Array(w * h), queue = new Int32Array(w * h);
     let head = 0, tail = 0;
     function seed(i) { if (!solid[i] && !outside[i]) {outside[i] = 1; queue[tail++] = i;} }
@@ -137,35 +157,30 @@
     }
     const alpha = new Uint8Array(w * h), pixels = new Uint8ClampedArray(w * h * 4);
     // Undo the gap-closing expansion so the common ring starts at the drawing.
-    for (let y = 2; y < h - 2; y++) for (let x = 2; x < w - 2; x++) {
-      const i = y * w + x;
-      let inside = true;
-      for (let dy = -2; dy <= 2 && inside; dy++) for (let dx = -2; dx <= 2; dx++) {
-        if (outside[i + dy * w + dx]) {inside = false; break;}
-      }
-      if (inside) {alpha[i] = 255; pixels.fill(255, i * 4, i * 4 + 4);}
-    }
-    const filledPixels = pixels.slice();
-    // Hit-testing keeps its filled mask. The visible line-art mask uses only
-    // the supplied strokes (including antialiasing), without growing an edge.
-    if (lineArt) {
-      pixels.fill(0);
-      for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
-        const from = (y * canvas.width + x) * 4;
-        const to = ((y - minY + pad) * w + x - minX + pad) * 4;
-        pixels[to] = pixels[to + 1] = pixels[to + 2] = 255;
-        pixels[to + 3] = raw[from + 3];
-      }
+    const empty = expandMask(outside, w, h, gapRadius);
+    for (let i = 0; i < alpha.length; i++) {
+      if (!empty[i]) {alpha[i] = 255; pixels.fill(255, i * 4, i * 4 + 4);}
     }
     canvas.width = w; canvas.height = h;
     ctx.putImageData(new ImageData(pixels, w, h), 0, 0);
+    const filledHref = canvas.toDataURL();
+    // Subtract the entire filled interior, including eyes, clothes and strings.
+    // On interrupted line drawings, keep only edges near the original strokes:
+    // closing the mask must not invent visible lines across foreground objects.
+    if (lineArt) {
+      const outer = expandMask(alpha, w, h, width);
+      const supported = expandMask(sourceMask, w, h, width + 1);
+      pixels.fill(0);
+      for (let i = 0; i < alpha.length; i++) {
+        if (outer[i] && !alpha[i] && supported[i]) pixels.fill(255, i * 4, i * 4 + 4);
+      }
+      ctx.putImageData(new ImageData(pixels, w, h), 0, 0);
+    }
     const x = box.x + minX - pad, y = box.y + minY - pad;
     const outline = element('image', {
-      href: canvas.toDataURL(), x, y, width: w, height: h,
-      class: 'room-hover-outline', filter: lineArt ? 'url(#nana-room-hover-ink)' : 'url(#nana-room-hover-ring)'
+      href: lineArt ? canvas.toDataURL() : filledHref, x, y, width: w, height: h,
+      class: 'room-hover-outline', filter: lineArt ? 'url(#nana-room-hover-stroke)' : 'url(#nana-room-hover-ring)'
     });
-    ctx.putImageData(new ImageData(filledPixels, w, h), 0, 0);
-    const filledHref = canvas.toDataURL();
     overlay.append(outline);
     // Release the temporary drawing buffer after encoding the small mask.
     canvas.width = canvas.height = 1;
