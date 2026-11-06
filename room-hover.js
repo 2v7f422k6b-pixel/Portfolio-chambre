@@ -81,8 +81,12 @@
     }
     #pixel-outline-overlay > .room-hover-outline {opacity:0;}
     #pixel-outline-overlay > .room-hover-outline.is-active {opacity:1;}
+    /* Keep the feedback fully white; dim artwork only, never its parent. */
+    html[data-theme="night"] #play-scene #hotspots .poster-perspective-artworks {opacity:1!important;}
+    html[data-theme="night"] #play-scene #hotspots .poster-perspective-artworks > g,
+    html[data-theme="night"] #play-scene #hotspots .poster-perspective-artworks > .poster-glowy-handline {opacity:.8!important;}
     #hotspots .poster-white-outline {
-      fill:none;stroke:#fff;stroke-width:var(--room-hover-width);
+      fill:none;stroke:#fff;stroke-width:2.6;
       stroke-linecap:round;stroke-linejoin:round;opacity:0;
       filter:url(#nana-room-hover-stroke);
     }
