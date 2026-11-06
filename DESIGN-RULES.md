@@ -17,3 +17,13 @@ Tous les éléments graphiques **de l'interface** (fenêtres, séparateurs, cadr
 Le moteur partagé est `sketch-ui.js`, stylé dans `sketch-ui.css`. Il dessine des chemins SVG déterministes pour les cadres et les règles, y compris les contenus ajoutés dynamiquement. Pour chaque nouveau composant, déclarer explicitement les cibles pertinentes dans ce moteur, masquer les bordures natives correspondantes et vérifier que les textes et les images restent intacts.
 
 **Important :** Cette charte est une règle de développement et de design, pas une garantie automatique que toutes les bordures historiques du site ont déjà été converties. Toute ligne droite restante doit être traitée lors des audits et des prochaines retouches.
+
+## Contours blancs des objets de la chambre
+
+Les contours de survol sont définis une seule fois dans `room-hover.js` : blanc pur, épaisseur de 2 unités de scène, halo de 2 unités, apparition/disparition en 150 ms (sans transition si le visiteur réduit les animations). Les silhouettes suivent les dessins existants, sans rectangle ni modification des illustrations.
+
+- Les objets PNG, le sac et le Mimilab passent par `pixel-outlines.js` et le filtre partagé `nana-room-hover-ring`.
+- Le miroir, la lampe murale et le fortune cookie réutilisent ce même filtre sur leur illustration transformée.
+- Les posters gardent leur chemin irrégulier, avec la même épaisseur et le filtre de halo partagé `nana-room-hover-stroke`.
+- Les effets jour/nuit assombrissent uniquement les illustrations : le blanc du survol reste blanc.
+- Tout nouvel objet doit rejoindre ce système, y compris « Voir les zones », sans ajouter une chaîne de `drop-shadow` locale.

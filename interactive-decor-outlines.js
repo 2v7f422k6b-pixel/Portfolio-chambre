@@ -3,7 +3,8 @@
 (() => {
   'use strict';
   const svg = document.getElementById('hotspots');
-  if (!svg || document.getElementById('nana-decor-white-outline-filter')) return;
+  const hover = window.NanaRoomHover;
+  if (!svg || !hover) return;
 
   const NS = 'http://www.w3.org/2000/svg';
   const make = (tag, attrs = {}) => {
@@ -13,26 +14,6 @@
     return node;
   };
 
-  // The filter renders only a delicate white ring outside the artwork alpha,
-  // with a subtle halo matching the other clickable PNG objects.
-  const defs = svg.querySelector(':scope > defs') || svg.insertBefore(make('defs'), svg.firstChild);
-  const filter = make('filter', {
-    id: 'nana-decor-white-outline-filter',
-    x: '-35%', y: '-35%', width: '170%', height: '170%',
-    'color-interpolation-filters': 'sRGB'
-  });
-  filter.append(
-    make('feMorphology', { in: 'SourceAlpha', operator: 'dilate', radius: '2', result: 'expanded' }),
-    make('feComposite', { in: 'expanded', in2: 'SourceAlpha', operator: 'out', result: 'rim' }),
-    make('feFlood', { 'flood-color': '#fff', 'flood-opacity': '1', result: 'white' }),
-    make('feComposite', { in: 'white', in2: 'rim', operator: 'in', result: 'white-rim' }),
-    make('feGaussianBlur', { in: 'white-rim', stdDeviation: '2', result: 'glow' })
-  );
-  const merge = make('feMerge');
-  merge.append(make('feMergeNode', { in: 'glow' }), make('feMergeNode', { in: 'white-rim' }));
-  filter.appendChild(merge);
-  defs.appendChild(filter);
-
   for (const [groupId, visualSelector, hitId] of [
     ['nana-wall-lamp', '.nana-wall-lamp-visual', 'wall-lamp-hit'],
     ['nana-wall-mirror', 'g[pointer-events="none"]', 'wall-mirror-hit']
@@ -41,14 +22,17 @@
     const visual = group?.querySelector(visualSelector);
     const hit = document.getElementById(hitId);
     if (!group || !visual || !hit) continue;
-    visual.id = groupId + '-artwork-for-outline';
+    // Reference unfiltered artwork so night dimming/lamp glow cannot tint the ring.
+    const source = make('g', {id: groupId + '-artwork-for-outline'});
+    source.append(...visual.childNodes);
+    visual.append(source);
 
     // <use> tracks the existing distorted artwork automatically after edits.
     // Filtering the *combined* artwork avoids a line down the two triangles.
     const outline = make('use', {
-      href: '#' + visual.id,
-      class: 'nana-decor-white-outline',
-      filter: 'url(#nana-decor-white-outline-filter)',
+      href: '#' + source.id,
+      class: 'nana-decor-white-outline room-hover-outline',
+      filter: hover.ring,
       'aria-hidden': 'true',
       'pointer-events': 'none'
     });

@@ -26,9 +26,9 @@
   <link rel="stylesheet" href="nana-admin.css?v=20261105-photo-crop-3">
   <link rel="stylesheet" href="nana-discoveries.css?v=20261104-stars-svg-fill-13">
   <style id="phone-corners-fix">.phone-device{border-radius:50px!important;overflow:hidden!important}.phone-screen{border-radius:40px!important;overflow:hidden!important;clip-path:inset(0 round 40px)!important}.phone-wallpaper{border-radius:40px!important}.phone-app .ios-icon,.phone-app .ios-icon.mail,.phone-app .ios-icon.ig{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}.phone-app .phone-drawn-icon{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}</style>
-<link rel="stylesheet" href="minilab-day-layer.css?v=20261104-hover-fix2">
+<link rel="stylesheet" href="minilab-day-layer.css?v=20261106-unified-1">
   <link rel="stylesheet" href="style.css?v=20261105-transparent-tamagotchi-1">
-  <link rel="stylesheet" href="nana-shop-hover.css?v=20261104-white-outline">
+  <link rel="stylesheet" href="nana-shop-hover.css?v=20261106-unified-1">
   <link rel="stylesheet" href="window-animations.css?v=1">
   <link rel="stylesheet" href="cat-interaction.css?v=1">
   <link rel="stylesheet" href="motion-addon.css?v=20261103-subtle-motion-2">
@@ -921,7 +921,7 @@ html[data-theme="night"] #play-scene .nana-minilab-night { opacity:1; }
 </style>
 
 <style id="nana-night-mirror-brightness">
-html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror {
+html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror > g[pointer-events="none"] {
   opacity:1!important;
   filter:brightness(.60)!important;
 }
@@ -1141,7 +1141,8 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror {
 
   <script src="pixel-hotspots.js?v=figurines-first-click-20261103-2" defer></script>
   <script src="talking-figurines.js?v=20261103-smaller-nana-font-rounded-3" defer></script>
-  <script src="pixel-outlines.js?v=6" defer></script>
+  <script src="room-hover.js?v=20261106-unified-1" defer></script>
+  <script src="pixel-outlines.js?v=20261106-unified-1" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
    <script src="coloring-addon.js?v=20261105-unified-1" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
@@ -1259,13 +1260,13 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror {
 <script>
 /* Apply phone art after all existing styles and dynamic phone rendering. */
 (function(){function fix(){const phone=document.querySelector('.phone-device');if(!phone)return;phone.style.setProperty('border-radius','50px','important');phone.style.setProperty('overflow','hidden','important');const screen=phone.querySelector('.phone-screen');if(screen){screen.style.setProperty('border-radius','40px','important');screen.style.setProperty('overflow','hidden','important');screen.style.setProperty('clip-path','inset(0 round 40px)','important')}const icons=[['contacts','contacts'],['mail','mail'],['instagram','insta']];for(const [key,file] of icons){const b=phone.querySelector('[data-phone-app="'+key+'"] .ios-icon');if(!b)continue;b.style.setProperty('background','transparent','important');b.style.setProperty('border','0','important');b.style.setProperty('box-shadow','none','important');let img=b.querySelector('img');if(!img){b.replaceChildren();img=document.createElement('img');b.append(img)}img.src='assets/smartphone/'+file+'%20smartphone.png';img.alt='';img.className='phone-drawn-icon';img.style.cssText='width:100%!important;height:100%!important;object-fit:contain!important;display:block!important'}}document.addEventListener('click',e=>{if(e.target.closest('[data-open="phone"],[data-open="smartphone"],#special-shade'))requestAnimationFrame(fix)},true);new MutationObserver(()=>{if(document.querySelector('.phone-device:not([data-phone-art-ready])')){fix();document.querySelector('.phone-device')?.setAttribute('data-phone-art-ready','1')}}).observe(document.body,{childList:true,subtree:true});if(document.readyState!=='loading')fix();else document.addEventListener('DOMContentLoaded',fix)})();
-</script><script src="poster-fit.js?v=20261105-add-remove-posters-1" defer></script><script src="mirror-placement.js?v=20261103-no-hitbox-frame" defer></script><script src="flower-lamp-placement.js?v=20261103-no-hitbox-frame" defer></script>
-<script src="fortune-cookie-placement.js?v=20261103-png-outline-1" defer></script>
-<script src="interactive-decor-outlines.js?v=20261103-white-outline-1" defer></script>
+</script><script src="poster-fit.js?v=20261106-unified-1" defer></script><script src="mirror-placement.js?v=20261106-unified-1" defer></script><script src="flower-lamp-placement.js?v=20261106-unified-1" defer></script>
+<script src="fortune-cookie-placement.js?v=20261106-unified-1" defer></script>
+<script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261105-above-posters-15" defer></script>
 <script src="night-decor-dimming.js?v=20261105-opaque-mirror-10" defer></script>
 
-<script src="room-zone-registry.js?v=20261103-figurine-hotspots-2" defer></script>
+<script src="room-zone-registry.js?v=20261106-ring-light-1" defer></script>
 <script src="ipad-clock.js?v=20261103-final-placement-2" defer></script>
   <script src="rug-secret.js?v=20261103-spider-down-left-v3" defer></script>
   <script src="twist-reality.js?v=20261104-performance-1" defer></script>
@@ -1280,15 +1281,7 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror {
   <script src="nana-admin.js?v=20261105-poster-collection-1" defer></script>
 <script src="nana-discoveries.js?v=20261104-english-no-more-secrets-14" defer></script>
   <script src="dreamlab-launcher.js?v=20261105-all-lines-2" defer></script>
-<style id="nana-minilab-white-hover-outline">
-/* Trace the transparent MiniLab silhouette, not the rectangular image bounds. */
-#app.mode-play #play-scene .nana-minilab-day.is-hovered,
-#app.mode-play #play-scene .nana-minilab-night.is-hovered {
-  filter:drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white)
-         drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white)
-         drop-shadow(0 0 3px white) !important;
-}
-</style>
+
 <script id="nana-minilab-day-layer">
 (() => {
   const mount = () => {
@@ -1311,32 +1304,18 @@ html[data-theme="night"] #play-scene #hotspots #nana-wall-mirror {
     nightImage.onerror = () => nightImage.remove();
     scene.appendChild(nightImage);
 
-    // Hit-test the actual transparent PNG pixels, not the entire scene canvas.
-    const alphaMaps = new WeakMap();
-    for (const layer of [image, nightImage]) {
-      layer.addEventListener('load', () => {
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = layer.naturalWidth;
-          canvas.height = layer.naturalHeight;
-          const context = canvas.getContext('2d', {willReadFrequently:true});
-          context.drawImage(layer, 0, 0);
-          alphaMaps.set(layer, context);
-        } catch (_) {}
-      });
-    }
+    // Reuse the cropped alpha mask already prepared for the shared outline.
     const activeLayer = () => document.documentElement.dataset.theme === 'night' ? nightImage : image;
     const hit = (event) => {
-      const layer = activeLayer();
-      const context = alphaMaps.get(layer);
-      if (!context || !layer.naturalWidth || !layer.naturalHeight) return false;
+      const hover = window.NanaRoomHover;
+      if (!hover || event.target.closest?.('#nana-shop-bag,#nana-wall-mirror,#nana-wall-lamp,#nana-fortune-cookie,polygon[data-type="poster"]')) return false;
       const rect = scene.getBoundingClientRect();
-      const x = Math.floor((event.clientX - rect.left) / rect.width * layer.naturalWidth);
-      const y = Math.floor((event.clientY - rect.top) / rect.height * layer.naturalHeight);
-      if (x < 0 || y < 0 || x >= layer.naturalWidth || y >= layer.naturalHeight) return false;
-      return context.getImageData(x, y, 1, 1).data[3] > 24;
+      return hover.contains(hover.maskFor(activeLayer()),
+        (event.clientX - rect.left) / rect.width * hover.W,
+        (event.clientY - rect.top) / rect.height * hover.H);
     };
     scene.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch') return;
       const hovered = hit(event);
       image.classList.toggle('is-hovered', hovered && activeLayer() === image);
       nightImage.classList.toggle('is-hovered', hovered && activeLayer() === nightImage);

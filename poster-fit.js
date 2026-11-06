@@ -150,11 +150,6 @@
     'filter:drop-shadow(0 0 1.15px rgba(255,23,59,.35)); }',
     'html[data-theme="night"] #hotspots .poster-glowy-handline {',
     'stroke:#091329; opacity:1; filter:drop-shadow(0 0 .8px rgba(9,19,41,.18)); }',
-    // White glow uses the existing hand-drawn silhouette; no polygon rectangles.
-    '#hotspots .poster-glowy-handline.poster-hover-white,',
-    'html[data-theme="night"] #hotspots .poster-glowy-handline.poster-hover-white {',
-    'stroke:#fff!important; stroke-width:1.55!important; opacity:1!important;',
-    'filter:drop-shadow(0 0 2.5px rgba(255,255,255,.88))!important; }'
   ].join(' ');
   document.head.appendChild(borderStyle);
   // The static layer remains as a progressive-enhancement fallback until rendering succeeds.
@@ -315,6 +310,12 @@
       art.appendChild(node('path', {
         class: 'poster-glowy-handline',
         'data-poster-outline-index': posterIds[index],
+        d: wobblyOutline(rec.shape, posterIds[index]),
+        'pointer-events': 'none'
+      }));
+      art.appendChild(node('path', {
+        class: 'poster-white-outline room-hover-outline',
+        'data-poster-white-index': posterIds[index],
         d: wobblyOutline(rec.shape, posterIds[index]),
         'pointer-events': 'none'
       }));
@@ -680,7 +681,7 @@
     if (previous) previous.classList.remove('poster-hover-white');
     activePoster = next;
     if (next !== null) {
-      const outline = art.querySelector('[data-poster-outline-index="' + next + '"]');
+      const outline = art.querySelector('[data-poster-white-index="' + next + '"]');
       if (outline) outline.classList.add('poster-hover-white');
     }
   }

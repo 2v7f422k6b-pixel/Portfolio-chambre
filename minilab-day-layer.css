@@ -16,14 +16,7 @@ html[data-theme="night"] #play-scene .nana-minilab-day,
 html[data-theme="night"] #play-scene .nana-minilab-night {display:block;}
 #app.mode-work #play-scene .nana-minilab-night {display:none!important;}
 
-/* White silhouette on hover, following PNG alpha instead of its canvas rectangle. */
-#play-scene .nana-minilab-day.is-hovered,
-#play-scene .nana-minilab-night.is-hovered {
- filter: drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white)
-         drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white)
-         drop-shadow(2px 2px 0 white) drop-shadow(-2px -2px 0 white) !important;
- z-index:1001 !important;
-}
+/* Hover feedback is drawn separately by room-hover.js / pixel-outlines.js. */
 
 /* Hard-disable the old corner launcher even if an older script is cached. */
 #nana-dreamlab-trigger {display:none!important;visibility:hidden!important;}

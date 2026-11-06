@@ -32,30 +32,13 @@
   const group=element('g',{id:'nana-fortune-cookie'});
   // Match the other room objects: glow around the *transparent PNG silhouette*,
   // not the rectangular hitbox. The outline travels with position and rotation.
-  const cookieFilterId='nana-fortune-cookie-edge-filter';
-  if (!document.getElementById(cookieFilterId)) {
-    const defs=svg.querySelector('defs') || svg.insertBefore(element('defs'),svg.firstChild);
-    const filter=element('filter',{id:cookieFilterId,x:'-50%',y:'-50%',width:'200%',height:'200%',
-      'color-interpolation-filters':'sRGB'});
-    filter.append(
-      element('feMorphology',{'in':'SourceAlpha',operator:'dilate',radius:'1.35',result:'outer'}),
-      element('feComposite',{'in':'outer',in2:'SourceAlpha',operator:'out',result:'edge'}),
-      element('feFlood',{'flood-color':'white',result:'ink'}),
-      element('feComposite',{'in':'ink',in2:'edge',operator:'in',result:'white-edge'}),
-      element('feGaussianBlur',{'in':'white-edge',stdDeviation:'0.8',result:'glow'}),
-      (()=>{const merge=element('feMerge');merge.append(
-        element('feMergeNode',{'in':'glow'}),element('feMergeNode',{'in':'white-edge'})
-      );return merge;})()
-    );
-    defs.appendChild(filter);
-  }
   const outline=element('image',{
     href:'assets/fortune-cookie.png',
     'aria-hidden':'true',
     'pointer-events':'none',
     preserveAspectRatio:'xMidYMid meet',
-    filter:'url(#'+cookieFilterId+')',
-    class:'nana-fortune-cookie-outline'
+    filter:window.NanaRoomHover.ring,
+    class:'nana-fortune-cookie-outline room-hover-outline'
   });
   if (!document.getElementById('nana-fortune-cookie-outline-styles')) {
     const style=document.createElement('style');

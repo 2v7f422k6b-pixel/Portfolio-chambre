@@ -15,7 +15,7 @@
     ['book','Livre La Princesse Clown','TALE.PNG','[data-open="book"]'],
     ['rilakkuma','Rilakkuma','RILAKKUMA.PNG','[data-open="do-nothing"]'],
     ['guitare','Guitare','GUITARE.PNG','[data-open="contact"]'],
-    ['ring-light','Ring light','RING LIGHT.PNG','[aria-label="Open Photos via the ring light"]'],
+    ['ring-light','Ring light','RING LIGHT.PNG','[data-open="gearnews-series"]'],
     ['chat','Chat','CAT.PNG','[data-cat-pet]'],
     ['instax','Instax','INSTAX.PNG','[data-open="polaroids"]'],
     ['vase','Vase','VASE.PNG',null],
