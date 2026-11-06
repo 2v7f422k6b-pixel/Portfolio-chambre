@@ -125,12 +125,22 @@
     return handle;
   });
   if (editing) editorLayer.append(dragSurface,guide,dragGrip,...handles);
-  group.append(defs,visual,hit,editorLayer);
+  // Broad light spill on the wall, independent from the hover outline.
+  const glowGradient=make('radialGradient',{id:'nana-flower-wall-light'});
+  for (const [offset,color,opacity] of [['0%','#fff9d5',.9],['22%','#ffefad',.7],['48%','#ffdb82',.36],['75%','#ffd16e',.12],['100%','#ffd16e',0]]) {
+    glowGradient.appendChild(make('stop',{offset,'stop-color':color,'stop-opacity':opacity}));
+  }
+  defs.appendChild(glowGradient);
+  const wallLight=make('ellipse',{class:'nana-flower-wall-light',fill:'url(#nana-flower-wall-light)','pointer-events':'none','aria-hidden':'true'});
+  group.append(defs,wallLight,visual,hit,editorLayer);
   // The mirror is the final SVG layer so it remains clickable above room hotspots.
   svg.appendChild(group);
   const style=document.createElement('style');
   style.id='wall-lamp-perspective-style';
   style.textContent=[
+    '.nana-flower-wall-light{opacity:0;mix-blend-mode:screen;transition:opacity 1.8s cubic-bezier(.42,0,.25,1);pointer-events:none}',
+    'html[data-theme="night"] .nana-flower-wall-light{opacity:1}',
+    '@media(prefers-reduced-motion:reduce){.nana-flower-wall-light{transition:none}}',
     // No rectangular/dashed SVG hitbox on hover, click or focus.
     '#wall-lamp-hit,#wall-lamp-hit:hover,#wall-lamp-hit:focus,#wall-lamp-hit:focus-visible,#wall-lamp-hit:active{outline:none;box-shadow:none;stroke:transparent;stroke-width:0;stroke-dasharray:none}',
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
@@ -140,11 +150,16 @@
 
   function render() {
     const p=state.quad;
+    const lampCenter=center(p);
+    const lampWidth=(Math.hypot(p[1][0]-p[0][0],p[1][1]-p[0][1])+Math.hypot(p[2][0]-p[3][0],p[2][1]-p[3][1]))/2;
+    const lampHeight=(Math.hypot(p[3][0]-p[0][0],p[3][1]-p[0][1])+Math.hypot(p[2][0]-p[1][0],p[2][1]-p[1][1]))/2;
+    wallLight.setAttribute('cx',lampCenter[0]);wallLight.setAttribute('cy',lampCenter[1]);
+    wallLight.setAttribute('rx',lampWidth*1.65);wallLight.setAttribute('ry',lampHeight*1.6);
     const first=[p[0],p[1],p[3]];
     const second=[p[1],p[2],p[3]];
     // Overlap the shared diagonal slightly to close the antialiasing seam.
-    const center=first.reduce((c,p)=>[c[0]+p[0]/3,c[1]+p[1]/3],[0,0]);
-    const overlap=first.map(p=>{const dx=p[0]-center[0],dy=p[1]-center[1],d=Math.hypot(dx,dy)||1;return [p[0]+dx/d*.6,p[1]+dy/d*.6];});
+    const seamCenter=first.reduce((c,p)=>[c[0]+p[0]/3,c[1]+p[1]/3],[0,0]);
+    const overlap=first.map(p=>{const dx=p[0]-seamCenter[0],dy=p[1]-seamCenter[1],d=Math.hypot(dx,dy)||1;return [p[0]+dx/d*.6,p[1]+dy/d*.6];});
     triangles[0].area.setAttribute('points',pointsToString(overlap));
     triangles[1].area.setAttribute('points',pointsToString(second));
     const a0=(p[1][0]-p[0][0])/W, b0=(p[1][1]-p[0][1])/W;

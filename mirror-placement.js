@@ -120,8 +120,8 @@
     const first=[p[0],p[1],p[3]];
     const second=[p[1],p[2],p[3]];
     // Overlap the shared diagonal slightly to close the antialiasing seam.
-    const center=first.reduce((c,p)=>[c[0]+p[0]/3,c[1]+p[1]/3],[0,0]);
-    const overlap=first.map(p=>{const dx=p[0]-center[0],dy=p[1]-center[1],d=Math.hypot(dx,dy)||1;return [p[0]+dx/d*.6,p[1]+dy/d*.6];});
+    const seamCenter=first.reduce((c,p)=>[c[0]+p[0]/3,c[1]+p[1]/3],[0,0]);
+    const overlap=first.map(p=>{const dx=p[0]-seamCenter[0],dy=p[1]-seamCenter[1],d=Math.hypot(dx,dy)||1;return [p[0]+dx/d*.6,p[1]+dy/d*.6];});
     triangles[0].area.setAttribute('points',pointsToString(overlap));
     triangles[1].area.setAttribute('points',pointsToString(second));
     const a0=(p[1][0]-p[0][0])/W, b0=(p[1][1]-p[0][1])/W;
