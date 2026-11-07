@@ -123,6 +123,7 @@ html body .tabs .tab:focus-visible{outline:2px dashed #ff173b!important}
 const data=JSON.parse(document.querySelector('#assets').textContent);
 const {sprites:SPRITES,items:ITEMS,fits:FITS,base:BASE,fitted:FITTED,thumbnails:THUMBNAILS={}}=data;
 const $=s=>document.querySelector(s);
+const translate=text=>window.portfolioTranslate?.(text)||text;
 if(window.parent!==window)document.documentElement.classList.add('embedded');
 const W=1365,H=2048;
 const categories=[['tops','TOPS'],['pants','PANTS'],['skirts','SKIRTS'],['dresses','DRESSES'],['jackets','JACKETS'],['bags','BAGS'],['shoes','SHOES'],['headwear','HEADWEAR'],['jewelry','JEWELRY'],['makeup','MAKEUP'],['bagAccessories','BAG ACCESSORIES'],['sets','SETS']];
@@ -149,7 +150,7 @@ for(const [key,z] of [['earrings',20],['necklace',21],['hat',23],['headphones',2
 makeupMarks(node);
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===0);
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>window.portfolioTranslate?.(ITEMS[id][0])||ITEMS[id][0]);
-$('#style-name').textContent=chosen?.style||'CUSTOM';$('#look-desc').textContent=chosen?.desc||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
+$('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
 node.setAttribute('aria-label',(document.documentElement.lang==='en'?'Léna is wearing ':'Léna porte ')+pieces.join(', '));}
 // Show the artwork bounds in the inventory, retaining the original full canvas on the avatar.
 function itemThumbnail(id){
@@ -160,10 +161,10 @@ svg.setAttribute('viewBox',box.join(' '));svg.setAttribute('class','garment-thum
 im.setAttribute('href',SPRITES[id]);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
 }
 function renderItems(){const target=$('#items');target.textContent='';target.className=activeTab==='sets'?'presets':'items';
-if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.innerHTML='<strong>'+p.title+'</strong><br/><small>'+p.desc+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
-for(const [id,meta] of itemsIn(activeTab)){const b=document.createElement('button');b.className='item'+(selected(id)?' active':'');b.type='button';b.title=meta[0];b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=meta[0];b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
+if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.innerHTML='<strong>'+translate(p.title)+'</strong><br/><small>'+translate(p.desc)+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
+for(const [id,meta] of itemsIn(activeTab)){const b=document.createElement('button');b.className='item'+(selected(id)?' active':'');b.type='button';b.title=translate(meta[0]);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=translate(meta[0]);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
 if(!target.children.length)target.textContent='Bientôt disponible.'}
-function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=label;b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
+function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
 function select(id){const key=slotFor(id);if(!key)return;
 if(key==='makeup'){slots.makeup.has(id)?slots.makeup.delete(id):slots.makeup.add(id)}else{slots[key]=slots[key]===id?null:id;
 if(slots[key]){if(key==='dresses'){slots.tops=null;slots.pants=null;slots.skirts=null}if(['tops','pants','skirts'].includes(key))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&!slots.bags)slots.bags='bag-brown'}

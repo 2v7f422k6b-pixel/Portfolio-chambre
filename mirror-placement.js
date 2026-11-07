@@ -72,7 +72,7 @@
     id:'wall-mirror-hit',
     'data-open':'dressup',
     role:'button',tabindex:0,
-    'aria-label':'Ouvrir About me et le jeu d’habillage',
+    'aria-label':'Ouvrir le dressing',
     fill:'transparent',stroke:'transparent',
     'pointer-events':'all'
   });
