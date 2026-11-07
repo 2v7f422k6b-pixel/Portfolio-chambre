@@ -409,8 +409,17 @@ function openWorkAbout(){
  const t=(fr,english)=>en?english:fr;
  const rule='<svg class="nana-card-rule" viewBox="0 0 400 5" preserveAspectRatio="none" aria-hidden="true"><path d="M1 3 Q48 1 96 3 T194 2 T298 3 T399 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
  openWindow(t('À propos','About me'),`<style>
- html body #window:has(.nana-profile-card){width:min(520px,95vw)!important}
- html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.716),100%);aspect-ratio:63/88;box-sizing:border-box;margin:0 auto;padding:4.8% 5.5% 3.7%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:16px 13px 17px 14px!important;overflow:hidden;font-family:inherit}
+ html body #window-shade #window:has(.nana-profile-card){width:min(460px,94vw)!important;height:auto!important;min-height:0!important;background:transparent!important;border:0!important;border-image:none!important;box-shadow:none!important;overflow:visible!important}
+ html body #window-shade #window:has(.nana-profile-card)::before,html body #window-shade #window:has(.nana-profile-card)::after,html body #window-shade #window:has(.nana-profile-card)>.sketch-ui-svg{display:none!important}
+ html body #window-shade #window:has(.nana-profile-card)>.window-top{position:relative!important;display:block!important;height:39px!important;min-height:39px!important;margin:0 0 6px!important;padding:0!important;background:transparent!important;border:0!important;border-image:none!important;box-shadow:none!important}
+ html body #window-shade #window:has(.nana-profile-card)>.window-top>.nana-window-heart,html body #window-shade #window:has(.nana-profile-card)>.window-top>.sketch-ui-svg{display:none!important}
+ html body #window-shade #window:has(.nana-profile-card) #window-title{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important}
+ html body #window-shade #window:has(.nana-profile-card) #window-close{position:absolute!important;top:0!important;right:0!important;width:38px!important;height:38px!important;min-width:38px!important;padding:5px!important;margin:0!important;background:#fff!important;border:2px solid #ff173b!important;border-image:url('assets/drawn-ui/cadre_bouton.png') 20 / 3px / 0 stretch!important;border-radius:3px 5px 2px 4px!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important}
+ html body #window-shade #window:has(.nana-profile-card) #window-close img{width:28px!important;height:28px!important;object-fit:contain!important}
+ html body #window-shade #window:has(.nana-profile-card) #window-content{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important}
+ html body #window-shade #window:has(.nana-profile-card) #window-content>.sketch-ui-svg{display:none!important}
+
+ html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.716),100%);aspect-ratio:63/88;box-sizing:border-box;margin:0 auto;padding:4.8% 5.5% 3.7%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:24px!important;overflow:hidden;font-family:inherit}
  html body #window .nana-profile-card::before{content:none!important}
  .nana-profile-card>.card-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
  .nana-profile-card .card-edition{font-size:2.6cqw;font-weight:700;line-height:1.1}
@@ -438,7 +447,7 @@ function openWorkAbout(){
  html body #window .nana-profile-card .card-anecdote{font-size:2.9cqw;font-weight:bold;font-style:italic;line-height:1.25;padding:1.6cqw 2cqw;background:#ffe5ed!important;border-radius:2px 4px 2px 3px!important}
  .nana-profile-card footer{display:flex;justify-content:space-between;gap:2cqw;font-size:2.2cqw;line-height:1.2;padding-top:1.3cqw}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
- <svg class="card-outline" viewBox="0 0 630 880" preserveAspectRatio="none" aria-hidden="true"><path d="M24 16 Q310 13 606 17 Q615 18 615 30 L613 850 Q613 864 601 865 Q310 869 27 864 Q15 864 16 851 L15 30 Q14 17 24 16Z" fill="none" stroke="#f58bb0" stroke-width="28"/><path d="M32 30 Q310 28 598 32 L597 847 Q310 852 32 847Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
+ <svg class="card-outline" viewBox="0 0 630 880" preserveAspectRatio="none" aria-hidden="true"><path d="M44 16 Q310 13 586 17 Q615 18 615 46 L613 835 Q613 864 584 865 Q310 869 45 864 Q15 864 16 835 L15 46 Q14 17 44 16Z" fill="none" stroke="#f58bb0" stroke-width="28"/><path d="M48 31 Q310 28 582 32 Q598 32 598 48 L597 830 Q597 847 581 848 Q310 852 48 847 Q32 847 32 831 L32 48 Q32 31 48 31Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
  <div class="card-edition">${t('Personnage de base','Basic character')}</div>
  <header><h2>Léna</h2><span class="card-hp">40 ${t('PV','HP')}<span class="card-energy" aria-hidden="true"><img src="assets/drawn-ui/etoile_pleine.png" alt=""></span></span></header>
  <div class="card-recharge">${t('rechargeable au café','coffee-rechargeable')}</div>
