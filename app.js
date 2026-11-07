@@ -291,7 +291,7 @@ function openApp(name,index){
   case 'gabzilla':openGallery('gabzilla',0);break;
   case 'motion':window.openMotion?.();break;
   case 'pages':window.openEditorialPages?.();break;
-  case 'about':currentMode==='work'?openWorkAbout():openAbout();break;
+  case 'about':openWorkAbout();break;
   case 'book':window.openBook?.();break;
    case 'do-nothing':window.NanaDoNothing?.open();break;
   case 'reading-room':
@@ -371,7 +371,7 @@ function openSocialProjects(){
 }
 function openMiniGames(){
  const fr=!document.documentElement.lang.toLowerCase().startsWith('en');
- const games=[["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends soin d’un petit compagnon numérique.","Take care of a tiny digital companion."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["dressup","Dans mon dressing","Inside my wardrobe","Explore ma garde-robe et habille le personnage.","Explore my illustrated wardrobe and dress the character."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
+ const games=[["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends soin d’un petit compagnon numérique.","Take care of a tiny digital companion."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
  openWindow(fr?'MINI-JEUX':'MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
   <div class="eyebrow">${fr?'MODE WORK / MINI-JEUX':'WORK MODE / MINI GAMES'}</div>
   <h2 id="mini-games-heading">${fr?'Mini-jeux':'Mini Games'}</h2>
@@ -404,36 +404,36 @@ function safePresentationImage(value){
   return url.href;
  }catch{return ''}
 }
-async function openWorkAbout(){
- openWindow('LÉNA ABOUT',`<div class="eyebrow">PROFILE / ABOUT ME</div><div class="atelier-about-layout">
- <div class="atelier-about-portrait" id="nana-about-portrait" aria-label="Illustration de présentation"><strong>LÉNA</strong></div>
- <div class="atelier-about-copy"><h2 class="nana-script-heading" id="nana-about-title">Léna’s creative world</h2><p id="nana-about-description">Chargement de la présentation…</p>
- <div class="info-list"><div class="info-box"><small>SKILLS</small><strong>Illustration · Animation · Content creation · Writing</strong></div>
- <div class="info-box"><small>TOOLS</small><strong>Procreate · Procreate Dreams · Video editing</strong></div>
- <div class="info-box"><small>LET'S TALK</small><button type="button" class="soft-btn" data-open="contact">Get in touch</button></div></div></div></div>`,'work-about');
- const panel=$('#nana-about-description');
- try{
-  const response=await fetch('content/presentation.json',{cache:'no-store'});
-  if(!response.ok)throw new Error('HTTP '+response.status);
-  const data=await response.json();
-  if(!panel || !panel.isConnected)return;
-  $('#nana-about-title').textContent=data.title||'Léna’s creative world';
-  panel.textContent=data.about||'';
-  panel.style.whiteSpace='pre-line';
-  const image=safePresentationImage(data.image);
-  const portrait=$('#nana-about-portrait');
-  if(image && portrait){
-   portrait.textContent='';
-   const img=document.createElement('img');
-   img.src=image;
-   img.alt='Illustration de présentation';
-   img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;';
-   portrait.appendChild(img);
-  }
- }catch(error){
-  if(panel && panel.isConnected)panel.textContent='Présentation indisponible pour le moment.';
-  console.warn('Nana Studio: présentation non chargée',error);
- }
+function openWorkAbout(){
+ const en=document.documentElement.lang==='en';
+ const t=(fr,english)=>en?english:fr;
+ openWindow(t('À propos','About me'),`<style>
+ .nana-profile-card{position:relative;width:min(100%,410px);margin:0 auto;padding:20px 24px;color:#ff173b;background:#fff4e8;border-radius:14px 10px 16px 11px;font-family:inherit}
+ .nana-profile-card::before{content:'';position:absolute;inset:0;pointer-events:none;border:12px solid transparent;border-image:url('assets/drawn-ui/cadre_certificat.png') 30 stretch}
+ .nana-profile-card header{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+ .nana-profile-card h2{margin:0;font-size:32px}.nana-profile-card .card-level{font-size:14px}
+ .nana-profile-card .card-type{font-size:13px;margin:4px 0 10px}
+ .nana-profile-art{position:relative;width:100%;height:clamp(170px,31dvh,280px);background:#ffe3e7;border-radius:45% 48% 43% 46%;overflow:hidden}
+ .nana-profile-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+ .nana-profile-card .card-location{text-align:center;font-size:12px;margin:8px 0 14px}
+ .nana-profile-card .card-ability{margin:12px 0}.nana-profile-card h3{font-size:17px;margin:0 0 3px}
+ .nana-profile-card p{font-size:14px;line-height:1.45;margin:0}
+ .nana-profile-card footer{font-size:12px;text-align:center;padding-top:12px}
+ </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
+ <header><h2>Léna</h2><span class="card-level">${t('Niveau','Level')} 32</span></header>
+ <div class="card-type">${t('Illustratrice · Rédactrice · CM','Illustrator · Writer · Community manager')}</div>
+ <div class="nana-profile-art" role="img" aria-label="${t('Léna en pyjama rose','Léna in pink pyjamas')}">
+ <img src="assets/dressing-lena/lena-original.png" alt="">
+ <img src="assets/dressing-lena/Illustration_sans_titre-6.png" alt="">
+ <img src="assets/dressing-lena/Illustration_sans_titre-7.png" alt="">
+ <img src="assets/dressing-lena/Illustration_sans_titre-8.png" alt="">
+ </div>
+ <div class="card-location">Marseille · Nana Color Studio</div>
+ <section class="card-ability"><h3>${t('Au quotidien','Every day')}</h3><p>${t('Des dessins, des histoires et de la musique.','Drawings, stories and music.')}</p></section>
+ <section class="card-ability"><h3>${t('Quête actuelle','Current quest')}</h3><p>${t('Créer de jolies choses.','Make pretty things.')}</p></section>
+ <section class="card-ability"><h3>${t('Quête secondaire','Side quest')}</h3><p>${t('Devenir prof de philosophie.','Become a philosophy teacher.')}</p></section>
+ <footer>${t('Collection Nana · Carte 001','Nana collection · Card 001')}</footer>
+ </article>`,'work-about');
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
@@ -464,7 +464,7 @@ function openAbout(){
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261107-dressing-copy-1" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261107-dressing-card-2" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});

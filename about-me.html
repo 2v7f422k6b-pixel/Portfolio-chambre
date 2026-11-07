@@ -101,6 +101,12 @@ html body .panel::before,html body .panel::after{display:none!important}
 @media(max-width:1100px){.main{grid-template-columns:180px minmax(180px,1fr) 285px;padding:12px;gap:12px}.profile{padding-right:10px}.wardrobe{padding-left:10px}.action{padding:8px 10px}.item{font-size:11px}}
 @media(max-width:760px){.frame{height:auto;min-height:100dvh}.main{grid-template-columns:1fr;padding:12px;gap:20px}.stage{height:clamp(490px,72dvh,650px)}.avatar{height:min(100%,520px);max-height:calc(72dvh - 110px)}.profile{border:0;border-top:1px solid #ff173b;padding:18px 4px;gap:14px}.wardrobe{border:0;border-top:1px solid #ff173b;padding:18px 4px;min-height:380px}.inventory{max-height:400px}.profile h2,.profile .identity{display:block}.stats{display:block}.items{grid-template-columns:repeat(3,minmax(0,1fr))}.actions{gap:5px}.action{font-size:11px;padding:8px}.brand{font-size:14px}.top{flex-wrap:wrap}.brand{flex:1}.actions{flex-wrap:wrap}.stage-head h1{font-size:27px}}
 @media(max-width:440px){.stage{height:500px}.avatar{max-height:390px}.brand{width:auto;justify-content:flex-start}.actions{width:100%}.action{flex:1 1 auto}.items{grid-template-columns:repeat(2,minmax(0,1fr))}.item{font-size:12px;min-height:146px}.item img,.item .garment-thumbnail{height:98px}.tab{font-size:11px;min-width:calc(33.33% - 7px)}}
+
+/* Categories remain plain labels: shared tracing must never frame these tabs. */
+html body .tabs .tab{border:0!important;border-image:none!important;box-shadow:none!important;outline-offset:2px}
+html body .tabs .tab > .sketch-ui-svg{display:none!important}
+html body .tabs .tab.active{background:#ffdce4}
+html body .tabs .tab:focus-visible{outline:2px dashed #ff173b!important}
 </style></head><body>
 <div class="frame">
 <header class="top"><div class="brand"><span class="flower">✿</span> LÉNA <span class="heart">♡</span> ABOUT ME.EXE</div><div class="actions"><button id="random" class="action" type="button">Surprise</button><button id="reset" class="action" type="button">↶ Reset</button><button id="save" class="action primary" type="button">Enregistrer en PNG</button><button id="close" class="action close" type="button" title="Fermer" aria-label="Fermer"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></div></header>
