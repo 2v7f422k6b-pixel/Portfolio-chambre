@@ -566,7 +566,7 @@ Object.assign(window.NanaI18nExtra.enToFr,{
   "LEVEL": "NIVEAU",
   "LOCATION": "LIEU",
   "STYLE": "STYLE",
-  "COZY": "COCOONING",
+  "COZY": "DOUILLET",
   "STREET": "URBAIN",
   "FAIRY TALE": "CONTE DE FÉES",
   "✧ Special skills": "✧ Talents spéciaux",
@@ -593,16 +593,16 @@ Object.assign(window.NanaI18nExtra.enToFr,{
   "SETS": "ENSEMBLES",
   "Pink striped pyjama shirt": "Chemise de pyjama rose à rayures",
   "Pink bear slippers": "Chaussons oursons roses",
-  "Pyjama rose et chaussons oursons": "Pink pyjamas and bear slippers",
+  
   "Pink velvet shirt": "Haut en velours rose",
-  "Yellow vest": "Gilet jaune",
+  "Patent top": "Top vernis",
   "Clown princess corset": "Corsage de princesse clown",
   "White lace blouse": "Blouse en dentelle blanche",
   "Lace camisole": "Caraco en dentelle",
   "Brown turtleneck": "Col roulé marron",
   "Bunny T-shirt": "T-shirt lapin",
   "GABZILLA T-shirt": "T-shirt GABZILLA",
-  "Oversized pink sweater": "Pull rose oversize",
+  "Oversized pink sweater": "Pull rose ample",
   "Pink velvet pants": "Pantalon en velours rose",
   "Pink striped pants": "Pantalon à rayures roses",
   "Loose green pants": "Pantalon vert large",
@@ -626,7 +626,7 @@ Object.assign(window.NanaI18nExtra.enToFr,{
   "Orb earrings": "Boucles d’oreilles orbe",
   "Colourful beaded necklace": "Collier de perles colorées",
   "Hello Kitty lipstick": "Rouge à lèvres Hello Kitty",
-  "Pink blush": "Blush rose",
+  "Pink blush": "Fard à joues rose",
   "Concealer": "Anticernes",
   "Pink My Melody": "My Melody rose",
   "Purple Kuromi": "Kuromi violette",
@@ -740,4 +740,35 @@ Object.assign(window.NanaI18nExtra.enToFr, {
   "Rilakkuma — Do Nothing Club": "Rilakkuma — Le club du rien",
   "Watch my GearNews music series via the ring light": "Regarder ma série musicale GearNews depuis la ring light",
   "Open my Polaroid gallery via the Instax camera": "Ouvrir mes Polaroïds depuis l’appareil Instax"
+});
+
+/* Dressing copy and complete bidirectional labels. */
+Object.assign(window.NanaI18nExtra.frToEn,{
+  "Dans mon dressing": "Inside my wardrobe",
+  "Enregistrer en PNG": "Save as PNG",
+  "Illustration · Histoires · Musique": "Illustration · Stories · Music",
+  "Créer de jolies choses.": "Make pretty things.",
+  "Devenir prof de philosophie.": "Become a philosophy teacher.",
+  "Top vernis, pantalon rayé et manteau léopard": "Patent top, striped trousers and leopard coat",
+  "Pyjama rose et chaussons oursons": "Pink pyjamas and bear slippers",
+  "STYLÉE": "STYLISH",
+  "Une tenue à composer": "An outfit to put together",
+  "Tenue enregistrée en PNG transparent": "Outfit saved as a transparent PNG",
+  "Impossible d’enregistrer la tenue": "Unable to save the outfit"
+});
+Object.assign(window.NanaI18nExtra.enToFr,{
+  "Inside my wardrobe": "Dans mon dressing",
+  "Save as PNG": "Enregistrer en PNG",
+  "Illustration · Stories · Music": "Illustration · Histoires · Musique",
+  "Make pretty things.": "Créer de jolies choses.",
+  "Become a philosophy teacher.": "Devenir prof de philosophie.",
+  "Patent top, striped trousers and leopard coat": "Top vernis, pantalon rayé et manteau léopard",
+  "Pink pyjamas and bear slippers": "Pyjama rose et chaussons oursons",
+  "STYLISH": "STYLÉE",
+  "An outfit to put together": "Une tenue à composer",
+  "Outfit saved as a transparent PNG": "Tenue enregistrée en PNG transparent",
+  "Unable to save the outfit": "Impossible d’enregistrer la tenue",
+  "Special skills": "Talents spéciaux",
+  "Wardrobe": "Garde-robe",
+  "CUSTOM": "PERSONNALISÉ"
 });
