@@ -464,7 +464,7 @@ function openAbout(){
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261106-lena-drawings" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261107-dressing-lena" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
