@@ -174,16 +174,23 @@ return null;
 }
 function clipCSS(points){return 'polygon('+points.map(([x,y])=>(x/2048*100)+'% '+(y/3072*100)+'%').join(',')+')'}
 function clipCanvas(ctx,points){ctx.beginPath();points.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](x/2048*W,y/3072*H));ctx.closePath();ctx.clip()}
+// Fit the scarf over the shoulder line of the outermost garment.
+// Coordinates are in the original 2048 × 3072 artwork; source files stay intact.
+function scarfFit(){
+if(slots.jackets)return {sx:1,dy:18};
+if(['top-gabzilla','top-pullover','top-pajama'].includes(slots.tops))return {sx:.96,dy:24};
+return {sx:.94,dy:18};
+}
 function outfitLayers(){
 const entries=[{src:BASE,z:1,clip:slots.tops==='top-pullover'?PULLOVER_BODY:null}];
 const jewelryZ=['top-yellow','top-pullover'].includes(slots.tops)?10:4;
 const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['jackets',12],['earrings',jewelryZ],['necklace',jewelryZ],['bags',19],['bagAccessories',20],['hat',23],['headphones',24],['clips',25],['scarves',40]];
-for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:underJacketClip(key)});
+for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():null});
 for(const id of slots.makeup)entries.push({id,z:35});
 return entries.sort((a,b)=>a.z-b.z);
 }
 function renderAvatar(){const node=$('#avatar');node.textContent='';
-for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip)im.style.clipPath=clipCSS(entry.clip);node.appendChild(im)}}
+for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip)im.style.clipPath=clipCSS(entry.clip);if(entry.fit){im.style.transformOrigin=(970/2048*100)+'% 0';im.style.transform='translateY('+(entry.fit.dy/3072*100)+'%) scaleX('+entry.fit.sx+')'}node.appendChild(im)}}
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
@@ -223,6 +230,7 @@ async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale
 const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src)continue;
 const img=await decode(src);
 ctx.save();if(entry.clip)clipCanvas(ctx,entry.clip);
+if(entry.fit){ctx.translate(970/2048*W,entry.fit.dy/3072*H);ctx.scale(entry.fit.sx,1);ctx.translate(-970/2048*W,0)}
 if(entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
 else if(FITS[entry.id])ctx.drawImage(img,...FITS[entry.id]);
 ctx.restore();
