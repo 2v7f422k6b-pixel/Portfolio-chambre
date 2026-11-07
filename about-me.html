@@ -140,14 +140,17 @@ function selected(id){return id.startsWith('makeup-')?slots.makeup.has(id):slots
 function itemsIn(tab){return Object.entries(ITEMS).filter(([_,data])=>data[1]===tab)}
 function layer(id,z){const rect=FITS[id],src=FITTED[id]||SPRITES[id];if(!src||(!FITTED[id]&&!rect))return null;const im=document.createElement('img');im.className='layer';im.src=src;im.alt='';im.draggable=false;if(FITTED[id]){im.style.left='0';im.style.top='0';im.style.width='100%';im.style.height='100%';}else{im.style.left=(rect[0]/W*100)+'%';im.style.top=(rect[1]/H*100)+'%';im.style.width=(rect[2]/W*100)+'%';im.style.height=(rect[3]/H*100)+'%';}im.style.zIndex=z;return im}
 function overlayImage(src,z,style){const im=document.createElement('img');im.className='layer';im.src=src;im.alt='';im.draggable=false;im.style.cssText='left:0;top:0;width:100%;height:100%;z-index:'+z+';'+(style||'');return im}
-function makeupMarks(node){for(const id of slots.makeup){const im=layer(id,35);if(im)node.appendChild(im)}}
-function renderAvatar(){const node=$('#avatar');node.textContent='';node.appendChild(overlayImage(BASE,1));
-const ordered=[['pants',5],['skirts',6],['tops',8],['dresses',9],['shoes',11],['jackets',12],['bags',14],['scarves',16],['bagAccessories',15]];
-for(const [key,z] of ordered)if(slots[key]){const im=layer(slots[key],z);if(im)node.appendChild(im)}
-// Keep Léna's original hair and face in front of coat collars.
-node.appendChild(overlayImage(BASE,18,'clip-path:inset(0 0 76.8% 0);'));
-for(const [key,z] of [['earrings',20],['necklace',21],['hat',23],['headphones',24],['clips',25]])if(slots[key]){const im=layer(slots[key],z);if(im)node.appendChild(im)}
-makeupMarks(node);
+// One layer order shared by the screen and PNG export.
+function outfitLayers(){
+const entries=[{src:BASE,z:1},{src:BASE,z:18,face:true}];
+const jewelryZ=['top-yellow','top-pullover'].includes(slots.tops)?10:4;
+const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['jackets',12],['earrings',jewelryZ],['necklace',jewelryZ],['bags',19],['bagAccessories',20],['hat',23],['headphones',24],['clips',25],['scarves',40]];
+for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z});
+for(const id of slots.makeup)entries.push({id,z:35});
+return entries.sort((a,b)=>a.z-b.z);
+}
+function renderAvatar(){const node=$('#avatar');node.textContent='';
+for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z,entry.face?'clip-path:inset(0 0 76.8% 0);':''):layer(entry.id,entry.z);if(im)node.appendChild(im)}
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
@@ -164,25 +167,31 @@ function renderItems(){const target=$('#items');target.textContent='';target.cla
 if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.innerHTML='<strong>'+translate(p.title)+'</strong><br/><small>'+translate(p.desc)+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
 for(const [id,meta] of itemsIn(activeTab)){const b=document.createElement('button');b.className='item'+(selected(id)?' active':'');b.type='button';b.title=translate(meta[0]);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=translate(meta[0]);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
 if(!target.children.length)target.textContent='Bientôt disponible.'}
-function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='scarves'?(document.documentElement.lang==='en'?'Scarves':'Écharpes'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
+function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='scarves'?(document.documentElement.lang==='en'?'SCARVES':'ÉCHARPES'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
 function select(id){const key=slotFor(id);if(!key)return;
 if(key==='makeup'){slots.makeup.has(id)?slots.makeup.delete(id):slots.makeup.add(id)}else{slots[key]=slots[key]===id?null:id;
 if(slots[key]){if(key==='dresses'){slots.tops=null;slots.pants=null;slots.skirts=null}if(['tops','pants','skirts'].includes(key))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&!slots.bags)slots.bags='bag-brown'}
 if(key==='bags'&&!slots.bags)slots.bagAccessories=null;
+if(key==='tops'&&id==='top-pullover'&&slots.tops&&slots.jackets==='jacket-cardigan')slots.jackets=null;
+if(key==='jackets'&&id==='jacket-cardigan'&&slots.jackets&&slots.tops==='top-pullover')slots.tops=null;
+if(key==='hat'&&slots.hat==='head-cap')slots.clips=null;
+if(key==='clips'&&slots.clips&&slots.hat==='head-cap')slots.hat=null;
 if(key==='hat'&&slots.hat)slots.headphones=null;if(key==='headphones'&&slots.headphones)slots.hat=null}
 render()}
 function applyPreset(i){for(const key of allSlots)slots[key]=null;slots.makeup.clear();Object.assign(slots,presets[i].values);for(const id of presets[i].makeup||[])slots.makeup.add(id);render()}
-function render(){renderAvatar();renderItems()}
+function render(){if(slots.tops==='top-pullover'&&slots.jackets==='jacket-cardigan')slots.jackets=null;renderAvatar();renderItems()}
 function toast(message){let e=$('#toast');e.textContent=message;e.hidden=false;clearTimeout(window.aboutToast);window.aboutToast=setTimeout(()=>e.hidden=true,2600)}
 $('#reset').addEventListener('click',()=>applyPreset(0));
 $('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsIn('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsIn('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsIn(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsIn('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsIn('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsIn('bagAccessories').map(x=>x[0]));render()});
 $('#close').addEventListener('click',()=>{if(window.parent!==window){window.parent.postMessage({type:'close-about-me'},location.origin==='null'?'*':location.origin)}else if(history.length>1)history.back();else location.href='index.html'});
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
-async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);const body=await decode(BASE);ctx.drawImage(body,0,0,W,H);
-for(const key of ['pants','skirts','tops','dresses','shoes','jackets','bags','scarves','bagAccessories'])if(slots[key]&&FITS[slots[key]])if(FITTED[slots[key]])ctx.drawImage(await decode(FITTED[slots[key]]),0,0,W,H);else ctx.drawImage(await decode(SPRITES[slots[key]]),...FITS[slots[key]]);
-const faceHeight=H*.232;ctx.drawImage(body,0,0,W,faceHeight,0,0,W,faceHeight);
-for(const key of ['earrings','necklace','hat','headphones','clips'])if(slots[key]&&FITS[slots[key]])if(FITTED[slots[key]])ctx.drawImage(await decode(FITTED[slots[key]]),0,0,W,H);else ctx.drawImage(await decode(SPRITES[slots[key]]),...FITS[slots[key]]);
-for(const id of slots.makeup)if(FITTED[id])ctx.drawImage(await decode(FITTED[id]),0,0,W,H);
+async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
+const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src)continue;
+const img=await decode(src);
+if(entry.face){ctx.save();ctx.beginPath();ctx.rect(0,0,W,H*.232);ctx.clip();ctx.drawImage(img,0,0,W,H);ctx.restore()}
+else if(entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
+else if(FITS[entry.id])ctx.drawImage(img,...FITS[entry.id]);
+}
 const blob=await new Promise(resolve=>c.toBlob(resolve,'image/png'));
 if(!blob)throw new Error('PNG export unavailable');
 const file=new File([blob],'lena-tenue.png',{type:'image/png'});
