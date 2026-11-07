@@ -152,13 +152,24 @@ function overlayImage(src,z,style){const im=document.createElement('img');im.cla
 // Full-canvas coordinates: keep the neckline and lower hems, conceal fabric
 // that would be tucked inside the closed coat. Original PNGs remain untouched.
 const GREEN_COAT_UNDERLAY=[[850,0],[1110,0],[1110,1100],[1140,1700],[1310,2300],[1380,2700],[1450,3072],[550,3072],[620,2700],[690,2300],[850,1700]];
+// Closed short jackets conceal the shoulders and sleeves underneath.
+const SHORT_JACKET_TOP=[[880,0],[1120,0],[1120,1000],[1190,1450],[800,1450],[880,1000]];
+const SHORT_JACKET_DRESS=[[880,0],[1120,0],[1120,1000],[1190,1450],[1220,1700],[2048,1900],[2048,3072],[0,3072],[0,1900],[770,1700],[800,1450],[880,1000]];
+function underJacketClip(key){
+if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
+if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
+if(key==='tops')return SHORT_JACKET_TOP;
+if(key==='dresses')return SHORT_JACKET_DRESS;
+}
+return null;
+}
 function clipCSS(points){return 'polygon('+points.map(([x,y])=>(x/2048*100)+'% '+(y/3072*100)+'%').join(',')+')'}
 function clipCanvas(ctx,points){ctx.beginPath();points.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](x/2048*W,y/3072*H));ctx.closePath();ctx.clip()}
 function outfitLayers(){
 const entries=[{src:BASE,z:1}];
 const jewelryZ=['top-yellow','top-pullover'].includes(slots.tops)?10:4;
 const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['jackets',12],['earrings',jewelryZ],['necklace',jewelryZ],['bags',19],['bagAccessories',20],['hat',23],['headphones',24],['clips',25],['scarves',40]];
-for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key)?GREEN_COAT_UNDERLAY:null});
+for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:underJacketClip(key)});
 for(const id of slots.makeup)entries.push({id,z:35});
 return entries.sort((a,b)=>a.z-b.z);
 }
