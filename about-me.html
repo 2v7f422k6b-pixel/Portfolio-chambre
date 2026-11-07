@@ -155,12 +155,14 @@ const GREEN_COAT_UNDERLAY=[[850,0],[1110,0],[1110,1100],[1140,1700],[1310,2300],
 // Closed short jackets conceal the shoulders and sleeves underneath.
 const SHORT_JACKET_TOP=[[880,0],[1120,0],[1120,1000],[1190,1450],[800,1450],[880,1000]];
 const SHORT_JACKET_DRESS=[[880,0],[1120,0],[1120,1000],[1190,1450],[1220,1700],[2048,1900],[2048,3072],[0,3072],[0,1900],[770,1700],[800,1450],[880,1000]];
+const GABZILLA_BOTTOM=[[760,0],[1160,0],[1160,1400],[1235,1520],[1270,1620],[2048,1800],[2048,3072],[0,3072],[0,1800],[680,1620],[705,1520],[760,1400]];
 function underJacketClip(key){
 if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
 if(key==='dresses')return SHORT_JACKET_DRESS;
 }
+if(slots.tops==='top-gabzilla'&&['pants','skirts'].includes(key))return GABZILLA_BOTTOM;
 return null;
 }
 function clipCSS(points){return 'polygon('+points.map(([x,y])=>(x/2048*100)+'% '+(y/3072*100)+'%').join(',')+')'}
