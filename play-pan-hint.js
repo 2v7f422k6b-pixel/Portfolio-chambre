@@ -152,7 +152,7 @@
     hint.innerHTML =
       '<div class="pan-hint-visual">' +
       '<svg class="pan-hint-directions" viewBox="0 0 168 168" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
-      '<g opacity="0.58"><image href="assets/drawn-ui/aide_deplacement_haut.png" x="67" y="10" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_bas.png" x="67" y="113" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_gauche.png" x="10" y="67" width="45" height="34"/><image href="assets/drawn-ui/aide_deplacement_droite.png" x="113" y="67" width="45" height="34"/></g>' +
+      '<g opacity="1"><image href="assets/drawn-ui/aide_deplacement_haut.png" x="67" y="10" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_bas.png" x="67" y="113" width="34" height="45"/><image href="assets/drawn-ui/aide_deplacement_gauche.png" x="10" y="67" width="45" height="34"/><image href="assets/drawn-ui/aide_deplacement_droite.png" x="113" y="67" width="45" height="34"/></g>' +
       '</svg>' +
       '<span class="pan-hint-label" data-no-translate></span>' +
       '</div>' +
