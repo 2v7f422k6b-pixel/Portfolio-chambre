@@ -132,7 +132,7 @@ const slots=Object.fromEntries(allSlots.map(k=>[k,null]));slots.makeup=new Set()
 const presets=[
 {title:'☾ PYJAMA',style:'COZY',desc:'Pyjama rose et chaussons oursons',values:{tops:'top-pajama',pants:'pants-pajama',shoes:'shoes-bunny'}},
 {title:'STYLÉE',style:'STREET',desc:'Top vernis et pantalon rayé',values:{tops:'top-yellow',pants:'pants-stripes',shoes:'shoes-bambi',bags:'bag-brown'}},
-{title:'♡ PRINCESSE CLOWN',style:'FAIRY TALE',desc:'Corsage rouge, manches bleues et jupe jaune',makeup:['makeup-clown-nose'],values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}}
+{title:'♡ PRINCESSE CLOWN',style:'FAIRY TALE',desc:'Corsage rouge, manches bleues et jupe jaune',makeup:['makeup-clown-nose','makeup-blush'],values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}}
 ];
 let activeTab='tops';
 function slotFor(id){if(id.startsWith('head-'))return id==='head-airpods'?'headphones':id==='head-stars'?'clips':'hat';if(id.startsWith('jewelry-'))return 'necklace';return ITEMS[id]?.[1]||null}
