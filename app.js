@@ -458,7 +458,7 @@ function openWorkAbout(){
  <img src="assets/dressing-lena/Illustration_sans_titre-8.png" alt="">
  <svg class="card-art-frame" viewBox="0 0 400 250" preserveAspectRatio="none" aria-hidden="true"><path d="M5 5 Q190 3 395 5 L394 245 Q190 247 5 244Z" fill="none" stroke="#f58bb0" stroke-width="9"/><path d="M9 9 Q190 7 391 9 L390 241 Q190 243 9 240Z" fill="none" stroke="#cf123a" stroke-width="1"/></svg>
  </div>
- <div class="card-location">${t('Artiste chaotique · Type : créative · Marseille','Chaotic artist · Type: creative · Marseille')}</div>
+ <div class="card-location">${t('Artiste chaotique · Type : créative · Habitat : canapé','Chaotic artist · Type: creative · Habitat: sofa')}</div>
  ${rule}
  <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true">♥</span><span class="card-energy" aria-hidden="true">♥</span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Digression','Digression')}</h3><p>${t('Part d’un détail et en fait toute une histoire. Ajoute 10 dégâts si le sujet de départ a été oublié.','Turns one small detail into a whole story. Add 10 damage if the original topic has been forgotten.')}</p></div><strong class="card-damage">30+</strong></section>
  ${rule}
