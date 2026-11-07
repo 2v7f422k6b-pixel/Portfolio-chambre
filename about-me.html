@@ -161,10 +161,6 @@ const GABZILLA_BOTTOM=[[760,0],[1160,0],[1160,1400],[1235,1520],[1270,1620],[204
 const CAMISOLE_BOTTOM=[[860,0],[1100,0],[1100,1180],[1168,1300],[1250,1420],[2048,1550],[2048,3072],[0,3072],[0,1550],[730,1420],[795,1300],[860,1180]];
 // Hide the boot shafts above each trouser hem, including the gap between legs.
 // Restore only exposed hands; keep the body and cuffs in their original layers.
-const HAND_LEFT=[[620,1550],[740,1550],[737,1580],[746,1610],[750,1640],[762,1680],[770,1755],[620,1755]];
-const HAND_RIGHT=[[1230,1550],[1340,1550],[1340,1725],[1220,1725],[1223,1690],[1226,1650],[1228,1610]];
-const ARM_LEFT=[[620,1150],[812,1150],[810,1200],[794,1250],[779,1300],[761,1350],[745,1400],[738,1450],[735,1500],[740,1550],[737,1580],[746,1610],[750,1640],[762,1680],[770,1755],[620,1755]];
-const ARM_RIGHT=[[1143,1150],[1340,1150],[1340,1725],[1220,1725],[1223,1690],[1226,1650],[1228,1610],[1230,1550],[1232,1500],[1227,1450],[1215,1400],[1201,1350],[1185,1300],[1162,1250],[1150,1200]];
 const FACE_FOREGROUND=[[0,0],[2048,0],[2048,620],[1125,620],[1105,640],[1085,663],[1060,687],[1040,697],[1015,698],[990,688],[960,673],[930,654],[900,630],[0,630]];
 const PATENT_BOTTOM=[[850,0],[1100,0],[1100,1180],[1170,1290],[1240,1410],[2048,1530],[2048,3072],[0,3072],[0,1530],[740,1410],[790,1300],[820,1220],[850,1180]];
 const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':2640,'pants-leopard':2600};
@@ -201,7 +197,7 @@ for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:un
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
   const showForearms=!slots.dresses||slots.dresses==='dress-blue'||['jacket-purple','jacket-cardigan'].includes(slots.jackets);
-  entries.push({src:BASE,z:handZ,clip:showForearms?ARM_LEFT:HAND_LEFT},{src:BASE,z:handZ,clip:showForearms?ARM_RIGHT:HAND_RIGHT});
+  entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:handZ,clip:showForearms?null:[[0,1550],[2048,1550],[2048,3072],[0,3072]]});
  }
  if(slots.jackets==='jacket-purple')entries.push({src:BASE,z:13,clip:FACE_FOREGROUND});
  for(const id of slots.makeup)entries.push({id,z:35});
