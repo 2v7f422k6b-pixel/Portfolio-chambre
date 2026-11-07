@@ -197,12 +197,14 @@ const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,sl
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
 node.setAttribute('aria-label',(document.documentElement.lang==='en'?'Léna is wearing ':'Léna porte ')+pieces.join(', '));}
 // Show the artwork bounds in the inventory, retaining the original full canvas on the avatar.
+const CATALOG_IMAGES={"head-airpods":["assets/dressing-lena/IMG_5446.png",[780,309,420,342]],"bag-brown":["assets/dressing-lena/IMG_5447.png",[992,692,664,990]],"dress-striped":["assets/dressing-lena/IMG_5448.png",[411,721,1068,1888]],"dress-floral":["assets/dressing-lena/IMG_5449.png",[470,726,968,1770]],"top-gabzilla":["assets/dressing-lena/IMG_5450.png",[536,712,865,850]],"head-beret":["assets/dressing-lena/IMG_5451.png",[707,234,485,326]],"jacket-green":["assets/dressing-lena/IMG_5452.png",[592,655,802,1702]],"skirt-princess":["assets/dressing-lena/IMG_5453.png",[509,1182,975,548]],"jacket-cardigan":["assets/dressing-lena/IMG_5454.png",[590,673,799,1051]],"shoes-docs":["assets/dressing-lena/IMG_5455.png",[784,2538,413,280]],"top-yellow":["assets/dressing-lena/IMG_5456.png",[760,706,479,757]],"top-pajama":["assets/dressing-lena/IMG_5457.png",[631,692,711,917]],"top-pullover":["assets/dressing-lena/IMG_5458.png",[573,711,831,885]],"jacket-purple":["assets/dressing-lena/IMG_5459.png",[522,656,903,930]],"head-cap":["assets/dressing-lena/IMG_5460.png",[777,226,506,294]],"head-stars":["assets/dressing-lena/IMG_5461.png",[882,368,143,108]],"makeup-blush":["assets/dressing-lena/IMG_5462.png",[675,1149,696,820]]};
 function itemThumbnail(id){
-const box=THUMBNAILS[id];
-if(!box){const im=document.createElement('img');im.src=SPRITES[id];im.alt='';im.loading='lazy';return im;}
+const catalogue=CATALOG_IMAGES[id],src=catalogue?catalogue[0]:SPRITES[id];
+const box=catalogue?catalogue[1]:THUMBNAILS[id];
+if(!box){const im=document.createElement('img');im.src=src;im.alt='';im.loading='lazy';return im;}
 const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),im=document.createElementNS(ns,'image');
 svg.setAttribute('viewBox',box.join(' '));svg.setAttribute('class','garment-thumbnail');svg.setAttribute('aria-hidden','true');
-im.setAttribute('href',SPRITES[id]);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
+im.setAttribute('href',src);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
 }
 function renderItems(){const target=$('#items');target.textContent='';target.className=activeTab==='sets'?'presets':'items';
 if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';if(i===2&&!clownUnlocked()){b.setAttribute('aria-disabled','true');b.textContent=bilingual('Princesse Clown — à débloquer. Indice : ouvre mon conte illustré dans la chambre.','Clown Princess — locked. Hint: open my illustrated story in the room.');target.appendChild(b);continue}b.innerHTML='<strong>'+translate(p.title)+'</strong><br/><small>'+translate(p.desc)+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
