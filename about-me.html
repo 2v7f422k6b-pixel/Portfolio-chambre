@@ -159,9 +159,10 @@ const SHORT_JACKET_DRESS_STRIPED=[[880,0],[1120,0],[1120,1000],[1190,1450],[1235
 const PULLOVER_BODY=[[0,0],[2048,0],[2048,735],[1090,735],[1090,775],[1250,825],[2048,825],[2048,3072],[0,3072]];
 const GABZILLA_BOTTOM=[[760,0],[1160,0],[1160,1400],[1235,1520],[1270,1620],[2048,1800],[2048,3072],[0,3072],[0,1800],[680,1620],[705,1520],[760,1400]];
 const CAMISOLE_BOTTOM=[[860,0],[1100,0],[1100,1180],[1168,1300],[1250,1420],[2048,1550],[2048,3072],[0,3072],[0,1550],[730,1420],[795,1300],[860,1180]];
-const BOOTS_UNDER_STRIPED_PANTS=[[0,2680],[2048,2680],[2048,3072],[0,3072]];
+// Hide the boot shafts above each trouser hem, including the gap between legs.
+const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':2640,'pants-leopard':2600};
 function underJacketClip(key){
-if(key==='shoes'&&slots.shoes==='shoes-boots'&&slots.pants==='pants-stripes')return BOOTS_UNDER_STRIPED_PANTS;
+if(key==='shoes'&&slots.shoes==='shoes-boots'&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
 if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
