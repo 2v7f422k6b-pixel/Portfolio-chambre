@@ -407,20 +407,35 @@ function safePresentationImage(value){
 function openWorkAbout(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
+ const rule='<svg class="nana-card-rule" viewBox="0 0 400 5" preserveAspectRatio="none" aria-hidden="true"><path d="M1 3 Q48 1 96 3 T194 2 T298 3 T399 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
  openWindow(t('À propos','About me'),`<style>
- .nana-profile-card{position:relative;width:min(100%,410px);margin:0 auto;padding:20px 24px;color:#ff173b;background:#fff4e8;border-radius:14px 10px 16px 11px;font-family:inherit}
+ #window:has(.nana-profile-card){width:min(560px,94vw)}
+ .nana-profile-card{position:relative;width:min(100%,440px);margin:0 auto;padding:19px 22px 16px;color:#ff173b;background:#fff4e8;border-radius:14px 10px 16px 11px;font-family:inherit}
  .nana-profile-card::before{content:'';position:absolute;inset:0;pointer-events:none;border:12px solid transparent;border-image:url('assets/drawn-ui/cadre_certificat.png') 30 stretch}
- .nana-profile-card header{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
- .nana-profile-card h2{margin:0;font-size:32px}.nana-profile-card .card-level{font-size:14px}
- .nana-profile-card .card-type{font-size:13px;margin:4px 0 10px}
- .nana-profile-art{position:relative;width:100%;height:clamp(170px,31dvh,280px);background:#ffe3e7;border-radius:45% 48% 43% 46%;overflow:hidden}
+ .nana-profile-card .card-edition{font-size:11px;letter-spacing:.04em}
+ .nana-profile-card header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:1px 0}
+ .nana-profile-card h2{margin:0;font-size:32px}.nana-profile-card .card-hp{font-size:19px;white-space:nowrap}
+ .nana-profile-card .card-type{font-size:12px;margin:2px 0 9px}
+ .nana-profile-art{position:relative;width:100%;height:clamp(145px,24dvh,210px);background:#ffe3e7;overflow:hidden}
  .nana-profile-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
- .nana-profile-card .card-location{text-align:center;font-size:12px;margin:8px 0 14px}
- .nana-profile-card .card-ability{margin:12px 0}.nana-profile-card h3{font-size:17px;margin:0 0 3px}
- .nana-profile-card p{font-size:14px;line-height:1.45;margin:0}
- .nana-profile-card footer{font-size:12px;text-align:center;padding-top:12px}
+ .nana-profile-card .card-location{text-align:center;font-size:11px;margin:5px 0 9px}
+ .nana-profile-card .card-attack{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 14px;margin:9px 0}
+ .nana-profile-card h3{font-size:19px;margin:0 0 4px}
+ .nana-profile-card .card-damage{font-size:27px;align-self:center}
+ .nana-profile-card p{font-size:13px;line-height:1.4;margin:0}
+ .nana-profile-card .card-section-label{display:block;font-size:10px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+ .nana-card-rule{display:block;width:100%;height:5px;pointer-events:none}
+ .nana-profile-card .card-matchups{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:9px 0;text-align:center}
+ .nana-profile-card .card-matchups dt{font-size:11px;margin-bottom:4px}
+ .nana-profile-card .card-matchups dd{font-size:12px;line-height:1.4;margin:0}
+ .nana-profile-card .card-matchups strong{display:block;font-size:16px}
+ .nana-profile-card .card-anecdote{font-size:12px;font-style:italic;line-height:1.4;padding:8px 9px;background:#ffe9ec;border-radius:3px 6px 4px 5px}
+ .nana-profile-card .card-quests{font-size:11px;line-height:1.5;margin-top:8px}
+ .nana-profile-card footer{display:flex;justify-content:space-between;font-size:10px;padding-top:9px;gap:10px}
+ @media(max-width:440px){.nana-profile-card{padding:16px}.nana-profile-card h3{font-size:17px}.nana-profile-card .card-matchups{gap:6px}}
  </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
- <header><h2>Léna</h2><span class="card-level">${t('Niveau','Level')} 32</span></header>
+ <div class="card-edition">${t('Personnage de base · Édition pyjama','Basic character · Pyjama edition')}</div>
+ <header><h2>Léna</h2><span class="card-hp">60 ${t('PV','HP')}</span></header>
  <div class="card-type">${t('Illustratrice · Rédactrice · CM','Illustrator · Writer · Community manager')}</div>
  <div class="nana-profile-art" role="img" aria-label="${t('Léna en pyjama rose','Léna in pink pyjamas')}">
  <img src="assets/dressing-lena/lena-original.png" alt="">
@@ -428,11 +443,20 @@ function openWorkAbout(){
  <img src="assets/dressing-lena/Illustration_sans_titre-7.png" alt="">
  <img src="assets/dressing-lena/Illustration_sans_titre-8.png" alt="">
  </div>
- <div class="card-location">Marseille · Nana Color Studio</div>
- <section class="card-ability"><h3>${t('Au quotidien','Every day')}</h3><p>${t('Des dessins, des histoires et de la musique.','Drawings, stories and music.')}</p></section>
- <section class="card-ability"><h3>${t('Quête actuelle','Current quest')}</h3><p>${t('Créer de jolies choses.','Make pretty things.')}</p></section>
- <section class="card-ability"><h3>${t('Quête secondaire','Side quest')}</h3><p>${t('Devenir prof de philosophie.','Become a philosophy teacher.')}</p></section>
- <footer>${t('Collection Nana · Carte 001','Nana collection · Card 001')}</footer>
+ <div class="card-location">${t('Type : créative · Habitat : Marseille','Type: creative · Habitat: Marseille')}</div>
+ ${rule}
+ <section class="card-attack"><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Quête secondaire','Side quest')}</h3><p>${t('Ouvre un nouveau projet. Ajoute 10 dégâts pour chaque idée encore en cours.','Starts a new project. Add 10 damage for every idea still in progress.')}</p></div><strong class="card-damage">30+</strong></section>
+ ${rule}
+ <section class="card-attack"><div><span class="card-section-label">${t('Talent','Ability')}</span><h3>${t('Le pourquoi du pourquoi','The why behind the why')}</h3><p>${t('Chaque réponse fait apparaître une nouvelle question.','Every answer reveals another question.')}</p></div></section>
+ ${rule}
+ <dl class="card-matchups">
+ <div><dt>${t('Faiblesse','Weakness')}</dt><dd>${t('Nouvelles idées','New ideas')}<strong>×2</strong></dd></div>
+ <div><dt>${t('Résistance','Resistance')}</dt><dd>${t('Lignes droites','Straight lines')}<strong>−30</strong></dd></div>
+ <div><dt>${t('Coût de retraite','Retreat cost')}</dt><dd>${t('Un café','One coffee')}<strong>1</strong></dd></div>
+ </dl>
+ <p class="card-anecdote">${t('Prend les pyjamas très au sérieux. Cette carte en est la preuve.','Takes pyjamas very seriously. This card is proof.')}</p>
+ <p class="card-quests">${t('Quête actuelle : créer de jolies choses.','Current quest: make pretty things.')}<br>${t('Quête secondaire : devenir prof de philosophie.','Side quest: become a philosophy teacher.')}</p>
+ <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>001 / 001</span></footer>
  </article>`,'work-about');
 }
 function renderArtTiles(filtered=ART){
