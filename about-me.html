@@ -134,10 +134,18 @@ const presets=[
 {title:'STYLÉE',style:'STREET',desc:'Top vernis et pantalon rayé',values:{tops:'top-yellow',pants:'pants-stripes',shoes:'shoes-bambi',bags:'bag-brown'}},
 {title:'♡ PRINCESSE CLOWN',style:'FAIRY TALE',desc:'Corsage rouge, manches bleues et jupe jaune',makeup:['makeup-clown-nose','makeup-blush'],values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}}
 ];
+const CLOWN_KEY='nana-clown-outfit-unlocked-v1';
+const CLOWN_PARTS=new Set(['top-clown','skirt-princess','jewelry-clown-ruff','makeup-clown-nose']);
+let clownActive=false;
+function clownUnlocked(){try{return localStorage.getItem(CLOWN_KEY)==='1'}catch(e){return false}}
+function clearClown(){if(!clownActive)return;clownActive=false;for(const key of allSlots)if(presets[2].values[key])slots[key]=null;for(const id of presets[2].makeup)slots.makeup.delete(id)}
+const bilingual=(fr,en)=>document.documentElement.lang==='en'?en:fr;
 let activeTab='tops';
+window.addEventListener('storage',e=>{if(e.key===CLOWN_KEY)renderItems()});
+window.addEventListener('focus',()=>renderItems());
 function slotFor(id){if(id.startsWith('head-'))return id==='head-airpods'?'headphones':id==='head-stars'?'clips':'hat';if(id.startsWith('jewelry-'))return 'necklace';return ITEMS[id]?.[1]||null}
 function selected(id){return id.startsWith('makeup-')?slots.makeup.has(id):slots[slotFor(id)]===id}
-function itemsIn(tab){return Object.entries(ITEMS).filter(([_,data])=>data[1]===tab)}
+function itemsIn(tab){return Object.entries(ITEMS).filter(([_,data])=>data[1]===tab&&!CLOWN_PARTS.has(_))}
 function layer(id,z){const rect=FITS[id],src=FITTED[id]||SPRITES[id];if(!src||(!FITTED[id]&&!rect))return null;const im=document.createElement('img');im.className='layer';im.src=src;im.alt='';im.draggable=false;if(FITTED[id]){im.style.left='0';im.style.top='0';im.style.width='100%';im.style.height='100%';}else{im.style.left=(rect[0]/W*100)+'%';im.style.top=(rect[1]/H*100)+'%';im.style.width=(rect[2]/W*100)+'%';im.style.height=(rect[3]/H*100)+'%';}im.style.zIndex=z;return im}
 function overlayImage(src,z,style){const im=document.createElement('img');im.className='layer';im.src=src;im.alt='';im.draggable=false;im.style.cssText='left:0;top:0;width:100%;height:100%;z-index:'+z+';'+(style||'');return im}
 // One layer order shared by the screen and PNG export.
@@ -164,11 +172,12 @@ svg.setAttribute('viewBox',box.join(' '));svg.setAttribute('class','garment-thum
 im.setAttribute('href',SPRITES[id]);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
 }
 function renderItems(){const target=$('#items');target.textContent='';target.className=activeTab==='sets'?'presets':'items';
-if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.innerHTML='<strong>'+translate(p.title)+'</strong><br/><small>'+translate(p.desc)+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
+if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';if(i===2&&!clownUnlocked()){b.setAttribute('aria-disabled','true');b.textContent=bilingual('Princesse Clown — à débloquer. Indice : ouvre mon conte illustré dans la chambre.','Clown Princess — locked. Hint: open my illustrated story in the room.');target.appendChild(b);continue}b.innerHTML='<strong>'+translate(p.title)+'</strong><br/><small>'+translate(p.desc)+'</small>';b.addEventListener('click',()=>applyPreset(i));target.appendChild(b)}return}
 for(const [id,meta] of itemsIn(activeTab)){const b=document.createElement('button');b.className='item'+(selected(id)?' active':'');b.type='button';b.title=translate(meta[0]);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=translate(meta[0]);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
 if(!target.children.length)target.textContent='Bientôt disponible.'}
 function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='scarves'?(document.documentElement.lang==='en'?'SCARVES':'ÉCHARPES'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
-function select(id){const key=slotFor(id);if(!key)return;
+function select(id){const key=slotFor(id);if(!key||CLOWN_PARTS.has(id))return;
+if(clownActive&&(['tops','pants','skirts','dresses','jackets','necklace','shoes'].includes(key)||presets[2].makeup.includes(id)))clearClown();
 if(key==='makeup'){slots.makeup.has(id)?slots.makeup.delete(id):slots.makeup.add(id)}else{slots[key]=slots[key]===id?null:id;
 if(slots[key]){if(key==='dresses'){slots.tops=null;slots.pants=null;slots.skirts=null}if(['tops','pants','skirts'].includes(key))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&!slots.bags)slots.bags='bag-brown'}
 if(key==='bags'&&!slots.bags)slots.bagAccessories=null;
@@ -178,11 +187,11 @@ if(key==='hat'&&slots.hat==='head-cap')slots.clips=null;
 if(key==='clips'&&slots.clips&&slots.hat==='head-cap')slots.hat=null;
 if(key==='hat'&&slots.hat)slots.headphones=null;if(key==='headphones'&&slots.headphones)slots.hat=null}
 render()}
-function applyPreset(i){for(const key of allSlots)slots[key]=null;slots.makeup.clear();Object.assign(slots,presets[i].values);for(const id of presets[i].makeup||[])slots.makeup.add(id);render()}
+function applyPreset(i){if(i===2&&!clownUnlocked())return;clownActive=i===2;for(const key of allSlots)slots[key]=null;slots.makeup.clear();Object.assign(slots,presets[i].values);for(const id of presets[i].makeup||[])slots.makeup.add(id);render()}
 function render(){if(slots.tops==='top-pullover'&&slots.jackets==='jacket-cardigan')slots.jackets=null;renderAvatar();renderItems()}
 function toast(message){let e=$('#toast');e.textContent=message;e.hidden=false;clearTimeout(window.aboutToast);window.aboutToast=setTimeout(()=>e.hidden=true,2600)}
 $('#reset').addEventListener('click',()=>applyPreset(0));
-$('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsIn('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsIn('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsIn(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsIn('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsIn('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsIn('bagAccessories').map(x=>x[0]));render()});
+$('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];clownActive=false;for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsIn('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsIn('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsIn(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsIn('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsIn('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsIn('bagAccessories').map(x=>x[0]));render()});
 $('#close').addEventListener('click',()=>{if(window.parent!==window){window.parent.postMessage({type:'close-about-me'},location.origin==='null'?'*':location.origin)}else if(history.length>1)history.back();else location.href='index.html'});
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
 async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){

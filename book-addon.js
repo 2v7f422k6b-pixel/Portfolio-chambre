@@ -176,6 +176,10 @@ function openBook(){
  '<div class="book-pages" id="book-pages" aria-label="Pages du livre"><div id="book-left" class="book-page book-left"><img alt="Page de gauche du livre"></div><div class="book-spine" aria-hidden="true"></div><div id="book-right" class="book-page book-right"><img alt="Page de droite du livre"></div></div>'+
  '<button class="book-side-arrow" data-book-next aria-label="Page suivante">›</button></div></div>'+
  '<footer class="book-reader-footer"><span>♡ Un conte de Léna de Firmas</span><span id="book-count" aria-live="polite">74 pages</span><span>Glisse ou clique pour tourner les pages</span></footer></section>','book');
+ if(document.querySelector('#book-reader')){
+ let fresh=false;try{fresh=localStorage.getItem('nana-clown-outfit-unlocked-v1')!=='1';localStorage.setItem('nana-clown-outfit-unlocked-v1','1')}catch(e){}
+ if(fresh){const note=document.createElement('p');note.setAttribute('role','status');note.textContent=document.documentElement.lang==='en'?'Clown Princess outfit unlocked in the dressing room!':'Tenue Princesse Clown débloquée dans le dressing !';document.querySelector('.book-reader-header').appendChild(note);}
+ }
  position=1;busy=false;token++;
  loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
