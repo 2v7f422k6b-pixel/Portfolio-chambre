@@ -142,7 +142,31 @@
         loadArtwork('assets/drawn-ui/ornement_certificat.png'),
         loadArtwork('assets/heart-lena.svg')
       ]);
-      ctx.drawImage(frame,28,28,1544,1064);
+      // Nine-slice the original drawing: never enlarge its pen stroke.
+      const source=document.createElement('canvas');
+      source.width=frame.naturalWidth;source.height=frame.naturalHeight;
+      const sc=source.getContext('2d');sc.drawImage(frame,0,0);
+      const pixels=sc.getImageData(0,0,source.width,source.height).data;
+      let l=source.width,t=source.height,r=0,b=0;
+      for(let y=0;y<source.height;y++)for(let x=0;x<source.width;x++){
+        if(pixels[(y*source.width+x)*4+3]>24){l=Math.min(l,x);t=Math.min(t,y);r=Math.max(r,x);b=Math.max(b,y);}
+      }
+      const sw=r-l+1,sh=b-t+1,corner=18;
+      const x0=48,y0=48,w=1504,h=1024;
+      const tile=(sx,sy,tw,th,dx,dy,dw,dh)=>{
+        for(let yy=0;yy<dh;yy+=th)for(let xx=0;xx<dw;xx+=tw){
+          const cw=Math.min(tw,dw-xx),ch=Math.min(th,dh-yy);
+          ctx.drawImage(source,sx,sy,cw,ch,dx+xx,dy+yy,cw,ch);
+        }
+      };
+      for(const right of [false,true])for(const bottom of [false,true]){
+        ctx.drawImage(source,right?r-corner+1:l,bottom?b-corner+1:t,corner,corner,
+          right?x0+w-corner:x0,bottom?y0+h-corner:y0,corner,corner);
+      }
+      tile(l+corner,t,sw-2*corner,corner,x0+corner,y0,w-2*corner,corner);
+      tile(l+corner,b-corner+1,sw-2*corner,corner,x0+corner,y0+h-corner,w-2*corner,corner);
+      tile(l,t+corner,corner,sh-2*corner,x0,y0+corner,corner,h-2*corner);
+      tile(r-corner+1,t+corner,corner,sh-2*corner,x0+w-corner,y0+corner,corner,h-2*corner);
       for(const [x,y,size] of [[123,135,70],[1470,920,68],[1467,147,42],[140,954,42]]){
         ctx.drawImage(heartArt,x-size/2,y-size/2,size,size);
       }
@@ -160,7 +184,7 @@
         ctx.fillText(value, 800, y);
       };
       centered('NANA COLOR STUDIO  ·  DO NOTHING CLUB', 138, 32);
-      centered(fr ? 'CERTIFICAT DE FLEMME INTERSIDÉRALE' : 'CERTIFICATE OF INTERGALACTIC LAZINESS', 236, 77);
+      centered(fr ? 'CERTIFICAT DE FLEMME INTERSIDÉRALE' : 'CERTIFICATE OF INTERGALACTIC LAZINESS', 236, 77,1320);
       centered(fr ? 'DÉLIVRÉ SANS LE MOINDRE EFFORT' : 'AWARDED WITHOUT THE SLIGHTEST EFFORT', 323, 39,1210);
       ctx.drawImage(ornament,130,303,40,40);ctx.drawImage(ornament,1430,303,40,40);
 
