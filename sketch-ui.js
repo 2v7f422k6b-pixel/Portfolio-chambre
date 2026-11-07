@@ -140,6 +140,42 @@
   targets.push(['.dl-daw','frame',1201]);
   targets.push(['#pages-library .pages-cover-lines','double-frame',1202]);
   targets.push(['#window-content .lit-index-item','frame',1203]);
+
+  // Crop transparent export margins once; tile the pen strokes at a stable scale.
+  const frameImages = new Map();
+  function frameImage(file) {
+    if (!frameImages.has(file)) frameImages.set(file, new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width=image.naturalWidth; canvas.height=image.naturalHeight;
+          const ctx=canvas.getContext('2d'); ctx.drawImage(image,0,0);
+          const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+          let left=canvas.width,top=canvas.height,right=0,bottom=0;
+          for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){
+            if(pixels[(y*canvas.width+x)*4+3]>24){
+              left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);
+            }
+          }
+          if(right<left){resolve(image.src);return;}
+          const crop=document.createElement('canvas');
+          crop.width=right-left+1;crop.height=bottom-top+1;
+          crop.getContext('2d').drawImage(canvas,left,top,crop.width,crop.height,0,0,crop.width,crop.height);
+          resolve(crop.toDataURL());
+        } catch (_) { resolve(image.src); }
+      };
+      image.onerror=()=>resolve(new URL('assets/drawn-ui/'+file+'.png',scriptBase).href);
+      image.src=new URL('assets/drawn-ui/'+file+'.png',scriptBase).href;
+    }));
+    return frameImages.get(file);
+  }
+  function paintFrame(element,file){
+    frameImage(file).then(url=>{
+      element.style.setProperty('border-image',`url("${url}") 14 / 8px / 0 round`,'important');
+    });
+  }
+
   let serial = 0;
   const redrawn = new WeakMap();
 
@@ -212,6 +248,12 @@
   }
 
   function attach(element, kind, seed) {
+    if(element.matches('.dl-track-number,#dl-track-count,#player .player-buttons button,.dock-tooltip')){
+      element.style.setProperty('border','0','important');
+      element.style.setProperty('background','transparent','important');
+      element.style.setProperty('box-shadow','none','important');
+      return;
+    }
     const previous = redrawn.get(element);
     if (previous) {
       // Dynamic button labels and translated content can replace the SVG child.
@@ -239,7 +281,7 @@
     if(drawnFrame){
       const file=kind==='double-frame'?'cadre_certificat':element.matches('button,a,.soft-btn,.pill-link')?'cadre_bouton':'cadre_fenetre';
       svg.classList.add('lena-drawn-frame');
-      svg.style.setProperty('border-image',`url("${new URL('assets/drawn-ui/'+file+'.png',scriptBase).href}") 18 / 10px / 0 stretch`);
+      paintFrame(svg,file);
     }
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
@@ -304,7 +346,7 @@
     item.previousWidth=width;item.previousHeight=height;
     if(item.drawnFrame)return;
     if(!item.svg && item.kind==='frame'){
-      item.element.style.setProperty('border-image',`url("${new URL('assets/drawn-ui/cadre_bouton.png',scriptBase).href}") 18 / 10px / 0 stretch`,'important');
+      paintFrame(item.element,'cadre_bouton');
       return;
     }
     if(!item.svg){
