@@ -10,7 +10,7 @@ function run({width=1024,height=700,barBottom=46,visual}={}){
   let observe;
   const window={innerWidth:width,innerHeight:height,addEventListener:(name,fn)=>events.set(name,fn)};
   if(visual)window.visualViewport={...visual,addEventListener:(name,fn)=>events.set('visual:'+name,fn)};
-  const document={documentElement:{style:{getPropertyValue:name=>styles.get(name),setProperty:(name,value)=>styles.set(name,value)}},getElementById:()=>bar};
+  const document={documentElement:{style:{getPropertyValue:name=>styles.get(name),setProperty:(name,value)=>styles.set(name,value)}},getElementById:id=>id==='menubar'?bar:null};
   vm.runInNewContext(source,{window,document,requestAnimationFrame:fn=>frames.push(fn),ResizeObserver:class{constructor(fn){observe=fn}observe(){}}});
   return {window,styles,events,barResize:()=>observe(),setBar:bottom=>{barBottom=bottom},flush:()=>{while(frames.length)frames.shift()()}};
 }
