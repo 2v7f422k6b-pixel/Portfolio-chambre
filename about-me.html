@@ -169,6 +169,8 @@ const FACE_FOREGROUND=[[0,0],[2048,0],[2048,620],[1125,620],[1105,640],[1085,663
 const PATENT_BOTTOM=[[850,0],[1100,0],[1100,1180],[1170,1290],[1240,1410],[2048,1530],[2048,3072],[0,3072],[0,1530],[740,1410],[790,1300],[820,1220],[850,1180]];
 const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':2640,'pants-leopard':2600};
 function underJacketClip(key){
+// Hide the strap return behind the shoulder, including beneath scarves.
+if(key==='bags'&&slots.bags==='bag-brown')return [[0,850],[740,800],[780,785],[820,777],[850,778],[900,789],[2048,789],[2048,3072],[0,3072]];
 if(key==='shoes'&&slots.shoes==='shoes-boots'&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
 if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
@@ -197,7 +199,8 @@ const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',
 for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?{sx:1,dx:-30,dy:15}:null)});
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
-  entries.push({src:BASE,z:handZ,clip:slots.dresses?HAND_LEFT:ARM_LEFT},{src:BASE,z:handZ,clip:slots.dresses?HAND_RIGHT:ARM_RIGHT});
+  const showForearms=!slots.dresses||slots.dresses==='dress-blue'||['jacket-purple','jacket-cardigan'].includes(slots.jackets);
+  entries.push({src:BASE,z:handZ,clip:showForearms?ARM_LEFT:HAND_LEFT},{src:BASE,z:handZ,clip:showForearms?ARM_RIGHT:HAND_RIGHT});
  }
  if(slots.jackets==='jacket-purple')entries.push({src:BASE,z:13,clip:FACE_FOREGROUND});
  for(const id of slots.makeup)entries.push({id,z:35});
