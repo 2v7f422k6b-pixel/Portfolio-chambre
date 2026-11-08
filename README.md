@@ -80,10 +80,12 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 - Ajouter uniquement les souvenirs choisis par Léna dans `memory-box-content.js` :
   `type` (`image` ou `audio`), `src`, `title`, `caption` et `alt`, les textes en
   `{fr, en}`. `thumbnail` peut désigner le PNG transparent de l’accessoire ;
-  `x`, `y`, `width` (pourcentages du fond) et `rotation` règlent sa position.
+  `crop` règle le cadrage visuel du PNG sans modifier le dessin source ;
+  `x`, `y`, `width`, `height` (pourcentages du fond) et `rotation` règlent sa position.
   Toucher un accessoire affiche son contenu ; « Reposer dans la boîte » revient
-  au fond. La fenêtre est une boîte arrondie à couvercle articulé, en aplats
-  lilas, rose et crème, sans texture usée. Aucun faux souvenir n’est publié.
+  au fond. La fenêtre utilise la boîte dessinée `assets/memorybox/IMG_5749.png`,
+  accompagnée des six souvenirs fournis (cassette, Playmobil, Jojo, bracelet,
+  cocotte et médiator). Aucun faux souvenir n’est publié.
 - La découverte est attribuée après la chute complète, une seule fois. La sortie
   de la scène annule les animations ; fermer la boîte arrête l’audio. Navigation
   clavier, préférence de mouvement réduit, FR/EN et jour/nuit sont pris en compte.

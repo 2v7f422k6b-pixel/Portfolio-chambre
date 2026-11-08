@@ -28,22 +28,13 @@
     const ring=art.cloneNode(true);ring.classList.add('memory-hover');ring.setAttribute('aria-hidden','true');host.prepend(ring);
   }
   const dialog=document.createElement('dialog');dialog.id='nana-memory-box';dialog.setAttribute('aria-labelledby','memory-title');dialog.setAttribute('data-no-translate','');
-  // Rounded tin silhouette, hinge and perspective rim, with slightly uneven UI strokes.
-  // Flat colours preserve the room's palette; no photograph or aged-metal texture.
+  // Léna's box is the window itself. Only its empty transparent margins are cropped.
   dialog.innerHTML=`<button type="button" class="memory-close memory-ui-frame"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
     <div class="memory-box-form">
-      <svg class="memory-box-shape" viewBox="0 0 700 660" aria-hidden="true" focusable="false">
-        <path class="memory-lid-shell" d="M112 284 C108 216 109 133 111 65 Q112 31 147 29 C280 27 418 31 554 29 Q588 30 590 64 C592 141 589 215 589 285 Z"/>
-        <path class="memory-lid-inset" d="M134 260 C132 198 135 126 134 73 Q135 53 155 52 C282 54 417 51 545 53 Q567 53 567 75 C566 139 569 201 566 261 C421 259 278 263 134 260 Z"/>
-        <path class="memory-front-wall" d="M51 576 L650 577 L647 615 Q645 643 620 645 C439 648 256 643 80 646 Q54 646 52 620 Z"/>
-        <path class="memory-tray-rim" d="M116 289 C263 291 440 287 584 290 Q602 290 606 310 L649 578 Q654 605 626 607 C457 610 249 606 75 609 Q47 609 51 580 L93 312 Q97 290 116 289 Z"/>
-        <path class="memory-tray-well" d="M128 320 C272 322 430 318 573 321 L611 565 Q614 586 594 587 C431 585 266 590 107 587 Q87 587 91 566 Z"/>
-        <path class="memory-tray-floor" d="M139 345 C276 347 424 343 562 346 L594 558 Q598 570 584 571 C433 573 271 569 116 572 Q103 572 107 557 Z"/>
-        <path class="memory-rim-line" d="M128 320 Q122 303 116 289 M573 321 Q579 306 584 290 M91 566 L75 609 M611 565 L626 607"/>
-        <path class="memory-hinge" d="M204 277 Q217 275 232 278 L233 299 Q217 301 204 298 Z M468 277 Q482 276 495 278 L496 298 Q480 300 468 298 Z"/>
-        <path class="memory-rim-line" d="M206 286 Q219 288 231 286 M470 286 Q482 288 494 286"/>
+      <svg class="memory-box-shape" viewBox="400 210 2200 2680" aria-hidden="true" focusable="false">
+        <image href="assets/memorybox/IMG_5749.png" width="3000" height="3000"/>
       </svg>
-      <div class="memory-lid-copy"><p class="memory-eyebrow"></p><h1 id="memory-title"></h1><img src="assets/drawn-ui/fleur.png" alt=""></div>
+      <div class="memory-lid-copy"><p class="memory-eyebrow"></p><h1 id="memory-title"></h1></div>
       <div class="memory-items"></div>
     </div>
     <div class="memory-box-controls"><button type="button" class="memory-back memory-ui-frame" hidden></button><nav class="memory-pager" hidden><button class="memory-prev memory-ui-frame" type="button"></button><span class="memory-count"></span><button class="memory-next memory-ui-frame" type="button"></button></nav><button type="button" class="memory-replay"></button></div>`;
@@ -66,6 +57,20 @@
     if(dialog.open)renderItem();
   }
   function stopAudio(){dialog.querySelectorAll('audio').forEach(audio=>audio.pause());}
+  function artwork(item,thumbnail=false){
+    const src=thumbnail?(item.thumbnail||item.src):item.src;
+    const crop=thumbnail&&item.thumbnail?item.thumbnailCrop:item.crop;
+    const alt=thumbnail?'':words(item.alt)||words(item.title);
+    if(Array.isArray(crop)&&crop.length===4&&crop.every(Number.isFinite)&&crop[2]>0&&crop[3]>0){
+      const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),image=document.createElementNS(ns,'image');
+      svg.classList.add('memory-art');svg.setAttribute('viewBox',crop.join(' '));svg.setAttribute('focusable','false');
+      if(thumbnail)svg.setAttribute('aria-hidden','true');
+      else{svg.setAttribute('role','img');svg.setAttribute('aria-label',alt);}
+      image.setAttribute('href',src);image.setAttribute('width',item.sourceWidth||3000);image.setAttribute('height',item.sourceHeight||3000);
+      svg.append(image);return svg;
+    }
+    const image=document.createElement('img');image.className='memory-art';image.src=src;image.alt=alt;image.draggable=false;return image;
+  }
   function renderItem(){
     stopAudio();const list=items(),host=dialog.querySelector('.memory-items');host.replaceChildren();
     page=Math.max(-1,Math.min(page,list.length-1));
@@ -78,22 +83,23 @@
       const places=[[24,27,-9],[72,29,8],[42,67,5],[79,72,-7],[18,76,7],[51,25,-4]];
       const clamp=(n,min,max,fallback)=>Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback;
       list.forEach((item,index)=>{
-        const [x,y,rotation]=places[index%places.length],button=document.createElement('button'),art=document.createElement('img');
+        const [x,y,rotation]=places[index%places.length],button=document.createElement('button');
         button.type='button';button.className='memory-object';button.dataset.memoryItem=String(index);
         button.setAttribute('aria-label',words(item.title)||t('Souvenir ','Memory ')+(index+1));
-        button.style.left=clamp(item.x,12,88,x)+'%';button.style.top=clamp(item.y,15,85,y)+'%';
-        button.style.width=clamp(item.width,15,35,28)+'%';button.style.setProperty('--memory-rotation',clamp(item.rotation,-25,25,rotation)+'deg');
-        art.src=item.thumbnail||(item.type==='image'?item.src:'assets/drawn-ui/notes_musique.png');art.alt='';art.draggable=false;
+        button.style.left=clamp(item.x,5,95,x)+'%';button.style.top=clamp(item.y,5,95,y)+'%';
+        button.style.width=clamp(item.width,8,60,28)+'%';button.style.height=clamp(item.height,15,70,55)+'%';
+        button.style.setProperty('--memory-rotation',clamp(item.rotation,-25,25,rotation)+'deg');
+        const art=item.type==='image'||item.thumbnail?artwork(item,true):artwork({src:'assets/drawn-ui/notes_musique.png'},true);
         button.append(art);host.append(button);
       });
     }else{
-      const item=list[page],figure=document.createElement('figure'),media=document.createElement(item.type==='audio'?'audio':'img');
-      media.src=item.src;
-      if(item.type==='image'){media.alt=words(item.alt)||words(item.title);media.draggable=false;}
-      else{media.controls=true;media.preload='none';media.setAttribute('aria-label',words(item.title));}
+      const item=list[page],figure=document.createElement('figure'),media=item.type==='image'?artwork(item):document.createElement('audio');
+      if(item.type==='audio'){media.src=item.src;media.controls=true;media.preload='none';media.setAttribute('aria-label',words(item.title));}
       figure.append(media);
       const caption=document.createElement('figcaption'),title=document.createElement('strong'),text=document.createElement('p');
-      title.textContent=words(item.title);text.textContent=words(item.caption);caption.append(title,text);figure.append(caption);host.append(figure);
+      title.textContent=words(item.title);caption.append(title);
+      if(words(item.caption)){text.textContent=words(item.caption);caption.append(text);}
+      figure.append(caption);host.append(figure);
     }
     const pager=dialog.querySelector('.memory-pager');pager.hidden=list.length<2||page<0;
     pager.querySelector('.memory-count').textContent=(page+1)+' / '+list.length;

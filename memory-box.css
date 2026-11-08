@@ -30,33 +30,33 @@
 #nana-memory-secret button:focus-visible{outline:none}
 .memory-status{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 /* The dialog itself is transparent: a hinged tin is the entire window. */
-#nana-memory-box{border:0;padding:38px 8px 8px;width:min(700px,calc(100vw - 20px),calc((100dvh - 100px)*1.06));max-height:calc(100dvh - 16px);overflow:auto;background:transparent;color:#ed2347;font:18px/1.5 "Nana Trace UI",sans-serif}
+#nana-memory-box{border:0;padding:38px 8px 8px;box-sizing:border-box;width:min(720px,calc(100vw - 20px),calc((100dvh - 150px)*.82));max-height:calc(100dvh - 16px);overflow:auto;background:transparent;color:#ed2347;font:18px/1.5 "Nana Trace UI",sans-serif}
 #nana-memory-box::backdrop{background:rgba(45,19,37,.55);backdrop-filter:blur(4px)}
 #nana-memory-box button{font:inherit;color:inherit;cursor:pointer;border:0;position:relative}
-#nana-memory-box .memory-close{position:absolute;top:0;right:14%;width:36px;height:36px;background:#fff5e9;padding:6px;z-index:2}
+#nana-memory-box .memory-close{position:absolute;top:0;right:5%;width:40px;height:40px;background:#fff5e9;padding:6px;z-index:2}
 .memory-close img{width:100%;height:100%;object-fit:contain}
-.memory-box-form{position:relative;aspect-ratio:700/660;width:100%;isolation:isolate}
+.memory-box-form{position:relative;aspect-ratio:2200/2680;width:100%;isolation:isolate}
 .memory-box-shape{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
-.memory-box-shape path{stroke:#ef3153;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.memory-lid-shell{fill:#bdb0eb}.memory-lid-inset{fill:#dfd4fb}.memory-front-wall{fill:#e59ab5}.memory-tray-rim{fill:#ffc2d3}.memory-tray-well{fill:#efb0c7}.memory-tray-floor{fill:#fff1d9}.memory-hinge{fill:#e7a7c4}.memory-rim-line{fill:none}
-.memory-lid-copy{position:absolute;top:14%;left:22%;width:56%;text-align:center;pointer-events:none}
+.memory-lid-copy{position:absolute;top:18%;left:12%;width:76%;text-align:center;pointer-events:none;color:#fff5e9}
 .memory-eyebrow{font-size:clamp(10px,1.7vw,13px);margin:0 0 8px}
 #nana-memory-box #memory-title{font-size:clamp(17px,3.3vw,30px);font-weight:normal;line-height:1.2;margin:0;color:inherit}
 .memory-lid-copy>img{display:block;width:clamp(23px,4vw,34px);height:auto;margin:16px auto 0}
-.memory-items{position:absolute;left:18%;top:53%;width:64%;height:32%;display:grid;place-items:center}
+.memory-items{position:absolute;left:12%;top:52%;width:76%;height:39%;display:grid;place-items:center}
 .memory-empty{max-width:215px;margin:0;text-align:center;font-size:clamp(12px,2vw,16px);line-height:1.6;transform:rotate(-4deg);color:#a45c79}
-#nana-memory-box .memory-object{position:absolute;transform:translate(-50%,-50%) rotate(var(--memory-rotation));background:transparent;min-width:44px;min-height:44px;padding:3px;height:55%;max-height:55%;transition:transform .18s ease}
-.memory-object>img{display:block;max-width:100%;max-height:100%;width:100%;object-fit:contain;pointer-events:none}
-#nana-memory-box .memory-object:hover,#nana-memory-box .memory-object:focus-visible{transform:translate(-50%,-50%) rotate(0) scale(1.08);background:transparent}
-.memory-items.is-detail{left:19%;top:51%;width:62%;height:35%;display:block;background:#fff1d9;overflow:auto}
+#nana-memory-box .memory-object{position:absolute;transform:translate(-50%,-50%) rotate(var(--memory-rotation));background:transparent;min-width:44px;min-height:44px;padding:0;display:grid;place-items:center;transition:transform .18s ease}
+.memory-object>.memory-art{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;-webkit-user-drag:none}
+#nana-memory-box .memory-object:hover,#nana-memory-box .memory-object:focus-visible{transform:translate(-50%,-50%) rotate(0) scale(1.06);background:transparent;z-index:2}
+.memory-items.is-detail{display:block;background:transparent;color:#fff5e9;overflow:hidden}
 .memory-items figure{margin:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
-.memory-items figure>img{display:block;width:100%;height:0;min-height:0;flex:1 1 0;object-fit:contain}.memory-items audio{width:100%;flex-shrink:0}.memory-items figcaption{flex-shrink:0;font-size:clamp(11px,1.8vw,14px);line-height:1.35}.memory-items figcaption strong{font-weight:normal}.memory-items figcaption p{margin:3px 0 0}
+.memory-items figure>.memory-art{display:block;width:100%;height:0;min-height:0;flex:1 1 0;object-fit:contain}.memory-items audio{width:100%;flex-shrink:0}.memory-items figcaption{flex-shrink:0;font-size:clamp(11px,1.8vw,14px);line-height:1.35}.memory-items figcaption strong{font-weight:normal}.memory-items figcaption p{margin:3px 0 0}
 .memory-box-controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:8px auto 0;max-width:88%}
 .memory-pager{display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px}.memory-pager button,.memory-back{background:#fff5e9;padding:7px 12px}.memory-pager button:disabled{opacity:.35;cursor:default!important}
 .memory-count{background:#fff5e9;padding:3px 7px;border-radius:5px;white-space:nowrap}
 #nana-memory-box .memory-back{font-size:13px}
 #nana-memory-box .memory-replay{font-size:13px;line-height:1.4;background:#fff5e9;padding:5px 12px;border-radius:7px}
 #nana-memory-box button:hover:not(:disabled){background:#fff}
+#nana-memory-box .memory-object:hover{background:transparent}
+#nana-memory-box .memory-object:focus-visible{outline:2px dashed #fff5e9;outline-offset:3px}
 html[data-theme=night] .memory-tin-body,html[data-theme=night] .memory-tin-lid{filter:brightness(.65)}
-@media(max-width:600px){#nana-memory-box{padding:38px 0 8px}.memory-lid-copy{top:13%}.memory-lid-copy>img{margin-top:10px}.memory-eyebrow{margin-bottom:5px}.memory-empty{max-width:160px}.memory-box-controls{gap:8px}.memory-pager{gap:7px}#nana-memory-box .memory-replay{font-size:12px}}
+@media(max-width:600px){#nana-memory-box{padding:38px 0 8px}.memory-lid-copy{top:17%}.memory-lid-copy>img{margin-top:10px}.memory-eyebrow{margin-bottom:5px}.memory-empty{max-width:160px}.memory-box-controls{gap:6px;max-width:100%}.memory-pager button,.memory-back{padding:7px 8px}.memory-pager{gap:7px}#nana-memory-box .memory-replay{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.memory-hover,#nana-memory-box .memory-object{transition:none}}
