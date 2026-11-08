@@ -170,7 +170,7 @@ test('Sonny hood and headlamp require their own discoveries and survive reload',
  const reloaded=browser({storage}).p;
  assert.equal(reloaded.unlockedOutfit('sonny'),true);assert.equal(reloaded.unlockedOutfit('night-explorer'),true);
 });
-test('Sonny and bear hoods keep hair hidden, including with the purple jacket, and restore it when removed',()=>{
+test('Sonny hides hair while the bear sweater keeps it visible',()=>{
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
  const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
  assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
@@ -186,7 +186,7 @@ test('Sonny and bear hoods keep hair hidden, including with the purple jacket, a
   assert.ok(bodies.every(x=>x.src===assets.hairlessBase));
  }
  slots.hat=null;slots.tops='top-bear';slots.jackets='jacket-purple';
- assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.hairlessBase));
+ assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
  assert.ok(layers().some(x=>x.id==='top-bear'&&x.hood&&x.z>13));
  slots.tops=null;
  for(const hat of [null,'head-headlamp','head-miffy']){
@@ -222,4 +222,12 @@ test('overalls combine with tops and jackets and exclude other bottoms in either
   for(const key of ['pants','skirts','dresses'])assert.equal(slots[key],null);
  }
  env.select('suit-paint');assert.equal(slots.overalls,null);
+});
+
+test('Shining requires the typewriter and cafe socks follow the latte reward',()=>{
+ const {p,storage}=browser();
+ const cafe=p.outfits.find(x=>x.id==='cafe');assert.ok(cafe.pieces.includes('hosiery-cafe'));assert.equal(cafe.values.hosiery,'hosiery-cafe');
+ assert.equal(p.unlockedOutfit('shining'),false);p.feat('latte-made');assert.equal(p.unlockedOutfit('shining'),false);
+ p.feat('secret-typewriter');assert.equal(p.unlockedOutfit('shining'),true);assert.equal(browser({storage}).p.unlockedOutfit('shining'),true);
+ assert.equal(p.outfits.find(x=>x.id==='shining').pieces.length,4);
 });
