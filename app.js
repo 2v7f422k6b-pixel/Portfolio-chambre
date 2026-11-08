@@ -467,7 +467,7 @@ function openWorkAbout(){
  ${rule()}
  <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Tunnel','Tunnel')}</h3><p>${t('Part d’un détail et en fait toute une histoire.<br>Ajoute 10 dégâts si le sujet de départ a été oublié.','Turns one small detail into a whole story.<br>Add 10 damage if the original topic has been forgotten.')}</p></div><strong class="card-damage">30+</strong></section>
  ${rule()}
- <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true">🎀</span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Trop chou pour toi','Too cute for you')}</h3><p>${t('L’adversaire abandonne le combat.','The opponent gives up the fight.')}</p></div><strong class="card-damage">30</strong></section>
+ <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true"><img src="assets/drawn-ui/IMG_5523.png" alt=""></span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Trop chou pour toi','Too cute for you')}</h3><p>${t('L’adversaire abandonne le combat.','The opponent gives up the fight.')}</p></div><strong class="card-damage">30</strong></section>
  ${rule()}
  <dl class="card-matchups">
  <div><dt>${t('Faiblesse','Weakness')}</dt><dd>${t('Les librairies','Bookshops')}<strong>×2</strong></dd></div>
