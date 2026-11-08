@@ -156,6 +156,8 @@ const GREEN_COAT_UNDERLAY=[[850,0],[1110,0],[1110,1100],[1140,1700],[1310,2300],
 // Closed short jackets conceal the shoulders and sleeves underneath.
 const SHORT_JACKET_TOP=[[880,0],[1120,0],[1120,1000],[1190,1450],[800,1450],[880,1000]];
 const SHORT_JACKET_DRESS_FLORAL=[[880,0],[1120,0],[1120,1000],[1190,1450],[2048,1450],[2048,3072],[0,3072],[0,1450],[800,1450],[880,1000]];
+// The floral sleeves end below y=1450; keep them concealed to the cardigan cuffs.
+const CARDIGAN_DRESS_FLORAL=[[880,0],[1120,0],[1120,1000],[1190,1560],[2048,1560],[2048,3072],[0,3072],[0,1560],[800,1560],[880,1000]];
 // Use Léna's uncut drawing beneath short jackets: the fitted version has
 // hand-shaped holes that do not align with the jacket cuffs.
 const STRIPED_DRESS_FIT={sx:1052/1068,sy:1865/1888,ox:0,oy:0,dx:419-411*(1052/1068),dy:736-721*(1865/1888)};
@@ -182,6 +184,7 @@ if(slots.jackets==='jacket-green'&&key==='tops')return GREEN_COAT_UNDERLAY;
 if(slots.jackets==='jacket-green'&&['pants','skirts','dresses'].includes(key))return [[850,0],[1110,0],[1110,1700],[2048,1700],[2048,3072],[0,3072],[0,1700],[850,1700]];
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
+if(key==='dresses'&&slots.dresses==='dress-floral'&&slots.jackets==='jacket-cardigan')return CARDIGAN_DRESS_FLORAL;
 if(key==='dresses'&&['dress-floral','dress-polka'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
 }
 // Hide only the bag-side bow while the brown bag is worn; retain the opposite bow.
