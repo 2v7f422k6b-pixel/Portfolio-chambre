@@ -188,3 +188,32 @@ test('Sonny hood uses the hairless body for both the base and purple-jacket face
   assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
  }
 });
+
+test('paint overalls unlock with the existing atelier activity and retain that saved discovery',()=>{
+ const {p,storage}=browser();const notices=[];p.subscribe(e=>notices.push(...e.added));
+ assert.equal(p.unlockedOutfit('atelier'),false);
+ const atelier=p.outfits.find(x=>x.id==='atelier');
+ assert.ok(atelier.pieces.includes('suit-paint'));assert.equal(atelier.values.overalls,'suit-paint');
+ p.visit('jeu/coloring');p.visit('jeu/coloring');
+ assert.equal(p.unlockedOutfit('atelier'),true);
+ assert.equal(notices.filter(x=>x==='outfit:atelier').length,1);
+ assert.equal(browser({storage}).p.unlockedOutfit('atelier'),true);
+});
+test('overalls combine with tops and jackets and exclude other bottoms in either selection order',()=>{
+ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
+ const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
+ const slots={tops:'top-white',jackets:'jacket-purple',pants:'pants-pajama',skirts:null,dresses:null,overalls:null,makeup:new Set()};
+ const env={slots,ITEMS:assets.items,PULLOVERS:new Set(['top-pullover','top-lime']),progress:null,clownActive:false,render:()=>{},itemUnlocked:()=>true};
+ const slotFn=html.slice(html.indexOf('function slotFor(id){'),html.indexOf('function selected(id)'));
+ const selectFn=html.slice(html.indexOf('function select(id){'),html.indexOf('function applyPreset(i)'));
+ vm.runInNewContext(slotFn+selectFn,env);
+ env.select('suit-paint');assert.equal(slots.overalls,'suit-paint');assert.equal(slots.pants,null);
+ assert.equal(slots.tops,'top-white');assert.equal(slots.jackets,'jacket-purple');
+ env.select('top-gabzilla');assert.equal(slots.overalls,'suit-paint');assert.equal(slots.tops,'top-gabzilla');
+ for(const id of ['pants-pajama','skirt-black','dress-blue','suit-miffy']){
+  env.select(id);assert.equal(slots.overalls,null);
+  env.select('suit-paint');assert.equal(slots.overalls,'suit-paint');
+  for(const key of ['pants','skirts','dresses'])assert.equal(slots[key],null);
+ }
+ env.select('suit-paint');assert.equal(slots.overalls,null);
+});
