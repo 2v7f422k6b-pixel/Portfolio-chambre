@@ -168,7 +168,7 @@ const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':
 function underJacketClip(key){
 if(key==='jackets'&&slots.jackets==='jacket-purple'&&slots.scarves==='scarf-check')return [[0,900],[700,835],[735,800],[780,770],[830,750],[880,800],[1100,800],[1170,780],[1250,850],[2048,900],[2048,3072],[0,3072]];
 // Hide the strap return behind the shoulder, including beneath scarves.
-if(key==='bags'&&slots.bags==='bag-brown')return [[0,850],[740,800],[780,785],[820,777],[850,778],[900,789],[2048,789],[2048,3072],[0,3072]];
+
 if(key==='shoes'&&slots.shoes==='shoes-boots'&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
 if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
@@ -190,11 +190,23 @@ if(slots.jackets)return {sx:1.10,dy:18};
 if(['top-gabzilla','top-pullover','top-pajama'].includes(slots.tops))return {sx:1.15,dy:24};
 return {sx:1,dy:18};
 }
+// Full-canvas bag pieces share the ring anchor. Adjust the strap shoulder, not the bag shape.
+const BAG_SHOULDERS={"top-pajama":[-12,780,-8],"top-yellow":[0,774,0],"top-pink":[0,780,0],"top-white":[-10,745,-8],"top-gabzilla":[-22,770,-10],"top-pullover":[-28,760,-12],"top-peter-pan":[-18,753,-12],"dress-blue":[0,780,0],"dress-floral":[-10,780,0],"dress-striped":[-18,765,-8],"dress-polka":[-8,744,-8],"jacket-green":[-32,750,-18],"jacket-purple":[-42,740,-22],"jacket-cardigan":[-30,742,-18]};
+function bagFits(){
+ const [dx,top,lean]=BAG_SHOULDERS[slots.jackets||slots.dresses||slots.tops]||[0,780,0];
+ return {body:{sx:1,dx,dy:0},strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy:0},charm:{sx:1,dx:dx-30,dy:15}};
+}
 function outfitLayers(){
 const entries=[{src:BASE,z:1,clip:slots.tops==='top-pullover'?PULLOVER_BODY:null}];
 const jewelryZ=['top-yellow','top-pullover'].includes(slots.tops)?10:4;
 const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['jackets',12],['earrings',jewelryZ],['necklace',jewelryZ],['bags',19],['bagAccessories',20],['hat',23],['headphones',24],['clips',25],['scarves',40]];
-for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?{sx:1,dx:-30,dy:15}:null)});
+const bag=bagFits();
+for(const [key,z] of ordered)if(slots[key]){
+ if(key==='bags'&&slots.bags==='bag-brown'){
+  entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
+  entries.push({src:'assets/dressing-lena/IMG_5545.png',z:z+.1,fit:bag.strap});
+ }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null)});
+}
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
   const showForearms=!slots.dresses||['dress-blue','dress-polka'].includes(slots.dresses)||['jacket-purple','jacket-cardigan'].includes(slots.jackets);
@@ -207,7 +219,7 @@ if(slots.pants||slots.skirts||slots.dresses){
 return entries.sort((a,b)=>a.z-b.z);
 }
 function renderAvatar(){const node=$('#avatar');node.textContent='';
-for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip)im.style.clipPath=clipCSS(entry.clip);if(entry.fit){im.style.transformOrigin=(970/2048*100)+'% 0';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+(entry.fit.dy/3072*100)+'%) scaleX('+entry.fit.sx+')'}node.appendChild(im)}}
+for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip)im.style.clipPath=clipCSS(entry.clip);if(entry.fit){im.style.transformOrigin=((entry.fit.ox??970)/2048*100)+'% '+((entry.fit.oy||0)/3072*100)+'%';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+((entry.fit.dy||0)/3072*100)+'%) matrix('+entry.fit.sx+',0,'+(entry.fit.kx||0)+','+(entry.fit.sy||1)+',0,0)'}node.appendChild(im)}}
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
@@ -249,7 +261,7 @@ async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale
 const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src)continue;
 const img=await decode(src);
 ctx.save();if(entry.clip)clipCanvas(ctx,entry.clip);
-if(entry.fit){ctx.translate((970+(entry.fit.dx||0))/2048*W,entry.fit.dy/3072*H);ctx.scale(entry.fit.sx,1);ctx.translate(-970/2048*W,0)}
+if(entry.fit){const ox=(entry.fit.ox??970)/2048*W,oy=(entry.fit.oy||0)/3072*H;ctx.translate(ox+(entry.fit.dx||0)/2048*W,oy+(entry.fit.dy||0)/3072*H);ctx.transform(entry.fit.sx,0,entry.fit.kx||0,entry.fit.sy||1,0,0);ctx.translate(-ox,-oy)}
 if(entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
 else if(FITS[entry.id])ctx.drawImage(img,...FITS[entry.id]);
 ctx.restore();
