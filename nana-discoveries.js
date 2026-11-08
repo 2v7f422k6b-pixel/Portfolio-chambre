@@ -87,8 +87,8 @@
   const shopButton = dialog.querySelector('#nana-discovery-shop');
   const shopLink = dialog.querySelector('#nana-discovery-shop-link');
   const copyButton = dialog.querySelector('#nana-discovery-copy');
-  // The reward explicitly points to the same shop prototype as the portfolio.
-  shopLink.href = 'https://htmlpreview.github.io/?https://github.com/2v7f422k6b-pixel/Portfolio-chambre/blob/feature/nanas-little-shop/shop-prototype.html';
+  // The reward explicitly points to the same shop as the portfolio.
+  shopLink.href = 'shop.html';
 
   function localize() {
     // In the direct preview, rewardLang=fr or rewardLang=en can force

@@ -7,6 +7,9 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['.shop-frame', 'frame', 1401],
+    ['.shop-rule', 'rule', 1402],
+    ['.shop-top-rule', 'top-rule', 1403],
     ['#work-break-nudge .wb-card', 'frame', 1301],
     ['#work-break-nudge .wb-actions button', 'frame', 1311],
     ['#bead-workshop .bead-control', 'frame', 1201],

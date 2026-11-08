@@ -7,7 +7,7 @@ import vm from 'node:vm';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n');
-const pages=new Set(['index.html','dreamlab.html','about-me.html','latte/index.html','tamagotchi/index.html','coloring-book/index.html','polaroids/index.html','apercu-recompense.html']);
+const pages=new Set(['index.html','shop.html','dreamlab.html','about-me.html','latte/index.html','tamagotchi/index.html','coloring-book/index.html','polaroids/index.html','apercu-recompense.html']);
 const failures=[];
 let scripts=0,references=0,json=0;
 function checkScript(source,name){
