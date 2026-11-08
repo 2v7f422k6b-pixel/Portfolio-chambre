@@ -71,7 +71,8 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 - Les trois secrets retenus sont l’araignée, la boîte à souvenirs et le dessin
   d’enfance. Le dessin est annoncé « À venir » tant que Léna ne l’a pas fourni.
   Les anciens accomplissements restent conservés, mais ne comptent plus comme secrets.
-- Une petite bille, au bout de l’étagère du bas, tombe et déloge un carreau du mur.
+- Une petite bille, sur le coin gauche du bureau, tombe et déloge un carreau
+  au pied du mur, à gauche du rideau.
   La boîte apparaît derrière ; cliquer dessus ouvre son contenu. Le lien direct
   `#/secret/boite-a-souvenirs` joue la scène puis ouvre la boîte.
 - `memory-box.js` / `.css` portent l’interaction ; les éléments graphiques
