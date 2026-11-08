@@ -407,7 +407,13 @@ function safePresentationImage(value){
 function openWorkAbout(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
- const rule='<svg class="nana-card-rule" viewBox="0 0 400 5" preserveAspectRatio="none" aria-hidden="true"><path d="M1 3 Q28 .5 55 2.8 T112 2.3 T175 3.2 T240 1.5 T304 3 T360 2 T399 3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+ const cardRules=[
+ 'M1 4 L19 3.6 L43 4.2 L72 3.8 L98 4.5 L124 4.1 L159 4.4 L187 3.7 L213 4 L246 3.5 L274 4.2 L309 3.9 L338 4.4 L365 3.8 L399 4',
+ 'M1 3.6 L28 4.1 L57 3.7 L84 4.2 L119 3.8 L151 4.5 L178 4.1 L207 4.4 L237 3.9 L268 4.3 L298 3.6 L329 4 L361 3.7 L399 4.2',
+ 'M1 4.3 L23 3.9 L51 4.5 L88 4.1 L114 3.7 L144 4.2 L176 3.8 L203 4.3 L233 4 L261 4.5 L291 4.1 L323 3.8 L352 4.3 L378 3.7 L399 4'];
+ let cardRuleIndex=0;
+ const rule=()=>'<svg class="nana-card-rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="'+cardRules[cardRuleIndex++]+'" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linejoin="round"/></svg>';
+ const sparkles=Array.from({length:46},(_,i)=>'<i style="--x:'+((i*47+11)%97)+'%;--y:'+((i*31+7)%97)+'%;--delay:'+(-(i%11)*.57)+'s;--size:'+(i%5===0?'1.2':'0.55')+'cqw"></i>').join('');
  openWindow(t('À propos','About me'),`<style>
  html body #window-shade #window:has(.nana-profile-card){width:min(460px,94vw)!important;height:auto!important;min-height:0!important;background:transparent!important;border:0!important;border-image:none!important;box-shadow:none!important;overflow:visible!important}
  html body #window-shade #window:has(.nana-profile-card)::before,html body #window-shade #window:has(.nana-profile-card)::after,html body #window-shade #window:has(.nana-profile-card)>.sketch-ui-svg{display:none!important}
@@ -437,7 +443,7 @@ function openWorkAbout(){
  .nana-profile-card .card-damage{font-size:7cqw;font-weight:normal}
  .nana-profile-card .card-section-label{display:none}
  .nana-card-rule{display:block;width:100%;height:4px;flex:0 0 4px;pointer-events:none}
- .nana-profile-card .card-energy{display:inline-flex;align-items:center;justify-content:center;width:5.6cqw;height:5.6cqw;flex:0 0 auto;border-radius:48% 52% 46% 54%!important;background:#fff4e8!important;border:1px solid #cf123a}
+ .nana-profile-card .card-energy{display:inline-flex;align-items:center;justify-content:center;width:5.6cqw;height:5.6cqw;flex:0 0 auto;border-radius:48% 52% 46% 54%!important;background:#fff4e8!important;border:3px solid transparent!important;border-image:url("assets/drawn-ui/cadre_bouton.png") 12 / 3px / 0 stretch!important;box-sizing:border-box}
  .nana-profile-card .card-energy img{position:static;width:75%;height:75%;object-fit:contain}
  .nana-profile-card .card-cost{display:flex;flex-wrap:nowrap;gap:.6cqw;justify-content:center;align-items:center}
  .nana-profile-card .card-matchups{display:grid;grid-template-columns:1fr 1.7fr 1fr;gap:2cqw;padding:1.5cqw 0;margin:0;text-align:center}
@@ -446,9 +452,12 @@ function openWorkAbout(){
  .nana-profile-card .card-matchups strong{display:inline;font-size:3.5cqw;margin-left:1cqw}
  html body #window .nana-profile-card .card-anecdote{font-size:2.9cqw;font-weight:bold;font-style:italic;line-height:1.25;padding:1.6cqw 2cqw;background:#ffe5ed!important;border-radius:2px 4px 2px 3px!important}
  .nana-profile-card footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:2cqw;font-size:2.2cqw;line-height:1.2;padding-top:1.3cqw}
-.nana-profile-card::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 12%,rgba(188,225,255,.18) 26%,rgba(255,255,255,.42) 34%,rgba(255,201,231,.2) 42%,rgba(199,255,226,.2) 49%,transparent 62%);background-size:300% 100%;mix-blend-mode:soft-light;animation:nana-card-foil 9s ease-in-out infinite}
+.nana-profile-card::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 8%,rgba(98,211,255,.5) 23%,rgba(255,235,143,.45) 32%,rgba(255,255,255,.8) 37%,rgba(255,126,219,.48) 43%,rgba(150,130,255,.5) 51%,rgba(121,255,212,.4) 59%,transparent 73%);background-size:280% 100%;mix-blend-mode:overlay;animation:nana-card-foil 6s ease-in-out infinite}
+ .nana-card-glitter{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;background-image:radial-gradient(circle,#fff9 0 .55px,transparent .9px),radial-gradient(circle,#ffeab099 0 .65px,transparent 1px);background-size:13px 19px,23px 17px;background-position:0 0,7px 9px;mix-blend-mode:screen}
+ .nana-card-glitter i{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);background:#fffbea;clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);animation:nana-card-sparkle 4s ease-in-out infinite;animation-delay:var(--delay);opacity:.35}
  @keyframes nana-card-foil{0%,100%{background-position:100% 50%}50%{background-position:0% 50%}}
- @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}}
+ @keyframes nana-card-sparkle{0%,100%{opacity:.12;transform:scale(.45) rotate(0)}50%{opacity:1;transform:scale(1.25) rotate(25deg)}}
+ @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}.nana-card-glitter i{animation:none;opacity:.5}}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
  <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
  <div class="card-edition">${t('Personnage de base','Basic character')}</div>
@@ -459,11 +468,11 @@ function openWorkAbout(){
  <svg class="card-art-frame" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H400V300H0Z M7 7 Q100 5 200 7 T393 7 Q395 75 393 150 T393 293 Q300 295 200 293 T7 293 Q5 225 7 150 T7 7Z" fill="#ffd4e4" fill-rule="evenodd"/><path d="M7 7 Q100 5 200 7 T393 7 Q395 75 393 150 T393 293 Q300 295 200 293 T7 293 Q5 225 7 150 T7 7Z" fill="none" stroke="#cf123a" stroke-width="1.4"/></svg>
  </div>
  <div class="card-location">${t('Type : créative · Habitat : canapé','Type: creative · Habitat: sofa')}</div>
- ${rule}
+ ${rule()}
  <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Digression','Digression')}</h3><p>${t('Part d’un détail et en fait toute une histoire.<br>Ajoute 10 dégâts si le sujet de départ a été oublié.','Turns one small detail into a whole story.<br>Add 10 damage if the original topic has been forgotten.')}</p></div><strong class="card-damage">30+</strong></section>
- ${rule}
+ ${rule()}
  <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true">🎀</span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Trop chou pour toi','Too cute for you')}</h3><p>${t('L’adversaire abandonne le combat.','The opponent gives up the fight.')}</p></div><strong class="card-damage">30</strong></section>
- ${rule}
+ ${rule()}
  <dl class="card-matchups">
  <div><dt>${t('Faiblesse','Weakness')}</dt><dd>${t('Les librairies','Bookshops')}<strong>×2</strong></dd></div>
  <div><dt>${t('Résistance','Resistance')}</dt><dd>${t('« Sois raisonnable »','“Be reasonable”')}<br>${t('Cette carte ne reconnaît pas<br>la commande.','This card does not recognise<br>the command.')}</dd></div>
@@ -471,7 +480,7 @@ function openWorkAbout(){
  </dl>
  <p class="card-anecdote">${t('Les petits objets lui paraissent systématiquement nécessaires.','Small objects always seem essential to her.')}</p>
  <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>${t('Exemplaire unique','One of a kind')} · 001 / 001</span></footer>
- </article>`,'work-about');
+ <span class="nana-card-glitter" aria-hidden="true">${sparkles}</span>\n </article>`,'work-about');
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;
