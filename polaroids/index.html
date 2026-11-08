@@ -147,6 +147,7 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
   </div>
   <p class="viewer-indicator" id="indicator"></p>
 </dialog>
+<script src="../nana-progress.js?v=20261108-accessory-rewards"></script>
 <script src="photos.js"></script>
 <script>
 (async () => {
@@ -196,7 +197,9 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
     card.style.left=(Math.max(0,board.clientWidth-card.offsetWidth)*x/100)+'px';card.style.top=(Math.max(0,board.clientHeight-card.offsetHeight)*y/100)+'px';card.style.setProperty('--r',r+'deg');
     card.classList.remove('flipped');
   }
+  function seenPhoto(i){if(!demo)window.NanaProgress?.readPolaroid(photoIds[i],photoIds)}
   function flip(card){
+    seenPhoto(Number(card.dataset.index));
     card.classList.toggle('flipped');
     card.setAttribute('aria-label',(card.classList.contains('flipped')?'Back':'Front')+' of '+(photos[Number(card.dataset.index)].title||'Polaroid')+'. Tap to turn over; drag to move.');
   }
@@ -261,6 +264,7 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
     const previous=viewer.open?activePhoto:null;
     activePhoto=(i+photos.length)%photos.length;
     const p=photos[activePhoto];
+    seenPhoto(activePhoto);
     viewerCard.classList.remove('flipped');
     viewerCard.innerHTML=paper(p,activePhoto,true);
     document.getElementById('viewer-label').textContent=p.title||'Polaroid';
@@ -310,3 +314,4 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
 <script src="../game-i18n.js?v=20261105-stability-1"></script>
 </body>
 </html>
+

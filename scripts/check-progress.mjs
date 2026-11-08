@@ -231,3 +231,15 @@ test('Shining requires the typewriter and cafe socks follow the latte reward',()
  p.feat('secret-typewriter');assert.equal(p.unlockedOutfit('shining'),true);assert.equal(browser({storage}).p.unlockedOutfit('shining'),true);
  assert.equal(p.outfits.find(x=>x.id==='shining').pieces.length,4);
 });
+
+test('camera needs distinct photos across visits; phone and waistcoat have separate triggers',()=>{
+ const {p,storage}=browser();const ids=['a','b','c','d','e','f','g'];
+ p.readPolaroid('a',ids);p.readPolaroid('a',ids);p.readPolaroid('unknown',ids);
+ assert.equal(p.unlockedOutfit('photographer'),false);
+ for(const id of ids.slice(1,6))p.readPolaroid(id,ids);
+ const q=browser({storage}).p;assert.equal(q.unlockedOutfit('photographer'),false);q.readPolaroid('g',ids);assert.equal(q.unlockedOutfit('photographer'),true);
+ assert.equal(q.unlockedOutfit('flower'),false);assert.equal(q.unlockedOutfit('tresors'),false);
+ q.visit('objet/lampe-fleur');assert.equal(q.unlockedOutfit('flower'),true);assert.equal(q.unlockedOutfit('tresors'),false);
+ q.feat('beads-made');assert.equal(q.unlockedOutfit('tresors'),true);
+ const creator=browser({creator:true}).p;for(const id of ids)creator.readPolaroid(id,ids);assert.equal(creator.unlockedOutfit('photographer'),false);
+});

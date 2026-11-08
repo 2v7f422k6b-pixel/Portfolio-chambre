@@ -41,8 +41,10 @@
     {id:'clown', name:pair('Princesse Clown','Clown Princess'), visit:'livre/la-princesse-clown', image:crop('assets/dressing-lena/IMG_5381.png',[639,724,657,713],2048,3072), pieces:['top-clown','skirt-princess','jewelry-clown-ruff','makeup-clown-nose'], values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}, makeup:['makeup-clown-nose','makeup-blush'], rule:pair('Ouvrir le conte illustré.','Open the illustrated story.')},
     {id:'cafe', name:pair('Hibernation','Hibernation'), feat:'latte-made', image:crop('assets/dressing-lena/IMG_5724.png',[562,275,875,1359],2048,3072), pieces:['top-bear','hosiery-cafe'], values:{tops:'top-bear',hosiery:'hosiery-cafe',shoes:'shoes-bunny'}, rule:pair('Préparer ton premier latte.','Make your first latte.')},
     {id:'shining',name:pair('Les jumelles de Shining','The Shining twins'),feat:'secret-typewriter',image:crop('assets/dressing-lena/IMG_5726.png',[598,701,826,1407],2048,3072),pieces:['dress-shining','head-shining-flower','shoes-shining','hosiery-shining'],values:{dresses:'dress-shining',clips:'head-shining-flower',shoes:'shoes-shining',hosiery:'hosiery-shining'},rule:pair('Découvrir la machine à écrire de Shining.','Discover the Shining typewriter.')},
-    {id:'atelier', name:pair('Atelier en bazar','A messy studio'), visit:'jeu/coloring', image:crop('assets/dressing-lena/IMG_5723.png',[673,740,609,1888],2048,3072), pieces:['suit-paint'], values:{tops:'top-white',overalls:'suit-paint',hat:'head-beret',shoes:'shoes-bambi'}, rule:pair('Découvrir le jeu de coloriage.','Discover the colouring book.')},
-    {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), values:{tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-pink',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
+    {id:'atelier', name:pair('Atelier en bazar','A messy studio'), visit:'jeu/coloring', image:crop('assets/dressing-lena/IMG_5735.png',[673,740,609,1888],2048,3072), pieces:['suit-paint'], values:{tops:'top-white',overalls:'suit-paint',hat:'head-beret',shoes:'shoes-bambi'}, rule:pair('Découvrir le jeu de coloriage.','Discover the colouring book.')},
+    {id:'photographer',name:pair('Souvenirs instantanés','Instant memories'),feat:'polaroids-all',image:crop('assets/dressing-lena/IMG_5739.png',[848,700,253,555],2048,3072),pieces:['accessory-camera'],values:{camera:'accessory-camera',tops:'top-white',pants:'pants-light-blue',shoes:'shoes-bambi'},rule:pair('Consulter tous les polaroïds.','View every Polaroid.')},
+    {id:'flower',name:pair('Fleur de chambre','Room flower'),visit:'objet/lampe-fleur',image:crop('assets/dressing-lena/IMG_5734.png',[717,724,581,812],2048,3072),pieces:['jacket-floral'],values:{jackets:'jacket-floral',tops:'top-white',pants:'pants-light-blue',shoes:'shoes-bambi'},rule:pair('Cliquer sur la lampe fleur.','Click the flower lamp.')},
+    {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), pieces:['accessory-phone'], values:{phone:'accessory-phone',tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-pink',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
   ];
   const roomRoutes = {
     'objet/miffy':'object:miffy', 'jeu/dressing':'mirror', 'jeu/latte':'object:latte', 'jeu/tamagotchi':'object:tamagotchi',
@@ -54,7 +56,7 @@
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
     'photos':'object:instax', 'illustrations':'flowers', 'objet/lampe-fleur':'wall-lamp'
   };
-  const allowedFeats = new Set(['minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -160,10 +162,20 @@
     state.visits.push(route);save();
   }
   function feat(id) { if(suppressed()||!allowedFeats.has(id)||hasFeat(id))return;state.feats.push(id);save(); }
+  const POLAROID_KEY='nana-polaroids-viewed-v1';
+  let viewedPolaroids=new Set();
+  function readPolaroid(id,required){
+    if(suppressed()||!Array.isArray(required)||!required.length||!required.includes(id))return;
+    const stored=read(POLAROID_KEY);
+    if(Array.isArray(stored))for(const value of stored)if(typeof value==='string')viewedPolaroids.add(value);
+    viewedPolaroids.add(id);
+    try{localStorage.setItem(POLAROID_KEY,JSON.stringify([...viewedPolaroids]));}catch(_){}
+    if(required.every(value=>viewedPolaroids.has(value)))feat('polaroids-all');
+  }
   function selectTitle(id) { if(id!==null&&!titles.some(x=>x.id===id&&x.earned()))return;state.title=id;save(); }
   window.NanaProgress = {
     games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,
-    visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
+    readPolaroid,visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
     dialogueProgress,readDialogueLine,hasReadDialogue,DIALOGUE_KEY,
     snapshot:()=>({visits:[...state.visits],feats:[...state.feats],title:state.title,persistent,room:roomSnapshot()}),
     refresh:(silent=false)=>emit(silent),
