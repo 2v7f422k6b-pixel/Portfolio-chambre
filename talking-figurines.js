@@ -126,7 +126,11 @@
     if (id === 'miffy') window.NanaProgress?.visit('objet/miffy');
     clearTimeout(timeout);
     const lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
-    figure.index = (figure.index + 1) % figure[lang].length;
+    const progress=window.NanaProgress;
+    const read=progress?.dialogueProgress?.(id)?.read;
+    // Phrase IDs are shared across languages. Resume at the first unread line.
+    const unread=read && figure[lang].findIndex((_,index)=>!read.includes(index));
+    figure.index = unread>=0 ? unread : (figure.index + 1) % figure[lang].length;
     bubble.textContent = figure[lang][figure.index];
 
     // The zone polygon and artwork use the same 1670 × 942 room coordinates.
@@ -143,6 +147,8 @@
     const px = clamp(x * scaleX, half + 8, Math.max(half + 8, scene.clientWidth - half - 8));
     bubble.style.left = px + 'px';
     bubble.style.top = clamp(y * scaleY, 12, scene.clientHeight - 12) + 'px';
+
+    progress?.readDialogueLine?.(id,figure.index);
 
     timeout = setTimeout(hide, 4200);
   }

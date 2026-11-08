@@ -98,7 +98,7 @@
     iframe.title = "mimilab 3";
     iframe.setAttribute("allow", "autoplay");
     iframe.src =
-      "dreamlab.html?v=20261108-miffy-dj-1&lang=" +
+      "dreamlab.html?v=20261108-figurine-dialogues-1&lang=" +
       (document.documentElement.lang.toLowerCase().startsWith("en")
         ? "en"
         : "fr");

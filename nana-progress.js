@@ -9,6 +9,9 @@
   const KEY = 'nana-visitor-progress-v1';
   const ROOM_KEY = 'nana-room-exploration-20261104-v1';
   const CLOWN_KEY = 'nana-clown-outfit-unlocked-v1';
+  // Kept separately so older game tabs cannot erase newly read dialogue.
+  const DIALOGUE_KEY = 'nana-figurine-dialogue-v1';
+  const dialogueLengths = {miffy:6, 'sonny-angel':6};
   const listeners = new Set();
   const pair = (fr, en) => ({fr, en});
   const art = name => 'assets/drawn-ui/' + name + '.png';
@@ -31,7 +34,7 @@
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
-    {id:"miffy",name:pair("Miffy clown","Miffy clown"),visit:'objet/miffy',image:crop('assets/dressing-lena/IMG_5709.png',[852, 129, 238, 248],2048,3072),pieces:["head-miffy", "suit-miffy", "jewelry-miffy-ruff"],values:{"dresses": "suit-miffy", "hat": "head-miffy", "necklace": "jewelry-miffy-ruff"},rule:pair("Faire parler Miffy dans la chambre.","Talk to Miffy in the room.")},
+    {id:"miffy",name:pair("Miffy clown","Miffy clown"),dialogue:'miffy',image:crop('assets/dressing-lena/IMG_5709.png',[852, 129, 238, 248],2048,3072),pieces:["head-miffy", "suit-miffy", "jewelry-miffy-ruff"],values:{"dresses": "suit-miffy", "hat": "head-miffy", "necklace": "jewelry-miffy-ruff"},rule:pair("Lire les six phrases de Miffy dans la chambre.","Read all six of Miffy's lines in the room.")},
     {id:"dj",name:pair("DJ Minilab","Minilab DJ"),feat:'minilab-composed',image:crop('assets/dressing-lena/IMG_5716.png',[775, 733, 405, 523],2048,3072),pieces:["shoes-dj", "hosiery-dj", "top-dj", "jewelry-dj-bracelets", "skirt-dj"],values:{"tops": "top-dj", "skirts": "skirt-dj", "shoes": "shoes-dj", "hosiery": "hosiery-dj", "bracelets": "jewelry-dj-bracelets"},rule:pair("Enregistrer une piste musicale dans le Minilab.","Record a musical track in the Minilab.")},
     {id:'clown', name:pair('Princesse Clown','Clown Princess'), visit:'livre/la-princesse-clown', image:crop('assets/dressing-lena/IMG_5381.png',[639,724,657,713],2048,3072), pieces:['top-clown','skirt-princess','jewelry-clown-ruff','makeup-clown-nose'], values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}, makeup:['makeup-clown-nose','makeup-blush'], rule:pair('Ouvrir le conte illustré.','Open the illustrated story.')},
     {id:'cafe', name:pair('Ourson domestique','Stay-at-home bear'), feat:'latte-made', image:crop('assets/dressing-lena/IMG_5335.png',[755,1090,195,347],2048,3072), values:{tops:'top-pullover',pants:'pants-pajama',shoes:'shoes-bunny',bags:'bag-brown',bagAccessories:'charm-bear-doll'}, rule:pair('Préparer ton premier latte.','Make your first latte.')},
@@ -56,6 +59,30 @@
       feats:Array.isArray(value?.feats)?value.feats.filter(x=>allowedFeats.has(x)):[], title:typeof value?.title==='string'?value.title:null};
   }
   let state = clean(read(KEY));
+  function cleanDialogue(value) {
+    return Object.fromEntries(Object.entries(dialogueLengths).map(([id,total])=>[
+      id, [...new Set((Array.isArray(value?.[id])?value[id]:[]).filter(n=>Number.isInteger(n)&&n>=0&&n<total))]
+    ]));
+  }
+  let dialogue = cleanDialogue(read(DIALOGUE_KEY));
+  function mergeDialogue() {
+    const saved=cleanDialogue(read(DIALOGUE_KEY));
+    for(const id of Object.keys(dialogueLengths))dialogue[id]=[...new Set([...dialogue[id],...saved[id]])];
+  }
+  function dialogueProgress(id) {
+    return {read:[...(dialogue[id]||[])],total:dialogueLengths[id]||0};
+  }
+  function hasReadDialogue(id) {
+    return !!dialogueLengths[id] && dialogue[id].length===dialogueLengths[id];
+  }
+  function readDialogueLine(id,index) {
+    if(suppressed()||!Object.hasOwn(dialogueLengths,id)||!Number.isInteger(index)||index<0||index>=dialogueLengths[id])return;
+    mergeDialogue();
+    if(dialogue[id].includes(index))return;
+    dialogue[id].push(index);
+    try {localStorage.setItem(DIALOGUE_KEY,JSON.stringify(dialogue));} catch (_) {persistent=false;}
+    emit();
+  }
   function isCreator() { try { return sessionStorage.getItem('nana-admin-session-v1') === '1'; } catch (_) { return false; } }
   function suppressed() {
     const flags = new URLSearchParams(location.search);
@@ -75,7 +102,7 @@
   function hasFeat(id) { return state.feats.includes(id); }
   function unlockedOutfit(id, preview=false) {
     const outfit=outfits.find(x=>x.id===id);
-    return !!outfit && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
+    return !!outfit && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
   }
   function fullRoom() { const r=roomSnapshot();return r.required.length>0 && r.required.every(x=>r.discovered.includes(x)); }
   const stickers = [
@@ -134,12 +161,14 @@
   window.NanaProgress = {
     games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,
     visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
+    dialogueProgress,readDialogueLine,hasReadDialogue,DIALOGUE_KEY,
     snapshot:()=>({visits:[...state.visits],feats:[...state.feats],title:state.title,persistent,room:roomSnapshot()}),
     refresh:(silent=false)=>emit(silent),
     subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}
   };
   window.addEventListener('storage',event=>{
     if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};emit();}
+    else if(event.key===DIALOGUE_KEY){mergeDialogue();emit();}
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY)emit();
   });
 })();

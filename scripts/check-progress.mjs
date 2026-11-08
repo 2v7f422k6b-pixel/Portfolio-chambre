@@ -97,7 +97,9 @@ test('opening a route or the cookie never awards the hidden memory box',()=>{
 test('Miffy and DJ unlock only through their activity, persist and notify once',()=>{
  const {p,storage}=browser();const notices=[];p.subscribe(e=>notices.push(...e.added));
  p.visit('jeu/mimilab');assert.equal(p.unlockedOutfit('dj'),false);
- p.visit('objet/miffy');assert.equal(p.unlockedOutfit('miffy'),true);
+ p.visit('objet/miffy');assert.equal(p.unlockedOutfit('miffy'),false);
+ for(let i=0;i<6;i++)p.readDialogueLine('miffy',i);
+ assert.equal(p.unlockedOutfit('miffy'),true);
  assert.equal(p.unlockedOutfit('dj'),false);
  p.feat('minilab-composed');p.feat('minilab-composed');
  assert.equal(p.unlockedOutfit('dj'),true);
@@ -105,8 +107,42 @@ test('Miffy and DJ unlock only through their activity, persist and notify once',
  const reloaded=browser({storage}).p;assert.equal(reloaded.unlockedOutfit('dj'),true);assert.equal(reloaded.unlockedOutfit('miffy'),true);
  for(const opts of [{creator:true},{search:'?previewReward=1'}]){
   const q=browser(opts).p;q.feat('minilab-composed');q.visit('objet/miffy');
+  for(let i=0;i<6;i++)q.readDialogueLine('miffy',i);
   assert.equal(q.unlockedOutfit('dj'),false);assert.equal(q.unlockedOutfit('miffy'),false);
+  assert.equal(q.dialogueProgress('miffy').read.length,0);
  }
+});
+test('Miffy requires six unique lines, not a visit, repeats or Sonny dialogue',()=>{
+ const storage=new Map([[key,JSON.stringify({visits:['objet/miffy'],feats:[]})],
+  [roomKey,JSON.stringify({discovered:['object:miffy']})]]);
+ let {p}=browser({storage});
+ assert.equal(p.unlockedOutfit('miffy'),false);
+ for(let i=0;i<6;i++){p.readDialogueLine('miffy',0);p.readDialogueLine('sonny-angel',i);}
+ for(const i of [-1,6,NaN,'1',1.2])p.readDialogueLine('miffy',i);
+ p.readDialogueLine('other',0);
+ assert.equal(p.hasReadDialogue('sonny-angel'),true);
+ assert.equal(p.unlockedOutfit('miffy'),false);
+ assert.equal(p.dialogueProgress('miffy').read.length,1);
+ for(let i=1;i<5;i++)p.readDialogueLine('miffy',i);
+ p=browser({storage}).p;
+ assert.equal(p.dialogueProgress('miffy').read.length,5);
+ assert.equal(p.unlockedOutfit('miffy'),false);
+ const notices=[];p.subscribe(e=>notices.push(...e.added));
+ p.readDialogueLine('miffy',5);p.readDialogueLine('miffy',5);
+ assert.equal(p.unlockedOutfit('miffy'),true);
+ assert.equal(notices.filter(x=>x==='outfit:miffy').length,1);
+ assert.equal(browser({storage}).p.unlockedOutfit('miffy'),true);
+});
+test('dialogue merges between tabs and remains usable with unavailable storage',()=>{
+ const storage=new Map(),a=browser({storage}),b=browser({storage});
+ for(let i=0;i<6;i++)(i%2?a:b).p.readDialogueLine('miffy',i);
+ for(const tab of [a,b]){
+  tab.emit('storage',{key:tab.p.DIALOGUE_KEY});
+  assert.equal(tab.p.unlockedOutfit('miffy'),true);
+ }
+ const {p}=browser({blocked:true});
+ for(let i=0;i<6;i++)p.readDialogueLine('miffy',i);
+ assert.equal(p.unlockedOutfit('miffy'),true);
 });
 test('silent recordings do not qualify, music on either channel does',()=>{
  const recorder=readFileSync(new URL('../dreamlab-multitrack.js',import.meta.url),'utf8');
