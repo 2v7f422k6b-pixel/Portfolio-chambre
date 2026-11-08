@@ -198,7 +198,9 @@ for(const [key,z] of ordered)if(slots[key])entries.push({id:slots[key],z,clip:un
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
   const showForearms=!slots.dresses||['dress-blue','dress-polka'].includes(slots.dresses)||['jacket-purple','jacket-cardigan'].includes(slots.jackets);
-  entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:handZ,clip:showForearms?null:[[0,1550],[2048,1550],[2048,3072],[0,3072]]});
+  // Keep the polka dress straps and bows above the shoulders; restore arms only below them.
+  const armClip=slots.dresses==='dress-polka'?[[0,1000],[2048,1000],[2048,3072],[0,3072]]:(showForearms?null:[[0,1550],[2048,1550],[2048,3072],[0,3072]]);
+  entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:handZ,clip:armClip});
  }
  if(slots.jackets==='jacket-purple')entries.push({src:BASE,z:13,clip:FACE_FOREGROUND});
  for(const id of slots.makeup)entries.push({id,z:35});
