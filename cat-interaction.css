@@ -1,3 +1,35 @@
+/* A CV sheet resting on the blanket, beneath the original sleeping cat.
+   Its mask and perspective use the shared 1670 × 942 scene coordinates. */
+#cat-cv-paper,
+#cat-cv-paper * { pointer-events:none; }
+#cat-cv-paper {
+  color:#ff173b;
+  transition:filter 1.8s ease;
+}
+#cat-cv-paper .cv-paper-sheet,
+#cat-cv-paper .cv-paper-fold,
+#cat-cv-paper .cv-paper-lines {
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+#cat-cv-paper .cv-paper-sheet { fill:#fff8df; }
+#cat-cv-paper .cv-paper-fold { fill:#f6dfd1; }
+#cat-cv-paper .cv-paper-lines { fill:none; stroke-width:1.5; }
+#cat-cv-paper text {
+  fill:currentColor;
+  stroke:none;
+  font-family:"Nana Trace UI", cursive;
+  font-weight:400;
+}
+#cat-cv-paper .cv-paper-title { font-size:32px; }
+#cat-cv-paper .cv-paper-name { font-size:17px; }
+html[data-theme="night"] #cat-cv-paper { filter:brightness(.53) saturate(.72); }
+@media (prefers-reduced-motion:reduce) {
+  #cat-cv-paper { transition:none; }
+}
+
 /* A very small reaction when the sleeping cat is petted.
    All coordinates belong to the original 1670x942 room; no artwork changes. */
 #hotspots [data-cat-pet] {
@@ -78,3 +110,4 @@
     opacity:.9;
   }
 }
+

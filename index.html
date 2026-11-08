@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="style.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="nana-shop-hover.css?v=20261106-unified-1">
   <link rel="stylesheet" href="window-animations.css?v=20261107-night-colors-1">
-  <link rel="stylesheet" href="cat-interaction.css?v=1">
+  <link rel="stylesheet" href="cat-interaction.css?v=20261108-cv-sheet-1">
   <link rel="stylesheet" href="motion-addon.css?v=20261103-subtle-motion-2">
   <link rel="stylesheet" href="music-visuals.css?v=20261106-code-cleanup-1">
   <link rel="stylesheet" href="pages-addon.css?v=20261106-code-cleanup-1">
@@ -737,6 +737,25 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <polygon data-open="latte" points="932,738 868,775 840,782 825,777 800,748 805,729 825,711 838,708 868,709" aria-label="Make a latte by clicking the pink mug" tabindex="0"/>
           <polygon data-open="book" points="1024,752 1024,774 993,806 881,790 884,780 935,742" aria-label="Explore Clown Princess" tabindex="0"/>
           <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1168,765 1099,780 1040,744" aria-label="Browse illustrations by the flowers" tabindex="0"/>
+          <!-- CV sheet on the blanket. Occlusion follows the original CAT.PNG tracing.
+               Decorative until Léna supplies the actual CV document. -->
+          <g id="cat-cv-paper" aria-hidden="true" pointer-events="none" data-no-translate>
+            <defs>
+              <mask id="cat-cv-paper-mask" maskUnits="userSpaceOnUse" x="385" y="625" width="180" height="135" style="mask-type:luminance">
+                <rect x="385" y="625" width="180" height="135" fill="white"/>
+                <path fill="black" d="M 511.55,581.41 L 509.92,582.50 L 508.83,583.58 L 508.28,584.67 L 507.74,585.76 L 507.20,586.85 L 506.65,587.93 L 506.11,589.02 L 505.57,590.11 L 505.02,591.20 L 471.32,592.29 L 459.36,593.37 L 453.92,594.46 L 449.57,595.55 L 446.31,596.64 L 443.59,597.72 L 441.42,598.81 L 439.24,599.90 L 438.16,600.99 L 435.44,602.08 L 433.81,603.16 L 432.18,604.25 L 431.09,605.34 L 429.46,606.43 L 428.37,607.51 L 427.83,608.60 L 426.20,609.69 L 425.11,610.78 L 423.48,611.86 L 422.94,612.95 L 421.31,614.04 L 420.76,615.13 L 420.22,616.22 L 419.13,617.30 L 418.04,618.39 L 416.96,619.48 L 416.41,620.57 L 415.33,621.65 L 414.78,622.74 L 414.24,623.83 L 413.15,624.92 L 412.61,626.01 L 411.52,627.09 L 410.98,628.18 L 409.89,629.27 L 409.89,630.36 L 408.80,631.44 L 408.80,632.53 L 408.26,633.62 L 407.17,634.71 L 406.63,635.80 L 406.63,636.88 L 406.08,637.97 L 405.54,639.06 L 405.00,640.15 L 404.45,641.23 L 403.91,642.32 L 403.91,643.41 L 403.37,644.50 L 403.37,645.59 L 403.37,646.67 L 403.37,647.76 L 403.37,648.85 L 402.82,649.94 L 402.82,651.02 L 402.82,652.11 L 402.82,653.20 L 403.37,654.29 L 403.37,655.38 L 403.91,656.46 L 403.91,657.55 L 404.45,658.64 L 406.63,659.73 L 408.26,660.81 L 409.35,661.90 L 412.06,662.99 L 413.69,664.08 L 415.33,665.17 L 418.59,666.25 L 420.22,667.34 L 424.57,668.43 L 424.57,668.43 L 442.51,668.43 L 442.51,668.43 L 451.20,667.34 L 460.99,666.25 L 464.79,665.17 L 469.14,664.08 L 471.32,662.99 L 474.04,661.90 L 493.61,660.81 L 495.24,659.73 L 496.32,658.64 L 496.87,657.55 L 497.41,656.46 L 499.59,655.38 L 500.13,654.29 L 509.37,653.20 L 513.72,652.11 L 528.40,651.02 L 530.03,649.94 L 531.12,648.85 L 535.47,647.76 L 536.55,646.67 L 536.55,645.59 L 550.14,644.50 L 549.60,643.41 L 547.43,642.32 L 545.25,641.23 L 556.12,640.15 L 555.04,639.06 L 552.86,637.97 L 547.97,636.88 L 557.75,635.80 L 556.67,634.71 L 552.32,633.62 L 550.14,632.53 L 550.14,631.44 L 550.14,630.36 L 549.60,629.27 L 550.14,628.18 L 549.60,627.09 L 550.14,626.01 L 550.14,624.92 L 550.69,623.83 L 552.32,622.74 L 552.86,621.65 L 553.95,620.57 L 554.49,619.48 L 555.58,618.39 L 556.12,617.30 L 557.21,616.22 L 557.75,615.13 L 558.84,614.04 L 559.38,612.95 L 559.38,611.86 L 559.93,610.78 L 560.47,609.69 L 561.02,608.60 L 562.10,607.51 L 562.65,606.43 L 563.19,605.34 L 563.73,604.25 L 563.19,603.16 L 562.10,602.08 L 558.30,600.99 L 534.92,599.90 L 532.75,598.81 L 530.03,597.72 L 527.85,596.64 L 524.05,595.55 L 523.51,594.46 L 522.96,593.37 L 522.42,592.29 L 521.33,591.20 L 520.79,590.11 L 520.24,589.02 L 519.70,587.93 L 519.16,586.85 L 518.61,585.76 L 517.53,584.67 L 516.98,583.58 L 515.90,582.50 L 514.26,581.41 Z"/>
+              </mask>
+            </defs>
+            <g mask="url(#cat-cv-paper-mask)">
+              <g transform="matrix(.86 .12 -.56 .76 468 630)">
+                <path class="cv-paper-sheet" d="M 1 1 Q 25 -.3 50 .8 T 99 0 Q 100.5 34 99.4 68 T 100 121 Q 92 132 84 140 Q 44 139 1 140 Q -.7 104 .5 70 T 1 1 Z"/>
+                <path class="cv-paper-fold" d="M 84 140 Q 87 130 86 123 Q 93 125 100 121 Q 92 132 84 140 Z"/>
+                <text class="cv-paper-title" x="52" y="70" text-anchor="middle">CV</text>
+                <text class="cv-paper-name" x="51" y="91" text-anchor="middle">Léna</text>
+                <path class="cv-paper-lines" d="M 20 106 Q 43 104.9 76 106 M 20 116 Q 44 117 71 116 M 20 126 Q 36 125.2 53 126"/>
+              </g>
+            </g>
+          </g>
           <!-- Pet the cat: the original illustration stays untouched. -->
           <polygon data-cat-pet="" points="402,615 415,602 436,594 463,592 490,600 502,583 518,584 537,592 558,590 567,608 561,630 548,645 520,650 495,658 461,661 423,658 405,645 400,627" aria-label="Pet the sleeping cat" tabindex="0"/>
           <polygon data-open="do-nothing" points="700,591 691,597 612,606 583,605 536,583 466,462 469,437 491,420 622,390 641,394 658,413 705,566" aria-label="Rilakkuma — Do Nothing Club" tabindex="0"/>
@@ -1008,6 +1027,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="nana-deep-links.js?v=20261108-memory-1" defer></script>
 </body>
 </html>
+
 
 
 
