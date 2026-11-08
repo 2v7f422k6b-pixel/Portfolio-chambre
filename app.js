@@ -456,7 +456,7 @@ function openWorkAbout(){
  @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
  <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
- <div class="card-edition">${t('Personnage légendaire','Legendary character')}</div>
+ <div class="card-edition">${t('Édition limitée','Limited edition')}</div>
  <header><h2>Léna</h2><span class="card-hp">40 ${t('PV','HP')}<span class="card-energy" aria-hidden="true"><img src="assets/drawn-ui/etoile_pleine.png" alt=""></span></span></header>
  <div class="card-recharge">${t('rechargeable au café','coffee-rechargeable')}</div>
  <div class="nana-profile-art" role="img" aria-label="${t('Personnage illustré de Léna','Illustrated character of Léna')}">
