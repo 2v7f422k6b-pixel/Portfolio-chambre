@@ -106,6 +106,16 @@
     </div>`, 'music-visual-design');
     render();
   }
+  window.NanaMusicVisuals={
+    items:ALL_WORKS.map(w=>({id:w.src.split('/').pop(),title:w.title})),
+    artists:ARTISTS.map(a=>({id:a.id,title:a.name})),
+    open(section,id){
+      openMusicVisuals();
+      if(section==='artiste'&&ARTISTS.some(a=>a.id===id)){page='artist';activeArtist=id;render();}
+      else if(section==='illustration'){const i=ALL_WORKS.findIndex(w=>w.src.split('/').pop()===id);if(i>=0)pickWork(i);}
+      else if(navs.some(n=>n[0]===section)){page=section;render();}
+    }
+  };
   function updateNav(){
     document.querySelectorAll('#mv-root [data-mv-page]').forEach(button=>{
       const selected=button.dataset.mvPage===page;
@@ -174,6 +184,7 @@
     host.innerHTML=page==='home'?homeHTML():page==='artist'?artistHTML(artist(activeArtist)):listingHTML();
     if(keepScroll)host.scrollTop=prior;else host.scrollTop=0;
     updateNav();updateNowViewing();
+    window.NanaDeepLinks?.record(page==='artist'?'musique/artiste/'+activeArtist:'musique/'+(page==='search'?'home':page));
     const search=$('#mv-search');if(search&&search.value!==query)search.value=query;
   }
   function updateNowViewing(){
@@ -188,8 +199,9 @@
   }
   function renderLightbox(){
     const host=$('#mv-lightbox-host');if(!host)return;
-    if(lightbox===null){host.innerHTML='';return;}
+    if(lightbox===null){host.innerHTML='';window.NanaDeepLinks?.record(page==='artist'?'musique/artiste/'+activeArtist:'musique/'+(page==='search'?'home':page));return;}
     const w=ALL_WORKS[lightbox],a=artist(w.artistId);
+    window.NanaDeepLinks?.record('musique/illustration/'+encodeURIComponent(w.src.split('/').pop()));
     host.innerHTML=`<div class="mv-lightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
       <div class="mv-lightbar"><span>▧ &nbsp; Image viewer</span><button type="button" data-mv-close-lightbox aria-label="Close enlarged image">✕</button></div>
       <div class="mv-lightstage"><button type="button" data-mv-light-prev class="mv-light-arrow" aria-label="Previous image">‹</button><figure>${workImage(w,'',false)}</figure><button type="button" data-mv-light-next class="mv-light-arrow" aria-label="Next image">›</button></div>

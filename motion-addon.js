@@ -16,6 +16,7 @@
     { title: 'Bird', file: 'bird_animation.mov' }
   ];
 
+  window.NanaMotionItems = MOTION.map(item=>({...item}));
   const $ = selector => document.querySelector(selector);
   const RENAME_STORAGE_KEY = 'nana-motion-video-titles-v1';
   function loadSavedTitles() {
@@ -78,6 +79,7 @@
     $('#motion-reels-time').textContent = '0:00';
     $('#motion-reels-duration').textContent = '0:00';
     video.src = videoURL(item.file);
+    window.NanaDeepLinks?.record('animation/'+encodeURIComponent(item.file));
     video.muted = !soundOn;
     video.loop = true;
     video.playsInline = true;

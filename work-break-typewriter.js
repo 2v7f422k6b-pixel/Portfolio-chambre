@@ -107,7 +107,10 @@
     dialog.hidden = false;
     dialog.querySelector('[data-wb-play]').focus({preventScroll: true});
     typeMessage();
+    window.NanaDeepLinks?.record('objet/machine-a-ecrire');
   }
+
+  window.NanaTypewriter = {open(){shown=false;showPrompt();},close:hidePrompt};
 
   function isWork() {
     return app.classList.contains('mode-work');

@@ -753,6 +753,7 @@
     const root=appRoot(),result=root?.querySelector('#lit-reading-result .lit-card-body');
     if(!result || !book)return;
     selection=readingExamples.findIndex(item=>item.rank===book.rank);
+    window.NanaDeepLinks?.record('bibliotheque/'+linkId(book.title));
     root.querySelectorAll('[data-lit-book]').forEach(btn=>btn.setAttribute('aria-pressed',String(Number(btn.dataset.litBook)===book.rank)));
     root.querySelectorAll('[data-lit-mood]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litMood===selectedMood)));
     const rating=book.rating===null ? 'Dans mon Top 10 · Sans note affichée' : 'Ma note : '+book.rating+'/10';
@@ -782,6 +783,7 @@
  if(!root||!result)return;
  const p=souvenuesEntries[poet];
  if(!p)return;
+ window.NanaDeepLinks?.record('souvenues/'+linkId(p.name+'-'+p.title));
  const lines=p.aligned ?
    p.aligned.map(([left,right],index)=>([4,8,11].includes(index)?'\n':'')+left+' '+right).join('\n') :
    (p.poem||'Texte en attente de retranscription.');
@@ -958,5 +960,16 @@
     dragItem=null;
   });
   document.addEventListener('dragend',()=>{dragItem=null;});
-  window.NanaLiterary={view,activate};
+  const linkId=value=>String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  window.NanaLiterary={view,activate,
+    links:[...readingExamples.map(b=>({route:'bibliotheque/'+linkId(b.title),title:b.title})),...souvenuesEntries.map(p=>({route:'souvenues/'+linkId(p.name+'-'+p.title),title:p.name+' — '+p.title}))],
+    openLink(route){
+      if(route.startsWith('bibliotheque/')){
+        const book=readingExamples.find(b=>'bibliotheque/'+linkId(b.title)===route);if(!book)return false;
+        window.openApp('reading-room');drawReadingBook(book);return true;
+      }
+      const index=souvenuesEntries.findIndex(p=>'souvenues/'+linkId(p.name+'-'+p.title)===route);if(index<0)return false;
+      window.openApp('souvenues');poet=index;showPoet();return true;
+    }
+  };
 })();

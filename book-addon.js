@@ -157,6 +157,7 @@ async function turn(dir){
   fill('left',futureLeft,future[0]);
   fill('right',futureRight,future[1]);
   position=target;
+  window.NanaDeepLinks?.record('livre/la-princesse-clown/page/'+target);
   for(const n of [target-2,target-1,target+1,target+2])imageFor(n).catch(()=>{});
  }catch(err){
   if($('#book-reader')){status(err.message||'Impossible de tourner la page',100);await draw(position);}
@@ -165,7 +166,7 @@ async function turn(dir){
   busy=false;updateControls();
  }
 }
-function openBook(){
+function openBook(startPage=1){
  if(typeof window.openWindow!=='function')return;
  window.openWindow('La Princesse Clown',
  '<section id="book-reader" class="book-reader" aria-label="Livre interactif La Princesse Clown">'+
@@ -181,7 +182,7 @@ function openBook(){
  if(fresh){const note=document.createElement('p');note.setAttribute('role','status');note.textContent=document.documentElement.lang==='en'?'Clown Princess outfit unlocked in the dressing room!':'Tenue Princesse Clown débloquée dans le dressing !';document.querySelector('.book-reader-header').appendChild(note);}
  }
  position=1;busy=false;token++;
- loadPdf().then(async()=>{if(!$('#book-reader'))return;await draw(1);if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
+ loadPdf().then(async()=>{if(!$('#book-reader'))return;const page=limit(Number(startPage)||1);await draw(isSmall()||page===1?page:(page%2===0?page:page-1));if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
 window.openBook=openBook;
 document.addEventListener('click',e=>{

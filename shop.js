@@ -31,7 +31,27 @@ const save=(key,value)=>{try{localStorage.setItem(key,value);}catch(_){}};
 let hasCustom=false;try{const data=JSON.parse(read('nana-bead-charm-v1','null'));hasCustom=Array.isArray(data?.beads)&&data.beads.some(b=>b&&['heart','flower','star','letter'].includes(b.type)&&Number.isInteger(b.slot)&&b.slot>=0&&b.slot<20);}catch(_){}
 if(hasCustom)products.splice(products.findIndex(p=>p.id==='charm')+1,0,{id:'custom',type:'charm',fr:'Ton bijou',en:'Your charm'});
 let lang=read('portfolio-language-v2','fr')==='en'?'en':'fr',filter='all',collection='all',current=null;
-let wallExpanded=false;
+let wallExpanded=false,restoringUrl=false;
+function writeUrl(product=null,bagOpen=false){
+ if(restoringUrl)return;
+ const url=new URL(location.href);
+ if(product)url.searchParams.set('product',product);else url.searchParams.delete('product');
+ if(bagOpen)url.searchParams.set('bag','1');else url.searchParams.delete('bag');
+ if(filter==='all')url.searchParams.delete('category');else url.searchParams.set('category',filter);
+ if(filter==='art'&&collection!=='all')url.searchParams.set('collection',collection);else url.searchParams.delete('collection');
+ if(url.href!==location.href)history.pushState(null,'',url);
+}
+function restoreUrl(){
+ restoringUrl=true;
+ const query=new URLSearchParams(location.search);
+ filter=['art','charm','sticker','tshirt','book'].includes(query.get('category'))?query.get('category'):'all';
+ collection=collections.includes(query.get('collection'))?query.get('collection'):'all';
+ renderWall();applyFilter(false);
+ $('#bag-dialog').close();$('#product-dialog').close();
+ if(query.get('bag')==='1')openBag();else if(query.get('product'))openProduct(query.get('product'));
+ restoringUrl=false;
+}
+window.addEventListener('popstate',restoreUrl);
 const collections=['all','princesse-clown','marseille','libre'];
 const artwork=products.filter(p=>p.type==='art');
 // A mixed wall shows the three collections immediately; each filter keeps its full selection.
@@ -77,15 +97,15 @@ function applyFilter(updateUrl=true){
  $('#stickers-section').hidden=!['all','sticker'].includes(filter);
  $('#book-section').hidden=!['all','book'].includes(filter);
  $$('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===filter)));
- if(updateUrl){const url=new URL(location.href);if(filter==='all')url.searchParams.delete('category');else url.searchParams.set('category',filter);if(filter==='art'&&collection!=='all')url.searchParams.set('collection',collection);else url.searchParams.delete('collection');history.replaceState(null,'',url);}
+ if(updateUrl)writeUrl();
 }
 const gabzillaImages=[['tshirt-porte','gabzillaWorn'],['composition','gabzillaDesign'],['illustration','gabzillaArt']];
 function renderProduct(){const p=products.find(p=>p.id===current);if(!p)return;
  if(p.id==='gabzilla'){$('#product-detail').innerHTML=`<div class="detail-layout"><div><div class="detail-image"><img id="gabzilla-detail-image" src="${p.image}" alt="${t('gabzillaWorn')}"></div><div class="gabzilla-thumbnails" role="group" aria-label="GABZILLA">${gabzillaImages.map(([file,label],i)=>`<button data-gabzilla-image="${i}" aria-pressed="${i===0}" aria-label="${t(label)}"><img src="assets/previews/gabzilla/${file}.webp" alt=""></button>`).join('')}</div></div><div class="detail-copy"><p class="eyebrow">${t('collaboration')}</p><h2 id="product-title">${t('gabzillaTitle')}</h2><p>${t('gabzillaDescription')}</p></div></div>`;return;}
  $('#product-detail').innerHTML=`<div class="detail-layout"><div class="detail-image">${art(p)}</div><div class="detail-copy"><p class="eyebrow">${type(p)}</p><h2 id="product-title">${name(p)}</h2><p>${t(p.collection==='princesse-clown'?'bookArtDescription':(p.id==='custom'?'custom':p.type)+'Description')}</p>${p.collection==='princesse-clown'?`<button class="text-button" data-product="book">${t('discoverBook')}</button>`:''}<p class="price-note">${t('price')}</p><button class="shop-frame add" data-add="${p.id}" ${bag.has(p.id)?'disabled':''}>${bag.has(p.id)?t('added'):t('add')}</button><small>${t('available')}</small><button class="text-button" data-open-bag>${t('lookBag')}</button></div></div>`;}
 function renderBag(){const items=products.filter(p=>bag.has(p.id));$('#bag-items').innerHTML=items.length?items.map(p=>`<div class="bag-row shop-rule"><div class="product-art">${art(p,true)}</div><div><h3>${name(p)}</h3><p>${t('price')}</p></div><button class="text-button" data-remove="${p.id}" aria-label="${t('remove')} ${name(p)}">${t('remove')}</button></div>`).join(''):`<p class="empty-bag">${t('empty')}</p>`;$$('.bag-count').forEach(el=>el.textContent=bag.size);$$('[data-open-bag]').forEach(el=>el.setAttribute('aria-label',t('bag')+' ('+bag.size+')'));}
-function openProduct(id){if(!products.some(p=>p.id===id))return;current=id;renderProduct();if(!$('#product-dialog').open)$('#product-dialog').showModal();else $('#product-dialog [data-close]').focus();}
-function openBag(){$('#product-dialog').close();renderBag();$('#bag-dialog').showModal();}
+function openProduct(id){if(!products.some(p=>p.id===id))return;current=id;renderProduct();writeUrl(id);if(!$('#product-dialog').open)$('#product-dialog').showModal();else $('#product-dialog [data-close]').focus();}
+function openBag(){$('#product-dialog').close();renderBag();$('#bag-dialog').showModal();writeUrl(null,true);}
 function translate(){document.documentElement.lang=lang;$$('[data-text]').forEach(el=>el.textContent=t(el.dataset.text));$('#language').textContent=lang==='fr'?'EN':'FR';$('#language').setAttribute('aria-label',lang==='fr'?'Switch to English':'Passer en français');$('.shop-header .close').setAttribute('aria-label',t('back'));renderBoutique();renderBag();if(current)renderProduct();}
 let toastTimer;
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -101,5 +121,9 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(b.id==='language'){lang=lang==='fr'?'en':'fr';save('portfolio-language-v2',lang);translate();}
 });
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}));
-translate();if(params.get('product'))openProduct(params.get('product'));
+$$('dialog').forEach(dialog=>dialog.addEventListener('close',()=>{
+ if(restoringUrl||$('#product-dialog').open||$('#bag-dialog').open)return;
+ if(new URLSearchParams(location.search).has('product')||new URLSearchParams(location.search).has('bag'))writeUrl();
+}));
+translate();restoreUrl();
 })();
