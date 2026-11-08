@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nana’s Little Shop — illustrations, bijoux et histoires</title>
 <meta name="description" content="Un petit bout de la chambre de Nana : illustrations, bijoux de téléphone et La Princesse Clown. La boutique se prépare.">
-<link rel="stylesheet" href="shop.css?v=20261108-1">
+<link rel="stylesheet" href="shop.css?v=20261108-rack-2">
 <script src="shop-charm.js?v=20261108-1" defer></script>
-<script src="shop.js?v=20261108-1" defer></script>
+<script src="shop.js?v=20261108-rack-2" defer></script>
 <script src="sketch-ui.js?v=20261108-shop" defer></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
 <div id="shop-content" tabindex="-1">
 <section id="wander" aria-label="La petite boutique">
 <div class="shop-scene">
-<section class="rack-zone"><h2 data-text="illustrations">illustrations</h2><div class="rack"><img class="rack-stand" src="assets/IMG_5108.png" alt=""><div class="rack-sign" data-text="pick">choisis une image</div><div id="rack-cards"></div></div><p class="scene-hint" data-text="rackHint">Touche une carte pour la regarder de plus près.</p></section>
+<section class="rack-zone"><h2 data-text="illustrations">illustrations</h2><p id="rack-total" class="rack-total"></p><div class="rack"><img class="rack-stand" src="assets/IMG_5108.png" alt=""><div class="rack-sign" data-text="pick">choisis une image</div><div id="rack-cards"></div></div><div id="rack-pages" class="rack-pages" role="group" aria-label="Parcourir les illustrations / Browse illustrations"><button data-rack-step="-1" class="rack-arrow" aria-controls="rack-cards"><img src="assets/drawn-ui/fleche_gauche.png" alt=""><span data-text="rackPrevious">précédentes</span></button><span id="rack-range" aria-live="polite" aria-atomic="true"></span><button data-rack-step="1" class="rack-arrow" aria-controls="rack-cards"><img src="assets/drawn-ui/fleche_droite.png" alt=""><span data-text="rackNext">suivantes</span></button></div><button class="rack-all text-button" data-rack-all data-text="rackAll">voir toutes les illustrations</button><p class="scene-hint" data-text="rackHint">Touche une carte pour la regarder de plus près.</p></section>
 <section class="charms-zone"><h2 data-text="jewelry">bijoux</h2><div class="charms-rail shop-rule"></div><div id="hanging-charms"></div><p class="scene-hint" data-text="charmHint">Des perles, un prénom, un petit compagnon.</p></section>
 <section class="book-zone"><h2 data-text="book">le livre</h2><button class="book-object" data-product="book"><img src="assets/shop/princesse-clown-cover.jpg" alt="La Princesse Clown"><span data-text="bookHint">Il était une fois…</span></button><button class="text-button" data-product="book" data-text="discoverBook">découvrir le conte</button></section>
 </div>
