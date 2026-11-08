@@ -4,19 +4,18 @@
 
   // Keep filenames identical to the files in assets/motion/ on GitHub.
   const MOTION = [
-    { title: 'Animation 01', file: 'AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mov' },
-    { title: 'Dream 1', file: 'dream-1_FYODQUKb.mp4' },
-    { title: 'Dream 2', file: 'Dream 2.mov' },
-    { title: 'Dream 5', file: 'Dream 5.mov' },
-    { title: 'Dream 4', file: 'Dream 4.mp4' },
-    { title: 'Animation 06', file: 'v1anim.mov' },
-    { title: 'Animation 07', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0.mp4' },
-    { title: 'Animation 08', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mov' },
-    { title: 'Cœur nomade', file: 'coeur_nomade_animation.mov' },
-    { title: 'Bird', file: 'bird_animation.mov' }
+    { id: 'animation-01', title: 'Animation 01', file: 'AB57AC59-AEA5-4DC9-8FB5-69E49036D06F.mov' },
+    { id: 'dream-1', title: 'Dream 1', file: 'dream-1_FYODQUKb.mp4' },
+    { id: 'dream-2', title: 'Dream 2', file: 'Dream 2.mov' },
+    { id: 'dream-5', title: 'Dream 5', file: 'Dream 5.mov' },
+    { id: 'dream-4', published: false, title: 'Dream 4', file: 'Dream 4.mp4' },
+    { id: 'animation-06', title: 'Animation 06', file: 'v1anim.mov' },
+    { id: 'animation-07', published: false, title: 'Animation 07', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0.mp4' },
+    { id: 'animation-08', title: 'Animation 08', file: 'F10FF10A-6F3F-45C6-9A38-7CA6B4BD1DA0(1).mov' },
+    { id: 'coeur-nomade', title: 'Cœur nomade', file: 'coeur_nomade_animation.mov' },
+    { id: 'bird', title: 'Bird', file: 'bird_animation.mov' }
   ];
 
-  window.NanaMotionItems = MOTION.map(item=>({...item}));
   const $ = selector => document.querySelector(selector);
   const RENAME_STORAGE_KEY = 'nana-motion-video-titles-v1';
   function loadSavedTitles() {
@@ -31,8 +30,21 @@
   }[char]));
   const videoURL = file => 'assets/motion/' + encodeURIComponent(file);
   let available = [];
-  let requestedFile = null;
-  window.openMotionAt = function(file){ requestedFile = String(file||''); window.openMotion(); };
+  const motionRoot = 'objet/motion';
+  let routeItem = null;
+  window.NanaMotionItems = MOTION.map(item => ({published:true, ...item}));
+  window.openMotionAt = file => window.openMotion(MOTION.find(item => item.file === file));
+  window.NanaMotionLinks = {
+    current: () => isOpen() ? (routeItem ? motionRoot + '/' + routeItem.id : motionRoot) : null,
+    open(route) {
+      if (route === motionRoot || route === 'animations') { window.openMotion(); return true; }
+      const item = MOTION.find(entry => route === motionRoot + '/' + entry.id ||
+        route === 'animation/' + entry.file || route === 'animation/' + entry.file.replace(/\.[^.]+$/, ''));
+      if (!item) return false;
+      window.openMotion(item);
+      return true;
+    }
+  };
   let selected = 0;
   let soundOn = false;
   let requestId = 0;
@@ -61,10 +73,11 @@
   }
 
   // A separate video is NOT loaded for every thumbnail: only one plays at a time.
-  function selectVideo(index, shouldPlay = true) {
+  function selectVideo(index, userSelection = true) {
     if (!isOpen() || !available.length) return;
     selected = (index + available.length) % available.length;
     const item = available[selected];
+    if (userSelection) routeItem = item;
     const video = player();
     const screen = $('#motion-reels-screen');
     if (!video || !screen) return;
@@ -79,7 +92,6 @@
     $('#motion-reels-time').textContent = '0:00';
     $('#motion-reels-duration').textContent = '0:00';
     video.src = videoURL(item.file);
-    window.NanaDeepLinks?.record('animation/'+encodeURIComponent(item.file));
     video.muted = !soundOn;
     video.loop = true;
     video.playsInline = true;
@@ -92,12 +104,11 @@
       button.classList.toggle('active', active);
       button.setAttribute('aria-current', active ? 'true' : 'false');
     });
-    if (shouldPlay) {
-      const playRequest = video.play();
-      if (playRequest && typeof playRequest.catch === 'function') {
-        playRequest.catch(() => { updatePlayButton(); });
-      }
+    const playRequest = video.play();
+    if (playRequest && typeof playRequest.catch === 'function') {
+      playRequest.catch(() => { updatePlayButton(); });
     }
+    document.dispatchEvent(new Event('nana-route-change'));
   }
 
   function navigate(delta) { if (available.length > 1) selectVideo(selected + delta); }
@@ -159,9 +170,12 @@
   }
 
   // Restore autoplay on next/previous even if the user has paused the current Reel.
-  window.openMotion = function openMotionReels() {
+  window.openMotion = function openMotionReels(initialItem = null) {
     if (typeof window.openWindow !== 'function') return;
     pauseVideo();
+    routeItem = initialItem;
+    available = [];
+    selected = 0;
     window.openWindow('Animations', `
       <div id="motion-reels" class="motion-reels">
         <header class="motion-reels-header">
@@ -247,11 +261,13 @@
     }, { passive: false });
     const video = player();
     video.addEventListener('loadedmetadata', () => {
+      if (!video.isConnected) return;
       $('#motion-reels-duration').textContent = formatTime(video.duration);
       const landscape = video.videoWidth > video.videoHeight;
       $('#motion-reels-screen').classList.toggle('is-landscape', landscape);
     });
     video.addEventListener('timeupdate', () => {
+      if (!video.isConnected) return;
       if (Number.isFinite(video.duration) && video.duration > 0) {
         $('#motion-reels-progress').value = String(Math.round(video.currentTime / video.duration * 1000));
         $('#motion-reels-time').textContent = formatTime(video.currentTime);
@@ -259,10 +275,19 @@
     });
     video.addEventListener('play', updatePlayButton);
     video.addEventListener('pause', updatePlayButton);
-    video.addEventListener('error', () => { $('#motion-reels-error').hidden = false; updatePlayButton(); });
-    const wanted = available.findIndex(item => item.file === requestedFile);
-    requestedFile = null;
-    selectVideo(wanted >= 0 ? wanted : 0);
+    video.addEventListener('error', () => {
+      if (!video.isConnected) return;
+      $('#motion-reels-error').hidden = false;
+      updatePlayButton();
+    });
+    const wanted = routeItem ? available.findIndex(item => item.id === routeItem.id) : 0;
+    if (wanted === -1) {
+      // Keep a missing shared reel identifiable, even when other files are available.
+      $('#motion-reels-title').textContent = routeItem.title;
+      $('#motion-reels-error').hidden = false;
+      return;
+    }
+    selectVideo(wanted, false);
   }
 
   document.addEventListener('click', event => {

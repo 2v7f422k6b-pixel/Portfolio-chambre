@@ -5,7 +5,7 @@
   const base = document.currentScript.src;
   const heartURL = new URL('assets/heart-lena.svg', base).href;
   const closeURL = new URL('assets/portfolio-ux/IMG_5035.png', base).href;
-  const cssURL = new URL('window-chrome.css?v=20261105-unified-1', base).href;
+  const cssURL = new URL('window-chrome.css?v=20261108-routes', base).href;
   const decorated = new WeakSet();
   const frames = new WeakSet();
 
@@ -15,6 +15,53 @@
     img.setAttribute('aria-hidden', 'true'); img.draggable = false;
     return img;
   }
+  function shareButton(doc) {
+    const button = doc.createElement('button');
+    button.type = 'button';
+    button.className = 'nana-copy-link';
+    button.dataset.noTranslate = '';
+    button.dataset.copyLink = '';
+    button.append(image(doc, new URL('assets/drawn-ui/fleche_lien_agrandir.png', base).href, 'nana-share-art'));
+    // A Polaroid's enlarged viewer lives inside its own document.
+    if (doc !== document) button.addEventListener('click', () => copyFrom(button));
+    labelShare(button);
+    return button;
+  }
+  function labelShare(button) {
+    const label = document.documentElement.lang === 'en' ? 'Copy link' : 'Copier le lien';
+    button.title = label;
+    button.setAttribute('aria-label', label);
+  }
+  async function copyFrom(button) {
+    if (!window.NanaDeepLinks) return;
+    const url = await window.NanaDeepLinks.copy();
+    if (!url || !button.isConnected) return;
+    const confirmation = document.documentElement.lang === 'en' ? 'Link copied' : 'Lien copié';
+    button.title = confirmation;
+    button.setAttribute('aria-label', confirmation);
+    button.classList.add('nana-link-copied');
+    let status = button.ownerDocument.getElementById('nana-copy-status');
+    if (!status) {
+      status = button.ownerDocument.createElement('span');
+      status.id = 'nana-copy-status';
+      status.setAttribute('role','status');
+      button.after(status);
+    }
+    status.textContent = confirmation;
+    if (status.previousElementSibling !== button) button.after(status);
+    setTimeout(() => {
+      button.classList.remove('nana-link-copied');
+      labelShare(button);
+      if (status.previousElementSibling === button) status.textContent = '';
+    }, 1600);
+  }
+  document.addEventListener('click', event => {
+    const button = event.target.closest?.('[data-copy-link]');
+    if (button) copyFrom(button);
+  });
+  document.addEventListener('portfolio-language-change', () => {
+    document.querySelectorAll('[data-copy-link]').forEach(labelShare);
+  });
   function decorate(bar, title, close) {
     if (!bar || !title || !close || decorated.has(bar)) return;
     decorated.add(bar);
@@ -34,6 +81,9 @@
     // Preserve a tracing already attached by sketch-ui.js.
     const trace = bar.querySelector(':scope > .sketch-ui-svg');
     bar.replaceChildren(image(doc, heartURL, 'nana-window-heart'), title, close);
+    if (!['nana-admin-close','nana-discovery-close'].some(name => close.classList.contains(name))) {
+      close.before(shareButton(doc));
+    }
     if (trace) bar.append(trace);
   }
   function addBar(panel, close, name) {
@@ -59,6 +109,8 @@
     addBar(document.getElementById('player'), document.getElementById('player-hide'), 'Music');
     addBar(document.getElementById('nana-discovery-dialog'), document.querySelector('.nana-discovery-close'), 'Exploration');
     addBar(document.querySelector('#work-break-nudge .wb-card'), document.querySelector('.wb-close'), 'Break');
+    const desk = document.querySelector('.desk-panel');
+    if (desk && !desk.querySelector('[data-copy-link]')) desk.firstElementChild.after(shareButton(document));
     document.querySelectorAll('#special-host > iframe').forEach(connectFrame);
   }
   function connectFrame(frame) {

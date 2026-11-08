@@ -49,9 +49,9 @@
   <link rel="stylesheet" href="sketch-ui.css?v=20261106-motion-alignment-1">
 <link rel="stylesheet" href="window-system.css?v=20261105-unified-1">
 <script src="window-bounds.js?v=20261107-window-pinch-1" defer></script>
-<link rel="stylesheet" href="window-chrome.css?v=20261106-floating-polaroids-2">
+<link rel="stylesheet" href="window-chrome.css?v=20261108-routes">
 <link id="nana-complete-lines-style" rel="stylesheet" href="sketch-lines.css?v=20261105-all-lines-2">
-<script src="window-chrome.js?v=20261105-all-lines-2" defer></script>
+<script src="window-chrome.js?v=20261108-routes" defer></script>
   <link rel="stylesheet" href="portfolio-ux-assets.css?v=20261106-code-cleanup-1">
 
   <style id="latte-frame-style">.latte-frame{display:block;width:min(860px,94vw);height:min(540px,88dvh);max-height:88dvh;border:0;background:transparent}
@@ -600,7 +600,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
             <span class="tile-desc">Discover my projects</span>
           </button>
         </div>
-        <a id="postcard-shop-preview" href="shop.html" aria-label="Découvrir Nana’s Little Shop" target="_blank" rel="noopener noreferrer"><img src="assets/IMG_5108.png" alt="Nana’s Little Shop" style="display:block;width:100%;height:auto"></a>
+        <a id="postcard-shop-preview" href="#/shop" aria-label="Découvrir Nana’s Little Shop"><img src="assets/IMG_5108.png" alt="Nana’s Little Shop" style="display:block;width:100%;height:auto"></a>
         <div class="welcome-foot"><span>Illustration · Animation · Writing</span><span class="nana-hand nana-hand--made-with-care" data-nana-script="made-with-care">Made with care</span></div>
       </div>
     </section>
@@ -614,6 +614,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
         </nav>
         <nav class="menu-right" aria-label="Outils et préférences">
           <button id="nana-admin-trigger" type="button" aria-label="Ouvrir le petit atelier de Nana" title="Le petit atelier de Nana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M7.5 10.5V7.2C7.5 4.3 9.3 2.4 12 2.6c2.7.2 4.5 2.2 4.5 4.8v3.1"/><path d="M5.8 10.1 18.5 10.8 18 21 5.6 20.5Z"/><path d="M12 14.1v2.9"/></svg></button>
+          <button id="menu-copy-link" class="nana-copy-link" type="button" data-copy-link data-no-translate aria-label="Copier le lien" title="Copier le lien"><img src="assets/drawn-ui/fleche_lien_agrandir.png" alt=""></button>
           <button id="menu-search" type="button" aria-label="Search portfolio" title="Search portfolio" aria-expanded="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
           <button id="language-toggle" type="button" aria-label="Switch language to French" title="Language / Langue">FR</button>
           <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Enable night mode" title="Toggle night mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Night</span></button>
@@ -790,21 +791,21 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261105-remove-two-posters-3"></script>
-  <script src="app.js?v=20261108-deep-links-2" defer></script>
+  <script src="app.js?v=20261108-routes" defer></script>
   <script src="do-nothing-club.js?v=20261107-frame-fit" defer></script>
-  <script src="literary-zones.js?v=20261108-deep-links-2" defer></script>
+  <script src="literary-zones.js?v=20261108-routes" defer></script>
 
   <script src="pixel-hotspots.js?v=figurines-first-click-20261103-2" defer></script>
   <script src="talking-figurines.js?v=20261103-smaller-nana-font-rounded-3" defer></script>
   <script src="room-hover.js?v=20261106-clean-specks-1" defer></script>
   <script src="pixel-outlines.js?v=20261106-shelf-ipad-2" defer></script>
   <script src="cat-interaction.js?v=1" defer></script>
-   <script src="coloring-addon.js?v=20261106-lena-drawings" defer></script>
+   <script src="coloring-addon.js?v=20261108-routes" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
-  <script src="motion-addon.js?v=20261108-deep-links-2" defer></script>
-  <script src="music-visuals.js?v=20261108-deep-links-2" defer></script>
-  <script src="pages-addon.js?v=20261106-code-cleanup-1" defer></script>
-  <script src="book-addon.js?v=20261108-deep-links-2" defer></script>
+  <script src="motion-addon.js?v=20261108-routes" defer></script>
+  <script src="music-visuals.js?v=20261108-routes" defer></script>
+  <script src="pages-addon.js?v=20261108-routes" defer></script>
+  <script src="book-addon.js?v=20261108-routes" defer></script>
 
   <script id="touch-hotspots-script">
   (() => {
@@ -889,7 +890,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   <script src="sketch-ui.js?v=20261107-frame-fit" defer></script>
 <script src="portfolio-catalog.js?v=20261106-code-cleanup-1" defer></script>
 <script src="portfolio-search.js?v=20261106-code-cleanup-1" defer></script>
-<script src="desktop-extras.js?v=3" defer></script>
+<script src="desktop-extras.js?v=20261108-routes" defer></script>
 <script src="global-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="i18n-extra.js?v=20261106-book-full-edition" defer></script>
 <script src="i18n.js?v=20261106-code-cleanup-1" defer></script>
@@ -897,7 +898,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 (function(){
  const bar=document.getElementById('menubar'),toggle=document.getElementById('mobile-menu-toggle'),panel=document.getElementById('mobile-menu-panel');
  if(!bar||!toggle||!panel)return;
- const ids=['menu-about','menu-contact','menu-help','nana-admin-trigger','language-toggle','theme-toggle','switch-mode'];
+ const ids=['menu-about','menu-contact','menu-help','menu-copy-link','nana-admin-trigger','language-toggle','theme-toggle','switch-mode'];
  const originals=ids.map(id=>document.getElementById(id)).filter(Boolean);
  const slots=originals.map(el=>({el,parent:el.parentNode,next:el.nextSibling}));
  const mq=window.matchMedia('(max-width:760px)');
@@ -921,17 +922,17 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="room-zone-registry.js?v=20261106-original-colors" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
   <script src="rug-secret.js?v=20261106-lena-drawings" defer></script>
-  <script src="twist-reality.js?v=20261104-performance-1" defer></script>
+  <script src="twist-reality.js?v=20261108-routes" defer></script>
 <script src="guitar-interaction.js?v=20261103-shift-left-v3" defer></script>
   <script src="hotspot-numbers.js?v=20261103-all-objects" defer></script>
-  <script src="work-break-typewriter.js?v=20261108-deep-links-2" defer></script>
+  <script src="work-break-typewriter.js?v=20261108-routes" defer></script>
   <script src="play-pan-hint.js?v=20261107-opaque-white-arrows" defer></script>
   <script src="artwork-protection.js?v=20261104-3" defer></script>
-  <script src="nana-shop-bag.js?v=20261108-shop" defer></script>
+  <script src="nana-shop-bag.js?v=20261108-routes" defer></script>
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
   <script src="nana-admin.js?v=conte-local-20261106" defer></script>
-<script src="nana-discoveries.js?v=20261108-shop" defer></script>
+<script src="nana-discoveries.js?v=20261108-routes" defer></script>
   <script src="dreamlab-launcher.js?v=20261106-lena-drawings" defer></script>
 
 <script id="nana-minilab-day-layer">
@@ -992,9 +993,12 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   else mount();
 })();
 </script>
-<script src="bead-box.js?v=20261106-lena-drawings" defer></script>
+<script src="bead-box.js?v=20261108-routes" defer></script>
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
-<script src="nana-deep-links.js?v=20261108-deep-links-2" defer></script>
+<script src="nana-room-links.js?v=20261108-routes" defer></script>
+<script src="nana-link-directory.js?v=20261108-routes" defer></script>
+<script src="nana-art-links.js?v=20261108-routes" defer></script>
+<script src="nana-deep-links.js?v=20261108-routes" defer></script>
 </body>
 </html>
 

@@ -160,7 +160,6 @@ function resetModeTransition(){
  work.style.zIndex='';work.style.pointerEvents='';
 }
 function chooseMode(mode,zoom=false){
- window.NanaDeepLinks?.record(mode==='work'?'work':'room');
  const previousMode=currentMode;
  if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
  resetModeTransition();
@@ -221,7 +220,6 @@ function zoomIntoIMac(){
  });
 }
 function returnToWelcome(){
- window.NanaDeepLinks?.record('accueil');
  if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
  resetModeTransition();
  closeWindow();closeSpecial();audio.pause();player.hidden=true;
@@ -254,7 +252,6 @@ function closeSpecial(){
  phoneKeyboardInput=null;
 }
 function openWindow(title,html,type='generic'){
- window.NanaDeepLinks?.recordWindow(type);
  closeWindow();
  closeSpecial();
  currentWindow=type;
@@ -271,7 +268,6 @@ function openWindow(title,html,type='generic'){
  $('#window-close').focus({preventScroll:true});
 }
 function openApp(name,index){
- window.NanaDeepLinks?.recordApp(name,index);
  switch(name){
   case 'work-zoom':zoomIntoIMac();break;
   case 'phone':showPhone();break;
@@ -500,7 +496,7 @@ function openGallery(which,index=0){
 function updateGallery(){
  if(!currentGallery)return;
  const {which,index}=currentGallery,items=which==='gabzilla'?GABZILLA:ART;
- const image=items[index];window.NanaDeepLinks?.recordGallery(which,index);$('#viewer-image').src=image.src;$('#viewer-image').alt=image.title;
+ const image=items[index];$('#viewer-image').src=image.src;$('#viewer-image').alt=image.title;
  $('#viewer-caption').textContent=image.title;$('#viewer-number').textContent=(index+1)+' / '+items.length;
  $('#viewer-thumbnails').innerHTML=items.map((it,i)=>`<button data-gallery-index="${i}" class="viewer-thumb ${i===index?'active':''}" aria-label="View ${it.title}"><img src="${it.src}" alt=""></button>`).join('');
  const selected=$('#viewer-thumbnails .active');if(selected)selected.scrollIntoView({block:'nearest',inline:'center'});
@@ -524,7 +520,7 @@ function openMail(){
  openWindow('Mail — New Message',`<div class="eyebrow">To / lena.defirmas@gmail.com</div><h2>New message</h2><p>Send a message directly from the portfolio using a secure Formspree form.</p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'mail');
 }
 function openHelp(){
- openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><a href="#/liens">Liens directs / Direct links</a></p><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and animations through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p>`,'help');
+ openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and animations through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p><p><a href="#/liens">${document.documentElement.lang==='en'?'All portfolio links':'Tous les liens du portfolio'}</a></p>`,'help');
 }
 
 function showPhone(){
@@ -570,7 +566,7 @@ function showPolaroids(){
  closeWindow();closeSpecial();
  specialShade.classList.add('polaroids-floating');
  try {const Audio=window.AudioContext||window.webkitAudioContext;if(Audio){polaroidAudio=new Audio();polaroidAudio.resume().catch(()=>{});}}catch(_){}
- specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261108-deep-links-2" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
+ specialHost.innerHTML='<iframe title="Léna — interactive Polaroid gallery" src="polaroids/index.html?v=20261108-routes" allow="autoplay" loading="eager" style="display:block;width:100vw;height:100dvh;border:0;background:transparent;box-shadow:none"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
@@ -756,9 +752,7 @@ updatePlayer();
  observer.observe(shade,{attributes:true,attributeFilter:['hidden']});
  observer.observe(specialShade,{attributes:true,attributeFilter:['hidden']});
  const previous=read();
- // An explicit shared link takes precedence over this tab's previous window.
- if(location.hash || new URLSearchParams(location.search).has('typewriterTest'))return;
- if(!previous || !['play','work'].includes(previous.mode))return;
+ if(location.hash.startsWith('#/') || new URLSearchParams(location.search).get('typewriterTest') === '1' || !previous || !['play','work'].includes(previous.mode))return;
  restoring=true;
  const restore=()=>{
   try{

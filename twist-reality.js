@@ -389,6 +389,7 @@
     e.preventDefault();e.stopImmediatePropagation();
     dissolve(e,target);
   },true);
+  window.NanaTwistReality = { close: reset };
   undo.addEventListener('click',rebuild);
   window.addEventListener('keydown',e=>{
     if(!active||e.key!=='Escape')return;

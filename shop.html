@@ -4,17 +4,18 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nana’s Little Shop — illustrations, bijoux et histoires</title>
 <meta name="description" content="Un petit bout de la chambre de Nana : illustrations, bijoux de téléphone et La Princesse Clown. La boutique se prépare.">
-<link rel="stylesheet" href="shop.css?v=20261108-collections-1">
+<link rel="stylesheet" href="shop.css?v=20261108-routes-1">
 <script src="shop-charm.js?v=20261108-1" defer></script>
 <script src="shop-book-catalog.js?v=20261108-collections-1" defer></script>
-<script src="shop.js?v=20261108-deep-links-2" defer></script>
+<script src="shop-products.js?v=20261108-routes-1" defer></script>
+<script src="shop.js?v=20261108-routes-1" defer></script>
 <script src="sketch-ui.js?v=20261108-shop" defer></script>
 </head>
 <body>
 <a class="skip" href="#shop-content">Aller aux créations / Skip to creations</a>
 <header class="shop-header shop-rule">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">♡</span> Nana’s little shop</a>
-<nav aria-label="Shop"><button id="language" class="text-button" aria-label="Switch to English">EN</button><button class="bag-button" data-open-bag><svg viewBox="167 157 164 194" aria-hidden="true"><image href="assets/dock/IMG_5002.png" width="500" height="500"/></svg><span data-text="bag">mon panier</span> <span class="bag-count">0</span></button><a class="close" href="index.html" aria-label="Retour à la chambre"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></a></nav>
+<nav aria-label="Shop"><button class="text-button share-link" data-share>Copier le lien</button><button id="language" class="text-button" aria-label="Switch to English">EN</button><button class="bag-button" data-open-bag><svg viewBox="167 157 164 194" aria-hidden="true"><image href="assets/dock/IMG_5002.png" width="500" height="500"/></svg><span data-text="bag">mon panier</span> <span class="bag-count">0</span></button><a class="close" href="index.html" aria-label="Retour à la chambre"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></a></nav>
 </header>
 <main>
 <section class="intro"><p class="eyebrow" data-text="eyebrow">les petites choses de Nana</p><h1 data-text="heading">Un petit bout de ma chambre</h1><p data-text="subtitle">Illustrations, bijoux et histoires à emporter.</p></section>
@@ -40,7 +41,7 @@
 </div>
 <footer class="shop-footer shop-top-rule"><a href="index.html" data-text="back">retour à la chambre</a><p data-text="preview">La boutique se prépare. Tu peux composer ton panier ; les prix et les commandes arrivent bientôt.</p></footer>
 </main>
-<dialog id="product-dialog" class="shop-dialog shop-frame" aria-labelledby="product-title"><button class="close shop-frame" data-close aria-label="Fermer / Close"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><div id="product-detail"></div></dialog>
+<dialog id="product-dialog" class="shop-dialog shop-frame" aria-labelledby="product-title"><button class="close shop-frame" data-close aria-label="Fermer / Close"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><div id="product-detail"></div><button class="text-button share-link" data-share>Copier le lien</button></dialog>
 <dialog id="bag-dialog" class="shop-dialog shop-frame" aria-labelledby="bag-title"><button class="close shop-frame" data-close aria-label="Fermer / Close"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="eyebrow" data-text="yourSelection">tes petites trouvailles</p><h2 id="bag-title" data-text="bag">mon panier</h2><div id="bag-items"></div><p class="bag-note" data-text="bagNote">Ta sélection est gardée ici. Les prix et le paiement seront disponibles à l’ouverture de la boutique.</p><button class="shop-frame checkout" disabled data-text="soon">commandes bientôt disponibles</button><button class="text-button" data-close data-text="continue">continuer à flâner</button></dialog>
 <div id="shop-status" role="status" aria-live="polite"></div>
 <noscript>Active JavaScript pour découvrir la boutique. / Enable JavaScript to explore the shop.</noscript>

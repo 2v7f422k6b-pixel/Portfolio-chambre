@@ -106,6 +106,17 @@
   }
   // Publish the editorial entry point used by app.js and existing integrations.
   document.addEventListener('portfolio-language-change',()=>{if(document.getElementById('pages-library'))render()});
+  window.NanaPagesLinks = {
+    current: () => document.getElementById('pages-library') && sourceFilter !== 'all' ? 'objet/pages/' + sourceFilter : null,
+    open(route) {
+      const source = SOURCES.find(item => route === 'objet/pages/' + item.id);
+      if (!source) return false;
+      openEditorialPages();
+      sourceFilter = source.id;
+      render();
+      return true;
+    }
+  };
   window.openEditorialPages=openEditorialPages;
   window.openPages=openEditorialPages;
   document.addEventListener('click',event=>{

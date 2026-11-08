@@ -47,7 +47,7 @@
       credit:'Collaboration avec Malva',
       works:[['Réel — Packaging CD','charlie-reel-cd-packaging-malva.jpeg','packaging']]
     }
-  ].map(a=>({...a,works:a.works.map(([title,file,category],i)=>({title,src:BASE+file,category,index:i,artistId:a.id}))}));
+  ].map(a=>({...a,works:a.works.map(([title,file,category],i)=>({id:file.replace(/\.[^.]+$/,''),title,src:BASE+file,category,index:i,artistId:a.id}))}));
   const ALL_WORKS = ARTISTS.flatMap(a=>a.works);
   const $ = selector => document.querySelector(selector);
   const escapeHTML = value => String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -83,9 +83,10 @@
     button.innerHTML=`${workImage(cover(ARTISTS[0]),'',true)}<strong>Music & Visual Design</strong><small>5 artists · 14 original artworks</small>`;
     grid.appendChild(button);
   }
-  function openMusicVisuals(){
+  function openMusicVisuals(nextPage='home', artistId=ARTISTS[0].id, workIndex=null){
     if(typeof window.openWindow!=='function')return;
-    page='home';activeArtist='pyrene';query='';lightbox=null;currentWork=0;
+    page=nextPage; activeArtist=artistId; query=''; lightbox=workIndex;
+    currentWork=workIndex ?? allWorkIndex(cover(artist(artistId)));
     window.openWindow('Music & Visual Design',`<div id="mv-root" class="mv-app" aria-label="Music & Visual Design">
       <aside class="mv-sidebar" aria-label="Music & Visual Design navigation">
         <div class="mv-brand"><span class="mv-brand-icon">♫</span><span>MUSIC<br><b>& VISUAL DESIGN</b></span></div>
@@ -105,17 +106,8 @@
       <div id="mv-lightbox-host"></div>
     </div>`, 'music-visual-design');
     render();
+    if (lightbox !== null) renderLightbox();
   }
-  window.NanaMusicVisuals={
-    items:ALL_WORKS.map(w=>({id:w.src.split('/').pop(),title:w.title})),
-    artists:ARTISTS.map(a=>({id:a.id,title:a.name})),
-    open(section,id){
-      openMusicVisuals();
-      if(section==='artiste'&&ARTISTS.some(a=>a.id===id)){page='artist';activeArtist=id;render();}
-      else if(section==='illustration'){const i=ALL_WORKS.findIndex(w=>w.src.split('/').pop()===id);if(i>=0)pickWork(i);}
-      else if(navs.some(n=>n[0]===section)){page=section;render();}
-    }
-  };
   function updateNav(){
     document.querySelectorAll('#mv-root [data-mv-page]').forEach(button=>{
       const selected=button.dataset.mvPage===page;
@@ -184,7 +176,6 @@
     host.innerHTML=page==='home'?homeHTML():page==='artist'?artistHTML(artist(activeArtist)):listingHTML();
     if(keepScroll)host.scrollTop=prior;else host.scrollTop=0;
     updateNav();updateNowViewing();
-    window.NanaDeepLinks?.record(page==='artist'?'musique/artiste/'+activeArtist:'musique/'+(page==='search'?'home':page));
     const search=$('#mv-search');if(search&&search.value!==query)search.value=query;
   }
   function updateNowViewing(){
@@ -199,9 +190,9 @@
   }
   function renderLightbox(){
     const host=$('#mv-lightbox-host');if(!host)return;
-    if(lightbox===null){host.innerHTML='';window.NanaDeepLinks?.record(page==='artist'?'musique/artiste/'+activeArtist:'musique/'+(page==='search'?'home':page));return;}
+    document.dispatchEvent(new Event('nana-route-change'));
+    if(lightbox===null){host.innerHTML='';return;}
     const w=ALL_WORKS[lightbox],a=artist(w.artistId);
-    window.NanaDeepLinks?.record('musique/illustration/'+encodeURIComponent(w.src.split('/').pop()));
     host.innerHTML=`<div class="mv-lightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
       <div class="mv-lightbar"><span>▧ &nbsp; Image viewer</span><button type="button" data-mv-close-lightbox aria-label="Close enlarged image">✕</button></div>
       <div class="mv-lightstage"><button type="button" data-mv-light-prev class="mv-light-arrow" aria-label="Previous image">‹</button><figure>${workImage(w,'',false)}</figure><button type="button" data-mv-light-next class="mv-light-arrow" aria-label="Next image">›</button></div>
@@ -218,6 +209,39 @@
     try{localStorage.setItem(FAV_KEY,JSON.stringify(favorites));}catch(_){}
     render(true);
   }
+  const mediaRoot = 'objet/music-visuals';
+  window.NanaMediaLinks = {
+    current() {
+      if (!$('#mv-root') || $('#window-shade')?.hidden) return window.NanaMotionLinks.current();
+      if (lightbox !== null) return mediaRoot + '/oeuvre/' + ALL_WORKS[lightbox].id;
+      if (page === 'artist') return mediaRoot + '/artiste/' + activeArtist;
+      return page === 'home' ? mediaRoot : mediaRoot + '/' + page;
+    },
+    open(route) {
+      if (route === mediaRoot) { openMusicVisuals(); return true; }
+      const legacy = route.startsWith('musique/');
+      if (!legacy && !route.startsWith(mediaRoot + '/')) return window.NanaMotionLinks.open(route);
+      const path = route.slice(legacy ? 'musique/'.length : mediaRoot.length + 1);
+      const selectedArtist = ARTISTS.find(item => path === 'artiste/' + item.id);
+      const index = ALL_WORKS.findIndex(item => path === 'oeuvre/' + item.id ||
+        path === 'illustration/' + item.src.split('/').pop());
+      if (selectedArtist) openMusicVisuals('artist', selectedArtist.id);
+      else if (index >= 0) openMusicVisuals('artist', ALL_WORKS[index].artistId, index);
+      else if (path === 'search' || navs.some(([id]) => id === path)) openMusicVisuals(path);
+      else return false;
+      return true;
+    }
+  };
+
+  // Public catalog consumed by the directory of shareable links.
+  window.NanaMusicVisuals = {
+    artists: ARTISTS.map(a => ({id:a.id, title:a.name})),
+    items: ALL_WORKS.map(w => ({id:w.src.split('/').pop(), title:w.title})),
+    open(section='home', id) {
+      return window.NanaMediaLinks.open('musique/' + section + (id ? '/' + id : ''));
+    }
+  };
+
   // All controls in this module are functional, with no pretend audio player.
   document.addEventListener('click',event=>{
     const open=event.target.closest('[data-mv-open]');if(open){event.preventDefault();openMusicVisuals();return;}
@@ -235,6 +259,7 @@
       query=event.target.value;
       page=query.trim()?'search':'home';
       render();
+      document.dispatchEvent(new Event('nana-route-change'));
     }
   });
   document.addEventListener('keydown',event=>{

@@ -753,7 +753,6 @@
     const root=appRoot(),result=root?.querySelector('#lit-reading-result .lit-card-body');
     if(!result || !book)return;
     selection=readingExamples.findIndex(item=>item.rank===book.rank);
-    window.NanaDeepLinks?.record('bibliotheque/'+linkId(book.title));
     root.querySelectorAll('[data-lit-book]').forEach(btn=>btn.setAttribute('aria-pressed',String(Number(btn.dataset.litBook)===book.rank)));
     root.querySelectorAll('[data-lit-mood]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.litMood===selectedMood)));
     const rating=book.rating===null ? 'Dans mon Top 10 · Sans note affichée' : 'Ma note : '+book.rating+'/10';
@@ -783,7 +782,6 @@
  if(!root||!result)return;
  const p=souvenuesEntries[poet];
  if(!p)return;
- window.NanaDeepLinks?.record('souvenues/'+linkId(p.name+'-'+p.title));
  const lines=p.aligned ?
    p.aligned.map(([left,right],index)=>([4,8,11].includes(index)?'\n':'')+left+' '+right).join('\n') :
    (p.poem||'Texte en attente de retranscription.');
@@ -960,16 +958,36 @@
     dragItem=null;
   });
   document.addEventListener('dragend',()=>{dragItem=null;});
-  const linkId=value=>String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  window.NanaLiterary={view,activate,
-    links:[...readingExamples.map(b=>({route:'bibliotheque/'+linkId(b.title),title:b.title})),...souvenuesEntries.map(p=>({route:'souvenues/'+linkId(p.name+'-'+p.title),title:p.name+' — '+p.title}))],
-    openLink(route){
-      if(route.startsWith('bibliotheque/')){
-        const book=readingExamples.find(b=>'bibliotheque/'+linkId(b.title)===route);if(!book)return false;
-        window.openApp('reading-room');drawReadingBook(book);return true;
-      }
-      const index=souvenuesEntries.findIndex(p=>'souvenues/'+linkId(p.name+'-'+p.title)===route);if(index<0)return false;
-      window.openApp('souvenues');poet=index;showPoet();return true;
+  const bookId = book => book.url.split('/').at(-1);
+  const slug = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const links = [
+    ...readingExamples.map(b => ({route:'bibliotheque/'+slug(b.title), title:b.title, target:'objet/reading-room/'+bookId(b)})),
+    ...souvenuesEntries.map(p => ({route:'souvenues/'+slug(p.name+'-'+p.title), title:p.name+' — '+p.title, target:'objet/souvenues/'+p.id}))
+  ];
+  function route() {
+    if (!appRoot()) return null;
+    if (current === 'reading-room' && readingExamples[selection]) return 'objet/reading-room/' + bookId(readingExamples[selection]);
+    if (current === 'souvenues' && appRoot().querySelector('.lit-readable-paper')) return 'objet/souvenues/' + souvenuesEntries[poet].id;
+    return null;
+  }
+  function openRoute(path) {
+    path = links.find(item => item.route === path)?.target || path;
+    const match = /^objet\/(reading-room|souvenues)\/([a-z0-9-]+)$/.exec(path);
+    if (!match) return false;
+    const [, section, id] = match;
+    if (section === 'reading-room') {
+      const book = readingExamples.find(item => bookId(item) === id);
+      if (!book) return false;
+      openApp(section);
+      drawReadingBook(book);
+    } else {
+      const index = souvenuesEntries.findIndex(item => item.id === id);
+      if (index === -1) return false;
+      openApp(section);
+      poet = index;
+      showPoet();
     }
-  };
+    return true;
+  }
+  window.NanaLiterary={view,activate,route,links,openRoute,openLink:openRoute};
 })();

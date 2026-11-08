@@ -75,6 +75,7 @@ function sizeSpread(){
  book.style.aspectRatio=String(ratio);
 }
 function updateControls(){
+ window.NanaDeepLinks?.sync();
  const total=pdf?.numPages||74;
  const pair=pagePair(position),label=pair.filter(n=>n>0&&n<=total);
  const counter=$('#book-count');if(counter)counter.textContent='Page'+(label.length>1?'s ':' ')+label.join('–')+' / '+total;
@@ -93,6 +94,7 @@ async function draw(p){
 async function turn(dir){
  if(busy||!pdf)return;
  const target=nextPosition(position,dir);if(target===position)return;
+ const reader=$('#book-reader');
  busy=true;updateControls();
  let sheet=null;
  try{
@@ -102,7 +104,7 @@ async function turn(dir){
    [previous[0],previous[1],future[0],future[1]].map(imageFor)
   );
   const stage=$('#book-pages');
-  if(!stage||!$('#book-reader'))return;
+  if(!stage||!reader.isConnected)return;
   const goingForward=dir>0;
   const oldSrc=goingForward?previousRight:previousLeft;
   const newSrc=goingForward?futureLeft:futureRight;
@@ -152,21 +154,20 @@ async function turn(dir){
    sheet.addEventListener('transitionend',complete);
    setTimeout(()=>{sheet.removeEventListener('transitionend',complete);resolve();},1050);
   });
-  if(!$('#book-reader'))return;
+  if(!reader.isConnected)return;
   // Only now replace the folded leaf with the final, fixed spread.
   fill('left',futureLeft,future[0]);
   fill('right',futureRight,future[1]);
   position=target;
-  window.NanaDeepLinks?.record('livre/la-princesse-clown/page/'+target);
   for(const n of [target-2,target-1,target+1,target+2])imageFor(n).catch(()=>{});
  }catch(err){
-  if($('#book-reader')){status(err.message||'Impossible de tourner la page',100);await draw(position);}
+  if(reader.isConnected){status(err.message||'Impossible de tourner la page',100);await draw(position);}
  }finally{
   if(sheet)sheet.remove();
-  busy=false;updateControls();
+  if(reader.isConnected){busy=false;updateControls();}
  }
 }
-function openBook(startPage=1){
+function openBook(page=1){
  if(typeof window.openWindow!=='function')return;
  window.openWindow('La Princesse Clown',
  '<section id="book-reader" class="book-reader" aria-label="Livre interactif La Princesse Clown">'+
@@ -181,15 +182,25 @@ function openBook(startPage=1){
  let fresh=false;try{fresh=localStorage.getItem('nana-clown-outfit-unlocked-v1')!=='1';localStorage.setItem('nana-clown-outfit-unlocked-v1','1')}catch(e){}
  if(fresh){const note=document.createElement('p');note.setAttribute('role','status');note.textContent=document.documentElement.lang==='en'?'Clown Princess outfit unlocked in the dressing room!':'Tenue Princesse Clown débloquée dans le dressing !';document.querySelector('.book-reader-header').appendChild(note);}
  }
- position=1;busy=false;token++;
- loadPdf().then(async()=>{if(!$('#book-reader'))return;const page=limit(Number(startPage)||1);await draw(isSmall()||page===1?page:(page%2===0?page:page-1));if(!$('#book-reader'))return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
+ const reader=$('#book-reader');
+ position=isSmall() || page===1 ? page : page - page%2;busy=false;token++;
+ loadPdf().then(async()=>{if(!reader.isConnected)return;await draw(position);if(!reader.isConnected)return;$('#book-loader').hidden=true;$('#book-assembly').hidden=false;sizeSpread();}).catch(err=>{if(!reader.isConnected)return;status(err.message||'Erreur de lecture',0);const loader=$('#book-loader');if(loader&&!loader.querySelector('[data-book-retry]'))loader.insertAdjacentHTML('beforeend','<button type="button" data-book-retry>Réessayer</button>');});
 }
+window.NanaBookLinks = {
+ current: () => $('#book-reader') && position>1 ? 'livre/la-princesse-clown/page/'+position : null,
+ open(route) {
+   const match=/^livre\/la-princesse-clown\/page\/([1-9]\d?)$/.exec(route);
+   if(!match || Number(match[1])>74)return false;
+   openBook(Number(match[1]));
+   return true;
+ }
+};
 window.openBook=openBook;
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-book-prev]')){turn(-1);return;}
  if(e.target.closest('[data-book-next]')){turn(1);return;}
- if(e.target.closest('[data-book-retry]')){openBook();return;}
- if(e.target.closest('[data-book-shop]')){document.getElementById('nana-shop-bag')?.click();return;}
+ if(e.target.closest('[data-book-retry]')){openBook(position);return;}
+ if(e.target.closest('[data-book-shop]')){if(window.NanaDeepLinks)window.NanaDeepLinks.open('shop/la-princesse-clown');else document.getElementById('nana-shop-bag')?.click();return;}
  if(e.target.closest('#book-right')&&Date.now()>suppressClickUntil)turn(1);
  if(e.target.closest('#book-left')&&Date.now()>suppressClickUntil)turn(-1);
 });

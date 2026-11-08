@@ -73,7 +73,7 @@
     '    <p class="nana-discovery-reward-title" id="nana-discovery-reward-title"><span id="nana-discovery-gift-text"></span></p>',
     '    <strong class="nana-discovery-discount">−10 %</strong>',
     '    <p class="nana-discovery-purchase" id="nana-discovery-purchase"></p>',
-    '    <p class="nana-discovery-shop-line"><span id="nana-discovery-shop-preposition">at</span> <a id="nana-discovery-shop-link" href="#" target="_blank" rel="noopener noreferrer">Nana’s Little Shop</a>.</p>',
+    '    <p class="nana-discovery-shop-line"><span id="nana-discovery-shop-preposition">at</span> <a id="nana-discovery-shop-link" href="#">Nana’s Little Shop</a>.</p>',
     '    <div class="nana-discovery-coupon"><code>MERCI10</code><button type="button" id="nana-discovery-copy"></button></div>',
     '  </section>',
     '  <button type="button" class="nana-discovery-shop" id="nana-discovery-shop"></button>',
@@ -88,7 +88,10 @@
   const shopLink = dialog.querySelector('#nana-discovery-shop-link');
   const copyButton = dialog.querySelector('#nana-discovery-copy');
   // The reward explicitly points to the same shop as the portfolio.
-  shopLink.href = 'shop.html';
+  shopLink.href = document.querySelector('script[src*="nana-deep-links.js"]') ? '#/shop' : 'shop.html';
+  shopLink.addEventListener('click', event => {
+    if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) dialog.close();
+  });
 
   function localize() {
     // In the direct preview, rewardLang=fr or rewardLang=en can force
@@ -122,9 +125,7 @@
   closeButton.addEventListener('click', () => dialog.close());
   continueButton.addEventListener('click', () => dialog.close());
   shopButton.addEventListener('click', () => {
-    // Open the user-specified shop destination, matching the inline link.
-    window.open(shopLink.href, '_blank', 'noopener,noreferrer');
-    dialog.close();
+    shopLink.click();
   });
   copyButton.addEventListener('click', async () => {
     let success = false;

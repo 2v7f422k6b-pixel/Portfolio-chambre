@@ -37,3 +37,7 @@
 .shop-layout[data-category=tshirt] .side-boutique{max-width:440px;margin:auto}
 .shop-layout[data-category=tshirt] .gabzilla-photo img{max-height:400px}
 @media(max-width:600px){.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.gabzilla-card{max-width:360px;margin:0 auto 30px}.gabzilla-photo img{max-height:340px}.gabzilla-card h2{font-size:26px}}
+
+.share-link{font-size:14px}
+#product-dialog>.share-link{display:block;margin:10px auto 0}
+@media(max-width:600px){.shop-header .share-link{font-size:12px;max-width:58px;line-height:1.15}}

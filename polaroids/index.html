@@ -161,6 +161,9 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
     title:'Photo '+String(i+1).padStart(2,'0'),
     date:'',note:'A little note to write on the back.',src:null
   })):original;
+  const photoIds=photos.map((photo,i)=>photo.src
+    ? photo.src.split(/[?#]/)[0].split('/').pop().replace(/\.[^.]+$/,'')
+    : String(i));
   const board=document.getElementById('board'),viewer=document.getElementById('viewer');
   const viewerCard=document.getElementById('viewer-card');
   document.getElementById('pending').hidden=!demo;
@@ -244,7 +247,18 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
       if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(()=>{try{parent.postMessage({type:'nana-polaroid-arrival'},location.origin)}catch(_){}},i*380);
     });
   }
+  function syncPhoto(){
+    if(parent!==window){
+      try{parent.document.dispatchEvent(new parent.Event('nana-polaroid-change'))}catch(_){}
+      return;
+    }
+    const url=new URL(location.href);
+    if(viewer.open)url.searchParams.set('photo',photoIds[activePhoto]);
+    else url.searchParams.delete('photo');
+    if(url.href!==location.href)history.replaceState(history.state,'',url);
+  }
   function show(i){
+    const previous=viewer.open?activePhoto:null;
     activePhoto=(i+photos.length)%photos.length;
     const p=photos[activePhoto];
     viewerCard.classList.remove('flipped');
@@ -253,9 +267,7 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
     document.getElementById('indicator').textContent=(activePhoto+1)+' / '+photos.length;
     document.getElementById('turn').textContent='Turn over ↻';
     if(!viewer.open)viewer.showModal();
-    const id=(p.src||String(activePhoto)).split('/').pop().replace(/\.[^.]+$/,'');
-    const url=new URL(location.href);url.searchParams.set('photo',id);history.replaceState(null,'',url);
-    if(parent!==window)parent.postMessage({type:'nana-photo-route',id},location.origin);
+    if(previous!==activePhoto)syncPhoto();
   }
   document.getElementById('prev').addEventListener('click',()=>show(activePhoto-1));
   document.getElementById('next').addEventListener('click',()=>show(activePhoto+1));
@@ -264,6 +276,7 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
     document.getElementById('turn').textContent=viewerCard.classList.contains('flipped')?'Show front ↻':'Turn over ↻';
   });
   document.getElementById('viewer-close').addEventListener('click',()=>viewer.close());
+  viewer.addEventListener('close',syncPhoto);
   viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});
   document.addEventListener('keydown',e=>{
     if(!viewer.open)return;
@@ -276,11 +289,22 @@ dialog::backdrop {background:#16161677;backdrop-filter:none;}
   });
   window.addEventListener('resize',()=>board.querySelectorAll('.card').forEach((card,i)=>placeCard(card,i)));
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!viewer.open)parent.postMessage({type:'nana-polaroid-close'},location.origin);});
-  viewer.addEventListener('close',()=>{const url=new URL(location.href);url.searchParams.delete('photo');history.replaceState(null,'',url);if(parent!==window)parent.postMessage({type:'nana-photo-route',id:''},location.origin);});
   mount();
-  const requested=new URLSearchParams(location.search).get('photo');
-  const photoIndex=photos.findIndex((p,i)=>(p.src||String(i)).split('/').pop().replace(/\.[^.]+$/,'')===requested);
-  if(photoIndex>=0)show(photoIndex);
+  window.NanaPolaroidLinks={
+    current:()=>viewer.open?photoIds[activePhoto]:null,
+    show(id){
+      if(id===null){
+        if(viewer.open)viewer.close();
+        return true;
+      }
+      const index=photoIds.indexOf(id);
+      if(index===-1)return false;
+      if(!viewer.open||index!==activePhoto)show(index);
+      return true;
+    }
+  };
+  if(parent===window)window.NanaPolaroidLinks.show(new URL(location.href).searchParams.get('photo'));
+  else syncPhoto();
 })();
 </script>
 <script src="../game-i18n.js?v=20261105-stability-1"></script>

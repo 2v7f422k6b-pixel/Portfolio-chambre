@@ -96,3 +96,22 @@ html body #app #special-shade.polaroids-floating #special-host>iframe{
 html body #app #special-shade.polaroids-floating #special-window::before,
 html body #app #special-shade.polaroids-floating #special-window::after,
 html body #app #special-shade.polaroids-floating #special-window>.sketch-ui-svg{display:none!important}
+
+/* Léna’s original link arrow, beside the original close drawing. */
+html body button.nana-copy-link{
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+ width:40px;height:40px;padding:8px!important;margin:0;border:0!important;
+ background:transparent!important;box-shadow:none!important;cursor:pointer;
+}
+html body button.nana-copy-link>img{display:block!important;width:22px!important;height:22px!important;object-fit:contain;pointer-events:none}
+html body .nana-copy-link:focus-visible{outline:2px solid currentColor;outline-offset:-3px}
+html body .desk-panel>.nana-copy-link{float:right}
+html body #app #special-shade.polaroids-floating #special-titlebar{width:auto!important;gap:5px!important}
+html body #app #special-shade.polaroids-floating #special-titlebar>.nana-copy-link{display:inline-flex!important;background:white!important}
+html body button.nana-copy-link.nana-link-copied>img{opacity:.45}
+#nana-copy-status{position:absolute;inset:auto 85px auto auto;padding:.2em .45em;background:#ffe7e9;color:#a60930;font:14px NanaWindow,sans-serif;z-index:3;pointer-events:none}
+#nana-copy-status:empty{display:none}
+#nana-link-index details{margin:.55em 0}
+#nana-link-index summary{cursor:pointer;font-weight:bold}
+#nana-link-index li{margin:.25em 0}
+#nana-link-index a{color:inherit}

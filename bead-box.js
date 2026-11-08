@@ -155,7 +155,7 @@ document.addEventListener('click',e=>{
   case 'word':{const value=cleanWord(document.querySelector('#bead-word-input').value);if(value){add([...value].map(letter=>({type:'letter',letter})));document.querySelector('#bead-word-input').blur();}break;}
   case 'undo':if(history.length){const prev=JSON.parse(history.pop());beads=prev.beads;attached=prev.attached;persist();refresh();}break;
   case 'reset':snapshot();beads=[];attached=false;persist();refresh();break;
-  case 'shop':persist();document.getElementById('nana-shop-bag')?.click();break;
+  case 'shop':persist();if(window.NanaDeepLinks)window.NanaDeepLinks.open('shop/bijou-personnalise');else document.getElementById('nana-shop-bag')?.click();break;
   case 'attach':snapshot();attached=!attached;persist();refresh();if(attached)document.querySelector('#window-close')?.click();break;
   case 'swing':{const stage=document.querySelector('#bead-charm');stage.classList.remove('bead-swing');void stage.getBoundingClientRect();stage.classList.add('bead-swing');break;}
  }

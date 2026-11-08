@@ -100,17 +100,16 @@
     typeId = setTimeout(next, 380);
   }
 
-  function showPrompt() {
-    if (shown || !isActive()) return;
+  function showPrompt(immediate = false) {
+    if (!isWork() || (!immediate && (shown || !isActive()))) return;
+    if (!dialog.hidden) return;
+    pauseTimer();
     shown = true;
     lastFocus = document.activeElement;
     dialog.hidden = false;
     dialog.querySelector('[data-wb-play]').focus({preventScroll: true});
     typeMessage();
-    window.NanaDeepLinks?.record('objet/machine-a-ecrire');
   }
-
-  window.NanaTypewriter = {open(){shown=false;showPrompt();},close:hidePrompt};
 
   function isWork() {
     return app.classList.contains('mode-work');
@@ -184,6 +183,7 @@
     }
   });
 
+  window.NanaTypewriter = { open: () => showPrompt(true), close: hidePrompt };
   new MutationObserver(sync).observe(app, {attributes: true, attributeFilter: ['class']});
   document.addEventListener('visibilitychange', sync);
   window.addEventListener('pageshow', sync);

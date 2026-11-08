@@ -35,5 +35,5 @@ let backdropPointerStarted=false;
 overlay.addEventListener("pointerdown",e=>{backdropPointerStarted=e.target===overlay},{passive:true});
 overlay.addEventListener("click",e=>{if(e.target===overlay && (e.detail===0 || backdropPointerStarted))close();backdropPointerStarted=false});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!overlay.hidden){e.preventDefault();close()}});
-new MutationObserver(()=>{if(!root.classList.contains("mode-play"))close()}).observe(root,{attributes:true,attributeFilter:["class"]});
+new MutationObserver(()=>{if(root.classList.contains("mode-select"))close()}).observe(root,{attributes:true,attributeFilter:["class"]});
 })();

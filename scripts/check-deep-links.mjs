@@ -1,43 +1,202 @@
-import {readFileSync} from 'node:fs';
-import vm from 'node:vm';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-const source=readFileSync(new URL('../nana-deep-links.js',import.meta.url),'utf8');
-function setup(hash=''){
-  const calls=[],events={},tasks=[],writes=[];
-  let mode='select';
-  const element={hidden:true,dataset:{},classList:{contains:()=>false},scrollIntoView(){},focus(){},dispatchEvent(){calls.push(['object']);},append(){}};
-  const nodes={'#app':{classList:{contains:name=>name==='mode-'+mode}},'#nana-link-index':element,'#wall-lamp-hit':element,'[data-open="fortune-cookie"]':element};
-  const location={pathname:'/Portfolio-chambre/',search:'',hash,href:'https://example.test/Portfolio-chambre/'+hash,assign:url=>calls.push(['assign',url])};
-  const history={pushState(state,unused,url){location.hash=url.slice(url.indexOf('#'));writes.push(['push',location.hash]);},replaceState(state,unused,url){location.hash=url.slice(url.indexOf('#'));writes.push(['replace',location.hash]);}};
-  const on=(name,fn)=>(events[name]??=[]).push(fn);
-  const document={readyState:'complete',documentElement:{lang:'fr'},querySelector:s=>nodes[s]||null,getElementById:()=>null,addEventListener:on,createElement:()=>({...element})};
-  for(const key of ['[data-open="dressup"]','#hotspots [data-open="photos"]','[data-object="postit"]','[data-object="trash"]'])nodes[key]=element;
-  const window={addEventListener:on,removeEventListener(){},NANA_ROOM_ZONES:[{id:'vase',label:'Vase',element}],NanaMotionItems:[{file:'Dream 2.mov',title:'Dream 2'}],
-    NanaMusicVisuals:{items:[{id:'art.jpeg',title:'Art'}],artists:[{id:'pyrene',title:'Pyrène'}],open:(...a)=>calls.push(['music',...a])},
-    chooseMode(value){mode=value;calls.push(['mode',value]);},returnToWelcome(){mode='select';calls.push(['welcome']);},closeWindow(){},closeSpecial(){},
-    openApp:(...a)=>calls.push(['app',...a]),openGallery:(...a)=>calls.push(['gallery',...a]),openMotionAt:(...a)=>calls.push(['motion',...a]),openBook:(...a)=>calls.push(['book',...a]),
-    openWindow:(...a)=>calls.push(['window',...a]),showToast:(...a)=>calls.push(['toast',...a]),NanaTypewriter:{open:()=>calls.push(['typewriter']),close(){}}};
-  const context={window,document,location,history,URL,URLSearchParams,encodeURIComponent,decodeURIComponent,queueMicrotask:fn=>tasks.push(fn),navigator:{},MouseEvent:class{},MutationObserver:class{observe(){}},
-    ART:[{filename:'first.jpg',title:'First',index:0},{filename:'second.jpg',title:'Second',index:1}],GABZILLA:[{src:'assets/illustration.webp',title:'Original'},{src:'assets/composition.webp',title:'Composition'}]};
-  vm.runInNewContext(source,context);
-  return {api:window.NanaDeepLinks,calls,writes,location,events,window,flush(){while(tasks.length)tasks.shift()();}};
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+
+const source = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
+const router = source('nana-deep-links.js');
+const base = 'https://nana.test/Portfolio-chambre/';
+const card = 'objet/carte-pokemon';
+const drawing = 'illu/swans-lotus';
+
+function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
+  const location = new URL(initial, base);
+  const ui = {mode:null, panel:null, extra:null, shop:null, copied:null, toasts:[], modeChanges:[]};
+  const listeners = new Map(), timers = new Map();
+  const listen = (event, fn) => listeners.set(event, [...listeners.get(event) || [], fn]);
+  const emit = event => listeners.get(event)?.forEach(fn => fn());
+  const entries = [{href:location.href, state:null}];
+  let position = 0, timerId = 0;
+  function write(replace, state, url) {
+    location.href = new URL(url, location);
+    if (!replace) entries.splice(++position);
+    entries[position] = {href:location.href, state};
+  }
+  function traverse(offset) {
+    position += offset;
+    location.href = entries[position].href;
+    emit('popstate');
+    emit('hashchange');
+  }
+  const app = {classList:{contains:name => name === 'mode-' + ui.mode}};
+  const document = {
+    readyState:'loading', body:{}, documentElement:{lang:'en',dataset:{theme:'night'}},
+    getElementById:() => app, querySelector:() => null, addEventListener:listen
+  };
+  const room = {
+    current:() => ui.extra, mode:() => null, closeExtras:() => { ui.extra = null; },
+    open(route) { if (route !== card) return false; ui.extra = route; return true; }
+  };
+  const art = {
+    current:() => ui.panel,
+    open(route) {
+      if (route !== drawing && route !== 'illu/18') return false;
+      ui.panel = loadingGallery ? 'illustrations' : drawing;
+      return true;
+    }
+  };
+  const env = {
+    URL, URLSearchParams, location, document, app, shade:{}, specialShade:{},
+    history:{get state() { return entries[position].state; },
+      pushState:(state,title,url) => write(false,state,url), replaceState:(state,title,url) => write(true,state,url)},
+    MutationObserver:class {observe() {}},
+    addEventListener:listen, setTimeout:fn => {timers.set(++timerId, fn); return timerId;}, clearTimeout:id => timers.delete(id),
+    navigator:{clipboard:{writeText:async text => {ui.copied = text;}}},
+    chooseMode:value => {ui.modeChanges.push(value); ui.mode = value; ui.panel = null;},
+    returnToWelcome:() => {ui.mode = ui.panel = null;},
+    closeWindow:() => {ui.panel = null;}, closeSpecial() {}, showToast:message => ui.toasts.push(message),
+    NanaRoomLinks:room, NanaArtLinks:art,
+    NanaShop:{current:() => ui.shop, open:route => {ui.shop = route;}, close:() => {ui.shop = null;}},
+    NanaBookLinks:{current:() => null, open:() => false}, NanaPagesLinks:{current:() => null, open:() => false}
+  };
+  env.window = env;
+  if (savedSession) {
+    env.sessionStorage = {getItem:() => JSON.stringify(savedSession)};
+    const appJs = source('app.js');
+    const start = appJs.indexOf('/* Restore the current room after a browser refresh');
+    assert.ok(start >= 0);
+    vm.runInNewContext(appJs.slice(start), env);
+  }
+  vm.runInNewContext(router, env);
+  emit('DOMContentLoaded');
+  function flush() {
+    const queue = [...timers.values()];
+    timers.clear();
+    queue.forEach(fn => fn());
+  }
+  return {ui, location, document, entries, router:env.NanaDeepLinks, emit, flush, traverse,
+    close:() => {env.closeWindow(); room.closeExtras(); emit('click'); flush();}};
 }
-test('fresh shared URL opens the exact work without adding history',()=>{
-  const env=setup('#/illu/second');assert(env.calls.some(c=>c[0]==='mode'&&c[1]==='play'));assert(env.calls.some(c=>c[0]==='gallery'&&c[2]===1));assert.equal(env.writes.length,0);
+
+test('opening and closing views makes Back and Forward restore exactly one entry each', () => {
+  const b = browser('#/room');
+  b.router.open(card);
+  b.router.open(drawing);
+  b.close();
+  assert.deepEqual(b.entries.map(e => new URL(e.href).hash), ['#/room','#/'+card,'#/'+drawing,'#/room']);
+  for (const [offset, expected] of [[-1,drawing],[-1,card],[-1,'room'],[1,card],[1,drawing],[1,'room']]) {
+    b.traverse(offset); b.flush();
+    assert.equal(b.router.current(), expected);
+  }
+  assert.equal(b.entries.length, 4);
 });
-test('catalog routes resolve, including windows without a mounted opener',()=>{
- const env=setup();for(const {route} of env.api.entries()){const before=env.calls.length;env.api.open(route);assert(!env.calls.slice(before).some(c=>c[0]==='toast'),route);}
+
+test('aliases resolve to the actual creation and copied links omit editor/session flags', async () => {
+  const b = browser('?editor=1#/illu/18', {savedSession:{mode:'work',open:'phone',lang:'fr',theme:'day'}});
+  assert.equal(b.router.current(), drawing);
+  assert.equal(b.ui.mode, 'play');
+  assert.deepEqual(b.ui.modeChanges, ['play']);
+  assert.equal(b.document.documentElement.lang, 'en');
+  assert.equal(b.document.documentElement.dataset.theme, 'night');
+  assert.equal(await b.router.copy(), base+'#/'+drawing);
+  assert.equal(b.ui.copied, base+'#/'+drawing);
+  b.emit('nana-route-change'); b.flush();
+  assert.equal(b.entries.length, 1);
 });
-test('gallery URLs use filenames and distinguish GABZILLA',()=>{
- const env=setup();env.api.recordGallery('art',1);env.flush();assert.equal(env.location.hash,'#/illu/second');env.api.recordGallery('gabzilla',1);env.flush();assert.equal(env.location.hash,'#/projet/gabzilla/composition');env.api.open('illu/1');assert(env.calls.some(c=>c[0]==='gallery'&&c[2]===1));
+
+test('the gallery resolving after initial navigation keeps its requested history entry', () => {
+  const b = browser('#/'+drawing, {loadingGallery:true});
+  assert.equal(b.router.current(), 'illustrations');
+  b.ui.panel = drawing;
+  b.emit('nana-route-change'); b.flush();
+  assert.equal(b.router.current(), drawing);
+  assert.equal(b.entries.length, 1);
+  b.document.documentElement.lang = 'fr';
+  b.document.documentElement.dataset.theme = 'day';
+  b.emit('click'); b.flush();
+  assert.equal(b.entries.length, 1);
 });
-test('back and forward reopen content once without adding history',()=>{
- const env=setup('#/illu/first');env.location.hash='#/illu/second';env.events.popstate[0]();env.events.hashchange[0]();assert.equal(env.calls.filter(c=>c[0]==='gallery'&&c[2]===1).length,1);assert.equal(env.writes.length,0);env.location.hash='#/room';env.events.popstate[0]();assert.equal(env.calls.at(-1)[0],'mode');
+
+test('programmatic re-entry recovers a closed view before queued close sync fires', () => {
+  const b = browser('#/'+drawing);
+  b.ui.panel = null;
+  b.emit('nana-route-change');
+  b.router.open(drawing);
+  b.flush();
+  assert.equal(b.router.current(), drawing);
+  assert.equal(b.entries.length, 1);
 });
-test('malformed and unknown URLs recover safely',()=>{
- for(const route of ['illu/%E0%A4%A','illu/999','illu/missing','objet/missing']){const env=setup('#/'+route);assert.equal(env.location.hash,'#/room');assert(env.calls.some(c=>c[0]==='toast'));}
+
+test('an old UI notification cannot append an entry after browser Back', () => {
+  const b = browser('#/work');
+  b.router.open(card);
+  b.router.open('shop/la-princesse-clown');
+  b.emit('click');
+  b.traverse(-1); b.flush();
+  assert.equal(b.router.current(), card);
+  assert.equal(b.ui.mode, 'work');
+  assert.equal(b.entries.length, 3);
+  b.traverse(1);
+  assert.equal(b.router.current(), 'shop/la-princesse-clown');
 });
-test('encoded animation and immediate typewriter URLs resolve',()=>{
- const env=setup('#/animation/Dream%202.mov');assert(env.calls.some(c=>c[0]==='motion'&&c[1]==='Dream 2.mov'));env.api.open('objet/machine-a-ecrire');assert(env.calls.some(c=>c[0]==='typewriter'));assert(env.calls.some(c=>c[0]==='mode'&&c[1]==='work'));
+
+test('malformed and unknown hashes fall back to the room without adding an entry', () => {
+  for (const route of ['#/%E0%A4','#/unknown']) {
+    const b = browser(route);
+    assert.equal(b.router.current(), 'room');
+    assert.equal(b.location.hash, '#/room');
+    assert.equal(b.ui.toasts.length, 1);
+    assert.equal(b.entries.length, 1);
+  }
+});
+
+test('published illustrations and Gabzilla images round-trip by file name, even after reordering', () => {
+  const ctx = {
+    document: {addEventListener(){}, querySelector:() => null, getElementById:() => ({hidden:false})},
+    currentWindow:'gallery', currentGallery:null
+  };
+  ctx.window = ctx;
+  ctx.openGallery = (which,index) => { ctx.currentGallery = {which,index}; };
+  // Load the real catalog, including the artist's titles and original file names.
+  vm.runInNewContext(source('app.js').split('const $ = selector')[0] +
+    '\nwindow.artworkLists = [ART, GABZILLA];', ctx);
+  vm.runInNewContext(source('nana-art-links.js'),ctx);
+  for (const [group, items] of ctx.artworkLists.entries()) {
+    const routes = items.map((_,index) => {
+      ctx.openGallery(group ? 'gabzilla' : 'art', index);
+      return ctx.NanaArtLinks.current();
+    });
+    assert.equal(new Set(routes).size, items.length);
+    const reordered = Array.from(items).reverse();
+    items.splice(0,items.length,...reordered);
+    for (const [index,route] of routes.entries()) {
+      assert.equal(ctx.NanaArtLinks.open(route),true);
+      assert.equal(ctx.currentGallery.index,items.length-1-index);
+      assert.equal(ctx.NanaArtLinks.current(),route);
+    }
+  }
+  assert.equal(ctx.NanaArtLinks.open('illu/bubbles'),true);
+  assert.equal(ctx.NanaArtLinks.current(),'illu/soap-bubbles');
+  assert.equal(ctx.NanaArtLinks.open('illu/missing-image'),false);
+  assert.equal(ctx.NanaArtLinks.open('illu/999'),false);
+});
+
+test('every public shop product keeps its old URL and appears in both link directories', () => {
+  const window = {};
+  for (const file of ['shop-book-catalog.js', 'shop-products.js']) {
+    vm.runInNewContext(source(file), {window});
+  }
+  const catalog = window.NanaShopCatalog;
+  for (const language of ['fr','en']) {
+    const entries = catalog.entries(language);
+    const routes = new Set(entries.map(entry => entry.route));
+    assert.equal(routes.size, entries.length, 'duplicate shop route');
+    for (const product of catalog.products) {
+      const route = catalog.productRoute(product.id);
+      assert.ok(routes.has(route), product.id);
+      assert.equal(catalog.canonical('shop/'+product.id), route);
+      const entry = entries.find(item => item.route === route);
+      assert.ok(entry.title.includes(product[language]), route);
+    }
+  }
 });
