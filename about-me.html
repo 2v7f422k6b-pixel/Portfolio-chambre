@@ -176,6 +176,8 @@ if(key==='tops')return SHORT_JACKET_TOP;
 if(key==='dresses'&&['dress-floral','dress-polka'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
 if(key==='dresses'&&slots.dresses==='dress-striped')return SHORT_JACKET_DRESS_STRIPED;
 }
+// Hide only the bag-side bow while the brown bag is worn; retain the opposite bow.
+if(key==='dresses'&&slots.dresses==='dress-polka'&&slots.bags==='bag-brown')return [[0,960],[790,960],[790,820],[900,820],[900,0],[2048,0],[2048,3072],[0,3072]];
 if(slots.tops==='top-gabzilla'&&['pants','skirts'].includes(key))return GABZILLA_BOTTOM;
 if(slots.tops==='top-yellow'&&['pants','skirts'].includes(key))return PATENT_BOTTOM;
  if(slots.tops==='top-pink'&&['pants','skirts'].includes(key))return CAMISOLE_BOTTOM;
@@ -191,7 +193,7 @@ if(['top-gabzilla','top-pullover','top-pajama'].includes(slots.tops))return {sx:
 return {sx:1,dy:18};
 }
 // Full-canvas bag pieces share the ring anchor. Adjust the strap shoulder, not the bag shape.
-const BAG_SHOULDERS={"top-pajama":[-12,780,-8],"top-yellow":[0,774,0],"top-pink":[0,780,0],"top-white":[-10,745,-8],"top-gabzilla":[-22,770,-10],"top-pullover":[-28,760,-12],"top-peter-pan":[-18,753,-12],"dress-blue":[0,780,0],"dress-floral":[-10,780,0],"dress-striped":[-18,765,-8],"dress-polka":[-8,744,-8],"jacket-green":[-32,750,-18],"jacket-purple":[-42,740,-22],"jacket-cardigan":[-30,742,-18]};
+const BAG_SHOULDERS={"top-pajama":[-12,752,-8],"top-yellow":[0,762,0],"top-pink":[0,765,0],"top-white":[-10,765,40],"top-gabzilla":[-22,752,-10],"top-pullover":[-28,768,-12],"top-peter-pan":[-18,753,-12],"dress-blue":[0,765,0],"dress-floral":[-10,748,0],"dress-striped":[-18,752,-8],"dress-polka":[-8,765,-8],"jacket-green":[-32,773,-18],"jacket-purple":[-42,770,-22],"jacket-cardigan":[-30,765,-18]};
 function bagFits(){
  const [dx,top,lean]=BAG_SHOULDERS[slots.jackets||slots.dresses||slots.tops]||[0,780,0];
  return {body:{sx:1,dx,dy:0},strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy:0},charm:{sx:1,dx:dx-30,dy:15}};
