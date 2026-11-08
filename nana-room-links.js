@@ -40,7 +40,7 @@
   const normalize = route => aliases.get(route) || route;
   const workObjects = new Map([['objet/post-it','postit'],['objet/corbeille','trash']]);
   const sceneObjects = new Set(['chat','guitare','vase','miffy','sonny-angel','guirlande','jelly','lampe-bureau',
-    'bambi-lampe','lampe-fleur','ipad','tapis','bretzel','crayons-1','crayons-2','crayons-3','fortune-cookie']);
+    'bambi-lampe','lampe-fleur','ipad','cv','tapis','bretzel','crayons-1','crayons-2','crayons-3','fortune-cookie']);
   const objectRoute = id => id === 'fortune-cookie' ? 'jeu/fortune-cookie' : 'objet/' + id;
   const sceneId = route => {
     const id = route.split('/')[1];
@@ -69,7 +69,7 @@
     hit.focus({preventScroll:true});
     // The existing focus outline identifies lamps and the iPad. Opening a link
     // to a lamp preserves the visitor's current day/night setting.
-    if (!lamps.has(id) && id !== 'ipad' && (id !== 'tapis' || !q('#nana-rug-secret.is-open'))) {
+    if (!lamps.has(id) && !['ipad','cv'].includes(id) && (id !== 'tapis' || !q('#nana-rug-secret.is-open'))) {
       clickHotspot(hit);
     }
     notify();
@@ -195,3 +195,4 @@
   for (const event of ['nana-dreamlab-open','nana-dreamlab-close']) document.addEventListener(event, notify);
   window.NanaRoomLinks = {open, current, closeExtras, mode};
 })();
+

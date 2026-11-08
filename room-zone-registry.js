@@ -1,4 +1,4 @@
-/* Play room zone registry: one entry per illustrated PNG object.
+/* Play room zone registry: one entry per illustrated object.
    Adds missing interactive regions without altering existing click destinations.
    The silhouettes are derived from the transparent PNG layers at runtime. */
 (() => {
@@ -33,9 +33,11 @@
     ['miffy','Miffy clown','MIFFY.PNG',null],
     ['bambi-lampe','Lampe Bambi','BAMBI LAMP.PNG',null,'toggle-theme'],
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
-    ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality']
-  ].map(([id,label,file,selector,destination],i) => ({
-    id,label,file,selector,destination,number:16+i,
+    ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality'],
+    // 45 is already used by the separate flower-gallery hotspot.
+    ['cv','CV',null,'[data-cv-paper]',null,46]
+  ].map(([id,label,file,selector,destination,number],i) => ({
+    id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
     center: null
   }));

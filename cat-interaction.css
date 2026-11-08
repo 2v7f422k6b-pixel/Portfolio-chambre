@@ -30,6 +30,30 @@ html[data-theme="night"] #cat-cv-paper { filter:brightness(.53) saturate(.72); }
   #cat-cv-paper { transition:none; }
 }
 
+/* Match the shared room outline without changing the paper or cat artwork. */
+#hotspots #cat-cv-hit {
+  fill:transparent!important;
+  stroke:transparent!important;
+  filter:none!important;
+  outline:none;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+#cat-cv-hover {
+  opacity:0;
+  pointer-events:none;
+}
+#cat-cv-hover path {
+  fill:none;
+  stroke:#fff;
+  stroke-width:2.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:url(#nana-room-hover-stroke);
+}
+#cat-cv-hit:is(:hover,:focus-visible,.active) + #cat-cv-hover,
+#hotspots:is(.hotspot-guide-on,.hotspot-peek) #cat-cv-hover { opacity:1; }
+
 /* A very small reaction when the sleeping cat is petted.
    All coordinates belong to the original 1670x942 room; no artwork changes. */
 #hotspots [data-cat-pet] {
@@ -110,4 +134,5 @@ html[data-theme="night"] #cat-cv-paper { filter:brightness(.53) saturate(.72); }
     opacity:.9;
   }
 }
+
 
