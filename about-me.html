@@ -199,7 +199,7 @@ function bagFits(){
  const [dx,top,lean]=BAG_SHOULDERS[garment]||[0,780,0];
  const raised=['top-peter-pan','top-gabzilla','top-pink','top-white','top-yellow','top-pajama','dress-polka','dress-striped','dress-blue'];
  const higher=['top-peter-pan','top-white','top-pajama','dress-striped','dress-blue'];
- const dy=garment==='top-white'?-155:(!garment?-110:(higher.includes(garment)?-135:(raised.includes(garment)?-90:0)));
+ const dy=garment==='jacket-purple'?-30:garment==='top-white'?-155:(!garment?-110:(higher.includes(garment)?-135:(raised.includes(garment)?-90:0)));
  const body={sx:1,dx,dy},charm={sx:1,dx:dx-30,dy:15+dy};
  // Preserve the approved fits for jackets and other unraised outfits.
  if(!dy)return {body,strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy},charm};
