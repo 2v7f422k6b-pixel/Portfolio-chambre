@@ -30,7 +30,7 @@
       for(const id of Array.isArray(latest?.discovered)?latest.discovered:[])if(required.has(id))discovered.add(id);
       celebrated ||= latest?.celebrated===true && latest?.rewardSeen===true;
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        discovered: [...discovered], celebrated: celebrated, rewardSeen: celebrated
+        discovered: [...discovered], required: [...required], celebrated: celebrated, rewardSeen: celebrated
       }));
     } catch (_) { /* Still works for this visit if browser storage is disabled. */ }
     window.NanaProgress?.refresh();

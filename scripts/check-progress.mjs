@@ -243,3 +243,36 @@ test('camera needs distinct photos across visits; phone and waistcoat have separ
  q.feat('beads-made');assert.equal(q.unlockedOutfit('tresors'),true);
  const creator=browser({creator:true}).p;for(const id of ids)creator.readPolaroid(id,ids);assert.equal(creator.unlockedOutfit('photographer'),false);
 });
+
+test('the five patches unlock at real exploration thresholds and stay earned after reload',()=>{
+ const {p,env,storage}=browser(),required=Array.from({length:49},(_,i)=>'object:test-'+i);
+ let discovered=[];
+ env.NanaDiscoveries={snapshot:()=>({required,discovered})};
+ const notices=[];p.subscribe(e=>notices.push(...e.added));
+ const earned=()=>p.stickers.filter(b=>b.earned()).length;
+ assert.equal(p.stickers.length,5);assert.equal(earned(),0);
+ p.feat('latte-made');p.feat('beads-made');p.feat('rested');assert.equal(earned(),0,'activity rewards do not add patches');
+ for(const [count,total] of [[1,1],[12,1],[13,2],[24,2],[25,3],[36,3],[37,4],[48,4],[49,5]]){
+  discovered=[...required.slice(0,count),required[0],'unknown-object'];p.refresh();
+  assert.equal(earned(),total,'unique required discoveries: '+count);
+ }
+ p.refresh();assert.equal(notices.filter(id=>id.startsWith('sticker:')).length,5,'one notification per patch');
+ assert.equal(browser({storage}).p.stickers.filter(b=>b.earned()).length,5,'standalone dressing retains patches');
+ required.push('object:new-zone');p.refresh();assert.equal(earned(),5,'new room objects do not revoke earned patches');
+});
+
+test('saved room totals restore thresholds and patch progress merges between tabs',()=>{
+ const required=Array.from({length:48},(_,i)=>'object:'+i);
+ const storage=new Map([[roomKey,JSON.stringify({required,discovered:required.slice(0,24)})]]);
+ const a=browser({storage}),b=browser({storage});
+ assert.equal(a.p.stickers.filter(x=>x.earned()).length,3);
+ storage.set(roomKey,JSON.stringify({required,discovered:required}));a.emit('storage',{key:roomKey});
+ b.emit('storage',{key:b.p.BADGES_KEY});assert.equal(b.p.stickers.filter(x=>x.earned()).length,5);
+ const old=browser({storage:new Map([[roomKey,JSON.stringify({discovered:['object:old'],celebrated:true,rewardSeen:true})]])});
+ assert.equal(old.p.stickers.filter(x=>x.earned()).length,5,'previous completed explorers retain all five milestones');
+ for(const options of [{creator:true},{search:'?previewReward=1'}]){
+  const preview=browser(options);preview.env.NanaDiscoveries={snapshot:()=>({required,discovered:required})};preview.p.refresh();
+  assert.equal(preview.p.stickers.filter(x=>x.earned()).length,0,'preview does not award patches');
+  assert.equal(preview.storage.has(preview.p.BADGES_KEY),false);
+ }
+});

@@ -11,6 +11,7 @@
   const CLOWN_KEY = 'nana-clown-outfit-unlocked-v1';
   // Kept separately so older game tabs cannot erase newly read dialogue.
   const DIALOGUE_KEY = 'nana-figurine-dialogue-v1';
+  const BADGES_KEY = 'nana-exploration-badges-v1';
   const dialogueLengths = {miffy:6, 'sonny-angel':6};
   const listeners = new Set();
   const pair = (fr, en) => ({fr, en});
@@ -99,7 +100,8 @@
   }
   function roomSnapshot() {
     const live=window.NanaDiscoveries?.snapshot();
-    return live || {discovered:legacy(), required:[], celebrated:read(ROOM_KEY)?.celebrated===true};
+    const saved=read(ROOM_KEY);
+    return live || {discovered:legacy(), required:Array.isArray(saved?.required)?saved.required.filter(x=>typeof x==='string'):[], celebrated:saved?.celebrated===true};
   }
   function hasVisit(route) {
     return state.visits.includes(route) || !!(roomRoutes[route] && roomSnapshot().discovered.includes(roomRoutes[route]));
@@ -110,20 +112,31 @@
     return !!outfit && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
   }
   function fullRoom() { const r=roomSnapshot();return r.required.length>0 && r.required.every(x=>r.discovered.includes(x)); }
+  // Five exploration milestones, using exact regions of Léna's original sheet.
+  // Keep the historical collection API so old notebook links continue to work.
+  const earnedBadges=new Set();
   const stickers = [
-    {id:'hello',name:pair('Un petit monde','A little world'),image:art('maison'),earned:()=>roomSnapshot().discovered.length>0},
-    {id:'cat',name:pair('Une petite caresse','A gentle stroke'),image:crop('assets/CAT.PNG',[732,1059,315,181]),earned:()=>roomSnapshot().discovered.includes('object:chat')},
-    {id:'cafe',name:pair('Un café pour la route','A little coffee'),image:'assets/mini-games/latte/latte%20atelier%20mug.png',earned:()=>hasFeat('latte-made')},
-    {id:'night',name:pair('La tête dans les étoiles','Head in the stars'),image:art('lune'),earned:()=>hasVisit('night')},
-    {id:'book',name:pair('Il était une fois','Once upon a time'),image:crop('assets/TALE.PNG',[1610,1355,287,138]),earned:()=>unlockedOutfit('clown')},
-    {id:'spider',name:pair('La colocataire discrète','The quiet roommate'),image:art('araignee_jour'),earned:()=>hasFeat('secret-rug')},
-    {id:'art',name:pair('Des couleurs partout','Colour everywhere'),image:art('crayon_pinceau'),earned:()=>hasVisit('jeu/coloring')},
-    {id:'beads',name:pair('Mes petits trésors','My little treasures'),image:art('fleur'),earned:()=>hasFeat('beads-made')},
-    {id:'music',name:pair('Une mélodie dans la tête','A tune in my head'),image:art('notes_musique'),earned:()=>hasVisit('objet/marshall')},
-    {id:'care',name:pair('Un peu de douceur','A little kindness'),image:crop('assets/TAMAGOTCHI.PNG',[1997,1388,177,115]),earned:()=>state.feats.some(x=>x.startsWith('care-'))},
-    {id:'rest',name:pair('Le monde peut attendre','The world can wait'),image:crop('assets/RILAKKUMA.PNG',[845,707,463,418]),earned:()=>hasFeat('rested')},
-    {id:'home',name:pair('Comme à la maison','Make yourself at home'),image:art('etoile_pleine'),earned:fullRoom}
-  ];
+    ['glance','Juste un coup d’œil','Just a look',0,[5,226,333,256]],
+    ['five-minutes','Je reste cinq minutes','Just five minutes',25,[341,186,303,311]],
+    ['at-home','Comme chez moi','Make myself at home',50,[643,195,354,312]],
+    ['resident','J’habite ici','I live here',75,[96,499,348,321]],
+    ['spare-key','Le double des clés','The spare key',100,[460,519,470,297]]
+  ].map(([id,fr,en,percent,box])=>({id,name:pair(fr,en),percent,
+    rule:percent?pair('Explorer '+percent+' % de la chambre.','Explore '+percent+'% of the room.'):pair('Découvrir un premier objet.','Discover your first object.'),
+    image:crop('assets/IMG_5764.png',box,1000,1000),earned:()=>earnedBadges.has(id)}));
+  function collectBadges() {
+    const saved=read(BADGES_KEY);
+    if(Array.isArray(saved))for(const id of saved)if(stickers.some(b=>b.id===id))earnedBadges.add(id);
+    if(suppressed())return;
+    const room=roomSnapshot(),required=new Set(room.required),discovered=new Set(room.discovered);
+    const count=required.size?[...discovered].filter(id=>required.has(id)).length:discovered.size;
+    let changed=false;
+    for(const badge of stickers){
+      const eligible=room.celebrated || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
+      if(eligible&&!earnedBadges.has(badge.id)){earnedBadges.add(badge.id);changed=true;}
+    }
+    if(changed)try{localStorage.setItem(BADGES_KEY,JSON.stringify([...earnedBadges]));}catch(_){persistent=false;}
+  }
   const titles = [
     {id:'curious',name:pair('Petite âme curieuse','Curious soul'),rule:pair('Découvrir un premier objet.','Discover your first object.'),earned:()=>roomSnapshot().discovered.length>0},
     {id:'sofa',name:pair('Créature de canapé','Sofa creature'),rule:pair('Terminer une pause au club du rien.','Finish a break at the Do Nothing Club.'),earned:()=>hasFeat('rested')},
@@ -134,6 +147,7 @@
     {id:'resident',name:pair('Locataire honoraire','Honorary resident'),rule:pair('Explorer toute la chambre.','Explore the entire room.'),earned:fullRoom}
   ];
   function earnedIDs() {
+    collectBadges();
     return [...stickers.filter(x=>x.earned()).map(x=>'sticker:'+x.id),...titles.filter(x=>x.earned()).map(x=>'title:'+x.id),...outfits.filter(x=>unlockedOutfit(x.id)).map(x=>'outfit:'+x.id),...(fullRoom()?['gift:merci10']:[])];
   }
   let known = new Set(earnedIDs());
@@ -174,7 +188,7 @@
   }
   function selectTitle(id) { if(id!==null&&!titles.some(x=>x.id===id&&x.earned()))return;state.title=id;save(); }
   window.NanaProgress = {
-    games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,
+    games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,BADGES_KEY,
     readPolaroid,visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
     dialogueProgress,readDialogueLine,hasReadDialogue,DIALOGUE_KEY,
     snapshot:()=>({visits:[...state.visits],feats:[...state.feats],title:state.title,persistent,room:roomSnapshot()}),
@@ -184,7 +198,7 @@
   window.addEventListener('storage',event=>{
     if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};emit();}
     else if(event.key===DIALOGUE_KEY){mergeDialogue();emit();}
-    else if(event.key===ROOM_KEY||event.key===CLOWN_KEY)emit();
+    else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit();
   });
 })();
 

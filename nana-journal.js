@@ -3,12 +3,17 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes stickers','My stickers'],['titres','Mes titres','My titles'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['titres','Mes titres','My titles'],['cadeaux','Mes cadeaux','My gifts']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
   const h=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const img=(src,cls='')=>typeof src==='object'?'<svg class="nj-art '+cls+'" viewBox="'+src.box.join(' ')+'" aria-hidden="true" focusable="false"><image href="'+h(src.src)+'" width="'+src.width+'" height="'+src.height+'"/></svg>':'<img class="'+cls+'" src="'+h(src)+'" alt="" draggable="false">';
+  let artSequence=0;
+  const img=(src,cls='')=>{
+    if(typeof src!=='object')return '<img class="'+cls+'" src="'+h(src)+'" alt="" draggable="false">';
+    const [x,y,width,height]=src.box,id='nj-art-crop-'+(++artSequence);
+    return '<svg class="nj-art '+cls+'" viewBox="'+src.box.join(' ')+'" aria-hidden="true" focusable="false"><defs><clipPath id="'+id+'"><rect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/></clipPath></defs><image href="'+h(src.src)+'" width="'+src.width+'" height="'+src.height+'" clip-path="url(#'+id+')"/></svg>';
+  };
   const button=(text,attrs='',cls='')=>'<button type="button" class="nj-button '+cls+'" '+attrs+'>'+text+'</button>';
   const star='assets/drawn-ui/etoile_pleine.png';
   let active='chambre', page=0, previousFocus, wardrobe=null, wardrobeError=false, wardrobeLoading=false, toastTimer;
@@ -34,7 +39,7 @@
   function roomPage(){
     const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;
     const found=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;
-    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('stickers collés','stickers collected')],['titres',progress.titles.filter(x=>x.earned()).length,progress.titles.length,t('titres gagnés','titles earned')]];
+    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('écussons gagnés','patches earned')],['titres',progress.titles.filter(x=>x.earned()).length,progress.titles.length,t('titres gagnés','titles earned')]];
     return heading(t('Bienvenue dans ton petit carnet','Welcome to your little notebook'),t('Chaque détour laisse un souvenir.','Every little detour leaves a memory.'))+
       '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('objets découverts','objects discovered')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
       '<div class="nj-stats">'+summary.map(([tab,n,total,label])=>'<button type="button" class="nj-stat nj-frame" data-nj-tab="'+tab+'"><strong>'+n+' <small>/ '+total+'</small></strong><span>'+label+'</span></button>').join('')+'</div>'+
@@ -51,7 +56,7 @@
   async function loadWardrobe(){
     if(wardrobe||wardrobeLoading)return;wardrobeLoading=true;wardrobeError=false;
     try{
-      const response=await fetch('about-me.html?v=20261108-badge-jacket');
+      const response=await fetch('about-me.html?v=20261109-exploration-patches');
       if(!response.ok)throw new Error('wardrobe');
       const source=new DOMParser().parseFromString(await response.text(),'text/html');
       const data=JSON.parse(source.getElementById('assets').textContent);
@@ -69,9 +74,9 @@
         return '<article class="nj-card nj-outfit nj-frame '+(earned?'':'nj-locked')+'">'+img(outfit.image)+'<div><h3>'+h(name(outfit.name))+'</h3><p>'+h(earned?t('Tenue débloquée','Look unlocked'):name(outfit.rule))+'</p>'+(earned||progress.isCreator()?button(h(earned?t('Essayer','Try on'):t('Aperçu créatrice','Creator preview')),'data-nj-outfit="'+outfit.id+'"'):'')+'</div></article>';
       },{size:4})+(progress.isCreator()?'<p class="nj-bottom-note">'+t('Aperçu créatrice : les essais ne modifient pas ta progression.','Creator preview: trying things does not change your progress.')+'</p>':'');
   }
-  function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mon album de petits trésors','My album of little treasures'),count+' / '+progress.stickers.length+' '+t('stickers à collectionner','collectible stickers'))+paginate(progress.stickers,(sticker)=>{
+  function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes écussons d’exploration','My exploration patches'),count+' / '+progress.stickers.length+' '+t('écussons débloqués','patches unlocked'))+paginate(progress.stickers,(sticker)=>{
     const earned=sticker.earned(),number=progress.stickers.indexOf(sticker)+1;
-    return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+img(sticker.image)+'</div><p>'+h(earned?name(sticker.name):t('À découvrir','To discover'))+'</p><small>'+String(number).padStart(2,'0')+'</small></article>';
+    return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+img(sticker.image)+'</div><p>'+h(name(sticker.name))+'</p><small>'+h(name(sticker.rule))+'</small></article>';
   },{cls:'nj-sticker-grid'});}
   function titlesPage(){const selected=progress.snapshot().title;return heading(t('Un titre qui te ressemble','A title that feels like you'),t('Collectionne-les et choisis celui que tu portes.','Collect them and choose the one you wear.'))+paginate(progress.titles,title=>{
     const earned=title.earned(),chosen=selected===title.id;
@@ -131,9 +136,10 @@
   dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}});
   progress.subscribe(({added})=>{
     render();if(!added.length||dialog.open||document.querySelector('dialog[open]'))return;
-    const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:'));
-    const destination=outfit?'dressing':title?'titres':'stickers';
-    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
+    if(added.includes('gift:merci10')){notice.hidden=true;clearTimeout(toastTimer);return;}
+    const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
+    const destination=outfit?'dressing':badge?'stickers':title?'titres':'stickers';
+    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Un nouvel écusson t’attend dans le dressing.','A new patch is waiting in your wardrobe.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
     const btn=notice.querySelector('button');btn.textContent=t('Voir','See');btn.dataset.njNotice=destination;
     notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,4200);
   });
