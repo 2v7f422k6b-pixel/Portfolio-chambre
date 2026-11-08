@@ -426,7 +426,7 @@ function openWorkAbout(){
  html body #window-shade #window:has(.nana-profile-card) #window-content>.sketch-ui-svg{display:none!important}
 
  html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:7.5% 8% 7.5%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:5% / 3.15%!important;overflow:hidden;isolation:isolate;font-family:inherit}
- html body #window .nana-profile-card::before{content:none!important}
+ html body #window .nana-profile-card::before{content:""!important;position:absolute;inset:0;z-index:6;pointer-events:none;background:url("assets/card-paper-grain.svg") repeat;background-size:180px 180px;mix-blend-mode:multiply;opacity:.12}
  .nana-profile-card>.card-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
  .nana-profile-card .card-edition{font-size:2.6cqw;font-weight:700;line-height:1.1}
  .nana-profile-card header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 1cqw}
@@ -452,11 +452,11 @@ function openWorkAbout(){
  .nana-profile-card .card-matchups strong{display:inline;font-size:3.5cqw;margin-left:1cqw}
  html body #window .nana-profile-card .card-anecdote{font-size:2.9cqw;font-weight:bold;font-style:italic;line-height:1.25;padding:1.6cqw 2cqw;background:#ffe5ed!important;border-radius:2px 4px 2px 3px!important}
  .nana-profile-card footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:2cqw;font-size:2.2cqw;line-height:1.2;padding-top:1.3cqw}
-.nana-profile-card::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 8%,rgba(98,211,255,.5) 23%,rgba(255,235,143,.45) 32%,rgba(255,255,255,.8) 37%,rgba(255,126,219,.48) 43%,rgba(150,130,255,.5) 51%,rgba(121,255,212,.4) 59%,transparent 73%);background-size:280% 100%;mix-blend-mode:overlay;animation:nana-card-foil 8s ease-in-out infinite}
- .nana-card-glitter{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;background-image:radial-gradient(circle,#fff9 0 .55px,transparent .9px),radial-gradient(circle,#ffeab099 0 .65px,transparent 1px);background-size:13px 19px,23px 17px;background-position:0 0,7px 9px;mix-blend-mode:screen}
- .nana-card-glitter i{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);background:#fffbea;clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);animation:nana-card-sparkle 5.5s ease-in-out infinite;animation-delay:var(--delay);opacity:.35}
+.nana-profile-card::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 8%,rgba(98,211,255,.5) 23%,rgba(255,235,143,.45) 32%,rgba(255,255,255,.8) 37%,rgba(255,126,219,.48) 43%,rgba(150,130,255,.5) 51%,rgba(121,255,212,.4) 59%,transparent 73%);background-size:280% 100%;mix-blend-mode:overlay;opacity:.78;animation:nana-card-foil 10s ease-in-out infinite}
+ .nana-card-glitter{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;background-image:radial-gradient(circle,#fff9 0 .55px,transparent .9px),radial-gradient(circle,#ffeab099 0 .65px,transparent 1px);background-size:13px 19px,23px 17px;background-position:0 0,7px 9px;mix-blend-mode:screen;opacity:.7}
+ .nana-card-glitter i{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);background:#fffbea;clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);animation:nana-card-sparkle 7s ease-in-out infinite;animation-delay:var(--delay);opacity:.35}
  @keyframes nana-card-foil{0%,100%{background-position:100% 50%}50%{background-position:0% 50%}}
- @keyframes nana-card-sparkle{0%,100%{opacity:.12;transform:scale(.45) rotate(0)}50%{opacity:1;transform:scale(1.25) rotate(25deg)}}
+ @keyframes nana-card-sparkle{0%,100%{opacity:.12;transform:scale(.45) rotate(0)}50%{opacity:.8;transform:scale(1.1) rotate(18deg)}}
  @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}.nana-card-glitter i{animation:none;opacity:.5}}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
  <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
