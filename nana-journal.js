@@ -51,7 +51,7 @@
   async function loadWardrobe(){
     if(wardrobe||wardrobeLoading)return;wardrobeLoading=true;wardrobeError=false;
     try{
-      const response=await fetch('about-me.html?v=20261108-journal-1');
+      const response=await fetch('about-me.html?v=20261108-miffy-dj-1');
       if(!response.ok)throw new Error('wardrobe');
       const source=new DOMParser().parseFromString(await response.text(),'text/html');
       const data=JSON.parse(source.getElementById('assets').textContent);
@@ -60,7 +60,7 @@
   }
   function dressingPage(){
     const unlocked=progress.outfits.filter(x=>progress.unlockedOutfit(x.id)).length;
-    const total=wardrobe?Object.keys(wardrobe.items).length:null,locked=progress.unlockedOutfit('clown')?0:progress.outfits.find(x=>x.id==='clown').pieces.length;
+    const total=wardrobe?Object.keys(wardrobe.items).length:null,locked=new Set(progress.outfits.filter(x=>!progress.unlockedOutfit(x.id)).flatMap(x=>x.pieces||[])).size;
     const inventory=total===null?(wardrobeError?t('Le dressing n’a pas pu être chargé.','The wardrobe could not be loaded.'):t('Ouverture du dressing…','Opening the wardrobe…')):(total-locked)+' / '+total+' '+t('pièces accessibles','pieces available');
     return heading(t('Des tenues à découvrir','Looks to discover'),inventory)+
       '<div class="nj-wardrobe-summary"><p>'+unlocked+' / '+progress.outfits.length+' '+t('tenues bonus débloquées','bonus looks unlocked')+'</p>'+routeButton('jeu/dressing',t('Ouvrir le dressing','Open the wardrobe'))+(wardrobeError?button(t('Réessayer','Try again'),'data-nj-retry'):'')+'</div>'+
@@ -147,3 +147,4 @@
   window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+

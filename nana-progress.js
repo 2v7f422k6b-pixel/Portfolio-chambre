@@ -29,15 +29,17 @@
     {id:'secret-memory-box', name:pair('La boîte à souvenirs','The memory box'), image:art('fleur'), route:'secret/boite-a-souvenirs'},
     {id:'secret-childhood-drawing', name:pair('Un dessin d’enfance','A childhood drawing'), image:art('crayon_pinceau'), route:null, available:false}
   ];
-  // Bonus looks only use Léna's existing garments. The original wardrobe stays available.
+  // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
+    {id:"miffy",name:pair("Miffy clown","Miffy clown"),visit:'objet/miffy',image:crop('assets/dressing-lena/IMG_5709.png',[852, 129, 238, 248],2048,3072),pieces:["head-miffy", "suit-miffy", "jewelry-miffy-ruff"],values:{"dresses": "suit-miffy", "hat": "head-miffy", "necklace": "jewelry-miffy-ruff"},rule:pair("Faire parler Miffy dans la chambre.","Talk to Miffy in the room.")},
+    {id:"dj",name:pair("DJ Minilab","Minilab DJ"),feat:'minilab-composed',image:crop('assets/dressing-lena/IMG_5716.png',[775, 733, 405, 523],2048,3072),pieces:["shoes-dj", "hosiery-dj", "top-dj", "jewelry-dj-bracelets", "skirt-dj"],values:{"tops": "top-dj", "skirts": "skirt-dj", "shoes": "shoes-dj", "hosiery": "hosiery-dj", "bracelets": "jewelry-dj-bracelets"},rule:pair("Enregistrer une piste musicale dans le Minilab.","Record a musical track in the Minilab.")},
     {id:'clown', name:pair('Princesse Clown','Clown Princess'), visit:'livre/la-princesse-clown', image:crop('assets/dressing-lena/IMG_5381.png',[639,724,657,713],2048,3072), pieces:['top-clown','skirt-princess','jewelry-clown-ruff','makeup-clown-nose'], values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}, makeup:['makeup-clown-nose','makeup-blush'], rule:pair('Ouvrir le conte illustré.','Open the illustrated story.')},
     {id:'cafe', name:pair('Ourson domestique','Stay-at-home bear'), feat:'latte-made', image:crop('assets/dressing-lena/IMG_5335.png',[755,1090,195,347],2048,3072), values:{tops:'top-pullover',pants:'pants-pajama',shoes:'shoes-bunny',bags:'bag-brown',bagAccessories:'charm-bear-doll'}, rule:pair('Préparer ton premier latte.','Make your first latte.')},
     {id:'atelier', name:pair('Atelier en bazar','A messy studio'), visit:'jeu/coloring', image:crop('assets/dressing-lena/IMG_5348.png',[705,232,489,324],2048,3072), values:{tops:'top-white',pants:'pants-barrel',hat:'head-beret',shoes:'shoes-bambi'}, rule:pair('Découvrir le jeu de coloriage.','Discover the colouring book.')},
     {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), values:{tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-pink',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
   ];
   const roomRoutes = {
-    'jeu/dressing':'mirror', 'jeu/latte':'object:latte', 'jeu/tamagotchi':'object:tamagotchi',
+    'objet/miffy':'object:miffy', 'jeu/dressing':'mirror', 'jeu/latte':'object:latte', 'jeu/tamagotchi':'object:tamagotchi',
     'jeu/do-nothing':'object:rilakkuma', 'jeu/word-lab':'object:livres-3',
     'jeu/fortune-cookie':'fortune-cookie', 'livre/la-princesse-clown':'object:book',
     'objet/reading-room':'object:livres-1', 'objet/souvenues':'object:livres-2',
@@ -46,7 +48,7 @@
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
     'photos':'object:instax', 'illustrations':'flowers', 'objet/lampe-fleur':'wall-lamp'
   };
-  const allowedFeats = new Set(['latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -141,3 +143,4 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY)emit();
   });
 })();
+

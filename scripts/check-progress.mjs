@@ -92,3 +92,28 @@ test('opening a route or the cookie never awards the hidden memory box',()=>{
   assert.equal(p.hasFeat('secret-memory-box'),false);assert.equal(p.hasFeat('secret-cookie'),false);
   assert.equal(p.hasVisit('jeu/fortune-cookie'),true);
 });
+
+
+test('Miffy and DJ unlock only through their activity, persist and notify once',()=>{
+ const {p,storage}=browser();const notices=[];p.subscribe(e=>notices.push(...e.added));
+ p.visit('jeu/mimilab');assert.equal(p.unlockedOutfit('dj'),false);
+ p.visit('objet/miffy');assert.equal(p.unlockedOutfit('miffy'),true);
+ assert.equal(p.unlockedOutfit('dj'),false);
+ p.feat('minilab-composed');p.feat('minilab-composed');
+ assert.equal(p.unlockedOutfit('dj'),true);
+ assert.equal(notices.filter(x=>x==='outfit:dj').length,1);
+ const reloaded=browser({storage}).p;assert.equal(reloaded.unlockedOutfit('dj'),true);assert.equal(reloaded.unlockedOutfit('miffy'),true);
+ for(const opts of [{creator:true},{search:'?previewReward=1'}]){
+  const q=browser(opts).p;q.feat('minilab-composed');q.visit('objet/miffy');
+  assert.equal(q.unlockedOutfit('dj'),false);assert.equal(q.unlockedOutfit('miffy'),false);
+ }
+});
+test('silent recordings do not qualify, music on either channel does',()=>{
+ const recorder=readFileSync(new URL('../dreamlab-multitrack.js',import.meta.url),'utf8');
+ const fn=recorder.slice(recorder.indexOf('function containsMusic('),recorder.indexOf('  const en='));
+ const containsMusic=vm.runInNewContext('('+fn.trim()+')');
+ const audio=channels=>({numberOfChannels:channels.length,getChannelData:i=>Float32Array.from(channels[i])});
+ assert.equal(containsMusic(audio([[0,0,0],[0,0,0]])),false);
+ assert.equal(containsMusic(audio([[0,.00001,0]])),false);
+ assert.equal(containsMusic(audio([[0,0,0],[0,-.05,0]])),true);
+});

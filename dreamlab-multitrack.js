@@ -8,6 +8,14 @@
   let chunks=[],clock=null,started=0,monitor=[],mixBlob=null,mixUrl=null;
   let undoTake=null;
   const player=$("dl-playback");
+  window.NanaProgress?.visit("jeu/mimilab");
+  function containsMusic(audio){
+    for(let c=0;c<audio.numberOfChannels;c++){
+      const samples=audio.getChannelData(c);
+      for(let i=0;i<samples.length;i++)if(Math.abs(samples[i])>.001)return true;
+    }
+    return false;
+  }
   const en=()=>document.documentElement.lang==="en";
   const word=(fr,english)=>en()?english:fr;
   const time=sec=>{
@@ -167,6 +175,11 @@
       invalidateMix();undoTake=null;selected=firstEmpty();
       if(selected===-1)status("tes 5 pistes sont prêtes ! écoute puis télécharge ton mix.","all 5 tracks are ready! listen and download your mix.");
       else status("piste "+(index+1)+" enregistrée. tu peux ajouter la suivante.","track "+(index+1)+" saved. you can add another.");
+      if(containsMusic(audio)){
+        const progress=window.NanaProgress,already=progress?.unlockedOutfit("dj");
+        progress?.feat("minilab-composed");
+        if(!already&&progress?.unlockedOutfit("dj"))status("piste enregistrée · ta tenue DJ est débloquée dans le dressing !","track saved · your DJ outfit is unlocked in the wardrobe!");
+      }
     }catch(_){
       if(!unloading)status("impossible de sauvegarder cette prise. réessaie.","could not save this take. please try again.");
     }finally{
@@ -254,4 +267,5 @@
   });
   draw();
 })();
+
 

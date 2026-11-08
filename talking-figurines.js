@@ -123,6 +123,7 @@
   function speak(id, target) {
     const figure = figurines[id];
     if (!figure) return;
+    if (id === 'miffy') window.NanaProgress?.visit('objet/miffy');
     clearTimeout(timeout);
     const lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
     figure.index = (figure.index + 1) % figure[lang].length;
