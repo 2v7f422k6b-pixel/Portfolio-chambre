@@ -204,7 +204,7 @@ const bag=bagFits();
 for(const [key,z] of ordered)if(slots[key]){
  if(key==='bags'&&slots.bags==='bag-brown'){
   entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
-  entries.push({src:'assets/dressing-lena/IMG_5545.png',z:z+.1,fit:bag.strap});
+  entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap});
  }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null)});
 }
 if(slots.pants||slots.skirts||slots.dresses){
