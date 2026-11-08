@@ -176,13 +176,15 @@ const PATENT_BOTTOM=[[850,0],[1100,0],[1100,1180],[1170,1290],[1240,1410],[2048,
 const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':2640,'pants-leopard':2600,'pants-barrel':2620,'pants-light-blue':2675};
 // Keep the complete hem artwork when a closed coat holds wide clothes in.
 // The fit applies only below the hands and only while the green coat is worn.
-const GREEN_COAT_BOTTOM_FITS={'pants-barrel':.80,'dress-striped':.73,'dress-floral':.62,'dress-polka':.73,'dress-blue':0};
+const GREEN_COAT_BOTTOM_FITS={'pants-barrel':.80,'dress-striped':.73,'dress-floral':.62,'dress-polka':.73,'dress-blue':0,'dress-gingham':.60,'skirt-black':.65,'skirt-denim':.65};
 const GREEN_COAT_UPPER_CLIP=[[850,0],[1110,0],[1110,1701],[850,1701]];
 const GREEN_COAT_LOWER_CLIP=[[0,1700],[2048,1700],[2048,3072],[0,3072]];
 function underJacketClip(key){
 // Hide the strap return behind the shoulder, including beneath scarves.
 
 if(key==='shoes'&&['shoes-boots','shoes-green'].includes(slots.shoes)&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
+// The blue cardigan is closed: tuck the long tee inside, above its curved hem.
+if(slots.jackets==='jacket-blue'&&key==='tops')return [[870,0],[1110,0],[1110,770],[1160,1000],[1160,1290],[800,1290],[800,1000],[870,770]];
 if(['jacket-fleece','jacket-blue','jacket-yukata'].includes(slots.jackets)&&['tops','dresses'].includes(key)){
  const hem=slots.jackets==='jacket-yukata'?1640:slots.jackets==='jacket-fleece'?1610:1510;
  return [[870,0],[1110,0],[1110,770],[1195,1000],[1205,hem],[2048,hem],[2048,3072],[0,3072],[0,hem],[775,hem],[785,1000],[870,770]];
@@ -192,10 +194,11 @@ if(slots.jackets==='jacket-green'&&['pants','skirts','dresses'].includes(key))re
 if(['jacket-purple','jacket-cardigan','jacket-fleece','jacket-blue'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
 if(key==='dresses'&&slots.dresses==='dress-floral'&&slots.jackets==='jacket-cardigan')return CARDIGAN_DRESS_FLORAL;
-if(key==='dresses'&&['dress-floral','dress-polka'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
+if(key==='dresses'&&['dress-floral','dress-polka','dress-gingham'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
 }
 // Hide only the bag-side bow while the brown bag is worn; retain the opposite bow.
 if(key==='dresses'&&slots.dresses==='dress-polka'&&slots.bags==='bag-brown')return [[0,960],[790,960],[790,820],[900,820],[900,0],[2048,0],[2048,3072],[0,3072]];
+if(slots.tops==='top-damson'&&['pants','skirts'].includes(key))return null;
 if(PRINTED_TEES.has(slots.tops)&&['pants','skirts'].includes(key))return GABZILLA_BOTTOM;
 if(slots.tops==='top-yellow'&&['pants','skirts'].includes(key))return PATENT_BOTTOM;
  if(slots.tops==='top-pink'&&['pants','skirts'].includes(key))return CAMISOLE_BOTTOM;
@@ -203,6 +206,58 @@ return null;
 }
 function clipCSS(points){return 'polygon('+points.map(([x,y])=>(x/2048*100)+'% '+(y/3072*100)+'%').join(',')+')'}
 function clipCanvas(ctx,points){ctx.beginPath();points.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](x/2048*W,y/3072*H));ctx.closePath();ctx.clip()}
+// Fit fabric underneath an outer garment without cutting away its drawn edge.
+// Each row keeps its outline and texture; the fit fades smoothly below the tee.
+const UNDERGARMENT_FITS={
+ damson:{start:1380,full:1600,release:1680,end:2300,edges:[[0,714,1234]]},
+ yukata:{start:1400,full:1640,edges:[[1400,790,1180],[1640,735,1235],[1800,704,1256],[2250,674,1294],[2640,650,1310]]}
+};
+const garmentImages=new Map(),garmentFrames=new Map();
+function garmentImage(id){
+ const src=FITTED[id]||SPRITES[id];
+ if(!garmentImages.has(src)){
+  const image=new Image();image.src=src;
+  const ready=image.decode();
+  const record={image,ready,loaded:false};garmentImages.set(src,record);
+  ready.then(()=>{record.loaded=true;if(allSlots.some(key=>slots[key]===id))renderAvatar()}).catch(()=>{});
+ }
+ return garmentImages.get(src);
+}
+function fittedGarment(id,profileName){
+ const record=garmentImage(id),source=record.image;
+ if(!record.loaded||!source.complete||!source.naturalWidth)return null;
+ const cacheKey=id+':'+profileName;
+ if(garmentFrames.has(cacheKey))return garmentFrames.get(cacheKey);
+ const profile=UNDERGARMENT_FITS[profileName],canvas=document.createElement('canvas');
+ canvas.width=2048;canvas.height=3072;
+ const ctx=canvas.getContext('2d');ctx.drawImage(source,0,0,2048,3072);
+ const pixels=ctx.getImageData(0,0,2048,3072).data;
+ const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
+ for(let y=profile.start;y<(profile.end||3072);y++){
+  let left=2048,right=-1,run=0;
+  // Ignore isolated stray pixels; retain both legs and every continuous edge.
+  for(let x=0;x<2048;x++){
+   run=pixels[(y*2048+x)*4+3]>100?run+1:0;
+   if(run>=5){left=Math.min(left,x-run+1);right=x;}
+  }
+  if(right<=left)continue;
+  let [limitLeft,limitRight]=profile.edges[0].slice(1);
+  for(let i=1;i<profile.edges.length;i++){
+   const a=profile.edges[i-1],b=profile.edges[i];
+   const t=ease((y-a[0])/(b[0]-a[0]));
+   limitLeft=a[1]+(b[1]-a[1])*t;limitRight=a[2]+(b[2]-a[2])*t;
+   if(y<=b[0])break;
+  }
+  const weight=ease((y-profile.start)/(profile.full-profile.start))*(profile.end?1-ease((y-profile.release)/(profile.end-profile.release)):1);
+  const targetLeft=left+Math.max(0,limitLeft-left)*weight;
+  const targetRight=right-Math.max(0,right-limitRight)*weight;
+  const sx=(targetRight-targetLeft)/(right-left),dx=targetLeft-left*sx;
+  if(sx<=0||sx>=1)continue;
+  ctx.clearRect(0,y,2048,1);ctx.drawImage(source,0,y,2048,1,dx,y,2048*sx,1);
+ }
+ if(garmentFrames.size>=2)garmentFrames.delete(garmentFrames.keys().next().value);
+ garmentFrames.set(cacheKey,canvas);return canvas;
+}
 // The wrap meets the two shoulder edges; the neck loop and hanging end keep
 // their original width. Values are measured on the worn artwork at y=813/800.
 const SCARF_SHOULDERS={"top-pajama": [694, 1250], "top-yellow": [718, 1220], "top-pink": [718, 1220], "top-white": [707, 1239], "top-gabzilla": [700, 1224], "top-pullover": [711, 1251], "top-peter-pan": [696, 1228], "top-clown": [689, 1247], "dress-blue": [718, 1220], "dress-floral": [718, 1220], "dress-striped": [680, 1231], "dress-polka": [718, 1220], "jacket-green": [706, 1234], "jacket-purple": [695, 1241], "jacket-cardigan": [712, 1233]};
@@ -295,7 +350,8 @@ for(const [key,z] of ordered)if(slots[key]){
   if(bag.connector)entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.connector,localClip:bag.connectorClip});
  }else if(key==='dresses'&&slots.dresses==='dress-striped'&&['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
   entries.push({src:'assets/dressing-lena/IMG_5448.png',z,fit:STRIPED_DRESS_FIT,localClip:STRIPED_DRESS_LOCAL_CLIP});
- }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null});
+ }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null,
+  rowFit:slots.jackets==='jacket-yukata'&&['pants','skirts','dresses'].includes(key)?'yukata':slots.tops==='top-damson'&&!slots.jackets&&['pants','skirts'].includes(key)?'damson':null});
 }
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
@@ -310,6 +366,8 @@ if(slots.pants||slots.skirts||slots.dresses){
   id:'dress-striped',z:10.5,clip:[[0,1450],[2048,1450],[2048,1690],[0,1690]]
  });
  if(slots.jackets==='jacket-purple')entries.push({src:BASE,z:13,clip:FACE_FOREGROUND});
+ // A long tee covers the thighs, but the hands rest in front of its hem.
+ if(slots.tops==='top-damson')entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:10.8,clip:[[0,1500],[2048,1500],[2048,3072],[0,3072]]});
  for(const id of slots.makeup)entries.push({id,z:35});
 if(scarf)for(const entry of entries){
  const category=ITEMS[entry.id]?.[1];
@@ -319,6 +377,7 @@ return entries.sort((a,b)=>a.z-b.z);
 }
 function renderAvatar(){const node=$('#avatar');node.textContent='';
 for(const entry of outfitLayers()){
+ if(entry.rowFit){const fitted=fittedGarment(entry.id,entry.rowFit);if(fitted)entry.canvas=fitted;}
  let im;
  if(entry.canvas){
   im=document.createElement('canvas');im.width=2048;im.height=3072;
@@ -375,6 +434,7 @@ $('#close').addEventListener('click',()=>{if(window.parent!==window){window.pare
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
 async function saveLook(){const btn=$('#save');btn.disabled=true;try{if(slots.scarves)await scarfReady;const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
 const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src&&!entry.canvas)continue;
+if(entry.rowFit){await garmentImage(entry.id).ready;entry.canvas=fittedGarment(entry.id,entry.rowFit);}
 const img=entry.canvas||await decode(src);
 ctx.save();if(entry.cover)clipCanvas(ctx,entry.cover);if(entry.clip)clipCanvas(ctx,entry.clip);
 if(entry.fit){const ox=(entry.fit.ox??970)/2048*W,oy=(entry.fit.oy||0)/3072*H;ctx.translate(ox+(entry.fit.dx||0)/2048*W,oy+(entry.fit.dy||0)/3072*H);ctx.transform(entry.fit.sx,0,entry.fit.kx||0,entry.fit.sy||1,0,0);ctx.translate(-ox,-oy)}
