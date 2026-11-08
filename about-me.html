@@ -195,8 +195,12 @@ return {sx:1,dy:18};
 // Full-canvas bag pieces share the ring anchor. Adjust the strap shoulder, not the bag shape.
 const BAG_SHOULDERS={"top-pajama":[-12,752,-8],"top-yellow":[0,762,0],"top-pink":[0,765,0],"top-white":[-10,765,40],"top-gabzilla":[-22,752,-10],"top-pullover":[-28,768,-12],"top-peter-pan":[-18,753,-12],"dress-blue":[0,765,0],"dress-floral":[-10,748,0],"dress-striped":[-18,752,-8],"dress-polka":[-8,765,-8],"jacket-green":[-32,773,-18],"jacket-purple":[-42,770,-22],"jacket-cardigan":[-30,765,-18]};
 function bagFits(){
- const [dx,top,lean]=BAG_SHOULDERS[slots.jackets||slots.dresses||slots.tops]||[0,780,0];
- return {body:{sx:1,dx,dy:0},strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy:0},charm:{sx:1,dx:dx-30,dy:15}};
+ const garment=slots.jackets||slots.dresses||slots.tops;
+ const [dx,top,lean]=BAG_SHOULDERS[garment]||[0,780,0];
+ // Lift the bag and charms together; keep the strap seated on the shoulder.
+ const raised=['top-peter-pan','top-gabzilla','top-pink','top-white','top-yellow','top-pajama','dress-polka','dress-striped','dress-blue'];
+ const dy=raised.includes(garment)?-90:0;
+ return {body:{sx:1,dx,dy},strap:{sx:1,sy:(1200+dy-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy},charm:{sx:1,dx:dx-30,dy:15+dy}};
 }
 function outfitLayers(){
 const entries=[{src:BASE,z:1,clip:slots.tops==='top-pullover'?PULLOVER_BODY:null}];
