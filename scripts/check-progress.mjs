@@ -74,3 +74,21 @@ test('every collectible uses an existing drawing and every bonus outfit uses act
   const assets=JSON.parse(dressing.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
   for(const outfit of p.outfits)for(const id of [...Object.values(outfit.values),...(outfit.makeup||[])])assert.ok(assets.items[id],id);
 });
+test('the three personal secrets replace the old interactions without losing saved history',()=>{
+  const storage=new Map([[key,JSON.stringify({visits:[],feats:['secret-rug','secret-cookie','secret-typewriter','secret-twist'],title:null})]]);
+  const {p}=browser({storage});
+  assert.deepEqual(Array.from(p.secrets,x=>x.id),['secret-rug','secret-memory-box','secret-childhood-drawing']);
+  assert.equal(p.secrets.filter(x=>p.hasFeat(x.id)).length,1);
+  assert.equal(p.hasFeat('secret-cookie'),true);
+  assert.equal(p.titles.find(x=>x.id==='detective').earned(),false);
+  p.feat('secret-childhood-drawing');assert.equal(p.hasFeat('secret-childhood-drawing'),false);
+  p.feat('secret-memory-box');p.feat('secret-memory-box');
+  assert.equal(p.secrets.filter(x=>p.hasFeat(x.id)).length,2);
+  assert.equal(p.titles.find(x=>x.id==='detective').earned(),true);
+  assert.equal(browser({storage}).p.hasFeat('secret-memory-box'),true);
+});
+test('opening a route or the cookie never awards the hidden memory box',()=>{
+  const {p}=browser();p.visit('secret/boite-a-souvenirs');p.visit('jeu/fortune-cookie');
+  assert.equal(p.hasFeat('secret-memory-box'),false);assert.equal(p.hasFeat('secret-cookie'),false);
+  assert.equal(p.hasVisit('jeu/fortune-cookie'),true);
+});

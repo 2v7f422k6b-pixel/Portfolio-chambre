@@ -66,6 +66,23 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 - Le cadeau conserve le code `MERCI10` existant. Son application à une commande
   dépend du paramétrage de la boutique ; le carnet ne crée pas de coupon côté paiement.
 
+## La boîte dans le mur
+
+- Les trois secrets retenus sont l’araignée, la boîte à souvenirs et le dessin
+  d’enfance. Le dessin est annoncé « À venir » tant que Léna ne l’a pas fourni.
+  Les anciens accomplissements restent conservés, mais ne comptent plus comme secrets.
+- Une petite bille, au bout de l’étagère du bas, tombe et déloge un carreau du mur.
+  La boîte apparaît derrière ; cliquer dessus ouvre son contenu. Le lien direct
+  `#/secret/boite-a-souvenirs` joue la scène puis ouvre la boîte.
+- `memory-box.js` / `.css` portent l’interaction ; les éléments graphiques
+  réutilisent les perles et cadres dessinés existants. Les PNG restent intacts.
+- Ajouter uniquement les souvenirs choisis par Léna dans `memory-box-content.js` :
+  `type` (`image` ou `audio`), `src`, `title`, `caption` et `alt`, les textes en
+  `{fr, en}`. Aucun faux souvenir n’est publié en attendant les fichiers.
+- La découverte est attribuée après la chute complète, une seule fois. La sortie
+  de la scène annule les animations ; fermer la boîte arrête l’audio. Navigation
+  clavier, préférence de mouvement réduit, FR/EN et jour/nuit sont pris en compte.
+
 ## Vérifications
 
 Avec Node.js 22 ou plus récent, depuis la racine du dépôt :

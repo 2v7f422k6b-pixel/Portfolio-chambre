@@ -27,7 +27,7 @@
     'objet/photos':'illustrations', 'objet/do-nothing':'jeu/do-nothing', 'jeu/dressup':'jeu/dressing',
     'objet/about':'objet/carte-pokemon', 'objet/dressup':'jeu/dressing',
     'objet/mini-games':'jeux', 'objet/word-lab':'jeu/word-lab', 'objet/coloring':'jeu/coloring',
-    'objet/bead-box':'jeu/bead-box', 'objet/rug-secret':'objet/tapis', 'objet/twist-reality':'objet/bretzel',
+    'objet/boite-a-souvenirs':'secret/boite-a-souvenirs', 'objet/bead-box':'jeu/bead-box', 'objet/rug-secret':'objet/tapis', 'objet/twist-reality':'objet/bretzel',
     'objet/music':'objet/marshall', 'objet/typewriter':'objet/machine-a-ecrire', 'objet/iphone':'objet/phone',
     'objet/ring-light':'objet/gearnews-series', 'objet/cds':'objet/music-visuals', 'objet/miroir':'jeu/dressing',
     'objet/rilakkuma':'jeu/do-nothing', 'jeu/rilakkuma':'jeu/do-nothing', 'objet/work-zoom':'objet/imac',
@@ -79,7 +79,7 @@
   function mode(raw) {
     const route = normalize(raw);
     if (raw.startsWith('fenetre/') || route === 'objet/machine-a-ecrire' || route === 'objet/imac' || workObjects.has(route)) return 'work';
-    if (sceneId(route)) return 'play';
+    if (route==='secret/boite-a-souvenirs' || sceneId(route)) return 'play';
     return null;
   }
   function open(raw) {
@@ -89,6 +89,7 @@
     }
     const outfit=/^jeu\/dressing\/tenue\/([a-z-]+)$/.exec(route);
     if(outfit && window.NanaProgress?.outfits.some(x=>x.id===outfit[1])){window.openAbout(outfit[1]);return true;}
+    if(route==='secret/boite-a-souvenirs')return !!window.NanaMemoryBox?.open();
     const appName = appRoutes.get(route);
     if (appName) { window.openApp(appName); return true; }
     if (route === 'objet/phone/contacts' || route === 'objet/phone/mail') {
@@ -117,6 +118,7 @@
   }
 
   function current() {
+    if(q('#nana-memory-box[open]'))return window.NanaMemoryBox?.current();
     if (visible('#work-break-nudge')) return 'objet/machine-a-ecrire';
     if (q('#nana-dreamlab-overlay')) return 'jeu/mimilab';
     if (visible('#coloring-overlay')) return isPencil(selected) ? objectRoute(selected) : 'jeu/coloring';
@@ -143,6 +145,7 @@
     }
     const desk = visible('.desk-panel');
     if (desk && q('#app.mode-work')) return desk.dataset.object === 'trash' ? 'objet/corbeille' : 'objet/post-it';
+    if(q('#app.mode-play')&&window.NanaMemoryBox?.current())return window.NanaMemoryBox.current();
     if (q('#app.mode-play') && selected && !isPencil(selected)) return objectRoute(selected);
     return visible('#player') ? 'objet/marshall' : null;
   }
@@ -155,6 +158,7 @@
       if (bubble) bubble.hidden = true;
     }
     clearSelection();
+    window.NanaMemoryBox?.close();
     window.NanaTypewriter?.close();
     window.NanaDreamLab?.close();
     window.NanaColoring?.close();

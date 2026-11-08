@@ -41,8 +41,8 @@
       '<p class="nj-bottom-note">'+(progress.snapshot().persistent?t('Tes découvertes restent ici quand tu reviens sur ce navigateur.','Your discoveries stay here when you return in this browser.'):t('Ton navigateur ne permet pas la sauvegarde : tes découvertes restent disponibles pendant cette visite.','Your browser cannot save progress: your discoveries are available for this visit.'))+'</p>';
   }
   function secretsPage(){const count=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;return heading(t('Les secrets de la chambre','The room’s secrets'),count+' / '+progress.secrets.length+' '+t('petites surprises trouvées','little surprises found'))+paginate(progress.secrets,(secret)=>{
-    const found=progress.hasFeat(secret.id),number=progress.secrets.indexOf(secret)+1;
-    return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':'Encore bien caché',found?'Discovered':'Still well hidden')+'</p>'+(found?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
+    const found=progress.hasFeat(secret.id),number=progress.secrets.indexOf(secret)+1,coming=secret.available===false;
+    return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':coming?'À venir':'Encore bien caché',found?'Discovered':coming?'Coming soon':'Still well hidden')+'</p>'+(found?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
   },{size:4});}
   function gamesPage(){const found=progress.games.filter(x=>progress.hasVisit(x.route)).length;return heading(t('À quoi on joue ?','What shall we play?'),found+' / '+progress.games.length+' '+t('jeux découverts','games discovered'))+paginate(progress.games,game=>{
     const unlocked=progress.hasVisit(game.route);

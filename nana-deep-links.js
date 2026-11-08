@@ -22,7 +22,7 @@
     if (!mode()) return '';
     const room = window.NanaRoomLinks?.current();
     // These independent dialogs can sit on top of the main artwork window.
-    if (document.querySelector('#work-break-nudge:not([hidden]),#nana-dreamlab-overlay,#coloring-overlay:not([hidden])') && room) return room;
+    if (document.querySelector('#nana-memory-box[open],#work-break-nudge:not([hidden]),#nana-dreamlab-overlay,#coloring-overlay:not([hidden])') && room) return room;
     if (document.getElementById('nana-link-index')?.isConnected) return 'liens';
     return window.NanaArtLinks?.current() || window.NanaMediaLinks?.current() || window.NanaLiterary?.route?.() ||
       window.NanaBookLinks?.current() || window.NanaPagesLinks?.current() || room || homeRoute();

@@ -26,9 +26,8 @@
   ].map(([id, fr, en, image]) => ({id, name:pair(fr,en), route:'jeu/'+id, image:art(image)}));
   const secrets = [
     {id:'secret-rug', name:pair('Une colocataire sous le tapis','A roommate under the rug'), image:art('araignee_jour'), route:'objet/tapis'},
-    {id:'secret-typewriter', name:pair('La machine qui écrit toute seule','The typewriter has a mind of its own'), image:art('lettre_A'), route:'objet/machine-a-ecrire'},
-    {id:'secret-twist', name:pair('La chambre en mille morceaux','A room in a thousand pieces'), image:art('etincelle_pleine'), route:'objet/bretzel'},
-    {id:'secret-cookie', name:pair('Un message dans le biscuit','A message in the cookie'), image:'assets/fortune-cookie.png', route:'jeu/fortune-cookie'}
+    {id:'secret-memory-box', name:pair('La boîte à souvenirs','The memory box'), image:art('fleur'), route:'secret/boite-a-souvenirs'},
+    {id:'secret-childhood-drawing', name:pair('Un dessin d’enfance','A childhood drawing'), image:art('crayon_pinceau'), route:null, available:false}
   ];
   // Bonus looks only use Léna's existing garments. The original wardrobe stays available.
   const outfits = [
@@ -47,7 +46,7 @@
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
     'photos':'object:instax', 'illustrations':'flowers', 'objet/lampe-fleur':'wall-lamp'
   };
-  const allowedFeats = new Set(['latte-made','beads-made','rested','outfit-styled',...secrets.map(x=>x.id),...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -125,7 +124,6 @@
     if (!knownRoute) return;
     const roomId=roomRoutes[route] || (scene?'object:'+scene.id:null);
     if(roomId) window.NanaDiscoveries?.remember(roomId);
-    if (route==='jeu/fortune-cookie') feat('secret-cookie');
     if(state.visits.includes(route))return;
     state.visits.push(route);save();
   }

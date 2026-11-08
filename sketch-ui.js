@@ -7,6 +7,7 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['.memory-ui-frame', 'frame', 1601],
     ['.nj-frame', 'frame', 1501],
     ['.nj-rule', 'rule', 1502],
     ['.nj-button', 'frame', 1503],
