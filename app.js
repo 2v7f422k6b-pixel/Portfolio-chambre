@@ -419,7 +419,7 @@ function openWorkAbout(){
  html body #window-shade #window:has(.nana-profile-card) #window-content{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important}
  html body #window-shade #window:has(.nana-profile-card) #window-content>.sketch-ui-svg{display:none!important}
 
- html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.716),100%);aspect-ratio:63/88;box-sizing:border-box;margin:0 auto;padding:4.8% 5.5% 7%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:24px!important;overflow:hidden;font-family:inherit}
+ html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:4.8% 5.5% 7%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:24px!important;overflow:hidden;font-family:inherit}
  html body #window .nana-profile-card::before{content:none!important}
  .nana-profile-card>.card-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
  .nana-profile-card .card-edition{font-size:2.6cqw;font-weight:700;line-height:1.1}
@@ -427,8 +427,8 @@ function openWorkAbout(){
  html body #window .nana-profile-card h2{font-size:7.8cqw!important;font-weight:bold;line-height:1.05;margin:0!important}
  .nana-profile-card .card-hp{display:flex;align-items:center;gap:1.5cqw;font-size:5.5cqw;font-weight:bold;white-space:nowrap}
  .nana-profile-card .card-recharge{text-align:right;font-size:2.5cqw;line-height:1.1;margin:-.4cqw 0 1.8cqw}
- html body #window .nana-profile-art{flex:0 0 32%;position:relative;width:100%;background:#c4b4ef!important;overflow:hidden;border-radius:0!important}
- .nana-profile-art img{position:absolute;width:100%;height:100%;max-width:none;inset:0;object-fit:contain}
+ html body #window .nana-profile-art{flex:0 0 auto;aspect-ratio:1536/1151;position:relative;width:100%;background:#c4b4ef!important;overflow:hidden;border-radius:0!important}
+ .nana-profile-art img{display:block;position:static;width:100%;height:auto;max-width:100%;object-fit:contain}
  .nana-profile-art .card-art-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
  .nana-profile-card .card-location{background:#ff9dba!important;font-weight:bold;font-style:italic;text-align:center;font-size:2.55cqw;line-height:1.3;padding:.7cqw 1cqw;margin:1cqw 0 1.5cqw}
  .nana-profile-card .card-attack{display:grid;grid-template-columns:13% minmax(0,1fr) auto;gap:2cqw;align-items:center;flex:1;padding:1.5cqw 0;margin:0}
@@ -452,7 +452,7 @@ function openWorkAbout(){
  <header><h2>Léna</h2><span class="card-hp">40 ${t('PV','HP')}<span class="card-energy" aria-hidden="true"><img src="assets/drawn-ui/etoile_pleine.png" alt=""></span></span></header>
  <div class="card-recharge">${t('rechargeable au café','coffee-rechargeable')}</div>
  <div class="nana-profile-art" role="img" aria-label="${t('Personnage illustré de Léna','Illustrated character of Léna')}">
- <img src="assets/dressing-lena/lena-card-illustration.jpeg" alt="">
+ <img src="assets/dressing-lena/lena-card-illustration-v2.jpeg" alt="">
  <svg class="card-art-frame" viewBox="0 0 400 250" preserveAspectRatio="none" aria-hidden="true"><path d="M5 5 Q190 3 395 5 L394 245 Q190 247 5 244Z" fill="none" stroke="#f58bb0" stroke-width="9"/><path d="M9 9 Q190 7 391 9 L390 241 Q190 243 9 240Z" fill="none" stroke="#cf123a" stroke-width="1"/></svg>
  </div>
  <div class="card-location">${t('Artiste chaotique · Type : créative · Habitat : canapé','Chaotic artist · Type: creative · Habitat: sofa')}</div>
