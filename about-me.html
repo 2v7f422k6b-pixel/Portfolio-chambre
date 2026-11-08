@@ -216,7 +216,15 @@ function scarfFrame(){
  const cover=[[0,813],[left,813]];
  for(let x=left;x<=right;x++){
   let bottom=x<970?813:800;
-  for(let y=859;y>=650;y--)if(pixels[(y*2048+x)*4+3]>180){bottom=y-4;break;}
+  // Follow the first opaque band (the neck wrap), not the hanging
+  // end below it: the transparent gap between them must show the garment.
+  let inWrap=false;
+  for(let y=650;y<860;y++){
+   const alpha=pixels[(y*2048+x)*4+3];
+   if(!inWrap){if(alpha>180){inWrap=true;bottom=y-4;}}
+   else if(alpha>16)bottom=y-4;
+   else break;
+  }
   cover.push([x,bottom]);
  }
  cover.push([2048,800],[2048,3072],[0,3072]);
