@@ -153,3 +153,38 @@ test('silent recordings do not qualify, music on either channel does',()=>{
  assert.equal(containsMusic(audio([[0,.00001,0]])),false);
  assert.equal(containsMusic(audio([[0,0,0],[0,-.05,0]])),true);
 });
+
+test('Sonny hood and headlamp require their own discoveries and survive reload',()=>{
+ const {p,storage}=browser();
+ assert.equal(p.unlockedOutfit('sonny'),false);assert.equal(p.unlockedOutfit('night-explorer'),false);
+ for(let i=0;i<6;i++)p.readDialogueLine('miffy',i);
+ assert.equal(p.unlockedOutfit('sonny'),false);
+ for(let i=0;i<5;i++)p.readDialogueLine('sonny-angel',i);
+ assert.equal(p.unlockedOutfit('sonny'),false);
+ p.readDialogueLine('sonny-angel',5);
+ assert.equal(p.unlockedOutfit('sonny'),true);
+ assert.equal(p.unlockedOutfit('night-explorer'),false);
+ p.visit('night');assert.equal(p.unlockedOutfit('night-explorer'),true);
+ const reloaded=browser({storage}).p;
+ assert.equal(reloaded.unlockedOutfit('sonny'),true);assert.equal(reloaded.unlockedOutfit('night-explorer'),true);
+});
+test('Sonny hood uses the hairless body for both the base and purple-jacket face overlay',()=>{
+ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
+ const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
+ assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
+ const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('function renderAvatar(){'));
+ const slots={hat:'head-sonny-rabbit',jackets:'jacket-purple',makeup:new Set()};
+ const env={slots,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,
+  PULLOVERS:new Set(),bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
+ const layers=vm.runInNewContext('('+fn.trim()+')',env);
+ for(const jacket of ['jacket-purple',null]){
+  slots.jackets=jacket;
+  const bodies=layers().filter(x=>x.z===1||x.z===13);
+  assert.equal(bodies.length,jacket?2:1);
+  assert.ok(bodies.every(x=>x.src===assets.hairlessBase));
+ }
+ for(const hat of [null,'head-headlamp','head-miffy']){
+  slots.hat=hat;slots.jackets='jacket-purple';
+  assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
+ }
+});
