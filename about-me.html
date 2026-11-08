@@ -157,7 +157,7 @@ const GREEN_COAT_UNDERLAY=[[850,0],[1110,0],[1110,1100],[1140,1700],[1310,2300],
 const SHORT_JACKET_TOP=[[880,0],[1120,0],[1120,1000],[1190,1450],[800,1450],[880,1000]];
 const SHORT_JACKET_DRESS_FLORAL=[[880,0],[1120,0],[1120,1000],[1190,1450],[2048,1450],[2048,3072],[0,3072],[0,1450],[800,1450],[880,1000]];
 const SHORT_JACKET_DRESS_STRIPED=[[880,0],[1120,0],[1120,1000],[1190,1450],[1235,1650],[2048,1650],[2048,3072],[0,3072],[0,1650],[740,1650],[800,1450],[880,1000]];
-const PULLOVER_BODY=[[0,0],[2048,0],[2048,735],[1090,735],[1090,775],[1250,825],[2048,825],[2048,3072],[0,3072]];
+const PULLOVER_BODY=[[0,0],[2048,0],[2048,680],[1050,680],[1050,800],[1300,900],[2048,900],[2048,3072],[0,3072]];
 const GABZILLA_BOTTOM=[[760,0],[1160,0],[1160,1400],[1235,1520],[1270,1620],[2048,1800],[2048,3072],[0,3072],[0,1800],[680,1620],[705,1520],[760,1400]];
 const CAMISOLE_BOTTOM=[[860,0],[1100,0],[1100,1180],[1168,1300],[1250,1420],[2048,1550],[2048,3072],[0,3072],[0,1550],[730,1420],[795,1300],[860,1180]];
 // Hide the boot shafts above each trouser hem, including the gap between legs.
@@ -199,7 +199,7 @@ function bagFits(){
  const [dx,top,lean]=BAG_SHOULDERS[garment]||[0,780,0];
  const raised=['top-peter-pan','top-gabzilla','top-pink','top-white','top-yellow','top-pajama','dress-polka','dress-striped','dress-blue'];
  const higher=['top-peter-pan','top-white','top-pajama','dress-striped','dress-blue'];
- const dy=higher.includes(garment)?-135:(raised.includes(garment)?-90:0);
+ const dy=garment==='top-white'?-155:(!garment?-110:(higher.includes(garment)?-135:(raised.includes(garment)?-90:0)));
  const body={sx:1,dx,dy},charm={sx:1,dx:dx-30,dy:15+dy};
  // Preserve the approved fits for jackets and other unraised outfits.
  if(!dy)return {body,strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy},charm};
@@ -258,7 +258,8 @@ for(const [id,meta] of itemsIn(activeTab)){const b=document.createElement('butto
 if(!target.children.length)target.textContent='Bientôt disponible.'}
 function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='scarves'?(document.documentElement.lang==='en'?'SCARVES':'ÉCHARPES'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
 function select(id){const key=slotFor(id);if(!key||CLOWN_PARTS.has(id))return;
-if(clownActive&&(['tops','pants','skirts','dresses','jackets','necklace','shoes'].includes(key)||presets[2].makeup.includes(id)))clearClown();
+// Unlocked clown pieces remain independently combinable with other garments.
+clownActive=false;
 if(key==='makeup'){slots.makeup.has(id)?slots.makeup.delete(id):slots.makeup.add(id)}else{slots[key]=slots[key]===id?null:id;
 if(slots[key]){if(key==='dresses'){slots.tops=null;slots.pants=null;slots.skirts=null}if(['tops','pants','skirts'].includes(key))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&!slots.bags)slots.bags='bag-brown'}
 if(key==='bags'&&!slots.bags)slots.bagAccessories=null;
