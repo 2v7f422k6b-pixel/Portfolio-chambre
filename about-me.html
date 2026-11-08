@@ -156,7 +156,11 @@ const GREEN_COAT_UNDERLAY=[[850,0],[1110,0],[1110,1100],[1140,1700],[1310,2300],
 // Closed short jackets conceal the shoulders and sleeves underneath.
 const SHORT_JACKET_TOP=[[880,0],[1120,0],[1120,1000],[1190,1450],[800,1450],[880,1000]];
 const SHORT_JACKET_DRESS_FLORAL=[[880,0],[1120,0],[1120,1000],[1190,1450],[2048,1450],[2048,3072],[0,3072],[0,1450],[800,1450],[880,1000]];
-const SHORT_JACKET_DRESS_STRIPED=[[880,0],[1120,0],[1120,1000],[1190,1450],[1235,1650],[2048,1650],[2048,3072],[0,3072],[0,1650],[740,1650],[800,1450],[880,1000]];
+// Use Léna's uncut drawing beneath short jackets: the fitted version has
+// hand-shaped holes that do not align with the jacket cuffs.
+const STRIPED_DRESS_FIT={sx:1052/1068,sy:1865/1888,ox:0,oy:0,dx:419-411*(1052/1068),dy:736-721*(1865/1888)};
+const SHORT_JACKET_DRESS_STRIPED=[[880,0],[1120,0],[1120,1000],[1190,1400],[1250,1500],[1275,1660],[2048,1660],[2048,3072],[0,3072],[0,1660],[682,1660],[710,1500],[800,1400],[880,1000]];
+const STRIPED_DRESS_LOCAL_CLIP=SHORT_JACKET_DRESS_STRIPED.map(([x,y])=>[(x-STRIPED_DRESS_FIT.dx)/STRIPED_DRESS_FIT.sx,(y-STRIPED_DRESS_FIT.dy)/STRIPED_DRESS_FIT.sy]);
 const PULLOVER_BODY=[[0,0],[2048,0],[2048,680],[1020,680],[1020,730],[1000,760],[1300,900],[2048,900],[2048,3072],[0,3072]];
 const GABZILLA_BOTTOM=[[760,0],[1160,0],[1160,1400],[1235,1520],[1270,1620],[2048,1800],[2048,3072],[0,3072],[0,1800],[680,1620],[705,1520],[760,1400]];
 const CAMISOLE_BOTTOM=[[860,0],[1100,0],[1100,1180],[1168,1300],[1250,1420],[2048,1550],[2048,3072],[0,3072],[0,1550],[730,1420],[795,1300],[860,1180]];
@@ -175,7 +179,6 @@ if(slots.jackets==='jacket-green'&&['pants','skirts','dresses'].includes(key))re
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
 if(key==='dresses'&&['dress-floral','dress-polka'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
-if(key==='dresses'&&slots.dresses==='dress-striped')return SHORT_JACKET_DRESS_FLORAL;
 }
 // Hide only the bag-side bow while the brown bag is worn; retain the opposite bow.
 if(key==='dresses'&&slots.dresses==='dress-polka'&&slots.bags==='bag-brown')return [[0,960],[790,960],[790,820],[900,820],[900,0],[2048,0],[2048,3072],[0,3072]];
@@ -224,6 +227,8 @@ for(const [key,z] of ordered)if(slots[key]){
   entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
   entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap,localClip:bag.strapClip});
   if(bag.connector)entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.connector,localClip:bag.connectorClip});
+ }else if(key==='dresses'&&slots.dresses==='dress-striped'&&['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
+  entries.push({src:'assets/dressing-lena/IMG_5448.png',z,fit:STRIPED_DRESS_FIT,localClip:STRIPED_DRESS_LOCAL_CLIP});
  }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null)});
 }
 if(slots.pants||slots.skirts||slots.dresses){
