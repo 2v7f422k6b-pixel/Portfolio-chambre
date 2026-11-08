@@ -32,7 +32,7 @@ header.top{min-height:53px;padding:7px 16px;display:flex;justify-content:space-b
 .avatar-area:before,.avatar-area:after{content:none;position:absolute;z-index:0;color:#d74a58;font-size:23px;opacity:.65}
 .avatar-area:before{left:8%;top:27%}.avatar-area:after{right:9%;bottom:25%}
 .avatar{position:relative;z-index:1;height:min(100%,690px);max-height:calc(100dvh - 210px);aspect-ratio:1365/2048;flex:0 0 auto;filter:none}
-.avatar img.layer{position:absolute;max-width:none;display:block;pointer-events:none;object-fit:fill;user-select:none;-webkit-user-drag:none}
+.avatar .layer{position:absolute;max-width:none;display:block;pointer-events:none;object-fit:fill;user-select:none;-webkit-user-drag:none}
 .makeup-mark{position:absolute;pointer-events:none;border-radius:50%;mix-blend-mode:multiply}
 .stage-foot{width:calc(100% - 24px);flex:0 0 auto;border-top:1px solid #d87b83;margin:0 12px;padding:9px 4px 13px;font-size:12px;text-align:center;line-height:1.25}
 .toolbar{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:7px}
@@ -170,7 +170,6 @@ const FACE_FOREGROUND=[[0,0],[2048,0],[2048,620],[1125,620],[1105,640],[1085,663
 const PATENT_BOTTOM=[[850,0],[1100,0],[1100,1180],[1170,1290],[1240,1410],[2048,1530],[2048,3072],[0,3072],[0,1530],[740,1410],[790,1300],[820,1220],[850,1180]];
 const BOOT_HEM_BY_PANTS={'pants-pajama':2680,'pants-stripes':2680,'pants-green':2640,'pants-leopard':2600,'pants-barrel':2620};
 function underJacketClip(key){
-if(key==='jackets'&&slots.jackets==='jacket-purple'&&slots.scarves==='scarf-check')return [[0,900],[700,835],[735,800],[780,770],[830,750],[880,800],[1100,800],[1170,780],[1250,850],[2048,900],[2048,3072],[0,3072]];
 // Hide the strap return behind the shoulder, including beneath scarves.
 
 if(key==='shoes'&&slots.shoes==='shoes-boots'&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
@@ -189,14 +188,41 @@ return null;
 }
 function clipCSS(points){return 'polygon('+points.map(([x,y])=>(x/2048*100)+'% '+(y/3072*100)+'%').join(',')+')'}
 function clipCanvas(ctx,points){ctx.beginPath();points.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](x/2048*W,y/3072*H));ctx.closePath();ctx.clip()}
-// Fit the scarf over the shoulder line of the outermost garment.
-// Coordinates are in the original 2048 × 3072 artwork; source files stay intact.
-// Match the upper shoulder silhouette of the outermost garment.
-const SCARF_SHOULDERS={"top-clown":[1.6,0],"top-peter-pan":[1.7,-30],"top-pajama":[1.625,0],"top-pink":[1.05,0],"top-pullover":[1.6,0],"top-gabzilla":[1.675,0],"top-white":[1.325,0],"top-yellow":[1.05,0],"dress-striped":[1.525,0],"dress-polka":[1.275,0],"dress-floral":[1.05,0],"dress-blue":[1.05,0],"jacket-purple":[1.675,-10],"jacket-cardigan":[1.575,0],"jacket-green":[1.6,0]};
-function scarfFit(){
-const garment=slots.jackets||slots.dresses||slots.tops;
-const [sx,dy]=SCARF_SHOULDERS[garment]||[1.05,0];
-return {sx,dy};
+// The wrap meets the two shoulder edges; the neck loop and hanging end keep
+// their original width. Values are measured on the worn artwork at y=813/800.
+const SCARF_SHOULDERS={"top-pajama": [694, 1250], "top-yellow": [718, 1220], "top-pink": [718, 1220], "top-white": [707, 1239], "top-gabzilla": [700, 1224], "top-pullover": [711, 1251], "top-peter-pan": [696, 1228], "top-clown": [689, 1247], "dress-blue": [718, 1220], "dress-floral": [718, 1220], "dress-striped": [680, 1231], "dress-polka": [718, 1220], "jacket-green": [706, 1234], "jacket-purple": [695, 1241], "jacket-cardigan": [712, 1233]};
+const scarfFrames=new Map();
+const scarfSource=new Image();
+scarfSource.src=FITTED['scarf-check']||SPRITES['scarf-check'];
+const scarfReady=scarfSource.decode().then(()=>{if(slots.scarves)renderAvatar()}).catch(()=>{});
+const scarfEase=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
+function scarfFrame(){
+ if(!scarfSource.complete||!scarfSource.naturalWidth)return null;
+ const garment=slots.jackets||slots.dresses||slots.tops||'body';
+ if(scarfFrames.has(garment))return scarfFrames.get(garment);
+ const [left,right]=SCARF_SHOULDERS[garment]||[718,1220];
+ const canvas=document.createElement('canvas');canvas.width=2048;canvas.height=3072;
+ const ctx=canvas.getContext('2d');
+ const scale=(right-left)/(1209-732),shift=left-732*scale,dy=18;
+ // A gradual row fit affects only the shoulder wrap. No global stretch.
+ for(let y=620;y<1030;y++){
+  const weight=scarfEase((y-710)/85)*(1-scarfEase((y-835)/195));
+  const sx=1+(scale-1)*weight;
+  ctx.drawImage(scarfSource,0,y,2048,1,shift*weight,y+dy,2048*sx,1);
+ }
+ ctx.drawImage(scarfSource,0,1030,2048,3072-1030,0,1030+dy,2048,3072-1030);
+ // Conceal collar tips above the wrap instead of widening the whole scarf.
+ const pixels=ctx.getImageData(0,0,2048,860).data;
+ const cover=[[0,813],[left,813]];
+ for(let x=left;x<=right;x++){
+  let bottom=x<970?813:800;
+  for(let y=859;y>=650;y--)if(pixels[(y*2048+x)*4+3]>180){bottom=y-4;break;}
+  cover.push([x,bottom]);
+ }
+ cover.push([2048,800],[2048,3072],[0,3072]);
+ // Keep only a few full-resolution canvases in memory on mobile.
+ if(scarfFrames.size>=3)scarfFrames.delete(scarfFrames.keys().next().value);
+ const frame={canvas,cover};scarfFrames.set(garment,frame);return frame;
 }
 // Full-canvas bag pieces share the ring anchor. Adjust the strap shoulder, not the bag shape.
 const BAG_SHOULDERS={"top-pajama":[-12,752,-8],"top-yellow":[0,762,0],"top-pink":[0,765,0],"top-white":[-10,765,40],"top-gabzilla":[-22,752,-10],"top-pullover":[-28,768,-12],"top-peter-pan":[-18,753,-12],"dress-blue":[0,765,0],"dress-floral":[-10,748,0],"dress-striped":[-18,752,-8],"dress-polka":[-8,765,-8],"jacket-green":[-32,773,-18],"jacket-purple":[-42,770,-22],"jacket-cardigan":[-30,765,-18]};
@@ -224,14 +250,17 @@ const entries=[{src:BASE,z:1,clip:slots.tops==='top-pullover'?PULLOVER_BODY:null
 const jewelryZ=['top-yellow','top-pullover'].includes(slots.tops)?10:4;
 const ordered=[['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['jackets',12],['earrings',jewelryZ],['necklace',jewelryZ],['bags',19],['bagAccessories',20],['hat',23],['headphones',24],['clips',25],['scarves',40]];
 const bag=bagFits();
+const scarf=slots.scarves==='scarf-check'?scarfFrame():null;
 for(const [key,z] of ordered)if(slots[key]){
- if(key==='bags'&&slots.bags==='bag-brown'){
+ if(key==='scarves'&&scarf){
+  entries.push({canvas:scarf.canvas,z});
+ }else if(key==='bags'&&slots.bags==='bag-brown'){
   entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
   entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap,localClip:bag.strapClip});
   if(bag.connector)entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.connector,localClip:bag.connectorClip});
  }else if(key==='dresses'&&slots.dresses==='dress-striped'&&['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
   entries.push({src:'assets/dressing-lena/IMG_5448.png',z,fit:STRIPED_DRESS_FIT,localClip:STRIPED_DRESS_LOCAL_CLIP});
- }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null)});
+ }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null});
 }
 if(slots.pants||slots.skirts||slots.dresses){
   const handZ=slots.dresses?10:7;
@@ -242,10 +271,29 @@ if(slots.pants||slots.skirts||slots.dresses){
  }
  if(slots.jackets==='jacket-purple')entries.push({src:BASE,z:13,clip:FACE_FOREGROUND});
  for(const id of slots.makeup)entries.push({id,z:35});
+if(scarf)for(const entry of entries){
+ const category=ITEMS[entry.id]?.[1];
+ if(['tops','dresses','jackets','jewelry'].includes(category)||entry.src==='assets/dressing-lena/IMG_5448.png')entry.cover=scarf.cover;
+}
 return entries.sort((a,b)=>a.z-b.z);
 }
 function renderAvatar(){const node=$('#avatar');node.textContent='';
-for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip||entry.localClip)im.style.clipPath=clipCSS(entry.clip||entry.localClip);if(entry.fit){im.style.transformOrigin=((entry.fit.ox??970)/2048*100)+'% '+((entry.fit.oy||0)/3072*100)+'%';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+((entry.fit.dy||0)/3072*100)+'%) matrix('+entry.fit.sx+',0,'+(entry.fit.kx||0)+','+(entry.fit.sy||1)+',0,0)'}node.appendChild(im)}}
+for(const entry of outfitLayers()){
+ let im;
+ if(entry.canvas){
+  im=document.createElement('canvas');im.width=2048;im.height=3072;
+  im.getContext('2d').drawImage(entry.canvas,0,0);
+  im.className='layer';im.style.cssText='left:0;top:0;width:100%;height:100%;z-index:'+entry.z;
+ }else im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);
+ if(!im)continue;
+ if(entry.clip||entry.localClip)im.style.clipPath=clipCSS(entry.clip||entry.localClip);
+ if(entry.fit){im.style.transformOrigin=((entry.fit.ox??970)/2048*100)+'% '+((entry.fit.oy||0)/3072*100)+'%';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+((entry.fit.dy||0)/3072*100)+'%) matrix('+entry.fit.sx+',0,'+(entry.fit.kx||0)+','+(entry.fit.sy||1)+',0,0)'}
+ if(entry.cover){
+  const wrap=document.createElement('div');wrap.className='layer';
+  wrap.style.cssText='left:0;top:0;width:100%;height:100%;z-index:'+entry.z;
+  wrap.style.clipPath=clipCSS(entry.cover);wrap.appendChild(im);node.appendChild(wrap);
+ }else node.appendChild(im);
+}
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
@@ -284,13 +332,13 @@ $('#reset').addEventListener('click',()=>applyPreset(0));
 $('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];clownActive=false;for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsIn('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsIn('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsIn(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsIn('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsIn('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsIn('bagAccessories').map(x=>x[0]));render()});
 $('#close').addEventListener('click',()=>{if(window.parent!==window){window.parent.postMessage({type:'close-about-me'},location.origin==='null'?'*':location.origin)}else if(history.length>1)history.back();else location.href='index.html'});
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
-async function saveLook(){const btn=$('#save');btn.disabled=true;try{const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
-const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src)continue;
-const img=await decode(src);
-ctx.save();if(entry.clip)clipCanvas(ctx,entry.clip);
+async function saveLook(){const btn=$('#save');btn.disabled=true;try{if(slots.scarves)await scarfReady;const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
+const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src&&!entry.canvas)continue;
+const img=entry.canvas||await decode(src);
+ctx.save();if(entry.cover)clipCanvas(ctx,entry.cover);if(entry.clip)clipCanvas(ctx,entry.clip);
 if(entry.fit){const ox=(entry.fit.ox??970)/2048*W,oy=(entry.fit.oy||0)/3072*H;ctx.translate(ox+(entry.fit.dx||0)/2048*W,oy+(entry.fit.dy||0)/3072*H);ctx.transform(entry.fit.sx,0,entry.fit.kx||0,entry.fit.sy||1,0,0);ctx.translate(-ox,-oy)}
 if(entry.localClip)clipCanvas(ctx,entry.localClip);
-if(entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
+if(entry.canvas||entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
 else if(FITS[entry.id])ctx.drawImage(img,...FITS[entry.id]);
 ctx.restore();
 }
