@@ -4,9 +4,10 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nana’s Little Shop — illustrations, bijoux et histoires</title>
 <meta name="description" content="Un petit bout de la chambre de Nana : illustrations, bijoux de téléphone et La Princesse Clown. La boutique se prépare.">
-<link rel="stylesheet" href="shop.css?v=20261108-book-1">
+<link rel="stylesheet" href="shop.css?v=20261108-collections-1">
 <script src="shop-charm.js?v=20261108-1" defer></script>
-<script src="shop.js?v=20261108-book-1" defer></script>
+<script src="shop-book-catalog.js?v=20261108-collections-1" defer></script>
+<script src="shop.js?v=20261108-collections-1" defer></script>
 <script src="sketch-ui.js?v=20261108-shop" defer></script>
 </head>
 <body>
@@ -17,12 +18,21 @@
 </header>
 <main>
 <section class="intro"><p class="eyebrow" data-text="eyebrow">les petites choses de Nana</p><h1 data-text="heading">Un petit bout de ma chambre</h1><p data-text="subtitle">Illustrations, bijoux et histoires à emporter.</p></section>
-<nav class="filters shop-rule" aria-label="Catégories / Categories"><button data-filter="all" aria-pressed="true" data-text="all">tout</button><button data-filter="art" aria-pressed="false" data-text="illustrations">illustrations</button><button data-filter="charm" aria-pressed="false" data-text="jewelry">bijoux</button><button data-filter="sticker" aria-pressed="false" data-text="stickers">stickers</button><button data-filter="book" aria-pressed="false" data-text="book">le livre</button></nav>
+<nav class="filters shop-rule" aria-label="Catégories / Categories"><button data-filter="all" aria-pressed="true" data-text="all">tout</button><button data-filter="art" aria-pressed="false" data-text="illustrations">illustrations</button><button data-filter="book" aria-pressed="false" data-text="book">le livre</button><button data-filter="charm" aria-pressed="false" data-text="jewelry">bijoux</button><button data-filter="tshirt" aria-pressed="false" data-text="tshirt">t-shirt</button><button data-filter="sticker" aria-pressed="false" data-text="stickers">stickers</button></nav>
 <div id="shop-content" class="shop-layout" data-category="all" tabindex="-1">
-<section id="book-section" class="featured-book shop-rule" aria-labelledby="book-title"><div class="book-feature"><button class="book-object" data-product="book" aria-label="La Princesse Clown"><img src="assets/shop/princesse-clown-cover.jpg" alt="La Princesse Clown" fetchpriority="high"></button><div class="book-caption"><p class="eyebrow" data-text="bookSpotlight">le livre de Nana</p><h2 id="book-title">La Princesse Clown</h2><p class="book-intro" data-text="bookIntro">Un conte écrit et illustré par Léna.</p><p data-text="bookType">Livre numérique · PDF</p><button class="shop-frame discover" data-product="book" data-text="discoverBook">découvrir le conte</button><p class="price-note" data-text="price">prix à venir</p></div></div></section>
+<section id="book-section" class="featured-book shop-rule" aria-labelledby="book-title"><div class="book-feature"><button class="book-object" data-product="book" aria-label="La Princesse Clown"><img src="assets/shop/princesse-clown-cover.jpg" alt="La Princesse Clown" fetchpriority="high"></button><div class="book-caption"><p class="eyebrow" data-text="bookSpotlight">le livre de Nana</p><h2 id="book-title">La Princesse Clown</h2><p class="book-intro" data-text="bookIntro">Un conte écrit et illustré par Léna.</p><p data-text="bookType">Livre numérique · PDF</p><button class="shop-frame discover" data-product="book" data-text="discoverBook">découvrir le livre</button><button class="text-button book-art-link" data-show-collection="princesse-clown" data-text="seeBookArt">voir les illustrations du conte</button><p class="price-note" data-text="price">prix à venir</p></div></div></section>
 
-<section id="illustration-wall" aria-labelledby="wall-title"><div class="section-heading"><h2 id="wall-title" data-text="illustrations">illustrations</h2><p id="wall-count"></p></div><div id="wall-grid" class="wall-grid"></div><button id="wall-more" class="shop-frame more-button" aria-expanded="false" aria-controls="wall-grid"></button></section>
+<section id="illustration-wall" aria-labelledby="wall-title"><div class="section-heading"><h2 id="wall-title" data-text="illustrations">illustrations</h2><p id="wall-count" role="status" aria-live="polite"></p></div>
+<nav class="collection-filters" aria-label="Collections d’illustrations / Illustration collections">
+<button data-collection="all" aria-pressed="true"><span data-text="collectionAll">tout voir</span><span class="collection-count" data-collection-count="all"></span></button>
+<button data-collection="princesse-clown" aria-pressed="false"><span data-text="collectionBook">La Princesse Clown</span><span class="collection-count" data-collection-count="princesse-clown"></span></button>
+<button data-collection="marseille" aria-pressed="false"><span data-text="collectionMarseille">Marseille</span><span class="collection-count" data-collection-count="marseille"></span></button>
+<button data-collection="libre" aria-pressed="false"><span data-text="collectionFree">Au fil des envies</span><span class="collection-count" data-collection-count="libre"></span></button>
+</nav>
+<div id="book-collection-note" class="collection-note" hidden><p data-text="bookArtNote">Les dessins du conte, à collectionner séparément. Le livre PDF est proposé à part.</p><button class="text-button" data-product="book" data-text="discoverBook">découvrir le livre</button></div>
+<div id="wall-grid" class="wall-grid"></div><button id="wall-more" class="shop-frame more-button" aria-expanded="false" aria-controls="wall-grid"></button></section>
 <aside id="side-boutique" class="side-boutique">
+<section id="gabzilla-section" class="gabzilla-card shop-frame" aria-labelledby="gabzilla-title"><p class="eyebrow" data-text="collaboration">collaboration</p><h2 id="gabzilla-title" data-text="gabzillaTitle">Le t-shirt GABZILLA</h2><button class="gabzilla-photo" data-product="gabzilla" aria-label="GABZILLA"><img src="assets/previews/gabzilla/tshirt-porte.webp" alt="T-shirt GABZILLA, devant et dos / front and back" loading="lazy" width="900" height="1200"></button><p data-text="gabzillaIntro">Mon illustration de Marseille sur un t-shirt GABZILLA.</p><button class="text-button" data-product="gabzilla" data-text="discoverGabzilla">voir la collaboration</button></section>
 <section id="charms-section" aria-labelledby="charms-title"><h2 id="charms-title" data-text="jewelry">bijoux</h2><div class="charms-rail shop-rule"></div><div id="hanging-charms"></div><p class="charm-caption" data-text="charmHint">Des perles, un prénom, un petit compagnon.</p><p class="price-note" data-text="price">prix à venir</p><button class="text-button" data-product="charm" data-text="discoverCharms">découvrir les bijoux</button></section>
 <section id="stickers-section" class="shop-top-rule" aria-labelledby="stickers-title"><h2 id="stickers-title" data-text="stickers">stickers</h2><p class="sticker-note" data-text="stickerNote">Des petits bouts de mon univers, à coller partout.</p><p class="coming-label" data-text="stickerSoon">bientôt dans la boutique</p></section>
 

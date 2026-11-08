@@ -1,0 +1,205 @@
+{
+  "sourceArchive": "La_princesse_clown_sources.zip",
+  "sourceFolder": "production/sources/Portfolio",
+  "transform": "Proportional WebP resizing only, without cropping or altering the illustrations.",
+  "existingArtwork": {
+    "id": "clown",
+    "source": "IMG_1242.jpeg",
+    "image": "assets/previews/photos/clown.webp"
+  },
+  "excluded": {
+    "IMG_4364.jpeg": "Instagram screenshot; original standalone illustration unavailable."
+  },
+  "illustrations": [
+    {
+      "id": "pc-portrait-princesse",
+      "source": "Vintage-Sketch-Pad(1).jpeg",
+      "sha256": "e59994ca17f8d5575953d4c73ebead0e17b1d9d040c889a91e638080f4ee0a92"
+    },
+    {
+      "id": "pc-reine-etoile",
+      "source": "IMG_1043(2).jpeg",
+      "sha256": "24e59706f8b8defbcbebaf7a247587d61a028d2af2945a28e8c7668b07ee6c8f"
+    },
+    {
+      "id": "pc-reine-vent",
+      "source": "IMG_1021.jpeg",
+      "sha256": "0bb02adedeaca9da4607daf08cb811b4816c99136632c9eadcf341a9858faba0"
+    },
+    {
+      "id": "pc-artiste",
+      "source": "IMG_1095.jpeg",
+      "sha256": "547ceeb90edb4075315eeb70f2a34ecddfd78d7735d480c8b8e064ca7b800046"
+    },
+    {
+      "id": "pc-chateau-rose",
+      "source": "IMG_1458.jpeg",
+      "sha256": "67072181f278346da0b7fbf252b1eea5cfd2706940a2920624497bcbfe04a2da"
+    },
+    {
+      "id": "pc-miroir",
+      "source": "IMG_1128(1).jpeg",
+      "sha256": "03612df61bde3f6e17c096f5b522769718d0e2c4e0d9340f96254acef804ff1c"
+    },
+    {
+      "id": "pc-roi-princesse",
+      "source": "IMG_1156(1).jpeg",
+      "sha256": "c57757f7ceb86a7b27e63401ff20b917cae451d3fc25d6b30cfd7cfe53e24a9d"
+    },
+    {
+      "id": "pc-lecon",
+      "source": "IMG_1103.jpeg",
+      "sha256": "c1bda555b929c936d37038dafba7f5b2cf9e1b0bbb074193d682c61adc7f7268"
+    },
+    {
+      "id": "pc-roi-enfants",
+      "source": "IMG_1628.jpeg",
+      "sha256": "6e45042ac23809868b6ea2d99606d1236267035bd0047ac592dda99a4188765f"
+    },
+    {
+      "id": "pc-cheveux-flammes",
+      "source": "IMG_1183.jpeg",
+      "sha256": "ff69999f6552da4fa4de18bd8486e1372e400c5e28de75ef8e6c96bcdee6dcb9"
+    },
+    {
+      "id": "pc-reine-genoux",
+      "source": "IMG_1210.jpeg",
+      "sha256": "239e2435f6a0d2ff00082c48de3c18278fac141be1a6348db1f00778988139ea"
+    },
+    {
+      "id": "pc-visage-sorciere",
+      "source": "IMG_1591.jpeg",
+      "sha256": "ab09f40539aa7f77cdaa5d449a806b56918cf229ea40a524a90b0f2082249961"
+    },
+    {
+      "id": "pc-depart",
+      "source": "IMG_1689.jpeg",
+      "sha256": "a62da49fa8b7ad16d8915dcafa891c9dac176f6c232fca832ec7b39b4595d417"
+    },
+    {
+      "id": "pc-fantome",
+      "source": "IMG_1939.jpeg",
+      "sha256": "c4aa74af620175110eaf72654145637e85abdf051ba5f49542ba22a312ccfa87"
+    },
+    {
+      "id": "pc-rencontre",
+      "source": "IMG_0825.jpeg",
+      "sha256": "4b5ce7ff41064ab1a0b18feead18091e954f0da3603f1c36566b233ea118e847"
+    },
+    {
+      "id": "pc-palais",
+      "source": "IMG_1662.jpeg",
+      "sha256": "33844131a7246921f975862b2676858537337d8a76fdf20b95441484c10c717a"
+    },
+    {
+      "id": "pc-sous-pluie",
+      "source": "Vintage-Sketch-Pad(2).jpeg",
+      "sha256": "4ca4d499cca4a9f754cffbedb178997d9aa12aa1163de5632c473dbc319ef0ab"
+    },
+    {
+      "id": "pc-coeur",
+      "source": "Vintage-Sketch-Pad(4).jpeg",
+      "sha256": "7234dfe9b969ce080558b58a6839d82f0d76352e51150c49d3808aa4aed19092"
+    },
+    {
+      "id": "pc-meduse",
+      "source": "IMG_1545(1).jpeg",
+      "sha256": "50ea7b4fbc20eaa51d3000a39b7ef8816b987d0921e7a90a5afa53e0016145ee"
+    },
+    {
+      "id": "pc-etreinte",
+      "source": "IMG_1734(2).jpeg",
+      "sha256": "784b82f8e9162683feb116ebb279306486dc4a2db89dec502f9e1c24bbe0a0dc"
+    },
+    {
+      "id": "pc-tour-rose",
+      "source": "IMG_1885.jpeg",
+      "sha256": "02c2803039784c92279dcdd3d1ad969fb629b2c192ba4e65909eed226ffd968d"
+    },
+    {
+      "id": "pc-balcon",
+      "source": "2BF14F28-2885-48AB-9B39-01DEB146A58C(3).jpeg",
+      "sha256": "81c1d2ae4a70f1ea9d3958706ba2cd362a0b93ec52811a433f4ea3e5d717e864"
+    },
+    {
+      "id": "pc-coussins",
+      "source": "IMG_1889(1).jpeg",
+      "sha256": "43048a57366ad3f3eac4f11c2c50af8be042b11dfe61c0bee9fd0f57139396f9"
+    },
+    {
+      "id": "pc-regard-princesse",
+      "source": "IMG_1916.jpeg",
+      "sha256": "5e797cb33a555a6673733626ca9d55c7d2200c82c0d54b9adc8d45d800e34bbc"
+    },
+    {
+      "id": "pc-dans-bras",
+      "source": "IMG_0972.jpeg",
+      "sha256": "07a0519900b559b902bb4d2ce3c15a004290a5cb18d9bcaeb751bc70de893158"
+    },
+    {
+      "id": "pc-ruban",
+      "source": "IMG_2058.jpeg",
+      "sha256": "d932e1326d1a8ea49d7d6ccace2ab3e9515d2fe12e085b16c49b9f8a21692f3d"
+    },
+    {
+      "id": "pc-robe-lumiere",
+      "source": "b846386c-d240-4dc7-8f8c-b891b347070b.jpeg",
+      "sha256": "a04377f9335e0c79f3fb4a6adfeaaa25f97e4d5d4dd0afd45f5106c19aa87a8c"
+    },
+    {
+      "id": "pc-tour-etoiles",
+      "source": "Untitled design - 2(1).jpeg",
+      "sha256": "e7b526432c134e54dc45baa5bb706ffb2fa830d51560eb5bec432b714dfe7f50"
+    },
+    {
+      "id": "pc-chambre",
+      "source": "IMG_0937.jpeg",
+      "sha256": "551b9dae72a37bbc9df9ad696a8fdbd2be332c0e42ada078ed8b8786636e1ec0"
+    },
+    {
+      "id": "pc-lecture",
+      "source": "IMG_2301.jpeg",
+      "sha256": "758a864433d70eddbb48b8d24339c43da39c9dbf5cebdafdfbf3cbf9acdc9064"
+    },
+    {
+      "id": "pc-mains",
+      "source": "IMG_1068.jpeg",
+      "sha256": "1e58a3b982a3a0232cb9d8ad7ddd0c49a0642dd3d8a6ff165d412bc92c5bfd61"
+    },
+    {
+      "id": "pc-ciel-etoile",
+      "source": "Vintage-Sketch-Pad(20261030-003831).jpeg",
+      "sha256": "6ef18bc8d04da9f0d7e1bebf18b9adadbfacf1ca43016cd23daea1de9d36d6f8"
+    },
+    {
+      "id": "pc-portrait-sorciere",
+      "source": "IMG_1323.jpeg",
+      "sha256": "2810388e6346ae5a8b4c0cb8246a64d300db424d635e2a1246afcf2efafa890f"
+    },
+    {
+      "id": "pc-portrait-encadre-princesse",
+      "source": "IMG_1325.jpeg",
+      "sha256": "74b83d0c08c2ec59c11273e1038789d1c358a3f4352c344c51db5f0cc000ee8e"
+    },
+    {
+      "id": "pc-portrait-reine",
+      "source": "IMG_1326.jpeg",
+      "sha256": "c50892220ed78fde015fa68c6f9d27683dc1abb6ba3fa4a7b99d35d2c81a0302"
+    },
+    {
+      "id": "pc-portrait-roi-1",
+      "source": "IMG_1327.jpeg",
+      "sha256": "147631a6a917f804269dad364d45854a211203dc8ef21bde5c12a88f69f190e4"
+    },
+    {
+      "id": "pc-portrait-roi-2",
+      "source": "IMG_1328.jpeg",
+      "sha256": "9e385bcff114b1352d3480efd0ac0127ac64ad0b547915ad1b718cb8c419175c"
+    },
+    {
+      "id": "pc-portrait-artiste",
+      "source": "IMG_1329.jpeg",
+      "sha256": "ca8392e79e5dcac1d8f4a0eea012466b30110793afcaa33b0282717fe65de7d8"
+    }
+  ]
+}
