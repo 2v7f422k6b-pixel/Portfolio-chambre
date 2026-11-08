@@ -19,6 +19,8 @@ test('old discoveries and the existing clown key survive migration without award
   const {p}=browser({storage});const changes=[];p.subscribe(x=>changes.push(x));
   assert.equal(p.hasVisit('jeu/latte'),true);assert.equal(p.unlockedOutfit('clown'),true);
   assert.equal(p.unlockedOutfit('cafe'),false); // visiting a mug does not finish a recipe
+  const cafe=p.outfits.find(x=>x.id==='cafe');
+  assert.equal(cafe.values.tops,'top-bear');assert.ok(cafe.pieces.includes('top-bear'));
   p.refresh();assert.equal(changes[0].added.length,0);
   p.feat('latte-made');assert.equal(p.unlockedOutfit('cafe'),true);
   const notices=changes.length;p.feat('latte-made');assert.equal(changes.length,notices);
@@ -168,7 +170,7 @@ test('Sonny hood and headlamp require their own discoveries and survive reload',
  const reloaded=browser({storage}).p;
  assert.equal(reloaded.unlockedOutfit('sonny'),true);assert.equal(reloaded.unlockedOutfit('night-explorer'),true);
 });
-test('Sonny hood uses the hairless body for both the base and purple-jacket face overlay',()=>{
+test('Sonny and bear hoods keep hair hidden, including with the purple jacket, and restore it when removed',()=>{
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
  const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
  assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
@@ -183,6 +185,10 @@ test('Sonny hood uses the hairless body for both the base and purple-jacket face
   assert.equal(bodies.length,jacket?2:1);
   assert.ok(bodies.every(x=>x.src===assets.hairlessBase));
  }
+ slots.hat=null;slots.tops='top-bear';slots.jackets='jacket-purple';
+ assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.hairlessBase));
+ assert.ok(layers().some(x=>x.id==='top-bear'&&x.hood&&x.z>13));
+ slots.tops=null;
  for(const hat of [null,'head-headlamp','head-miffy']){
   slots.hat=hat;slots.jackets='jacket-purple';
   assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));

@@ -51,7 +51,7 @@
   async function loadWardrobe(){
     if(wardrobe||wardrobeLoading)return;wardrobeLoading=true;wardrobeError=false;
     try{
-      const response=await fetch('about-me.html?v=20261108-paint-overalls-1');
+      const response=await fetch('about-me.html?v=20261108-bear-sweater-1');
       if(!response.ok)throw new Error('wardrobe');
       const source=new DOMParser().parseFromString(await response.text(),'text/html');
       const data=JSON.parse(source.getElementById('assets').textContent);
