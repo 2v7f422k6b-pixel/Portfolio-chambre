@@ -56,6 +56,7 @@
   function finish() {
     stop();
     completed = true;
+    window.NanaProgress?.feat('rested');
     doneBefore = true;
     remaining = 0;
     try { sessionStorage.setItem('nana-did-nothing', '1'); } catch (_) {}

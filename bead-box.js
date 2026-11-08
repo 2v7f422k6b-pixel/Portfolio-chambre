@@ -99,6 +99,7 @@ function add(items,point=null){
  snapshot();
  for(const item of items){const slot=point?nearestSlot(point):Array.from({length:MAX},(_,i)=>i).find(i=>!beads.some(b=>b.slot===i));beads.push({...item,...(item.type==='letter'?{variant:randomLetterVariant(),colorAssigned:true}:{}),slot});}
  persist();refresh(t().added);
+ if(beads.length>=3)window.NanaProgress?.feat('beads-made');
 }
 function remove(index){if(!beads[index])return;snapshot();beads.splice(index,1);persist();refresh(t().removed);}
 function panel(){const w=t();return `<section id="bead-workshop" data-no-translate aria-label="${w.title}">

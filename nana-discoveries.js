@@ -26,13 +26,18 @@
 
   function persist() {
     try {
+      const latest=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+      for(const id of Array.isArray(latest?.discovered)?latest.discovered:[])if(required.has(id))discovered.add(id);
+      celebrated ||= latest?.celebrated===true && latest?.rewardSeen===true;
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         discovered: [...discovered], celebrated: celebrated, rewardSeen: celebrated
       }));
     } catch (_) { /* Still works for this visit if browser storage is disabled. */ }
+    window.NanaProgress?.refresh();
   }
 
   function editing() {
+    if (window.NanaProgress?.suppressed()) return true;
     const flags = new URLSearchParams(location.search);
     if (['posterEdit', 'lampEdit', 'starsEdit', 'cookieEdit', 'ipadClockEdit', 'zones']
         .some(flag => flags.has(flag))) return true;
@@ -162,17 +167,32 @@
   }
 
   function remember(id) {
-    if (previewOnly || !id || !required.has(id) || celebrated || editing()) return;
+    if (previewOnly || !id || !required.has(id) || editing()) return;
     if (!discovered.has(id)) {
       discovered.add(id);
       persist();
     }
-    if (discovered.size === required.size && !pending) {
+    if (discovered.size === required.size && !celebrated && !pending) {
       pending = true;
       // Let the final interactive object open before showing the congratulations.
       window.setTimeout(celebrate, 450);
     }
   }
+
+  window.NanaDiscoveries = {
+    remember,
+    snapshot: () => ({discovered:[...discovered], required:[...required], celebrated})
+  };
+  window.addEventListener('storage', event => {
+    if (event.key !== STORAGE_KEY) return;
+    try {
+      const next=JSON.parse(event.newValue || '{}');
+      for(const id of Array.isArray(next?.discovered)?next.discovered:[]) if(required.has(id))discovered.add(id);
+      celebrated ||= next?.celebrated===true && next?.rewardSeen===true;
+      window.NanaProgress?.refresh();
+    } catch (_) {}
+  });
+  window.NanaProgress?.refresh(true);
 
   // Read-only preview: use the actual Play room behind the canonical dialog.
   // No progress, reward claim, or visit count is changed by preview mode.
@@ -190,9 +210,9 @@
   }
 
   // Capture survives custom interactions that stop propagation (lamps, rug, cookie, etc.).
-  svg.addEventListener('click', event => remember(idForClick(event.target)), true);
+  window.addEventListener('click', event => remember(idForClick(event.target)), true);
   // The rug's keyboard handler toggles directly instead of dispatching a click.
-  svg.addEventListener('keydown', event => {
+  window.addEventListener('keydown', event => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     if (event.target.closest?.('[data-room-zone-id="tapis"]'))
       remember('object:tapis');

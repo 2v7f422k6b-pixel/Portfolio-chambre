@@ -11,6 +11,7 @@
 
   function goto(n) {
     step=n;
+    if(n===5)window.NanaProgress?.feat('latte-made');
     $$('[data-step]').forEach(el => el.classList.toggle('active',Number(el.dataset.step)===n));
     $$('[data-progress]').forEach(el => {
       const i=Number(el.dataset.progress);

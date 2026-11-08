@@ -87,6 +87,8 @@
     if (route === 'photos' || route === 'illustrations' || route === 'objet/gabzilla') {
       return !!window.NanaArtLinks?.open(route);
     }
+    const outfit=/^jeu\/dressing\/tenue\/([a-z-]+)$/.exec(route);
+    if(outfit && window.NanaProgress?.outfits.some(x=>x.id===outfit[1])){window.openAbout(outfit[1]);return true;}
     const appName = appRoutes.get(route);
     if (appName) { window.openApp(appName); return true; }
     if (route === 'objet/phone/contacts' || route === 'objet/phone/mail') {
@@ -123,7 +125,8 @@
         if (visible('#phone-page')) return q('#phone-mail-form') ? 'objet/phone/mail' : 'objet/phone/contacts';
         return 'objet/phone';
       }
-      if (q('#special-host iframe[src^="about-me.html"]')) return 'jeu/dressing';
+      const dressing=q('#special-host iframe[src^="about-me.html"]');
+      if(dressing){const outfit=new URL(dressing.src,location.href).searchParams.get('outfit');return 'jeu/dressing'+(outfit?'/tenue/'+outfit:'');}
       if (q('#special-host .tama-frame')) return 'jeu/tamagotchi';
       if (q('#special-host .latte-frame')) return 'jeu/latte';
       return null;

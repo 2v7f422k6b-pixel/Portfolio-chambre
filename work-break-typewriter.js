@@ -107,6 +107,7 @@
     shown = true;
     lastFocus = document.activeElement;
     dialog.hidden = false;
+    window.NanaProgress?.feat('secret-typewriter');
     dialog.querySelector('[data-wb-play]').focus({preventScroll: true});
     typeMessage();
   }

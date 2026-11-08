@@ -15,6 +15,8 @@
   const hashFor = route => route ? '#/' + route.split('/').map(encodeURIComponent).join('/') : '';
 
   function visibleRoute() {
+    const journal = window.NanaJournal?.current();
+    if (journal) return journal;
     const shop = window.NanaShop?.current();
     if (shop) return shop;
     if (!mode()) return '';
@@ -26,6 +28,7 @@
       window.NanaBookLinks?.current() || window.NanaPagesLinks?.current() || room || homeRoute();
   }
   function write(route, method) {
+    window.NanaProgress?.visit(route);
     const url = location.pathname + location.search + hashFor(route);
     history[method]({...history.state, nanaMode:mode()}, '', url);
     lastHash = location.hash;
@@ -37,6 +40,7 @@
       // The browser may already have moved to an entry we haven't rendered yet.
       if (location.hash !== lastHash) return;
       const route = visibleRoute();
+      window.NanaProgress?.visit(route);
       if (route === lastView) return;
       lastView = route;
       if (hashFor(route) !== location.hash) write(route, 'pushState');
@@ -47,6 +51,7 @@
     clearTimeout(scheduled);
     scheduled = undefined;
     const rooms = window.NanaRoomLinks;
+    if (!/^carnet(?:\/|$)/.test(route || '')) window.NanaJournal?.close();
     if (!route || route === 'accueil') {
       window.NanaShop?.close();
       rooms?.closeExtras();
@@ -58,6 +63,10 @@
       : rooms?.mode(route) || entryMode || mode() || 'play';
     if (targetMode !== mode()) chooseMode(targetMode, false);
 
+    if (/^carnet(?:\/|$)/.test(route)) {
+      closeWindow(); closeSpecial(); rooms?.closeExtras();
+      return !!window.NanaJournal?.open(route.split('/')[1] || 'chambre');
+    }
     if (isShop(route)) {
       if (!window.NanaShop?.current()) {
         rooms?.closeExtras();
@@ -89,6 +98,7 @@
     const route = location.hash.startsWith('#/') ? parse() : '';
     const ok = display(route === null ? 'invalid-link' : route, history.state?.nanaMode);
     lastView = visibleRoute();
+    window.NanaProgress?.visit(lastView);
     lastHash = location.hash;
     if (!ok) write(homeRoute(), 'replaceState');
     else if (history.state?.nanaMode !== mode()) {
@@ -101,6 +111,7 @@
     if (hashFor(route) === location.hash && visibleRoute() === route) return;
     const ok = display(route);
     lastView = visibleRoute();
+    window.NanaProgress?.visit(lastView);
     const target = ok ? route : homeRoute();
     if (hashFor(target) !== location.hash) write(target, 'pushState');
     else lastHash = location.hash;
@@ -142,6 +153,7 @@
     } else {
       lastHash = location.hash;
       lastView = visibleRoute();
+      window.NanaProgress?.visit(lastView);
       if (!lastHash && lastView) write(lastView, 'replaceState');
     }
     // Apps may be opened by search, keyboard shortcuts, or a message from a game.

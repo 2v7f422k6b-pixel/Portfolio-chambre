@@ -368,6 +368,7 @@
     };
     // The SVG polygons, outlines, and their click targets disappear immediately.
     app.classList.add('nana-reality-active');
+    window.NanaProgress?.feat('secret-twist');
     viewport.classList.add('nana-pixel-chaos');
     field.hidden=false;
     undo.hidden=false;

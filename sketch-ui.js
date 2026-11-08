@@ -7,6 +7,10 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['.nj-frame', 'frame', 1501],
+    ['.nj-rule', 'rule', 1502],
+    ['.nj-button', 'frame', 1503],
+    ['.nj-progress', 'frame', 1504],
     ['.shop-frame', 'frame', 1401],
     ['.shop-rule', 'rule', 1402],
     ['.shop-top-rule', 'top-rule', 1403],

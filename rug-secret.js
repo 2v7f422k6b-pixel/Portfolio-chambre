@@ -135,6 +135,7 @@
   function toggle(){
     opened=!opened;
     overlay.classList.toggle('is-open',opened);
+    if(opened)window.NanaProgress?.feat('secret-rug');
     updateZoneLabel();
 
   }

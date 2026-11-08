@@ -43,6 +43,29 @@ accessible avec `?previewReward=1`).
 - Respecter [DESIGN-RULES.md](DESIGN-RULES.md) et actualiser la version des ressources
   modifiées dans leurs liens pour éviter les anciennes copies en cache.
 
+## Carnet de découvertes
+
+Le bouton étoile du menu ouvre le carnet (`#/carnet/chambre`), également accessible
+par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
+
+- `nana-progress.js` contient les règles des collections et les tenues bonus ;
+  `nana-journal.js` / `.css` présentent les compteurs, l’album et les cadeaux.
+- Les découvertes existantes et le déblocage Princesse Clown gardent leurs clés.
+  Les nouveaux accomplissements utilisent `nana-visitor-progress-v1`, sur le
+  navigateur du visiteur. Les jeux intégrés partagent le même état ; leurs pages
+  autonomes utilisent le même stockage. Aucun compte ni suivi externe n’est ajouté.
+- Les vêtements déjà accessibles restent disponibles. Les quatre pièces Princesse
+  Clown sont montrées en silhouette avant l’ouverture du livre. Les autres bonus
+  sont des ensembles de vêtements existants : latte préparé, coloriage découvert,
+  trois perles enfilées. Ajouter une tenue dans `NanaProgress.outfits` la rend
+  disponible à la fois dans le carnet et le dressing.
+- Les stickers réutilisent les dessins originaux. Les recadrages sont des fenêtres
+  SVG sur les PNG ; aucun dessin source n’est modifié.
+- L’atelier créatrice permet d’essayer les tenues sans attribuer de succès.
+  Les aperçus et éditeurs de placement sont exclus de la progression.
+- Le cadeau conserve le code `MERCI10` existant. Son application à une commande
+  dépend du paramétrage de la boutique ; le carnet ne crée pas de coupon côté paiement.
+
 ## Vérifications
 
 Avec Node.js 22 ou plus récent, depuis la racine du dépôt :

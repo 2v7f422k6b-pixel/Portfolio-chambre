@@ -571,6 +571,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 </style>
 <link rel="stylesheet" href="lena-drawings.css?v=20261106-original-colors">
 <script defer src="lena-drawings.js?v=20261106-original-colors"></script>
+<link rel="stylesheet" href="nana-journal.css?v=20261108-journal-1">
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -613,6 +614,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <button id="menu-help" data-open="help" type="button" title="Help" aria-label="Help">Help</button>
         </nav>
         <nav class="menu-right" aria-label="Outils et préférences">
+          <button id="nana-journal-trigger" type="button" data-no-translate aria-haspopup="dialog" aria-label="Mon carnet de découvertes"><img src="assets/drawn-ui/etoile_pleine.png" alt=""><span class="nj-trigger-label">Mon carnet</span><span class="nj-trigger-count">0 %</span></button>
           <button id="nana-admin-trigger" type="button" aria-label="Ouvrir le petit atelier de Nana" title="Le petit atelier de Nana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M7.5 10.5V7.2C7.5 4.3 9.3 2.4 12 2.6c2.7.2 4.5 2.2 4.5 4.8v3.1"/><path d="M5.8 10.1 18.5 10.8 18 21 5.6 20.5Z"/><path d="M12 14.1v2.9"/></svg></button>
           <button id="menu-copy-link" class="nana-copy-link" type="button" data-copy-link data-no-translate aria-label="Copier le lien" title="Copier le lien"><img src="assets/drawn-ui/fleche_lien_agrandir.png" alt=""></button>
           <button id="menu-search" type="button" aria-label="Search portfolio" title="Search portfolio" aria-expanded="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
@@ -791,8 +793,9 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261105-remove-two-posters-3"></script>
-  <script src="app.js?v=20261108-dressing-fleece-floyd" defer></script>
-  <script src="do-nothing-club.js?v=20261107-frame-fit" defer></script>
+  <script src="nana-progress.js?v=20261108-journal-1" defer></script>
+  <script src="app.js?v=20261108-journal-1" defer></script>
+  <script src="do-nothing-club.js?v=20261108-journal-1" defer></script>
   <script src="literary-zones.js?v=20261108-routes" defer></script>
 
   <script src="pixel-hotspots.js?v=figurines-first-click-20261103-2" defer></script>
@@ -805,7 +808,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   <script src="motion-addon.js?v=20261108-routes" defer></script>
   <script src="music-visuals.js?v=20261108-routes" defer></script>
   <script src="pages-addon.js?v=20261108-routes" defer></script>
-  <script src="book-addon.js?v=20261108-routes" defer></script>
+  <script src="book-addon.js?v=20261108-journal-1" defer></script>
 
   <script id="touch-hotspots-script">
   (() => {
@@ -887,7 +890,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   })();
   </script>
   <script src="heart-theme.js?v=two-hearts-all-pages-1" defer></script>
-  <script src="sketch-ui.js?v=20261107-frame-fit" defer></script>
+  <script src="sketch-ui.js?v=20261108-journal-1" defer></script>
 <script src="portfolio-catalog.js?v=20261106-code-cleanup-1" defer></script>
 <script src="portfolio-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="desktop-extras.js?v=20261108-routes" defer></script>
@@ -921,18 +924,18 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 
 <script src="room-zone-registry.js?v=20261106-original-colors" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
-  <script src="rug-secret.js?v=20261106-lena-drawings" defer></script>
-  <script src="twist-reality.js?v=20261108-routes" defer></script>
+  <script src="rug-secret.js?v=20261108-journal-1" defer></script>
+  <script src="twist-reality.js?v=20261108-journal-1" defer></script>
 <script src="guitar-interaction.js?v=20261103-shift-left-v3" defer></script>
   <script src="hotspot-numbers.js?v=20261103-all-objects" defer></script>
-  <script src="work-break-typewriter.js?v=20261108-routes" defer></script>
+  <script src="work-break-typewriter.js?v=20261108-journal-1" defer></script>
   <script src="play-pan-hint.js?v=20261107-opaque-white-arrows" defer></script>
   <script src="artwork-protection.js?v=20261104-3" defer></script>
   <script src="nana-shop-bag.js?v=20261108-routes" defer></script>
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
   <script src="nana-admin.js?v=conte-local-20261106" defer></script>
-<script src="nana-discoveries.js?v=20261108-routes" defer></script>
+<script src="nana-discoveries.js?v=20261108-journal-1" defer></script>
   <script src="dreamlab-launcher.js?v=20261106-lena-drawings" defer></script>
 
 <script id="nana-minilab-day-layer">
@@ -993,12 +996,13 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   else mount();
 })();
 </script>
-<script src="bead-box.js?v=20261108-routes" defer></script>
+<script src="bead-box.js?v=20261108-journal-1" defer></script>
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
-<script src="nana-room-links.js?v=20261108-routes" defer></script>
+<script src="nana-room-links.js?v=20261108-journal-1" defer></script>
 <script src="nana-link-directory.js?v=20261108-routes" defer></script>
 <script src="nana-art-links.js?v=20261108-routes" defer></script>
-<script src="nana-deep-links.js?v=20261108-routes" defer></script>
+<script src="nana-journal.js?v=20261108-journal-1" defer></script>
+<script src="nana-deep-links.js?v=20261108-journal-1" defer></script>
 </body>
 </html>
 

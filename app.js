@@ -371,7 +371,7 @@ function openSocialProjects(){
 }
 function openMiniGames(){
  const fr=!document.documentElement.lang.toLowerCase().startsWith('en');
- const games=[["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends soin d’un petit compagnon numérique.","Take care of a tiny digital companion."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
+ const games=[["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends un moment pour prendre soin de toi.","Take a little time to care for yourself."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
  openWindow(fr?'MINI-JEUX':'MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
   <div class="eyebrow">${fr?'MODE WORK / MINI-JEUX':'WORK MODE / MINI GAMES'}</div>
   <h2 id="mini-games-heading">${fr?'Mini-jeux':'Mini Games'}</h2>
@@ -502,12 +502,12 @@ function updateGallery(){
  const selected=$('#viewer-thumbnails .active');if(selected)selected.scrollIntoView({block:'nearest',inline:'center'});
 }
 function changeGallery(delta){if(!currentGallery)return;const len=(currentGallery.which==='gabzilla'?GABZILLA:ART).length;currentGallery.index=(currentGallery.index+delta+len)%len;updateGallery()}
-function openAbout(){
+function openAbout(outfit){
  $('#special-title').textContent=document.documentElement.lang==='en'?'Inside my wardrobe':'Dans mon dressing';
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261108-dressing-fleece-floyd" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261108-journal-1'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
@@ -553,12 +553,12 @@ function phoneMail(){
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
- specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light;aspect-ratio:987/1295;width:min(540px,94vw,calc(80dvh * 987 / 1295))" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261106-lena-drawings" allow="autoplay"></iframe>';
+ specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light;aspect-ratio:987/1295;width:min(540px,94vw,calc(80dvh * 987 / 1295))" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261108-journal-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261106-lena-drawings"></iframe>';
+  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261108-journal-1"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
