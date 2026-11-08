@@ -197,10 +197,21 @@ const BAG_SHOULDERS={"top-pajama":[-12,752,-8],"top-yellow":[0,762,0],"top-pink"
 function bagFits(){
  const garment=slots.jackets||slots.dresses||slots.tops;
  const [dx,top,lean]=BAG_SHOULDERS[garment]||[0,780,0];
- // Lift the bag and charms together; keep the strap seated on the shoulder.
  const raised=['top-peter-pan','top-gabzilla','top-pink','top-white','top-yellow','top-pajama','dress-polka','dress-striped','dress-blue'];
- const dy=raised.includes(garment)?-90:0;
- return {body:{sx:1,dx,dy},strap:{sx:1,sy:(1200+dy-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy},charm:{sx:1,dx:dx-30,dy:15+dy}};
+ const higher=['top-peter-pan','top-white','top-pajama','dress-striped','dress-blue'];
+ const dy=higher.includes(garment)?-135:(raised.includes(garment)?-90:0);
+ const body={sx:1,dx,dy},charm={sx:1,dx:dx-30,dy:15+dy};
+ // Preserve the approved fits for jackets and other unraised outfits.
+ if(!dy)return {body,strap:{sx:1,sy:(1200-top)/478,kx:lean/-478,ox:815,oy:1200,dx,dy},charm};
+ // Shorten only the strap above the rings. The rings and bag share an
+ // unscaled translation, so their original joint cannot open up.
+ const join=1090,span=join-722;
+ return {body,charm,
+  strap:{sx:1,sy:(join+dy-top)/span,kx:-lean/span,ox:815,oy:join,dx,dy},
+  strapClip:[[0,0],[2048,0],[2048,join+2],[0,join+2]],
+  connector:{sx:1,dx,dy},
+  connectorClip:[[0,join],[2048,join],[2048,3072],[0,3072]]
+ };
 }
 function outfitLayers(){
 const entries=[{src:BASE,z:1,clip:slots.tops==='top-pullover'?PULLOVER_BODY:null}];
@@ -210,7 +221,8 @@ const bag=bagFits();
 for(const [key,z] of ordered)if(slots[key]){
  if(key==='bags'&&slots.bags==='bag-brown'){
   entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
-  entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap});
+  entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap,localClip:bag.strapClip});
+  if(bag.connector)entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.connector,localClip:bag.connectorClip});
  }else entries.push({id:slots[key],z,clip:underJacketClip(key),fit:key==='scarves'?scarfFit():(key==='bagAccessories'&&slots.bags==='bag-brown'?bag.charm:null)});
 }
 if(slots.pants||slots.skirts||slots.dresses){
@@ -225,7 +237,7 @@ if(slots.pants||slots.skirts||slots.dresses){
 return entries.sort((a,b)=>a.z-b.z);
 }
 function renderAvatar(){const node=$('#avatar');node.textContent='';
-for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip)im.style.clipPath=clipCSS(entry.clip);if(entry.fit){im.style.transformOrigin=((entry.fit.ox??970)/2048*100)+'% '+((entry.fit.oy||0)/3072*100)+'%';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+((entry.fit.dy||0)/3072*100)+'%) matrix('+entry.fit.sx+',0,'+(entry.fit.kx||0)+','+(entry.fit.sy||1)+',0,0)'}node.appendChild(im)}}
+for(const entry of outfitLayers()){const im=entry.src?overlayImage(entry.src,entry.z):layer(entry.id,entry.z);if(im){if(entry.clip||entry.localClip)im.style.clipPath=clipCSS(entry.clip||entry.localClip);if(entry.fit){im.style.transformOrigin=((entry.fit.ox??970)/2048*100)+'% '+((entry.fit.oy||0)/3072*100)+'%';im.style.transform='translate('+((entry.fit.dx||0)/2048*100)+'%, '+((entry.fit.dy||0)/3072*100)+'%) matrix('+entry.fit.sx+',0,'+(entry.fit.kx||0)+','+(entry.fit.sy||1)+',0,0)'}node.appendChild(im)}}
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
 const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.jackets,slots.shoes].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?translate(chosen.desc):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
@@ -268,6 +280,7 @@ const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src)continue;
 const img=await decode(src);
 ctx.save();if(entry.clip)clipCanvas(ctx,entry.clip);
 if(entry.fit){const ox=(entry.fit.ox??970)/2048*W,oy=(entry.fit.oy||0)/3072*H;ctx.translate(ox+(entry.fit.dx||0)/2048*W,oy+(entry.fit.dy||0)/3072*H);ctx.transform(entry.fit.sx,0,entry.fit.kx||0,entry.fit.sy||1,0,0);ctx.translate(-ox,-oy)}
+if(entry.localClip)clipCanvas(ctx,entry.localClip);
 if(entry.src||FITTED[entry.id])ctx.drawImage(img,0,0,W,H);
 else if(FITS[entry.id])ctx.drawImage(img,...FITS[entry.id]);
 ctx.restore();
