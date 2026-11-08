@@ -407,7 +407,7 @@ function safePresentationImage(value){
 function openWorkAbout(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
- const rule='<svg class="nana-card-rule" viewBox="0 0 400 5" preserveAspectRatio="none" aria-hidden="true"><path d="M1 3 Q48 1 96 3 T194 2 T298 3 T399 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+ const rule='<svg class="nana-card-rule" viewBox="0 0 400 5" preserveAspectRatio="none" aria-hidden="true"><path d="M1 3 Q28 .5 55 2.8 T112 2.3 T175 3.2 T240 1.5 T304 3 T360 2 T399 3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
  openWindow(t('À propos','About me'),`<style>
  html body #window-shade #window:has(.nana-profile-card){width:min(460px,94vw)!important;height:auto!important;min-height:0!important;background:transparent!important;border:0!important;border-image:none!important;box-shadow:none!important;overflow:visible!important}
  html body #window-shade #window:has(.nana-profile-card)::before,html body #window-shade #window:has(.nana-profile-card)::after,html body #window-shade #window:has(.nana-profile-card)>.sketch-ui-svg{display:none!important}
@@ -419,7 +419,7 @@ function openWorkAbout(){
  html body #window-shade #window:has(.nana-profile-card) #window-content{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important}
  html body #window-shade #window:has(.nana-profile-card) #window-content>.sketch-ui-svg{display:none!important}
 
- html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:4.8% 5.5% 7%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:24px!important;overflow:hidden;font-family:inherit}
+ html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:7.5% 8% 7.5%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:5% / 3.15%!important;overflow:hidden;isolation:isolate;font-family:inherit}
  html body #window .nana-profile-card::before{content:none!important}
  .nana-profile-card>.card-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
  .nana-profile-card .card-edition{font-size:2.6cqw;font-weight:700;line-height:1.1}
@@ -427,11 +427,11 @@ function openWorkAbout(){
  html body #window .nana-profile-card h2{font-size:7.8cqw!important;font-weight:bold;line-height:1.05;margin:0!important}
  .nana-profile-card .card-hp{display:flex;align-items:center;gap:1.5cqw;font-size:5.5cqw;font-weight:bold;white-space:nowrap}
  .nana-profile-card .card-recharge{text-align:right;font-size:2.5cqw;line-height:1.1;margin:-.4cqw 0 1.8cqw}
- html body #window .nana-profile-art{flex:0 0 auto;aspect-ratio:1536/1151;position:relative;width:100%;background:#c4b4ef!important;overflow:hidden;border-radius:0!important}
+ html body #window .nana-profile-art{flex:0 0 auto;aspect-ratio:1536/1151;position:relative;width:100%;background:#c4b4ef!important;overflow:visible;border-radius:0!important}
  .nana-profile-art img{display:block;position:static;width:100%;height:auto;max-width:100%;object-fit:contain}
- .nana-profile-art .card-art-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
- .nana-profile-card .card-location{background:#ff9dba!important;font-weight:bold;font-style:italic;text-align:center;font-size:2.55cqw;line-height:1.3;padding:.7cqw 1cqw;margin:1cqw 0 1.5cqw}
- .nana-profile-card .card-attack{display:grid;grid-template-columns:13% minmax(0,1fr) auto;gap:2cqw;align-items:center;flex:1;padding:1.5cqw 0;margin:0}
+ .nana-profile-art .card-art-frame{position:absolute;inset:-2%;width:104%;height:104%;pointer-events:none}
+ .nana-profile-card .card-location{background:#ffc4d8!important;font-weight:bold;font-style:italic;text-align:center;font-size:2.55cqw;line-height:1.3;padding:.7cqw 1cqw;margin:1cqw 0 1.5cqw}
+ .nana-profile-card .card-attack{display:grid;grid-template-columns:15% minmax(0,1fr) auto;gap:2cqw;align-items:center;flex:1;padding:1.5cqw 0;margin:0}
  html body #window .nana-profile-card h3{font-size:4.5cqw!important;line-height:1.05;margin:0 0 1cqw!important;font-weight:bold}
  html body #window .nana-profile-card p{font-size:3cqw;line-height:1.25;margin:0}
  .nana-profile-card .card-damage{font-size:7cqw;font-weight:normal}
@@ -439,32 +439,35 @@ function openWorkAbout(){
  .nana-card-rule{display:block;width:100%;height:4px;flex:0 0 4px;pointer-events:none}
  .nana-profile-card .card-energy{display:inline-flex;align-items:center;justify-content:center;width:5.6cqw;height:5.6cqw;flex:0 0 auto;border-radius:48% 52% 46% 54%!important;background:#fff4e8!important;border:1px solid #cf123a}
  .nana-profile-card .card-energy img{position:static;width:75%;height:75%;object-fit:contain}
- .nana-profile-card .card-cost{display:flex;flex-wrap:wrap;gap:.6cqw;justify-content:center;align-items:center}
+ .nana-profile-card .card-cost{display:flex;flex-wrap:nowrap;gap:.6cqw;justify-content:center;align-items:center}
  .nana-profile-card .card-matchups{display:grid;grid-template-columns:1fr 1.7fr 1fr;gap:2cqw;padding:1.5cqw 0;margin:0;text-align:center}
  .nana-profile-card .card-matchups dt{font-size:3cqw;font-weight:bold;margin:0 0 .5cqw}
  .nana-profile-card .card-matchups dd{font-size:2.9cqw;line-height:1.2;margin:0}
  .nana-profile-card .card-matchups strong{display:inline;font-size:3.5cqw;margin-left:1cqw}
  html body #window .nana-profile-card .card-anecdote{font-size:2.9cqw;font-weight:bold;font-style:italic;line-height:1.25;padding:1.6cqw 2cqw;background:#ffe5ed!important;border-radius:2px 4px 2px 3px!important}
  .nana-profile-card footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:2cqw;font-size:2.2cqw;line-height:1.2;padding-top:1.3cqw}
+.nana-profile-card::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 12%,rgba(188,225,255,.18) 26%,rgba(255,255,255,.42) 34%,rgba(255,201,231,.2) 42%,rgba(199,255,226,.2) 49%,transparent 62%);background-size:300% 100%;mix-blend-mode:soft-light;animation:nana-card-foil 9s ease-in-out infinite}
+ @keyframes nana-card-foil{0%,100%{background-position:100% 50%}50%{background-position:0% 50%}}
+ @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
- <svg class="card-outline" viewBox="0 0 630 880" preserveAspectRatio="none" aria-hidden="true"><path d="M44 16 Q310 13 586 17 Q615 18 615 46 L613 835 Q613 864 584 865 Q310 869 45 864 Q15 864 16 835 L15 46 Q14 17 44 16Z" fill="none" stroke="#f58bb0" stroke-width="28"/><path d="M48 31 Q310 28 582 32 Q598 32 598 48 L597 830 Q597 847 581 848 Q310 852 48 847 Q32 847 32 831 L32 48 Q32 31 48 31Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
+ <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
  <div class="card-edition">${t('Personnage de base','Basic character')}</div>
  <header><h2>Léna</h2><span class="card-hp">40 ${t('PV','HP')}<span class="card-energy" aria-hidden="true"><img src="assets/drawn-ui/etoile_pleine.png" alt=""></span></span></header>
  <div class="card-recharge">${t('rechargeable au café','coffee-rechargeable')}</div>
  <div class="nana-profile-art" role="img" aria-label="${t('Personnage illustré de Léna','Illustrated character of Léna')}">
  <img src="assets/dressing-lena/lena-card-illustration-v2.jpeg" alt="">
- <svg class="card-art-frame" viewBox="0 0 400 250" preserveAspectRatio="none" aria-hidden="true"><path d="M5 5 Q190 3 395 5 L394 245 Q190 247 5 244Z" fill="none" stroke="#f58bb0" stroke-width="9"/><path d="M9 9 Q190 7 391 9 L390 241 Q190 243 9 240Z" fill="none" stroke="#cf123a" stroke-width="1"/></svg>
+ <svg class="card-art-frame" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H400V300H0Z M7 7 Q100 5 200 7 T393 7 Q395 75 393 150 T393 293 Q300 295 200 293 T7 293 Q5 225 7 150 T7 7Z" fill="#ffd4e4" fill-rule="evenodd"/><path d="M7 7 Q100 5 200 7 T393 7 Q395 75 393 150 T393 293 Q300 295 200 293 T7 293 Q5 225 7 150 T7 7Z" fill="none" stroke="#cf123a" stroke-width="1.4"/></svg>
  </div>
- <div class="card-location">${t('Artiste chaotique · Type : créative · Habitat : canapé','Chaotic artist · Type: creative · Habitat: sofa')}</div>
+ <div class="card-location">${t('Type : créative · Habitat : canapé','Type: creative · Habitat: sofa')}</div>
  ${rule}
- <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true">♥</span><span class="card-energy" aria-hidden="true">♥</span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Digression','Digression')}</h3><p>${t('Part d’un détail et en fait toute une histoire. Ajoute 10 dégâts si le sujet de départ a été oublié.','Turns one small detail into a whole story. Add 10 damage if the original topic has been forgotten.')}</p></div><strong class="card-damage">30+</strong></section>
+ <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span><span class="card-energy" aria-hidden="true"><img src="assets/heart-lena.svg" alt=""></span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Digression','Digression')}</h3><p>${t('Part d’un détail et en fait toute une histoire.<br>Ajoute 10 dégâts si le sujet de départ a été oublié.','Turns one small detail into a whole story.<br>Add 10 damage if the original topic has been forgotten.')}</p></div><strong class="card-damage">30+</strong></section>
  ${rule}
  <section class="card-attack"><span class="card-cost"><span class="card-energy" aria-hidden="true">🎀</span></span><div><span class="card-section-label">${t('Attaque','Attack')}</span><h3>${t('Trop chou pour toi','Too cute for you')}</h3><p>${t('L’adversaire abandonne le combat.','The opponent gives up the fight.')}</p></div><strong class="card-damage">30</strong></section>
  ${rule}
  <dl class="card-matchups">
  <div><dt>${t('Faiblesse','Weakness')}</dt><dd>${t('Les librairies','Bookshops')}<strong>×2</strong></dd></div>
- <div><dt>${t('Résistance','Resistance')}</dt><dd>${t('« Sois raisonnable »','“Be reasonable”')}<br>${t('Cette carte ne reconnaît pas la commande.','This card does not recognise the command.')}</dd></div>
- <div><dt>${t('Coût de retraite','Retreat cost')}</dt><dd>${t('Un café','One coffee')}<strong>1</strong></dd></div>
+ <div><dt>${t('Résistance','Resistance')}</dt><dd>${t('« Sois raisonnable »','“Be reasonable”')}<br>${t('Cette carte ne reconnaît pas<br>la commande.','This card does not recognise<br>the command.')}</dd></div>
+ <div><dt>${t('Coût de retraite','Retreat cost')}</dt><dd>${t('Une sieste','One nap')}<strong>1</strong></dd></div>
  </dl>
  <p class="card-anecdote">${t('Les petits objets lui paraissent systématiquement nécessaires.','Small objects always seem essential to her.')}</p>
  <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>${t('Exemplaire unique','One of a kind')} · 001 / 001</span></footer>
