@@ -170,11 +170,12 @@ if(key==='jackets'&&slots.jackets==='jacket-purple'&&slots.scarves==='scarf-chec
 // Hide the strap return behind the shoulder, including beneath scarves.
 
 if(key==='shoes'&&slots.shoes==='shoes-boots'&&BOOT_HEM_BY_PANTS[slots.pants]){const hem=BOOT_HEM_BY_PANTS[slots.pants];return [[0,hem],[2048,hem],[2048,3072],[0,3072]];}
-if(slots.jackets==='jacket-green'&&['tops','pants','skirts','dresses'].includes(key))return GREEN_COAT_UNDERLAY;
+if(slots.jackets==='jacket-green'&&key==='tops')return GREEN_COAT_UNDERLAY;
+if(slots.jackets==='jacket-green'&&['pants','skirts','dresses'].includes(key))return [[850,0],[1110,0],[1110,1700],[2048,1700],[2048,3072],[0,3072],[0,1700],[850,1700]];
 if(['jacket-purple','jacket-cardigan'].includes(slots.jackets)){
 if(key==='tops')return SHORT_JACKET_TOP;
 if(key==='dresses'&&['dress-floral','dress-polka'].includes(slots.dresses))return SHORT_JACKET_DRESS_FLORAL;
-if(key==='dresses'&&slots.dresses==='dress-striped')return SHORT_JACKET_DRESS_STRIPED;
+if(key==='dresses'&&slots.dresses==='dress-striped')return SHORT_JACKET_DRESS_FLORAL;
 }
 // Hide only the bag-side bow while the brown bag is worn; retain the opposite bow.
 if(key==='dresses'&&slots.dresses==='dress-polka'&&slots.bags==='bag-brown')return [[0,960],[790,960],[790,820],[900,820],[900,0],[2048,0],[2048,3072],[0,3072]];
