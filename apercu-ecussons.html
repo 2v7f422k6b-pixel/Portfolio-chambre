@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Aperçu des écussons — Nana</title>
+<link rel="stylesheet" href="nana-journal.css?v=20261109-milestones-1">
+<style>@font-face{font-family:"Nana Trace UI";src:url("assets/fonts/NanaTraceUI-Regular.woff2") format("woff2");font-display:swap}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#efc8df;color:#ed2347;font:18px/1.5 "Nana Trace UI",sans-serif}main{text-align:center;max-width:560px;padding:24px}nav{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}a,button{font:inherit;color:inherit}nav a,main button{padding:10px 16px;background:#fff5e9;border:1px solid currentColor;border-radius:4px 9px 5px 8px;cursor:pointer}html[data-theme=night] body{background:#191930;color:#ff8ba7}html[data-theme=night] nav a,html[data-theme=night] main button{background:#26213e}#nana-journal-trigger{display:none}</style></head>
+<body><main><h1>Les écussons d’exploration</h1><p>Aperçu uniquement : ta progression reste intacte.</p><nav aria-label="Choisir un palier"><a href="?palier=1">Première découverte</a><a href="?palier=2">25 %</a><a href="?palier=3">50 %</a><a href="?palier=4">75 %</a><a href="?palier=5">100 %</a></nav><p><button id="replay">Revoir ce palier</button> <button id="theme">Jour / nuit</button></p><p><a href="index.html">Retour dans la chambre</a></p></main>
+<button id="nana-journal-trigger"><span class="nj-trigger-count"></span><span class="nj-trigger-label"></span></button>
+<script>
+const previewParams=new URLSearchParams(location.search);
+const previewIndex=Math.max(0,Math.min(4,(Number(previewParams.get('palier'))||1)-1));
+if(previewParams.get('theme')==='night')document.documentElement.dataset.theme='night';
+if(previewParams.get('lang')==='en')document.documentElement.lang='en';
+const previewCallbacks=[];
+const previewBadges=[
+['glance','Juste un coup d’œil','Just a look',0,[5,226,333,256]],
+['five-minutes','Je reste cinq minutes','Just five minutes',25,[341,186,303,311]],
+['at-home','Comme chez moi','Make myself at home',50,[643,195,354,312]],
+['resident','J’habite ici','I live here',75,[96,499,348,321]],
+['spare-key','Le double des clés','The spare key',100,[460,519,470,297]]
+].map(([id,fr,en,percent,box])=>({id,name:{fr,en},rule:percent?{fr:'Explorer '+percent+' % de la chambre.',en:'Explore '+percent+'% of the room.'}:{fr:'Découvrir un premier objet.',en:'Discover your first object.'},image:{src:'assets/IMG_5764.png',box,width:1000,height:1000},earned:()=>true}));
+window.NanaProgress={stickers:previewBadges,titles:[],games:[],secrets:[],outfits:[],snapshot:()=>({room:{discovered:[],required:[]},persistent:true}),subscribe:fn=>previewCallbacks.push(fn),suppressed:()=>false,isCreator:()=>false,visit:()=>{},hasFeat:()=>false,hasVisit:()=>false,fullRoom:()=>false};
+window.NanaDeepLinks={sync:()=>{},open:route=>{if(route==='carnet/stickers')window.NanaJournal.open('stickers');}};
+document.querySelector('#theme').onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='night'?'day':'night';};
+document.querySelector('#replay').onclick=()=>location.reload();
+</script>
+<script src="nana-journal.js?v=20261109-milestones-1"></script>
+<script>previewCallbacks.forEach(fn=>fn({added:['sticker:'+previewBadges[previewIndex].id]}));</script>
+</body></html>
