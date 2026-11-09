@@ -14,7 +14,8 @@ const ART = [
   ['Close-up','closeup.jpg'],
   ['Sunglasses','sunglasses.jpg'],
   ['Clown','clown.jpg'],
-  ['The Pink Castle','pink-castle.jpg'],
+  // Keep the original ID for existing links; display the re-uploaded artwork.
+  ['The Pink Castle','pink-castle.jpg','assets/previews/photos/IMG_1458.webp'],
   ['Snowy City','snow-city.jpg'],
   ['Still Life','still-life.jpg'],
   ['Motorcycle','motorbike.jpg'],
@@ -22,7 +23,7 @@ const ART = [
   ['Marseille','marseille.jpg'],
   ['Marseille Emblem','marseille-emblem.jpg'],
   ['Swans and Lotus','swans-lotus.jpg']
-].map(([title,filename],index)=>({title,filename,src:'assets/previews/photos/'+filename.replace(/\.jpe?g$/i,'.webp'),index}));
+].map(([title,filename,preview],index)=>({title,filename,src:preview||'assets/previews/photos/'+filename.replace(/\.jpe?g$/i,'.webp'),index}));
 window.portfolioArtworkByFile = filename => ART.find(art => art.filename === String(filename||''));
 window.portfolioArtworkIndex = filename => window.portfolioArtworkByFile(filename)?.index ?? -1;
 const GABZILLA = [

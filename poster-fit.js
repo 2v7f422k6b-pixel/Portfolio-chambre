@@ -65,7 +65,7 @@
   }
 
   // Read the actual image-to-poster assignments from the existing HTML.
-  // In particular, poster 12 (index 11) has no source: never substitute another drawing.
+  // Poster 12 (index 11) uses the castle re-uploaded by the artist.
   const sources = new Map();
   oldArtwork.querySelectorAll('image').forEach(image => {
     const match = (image.getAttribute('clip-path') || '').match(/redraw-post-(\d+)/);

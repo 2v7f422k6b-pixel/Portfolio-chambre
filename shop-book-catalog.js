@@ -50,8 +50,8 @@ window.NanaBookIllustrations = [
     "collection": "princesse-clown",
     "fr": "Le château rose",
     "en": "The Pink Castle",
-    "image": "assets/shop/princesse-clown/chateau-rose.webp",
-    "thumbnail": "assets/shop/princesse-clown/chateau-rose-thumb.webp",
+    "image": "assets/previews/photos/IMG_1458.webp",
+    "thumbnail": "assets/previews/photos/IMG_1458.webp",
     "width": 848,
     "height": 1200
   },
