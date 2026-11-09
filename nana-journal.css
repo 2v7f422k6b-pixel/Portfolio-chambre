@@ -74,3 +74,48 @@ html[data-theme=night] .nj-milestone-art{background:#fff5e9;border-radius:46% 49
 @keyframes nj-milestone-arrive{from{opacity:0;transform:scale(.75) rotate(-9deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 @media(max-height:600px){#nana-milestone{padding:18px 20px}.nj-milestone-art{height:24dvh}#nana-milestone h2{font-size:25px}.nj-milestone-actions{margin-top:12px}#nana-milestone p{margin:5px 0}}
 @media(prefers-reduced-motion:reduce){.nj-milestone-art{animation:none}}
+
+/* A bound paper notebook, with a margin, visible rings and tabbed dividers. */
+#nana-journal{border:2px solid var(--nj-ink);border-radius:9px 16px 14px 8px;padding:0 7px 6px 26px;background:var(--nj-soft);width:min(980px,calc(100vw - 28px))}
+#nana-journal::before{content:"";position:absolute;z-index:5;pointer-events:none;left:3px;top:18px;bottom:18px;width:26px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='44' viewBox='0 0 26 44'%3E%3Cpath d='M23 12C5 3 1 12 3 21C4 28 12 31 20 25' fill='none' stroke='%23ed2347' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E") repeat-y}
+#nana-journal .nj-shell{position:relative;border:1px solid var(--nj-ink);border-radius:4px 10px 8px 4px;padding:0;background:var(--nj-paper);overflow:hidden}
+#nana-journal .nj-header{background:var(--nj-paper);min-height:44px;padding:8px 13px 8px 18px;border-bottom:1px solid color-mix(in srgb,var(--nj-ink) 30%,transparent)}
+#nana-journal .nj-file{font-size:16px;gap:8px}.nj-cover-label{line-height:1.2}
+#nana-journal .nj-file img{width:20px;height:20px}
+#nana-journal .nj-close.nj-button{width:36px;height:36px}
+#nana-journal .nj-layout{grid-template-columns:208px minmax(0,1fr)}
+#nana-journal .nj-sidebar{background:var(--nj-paper);border-right:1px solid color-mix(in srgb,var(--nj-ink) 30%,transparent);padding:24px 16px 16px}
+#nana-journal .nj-heading h1{font-size:28px;font-weight:normal}
+#nana-journal .nj-eyebrow{letter-spacing:.04em}
+#nana-journal .nj-selected-title{font-size:13px;min-height:0;margin:10px 0 16px}
+#nana-journal .nj-tabs{gap:8px;margin-top:0}
+#nana-journal .nj-tabs button{border:1px solid color-mix(in srgb,var(--nj-ink) 45%,transparent);border-radius:3px 8px 3px 5px;background:var(--nj-soft);padding:8px 10px;line-height:1.25;min-height:38px;transform:rotate(-1deg)}
+#nana-journal .nj-tabs button:nth-child(even){transform:rotate(1deg)}
+#nana-journal .nj-tabs button[aria-current=page]{background:var(--nj-ink);color:var(--nj-paper)}
+#nana-journal .nj-tabs button[data-nj-newsletter]{background:transparent;border-style:dashed;font-size:14px!important;margin-top:9px}
+#nana-journal .nj-main{position:relative;padding:25px 26px 14px 34px;background:repeating-linear-gradient(transparent 0,transparent 30px,color-mix(in srgb,var(--nj-ink) 8%,transparent) 30px,color-mix(in srgb,var(--nj-ink) 8%,transparent) 31px)}
+#nana-journal .nj-main::before{content:"";position:absolute;top:0;bottom:0;left:19px;width:1px;background:color-mix(in srgb,var(--nj-ink) 28%,transparent);pointer-events:none}
+#nana-journal .nj-section-title h2{font-size:26px}
+#nana-journal .nj-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#nana-journal .nj-stats .nj-stat{padding:12px 9px}
+@media(max-width:760px){#nana-journal .nj-layout{grid-template-columns:170px minmax(0,1fr)}#nana-journal .nj-sidebar{padding:18px 12px}#nana-journal .nj-main{padding:20px 15px 12px 27px}#nana-journal .nj-main::before{left:13px}}
+@media(max-width:600px){
+#nana-journal{width:calc(100vw - 12px);height:calc(100dvh - 24px);padding:0 4px 4px 20px}
+#nana-journal::before{left:-2px;width:25px;top:12px;bottom:12px}
+#nana-journal .nj-layout{display:flex}
+#nana-journal .nj-header{min-height:43px;padding:6px 8px 6px 12px}
+#nana-journal .nj-file{font-size:14px}
+#nana-journal .nj-sidebar{padding:14px 12px 12px;border-right:0;border-bottom:1px solid color-mix(in srgb,var(--nj-ink) 30%,transparent)}
+#nana-journal .nj-heading{display:block}
+#nana-journal .nj-heading h1{font-size:26px;line-height:1.15}
+#nana-journal .nj-selected-title{display:none}
+#nana-journal .nj-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}
+#nana-journal .nj-tabs button{font-size:12px!important;padding:7px 3px;min-height:36px;text-align:center}
+#nana-journal .nj-tabs button[data-nj-newsletter]{grid-column:1/-1;margin-top:2px;min-height:32px;padding:4px;font-size:12px!important;transform:none}
+#nana-journal .nj-main{padding:17px 10px 10px 24px}
+#nana-journal .nj-main::before{left:12px}
+#nana-journal .nj-section-title h2{font-size:22px}
+#nana-journal .nj-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#nana-journal .nj-stats .nj-stat{padding:10px 5px}
+#nana-journal .nj-stat span{font-size:11px}#nana-journal .nj-stat strong{font-size:21px}
+}

@@ -3,7 +3,7 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['titres','Mes titres','My titles'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
@@ -21,7 +21,7 @@
   const dialog=document.createElement('dialog');
   dialog.id='nana-journal';dialog.className='nj-frame';dialog.setAttribute('data-no-translate','');
   dialog.setAttribute('aria-labelledby','nj-title');
-  dialog.innerHTML='<div class="nj-shell"><header class="nj-header nj-rule"><span class="nj-file">'+img(star)+' carnet.exe</span><button class="nj-close nj-button" type="button" data-nj-close><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></header><div class="nj-layout"><aside class="nj-sidebar"><div class="nj-heading"><p class="nj-eyebrow"></p><h1 id="nj-title"></h1><p class="nj-selected-title"></p></div><nav class="nj-tabs" aria-label="Carnet"></nav><div class="nj-local-note"></div></aside><section class="nj-main" aria-live="off"><div class="nj-content"></div><nav class="nj-pager" aria-label="Pages"></nav></section></div></div>';
+  dialog.innerHTML='<div class="nj-shell"><header class="nj-header nj-rule"><span class="nj-file">'+img(star)+' <span class="nj-cover-label"></span></span><button class="nj-close nj-button" type="button" data-nj-close><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></header><div class="nj-layout"><aside class="nj-sidebar"><div class="nj-heading"><p class="nj-eyebrow"></p><h1 id="nj-title"></h1><p class="nj-selected-title"></p></div><nav class="nj-tabs" aria-label="Carnet"></nav><div class="nj-local-note"></div></aside><section class="nj-main" aria-live="off"><div class="nj-content"></div><nav class="nj-pager" aria-label="Pages"></nav></section></div></div>';
   document.body.append(dialog);
   const content=dialog.querySelector('.nj-content'), pager=dialog.querySelector('.nj-pager');
   const notice=document.createElement('div');notice.id='nana-journal-notice';notice.className='nj-frame';notice.hidden=true;notice.setAttribute('data-no-translate','');
@@ -78,7 +78,7 @@
   function roomPage(){
     const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;
     const found=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;
-    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('écussons gagnés','patches earned')],['titres',progress.titles.filter(x=>x.earned()).length,progress.titles.length,t('titres gagnés','titles earned')]];
+    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('écussons gagnés','patches earned')]];
     return heading(t('Bienvenue dans ton petit carnet','Welcome to your little notebook'),t('Chaque détour laisse un souvenir.','Every little detour leaves a memory.'))+
       '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('objets découverts','objects discovered')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
       '<div class="nj-stats">'+summary.map(([tab,n,total,label])=>'<button type="button" class="nj-stat nj-frame" data-nj-tab="'+tab+'"><strong>'+n+' <small>/ '+total+'</small></strong><span>'+label+'</span></button>').join('')+'</div>'+
@@ -132,9 +132,10 @@
   function render(){
     updateTrigger();if(!dialog.open)return;
     const focusKey=document.activeElement?.dataset?.njTitle;
+    dialog.querySelector('.nj-cover-label').textContent=t('Mon carnet de découvertes','My discovery notebook');
     dialog.querySelector('#nj-title').textContent=t('Mes découvertes','My discoveries');
     dialog.querySelector('.nj-eyebrow').textContent=t('Nana’s little world','Nana’s little world');
-    const title=progress.titles.find(x=>x.id===progress.snapshot().title&&x.earned());
+    const title=null;
     dialog.querySelector('.nj-selected-title').textContent=title?name(title.name):t('Une visite, mille petits détours.','One visit, a thousand little detours.');
     dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Rubriques du carnet','Notebook sections'));
     pager.setAttribute('aria-label',t('Pages','Pages'));
@@ -145,6 +146,7 @@
     if(focusKey)dialog.querySelector('[data-nj-title="'+focusKey+'"]')?.focus({preventScroll:true});
   }
   function open(tab='chambre'){
+    if(tab==='titres')tab='stickers';
     if(!pages[tab])return false;
     active=tab;page=0;
     if(!dialog.open){previousFocus=document.activeElement;dialog.showModal();}
@@ -175,6 +177,7 @@
   // Keep Escape scoped to the notebook; underlying room shortcuts must not close other views.
   dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}});
   progress.subscribe(({added})=>{
+    added=added.filter(id=>!id.startsWith('title:'));
     render();
     for(const id of added.filter(x=>x.startsWith('sticker:'))){
       const badge=progress.stickers.find(x=>'sticker:'+x.id===id);
