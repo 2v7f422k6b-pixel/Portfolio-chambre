@@ -123,6 +123,25 @@
 
   scene.appendChild(overlay);
 
+  // The file starts with 800 ms of silence, matching the spider's entrance.
+  // Start playback inside the click/key gesture so it also works on iOS.
+  const scream=new Audio('assets/audio/spider-scream.mp3');
+  scream.preload='auto';
+  scream.volume=.55;
+  function stopScream(){
+    scream.pause();
+    scream.currentTime=0;
+  }
+  function playScream(){
+    stopScream();
+    const playback=scream.play();
+    if(playback)playback.catch(()=>{});
+  }
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)stopScream();
+  });
+  window.addEventListener('pagehide',stopScream);
+
   let opened=false;
   function updateZoneLabel(){
     const zone=window.NANA_ROOM_ZONES?.find(z=>z.id==='tapis');
@@ -135,6 +154,7 @@
   function toggle(){
     opened=!opened;
     overlay.classList.toggle('is-open',opened);
+    if(opened)playScream();else stopScream();
     if(opened)window.NanaProgress?.feat('secret-rug');
     updateZoneLabel();
 
@@ -144,6 +164,7 @@
     event.preventDefault();event.stopImmediatePropagation();toggle();
   },true);
   svg.addEventListener('keydown',event=>{
+    if(event.repeat)return;
     if(!['Enter',' '].includes(event.key)
         ||!event.target.closest?.('[data-room-zone-id="tapis"]'))return;
     event.preventDefault();event.stopImmediatePropagation();toggle();
