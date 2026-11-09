@@ -3,7 +3,7 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
@@ -127,7 +127,22 @@
       '<p>'+t('Explore tous les objets de la chambre pour ouvrir ce cadeau.','Explore every object in the room to open this gift.')+'</p>'+meter(r.count,r.total,t('Progression vers le cadeau','Progress towards the gift'))+'<small>'+r.count+' / '+r.total+' '+t('objets découverts','objects discovered')+'</small>')+
     '</article><p class="nj-bottom-note">'+t('Les tenues bonus et les stickers gagnés restent dans leurs collections.','Your bonus looks and stickers stay in their collections.')+'</p>';
   }
-  const pages={chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
+  let keepsakeFilter='all',selectedKeepsake=null;
+  const kindLabel=kind=>kind==='poem'?t('Poème','Poem'):kind==='book'?t('Livre favori','Favourite book'):t('Texte favori','Favourite text');
+  function keepsakesPage(){
+    const all=window.NanaKeepsakes?.list()||[],selected=all.find(x=>x.id===selectedKeepsake);
+    if(selected?.kind==='poem')return heading(t('Un poème à garder','A poem to keep'),selected.title)+
+      '<article class="nj-poem-sheet"><p class="nj-poem-body" tabindex="0">'+h(selected.body)+'</p></article><div class="nj-keepsake-actions">'+button(t('Copier le poème','Copy poem'),'data-nj-poem-copy')+button(t('Télécharger en texte','Download as text'),'data-nj-poem-download')+button(t('Retour aux souvenirs','Back to keepsakes'),'data-nj-keepsake-back')+'</div>';
+    selectedKeepsake=null;
+    const filtered=all.filter(x=>keepsakeFilter==='all'||(keepsakeFilter==='poems'?x.kind==='poem':x.kind!=='poem'));
+    const draft=window.NanaKeepsakes?.draft(),draftCount=Array.isArray(draft?.poem)?draft.poem.length:0;
+    const beadCount=window.NanaBeadSouvenir?.count()||0;
+    const filters='<nav class="nj-keepsake-filters" aria-label="'+t('Filtrer les souvenirs','Filter keepsakes')+'">'+[['all',t('Tout','All')],['poems',t('Mes poèmes','My poems')],['favourites',t('Mes favoris','My favourites')]].map(([id,label])=>button(label,'data-nj-keepsake-filter="'+id+'" aria-pressed="'+(keepsakeFilter===id)+'"')).join('')+'</nav>';
+    const works=filtered.length?paginate(filtered,item=>'<article class="nj-keepsake nj-frame"><small>'+h(kindLabel(item.kind))+'</small><h3>'+h(item.title)+'</h3>'+(item.author?'<p>'+h(item.author)+'</p>':'')+(item.kind==='poem'?'<p class="nj-keepsake-excerpt">'+h(item.body.slice(0,140))+(item.body.length>140?'…':'')+'</p>'+button(t('Relire','Read again'),'data-nj-keepsake="'+h(item.id)+'"'):routeButton(item.route,t('Ouvrir la fiche','Open the page')))+'</article>',{size:small.matches?2:4,cls:'nj-grid nj-keepsakes-grid'}):'<div class="nj-keepsake-empty"><p>'+t('Tes petits souvenirs trouveront leur place ici.','Your little keepsakes will find a home here.')+'</p><p>'+t('Garde un poème dans le laboratoire des mots, ou ajoute un livre et un texte des Souvenues à tes favoris.','Keep a poem from the word lab, or save a book or a Souvenues text to your favourites.')+'</p>'+routeButton('jeu/word-lab',t('Composer un poème','Make a poem'))+' '+routeButton('objet/reading-room',t('Choisir un livre','Choose a book'))+'</div>';
+    const inProgress=keepsakeFilter==='all'?'<div class="nj-keepsake-current">'+(draftCount?'<article><p>'+t('Ton poème en cours','Your poem in progress')+'</p>'+routeButton('jeu/word-lab',t('Reprendre mon brouillon','Continue my draft'))+'</article>':'')+(beadCount?'<article class="nj-current-charm">'+window.NanaBeadSouvenir.preview()+'<div><p>'+t('Ton bijou en cours','Your charm in progress')+'</p>'+routeButton('jeu/bead-box',t('Retrouver mon bijou','Revisit my charm'))+'</div></article>':'')+'</div>':'';
+    return heading(t('Mes petits souvenirs','My little keepsakes'),t('Tes créations et tes lectures à retrouver.','Your creations and saved reading.'))+filters+works+inProgress+'<p class="nj-bottom-note">'+t('Conservés sur ce navigateur. Les poèmes déjà téléchargés avant cette nouveauté ne peuvent pas être récupérés automatiquement.','Saved in this browser. Poems downloaded before this feature cannot be recovered automatically.')+'</p>';
+  }
+  const pages={souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
   function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent=pct+' %';trigger.querySelector('.nj-trigger-label').textContent=t('Mon carnet','My notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
   function render(){
     updateTrigger();if(!dialog.open)return;
@@ -148,20 +163,30 @@
   function open(tab='chambre'){
     if(tab==='titres')tab='stickers';
     if(!pages[tab])return false;
-    active=tab;page=0;
+    active=tab;page=0;selectedKeepsake=null;
     if(!dialog.open){previousFocus=document.activeElement;dialog.showModal();}
     notice.hidden=true;render();if(active==='dressing')loadWardrobe();
     dialog.querySelector('.nj-close').focus({preventScroll:true});return true;
   }
   function close(){if(dialog.open)dialog.close();}
   function navigate(route){window.NanaDeepLinks.open(route);}
-  function goTab(tab){active=tab;page=0;render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]')?.focus({preventScroll:true});}
+  function goTab(tab){active=tab;page=0;selectedKeepsake=null;render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]')?.focus({preventScroll:true});}
   trigger.addEventListener('click',()=>navigate('carnet/chambre'));
   dialog.addEventListener('click',async event=>{
     const target=event.target.closest('button');if(!target)return;
     if(target.hasAttribute('data-nj-close'))close();
     else if(target.hasAttribute('data-nj-newsletter'))navigate('newsletter');
     else if(target.dataset.njTab)goTab(target.dataset.njTab);
+    else if(target.dataset.njKeepsakeFilter){keepsakeFilter=target.dataset.njKeepsakeFilter;selectedKeepsake=null;page=0;render();dialog.querySelector('[data-nj-keepsake-filter="'+keepsakeFilter+'"]').focus({preventScroll:true});}
+    else if(target.dataset.njKeepsake){selectedKeepsake=target.dataset.njKeepsake;render();dialog.querySelector('.nj-poem-body')?.focus({preventScroll:true});}
+    else if(target.hasAttribute('data-nj-keepsake-back')){selectedKeepsake=null;render();}
+    else if(target.hasAttribute('data-nj-poem-copy')||target.hasAttribute('data-nj-poem-download')){
+      const poem=window.NanaKeepsakes?.list().find(x=>x.id===selectedKeepsake);if(!poem)return;
+      if(target.hasAttribute('data-nj-poem-copy')){
+        try{await navigator.clipboard.writeText(poem.body);target.textContent=t('Copié !','Copied!');}
+        catch(_){const range=document.createRange();range.selectNodeContents(dialog.querySelector('.nj-poem-body'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);target.textContent=t('Sélectionné : copie le texte','Selected: copy the text');}
+      }else{const url=URL.createObjectURL(new Blob([poem.body],{type:'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=t('mon-poeme.txt','my-poem.txt');document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
+    }
     else if(target.dataset.njRoute)navigate(target.dataset.njRoute);
     else if(target.dataset.njOutfit)navigate('jeu/dressing/tenue/'+target.dataset.njOutfit);
     else if(target.dataset.njTitle)progress.selectTitle(progress.snapshot().title===target.dataset.njTitle?null:target.dataset.njTitle);
@@ -194,6 +219,7 @@
   });
   notice.querySelector('button').addEventListener('click',event=>navigate('carnet/'+event.currentTarget.dataset.njNotice));
   document.addEventListener('portfolio-language-change',()=>{notice.hidden=true;render();if(currentMilestone){renderMilestone();milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});}});
+  document.addEventListener('nana-keepsakes-change',()=>{if(dialog.open&&active==='souvenirs')render();});
   small.addEventListener('change',()=>{page=0;render();});
   const recordNight=()=>{if(document.documentElement.dataset.theme==='night')progress.visit('night');};
   // Theme transitions may apply their new state asynchronously. Observe the actual theme.
@@ -202,6 +228,7 @@
   window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 
 

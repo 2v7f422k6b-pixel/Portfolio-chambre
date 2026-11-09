@@ -632,6 +632,32 @@
   let bank = [];
   let poem = [];
   let nextId = 0;
+  const keepsakes=()=>window.NanaKeepsakes;
+  const bilingual=(fr,en)=>document.documentElement.lang.startsWith('en')?en:fr;
+  const draft=keepsakes()?.draft();
+  if(draft&&Array.isArray(draft.poem)&&Array.isArray(draft.bank)){
+    const clean=items=>items.filter(x=>typeof x?.word==='string'&&x.word.length<100).slice(0,100).map(x=>({id:++nextId,word:x.word}));
+    poem=clean(draft.poem);bank=clean(draft.bank);
+  }
+  function favoriteLabel(id){return keepsakes()?.has(id)?bilingual('Retirer des favoris','Remove from favourites'):bilingual('Garder dans mes favoris','Save to my favourites');}
+  function savePoem(){
+    const status=appRoot()?.querySelector('#lit-lab-status');
+    if(!poem.length){if(status)status.textContent=bilingual('Ajoute quelques mots avant de garder ton poème.','Add a few words before saving your poem.');return false;}
+    const lang=document.documentElement.lang.startsWith('en')?'en':'fr';
+    const words=poem.map(x=>window.portfolioTranslate?.(x.word,lang)||x.word),body=words.join(' ');
+    const existing=keepsakes()?.list().find(x=>x.kind==='poem'&&x.body===body);
+    const ok=keepsakes()?.keep({id:existing?.id||'poem:'+crypto.randomUUID(),kind:'poem',title:words.slice(0,6).join(' ')+(words.length>6?'…':''),body,route:'jeu/word-lab'});
+    if(status)status.textContent=ok?bilingual('Ton poème est gardé dans Mon carnet → Mes souvenirs.','Your poem is saved in My notebook → My keepsakes.'):bilingual('Le navigateur n’a pas pu garder ton poème. Tu peux le télécharger en PNG.','Your browser could not save your poem. You can download it as a PNG.');
+    return ok;
+  }
+  function toggleReadingFavorite(kind){
+    const book=kind==='book'?readingExamples[selection]:souvenuesEntries[poet];if(!book)return;
+    const id=kind+':'+(kind==='book'?book.rank:book.id);
+    const ok=keepsakes()?.has(id)?keepsakes().remove(id):keepsakes()?.keep({id,kind,title:book.title,author:book.author||book.name,route:kind==='book'?'objet/reading-room/'+bookId(book):'objet/souvenues/'+book.id});
+    if(ok){if(kind==='book')drawReadingBook(book);else showPoet();}
+    const feedback=appRoot()?.querySelector('[data-lit-favorite-status]');
+    if(feedback)feedback.textContent=ok?(keepsakes().has(id)?bilingual('Retrouve ce favori dans Mon carnet → Mes souvenirs.','Find this favourite in My notebook → My keepsakes.'):bilingual('Retiré de tes favoris.','Removed from your favourites.')):bilingual('Le navigateur n’a pas pu enregistrer ce favori.','Your browser could not save this favourite.');
+  }
   let dragItem = null;
   const escape = value => String(value).replace(/[&<>"']/g, ch => ({
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
@@ -741,7 +767,8 @@
       <div class="lit-actions">
         <button type="button" class="lit-button" data-lit-shuffle>↻ D'autres mots</button>
         <button type="button" class="lit-button" data-lit-clear>Effacer la feuille</button>
-        <button type="button" class="lit-button lit-primary" data-lit-export>Enregistrer en PNG</button>
+        <button type="button" class="lit-button lit-primary" data-lit-keep>${bilingual('Garder dans mon carnet','Keep in my notebook')}</button>
+        <button type="button" class="lit-button" data-lit-export>Enregistrer en PNG</button>
       </div>
       <p class="lit-caption" id="lit-lab-status" role="status" aria-live="polite"></p>
     </div>`;
@@ -763,6 +790,8 @@
         <h3>${escape(book.title)}</h3>
         <p class="lit-byline">${escape(book.author)}</p>
         <p class="lit-rating">${escape(rating)}${book.heart?' · Coup de cœur':''}</p>
+        <button type="button" class="lit-button" data-lit-favorite="book" aria-pressed="${!!keepsakes()?.has('book:'+book.rank)}">${favoriteLabel('book:'+book.rank)}</button>
+        <p role="status" data-lit-favorite-status></p>
         <p class="lit-book-summary">${escape(book.line)}</p>
         <span class="lit-book-mood">À lire pour : ${book.moods.map(escape).join(' · ')}</span>
         <a class="lit-text-link" href="${escape(book.url)}" target="_blank" rel="noopener noreferrer">Voir la fiche sur SensCritique ↗</a>
@@ -795,6 +824,8 @@
    <h3 class="lit-readable-title">${escape(p.title)}</h3>
    <p class="lit-readable-author">${escape(p.name)}</p>
    <p class="lit-readable-origin">${escape(p.kindNote)}</p>
+   <button type="button" class="lit-button" data-lit-favorite="excerpt" aria-pressed="${!!keepsakes()?.has('excerpt:'+p.id)}">${favoriteLabel('excerpt:'+p.id)}</button>
+   <p role="status" data-lit-favorite-status></p>
    <div class="lit-readable-excerpt" lang="fr">${escape(lines)}</div>
    <a class="lit-readable-source" href="${escape(babelioUrl)}" target="_blank" rel="noopener noreferrer">Rechercher cette œuvre sur Babelio ↗</a>
  </div>`;
@@ -806,6 +837,7 @@
   }
   function renderPoem() {
     const root=appRoot();if(!root||current!=='word-lab')return;
+    keepsakes()?.draft({poem,bank});
     const plate=root.querySelector('#lit-poem'), tray=root.querySelector('#lit-wordbank');
     plate.innerHTML=poem.length ? poem.map((item,i)=>`
       <span class="lit-poem-item" draggable="true" data-lit-drag="poem:${i}" data-lit-index="${i}">
@@ -832,6 +864,7 @@
   }
   function exportPoem() {
     if(!poem.length){const status=appRoot()?.querySelector('#lit-lab-status');if(status)status.textContent='Ajoute quelques mots avant de sauvegarder ton poème.';return;}
+    savePoem();
     const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1500;
     const ctx=canvas.getContext('2d');if(!ctx)return;
     const language=(()=>{try{return localStorage.getItem('portfolio-language-v2')==='en'?'en':'fr'}catch(_){return 'fr'}})();
@@ -869,8 +902,10 @@
     if(name==='word-lab'){if(!bank.length)freshBank();renderPoem();}
   }
   document.addEventListener('click',event=>{
-    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-prev],[data-lit-next],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export]');
+    const target=event.target.closest('[data-lit-mood],[data-lit-random],[data-lit-book],[data-lit-poet],[data-lit-pick-poet],[data-lit-filter],[data-lit-prev],[data-lit-next],[data-lit-add],[data-lit-remove],[data-lit-shift],[data-lit-shuffle],[data-lit-clear],[data-lit-export],[data-lit-keep],[data-lit-favorite]');
     if(!target||!target.closest('#window-content .lit-app'))return;
+    if(target.hasAttribute('data-lit-favorite')){toggleReadingFavorite(target.dataset.litFavorite);return;}
+    if(target.hasAttribute('data-lit-keep')){savePoem();return;}
     if(target.hasAttribute('data-lit-mood')){selectedMood=target.dataset.litMood;selection=-1;showReading();}
     else if(target.hasAttribute('data-lit-random'))showReading();
     else if(target.hasAttribute('data-lit-book')){
