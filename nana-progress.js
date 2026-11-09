@@ -55,7 +55,7 @@
     'objet/marshall':'object:marshall', 'objet/music-visuals':'object:cds',
     'objet/phone':'object:iphone', 'objet/gabzilla':'object:gabzilla',
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
-    'photos':'object:instax', 'illustrations':'flowers', 'objet/lampe-fleur':'wall-lamp'
+    'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
   };
   const allowedFeats = new Set(['polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
@@ -96,12 +96,12 @@
   }
   function legacy() {
     const room=read(ROOM_KEY);
-    return Array.isArray(room?.discovered)?room.discovered.filter(x=>typeof x==='string'):[];
+    return Array.isArray(room?.discovered)?room.discovered.filter(x=>typeof x==='string'&&x!=='flowers'):[];
   }
   function roomSnapshot() {
     const live=window.NanaDiscoveries?.snapshot();
     const saved=read(ROOM_KEY);
-    return live || {discovered:legacy(), required:Array.isArray(saved?.required)?saved.required.filter(x=>typeof x==='string'):[], celebrated:saved?.celebrated===true};
+    return live || {discovered:legacy(), required:Array.isArray(saved?.required)?saved.required.filter(x=>typeof x==='string'&&x!=='flowers'):[], celebrated:saved?.celebrated===true};
   }
   function hasVisit(route) {
     return state.visits.includes(route) || !!(roomRoutes[route] && roomSnapshot().discovered.includes(roomRoutes[route]));

@@ -93,11 +93,6 @@
         center:zone.center
       });
     }
-    const flowers=svg.querySelector('polygon[aria-label="Browse illustrations by the flowers"]');
-    if(flowers)items.push({
-      el:flowers,number:45,id:'fleurs',name:'Fleurs (galerie)',type:'object',
-      action:'photos',center:null
-    });
     return items;
   }
   let labels = new Map();

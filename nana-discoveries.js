@@ -9,8 +9,8 @@
   const posters = [...svg.querySelectorAll('polygon[data-type="poster"]')]
     .map(el => 'poster:' + el.dataset.index);
   const objects = (window.NANA_ROOM_ZONES || []).map(zone => 'object:' + zone.id);
-  // Flowers are a separate gallery hotspot; these three decor pieces are added by other scripts.
-  const required = new Set([...posters, ...objects, 'flowers', 'mirror', 'wall-lamp', 'fortune-cookie']);
+  // Only reachable room objects count; the old flower-gallery shortcut was removed.
+  const required = new Set([...posters, ...objects, 'mirror', 'wall-lamp', 'fortune-cookie']);
   if (!required.size) return;
 
   let stored = {};
@@ -55,7 +55,6 @@
     if (target.closest('#wall-lamp-hit')) return 'wall-lamp';
     if (target.closest('#nana-fortune-cookie [data-open="fortune-cookie"]')) return 'fortune-cookie';
     if (target.closest('polygon[data-open="gearnews-series"]')) return 'object:ring-light';
-    if (target.closest('polygon[data-open="photos"]')) return 'flowers';
     return null;
   }
 

@@ -276,3 +276,18 @@ test('saved room totals restore thresholds and patch progress merges between tab
   assert.equal(preview.storage.has(preview.p.BADGES_KEY),false);
  }
 });
+
+test('removing the flower shortcut keeps full exploration reachable and old achievements intact',()=>{
+  const oldRoom={discovered:['object:instax'],required:['object:instax','flowers'],celebrated:false};
+  const storage=new Map([[roomKey,JSON.stringify(oldRoom)]]);
+  const {p,env}=browser({storage});
+  assert.equal(p.fullRoom(),true);
+  assert.equal(p.snapshot().room.required.includes('flowers'),false);
+  assert.equal(p.snapshot().room.discovered.includes('object:instax'),true);
+  assert.deepEqual(JSON.parse(storage.get(roomKey)),oldRoom);
+  const remembered=[];
+  env.NanaDiscoveries={remember:id=>remembered.push(id),snapshot:()=>({required:['object:instax'],discovered:['object:instax']})};
+  p.visit('illustrations');
+  assert.deepEqual(remembered,[]);
+  assert.equal(p.fullRoom(),true);
+});

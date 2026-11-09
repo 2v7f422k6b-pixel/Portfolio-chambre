@@ -746,9 +746,6 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <!-- Pink coffee mug on the glass table, distinct from the book hotspot. -->
           <polygon data-open="latte" points="932,738 868,775 840,782 825,777 800,748 805,729 825,711 838,708 868,709" aria-label="Make a latte by clicking the pink mug" tabindex="0"/>
           <polygon data-open="book" points="1024,752 1024,774 993,806 881,790 884,780 935,742" aria-label="Explore Clown Princess" tabindex="0"/>
-          <!-- Keep the flower-gallery link above the vase base and table objects.
-               Its former lower edge overlapped the Tamagotchi and intercepted taps. -->
-          <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1179,720 1037,720" aria-label="Browse illustrations by the flowers" tabindex="0"/>
           <!-- Léna's day/night CV layers retain their original full-scene placement.
                The transparent cutout follows the cat; the destination stays unassigned. -->
           <g id="cat-cv-paper" aria-hidden="true" pointer-events="none" data-no-translate>
@@ -762,10 +759,10 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <!-- Pet the cat: the original illustration stays untouched. -->
           <polygon data-cat-pet="" points="402,615 415,602 436,594 463,592 490,600 502,583 518,584 537,592 558,590 567,608 561,630 548,645 520,650 495,658 461,661 423,658 405,645 400,627" aria-label="Pet the sleeping cat" tabindex="0"/>
           <polygon data-open="do-nothing" points="700,591 691,597 612,606 583,605 536,583 466,462 469,437 491,420 622,390 641,394 658,413 705,566" aria-label="Rilakkuma — Do Nothing Club" tabindex="0"/>
-          <polygon data-open="gearnews-series" points="111,851 0,804 0,433 8,401 23,369 34,358 53,351 79,360 103,398 155,692 118,846" aria-label="Watch my GearNews music series via the ring light" tabindex="0"/>
+          <polygon data-open="gearnews-series" fill-rule="evenodd" points="49,350.5 62,350.5 69,352.5 77,356.5 86.5,366 100.5,388 106.5,407 108.5,419 108.5,465 102.5,485 89.5,509 83.5,517 64.5,509 78.5,484 84.5,456 85.5,431 79.5,399 74.5,388 63,372.5 55,371.5 47,375.5 41.5,381 30.5,406 24.5,433 24.5,461 28.5,483 34.5,496 40,501.5 42.5,499 40.5,495 40.5,483 35,480.5 30.5,476 31.5,468 35,463.5 40,461.5 51,461.5 56.5,465 59.5,474 57.5,480 52,482.5 49.5,486 50.5,497 48.5,499 52.5,504 52.5,509 57,511.5 64.5,509 83.5,517 69,530.5 58.5,534 59.5,546 54.5,551 57.5,554 58.5,559 58.5,568 55.5,571 57.5,573 58.5,589 53.5,594 53.5,610 61,612.5 64.5,617 64.5,627 62.5,629 63.5,635 68.5,650 80.5,700 82.5,703 83.5,711 86,714.5 88,713.5 89.5,715 93.5,731 93.5,743 111.5,813 111.5,818 113.5,821 119.5,845 115,850.5 111,852.5 106,852.5 101.5,850 94.5,818 55,783.5 65,777.5 87,794.5 88.5,791 78.5,750 78.5,745 73.5,738 73.5,733 70.5,725 71.5,720 69.5,711 67.5,707 57.5,661 55.5,658 56.5,657 55,655.5 53.5,659 55.5,764 58.5,767 59.5,772 65,777.5 55,783.5 53.5,785 53.5,809 57.5,813 57.5,818 54,822.5 42,822.5 37.5,819 35.5,815 35.5,811 38.5,808 38.5,783 37,781.5 4,802.5 2,803.5 0.5,802 4,797.5 37.5,777 36,772.5 4,792.5 2,793.5 0.5,792 3,788.5 12,782.5 33,770.5 38.5,763 38.5,670 37.5,659 36,657.5 16.5,709 15.5,716 2,748.5 0.5,744 12.5,713 5,708.5 2,710.5 0.5,707 6.5,696 30.5,630 28.5,626 28.5,617 31,613.5 39,610.5 41.5,607 41.5,596 34.5,588 34.5,576 39.5,571 34.5,564 34.5,559 40.5,552 34.5,546 34.5,538 39.5,534 39.5,532 31,527.5 17.5,516 10.5,506 10.5,503 4.5,491 0.5,476 0.5,422 9.5,391 21.5,369 33,357.5" aria-label="Watch my GearNews music series via the ring light" tabindex="0"/>
           <polygon data-open="contact" points="1607,867 1580,857 1562,838 1556,798 1603,671 1669,549 1669,854 1643,869" aria-label="Contact me by the guitar" tabindex="0"/>
-          <!-- Same SVG hotspot system as the other Play objects. Coordinates preserve the former Instax hit box. -->
-          <polygon data-open="polaroids" points="197,72 284,72 284,158 197,158" aria-label="Open my Polaroid gallery via the Instax camera" tabindex="0"/>
+          <!-- Tight silhouette from Léna’s Instax drawing; keep the wall and bead box outside. -->
+          <polygon data-open="polaroids" points="273,107 273,135 271,140 263,146 212,132 210,107 212,95 218,88 230,81 234,81 263,92 271,98" aria-label="Open my Polaroid gallery via the Instax camera" tabindex="0"/>
           <g id="cat-response" aria-hidden="true" pointer-events="none">
             <!-- Two small irregular hearts and faint purring ripples, in red UI ink. -->
             <path class="cat-purr-line" d="M 394 616 Q 388 625 395 633"/>
@@ -816,7 +813,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261105-remove-two-posters-3"></script>
-  <script src="nana-progress.js?v=20261109-exploration-patches" defer></script>
+  <script src="nana-progress.js?v=20261109-tight-room-zones" defer></script>
   <script src="nana-keepsakes.js?v=20261109-keepsakes-1" defer></script>
   <script src="app.js?v=20261109-first-visit-bubble-1" defer></script>
   <script src="do-nothing-club.js?v=20261108-journal-1" defer></script>
@@ -946,12 +943,12 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="glow-stars.js?v=20261107-night-colors-1" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="room-zone-registry.js?v=20261108-cv-zone-1" defer></script>
+<script src="room-zone-registry.js?v=20261109-tight-room-zones" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
   <script src="rug-secret.js?v=20261109-lena-scream-4" defer></script>
   <script src="twist-reality.js?v=20261108-journal-1" defer></script>
 <script src="guitar-interaction.js?v=20261103-shift-left-v3" defer></script>
-  <script src="hotspot-numbers.js?v=20261103-all-objects" defer></script>
+  <script src="hotspot-numbers.js?v=20261109-tight-room-zones" defer></script>
   <script src="work-break-typewriter.js?v=20261108-journal-1" defer></script>
   <script src="play-pan-hint.js?v=20261109-first-visit-room-tour" defer></script>
   <script src="artwork-protection.js?v=20261104-3" defer></script>
@@ -959,7 +956,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261104-per-artwork-2"></script>
   <script src="nana-admin.js?v=conte-local-20261106" defer></script>
-<script src="nana-discoveries.js?v=20261109-exploration-patches" defer></script>
+<script src="nana-discoveries.js?v=20261109-tight-room-zones" defer></script>
   <script src="dreamlab-launcher.js?v=20261108-shining-socks-1" defer></script>
 
 <script id="nana-minilab-day-layer">
