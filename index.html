@@ -574,6 +574,13 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <link rel="stylesheet" href="memory-box.css?v=20261109-drawn-memories-1">
 <link rel="stylesheet" href="nana-journal.css?v=20261108-journal-1">
 <link rel="stylesheet" href="nana-newsletter.css?v=20261109-newsletter-1">
+  <style id="welcome-night-solid-background">
+    /* Let the purple welcome canvas show through both mode choices. */
+    html[data-theme="night"] body #welcome .mode-tile,
+    html[data-theme="night"] body #welcome .mode-tile.sketch-ui-frame {
+      background: transparent !important;
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="mode-select">
