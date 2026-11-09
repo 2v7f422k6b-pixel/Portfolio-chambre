@@ -27,6 +27,45 @@
   const notice=document.createElement('div');notice.id='nana-journal-notice';notice.className='nj-frame';notice.hidden=true;notice.setAttribute('data-no-translate','');
   notice.innerHTML='<span role="status" aria-live="polite"></span><button type="button" data-nj-notice></button>';
   document.body.append(notice);
+  // Milestones celebrate exploration first; defer them while a game or another dialog is open.
+  const milestone=document.createElement('dialog');
+  milestone.id='nana-milestone';milestone.setAttribute('data-no-translate','');
+  milestone.setAttribute('aria-labelledby','nj-milestone-title');
+  milestone.setAttribute('aria-describedby','nj-milestone-rule');
+  document.body.append(milestone);
+  const milestoneQueue=[], queuedBadges=new Set();
+  const ranks={
+    glance:['Petite âme curieuse','Curious soul'],
+    'five-minutes':['En visite prolongée','Staying a little longer'],
+    'at-home':['Comme chez toi','Right at home'],
+    resident:['Locataire honoraire','Honorary resident'],
+    'spare-key':['Gardienne des clés','Keeper of the keys']
+  };
+  let currentMilestone=null,milestoneFocus=null;
+  function renderMilestone(){
+    if(!currentMilestone)return;
+    const badge=currentMilestone,rank=ranks[badge.id];
+    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2><p class="nj-milestone-name">'+h(name(badge.name))+'</p><p id="nj-milestone-rule">'+h(name(badge.rule))+'</p><div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes écussons','My patches'),'data-milestone-collection')+'</div>';
+  }
+  function showNextMilestone(){
+    if(currentMilestone||!milestoneQueue.length||progress.suppressed()||document.hidden)return;
+    if(document.querySelector('dialog[open],#window-shade:not([hidden]),#special-shade:not([hidden]),#nana-discovery-overlay:not([hidden])'))return;
+    currentMilestone=milestoneQueue.shift();milestoneFocus=document.activeElement;
+    notice.hidden=true;clearTimeout(toastTimer);renderMilestone();milestone.showModal();
+    milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});
+  }
+  milestone.addEventListener('click',event=>{
+    if(event.target.closest('[data-milestone-collection]')){milestone.close();navigate('carnet/stickers');}
+    else if(event.target.closest('[data-milestone-close]'))milestone.close();
+  });
+  milestone.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();milestone.close();}});
+  milestone.addEventListener('cancel',event=>{event.preventDefault();milestone.close();});
+  milestone.addEventListener('close',()=>{
+    currentMilestone=null;
+    if(milestoneFocus?.isConnected)milestoneFocus.focus({preventScroll:true});
+  });
+  // A queued award survives a temporary game overlay and never interrupts it.
+  setInterval(showNextMilestone,600);
   function ratio(){const r=progress.snapshot().room;return{...r,count:r.discovered.filter(x=>r.required.includes(x)).length,total:r.required.length};}
   function meter(count,total,label){const percent=total?Math.min(100,Math.round(count/total*100)):0;return '<div class="nj-progress" role="progressbar" aria-label="'+h(label)+'" aria-valuemin="0" aria-valuemax="'+Math.max(total,1)+'" aria-valuenow="'+count+'"><span style="width:'+percent+'%"></span></div>';}
   function heading(title,subtitle){return '<div class="nj-section-title"><h2>'+h(title)+'</h2><p>'+h(subtitle)+'</p></div>';}
@@ -136,16 +175,22 @@
   // Keep Escape scoped to the notebook; underlying room shortcuts must not close other views.
   dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}});
   progress.subscribe(({added})=>{
-    render();if(!added.length||dialog.open||document.querySelector('dialog[open]'))return;
+    render();
+    for(const id of added.filter(x=>x.startsWith('sticker:'))){
+      const badge=progress.stickers.find(x=>'sticker:'+x.id===id);
+      if(badge&&!queuedBadges.has(id)){queuedBadges.add(id);milestoneQueue.push(badge);}
+    }
+    if(milestoneQueue.length||currentMilestone){notice.hidden=true;clearTimeout(toastTimer);return;}
+    if(!added.length||dialog.open||document.querySelector('dialog[open]'))return;
     if(added.includes('gift:merci10')){notice.hidden=true;clearTimeout(toastTimer);return;}
     const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
     const destination=outfit?'dressing':badge?'stickers':title?'titres':'stickers';
-    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Un nouvel écusson t’attend dans le dressing.','A new patch is waiting in your wardrobe.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
+    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Tu as gagné un nouvel écusson d’exploration.','You earned a new exploration patch.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
     const btn=notice.querySelector('button');btn.textContent=t('Voir','See');btn.dataset.njNotice=destination;
     notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,4200);
   });
   notice.querySelector('button').addEventListener('click',event=>navigate('carnet/'+event.currentTarget.dataset.njNotice));
-  document.addEventListener('portfolio-language-change',()=>{notice.hidden=true;render();});
+  document.addEventListener('portfolio-language-change',()=>{notice.hidden=true;render();if(currentMilestone){renderMilestone();milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});}});
   small.addEventListener('change',()=>{page=0;render();});
   const recordNight=()=>{if(document.documentElement.dataset.theme==='night')progress.visit('night');};
   // Theme transitions may apply their new state asynchronously. Observe the actual theme.
@@ -154,6 +199,7 @@
   window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 
 

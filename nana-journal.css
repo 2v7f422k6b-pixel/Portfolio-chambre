@@ -51,3 +51,26 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
 @media(max-width:760px){html body #menubar .menu-right #nana-journal-trigger{display:flex!important;flex:0 0 auto!important}#nana-journal{width:calc(100vw - 20px);height:min(760px,calc(100dvh - 28px))}.nj-layout{grid-template-columns:170px minmax(0,1fr)}.nj-sidebar{padding:20px 14px}.nj-main{padding:20px 16px}.nj-heading h1{font-size:25px}.nj-tabs button{font-size:15px!important}}
 @media(max-width:600px){#nana-journal{width:calc(100vw - 14px);height:calc(100dvh - 20px)}.nj-header{min-height:44px;padding:5px 12px}.nj-layout{display:flex;flex-direction:column}.nj-sidebar{padding:13px 15px 10px;flex-shrink:0}.nj-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.nj-heading h1{font-size:25px}.nj-eyebrow,.nj-local-note{display:none}.nj-selected-title{font-size:11px;min-height:0;max-width:140px;margin:0;text-align:right;line-height:1.3}.nj-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:12px}#nana-journal .nj-tabs button{text-align:center;font-size:12px!important;padding:8px 2px;min-height:32px}.nj-main{padding:17px 14px 10px;flex:1}.nj-section-title h2{font-size:23px}.nj-section-title p{font-size:12px;margin-bottom:15px}.nj-hero{padding:13px 18px;grid-template-columns:1fr 68px}.nj-hero strong{font-size:48px}.nj-hero p{font-size:14px}.nj-hero-star{width:65px;height:65px}.nj-stats{gap:12px;margin-top:14px}#nana-journal .nj-stat{padding:12px}.nj-stat strong{font-size:24px}.nj-stat span{font-size:13px}.nj-bottom-note{font-size:11px;margin-top:13px}.nj-grid{gap:12px}.nj-card{padding:12px 8px;min-height:155px;gap:7px}.nj-card h3{font-size:16px}.nj-card p{font-size:11px}.nj-sticker-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.nj-sticker-art{height:100px}.nj-sticker-art img,.nj-sticker-art .nj-art{height:90px;width:100px}.nj-sticker p{font-size:13px}.nj-title-card{flex-wrap:wrap;gap:10px;padding:12px}.nj-title-card h3{font-size:17px}.nj-title-card .nj-button,.nj-title-card .nj-status{margin-left:38px}.nj-wardrobe-summary{font-size:12px;gap:8px}.nj-card.nj-outfit{flex-direction:column;text-align:center;min-height:190px}.nj-outfit>img,.nj-outfit>.nj-art{height:55px;width:55px}.nj-outfit>div{align-items:center}.nj-outfit h3{font-size:16px}.nj-gift{padding:16px}.nj-gift>strong{font-size:60px}.nj-gift p{font-size:14px}.nj-gift>img{width:34px;height:34px}#nana-journal-notice{bottom:85px;right:12px;font-size:14px}}
 @media(prefers-reduced-motion:reduce){.nj-sticker-art{transition:none}.nj-sticker.is-earned:hover .nj-sticker-art{transform:rotate(var(--tilt))}}
+
+
+/* Exploration milestones: the patch is the reward, with the notebook as a secondary action. */
+#nana-milestone{box-sizing:border-box;width:min(470px,calc(100vw - 28px));max-height:calc(100dvh - 28px);margin:auto;padding:30px 26px 25px;border:2px solid #ed2347;border-radius:47% 3% 4% 3% / 2% 4% 3% 4%;background:#fff5e9;color:#ed2347;font:17px/1.4 "Nana Trace UI",Arial,sans-serif;text-align:center;overflow:auto;box-shadow:none}
+#nana-milestone::backdrop{background:rgba(34,15,42,.5);backdrop-filter:blur(4px)}
+#nana-milestone p{margin:8px 0}#nana-milestone h2{font:inherit;font-size:clamp(26px,6vw,36px);line-height:1.2;color:inherit;margin:8px 0 12px}
+#nana-milestone .nj-milestone-eyebrow{font-size:15px;margin:0 30px 14px}
+.nj-milestone-art{margin:auto;width:min(240px,55vw);height:min(210px,29dvh);display:grid;place-items:center;animation:nj-milestone-arrive .55s ease-out both}
+.nj-milestone-art .nj-art{width:100%;height:100%;overflow:hidden}
+#nana-milestone .nj-milestone-name{font-size:16px}#nana-milestone #nj-milestone-rule{font-size:13px;opacity:.8}
+#nana-milestone button{font:inherit;color:inherit;cursor:pointer;box-shadow:none}
+#nana-milestone .nj-milestone-close{position:absolute;top:12px;right:12px;width:38px;height:38px;padding:8px;border:0;background:#fff5e9}
+.nj-milestone-close img{width:100%;height:100%;object-fit:contain}
+.nj-milestone-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:22px}
+#nana-milestone .nj-button{font-size:15px;min-height:44px;padding:10px 14px;border:1px solid currentColor;border-radius:5px 9px 4px 8px;background:#ffe8ed}
+#nana-milestone .nj-button:last-child{border-color:transparent;background:transparent;text-decoration:underline}
+#nana-milestone button:hover{background:white}#nana-milestone button:focus-visible{outline:2px dashed currentColor;outline-offset:3px}
+html[data-theme=night] #nana-milestone{background:#191930;color:#ff8ba7;border-color:#ff8ba7}
+html[data-theme=night] #nana-milestone .nj-button{background:#26213e}html[data-theme=night] #nana-milestone .nj-milestone-close{background:#fff5e9}
+html[data-theme=night] .nj-milestone-art{background:#fff5e9;border-radius:46% 49% 45% 48%}
+@keyframes nj-milestone-arrive{from{opacity:0;transform:scale(.75) rotate(-9deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@media(max-height:600px){#nana-milestone{padding:18px 20px}.nj-milestone-art{height:24dvh}#nana-milestone h2{font-size:25px}.nj-milestone-actions{margin-top:12px}#nana-milestone p{margin:5px 0}}
+@media(prefers-reduced-motion:reduce){.nj-milestone-art{animation:none}}
