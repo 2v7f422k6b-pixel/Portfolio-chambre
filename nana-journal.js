@@ -17,11 +17,13 @@
   const button=(text,attrs='',cls='')=>'<button type="button" class="nj-button '+cls+'" '+attrs+'>'+text+'</button>';
   const star='assets/drawn-ui/etoile_pleine.png';
   let active='chambre', page=0, previousFocus, wardrobe=null, wardrobeError=false, wardrobeLoading=false, toastTimer;
-  const small=matchMedia('(max-width:600px)');
+  const small=matchMedia('(max-width:760px)');
+  let bookOpened=false,pageTotal=1,turning=false;
   const dialog=document.createElement('dialog');
-  dialog.id='nana-journal';dialog.className='nj-frame';dialog.setAttribute('data-no-translate','');
+  dialog.id='nana-journal';dialog.className='nj-notebook';dialog.setAttribute('data-no-translate','');
   dialog.setAttribute('aria-labelledby','nj-title');
-  dialog.innerHTML='<div class="nj-shell"><header class="nj-header nj-rule"><span class="nj-file">'+img(star)+' <span class="nj-cover-label"></span></span><button class="nj-close nj-button" type="button" data-nj-close><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></header><div class="nj-layout"><aside class="nj-sidebar"><div class="nj-heading"><p class="nj-eyebrow"></p><h1 id="nj-title"></h1><p class="nj-selected-title"></p></div><nav class="nj-tabs" aria-label="Carnet"></nav><div class="nj-local-note"></div></aside><section class="nj-main" aria-live="off"><div class="nj-content"></div><nav class="nj-pager" aria-label="Pages"></nav></section></div></div>';
+  dialog.innerHTML='<h1 id="nj-title" class="nj-sr-only"></h1><button class="nj-close" type="button" data-nj-close><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><button type="button" class="nj-cover" data-nj-open-cover aria-expanded="false"><span class="nj-cover-grain" aria-hidden="true"></span><span class="nj-cover-elastic" aria-hidden="true"></span><span class="nj-cover-stamp">NANA COLOR STUDIO</span><span class="nj-cover-label"></span><span class="nj-cover-star">'+img(star)+'</span><span class="nj-cover-note"></span><span class="nj-cover-invitation"></span></button><div class="nj-shell" inert><nav class="nj-tabs" aria-label="Carnet"></nav><section class="nj-main" aria-live="off"><div class="nj-content"></div></section><footer class="nj-book-footer"><button type="button" data-nj-cover-close></button><nav class="nj-pager" aria-label="Pages"></nav></footer><span class="nj-ribbon" aria-hidden="true"></span></div>';
+
   document.body.append(dialog);
   const content=dialog.querySelector('.nj-content'), pager=dialog.querySelector('.nj-pager');
   const notice=document.createElement('div');notice.id='nana-journal-notice';notice.className='nj-frame';notice.hidden=true;notice.setAttribute('data-no-translate','');
@@ -70,9 +72,9 @@
   function meter(count,total,label){const percent=total?Math.min(100,Math.round(count/total*100)):0;return '<div class="nj-progress" role="progressbar" aria-label="'+h(label)+'" aria-valuemin="0" aria-valuemax="'+Math.max(total,1)+'" aria-valuenow="'+count+'"><span style="width:'+percent+'%"></span></div>';}
   function heading(title,subtitle){return '<div class="nj-section-title"><h2>'+h(title)+'</h2><p>'+h(subtitle)+'</p></div>';}
   function routeButton(route,label){return button(h(label),'data-nj-route="'+h(route)+'"');}
-  function paginate(items,render,{size=small.matches?4:6,cls='nj-grid'}={}){
+  function paginate(items,render,{size=small.matches?2:4,cls='nj-grid'}={}){
     const pages=Math.max(1,Math.ceil(items.length/size));page=Math.min(page,pages-1);
-    pager.innerHTML=pages>1?button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-page="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(page===0?'disabled':''))+'<span>'+t('Page ','Page ')+(page+1)+' / '+pages+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-page="1" aria-label="'+t('Page suivante','Next page')+'" '+(page===pages-1?'disabled':'')):'';
+    pageTotal=pages;
     return '<div class="'+cls+'">'+items.slice(page*size,(page+1)*size).map(render).join('')+'</div>';
   }
   function roomPage(){
@@ -87,7 +89,7 @@
   function secretsPage(){const count=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;return heading(t('Les secrets de la chambre','The room’s secrets'),count+' / '+progress.secrets.length+' '+t('petites surprises trouvées','little surprises found'))+paginate(progress.secrets,(secret)=>{
     const found=progress.hasFeat(secret.id),number=progress.secrets.indexOf(secret)+1,coming=secret.available===false;
     return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':coming?'À venir':'Encore bien caché',found?'Discovered':coming?'Coming soon':'Still well hidden')+'</p>'+(found?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
-  },{size:4});}
+  },{size:small.matches?2:4});}
   function gamesPage(){const found=progress.games.filter(x=>progress.hasVisit(x.route)).length;return heading(t('À quoi on joue ?','What shall we play?'),found+' / '+progress.games.length+' '+t('jeux découverts','games discovered'))+paginate(progress.games,game=>{
     const unlocked=progress.hasVisit(game.route);
     return '<article class="nj-card nj-frame '+(unlocked?'':'nj-locked')+'">'+img(game.image)+'<h3>'+h(name(game.name))+'</h3><p>'+t(unlocked?'Dans ta collection':'À découvrir dans la chambre',unlocked?'In your collection':'Find it in the room')+'</p>'+(unlocked?routeButton(game.route,t('Jouer','Play')):'')+'</article>';
@@ -111,7 +113,7 @@
       paginate(progress.outfits,outfit=>{
         const earned=progress.unlockedOutfit(outfit.id);
         return '<article class="nj-card nj-outfit nj-frame '+(earned?'':'nj-locked')+'">'+img(outfit.image)+'<div><h3>'+h(name(outfit.name))+'</h3><p>'+h(earned?t('Tenue débloquée','Look unlocked'):name(outfit.rule))+'</p>'+(earned||progress.isCreator()?button(h(earned?t('Essayer','Try on'):t('Aperçu créatrice','Creator preview')),'data-nj-outfit="'+outfit.id+'"'):'')+'</div></article>';
-      },{size:4})+(progress.isCreator()?'<p class="nj-bottom-note">'+t('Aperçu créatrice : les essais ne modifient pas ta progression.','Creator preview: trying things does not change your progress.')+'</p>':'');
+      },{size:small.matches?2:4})+(progress.isCreator()?'<p class="nj-bottom-note">'+t('Aperçu créatrice : les essais ne modifient pas ta progression.','Creator preview: trying things does not change your progress.')+'</p>':'');
   }
   function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes écussons d’exploration','My exploration patches'),count+' / '+progress.stickers.length+' '+t('écussons débloqués','patches unlocked'))+paginate(progress.stickers,(sticker)=>{
     const earned=sticker.earned(),number=progress.stickers.indexOf(sticker)+1;
@@ -144,41 +146,92 @@
   }
   const pages={souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
   function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent=pct+' %';trigger.querySelector('.nj-trigger-label').textContent=t('Mon carnet','My notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
+  function paperLayout(html){
+    const source=document.createElement('div');source.innerHTML=html;
+    const left=document.createElement('section'),right=document.createElement('section');
+    left.className='nj-leaf nj-leaf-left';right.className='nj-leaf nj-leaf-right';
+    const makeInside=leaf=>{const inner=document.createElement('div');inner.className='nj-leaf-inner';leaf.append(inner);return inner;};
+    const a=makeInside(left),b=makeInside(right);
+    if(small.matches){a.append(...source.childNodes);content.replaceChildren(left);return;}
+    for(const node of [...source.children]){
+      if(node.matches('.nj-grid,.nj-sticker-grid,.nj-titles')){
+        const first=node.cloneNode(false),second=node.cloneNode(false),items=[...node.children],split=Math.ceil(items.length/2);
+        items.forEach((item,i)=>(i<split?first:second).append(item));a.append(first);b.append(second);
+      }else if(node.matches('.nj-section-title,.nj-wardrobe-summary,.nj-keepsake-filters,.nj-hero'))a.append(node);
+      else if(node.matches('.nj-stats,.nj-gift,.nj-keepsake-current,.nj-bottom-note,.nj-keepsake-actions,.nj-poem-sheet'))b.append(node);
+      else a.append(node);
+    }
+    if(!b.children.length)b.innerHTML='<div class="nj-paper-memento">'+img(star)+'<p>'+t('La suite reste à écrire…','More little stories to come…')+'</p></div>';
+    content.replaceChildren(left,right);
+  }
   function render(){
     updateTrigger();if(!dialog.open)return;
-    const focusKey=document.activeElement?.dataset?.njTitle;
-    dialog.querySelector('.nj-cover-label').textContent=t('Mon carnet de découvertes','My discovery notebook');
-    dialog.querySelector('#nj-title').textContent=t('Mes découvertes','My discoveries');
-    dialog.querySelector('.nj-eyebrow').textContent=t('Nana’s little world','Nana’s little world');
-    const title=null;
-    dialog.querySelector('.nj-selected-title').textContent=title?name(title.name):t('Une visite, mille petits détours.','One visit, a thousand little detours.');
-    dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Rubriques du carnet','Notebook sections'));
-    pager.setAttribute('aria-label',t('Pages','Pages'));
-    dialog.querySelector('.nj-local-note').textContent=t('Ton petit monde se souvient de toi.','Your little world remembers you.');
+    dialog.querySelector('#nj-title').textContent=t('Mon carnet de découvertes','My discovery notebook');
+    dialog.querySelector('.nj-cover-label').innerHTML=t('mon petit<br>carnet','my little<br>notebook');
+    dialog.querySelector('.nj-cover-note').textContent=t('des découvertes, des mots, des petits riens.','discoveries, words, little things.');
+    dialog.querySelector('.nj-cover-invitation').textContent=t('ouvrir le carnet','open the notebook');
+    dialog.querySelector('[data-nj-open-cover]').setAttribute('aria-label',t('Ouvrir mon carnet','Open my notebook'));
+    dialog.querySelector('[data-nj-cover-close]').textContent=t('couverture','cover');
+    dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Marque-pages du carnet','Notebook bookmarks'));
+    pager.setAttribute('aria-label',t('Feuilleter le carnet','Turn the pages'));
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
-    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en])=>'<button type="button" data-nj-tab="'+id+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(fr,en))+'</button>').join('')+'<button type="button" data-nj-newsletter aria-haspopup="dialog">Newsletter</button>';
-    pager.innerHTML='';content.innerHTML=pages[active]();
-    if(focusKey)dialog.querySelector('[data-nj-title="'+focusKey+'"]')?.focus({preventScroll:true});
+    const labels={chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Écussons','Patches'],cadeaux:['Cadeaux','Gifts']};
+    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('')+'<button type="button" style="--tab:7" data-nj-newsletter aria-haspopup="dialog">'+t('Courrier','Letters')+'</button>';
+    pageTotal=1;paperLayout(pages[active]());
+    const index=tabs.findIndex(x=>x[0]===active);
+    pager.innerHTML=button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-turn="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(index===0&&page===0?'disabled':''))+'<span>'+h(t(...labels[active]))+(pageTotal>1?' · '+(page+1)+' / '+pageTotal:'')+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-turn="1" aria-label="'+t('Page suivante','Next page')+'" '+(index===tabs.length-1&&page===pageTotal-1?'disabled':''));
+  }
+  function unfold(){
+    bookOpened=true;dialog.classList.add('nj-book-open');dialog.querySelector('.nj-shell').inert=false;
+    const cover=dialog.querySelector('.nj-cover');cover.inert=true;cover.setAttribute('aria-expanded','true');
+    dialog.querySelector('[data-nj-tab="'+active+'"]').focus({preventScroll:true});
+  }
+  function fold(){
+    bookOpened=false;dialog.classList.remove('nj-book-open');dialog.querySelector('.nj-shell').inert=true;
+    const cover=dialog.querySelector('.nj-cover');cover.inert=false;cover.setAttribute('aria-expanded','false');cover.focus({preventScroll:true});
+  }
+  function turnPage(change,direction=1){
+    if(turning)return;
+    const old=content.querySelector(small.matches?'.nj-leaf':direction>0?'.nj-leaf-right':'.nj-leaf-left')?.cloneNode(true);
+    change();
+    if(!bookOpened||!old||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    const sheet=document.createElement('div');sheet.className='nj-turn-sheet'+(direction<0?' nj-turn-back':'');sheet.inert=true;sheet.setAttribute('aria-hidden','true');
+    old.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));old.className='nj-turn-front';
+    const back=document.createElement('div');back.className='nj-turn-reverse';sheet.append(old,back);dialog.querySelector('.nj-main').append(sheet);turning=true;
+    const animation=sheet.animate([{transform:'rotateY(0deg)',filter:'brightness(1)'},{transform:'rotateY('+(-85*direction)+'deg)',filter:'brightness(.86)',offset:.53},{transform:'rotateY('+(-179*direction)+'deg)',filter:'brightness(.96)'}],{duration:680,easing:'cubic-bezier(.3,.08,.25,1)',fill:'forwards'});
+    animation.finished.catch(()=>{}).finally(()=>{sheet.remove();turning=false;});
   }
   function open(tab='chambre'){
     if(tab==='titres')tab='stickers';
     if(!pages[tab])return false;
     active=tab;page=0;selectedKeepsake=null;
-    if(!dialog.open){previousFocus=document.activeElement;dialog.showModal();}
+    const wasOpen=dialog.open;
+    if(!wasOpen){previousFocus=document.activeElement;dialog.showModal();}
     notice.hidden=true;render();if(active==='dressing')loadWardrobe();
-    dialog.querySelector('.nj-close').focus({preventScroll:true});return true;
+    if(!wasOpen)fold();else if(bookOpened)dialog.querySelector('[data-nj-tab="'+active+'"]').focus({preventScroll:true});
+    return true;
   }
   function close(){if(dialog.open)dialog.close();}
   function navigate(route){window.NanaDeepLinks.open(route);}
-  function goTab(tab){active=tab;page=0;selectedKeepsake=null;render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]')?.focus({preventScroll:true});}
+  function goTab(tab){
+    const direction=tabs.findIndex(x=>x[0]===tab)>=tabs.findIndex(x=>x[0]===active)?1:-1;
+    turnPage(()=>{active=tab;page=0;selectedKeepsake=null;render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]').focus({preventScroll:true});},direction);
+  }
   trigger.addEventListener('click',()=>navigate('carnet/chambre'));
   dialog.addEventListener('click',async event=>{
     const target=event.target.closest('button');if(!target)return;
-    if(target.hasAttribute('data-nj-close'))close();
+    if(target.hasAttribute('data-nj-open-cover'))unfold();
+    else if(target.hasAttribute('data-nj-cover-close'))fold();
+    else if(target.dataset.njTurn){
+      const delta=Number(target.dataset.njTurn),index=tabs.findIndex(x=>x[0]===active);
+      if(page+delta>=0&&page+delta<pageTotal)turnPage(()=>{page+=delta;selectedKeepsake=null;render();pager.querySelector('[data-nj-turn="'+delta+'"]').focus({preventScroll:true});},delta);
+      else if(tabs[index+delta])goTab(tabs[index+delta][0]);
+    }
+    else if(target.hasAttribute('data-nj-close'))close();
     else if(target.hasAttribute('data-nj-newsletter'))navigate('newsletter');
     else if(target.dataset.njTab)goTab(target.dataset.njTab);
-    else if(target.dataset.njKeepsakeFilter){keepsakeFilter=target.dataset.njKeepsakeFilter;selectedKeepsake=null;page=0;render();dialog.querySelector('[data-nj-keepsake-filter="'+keepsakeFilter+'"]').focus({preventScroll:true});}
-    else if(target.dataset.njKeepsake){selectedKeepsake=target.dataset.njKeepsake;render();dialog.querySelector('.nj-poem-body')?.focus({preventScroll:true});}
+    else if(target.dataset.njKeepsakeFilter){turnPage(()=>{keepsakeFilter=target.dataset.njKeepsakeFilter;selectedKeepsake=null;page=0;render();dialog.querySelector('[data-nj-keepsake-filter="'+keepsakeFilter+'"]').focus({preventScroll:true});});}
+    else if(target.dataset.njKeepsake){turnPage(()=>{selectedKeepsake=target.dataset.njKeepsake;render();dialog.querySelector('.nj-poem-body')?.focus({preventScroll:true});});}
     else if(target.hasAttribute('data-nj-keepsake-back')){selectedKeepsake=null;render();}
     else if(target.hasAttribute('data-nj-poem-copy')||target.hasAttribute('data-nj-poem-download')){
       const poem=window.NanaKeepsakes?.list().find(x=>x.id===selectedKeepsake);if(!poem)return;
@@ -228,6 +281,7 @@
   window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 
 
