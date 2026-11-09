@@ -125,7 +125,7 @@
 
   // The file starts with 800 ms of silence, matching the spider's entrance.
   // Start playback inside the click/key gesture so it also works on iOS.
-  const scream=new Audio('assets/audio/spider-scream.mp3');
+  const scream=new Audio('assets/audio/spider-scream.mp3?v=short-20261109');
   scream.preload='auto';
   scream.volume=.55;
   function stopScream(){
