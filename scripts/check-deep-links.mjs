@@ -11,7 +11,7 @@ const drawing = 'illu/swans-lotus';
 
 function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
   const location = new URL(initial, base);
-  const ui = {mode:null, panel:null, extra:null, shop:null, copied:null, toasts:[], modeChanges:[]};
+  const ui = {mode:null, panel:null, extra:null, shop:null, newsletter:false, copied:null, toasts:[], modeChanges:[]};
   const listeners = new Map(), timers = new Map();
   const listen = (event, fn) => listeners.set(event, [...listeners.get(event) || [], fn]);
   const emit = event => listeners.get(event)?.forEach(fn => fn());
@@ -56,6 +56,7 @@ function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
     returnToWelcome:() => {ui.mode = ui.panel = null;},
     closeWindow:() => {ui.panel = null;}, closeSpecial() {}, showToast:message => ui.toasts.push(message),
     NanaRoomLinks:room, NanaArtLinks:art,
+    NanaNewsletter:{current:() => ui.newsletter ? 'newsletter' : null, open:() => { ui.newsletter = true; return true; }, close:() => { ui.newsletter = false; }},
     NanaShop:{current:() => ui.shop, open:route => {ui.shop = route;}, close:() => {ui.shop = null;}},
     NanaBookLinks:{current:() => null, open:() => false}, NanaPagesLinks:{current:() => null, open:() => false}
   };
@@ -75,8 +76,18 @@ function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
     queue.forEach(fn => fn());
   }
   return {ui, location, document, entries, router:env.NanaDeepLinks, emit, flush, traverse,
-    close:() => {env.closeWindow(); room.closeExtras(); emit('click'); flush();}};
+    close:() => {env.closeWindow(); room.closeExtras(); env.NanaNewsletter.close(); emit('click'); flush();}};
 }
+
+test('newsletter opens directly, closes cleanly, and follows Back and Forward without reopening other views', () => {
+  const b = browser('#/newsletter');
+  assert.equal(b.ui.newsletter,true); assert.equal(b.router.current(),'newsletter');
+  b.close(); assert.equal(b.location.hash,'#/room'); assert.equal(b.ui.newsletter,false);
+  b.traverse(-1); assert.equal(b.router.current(),'newsletter'); assert.equal(b.ui.newsletter,true);
+  b.router.open(card); assert.equal(b.ui.newsletter,false); assert.equal(b.router.current(),card);
+  b.router.open('newsletter'); assert.equal(b.ui.panel,null); assert.equal(b.ui.extra,null);
+  b.router.open('work'); assert.equal(b.ui.newsletter,false); assert.equal(b.router.current(),'work');
+});
 
 test('opening and closing views makes Back and Forward restore exactly one entry each', () => {
   const b = browser('#/room');
@@ -200,3 +211,4 @@ test('every public shop product keeps its old URL and appears in both link direc
     }
   }
 });
+

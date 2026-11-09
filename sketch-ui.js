@@ -7,6 +7,7 @@
   const scriptBase = document.currentScript.src;
   // Shared traced outlines for interface chrome, never the illustrated room.
   const targets = [
+    ['.nn-frame', 'frame', 1701],
     ['.memory-ui-frame', 'frame', 1601],
     ['.nj-frame', 'frame', 1501],
     ['.nj-rule', 'rule', 1502],
@@ -412,4 +413,5 @@
   window.addEventListener('resize',()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;scan();});}},{passive:true});
   if(!observer)window.addEventListener('resize',()=>items.forEach(draw),{passive:true});
 })();
+
 

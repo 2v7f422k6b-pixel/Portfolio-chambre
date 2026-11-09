@@ -101,7 +101,7 @@
     pager.setAttribute('aria-label',t('Pages','Pages'));
     dialog.querySelector('.nj-local-note').textContent=t('Ton petit monde se souvient de toi.','Your little world remembers you.');
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
-    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en])=>'<button type="button" data-nj-tab="'+id+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(fr,en))+'</button>').join('');
+    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en])=>'<button type="button" data-nj-tab="'+id+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(fr,en))+'</button>').join('')+'<button type="button" data-nj-newsletter aria-haspopup="dialog">Newsletter</button>';
     pager.innerHTML='';content.innerHTML=pages[active]();
     if(focusKey)dialog.querySelector('[data-nj-title="'+focusKey+'"]')?.focus({preventScroll:true});
   }
@@ -119,6 +119,7 @@
   dialog.addEventListener('click',async event=>{
     const target=event.target.closest('button');if(!target)return;
     if(target.hasAttribute('data-nj-close'))close();
+    else if(target.hasAttribute('data-nj-newsletter'))navigate('newsletter');
     else if(target.dataset.njTab)goTab(target.dataset.njTab);
     else if(target.dataset.njRoute)navigate(target.dataset.njRoute);
     else if(target.dataset.njOutfit)navigate('jeu/dressing/tenue/'+target.dataset.njOutfit);
@@ -153,5 +154,6 @@
   window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 

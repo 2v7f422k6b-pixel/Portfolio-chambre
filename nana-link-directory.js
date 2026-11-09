@@ -21,6 +21,7 @@
       ['fenetre/bibliotheque','Bibliothèque','Bookshelf'],['fenetre/souvenues','Les Souvenues'],
       ['fenetre/gearnews','Série GearNews','GearNews series'],['objet/carte-pokemon','La carte de Léna','Léna’s character card'],
       ['fenetre/contact','Contact'],['fenetre/mail','Mail'],['fenetre/aide','Aide','Help'],
+      ['newsletter','La newsletter de Léna','Letters from Léna'],
       ['livre/la-princesse-clown','Lire La Princesse Clown','Read La Princesse Clown']
     ]);
     const games = staticItems([
@@ -84,3 +85,4 @@
   });
   window.NanaLinkDirectory = {open, entries:() => groups().flatMap(([,items])=>items)};
 })();
+

@@ -66,6 +66,26 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 - Le cadeau conserve le code `MERCI10` existant. Son application à une commande
   dépend du paramétrage de la boutique ; le carnet ne crée pas de coupon côté paiement.
 
+## Newsletter
+
+- `nana-newsletter.js` / `.css` proposent un petit courrier mensuel, en FR/EN.
+  Le formulaire est accessible dans le carnet et par `#/newsletter`.
+- Une invitation non modale apparaît une seule fois par navigateur, après au
+  moins une minute de Play visible et une activité réalisée (dressing, latte,
+  perles, musique, repos ou tous les polaroïds), ou 25 % des objets explorés.
+  Elle attend le retour à la chambre, sans jeu, fenêtre ni récompense ouverte.
+  Les sessions de création et d’aperçu sont exclues.
+- Les demandes utilisent le formulaire Formspree existant `mbggaaqo`, avec un
+  sujet Newsletter, le consentement affiché, sa version, sa date et la langue.
+  Le succès est affiché uniquement après acceptation HTTP. Aucune donnée de jeu
+  n’est transmise et l’adresse n’est jamais enregistrée dans localStorage.
+- Il s’agit de **demandes d’inscription reçues par Léna**, pas d’une intégration
+  à un service d’envoi de newsletters. Ajouter les adresses consentantes dans
+  l’outil choisi pour les envois et traiter les demandes de désinscription avant
+  chaque campagne. Le formulaire fournit déjà le contact pour ces demandes.
+- `nana-newsletter-v1` conserve uniquement l’invitation vue et la demande envoyée.
+  Les tests simulent les réponses de Formspree ; aucun email de test n’est envoyé.
+
 ## La boîte dans le mur
 
 - Les trois secrets retenus sont l’araignée, la boîte à souvenirs et le dessin
@@ -107,3 +127,4 @@ de Mimilab et les destinations de recherche. GitHub Actions relance ces contrôl
 Pour une modification visuelle, comparer aussi les vues Play/Work, les deux
 langues et les deux thèmes aux formats téléphone, iPad portrait/paysage et ordinateur.
 Les contrôles automatisés ne remplacent pas cette comparaison ni un essai sur Safari iOS.
+

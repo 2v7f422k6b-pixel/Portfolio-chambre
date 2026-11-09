@@ -1,0 +1,47 @@
+/* The existing hand-traced chrome and Léna's envelope drawing. */
+.nn-paper{--nn-paper:#fff5e9;--nn-ink:#d8173e;--nn-muted:#965264;--nn-soft:#ffe4ec;background:var(--nn-paper);color:var(--nn-ink);font:16px/1.5 "Nana Trace UI",Arial,sans-serif;box-sizing:border-box;box-shadow:none;border:0;border-radius:0}
+.nn-paper *{box-sizing:border-box}
+.nn-frame{position:relative;border:0;box-shadow:none}
+.nn-paper button,.nn-paper input{font:inherit;color:inherit;border:0;border-radius:0;box-shadow:none}
+.nn-paper button{cursor:pointer}
+.nn-paper button:focus-visible,.nn-paper a:focus-visible{outline:2px dashed currentColor!important;outline-offset:4px}
+.nn-paper .nn-close{position:absolute;right:12px;top:12px;z-index:2;width:40px;height:40px;padding:8px;background:var(--nn-paper)}
+.nn-close img{width:100%;height:100%;object-fit:contain}
+.nn-paper .nn-button{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:10px 18px;background:var(--nn-soft);line-height:1.3}
+.nn-paper .nn-button:hover:not(:disabled),.nn-paper .nn-close:hover{background:#fff}
+.nn-paper button:disabled{opacity:.6;cursor:wait}
+#nana-newsletter-note{position:fixed;z-index:109;right:18px;bottom:max(94px,env(safe-area-inset-bottom));width:min(350px,calc(100vw - 28px));padding:20px 22px}
+#nana-newsletter-note[hidden]{display:none}
+body:has(dialog[open],#window-shade:not([hidden]),#special-shade:not([hidden]),#nana-dreamlab-overlay,#coloring-overlay:not([hidden]),#work-break-nudge:not([hidden]),#nana-journal-notice:not([hidden]),#mobile-menu-toggle[aria-expanded="true"],#app:not(.mode-play)) #nana-newsletter-note{visibility:hidden}
+#nn-note-title{font-size:25px;line-height:1.2;margin:0 34px 9px 0}
+.nn-note-copy{font-size:14px;line-height:1.5;margin:0 0 15px;max-width:28ch}
+#nana-newsletter-note .nn-button{font-size:14px}
+#nana-newsletter{width:min(470px,calc(100vw - 28px));max-width:none;max-height:calc(100dvh - 28px);margin:auto;padding:0;overflow:auto;isolation:isolate;scrollbar-width:thin}
+#nana-newsletter::backdrop{background:rgba(34,15,42,.42);backdrop-filter:blur(3px)}
+.nn-letter{padding:30px 34px 24px}
+.nn-envelope{display:block;width:64px;height:54px;object-fit:contain;margin:0 0 13px;transform:rotate(-7deg)}
+.nn-eyebrow{font-size:12px;margin:0 0 9px;color:var(--nn-muted)}
+#nn-title{font:normal 32px/1.13 "Nana Trace UI",Arial,sans-serif;color:inherit;white-space:pre-line;margin:0 0 16px}
+#nn-description{font-size:15px;line-height:1.55;margin:0 0 21px}
+#nn-form[hidden]{display:none}
+#nn-email-label{display:block;font-size:14px;margin:0 0 7px}
+.nn-field{background:var(--nn-paper);padding:3px}
+#nn-email{display:block;width:100%;min-width:0;padding:10px 11px;min-height:44px;background:transparent;font-size:16px;outline:none}
+#nana-newsletter #nn-email:focus-visible{outline:none!important}
+.nn-field:focus-within{background:var(--nn-soft)}
+.nn-small{font-size:11px;line-height:1.5;color:var(--nn-muted)}
+#nn-consent{margin:11px 0 16px}
+.nn-paper .nn-submit{width:100%}
+.nn-honey{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+#nn-status{font-size:16px;line-height:1.5;margin:16px 0 0}
+#nn-status:empty{display:none}
+.nn-privacy{margin:16px 0 0;overflow-wrap:anywhere}
+.nn-privacy a{color:inherit;text-underline-offset:3px}
+.nn-paper .nn-later{display:block;min-height:44px;padding:10px 0 0;background:transparent;font-size:13px;text-decoration:underline;text-underline-offset:4px;margin:8px auto 0}
+html[data-theme=night] .nn-paper{--nn-paper:#191930;--nn-ink:#ff8ba7;--nn-muted:#dbb5c6;--nn-soft:#30243e}
+html[data-theme=night] .nn-paper .sketch-ui-ink{stroke:var(--nn-ink)!important}
+html[data-theme=night] .nn-paper .nn-button:hover:not(:disabled){background:#38304b}
+html[data-theme=night] .nn-paper .nn-close{background:#fff5e9}
+html[data-theme=night] .nn-paper .nn-close:hover{background:#fff}
+@media(max-width:600px){#nana-newsletter-note{right:14px;bottom:max(85px,env(safe-area-inset-bottom));padding:17px 19px}#nn-note-title{font-size:23px}.nn-letter{padding:22px 24px 17px}#nn-title{font-size:29px}#nn-description{font-size:14px;margin-bottom:17px}.nn-envelope{width:53px;height:44px;margin-bottom:10px}}
+@media(max-height:650px){.nn-letter{padding:19px 25px 14px}.nn-envelope{display:none}#nn-title{font-size:27px;margin-bottom:12px}#nn-description{margin-bottom:14px}.nn-privacy{margin-top:12px}}

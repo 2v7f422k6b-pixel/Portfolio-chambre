@@ -15,6 +15,8 @@
   const hashFor = route => route ? '#/' + route.split('/').map(encodeURIComponent).join('/') : '';
 
   function visibleRoute() {
+    const newsletter = window.NanaNewsletter?.current();
+    if (newsletter) return newsletter;
     const journal = window.NanaJournal?.current();
     if (journal) return journal;
     const shop = window.NanaShop?.current();
@@ -51,6 +53,7 @@
     clearTimeout(scheduled);
     scheduled = undefined;
     const rooms = window.NanaRoomLinks;
+    if (route !== 'newsletter') window.NanaNewsletter?.close();
     if (!/^carnet(?:\/|$)/.test(route || '')) window.NanaJournal?.close();
     if (!route || route === 'accueil') {
       window.NanaShop?.close();
@@ -62,6 +65,11 @@
     const targetMode = route === 'work' ? 'work' : /^(room|chambre|play)$/.test(route) ? 'play'
       : rooms?.mode(route) || entryMode || mode() || 'play';
     if (targetMode !== mode()) chooseMode(targetMode, false);
+
+    if (route === 'newsletter') {
+      closeWindow(); closeSpecial(); rooms?.closeExtras();
+      return !!window.NanaNewsletter?.open();
+    }
 
     if (/^carnet(?:\/|$)/.test(route)) {
       closeWindow(); closeSpecial(); rooms?.closeExtras();
@@ -173,3 +181,4 @@
     document.addEventListener('DOMContentLoaded', start, {once:true});
   } else start();
 })();
+
