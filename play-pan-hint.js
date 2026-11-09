@@ -1,9 +1,8 @@
 'use strict';
 
-/* Non-blocking, four-direction Play Mode navigation hint.
-   Appears whenever the visitor ENTERS Play Mode and the illustration
-   extends beyond the available viewport. No session storage: returning
-   to Play should allow the hint to appear again. */
+/* A first-visit touch tour reveals the room's width, then the existing
+   navigation hint explains how to explore. The tour is remembered locally;
+   the hint can still appear when returning to Play. Neither blocks input. */
 (() => {
   const app = document.getElementById('app');
   const viewport = document.getElementById('play-viewport');
@@ -36,7 +35,10 @@
       filter:none;-webkit-backface-visibility:hidden;backface-visibility:hidden;
       animation:nana-touch-hand-swipe 3.4s ease-in-out infinite;
     }
-    #nana-play-pan-hint.touch-hint .pan-hint-label{display:none;}
+    #nana-play-pan-hint.touch-hint .pan-hint-label {
+      display:block;top:auto;bottom:calc(100% + 16px);
+      font-size:clamp(16px,4vw,20px);border:0;
+    }
     #nana-play-pan-hint.touch-hint .pan-hint-visual{
       animation:nana-pan-fade-touch 5.8s ease-in-out both;
     }
@@ -120,9 +122,9 @@
     const label = hint.querySelector('.pan-hint-label');
     if (!label) return;
     const isEnglish = document.documentElement.lang === 'en';
-    const isTouch = window.matchMedia('(pointer:coarse)').matches;
+    const isTouch = isTabletOrPhone() || window.matchMedia('(pointer:coarse)').matches;
     label.textContent = isTouch
-      ? (isEnglish ? 'Swipe to explore' : 'Glisse pour explorer')
+      ? (isEnglish ? 'Swipe to explore' : 'Fais glisser pour explorer')
       : (isEnglish ? 'Scroll to explore' : 'Fais défiler pour explorer');
   }
 
@@ -131,6 +133,96 @@
   let shownThisEntry = false;
   let wasInPlay = app.classList.contains('mode-play');
   let frame = 0;
+  const tourKey = 'nana-room-tour-seen-v1';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let tourSeen = false;
+  try { tourSeen = localStorage.getItem(tourKey) === '1'; } catch (_) {}
+  let tour = null;
+  let tourFrame = 0;
+
+  function rememberTour() {
+    tourSeen = true;
+    try { localStorage.setItem(tourKey, '1'); } catch (_) {}
+  }
+
+  function roomIsVisible() {
+    if (!app.classList.contains('mode-play') || viewport.hidden || document.hidden) return false;
+    const route = window.NanaDeepLinks?.current();
+    if (route && !/^(room|chambre|play)$/.test(route)) return false;
+    return !document.querySelector('#window-shade:not([hidden]), #special-shade:not([hidden]), dialog[open]');
+  }
+
+  function stopTour() {
+    if (!tour) return;
+    tour = null;
+    cancelAnimationFrame(tourFrame);
+    shownThisEntry = true;
+    for (const type of ['pointerdown', 'touchstart', 'wheel', 'keydown']) {
+      document.removeEventListener(type, interruptTour, true);
+    }
+    window.removeEventListener('resize', interruptTour);
+    document.removeEventListener('visibilitychange', interruptTour);
+    reducedMotion.removeEventListener?.('change', interruptTour);
+  }
+
+  function interruptTour() {
+    if (!tour) return;
+    // Input while the picture is loading also counts as taking control.
+    rememberTour();
+    stopTour();
+  }
+
+  async function startTour() {
+    const current = {};
+    tour = current;
+    for (const type of ['pointerdown', 'touchstart', 'wheel', 'keydown']) {
+      document.addEventListener(type, interruptTour, {capture:true, passive:true});
+    }
+    window.addEventListener('resize', interruptTour, {passive:true});
+    document.addEventListener('visibilitychange', interruptTour);
+    reducedMotion.addEventListener?.('change', interruptTour);
+
+    // Never spend the introduction panning across an unloaded room.
+    const night = document.documentElement.dataset.theme === 'night';
+    const images = ['room-img', night ? 'room-night' : 'room-img', night ? 'marseille-night' : 'marseille-day']
+      .map(id => document.getElementById(id)).filter(Boolean);
+    await Promise.all([
+      ...images.map(img => img.decode ? img.decode().catch(() => {}) : Promise.resolve()),
+      ...(scene.getAnimations?.() || []).map(animation => animation.finished.catch(() => {}))
+    ]);
+    if (tour !== current) return;
+    if (!roomIsVisible() || reducedMotion.matches) { stopTour(); return; }
+
+    const startX = viewport.scrollLeft;
+    const endX = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    if (endX <= 12 || images.some(img => !img.complete || !img.naturalWidth)) {
+      stopTour();
+      shownThisEntry = false;
+      showHint();
+      return;
+    }
+    rememberTour();
+    let started;
+    const ease = t => (1 - Math.cos(Math.PI * t)) / 2;
+    function step(now) {
+      if (tour !== current) return;
+      if (!roomIsVisible()) { stopTour(); return; }
+      if (started === undefined) started = now;
+      const elapsed = now - started;
+      // The room slides right-to-left, pauses at its far edge, then comes home.
+      if (elapsed < 2400) viewport.scrollLeft = startX + (endX - startX) * ease(elapsed / 2400);
+      else if (elapsed < 2560) viewport.scrollLeft = endX;
+      else viewport.scrollLeft = endX + (startX - endX) * ease(Math.min(1, (elapsed - 2560) / 700));
+      if (elapsed < 3260) tourFrame = requestAnimationFrame(step);
+      else {
+        stopTour();
+        shownThisEntry = false;
+        // Let the final programmatic scroll event settle before the hint listens.
+        scheduleCheck();
+      }
+    }
+    tourFrame = requestAnimationFrame(step);
+  }
 
   function removeHint() {
     if (!hint) return;
@@ -168,11 +260,12 @@
   }
 
   function check() {
-    if (shownThisEntry || hint || !app.classList.contains('mode-play') || viewport.hidden) return;
+    if (shownThisEntry || hint || tour || !roomIsVisible()) return;
     // Use layout sizes, not temporary iMac zoom transforms.
     const overflowsX = scene.offsetWidth - viewport.clientWidth > 12;
     const overflowsY = scene.offsetHeight - viewport.clientHeight > 12;
-    if (overflowsX || overflowsY) showHint();
+    if (overflowsX && isTabletOrPhone() && !tourSeen && !reducedMotion.matches) startTour();
+    else if (overflowsX || overflowsY) showHint();
   }
 
   function scheduleCheck() {
@@ -186,6 +279,7 @@
   function onModeChange() {
     const inPlay = app.classList.contains('mode-play');
     if (!inPlay) {
+      stopTour();
       wasInPlay = false;
       shownThisEntry = false;
       cancelAnimationFrame(frame);
