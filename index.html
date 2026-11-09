@@ -746,7 +746,9 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <!-- Pink coffee mug on the glass table, distinct from the book hotspot. -->
           <polygon data-open="latte" points="932,738 868,775 840,782 825,777 800,748 805,729 825,711 838,708 868,709" aria-label="Make a latte by clicking the pink mug" tabindex="0"/>
           <polygon data-open="book" points="1024,752 1024,774 993,806 881,790 884,780 935,742" aria-label="Explore Clown Princess" tabindex="0"/>
-          <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1168,765 1099,780 1040,744" aria-label="Browse illustrations by the flowers" tabindex="0"/>
+          <!-- Keep the flower-gallery link above the vase base and table objects.
+               Its former lower edge overlapped the Tamagotchi and intercepted taps. -->
+          <polygon data-open="photos" points="1025,615 1062,588 1124,586 1167,622 1186,689 1179,720 1037,720" aria-label="Browse illustrations by the flowers" tabindex="0"/>
           <!-- Léna's day/night CV layers retain their original full-scene placement.
                The transparent cutout follows the cat; the destination stays unassigned. -->
           <g id="cat-cv-paper" aria-hidden="true" pointer-events="none" data-no-translate>
