@@ -520,9 +520,47 @@ function mailFields(){return `<label>Your name<span class="mail-field-box"><inpu
 function openMail(){
  openWindow('Mail — New Message',`<div class="eyebrow">To / lena.defirmas@gmail.com</div><h2>New message</h2><p>Send a message directly from the portfolio using a secure Formspree form.</p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'mail');
 }
-function openHelp(){
- openWindow('Help',`<div class="eyebrow">Portfolio / Help</div><h2>How to explore</h2><p><strong>Play Mode:</strong> tap the objects in the illustrated bedroom. Posters open original artwork, the iPhone opens Contacts and Mail, the Tamagotchi is a mini-game, and the pink mug opens the Latte Lab.</p><p><strong>Work Mode:</strong> browse projects, illustrations, writing and animations through the desktop folders.</p><p>Click the iMac in Play Mode to enter Work Mode. Use <strong>Switch Mode</strong> in the menu bar to move between them at any time.</p><p><a href="#/liens">${document.documentElement.lang==='en'?'All portfolio links':'Tous les liens du portfolio'}</a></p>`,'help');
+function helpContent(){
+ const en=document.documentElement.lang==='en';
+ const t=(fr,english)=>en?english:fr;
+ const section=(title,body,expanded=false)=>`<details${expanded?' open':''}><summary><strong>${title}</strong></summary>${body}</details>`;
+ return `<div data-no-translate class="help-guide">
+ <div class="eyebrow">${t('Le petit guide de la chambre','A little room guide')}</div>
+ <h2>${t('Entre, tu peux juste regarder.','Come in. You can just look around.')}</h2>
+ <p>${t('C’est un portfolio dans une chambre : les objets ouvrent mes créations, des petits jeux ou des surprises. Tu peux tout explorer, ou aller directement à mes projets. Rien n’est obligatoire.','This is a portfolio inside a bedroom: objects open my work, little games or surprises. Explore freely or go straight to my projects. Everything is optional.')}</p>
+ <p><button class="soft-btn" type="button" data-help-action="work">${t('Voir mes projets · Work','See my projects · Work')}</button> <button class="soft-btn" type="button" data-help-action="zones">${t('Repérer les objets cliquables','Find clickable objects')}</button></p>
+ ${section(t('1 · Se déplacer et cliquer','1 · Move around and click'),`<p>${t('Sur téléphone ou tablette, fais glisser la chambre à gauche et à droite pour voir les autres coins. Sur ordinateur, survole les objets : un contour blanc signale ceux que tu peux ouvrir. Touche ou clique pour découvrir ce qu’ils cachent.','On a phone or tablet, swipe the room left and right to see its other corners. On a computer, hover over objects: a white outline shows what you can open. Tap or click to discover what is inside.')}</p><p>${t('Le bouton « Voir les zones » révèle les éléments cliquables. Tu peux ensuite masquer ces repères. La croix d’une fenêtre la ferme pour revenir à ta visite.','The “Show hotspots” button reveals clickable objects. You can hide these hints again. Close a window with its cross to return to your visit.')}</p>`,true)}
+ ${section(t('2 · Play ou Work ?','2 · Play or Work?'),`<p><strong>Play</strong> — ${t('La chambre à explorer à ton rythme, avec ses illustrations, ses objets et ses mini-jeux.','Explore the room at your own pace, with its artwork, objects and mini-games.')}</p><p><strong>Work</strong> — ${t('Mes projets rangés dans des dossiers sur un bureau, pour accéder plus directement à mon travail. Clique sur l’iMac dans la chambre ou sur « Passer en mode Work » dans le menu. Tu peux revenir en Play à tout moment.','My projects organised in desktop folders for more direct access to my work. Click the iMac in the room or “Switch to Work Mode” in the menu. You can return to Play at any time.')}</p>`)}
+ ${section(t('3 · Les mini-jeux','3 · Mini-games'),`<p>${t('La tasse ouvre l’atelier latte, le miroir le dressing, le Mimilab un atelier musical… Chaque activité explique ses commandes à l’ouverture. Tu peux essayer, quitter et continuer ta visite sans devoir tout terminer.','The mug opens the latte café, the mirror opens the wardrobe, and Mimilab opens a music studio… Each activity introduces its controls when opened. Try one, leave, and carry on exploring without having to finish everything.')}</p>`)}
+ ${section(t('4 · Les écussons et les récompenses','4 · Patches and rewards'),`<p>${t('Les écussons marquent ta découverte de la chambre : un premier objet, puis 25 %, 50 %, 75 % et 100 % des zones explorées. Le pourcentage compte les endroits découverts, pas les jeux terminés.','Patches mark your exploration of the room: your first object, then 25%, 50%, 75% and 100% of its spots explored. This percentage counts places discovered, not games completed.')}</p><p>${t('Certaines découvertes ou actions débloquent aussi des vêtements, des accessoires ou des titres. Retrouve ta progression et les conditions de déblocage dans « Mon carnet ». Les écussons gagnés sont aussi disponibles dans le dressing.','Some discoveries or actions also unlock clothes, accessories or titles. Find your progress and unlock conditions in “My notebook”. Earned patches are also available in the wardrobe.')}</p><p><button class="soft-btn" type="button" data-help-action="notebook">${t('Ouvrir mon carnet','Open my notebook')}</button></p>`)}
+ ${section(t('5 · Est-ce que ma progression est gardée ?','5 · Is my progress saved?'),`<p>${t('Tes découvertes et récompenses sont enregistrées dans ce navigateur, si le stockage est autorisé. Retrouve-les en revenant avec le même appareil et le même navigateur. Elles ne se synchronisent pas entre appareils ; effacer les données du site peut les supprimer.','Your discoveries and rewards are saved in this browser when storage is allowed. Return on the same device and browser to find them again. They do not sync between devices; clearing site data may remove them.')}</p>`)}
+ <p><a href="#/liens">${t('Tous les liens du portfolio · accès direct','All portfolio links · direct access')}</a></p>
+ </div>`;
 }
+function openHelp(){
+ openWindow(document.documentElement.lang==='en'?'Help':'Aide',helpContent(),'help');
+}
+document.addEventListener('portfolio-language-change',()=>{
+ if(currentWindow==='help'&&!shade.hidden){
+  const opened=[...winContent.querySelectorAll('details')].map(el=>el.open);
+  winTitle.textContent=document.documentElement.lang==='en'?'Help':'Aide';
+  winContent.innerHTML=helpContent();
+  winContent.querySelectorAll('details').forEach((el,i)=>el.open=opened[i]??el.open);
+  window.nanaHydrate?.(winContent);
+ }
+});
+document.addEventListener('click',event=>{
+ const action=event.target.closest('[data-help-action]')?.dataset.helpAction;
+ if(!action)return;
+ if(action==='work'){chooseMode('work');return;}
+ if(action==='notebook'){closeWindow();window.NanaJournal?.open();return;}
+ if(action==='zones'){
+  chooseMode('play');
+  const guide=document.getElementById('hotspot-guide');
+  if(guide&&guide.getAttribute('aria-pressed')!=='true')guide.click();
+  guide?.focus({preventScroll:true});
+ }
+});
 
 function showPhone(){
  $('#special-title').textContent='Phone';
