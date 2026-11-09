@@ -755,6 +755,68 @@ $('#player-seek').addEventListener('change',e=>{if(Number.isFinite(audio.duratio
 updatePlayer();
 
 
+/* A single optional comic bubble points newcomers to Help without opening a dialog. */
+(() => {
+ 'use strict';
+ const help=document.getElementById('menu-help');
+ if(!help)return;
+ const key='nana-help-first-visit-v1';
+ let dismissed=false;
+ try{dismissed=localStorage.getItem(key)==='seen';}catch(_){}
+ const style=document.createElement('style');
+ style.textContent=`
+ #nana-help-bubble{position:fixed;z-index:1300;width:min(230px,calc(100vw - 20px));height:82px;box-sizing:border-box;padding:23px 32px 13px 14px;color:#ff173b;font-family:"Nana Trace UI",sans-serif;}
+ #nana-help-bubble[hidden]{display:none!important}
+ #nana-help-bubble svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+ #nana-help-bubble path{fill:#fff2fc;stroke:#ff173b;stroke-width:1.8;stroke-linejoin:round}
+ html[data-theme="night"] #nana-help-bubble path{fill:#e9b5ff}
+ #nana-help-bubble button{position:relative;border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:0}
+ #nana-help-bubble [data-first-help]{display:block;width:100%;height:100%;font-size:16px;line-height:1.3;text-align:center}
+ #nana-help-bubble [data-first-dismiss]{position:absolute;right:8px;top:20px;width:24px;height:24px;padding:5px}
+ #nana-help-bubble [data-first-dismiss] img{width:100%;height:100%;object-fit:contain}
+ #nana-help-bubble button:focus-visible{outline:2px dotted currentColor;outline-offset:3px}
+ `;
+ document.head.append(style);
+ const bubble=document.createElement('aside');
+ bubble.id='nana-help-bubble';bubble.hidden=true;bubble.setAttribute('data-no-translate','');
+ bubble.innerHTML='<svg viewBox="0 0 230 82" preserveAspectRatio="none" aria-hidden="true"><path/></svg><button type="button" data-first-help></button><button type="button" data-first-dismiss><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>';
+ document.body.append(bubble);
+ const t=(fr,en)=>document.documentElement.lang==='en'?en:fr;
+ function localize(){
+  bubble.setAttribute('aria-label',t('Un petit coup de main','A little help'));
+  bubble.querySelector('[data-first-help]').textContent=t('Première visite ?','First visit?');
+  bubble.querySelector('[data-first-help]').setAttribute('aria-label',t('Première visite ? Ouvrir le guide','First visit? Open the guide'));
+  bubble.querySelector('[data-first-dismiss]').setAttribute('aria-label',t('Masquer cette bulle','Dismiss this hint'));
+  const caption=document.querySelector('.work-choice .tile-desc');
+  if(caption){caption.setAttribute('data-no-translate','');caption.textContent=t('Accéder directement à mes projets','Go straight to my projects');}
+ }
+ function position(){
+  if(bubble.hidden)return;
+  const rect=help.getBoundingClientRect(),width=bubble.getBoundingClientRect().width;
+  const left=Math.min(Math.max(10,rect.left-14),Math.max(10,innerWidth-width-10));
+  bubble.style.left=left+'px';bubble.style.top=(rect.bottom+4)+'px';
+  const tip=Math.max(18,Math.min(204,(rect.left+rect.width/2-left)*230/width));
+  bubble.querySelector('path').setAttribute('d',`M 13 16 Q 7 17 7 26 L 6 65 Q 7 76 19 75 Q 116 78 213 75 Q 225 75 224 63 L 225 28 Q 225 17 214 17 L ${tip+16} 17 L ${tip} 2 L ${tip+3} 17 Q 60 15 13 16 Z`);
+ }
+ function dismiss(){dismissed=true;bubble.hidden=true;try{localStorage.setItem(key,'seen');}catch(_){}}
+ function update(){
+  const busy=!!document.querySelector('dialog[open],#window-shade:not([hidden]),#special-shade:not([hidden])');
+  bubble.hidden=dismissed||!currentMode||busy||document.getElementById('desktop').hidden;
+  if(!bubble.hidden){try{localStorage.setItem(key,'seen');}catch(_){}position();}
+ }
+ bubble.querySelector('[data-first-help]').addEventListener('click',()=>{dismiss();help.click();});
+ bubble.querySelector('[data-first-dismiss]').addEventListener('click',dismiss);
+ help.addEventListener('click',dismiss);
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!bubble.hidden)dismiss();});
+ document.addEventListener('portfolio-language-change',()=>{localize();position();});
+ document.addEventListener('toggle',update,true);
+ const observer=new MutationObserver(update);
+ for(const element of [app,shade,specialShade,desktop])observer.observe(element,{attributes:true,attributeFilter:['class','hidden']});
+ addEventListener('resize',position);
+ addEventListener('storage',event=>{if(event.key===key&&event.newValue==='seen')dismiss();});
+ localize();update();
+})();
+
 /* Restore the current room after a browser refresh (tab-scoped). */
 (()=>{
  const KEY='nana-room-refresh-v1';
@@ -821,64 +883,3 @@ updatePlayer();
 
 
 
-/* A single optional comic bubble points newcomers to Help without opening a dialog. */
-(() => {
- 'use strict';
- const help=document.getElementById('menu-help');
- if(!help)return;
- const key='nana-help-first-visit-v1';
- let dismissed=false;
- try{dismissed=localStorage.getItem(key)==='seen';}catch(_){}
- const style=document.createElement('style');
- style.textContent=`
- #nana-help-bubble{position:fixed;z-index:1300;width:min(230px,calc(100vw - 20px));height:82px;box-sizing:border-box;padding:23px 32px 13px 14px;color:#ff173b;font-family:"Nana Trace UI",sans-serif;}
- #nana-help-bubble[hidden]{display:none!important}
- #nana-help-bubble svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
- #nana-help-bubble path{fill:#fff2fc;stroke:#ff173b;stroke-width:1.8;stroke-linejoin:round}
- html[data-theme="night"] #nana-help-bubble path{fill:#e9b5ff}
- #nana-help-bubble button{position:relative;border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:0}
- #nana-help-bubble [data-first-help]{display:block;width:100%;height:100%;font-size:16px;line-height:1.3;text-align:center}
- #nana-help-bubble [data-first-dismiss]{position:absolute;right:8px;top:20px;width:24px;height:24px;padding:5px}
- #nana-help-bubble [data-first-dismiss] img{width:100%;height:100%;object-fit:contain}
- #nana-help-bubble button:focus-visible{outline:2px dotted currentColor;outline-offset:3px}
- `;
- document.head.append(style);
- const bubble=document.createElement('aside');
- bubble.id='nana-help-bubble';bubble.hidden=true;bubble.setAttribute('data-no-translate','');
- bubble.innerHTML='<svg viewBox="0 0 230 82" preserveAspectRatio="none" aria-hidden="true"><path/></svg><button type="button" data-first-help></button><button type="button" data-first-dismiss><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>';
- document.body.append(bubble);
- const t=(fr,en)=>document.documentElement.lang==='en'?en:fr;
- function localize(){
-  bubble.setAttribute('aria-label',t('Un petit coup de main','A little help'));
-  bubble.querySelector('[data-first-help]').textContent=t('Première visite ?','First visit?');
-  bubble.querySelector('[data-first-help]').setAttribute('aria-label',t('Première visite ? Ouvrir le guide','First visit? Open the guide'));
-  bubble.querySelector('[data-first-dismiss]').setAttribute('aria-label',t('Masquer cette bulle','Dismiss this hint'));
-  const caption=document.querySelector('.work-choice .tile-desc');
-  if(caption){caption.setAttribute('data-no-translate','');caption.textContent=t('Accéder directement à mes projets','Go straight to my projects');}
- }
- function position(){
-  if(bubble.hidden)return;
-  const rect=help.getBoundingClientRect(),width=bubble.getBoundingClientRect().width;
-  const left=Math.min(Math.max(10,rect.left-14),Math.max(10,innerWidth-width-10));
-  bubble.style.left=left+'px';bubble.style.top=(rect.bottom+4)+'px';
-  const tip=Math.max(18,Math.min(204,(rect.left+rect.width/2-left)*230/width));
-  bubble.querySelector('path').setAttribute('d',`M 13 16 Q 7 17 7 26 L 6 65 Q 7 76 19 75 Q 116 78 213 75 Q 225 75 224 63 L 225 28 Q 225 17 214 17 L ${tip+16} 17 L ${tip} 2 L ${tip+3} 17 Q 60 15 13 16 Z`);
- }
- function dismiss(){dismissed=true;bubble.hidden=true;try{localStorage.setItem(key,'seen');}catch(_){}}
- function update(){
-  const busy=!!document.querySelector('dialog[open],#window-shade:not([hidden]),#special-shade:not([hidden])');
-  bubble.hidden=dismissed||!currentMode||busy||document.getElementById('desktop').hidden;
-  if(!bubble.hidden){try{localStorage.setItem(key,'seen');}catch(_){}position();}
- }
- bubble.querySelector('[data-first-help]').addEventListener('click',()=>{dismiss();help.click();});
- bubble.querySelector('[data-first-dismiss]').addEventListener('click',dismiss);
- help.addEventListener('click',dismiss);
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!bubble.hidden)dismiss();});
- document.addEventListener('portfolio-language-change',()=>{localize();position();});
- document.addEventListener('toggle',update,true);
- const observer=new MutationObserver(update);
- for(const element of [app,shade,specialShade,desktop])observer.observe(element,{attributes:true,attributeFilter:['class','hidden']});
- addEventListener('resize',position);
- addEventListener('storage',event=>{if(event.key===key&&event.newValue==='seen')dismiss();});
- localize();update();
-})();
