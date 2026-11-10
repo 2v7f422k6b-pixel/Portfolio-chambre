@@ -1,6 +1,6 @@
 # Retour dressing — publication du 10 novembre 2026
 
-Deux passes de corrections ont été réalisées. Les demandes qui nécessitent de nouveaux dessins ou un choix esthétique restent ouvertes. Aucun PNG source n'a été modifié.
+Trois passes de corrections ont été réalisées. Les demandes qui nécessitent de nouveaux dessins ou un choix esthétique restent ouvertes. Aucun PNG source n'a été modifié.
 
 ## Changements livrés
 
@@ -54,40 +54,28 @@ Deux passes de corrections ont été réalisées. Les demandes qui nécessitent 
 - [x] Grand col sous robe en jean ; Claudine sous GANNI sans manches ; col roulé et chemise George Sand sous gilet fleuri.
 - [ ] Finalisation des cols avec les nouveaux dessins séparés.
 
-## Travail restant et limites
+## Troisième passe — dessins et captures fournis
 
-- [ ] Intégrer le mannequin sans soutien-gorge et le soutien-gorge séparé ; retirer les rustines devenues inutiles sans altérer les vêtements.
-- [ ] Intégrer les deux cols séparés pour améliorer leurs contours. Le détourage actuel reste provisoire.
-- [ ] Intégrer le sac crochet complet : les trous déjà découpés dans le PNG actuel laissent encore voir le tissu derrière à certains endroits ; le code ne peut pas recréer fidèlement la maille absente.
-- [ ] Intégrer le futur bijou « Petits trésors ».
-- [ ] Valider les volumes resserrés avec Léna, en particulier les jupes très amples : le mécanisme conserve les traits mais modifie localement leur largeur.
-- [ ] Revoir les interactions très particulières de la lanière marron avec volants de dentelle, corsage clown et robe vichy. Les hauteurs ont été ajustées ; le passage exact entre les volants reste à valider.
-- [ ] Traiter les éventuels défauts résiduels des épaules et poignets après les nouvelles captures, sans demander un redessin systématique des manches.
-- [ ] Confirmer les choix ouverts listés en fin de document.
+- [x] Intégrer le mannequin sans soutien-gorge IMG_5993 et le soutien-gorge bleu séparé IMG_5995 (visible sans vêtement de torse ou sous le scintillant seul). Les variantes rose/noire restent disponibles dans Assets, sans nouveau sélecteur ajouté.
+- [x] Remplacer les anciens calques de bras par les mains seules IMG_5994 pour les raccords aux poignets ; préserver la tête sans cheveux des coiffes concernées.
+- [x] Utiliser les cols séparés IMG_5998 et IMG_5999 au-dessus des robes salopettes et des mailles.
+- [x] Intégrer le top papillon IMG_6018 sans rustine et le sac crochet complet IMG_6001.
+- [x] Rétablir l'avant-bras devant le sac crochet sans rétablir le torse du t-shirt.
+- [x] Ajouter le bijou Petits trésors IMG_6017 aux accessoires de sac, adapté au sac marron et au crochet.
+- [x] Resserrement local de la jupe Princesse sous les t-shirts GABZILLA, Plantasia, Pink Floyd et DAMSON ; enlever l'ancien double traitement DAMSON.
+- [x] Rehausser encore la lanière marron sur le trench et la déplacer légèrement à gauche sur le corsage clown.
+- [x] Corriger la vignette de la blouse à grand col en utilisant son dessin complet.
+- [x] Permettre le manteau rayé sous le yukata grâce à un emplacement de superposition distinct ; conserver le yukata dans Vestes en attendant le choix de rangement.
+- [x] Vérifier le col roulé Inspecteur sous le manteau rayé, la frontale avec Kangol, les scintillants sous robe à pois / robe en jean / salopette / bustier. La robe à carreaux reste exclue.
+- [x] Gilet fleuri au-dessus du pull rose ou du GANNI multicolore, avec manches visibles et torse contenu.
 
-## Dessins à fournir
+121 tests automatisés. Contrôle visuel ciblé : nouveaux dessins, gilet bleu avec deux robes, deux blouses sous robe en jean, scintillants avec robe en jean/à pois/salopette, manches de pyjama sous robe en jean, chemise George Sand sous gilet fleuri, deux sacs, deux t-shirts avec jupe Princesse, ourson avec pantalon rayé, yukata avec manteau rayé, gilet fleuri avec deux mailles, frontale avec Kangol.
 
-Exports PNG transparents sur le même canevas et aux mêmes positions que les originaux, sans recadrage automatique :
+## À valider avec Léna
 
-- Mannequin sans soutien-gorge dessiné sur le corps, avec soutien-gorge sur un calque séparé. Cela permettra d'éviter une rustine par vêtement.
-- Col Claudine séparé ; grand col et nœud séparés. Conserver aussi les blouses complètes comme référence.
-- Sac crochet complet, sans découpe pour le bras, pour pouvoir gérer le passage devant/derrière selon la tenue.
-- Nouveau bijou de sac « Petits trésors », inspiré de la dragonne du téléphone.
+- [ ] Jugement esthétique sur les volumes du gilet fleuri sur les deux grosses mailles ; le dessin reste inchangé, les couches du dessous sont contenues localement.
+- [ ] Choix de rangement du yukata dans Pyjamas ou Vestes. Le rangement peut être changé sans modifier son comportement de couche extérieure.
+- [ ] Passage précis de la lanière marron entre les volants de dentelle et de la robe vichy, si un défaut subsiste.
+- [ ] Validation finale des petits raccords après rechargement ; les captures ont été traitées comme cas de contrôle, sans supposer que toutes les combinaisons possibles sont parfaites.
 
-Ne pas redessiner toutes les manches à ce stade : vérifier d'abord les masques et les calques existants.
-
-## Captures utiles seulement si le défaut persiste après rechargement
-
-- Pantalon à rayures roses + pull ourson : zone de la main à gauche de l'écran.
-- Robe mauve à rayures + gilet bleu : défaut au bas des manches.
-- Robe en jean + blouse à col Claudine : mains et manches.
-- Chemise George Sand + gilet fleuri : épaules.
-- Jupe Princesse clown + vêtement long choisi : silhouette souhaitée à discuter.
-
-## Choix encore ouverts
-
-- Jupe Princesse clown sous les vêtements longs : resserrement, version dédiée ou incompatibilité.
-- Yukata dans Pyjamas : rangement seulement, sans nécessairement changer son rôle de couche extérieure.
-- Haut anthracite sous la robe à carreaux rose/mauve.
-- Association gilet fleuri + pull rose ample / gilet multicolore.
-- Apparence finale des accessoires provisoirement placés au premier plan.
+Les dessins demandés ont été reçus. Aucun redessin général des manches n'est requis à ce stade. Les PNG originaux sont conservés intacts.

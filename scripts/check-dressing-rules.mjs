@@ -36,3 +36,9 @@ test('crochet bag keeps its own charm without switching to the brown bag',()=>{
  const t=wear('bag-brown','charm-pink','bag-crochet');assert.equal(t.bagAccessories,'charm-pink');
  assert.equal(wear('bag-crochet','charm-pink','bag-heart').bagAccessories,null);
 });
+
+test('confirmed November combinations survive both selection orders',()=>{
+ for(const pair of [['jacket-striped-knit','jacket-yukata'],['top-inspector','jacket-striped-knit'],['top-pullover','jacket-floral'],['jacket-ganni-knit','jacket-floral'],['head-beret','head-headlamp'],['dress-denim','top-sparkle-pink'],['suit-paint','top-sparkle-pink']])for(const ids of [pair,[...pair].reverse()]){const s=wear(...ids);for(const id of pair)assert.equal(s[r.slotFor(id,items)],id);}
+ const s=wear('dress-pink-check','top-sparkle-pink');assert.equal(s.dresses,null);
+ const c=wear('bag-crochet','charm-treasures');assert.equal(c.bags,'bag-crochet');assert.equal(c.bagAccessories,'charm-treasures');
+});

@@ -182,8 +182,10 @@ test('Sonny hides hair while the bear sweater keeps it visible',()=>{
  for(const jacket of ['jacket-purple',null]){
   slots.jackets=jacket;
   const bodies=layers().filter(x=>x.z===1||x.z===13);
-  assert.equal(bodies.length,jacket?2:1);
-  assert.ok(bodies.every(x=>x.src===assets.hairlessBase));
+  assert.equal(bodies.length,jacket?3:2);
+  assert.equal(bodies[0].src,assets.base);
+  assert.equal(bodies[0].clip[0][1],690);
+  assert.ok(bodies.slice(1).every(x=>x.src===assets.hairlessBase));
  }
  slots.hat=null;slots.sweater='top-bear';slots.jackets='jacket-purple';
  assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));

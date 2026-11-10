@@ -1,9 +1,9 @@
 /* Non-destructive garment composition. All coordinates refer to Léna's 2048 × 3072 canvas. */
 (()=>{'use strict';
 const CW=1024,CH=1536,S=2;
-const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets'];
+const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets','wrap'];
 const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','dress-denim','suit-paint']);
-const sleeveEnd={ 'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
+const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
 const ease=t=>{t=Math.min(1,Math.max(0,t));return t*t*(3-2*t)};
 function fitRow(left,right,lo,hi,weight=1){return [left+Math.max(0,lo-left)*weight,right-Math.max(0,right-hi)*weight]}
 function canvas(){const c=document.createElement('canvas');c.width=CW;c.height=CH;return c}
@@ -50,17 +50,17 @@ function create({source,changed}){
    }return c;
   });
  }
- function hands(s){const src='assets/dressing-lena/IMG_5495.png?v=e0bfaa25',r=image(src);const ids=[s.tops,s.sheer,s.dresses].filter(id=>id&&sleeveEnd[id]>1000);if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
+ function hands(s){const src='assets/dressing-lena/IMG_5994.png',r=image(src);const ids=[s.tops,s.sheer,s.dresses,s.sweater,s.cardigan,s.jackets].filter(id=>id&&sleeveEnd[id]>1000);if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
   return remember('hands:'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);ctx.clearRect(0,0,CW,500);
    ctx.globalCompositeOperation='destination-out';for(const id of ids){const end=sleeveEnd[id]/S;ctx.drawImage(get(id).im,0,0,2048,end*S,0,0,CW,end);}return c;});
  }
  function phone(s){const id=s.phone;if(!id)return null;const ids=garmentSlots.filter(k=>['sweater','cardigan','jackets'].includes(k)||sleeveEnd[s[k]]>1100).map(k=>s[k]).filter(x=>x&&!sleeveless.has(x));if(!get(id).loaded||ids.some(x=>!get(x).loaded))return null;
   return remember('phone:'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(get(id).im,0,0,CW,CH);ctx.save();ctx.beginPath();ctx.rect(0,0,CW,830);ctx.clip();ctx.globalCompositeOperation='destination-out';for(const x of ids)ctx.drawImage(get(x).im,0,0,CW,CH);ctx.restore();return c;});
  }
- function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.pants)ids.push(s.pants);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),'assets/dressing-lena/IMG_5495.png?v=e0bfaa25'])]}
+ function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.pants)ids.push(s.pants);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),'assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png'])]}
  async function ready(entries,s){await Promise.all(sources(entries,s).map(src=>image(src).ready))}
  function process(entries,s){sources(entries,s).forEach(image);
-  const outer=s.jackets||s.cardigan||s.sweater||s.vest||(s.dresses==='dress-denim'?s.dresses:s.overalls);
+  const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
   const result=entries.map(e=>{if(!e.id||e.hood||e.canvas)return {...e};
    const key=Object.keys(s).find(k=>s[k]===e.id);
@@ -75,7 +75,8 @@ function create({source,changed}){
   }
   if(s.bags==='bag-crochet'&&hand){
    const key='crochet:'+garmentSlots.map(k=>s[k]||'').join(',');
-   const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');ctx.save();ctx.beginPath();ctx.moveTo(0,390);ctx.lineTo(380,390);ctx.lineTo(415,500);ctx.lineTo(400,700);ctx.lineTo(405,875);ctx.lineTo(0,875);ctx.closePath();ctx.clip();
+   const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');ctx.save();ctx.beginPath();ctx.moveTo(0,390);ctx.lineTo(350,390);ctx.lineTo(375,500);ctx.lineTo(365,700);ctx.lineTo(405,875);ctx.lineTo(0,875);ctx.closePath();ctx.clip();
+    const body=image('assets/dressing-lena/IMG_5993.png');if(body.loaded)ctx.drawImage(body.im,0,0,CW,CH);
     for(const e of result.filter(e=>e.part==='hands'||garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z)){const im=e.canvas||(e.id&&get(e.id).loaded?get(e.id).im:null);if(im)ctx.drawImage(im,0,0,CW,CH);}ctx.restore();return c;});
    result.push({canvas:c,z:19.5,part:'bag-arm'});
   }

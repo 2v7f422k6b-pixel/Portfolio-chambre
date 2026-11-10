@@ -12,7 +12,7 @@
     if(cardigans.has(id))return 'cardigan';
     if(vests.has(id))return 'vest';
     if(sparkles.has(id))return 'sheer';
-    const fixed={'head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
+    const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
     if(fixed[id])return fixed[id];
     if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';
     if(id.startsWith('jewelry-'))return 'necklace';
