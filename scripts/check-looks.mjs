@@ -51,7 +51,7 @@ const data=JSON.parse(html.match(/<script type="application\/json" id="assets">(
 function dressing(earned=[]){
  const allSlots=JSON.parse(html.match(/const allSlots=(\[[^;]+\]);/)[1].replaceAll("'",'"'));
  const context={data:copy(data),ITEMS:data.items,SPRITES:data.sprites,allSlots,slots:{makeup:new Set()},BADGE_PLACES:[[825,1030],[1115,1030],[825,1175],[1115,1175],[825,1390]],badgeSelection:[],PULLOVERS:new Set(['top-bow-knit','top-pullover','top-lime','top-bear']),clownActive:false,progress:{stickers:[{id:'glance',earned:()=>earned.includes('glance')}],unlockedOutfit:id=>earned.includes(id)},itemReward:id=>['suit-paint','accessory-camera','accessory-phone','top-dj'].includes(id)?{id}:null};
- vm.createContext(context);
+ context.window={};vm.createContext(context);vm.runInContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),context);context.rules=context.window.NanaWardrobeRules;
  vm.runInContext(html.match(/function slotFor\(id\)\{[^\n]+/)[0]+ '\n'+html.slice(html.indexOf('function snapshotOutfit(){'),html.indexOf('window.NanaDressing=')),context);
  return context;
 }
@@ -70,3 +70,4 @@ test('layered blouse, GANNI knit, overalls, accessories, pyjamas, makeup and ord
  d.restoreOutfit({slots:{tops:'top-peter-pan',dresses:'dress-denim'}});assert.equal(d.slots.tops,'top-peter-pan');assert.equal(d.slots.dresses,'dress-denim');
  d.restoreOutfit({slots:{tops:'top-white',dresses:'dress-blue',pants:'pants-pajama'}});assert.equal(d.slots.tops,null);assert.equal(d.slots.pants,null);
 });
+
