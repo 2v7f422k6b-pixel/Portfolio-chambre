@@ -79,3 +79,10 @@ Trois passes de corrections ont été réalisées. Les demandes qui nécessitent
 - [ ] Validation finale des petits raccords après rechargement ; les captures ont été traitées comme cas de contrôle, sans supposer que toutes les combinaisons possibles sont parfaites.
 
 Les dessins demandés ont été reçus. Aucun redessin général des manches n'est requis à ce stade. Les PNG originaux sont conservés intacts.
+
+## Correctif après les captures des bas déformés
+
+- [x] Retirer la compression des pantalons et jupes sous les hauts, pulls et gilets : utiliser le dessin original, avec les mains séparées devant.
+- [x] Retirer aussi les anciens masques de bas sous les t-shirts et caracos lorsqu’aucun manteau/yukata n’est porté.
+- [x] Pour les robes sous les pulls, arrêter le traitement à l’ourlet du pull ; conserver le dessin original en dessous, sans prolonger une zone de rétrécissement vers les cuisses.
+- Les validations précédentes sur les volumes étaient insuffisantes : les tests techniques ne validaient pas le respect de la silhouette. Le resserrement de la jupe Princesse sous les hauts est retiré avec ce correctif.

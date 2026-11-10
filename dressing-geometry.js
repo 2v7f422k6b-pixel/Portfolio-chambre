@@ -22,10 +22,10 @@ function create({source,changed}){
   const bottom=rows.findLastIndex(r=>r&&r.h-r.l>40);if(['jacket-inspector','jacket-george-sand','jacket-green','jacket-yukata'].includes(id))hem=bottom;const p={rows,hem};profiles.set(id,p);return p;
  }
  function remember(key,make){if(frames.has(key))return frames.get(key);const c=make();if(frames.size>=8)frames.delete(frames.keys().next().value);frames.set(key,c);return c}
- function contained(id,outer,arms=false){const a=profile(id),b=profile(outer);if(!a||!b)return null;
-  return remember('fit:'+id+':'+outer+':'+arms,()=>{
+ function contained(id,outer,arms=false,preserveHem=false){const a=profile(id),b=profile(outer);if(!a||!b)return null;
+  return remember('fit:'+id+':'+outer+':'+arms+':'+preserveHem,()=>{
    const c=canvas(),ctx=c.getContext('2d'),im=get(id).im;ctx.drawImage(im,0,0,CW,CH);
-   const hem=Math.max(b.hem,(sleeveEnd[id]||0)/S);let last=null;for(let y=330;y<Math.min(CH,hem+250);y++){
+   const hem=Math.max(b.hem,(sleeveEnd[id]||0)/S);let last=null;for(let y=330;y<Math.min(CH,preserveHem?b.hem:hem+250);y++){
     const row=a.rows[y],out=b.rows[Math.min(y,Math.max(400,b.hem-60))];if(out&&y<=b.hem)last=out;if(!row)continue;
     ctx.clearRect(0,y,CW,1);
     if(y<400){
@@ -64,8 +64,10 @@ function create({source,changed}){
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
   const result=entries.map(e=>{if(!e.id||e.hood||e.canvas)return {...e};
    const key=Object.keys(s).find(k=>s[k]===e.id);
+   // Hands occlude the original lower garment; never reshape it to clear wrists.
+   if(['pants','skirts'].includes(key)&&!s.jackets&&!s.wrap)return {...e,clip:null,rowFit:null,fit:null};
    if(outer&&e.id!==outer&&e.z<z&&['tops','sheer','sweater','cardigan','vest','dresses','overalls','pants','skirts'].includes(key)){
-    const c=contained(e.id,outer,sleeveless.has(outer)&&['tops','sheer','cardigan','sweater'].includes(key));if(c)return {id:e.id,z:e.z,canvas:c,cover:e.cover};
+    const c=contained(e.id,outer,sleeveless.has(outer)&&['tops','sheer','cardigan','sweater'].includes(key),!s.jackets&&!s.wrap);if(c)return {id:e.id,z:e.z,canvas:c,cover:e.cover};
    }
    if(e.id===s.phone){const c=phone(s);if(c)return {...e,canvas:c};}return {...e};
   });
