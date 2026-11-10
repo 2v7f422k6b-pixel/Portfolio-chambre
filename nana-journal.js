@@ -3,7 +3,7 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['looks','Mes looks','My looks'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
@@ -144,7 +144,8 @@
     const inProgress=keepsakeFilter==='all'?'<div class="nj-keepsake-current">'+(draftCount?'<article><p>'+t('Ton poème en cours','Your poem in progress')+'</p>'+routeButton('jeu/word-lab',t('Reprendre mon brouillon','Continue my draft'))+'</article>':'')+(beadCount?'<article class="nj-current-charm">'+window.NanaBeadSouvenir.preview()+'<div><p>'+t('Ton bijou en cours','Your charm in progress')+'</p>'+routeButton('jeu/bead-box',t('Retrouver mon bijou','Revisit my charm'))+'</div></article>':'')+'</div>':'';
     return heading(t('Mes petits souvenirs','My little keepsakes'),t('Tes créations et tes lectures à retrouver.','Your creations and saved reading.'))+filters+works+inProgress+'<p class="nj-bottom-note">'+t('Conservés sur ce navigateur. Les poèmes déjà téléchargés avant cette nouveauté ne peuvent pas être récupérés automatiquement.','Saved in this browser. Poems downloaded before this feature cannot be recovered automatically.')+'</p>';
   }
-  const pages={souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
+  const looks=window.NanaJournalLooks.create({dialog,content,t,h,button,heading,paginate,render,navigate});
+  const pages={looks:looks.page,souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
   function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent=pct+' %';trigger.querySelector('.nj-trigger-label').textContent=t('Mon carnet','My notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
   function paperLayout(html){
     const source=document.createElement('div');source.innerHTML=html;
@@ -158,7 +159,7 @@
         const first=node.cloneNode(false),second=node.cloneNode(false),items=[...node.children],split=Math.ceil(items.length/2);
         items.forEach((item,i)=>(i<split?first:second).append(item));a.append(first);b.append(second);
       }else if(node.matches('.nj-section-title,.nj-wardrobe-summary,.nj-keepsake-filters,.nj-hero'))a.append(node);
-      else if(node.matches('.nj-stats,.nj-gift,.nj-keepsake-current,.nj-bottom-note,.nj-keepsake-actions,.nj-poem-sheet'))b.append(node);
+      else if(node.matches('.nj-stats,.nj-gift,.nj-keepsake-current,.nj-bottom-note,.nj-keepsake-actions,.nj-poem-sheet,.nl-look-details'))b.append(node);
       else a.append(node);
     }
     if(!b.children.length)b.innerHTML='<div class="nj-paper-memento">'+img(star)+'<p>'+t('La suite reste à écrire…','More little stories to come…')+'</p></div>';
@@ -175,9 +176,10 @@
     dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Marque-pages du carnet','Notebook bookmarks'));
     pager.setAttribute('aria-label',t('Feuilleter le carnet','Turn the pages'));
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
-    const labels={chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Écussons','Patches'],cadeaux:['Cadeaux','Gifts']};
-    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('')+'<button type="button" style="--tab:7" data-nj-newsletter aria-haspopup="dialog">'+t('Courrier','Letters')+'</button>';
-    pageTotal=1;paperLayout(pages[active]());
+    const labels={looks:['Mes looks','My looks'],chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Écussons','Patches'],cadeaux:['Cadeaux','Gifts']};
+    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('')+'<button type="button" style="--tab:8" data-nj-newsletter aria-haspopup="dialog">'+t('Courrier','Letters')+'</button>';
+    dialog.classList.toggle('nj-looks-open',active==='looks');
+    pageTotal=1;paperLayout(pages[active]());if(active==='looks')looks.hydrate();
     const index=tabs.findIndex(x=>x[0]===active);
     pager.innerHTML=button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-turn="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(index===0&&page===0?'disabled':''))+'<span>'+h(t(...labels[active]))+(pageTotal>1?' · '+(page+1)+' / '+pageTotal:'')+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-turn="1" aria-label="'+t('Page suivante','Next page')+'" '+(index===tabs.length-1&&page===pageTotal-1?'disabled':''));
   }
@@ -204,7 +206,7 @@
   function open(tab='chambre'){
     if(tab==='titres')tab='stickers';
     if(!pages[tab])return false;
-    active=tab;page=0;selectedKeepsake=null;
+    active=tab;page=0;selectedKeepsake=null;looks.reset();
     const wasOpen=dialog.open;
     if(!wasOpen){previousFocus=document.activeElement;dialog.showModal();}
     notice.hidden=true;render();if(active==='dressing')loadWardrobe();
@@ -215,16 +217,17 @@
   function navigate(route){window.NanaDeepLinks.open(route);}
   function goTab(tab){
     const direction=tabs.findIndex(x=>x[0]===tab)>=tabs.findIndex(x=>x[0]===active)?1:-1;
-    turnPage(()=>{active=tab;page=0;selectedKeepsake=null;render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]').focus({preventScroll:true});},direction);
+    turnPage(()=>{active=tab;page=0;selectedKeepsake=null;looks.reset();render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]').focus({preventScroll:true});},direction);
   }
   trigger.addEventListener('click',()=>navigate('carnet/chambre'));
   dialog.addEventListener('click',async event=>{
     const target=event.target.closest('button');if(!target)return;
+    if(looks.handle(target))return;
     if(target.hasAttribute('data-nj-open-cover'))unfold();
     else if(target.hasAttribute('data-nj-cover-close'))fold();
     else if(target.dataset.njTurn){
       const delta=Number(target.dataset.njTurn),index=tabs.findIndex(x=>x[0]===active);
-      if(page+delta>=0&&page+delta<pageTotal)turnPage(()=>{page+=delta;selectedKeepsake=null;render();pager.querySelector('[data-nj-turn="'+delta+'"]').focus({preventScroll:true});},delta);
+      if(page+delta>=0&&page+delta<pageTotal)turnPage(()=>{page+=delta;selectedKeepsake=null;looks.reset();render();pager.querySelector('[data-nj-turn="'+delta+'"]').focus({preventScroll:true});},delta);
       else if(tabs[index+delta])goTab(tabs[index+delta][0]);
     }
     else if(target.hasAttribute('data-nj-close'))close();
@@ -272,6 +275,7 @@
   });
   notice.querySelector('button').addEventListener('click',event=>navigate('carnet/'+event.currentTarget.dataset.njNotice));
   document.addEventListener('portfolio-language-change',()=>{notice.hidden=true;render();if(currentMilestone){renderMilestone();milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});}});
+  document.addEventListener('nana-looks-change',()=>{if(dialog.open&&active==='looks'&&!dialog.querySelector('.nl-rename'))render();});
   document.addEventListener('nana-keepsakes-change',()=>{if(dialog.open&&active==='souvenirs')render();});
   small.addEventListener('change',()=>{page=0;render();});
   const recordNight=()=>{if(document.documentElement.dataset.theme==='night')progress.visit('night');};

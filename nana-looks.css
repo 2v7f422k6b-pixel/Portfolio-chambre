@@ -1,0 +1,112 @@
+/* Personal Polaroids and dressing controls. Shared hand-traced chrome, no shadows. */
+.nl-frame{position:relative;border:0!important;box-shadow:none!important;color:#ff173b}
+.nl-frame>.sketch-ui-svg{color:#ff173b;pointer-events:none}
+.nl-input{display:block;padding:8px;background:#fffaf2}
+.nl-input input{box-sizing:border-box;width:100%;border:0;outline:0;background:transparent;color:#ff173b;font:inherit;box-shadow:none}
+.nl-input:focus-within{background:#fff}
+.nl-save-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 28px));max-height:calc(100dvh - 24px);padding:24px;background:#fff4e8;color:#ff173b;font:inherit;overflow:hidden}
+.nl-save-dialog::backdrop{background:#34233280}
+.nl-save-dialog h2{font-size:23px;font-weight:normal;margin:0 0 18px}
+.nl-save-dialog label{display:block;margin-bottom:8px}
+.nl-save-dialog p{font-size:13px;line-height:1.5;margin:12px 0}
+.nl-dialog-actions{display:flex;flex-wrap:wrap;gap:12px}
+.nl-save-dialog .action{font:inherit;font-size:14px;padding:9px 12px;white-space:normal}
+.nl-save-dialog [hidden],.has-saved-looks #items>[hidden]{display:none!important}
+.nl-save-error:empty{display:none}
+.nl-frame:hover:not(:disabled):not(.nl-save-dialog),.nl-frame:focus-visible{background:#fff!important}
+.has-saved-looks{height:100dvh;overflow:hidden}
+.has-saved-looks .frame{height:100dvh;min-height:0;max-height:none}
+.has-saved-looks .main{min-height:0;overflow:hidden}
+.has-saved-looks .profile{overflow:hidden!important}
+.has-saved-looks .wardrobe{min-height:0;max-height:none;overflow:hidden}
+.has-saved-looks .inventory{flex:1;min-height:0;max-height:none;overflow:hidden}
+.has-saved-looks .stage{height:auto;min-height:0;overflow:hidden}
+.has-saved-looks .avatar{max-height:100%;height:100%;width:auto;aspect-ratio:1365/2048}
+.has-saved-looks .avatar-area{min-height:0;flex:1}
+.has-saved-looks .actions{flex-wrap:wrap;gap:8px}
+.has-saved-looks .action{padding:7px 8px;font-size:12px}
+.has-saved-looks .items{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+.has-saved-looks .item{min-height:0;height:128px;padding:5px;font-size:11px}
+.has-saved-looks .item img,.has-saved-looks .item .garment-thumbnail,.has-saved-looks .item canvas{height:88px!important;max-height:88px}
+.has-saved-looks .presets{display:grid;grid-template-columns:1fr;gap:8px;align-content:start}
+.has-saved-looks .preset{min-height:0;padding:8px;font-size:12px}
+.nl-inventory-pager{flex:none;height:34px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px}
+.nl-inventory-pager button{min-width:32px;min-height:30px}
+.nl-category{display:none;width:100%;background:#fff4e8;border:0;color:#ff173b;font:inherit;padding:8px 0}
+#nana-journal .nj-tabs{grid-template-columns:repeat(9,minmax(0,1fr))}
+#nana-journal .nl-frame>.sketch-ui-svg{display:block!important}
+#nana-journal.nj-looks-open .nj-leaf-inner{display:flex;flex-direction:column;overflow:hidden;gap:10px;padding-top:22px;padding-bottom:16px}
+#nana-journal.nj-looks-open .nj-section-title{margin:0;flex:none}
+#nana-journal.nj-looks-open .nj-section-title h2{margin-bottom:5px;font-size:25px}
+#nana-journal.nj-looks-open .nj-section-title p{font-size:12px;line-height:1.4}
+#nana-journal .nl-album{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);align-items:center;gap:16px;padding:8px}
+#nana-journal .nl-polaroid{display:flex;flex-direction:column;align-items:stretch;justify-content:center;box-sizing:border-box;min-height:0;max-height:100%;min-width:0;padding:9px 9px 13px;border:0;background:#fffcf6;color:#b14661;box-shadow:none;transform:rotate(var(--look-tilt,-1.5deg));font:inherit;cursor:pointer;text-align:center}
+#nana-journal button.nl-polaroid:hover,#nana-journal button.nl-polaroid:focus-visible{background:#fff;transform:rotate(0)}
+.nl-photo{display:flex;align-items:center;justify-content:center;position:relative;width:100%;min-height:0;aspect-ratio:2/3;background:#eee4dc;overflow:hidden;font-size:12px;line-height:1.5}
+.nl-photo img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important}
+.nl-photo-wait{padding:12px}
+.nl-photo-name{display:block;margin:8px 0 3px;font-size:15px;line-height:1.3;overflow-wrap:anywhere;max-height:3.9em;overflow:hidden}
+.nl-polaroid time{font-size:10px;color:#8c7377}
+.nl-photo-status{position:absolute;bottom:0;left:0;right:0;font-size:10px;background:#fffcf6e8;padding:3px}
+#nana-journal .nl-large{flex:1;margin:auto;max-width:100%;width:280px;cursor:default;overflow:hidden}
+#nana-journal .nl-large .nl-photo{flex:1;max-height:100%;aspect-ratio:auto}
+#nana-journal .nl-look-details{display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:0;flex:1}
+#nana-journal .nl-look-actions{display:flex;flex-wrap:wrap;gap:12px}
+#nana-journal .nl-look-actions p{width:100%}
+#nana-journal .nl-look-details p{font-size:13px;line-height:1.5;margin:0}
+#nana-journal .nl-look-details .nj-button{font:inherit;font-size:14px;color:#ff173b;box-shadow:none;padding:9px 12px;background:#fff4e8}
+#nana-journal .nl-look-details>.nj-button{align-self:flex-start}
+.nl-look-warning:empty,.nl-error:empty{display:none}
+.nl-rename{display:flex;flex-wrap:wrap;gap:12px;width:100%}
+.nl-rename label,.nl-rename .nl-input{width:100%}
+#nana-journal .nl-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px}
+.nl-empty>span{font-size:68px;color:#ff173b;transform:rotate(-10deg)}
+#nana-journal .nl-local-note{font-size:11px;line-height:1.4;margin:0;flex:none}
+@media(max-width:1050px),(max-height:760px){
+ .has-saved-looks .main{grid-template-columns:minmax(140px,.6fr) minmax(160px,1fr) minmax(240px,1fr);padding:10px;gap:12px}
+ .has-saved-looks .profile{font-size:11px;gap:10px;overflow:hidden}
+ .has-saved-looks .profile .stats,.has-saved-looks .profile .quest{display:none!important}
+ .has-saved-looks .wardrobe>p,.has-saved-looks .smallnote{display:none}
+ .has-saved-looks #tabs{display:none}.nl-category{display:block}
+ .has-saved-looks .wardrobe h2{font-size:20px}
+}
+@media(max-width:760px){
+ .has-saved-looks .main{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:minmax(0,1fr);gap:9px;padding:6px}
+ .has-saved-looks .stage{grid-column:1;grid-row:1;padding:8px 0}
+ .has-saved-looks .wardrobe{grid-column:2;grid-row:1;padding:8px 0 0 6px;border-top:0}
+ .has-saved-looks .profile{display:none}
+ .has-saved-looks .stage-head h1{font-size:20px}.has-saved-looks .stage-foot{font-size:10px;padding:4px;min-height:32px}
+ .has-saved-looks .toolbar{display:none}.has-saved-looks .brand{font-size:12px;width:auto}
+ .has-saved-looks .top{padding:7px;gap:6px;flex-wrap:wrap}
+ .has-saved-looks .actions{width:100%;gap:5px;justify-content:stretch}
+ .has-saved-looks .action{flex:1 1 auto;font-size:11px;padding:7px 5px}
+ .has-saved-looks .actions .close{position:absolute;right:6px;top:4px;width:28px}
+ .has-saved-looks #save-personal-look,.has-saved-looks #open-my-looks{order:-1}
+ .has-saved-looks .item{height:115px;font-size:10px}
+ .has-saved-looks .item img,.has-saved-looks .item .garment-thumbnail,.has-saved-looks .item canvas{height:75px!important;max-height:75px}
+ .has-saved-looks .wardrobe h2{font-size:18px}.has-saved-looks #dressing-unlocks{font-size:10px;margin:4px 0}
+ #nana-journal .nj-tabs{grid-template-columns:repeat(5,minmax(0,1fr));height:68px;top:-64px;gap:2px}
+ #nana-journal .nj-tabs button,#nana-journal .nj-tabs button[data-nj-newsletter]{font-size:10px!important;min-height:30px;padding:6px 1px}
+ #nana-journal.nj-looks-open .nj-leaf-inner{padding:16px 18px;gap:8px}
+ #nana-journal .nl-album{gap:12px;padding:5px}
+ #nana-journal .nl-polaroid{padding:6px 6px 9px}.nl-photo-name{font-size:13px}
+ #nana-journal .nl-large{width:180px;flex:1;min-height:90px}
+ #nana-journal .nl-look-details{flex:none;gap:7px}
+ #nana-journal .nl-look-details .nj-section-title{display:none}
+ #nana-journal .nl-look-actions{gap:8px}
+ #nana-journal .nl-look-details .nj-button{font-size:12px;padding:6px 9px}
+ #nana-journal .nl-look-details p{font-size:11px}
+}
+@media(max-height:540px){
+ .has-saved-looks .top{padding:4px}.has-saved-looks .brand{display:none}
+ .has-saved-looks .stage-head,.has-saved-looks .stage-foot,.has-saved-looks .wardrobe h2{display:none}
+ .has-saved-looks .item{height:88px}.has-saved-looks .item img,.has-saved-looks .item .garment-thumbnail,.has-saved-looks .item canvas{height:55px!important;max-height:55px}
+ #nana-journal.nj-looks-open .nj-leaf-inner{padding:10px 20px}
+ #nana-journal.nj-looks-open .nj-section-title p,#nana-journal .nl-local-note{display:none}
+ #nana-journal .nl-look-details{gap:6px}
+ #nana-journal .nl-look-details .nj-button{padding:6px;font-size:12px}
+}
+/* The original mobile layout aligned panels to their intrinsic content height. */
+.has-saved-looks .main{align-items:stretch;grid-template-rows:minmax(0,1fr)}
+.has-saved-looks .stage,.has-saved-looks .wardrobe{align-self:stretch;height:100%;max-height:100%;box-sizing:border-box}
+.has-saved-looks .avatar-area{height:0}
