@@ -185,10 +185,10 @@ test('Sonny hides hair while the bear sweater keeps it visible',()=>{
   assert.equal(bodies.length,jacket?2:1);
   assert.ok(bodies.every(x=>x.src===assets.hairlessBase));
  }
- slots.hat=null;slots.tops='top-bear';slots.jackets='jacket-purple';
+ slots.hat=null;slots.sweater='top-bear';slots.jackets='jacket-purple';
  assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
  assert.ok(layers().some(x=>x.id==='top-bear'&&x.hood&&x.z>13));
- slots.tops=null;
+ slots.sweater=null;
  for(const hat of [null,'head-headlamp','head-miffy']){
   slots.hat=hat;slots.jackets='jacket-purple';
   assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
@@ -212,7 +212,7 @@ test('overalls combine with tops and jackets and exclude other bottoms in either
  const env={slots,ITEMS:assets.items,PULLOVERS:new Set(['top-pullover','top-lime']),progress:null,clownActive:false,render:()=>{},itemUnlocked:()=>true};
  const slotFn=html.slice(html.indexOf('function slotFor(id){'),html.indexOf('function selected(id)'));
  const selectFn=html.slice(html.indexOf('function select(id){'),html.indexOf('function applyPreset(i)'));
- vm.runInNewContext(slotFn+selectFn,env);
+ env.window={};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);env.rules=env.window.NanaWardrobeRules;vm.runInNewContext(slotFn+selectFn,env);
  env.select('suit-paint');assert.equal(slots.overalls,'suit-paint');assert.equal(slots.pants,null);
  assert.equal(slots.tops,'top-white');assert.equal(slots.jackets,'jacket-purple');
  env.select('top-gabzilla');assert.equal(slots.overalls,'suit-paint');assert.equal(slots.tops,'top-gabzilla');
@@ -296,10 +296,11 @@ test('denim dress, overalls and GANNI accept a blouse in both selection orders',
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
  const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
  const env={slots:{makeup:new Set()},ITEMS:assets.items,PULLOVERS:new Set(),progress:null,clownActive:false,render:()=>{},itemUnlocked:()=>true};
+ env.window={};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);env.rules=env.window.NanaWardrobeRules;
  vm.runInNewContext(html.slice(html.indexOf('function slotFor(id){'),html.indexOf('function selected(id)'))+html.slice(html.indexOf('function select(id){'),html.indexOf('function applyPreset(i)')),env);
  for(const outer of ['dress-denim','suit-paint','top-ganni-knit'])for(const pair of [[outer,'top-peter-pan'],['top-peter-pan',outer]]){
   env.slots={makeup:new Set()};for(const id of pair)env.select(id);
   assert.equal(env.slots.tops,'top-peter-pan');assert.ok(Object.values(env.slots).includes(outer));
  }
- env.select('dress-blue');assert.equal(env.slots.tops,null);assert.equal(env.slots.vest,null);
+ env.select('dress-blue');assert.equal(env.slots.tops,null);assert.equal(env.slots.vest,'top-ganni-knit');
 });
