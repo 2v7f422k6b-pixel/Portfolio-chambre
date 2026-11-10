@@ -172,12 +172,12 @@ test('Sonny hood and headlamp require their own discoveries and survive reload',
 });
 test('Sonny hides hair while the bear sweater keeps it visible',()=>{
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
- const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
+ const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
  assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
  const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('function renderAvatar(){'));
  const slots={hat:'head-sonny-rabbit',jackets:'jacket-purple',makeup:new Set()};
  const env={slots,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,
-  PULLOVERS:new Set(),bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
+  PULLOVERS:new Set(),raisedCollar:()=>null,bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
  const layers=vm.runInNewContext('('+fn.trim()+')',env);
  for(const jacket of ['jacket-purple',null]){
   slots.jackets=jacket;
@@ -207,7 +207,7 @@ test('paint overalls unlock with the existing atelier activity and retain that s
 });
 test('overalls combine with tops and jackets and exclude other bottoms in either selection order',()=>{
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
- const assets=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
+ const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
  const slots={tops:'top-white',jackets:'jacket-purple',pants:'pants-pajama',skirts:null,dresses:null,overalls:null,makeup:new Set()};
  const env={slots,ITEMS:assets.items,PULLOVERS:new Set(['top-pullover','top-lime']),progress:null,clownActive:false,render:()=>{},itemUnlocked:()=>true};
  const slotFn=html.slice(html.indexOf('function slotFor(id){'),html.indexOf('function selected(id)'));
@@ -290,4 +290,16 @@ test('removing the flower shortcut keeps full exploration reachable and old achi
   p.visit('illustrations');
   assert.deepEqual(remembered,[]);
   assert.equal(p.fullRoom(),true);
+});
+
+test('denim dress, overalls and GANNI accept a blouse in both selection orders',()=>{
+ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
+ const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
+ const env={slots:{makeup:new Set()},ITEMS:assets.items,PULLOVERS:new Set(),progress:null,clownActive:false,render:()=>{},itemUnlocked:()=>true};
+ vm.runInNewContext(html.slice(html.indexOf('function slotFor(id){'),html.indexOf('function selected(id)'))+html.slice(html.indexOf('function select(id){'),html.indexOf('function applyPreset(i)')),env);
+ for(const outer of ['dress-denim','suit-paint','top-ganni-knit'])for(const pair of [[outer,'top-peter-pan'],['top-peter-pan',outer]]){
+  env.slots={makeup:new Set()};for(const id of pair)env.select(id);
+  assert.equal(env.slots.tops,'top-peter-pan');assert.ok(Object.values(env.slots).includes(outer));
+ }
+ env.select('dress-blue');assert.equal(env.slots.tops,null);assert.equal(env.slots.vest,null);
 });
