@@ -139,7 +139,7 @@ const translate=text=>newGarmentNames[text]?(document.documentElement.lang==='en
 if(window.parent!==window)document.documentElement.classList.add('embedded');
 const W=1365,H=2048;
 const categories=[['tops','TOPS'],['sweaters','SWEATERS'],['pyjamas','PYJAMAS'],['pants','PANTS'],['skirts','SKIRTS'],['dresses','DRESSES'],['jumpsuits','COMBINAISONS'],['jackets','JACKETS'],['bags','BAGS'],['scarves','Écharpes'],['shoes','SHOES'],['hosiery','BAS'],['headwear','HEADWEAR'],['jewelry','JEWELRY'],['makeup','MAKEUP'],['bagAccessories','BAG ACCESSORIES'],['accessories','ACCESSORIES'],['badges','BADGES'],['sets','SETS']];
-const allSlots=['tops','pants','skirts','dresses','overalls','jackets','bags','scarves','shoes','hat','headphones','clips','necklace','earrings','bracelets','hosiery','bagAccessories','camera','phone','gloves'];
+const allSlots=['tops','pants','skirts','dresses','overalls','jackets','bags','scarves','shoes','hat','headphones','clips','necklace','earrings','bracelets','hosiery','bagAccessories','camera','phone','gloves','vest'];
 const slots=Object.fromEntries(allSlots.map(k=>[k,null]));slots.makeup=new Set();
 const presets=[
 {title:'☾ PYJAMA',style:'COZY',desc:'Pyjama rose et chaussons oursons',values:{tops:'top-pajama',pants:'pants-pajama',shoes:'shoes-bunny'}},
@@ -161,7 +161,7 @@ const bilingual=(fr,en)=>document.documentElement.lang==='en'?en:fr;
 let activeTab='tops';
 window.addEventListener('storage',e=>{if(e.key===CLOWN_KEY)renderItems()});
 window.addEventListener('focus',()=>renderItems());
-function slotFor(id){if(id==='accessory-pink-gloves')return 'gloves';if(id==='accessory-camera')return 'camera';if(id==='accessory-phone')return 'phone';if(id==='suit-paint')return 'overalls';if(id==='jewelry-dj-bracelets')return 'bracelets';if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';if(id.startsWith('jewelry-'))return 'necklace';return ITEMS[id]?.[1]||null}
+function slotFor(id){if(id==='top-ganni-knit')return 'vest';if(id==='accessory-pink-gloves')return 'gloves';if(id==='accessory-camera')return 'camera';if(id==='accessory-phone')return 'phone';if(id==='suit-paint')return 'overalls';if(id==='jewelry-dj-bracelets')return 'bracelets';if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';if(id.startsWith('jewelry-'))return 'necklace';return ITEMS[id]?.[1]||null}
 function selected(id){return id.startsWith('makeup-')?slots.makeup.has(id):slots[slotFor(id)]===id}
 // Inventory sections are independent of wearing slots: cardigans still layer over tops.
 const KNITWEAR=new Set(['top-ganni-knit','top-bow-knit','top-pullover','top-lime','top-bear','jacket-cardigan','jacket-blue']);
@@ -302,7 +302,7 @@ const scarfEase=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
 function scarfFrame(){
  const scarfSource=scarfSources.get(slots.scarves);
  if(!scarfSource||!scarfSource.complete||!scarfSource.naturalWidth)return null;
- const garment=slots.jackets||slots.dresses||slots.tops||'body';
+ const garment=slots.jackets||slots.vest||slots.dresses||slots.tops||'body';
  const cacheKey=slots.scarves+':'+garment;
  if(scarfFrames.has(cacheKey))return scarfFrames.get(cacheKey);
  const [left,right]=SCARF_SHOULDERS[garment]||[718,1220];
@@ -359,12 +359,29 @@ function bagFits(){
   connectorClip:[[0,join],[2048,join],[2048,3072],[0,3072]]
  };
 }
+
+const COLLAR_PATHS={
+ 'top-peter-pan':'M 680 680 H 1300 V 790 Q 1300 1000 1180 1005 Q 1090 1015 970 860 Q 875 1020 770 1010 Q 675 990 680 790 Z',
+ 'top-bow-blouse-tucked':'M 570 680 H 1420 V 810 L 1290 850 Q 1240 1100 1090 980 Q 1020 920 975 805 Q 940 1080 780 1000 Q 665 965 650 810 Z',
+ 'top-pajama-blue':'M 720 680 H 1260 V 760 Q 1220 1015 1090 930 Q 1030 895 990 765 Q 900 1025 800 930 Q 740 890 720 760 Z',
+ 'top-pajama-leopard':'M 720 680 H 1260 V 760 Q 1220 1015 1090 930 Q 1030 895 990 765 Q 900 1025 800 930 Q 740 890 720 760 Z',
+ 'top-pajama':'M 790 680 H 1170 V 800 L 1120 960 L 980 840 L 850 960 L 790 800 Z'
+};
+const collarCache=new Map();
+function raisedCollar(){
+ const id=slots.tops,path=COLLAR_PATHS[id];if(!path||!(slots.vest||slots.overalls||slots.dresses==='dress-denim'))return null;
+ const record=garmentImage(id);if(!record.loaded)return null;
+ if(collarCache.has(id))return collarCache.get(id);
+ const c=document.createElement('canvas');c.width=2048;c.height=3072;const ctx=c.getContext('2d');
+ ctx.clip(new Path2D(path));ctx.drawImage(record.image,0,0,2048,3072);collarCache.set(id,c);return c;
+}
+
 function outfitLayers(){
 const body=slots.hat==='head-sonny-rabbit'?HAIRLESS_BASE:BASE;
 const entries=[{src:body,z:1,clip:PULLOVERS.has(slots.tops)?PULLOVER_BODY:null}];
 if(slots.jackets==='jacket-yukata')entries.unshift({src:'assets/dressing-lena/IMG_5639.png',z:0});
 const jewelryZ=slots.tops==='top-yellow'||PULLOVERS.has(slots.tops)?10:4;
-const ordered=[['hosiery',2],['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['dresses',9],['overalls',9],['gloves',11],['jackets',12],['earrings',jewelryZ],['necklace',slots.necklace==='jewelry-miffy-ruff'?14:jewelryZ],['bracelets',14],['bags',19],['bagAccessories',20],['camera',21],['phone',22],['hat',23],['headphones',24],['clips',25],['scarves',40]];
+const ordered=[['hosiery',2],['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['tops',8],['vest',9.2],['dresses',9],['overalls',9],['gloves',11],['jackets',12],['earrings',jewelryZ],['necklace',slots.necklace==='jewelry-miffy-ruff'?14:jewelryZ],['bracelets',14],['bags',19],['bagAccessories',20],['camera',21],['phone',22],['hat',23],['headphones',24],['clips',25],['scarves',40]];
 const bag=bagFits();
 const scarf=slots.scarves?scarfFrame():null;
 for(const [key,z] of ordered)if(slots[key]){
@@ -387,7 +404,7 @@ if(slots.pants||slots.skirts||slots.dresses||slots.overalls){
   const handZ=slots.dresses||slots.overalls?10:7;
   const showForearms=!slots.dresses||['dress-blue','dress-polka','dress-gingham','dress-pink-bustier','dress-shining','dress-denim','dress-pink-check'].includes(slots.dresses)||['jacket-purple','jacket-cardigan'].includes(slots.jackets);
   // Keep the polka dress straps and bows above the shoulders; restore arms only below them.
-  const armClip=slots.overalls||PULLOVERS.has(slots.tops)?[[0,1550],[2048,1550],[2048,3072],[0,3072]]:['dress-polka','dress-gingham'].includes(slots.dresses)?[[0,1000],[2048,1000],[2048,3072],[0,3072]]:(showForearms?null:[[0,1550],[2048,1550],[2048,3072],[0,3072]]);
+  const armClip=slots.overalls||(slots.tops&&slots.dresses==='dress-denim')||PULLOVERS.has(slots.tops)?[[0,1550],[2048,1550],[2048,3072],[0,3072]]:['dress-polka','dress-gingham'].includes(slots.dresses)?[[0,1000],[2048,1000],[2048,3072],[0,3072]]:(showForearms?null:[[0,1550],[2048,1550],[2048,3072],[0,3072]]);
   entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:handZ,clip:armClip});
  }
  // Keep the striped dress cuffs in front of the wrists, while the fingers
@@ -398,6 +415,7 @@ if(slots.pants||slots.skirts||slots.dresses||slots.overalls){
  if(slots.jackets==='jacket-purple')entries.push({src:body,z:13,clip:FACE_FOREGROUND});
  // A long tee covers the thighs, but the hands rest in front of its hem.
  if(slots.tops==='top-damson')entries.push({src:'assets/dressing-lena/IMG_5495.png?v=e0bfaa25',z:10.8,clip:[[0,1500],[2048,1500],[2048,3072],[0,3072]]});
+ const collar=raisedCollar();if(collar)entries.push({id:slots.tops,canvas:collar,z:10.6});
  for(const id of slots.makeup)entries.push({id,z:35});
 // Keep the hood above jacket collars; the source remains on its original canvas.
 if(slots.tops==='top-bear')entries.push({id:'top-bear',z:14,hood:true,clip:[[0,0],[2048,0],[2048,685],[1210,685],[1200,735],[1140,790],[840,790],[770,735],[745,685],[0,685]]});
@@ -427,7 +445,7 @@ for(const entry of outfitLayers()){
  }else node.appendChild(im);
 }
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
-const pieces=[slots.tops,slots.pants,slots.skirts,slots.dresses,slots.overalls,slots.jackets,slots.shoes,slots.hat].filter(Boolean).map(id=>translate(ITEMS[id][0]));
+const pieces=[slots.tops,slots.vest,slots.pants,slots.skirts,slots.dresses,slots.overalls,slots.jackets,slots.shoes,slots.hat].filter(Boolean).map(id=>translate(ITEMS[id][0]));
 $('#style-name').textContent=translate(chosen?.style||'CUSTOM');$('#look-desc').textContent=(chosen?presetText(chosen,'desc'):null)||(pieces.slice(0,3).join(' + ')||'Une tenue à composer');
 node.setAttribute('aria-label',(document.documentElement.lang==='en'?'Léna is wearing ':'Léna porte ')+pieces.join(', '));}
 // Show the artwork bounds in the inventory, retaining the original full canvas on the avatar.
@@ -452,7 +470,7 @@ progress?.feat('outfit-styled');
 // Unlocked clown pieces remain independently combinable with other garments.
 clownActive=false;
 if(key==='makeup'){slots.makeup.has(id)?slots.makeup.delete(id):slots.makeup.add(id)}else{slots[key]=slots[key]===id?null:id;
-if(slots[key]){if(key==='dresses'){slots.tops=null;slots.pants=null;slots.skirts=null;slots.overalls=null}if(key==='overalls'){slots.dresses=null;slots.pants=null;slots.skirts=null}if(['pants','skirts'].includes(key))slots.overalls=null;if(['tops','pants','skirts'].includes(key))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&slots.bags!=='bag-brown')slots.bags='bag-brown'}
+if(slots[key]){if(key==='dresses'){if(id!=='dress-denim')slots.tops=null;slots.vest=null;slots.pants=null;slots.skirts=null;slots.overalls=null}if(key==='overalls'){slots.dresses=null;slots.pants=null;slots.skirts=null}if(['pants','skirts'].includes(key))slots.overalls=null;if(['pants','skirts','vest'].includes(key)||(key==='tops'&&slots.dresses!=='dress-denim'))slots.dresses=null;if(key==='pants')slots.skirts=null;if(key==='skirts')slots.pants=null;if(key==='bagAccessories'&&slots.bags!=='bag-brown')slots.bags='bag-brown'}
 if(key==='bags'&&slots.bags!=='bag-brown')slots.bagAccessories=null;
 if(key==='tops'&&PULLOVERS.has(id)&&slots.tops&&slots.jackets==='jacket-cardigan')slots.jackets=null;
 if(key==='jackets'&&id==='jacket-cardigan'&&slots.jackets&&PULLOVERS.has(slots.tops))slots.tops=null;
@@ -463,13 +481,13 @@ if(key==='clips'&&slots.clips&&['head-cap','head-sonny-rabbit','head-headlamp'].
 if(key==='hat'&&slots.hat)slots.headphones=null;if(key==='headphones'&&slots.headphones)slots.hat=null}
 render()}
 function applyPreset(i){if(!presets[i]||!presetUnlocked(presets[i]))return;clownActive=i===2;for(const key of allSlots)slots[key]=null;slots.makeup.clear();Object.assign(slots,presets[i].values);for(const id of presets[i].makeup||[])slots.makeup.add(id);render()}
-function render(){if(slots.tops==='top-bear'){slots.hat=null;slots.headphones=null;slots.clips=null}if(PULLOVERS.has(slots.tops)&&slots.jackets==='jacket-cardigan')slots.jackets=null;renderAvatar();renderItems()}
+function render(){if(slots.tops==='top-ganni-knit'){slots.vest=slots.tops;slots.tops=null;}if(slots.tops==='top-bear'){slots.hat=null;slots.headphones=null;slots.clips=null}if(PULLOVERS.has(slots.tops)&&slots.jackets==='jacket-cardigan')slots.jackets=null;renderAvatar();renderItems()}
 function toast(message){let e=$('#toast');e.textContent=message;e.hidden=false;clearTimeout(window.aboutToast);window.aboutToast=setTimeout(()=>e.hidden=true,2600)}
 $('#reset').addEventListener('click',()=>applyPreset(0));
 $('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];clownActive=false;for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsForSlot('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsForSlot('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsForSlot(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsForSlot('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsForSlot('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsForSlot('bagAccessories').map(x=>x[0]));render()});
 $('#close').addEventListener('click',()=>{if(window.parent!==window){window.parent.postMessage({type:'close-about-me'},location.origin==='null'?'*':location.origin)}else if(history.length>1)history.back();else location.href='index.html'});
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
-async function saveLook(){const btn=$('#save');btn.disabled=true;try{if(slots.scarves)await scarfReady;if(slots.jackets==='jacket-badges'){await Promise.all(wornBadges().map(b=>badgeImage(b).ready));if(wornBadges().some(b=>!badgeImage(b).canvas))throw new Error('Badge image unavailable');}const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
+async function saveLook(){const btn=$('#save');btn.disabled=true;try{if(slots.tops&&COLLAR_PATHS[slots.tops]&&(slots.vest||slots.overalls||slots.dresses==='dress-denim'))await garmentImage(slots.tops).ready;if(slots.scarves)await scarfReady;if(slots.jackets==='jacket-badges'){await Promise.all(wornBadges().map(b=>badgeImage(b).ready));if(wornBadges().some(b=>!badgeImage(b).canvas))throw new Error('Badge image unavailable');}const scale=1,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of outfitLayers()){
 const src=entry.src||FITTED[entry.id]||SPRITES[entry.id];if(!src&&!entry.canvas)continue;
 if(entry.rowFit){await garmentImage(entry.id).ready;entry.canvas=fittedGarment(entry.id,entry.rowFit);}
 const img=entry.canvas||await decode(src);
