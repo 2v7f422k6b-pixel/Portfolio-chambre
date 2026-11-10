@@ -34,7 +34,7 @@
     if(s.vest==='jacket-floral'&&['jacket-striped-knit','jacket-cardigan'].includes(s.jackets)){
       if(changed==='vest')s.jackets=null;else s.vest=null;
     }
-    if(s.bags!=='bag-brown')s.bagAccessories=null;
+    if(!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
     if(s.hat==='head-sonny-rabbit'){
       if(changed==='clips'||changed==='headlamp'||changed==='headphones')s.hat=null;else{s.clips=null;s.headlamp=null;s.headphones=null;}
     }
@@ -55,7 +55,7 @@
       if(key==='skirts'){s.dresses=null;s.overalls=null;s.pants=null;}
       if(key==='dresses')s.overalls=null;
       if(key==='overalls')s.dresses=null;
-      if(key==='bagAccessories'&&s.bags!=='bag-brown')s.bags='bag-brown';
+      if(key==='bagAccessories'&&!['bag-brown','bag-crochet'].includes(s.bags))s.bags='bag-brown';
     }
     normalize(s,key);
   }

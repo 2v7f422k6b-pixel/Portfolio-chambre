@@ -31,3 +31,8 @@ test('headlamp sits independently of headphones, excludes buckets',()=>{
 test('every inline script parses',()=>{
  for(const m of html.matchAll(/<script\b([^>]*)>([^]*?)<\/script>/g))if(!/src=|application\//.test(m[1]))assert.doesNotThrow(()=>new vm.Script(m[2]));
 });
+test('crochet bag keeps its own charm without switching to the brown bag',()=>{
+ const s=wear('bag-crochet','charm-pink');assert.equal(s.bags,'bag-crochet');assert.equal(s.bagAccessories,'charm-pink');
+ const t=wear('bag-brown','charm-pink','bag-crochet');assert.equal(t.bagAccessories,'charm-pink');
+ assert.equal(wear('bag-crochet','charm-pink','bag-heart').bagAccessories,null);
+});
