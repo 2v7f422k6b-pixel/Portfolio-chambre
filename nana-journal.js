@@ -109,7 +109,7 @@
     const total=wardrobe?Object.keys(wardrobe.items).length:null,locked=new Set(progress.outfits.filter(x=>!progress.unlockedOutfit(x.id)).flatMap(x=>x.pieces||[])).size;
     const inventory=total===null?(wardrobeError?t('Le dressing n’a pas pu être chargé.','The wardrobe could not be loaded.'):t('Ouverture du dressing…','Opening the wardrobe…')):(total-locked)+' / '+total+' '+t('pièces accessibles','pieces available');
     return heading(t('Des tenues à découvrir','Looks to discover'),inventory)+
-      '<div class="nj-wardrobe-summary"><p>'+unlocked+' / '+progress.outfits.length+' '+t('tenues bonus débloquées','bonus looks unlocked')+'</p>'+routeButton('jeu/dressing',t('Ouvrir le dressing','Open the wardrobe'))+(wardrobeError?button(t('Réessayer','Try again'),'data-nj-retry'):'')+'</div>'+
+      '<div class="nj-wardrobe-summary"><p>'+unlocked+' / '+progress.outfits.length+' '+t('tenues bonus débloquées','bonus looks unlocked')+'</p>'+routeButton('jeu/dressing',t('Ouvrir le dressing','Open the wardrobe'))+' '+routeButton('carnet/looks',t('Mes looks sauvegardés','My saved looks')+' · '+(window.NanaLooks?.list().length||0))+(wardrobeError?button(t('Réessayer','Try again'),'data-nj-retry'):'')+'</div>'+
       paginate(progress.outfits,outfit=>{
         const earned=progress.unlockedOutfit(outfit.id);
         return '<article class="nj-card nj-outfit nj-frame '+(earned?'':'nj-locked')+'">'+img(outfit.image)+'<div><h3>'+h(name(outfit.name))+'</h3><p>'+h(earned?t('Tenue débloquée','Look unlocked'):name(outfit.rule))+'</p>'+(earned||progress.isCreator()?button(h(earned?t('Essayer','Try on'):t('Aperçu créatrice','Creator preview')),'data-nj-outfit="'+outfit.id+'"'):'')+'</div></article>';
