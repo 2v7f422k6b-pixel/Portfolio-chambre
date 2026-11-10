@@ -308,6 +308,7 @@
       '<button class="nana-admin-action" data-tool="polaroids">Polaroïds : photos et textes</button>' +
       '<button class="nana-admin-action" data-tool="conte">La Princesse Clown : composer le livre</button>' +
       '<button class="nana-admin-action" data-tool="zones">Zones cliquables</button>' +
+      '<a class="nana-admin-action" href="https://nana-statistics.2v7f422k6b.workers.dev/" target="_blank" rel="noopener noreferrer">Statistiques du site ↗</a>' +
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
       '<div class="nana-admin-divider"><strong>Enregistrer et publier</strong>' +
