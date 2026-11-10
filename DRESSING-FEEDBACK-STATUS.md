@@ -1,37 +1,28 @@
-# Dressing — reprise après les trois séries de captures du 10 novembre 2026
+# Dressing — retours annotés du 10 novembre, quatre envois
 
-Les anciennes validations étaient insuffisantes : elles avaient accepté des déformations et des découpes qui ne respectaient pas les dessins. Ce bilan les remplace. Aucun PNG source n'a été retouché.
+Cette passe répond aux captures IMG_6065–IMG_6104. Les corrections précédentes n'avaient pas réglé tous ces défauts.
 
-## Corrections de cette passe
+## Décision confirmée pendant cette passe
 
-- [x] Supprimer le rééchantillonnage horizontal des rangées des vêtements. Les pantalons, jupes et salopettes conservent leur source, leurs dimensions et leur placement, y compris sous les manteaux.
-- [x] Utiliser IMG_5453, la jupe Princesse entière, sur le mannequin. L'ancienne source IMG_5382 comportait déjà deux encoches pour les bras.
-- [x] Rétablir la continuité des bras et des mains avec IMG_5495, masqué par les vêtements réellement portés. Le calque des seules mains provoquait un raccord visible au-dessus des poignets.
-- [x] Conserver les dessins portés des hauts et manteaux avec leurs encolures transparentes. Les variantes de catalogue ne les remplacent pas.
-- [x] Autoriser une seule maille extérieure (pull, cardigan ou GANNI sans manches). Seul le col roulé Inspecteur peut constituer une seconde maille en dessous. La dernière sélection remplace la maille incompatible.
-- [x] Restreindre le gilet George Sand aux pièces de torse George Sand ; les autres chaussures, bijoux et bas restent sélectionnables.
-- [x] Exclure yukata + autre veste, sauf manteau rayé. Le gilet fleuri reste autorisé. La veste à badges est retirée avec ses badges lorsqu'on choisit le yukata.
-- [x] Rendre les écharpes incompatibles avec les deux collerettes et le nœud George Sand. La dernière sélection remplace l'autre accessoire.
-- [x] Retirer les extractions approximatives de cols. Seuls les deux cols fournis séparément sont remis au premier plan.
-- [x] Masquer les couches supérieures couvertes sans les étirer ; conserver le bas visible de Miffy et des robes. Masquer les débordements des manches de Miffy jusqu'au bas des manches de la veste.
-- [x] Conserver le top scintillant entier sous la robe en jean ; rendre les gants au-dessus du scintillant et sous les manches opaques, sans raccord blanc aux poignets.
-- [x] Recomposer le bras et la manche au-dessus du crochet, sans réintroduire le torse ni le bras nu à travers une manche. Déplacer l'ancrage des bijoux sur le sac.
-- [x] Masquer la dragonne avec la silhouette de la manche visible, sans longueur de découpe fixe au poignet.
-- [x] Supprimer la découpe rectangulaire des cheveux sous les bobs et le haut-de-forme. Les chapeaux recouvrent maintenant les cheveux originaux.
+Pour les bas larges sous un vêtement étroit, Léna a choisi **Adapter le contour** : resserrer la partie couverte, conserver la longueur et l'ourlet. L'adaptation est horizontale, revient progressivement à la largeur originale sous le vêtement et laisse les dernières lignes de l'ourlet intactes. Les PNG sources ne sont pas modifiés.
 
-## Vérifications
+## Modifications
 
-124 tests automatisés locaux réussis, dont les ordres de sélection des mailles, George Sand, yukata et accessoires de cou ; restauration d'un état contenant trop de mailles ; conservation des sources des bas sous tee-shirts, pulls et manteaux ; sauvegarde des looks et déblocages.
+- Les robes sans manches n'effacent plus les bras et mains de premier plan. Le masque des manches s'arrête au poignet.
+- Les robes et Miffy sous une veste ne sont plus découpées sur la dernière ligne étroite de l'ourlet de cette veste. Le contour adapté garde la continuité du tissu.
+- Les pantalons/jupes sont contenus par le vêtement supérieur selon la décision ci-dessus, sans déplacement vertical.
+- Le retour de la bandoulière du sac marron est masqué par la silhouette réelle de l'épaule. Sa hauteur prend en compte le vêtement porté. Le cache inclut la transformation effective de la bandoulière.
+- Le crochet ne restaure plus une bande de robe ou de torse devant le sac. Seuls le bras et la manche passent devant.
+- Les doigts passent devant l'anse du sac cœur ; la breloque Petits trésors rejoint davantage l'anneau du sac marron.
+- Le yukata masque aussi la dragonne du téléphone.
+- Les barrettes passent derrière les chapeaux. Le masquage des cheveux suit le bord inférieur des deux bobs et du haut-de-forme, au lieu d'une découpe rectangulaire.
+- Les nœuds des bretelles de la robe à pois sont rentrés sous le gilet ; les épaules du mannequin ne sont plus redessinées par-dessus les manches.
+- Suppression de la coupe horizontale fixe des tiges de bottes sous les pantalons.
 
-Contrôles visuels ciblés dans le navigateur et dans les exports du même compositeur :
+## Vérification
 
-- Pull vert anis + jupes jean/Princesse/marron et pantalons rayé/léopard/cargo/George Sand ; ourson + jean barrel.
-- Papillon + pantalon rayé ; GABZILLA + jupe Princesse ; pyjama + gilet bleu + mini-jupe ; scintillant + robe en jean + gants.
-- Crochet avec trench, cardigan oversize, GABZILLA et pull à nœuds avec bijou.
-- Gants avec chemise de pyjama ; téléphone avec GANNI multicolore, pull à nœuds et manteau vert.
-- Miffy avec GANNI multicolore, cardigan oversize, manteau rayé et Take a Trip.
-- Deux bobs et haut-de-forme sans masque de cheveux ; écharpe avec trench.
+127 tests automatisés passent. Les tests du compositeur vérifient notamment la conservation des coordonnées verticales et des dernières lignes de l'ourlet, les mains non effacées par une robe sans manches et le même chemin de composition pour écran et PNG. Ce sont des tests de comportement, pas une validation esthétique exhaustive.
 
-Ces contrôles couvrent les cas signalés, pas toutes les combinaisons du catalogue. La hauteur visible d'une mini-jupe sous un tee-shirt long dépend désormais de leurs deux dessins d'origine ; aucune réduction de la jupe n'est appliquée.
+Contrôles visuels dans Chrome, à partir d'exports du compositeur : robes mauve/fleurie + trench ; Miffy + polaire ; robe en jean + cardigan ; robe à pois + cardigan/manteau rayé ; bustier + sac cœur/crochet ; caraco et gilet bleu + crochet ; sac marron avec corsage clown, top papillon, dentelle, blouse vichy, chemise George Sand + GANNI ; jupe princesse + tee-shirt/manteau vert ; pantalon rayé + redingote ; bobs et haut-de-forme ; breloque Petits trésors et téléphone sous yukata. D'autres associations ont été examinées au cours des réglages.
 
-Les contrôles de ressources complets doivent être exécutés par GitHub Actions sur le dépôt intégral : la copie locale utilisée pour travailler ne contient pas toutes les images de la chambre.
+Limites : pas de test sur un iPad physique et pas d'examen manuel de toutes les combinaisons du catalogue. Les contours sous des vêtements très étroits restent une adaptation visuelle à apprécier, et non une simulation de tissu.

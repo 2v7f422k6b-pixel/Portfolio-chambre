@@ -2,22 +2,40 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
-const context={window:{}};
-vm.runInNewContext(readFileSync(new URL('../dressing-geometry.js',import.meta.url),'utf8'),context);
-test('screen and saved PNG use the same compositor and PNG waits for geometry assets',()=>{
- const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
+const code=readFileSync(new URL('../dressing-geometry.js',import.meta.url),'utf8');
+const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
+function fixture(){
+ const env={window:{},Image:class{decode(){return Promise.resolve()}},requestAnimationFrame(){},document:{createElement(){
+  const calls=[];let last;
+  const ctx={calls,drawImage(...args){calls.push(args);last=args[0]},clearRect(){},save(){},restore(){},beginPath(){},rect(){},clip(){},moveTo(){},lineTo(){},closePath(){},translate(){},transform(){},fillRect(){},putImageData(){},
+   getImageData(){const data=new Uint8ClampedArray(1024*1536*4);const outer=last?.src==='jacket-inspector';
+    for(let y=600;y<(outer?900:1200);y++)for(let x=outer?350:280;x<(outer?650:740);x++)data[(y*1024+x)*4+3]=255;
+    return {data};}};return {getContext(){return ctx}};
+ }}};
+ vm.runInNewContext(code,env);return env.window.NanaDressingGeometry.create({source:id=>id,changed(){}});
+}
+test('screen and saved PNG use the same compositor and await its sources',()=>{
  assert.equal((html.match(/geometry.process\(outfitLayers\(\),slots\)/g)||[]).length,2);
  assert.match(html,/async function composeLook\(width=W\)\{await geometry.ready/);
 });
-test('bottoms beneath tops, knitwear and coats retain their source and never enter pixel deformation',async()=>{
- const ctx={drawImage(){},clearRect(){},getImageData(){throw Error('Bottom artwork must not be sampled or warped');}};
- const env={window:{},Image:class{decode(){return Promise.resolve()}},requestAnimationFrame(){},document:{createElement(){return {getContext(){return ctx}}}}};
- vm.runInNewContext(readFileSync(new URL('../dressing-geometry.js',import.meta.url),'utf8'),env);
- const compositor=env.window.NanaDressingGeometry.create({source:id=>id,changed(){}});
- for(const [slot,id] of [['skirts','skirt-denim'],['skirts','skirt-princess'],['skirts','skirt-black'],['pants','pants-stripes'],['pants','pants-leopard'],['pants','pants-cargo-pink']]){
-  for(const [outerSlot,outer] of [['tops','top-gabzilla'],['sweater','top-lime'],['jackets','jacket-purple'],['jackets','jacket-inspector']]){
-  const s={[slot]:id,[outerSlot]:outer};const entries=[{id,z:5,clip:[[1,2]],rowFit:'legacy'},{id:outer,z:12}];
-  await compositor.ready(entries,s);const layer=compositor.process(entries,s).find(e=>e.id===id);
-  assert.equal(layer.canvas,undefined);assert.equal(layer.clip,null);assert.equal(layer.rowFit,null);assert.equal(layer.fit,null);
- }}
+test('approved lower contour adapts width without shifting rows or trimming the hem',async()=>{
+ const geo=fixture(),s={skirts:'skirt-denim',jackets:'jacket-inspector'},entries=[{id:s.skirts,z:6},{id:s.jackets,z:12}];
+ await geo.ready(entries,s);const layer=geo.process(entries,s).find(e=>e.id===s.skirts);
+ const rows=layer.canvas.getContext('2d').calls.filter(c=>c.length===9);
+ assert(rows.length>0);assert(rows.some(c=>c[7]<1024));
+ for(const row of rows){assert.equal(row[2]/2,row[6]);assert.equal(row[4],2);assert.equal(row[8],1);assert(row[6]<1175,'bottom 24 pixels must stay untouched');}
+ assert.equal(layer.fit,null);assert.equal(layer.clip,null);assert.equal(layer.rowFit,null);
+});
+test('a lower garment worn without an enclosing top retains its original source',async()=>{
+ const geo=fixture(),s={pants:'pants-stripes',tops:'top-dj'},entries=[{id:s.pants,z:5},{id:s.tops,z:8}];
+ await geo.ready(entries,s);const layer=geo.process(entries,s).find(e=>e.id===s.pants);assert.equal(layer.canvas,undefined);assert.equal(layer.fit,null);
+});
+test('a sleeveless dress does not erase the foreground hands',async()=>{
+ const geo=fixture(),s={dresses:'dress-polka',jackets:'jacket-inspector'},entries=[{id:s.dresses,z:9},{id:s.jackets,z:12}];
+ await geo.ready(entries,s);const hands=geo.process(entries,s).find(e=>e.part==='hands');
+ assert(hands);assert(!hands.canvas.getContext('2d').calls.some(c=>c[0]?.src==='dress-polka'));
+});
+test('hair clips sit beneath hats and boots have no fixed horizontal trouser cut',()=>{
+ assert.match(html,/\['clips',22\.5\]/);assert.match(html,/\['hat',23\]/);
+ assert.doesNotMatch(html,/if\(key==='shoes'&&/);
 });
