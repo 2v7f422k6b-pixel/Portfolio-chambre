@@ -6,8 +6,8 @@ const code=readFileSync(new URL('../dressing-geometry.js',import.meta.url),'utf8
 const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 function fixture(){
  const env={window:{},Image:class{decode(){return Promise.resolve()}},requestAnimationFrame(){},document:{createElement(){
-  const calls=[];let last;
-  const ctx={calls,drawImage(...args){calls.push(args);last=args[0]},clearRect(){},save(){},restore(){},beginPath(){},rect(){},clip(){},moveTo(){},lineTo(){},closePath(){},translate(){},transform(){},fillRect(){},putImageData(){},
+  const calls=[],clears=[],rects=[];let last;
+  const ctx={calls,clears,rects,drawImage(...args){calls.push(args);last=args[0]},clearRect(...a){clears.push(a)},save(){},restore(){},beginPath(){},rect(...a){rects.push(a)},clip(){},moveTo(){},lineTo(){},closePath(){},translate(){},transform(){},fillRect(){},putImageData(){},
    getImageData(){const data=new Uint8ClampedArray(1024*1536*4);const outer=last?.src==='jacket-inspector';
     for(let y=600;y<(outer?900:1200);y++)for(let x=outer?350:280;x<(outer?650:740);x++)data[(y*1024+x)*4+3]=255;
     return {data};}};return {getContext(){return ctx}};
@@ -38,4 +38,16 @@ test('a sleeveless dress does not erase the foreground hands',async()=>{
 test('hair clips sit beneath hats and boots have no fixed horizontal trouser cut',()=>{
  assert.match(html,/\['clips',22\.5\]/);assert.match(html,/\['hat',23\]/);
  assert.doesNotMatch(html,/if\(key==='shoes'&&/);
+});
+
+test('standalone tops are not covered by a foreground upper arm or a sleeve-end cutoff',async()=>{
+ const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
+ for(const id of Object.keys(data.items).filter(id=>id.startsWith('top-'))){
+  const geo=fixture(),s={tops:id},entries=[{id,z:8}];await geo.ready(entries,s);
+  const result=geo.process(entries,s),top=result.find(e=>e.id===id),hands=result.find(e=>e.part==='hands');
+  assert.equal(top.canvas,undefined,id+' retains its original artwork');
+  const ctx=hands.canvas.getContext('2d');
+  assert(ctx.clears.some(a=>a[0]===0&&a[1]===0&&a[2]===1024&&a[3]===780),id+' must not repaint upper arms');
+  assert(ctx.rects.every(a=>a[3]===1536),id+' must mask the entire sleeve, not an estimated sleeve length');
+ }
 });

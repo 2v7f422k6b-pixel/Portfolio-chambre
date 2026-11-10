@@ -61,16 +61,26 @@ function create({source,changed}){
   });
  }
  const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier']);
- function hands(s,entries){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
-  const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&!sleeveless.has(id)&&!bareDresses.has(id)&&!['top-sparkle-pink','top-sparkle-charcoal'].includes(id));
+ function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
+  const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&!sleeveless.has(id)&&!bareDresses.has(id));
   if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
-  return remember('arms:'+src+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
-   if(!s.gloves)ctx.clearRect(0,0,CW,450);
+  return remember('arms:'+src+':'+forearm+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
+   // The ordinary foreground layer restores wrists and fingers only. Bare
+   // upper arms already exist in the body and must never repaint over tops.
+   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?450:780);
    ctx.globalCompositeOperation='destination-out';for(const id of ids){
     const e=entries.find(e=>e.id===id);ctx.save();ctx.beginPath();
     // Only sleeves can cover arms: a dress's skirt must not erase the hands.
-    const end=(sleeveEnd[id]||1600)/S;
-    ctx.rect(0,0,CW,end);ctx.clip();ctx.drawImage(e?.canvas||get(id).im,0,0,CW,CH);ctx.restore();
+    const end=s.dresses===id?800:CH;
+    let cover=e?.canvas||get(id).im;
+    // Transparent sleeves already tint the base arm. Do not repaint skin
+    // over them, including the small section overlapping the wrist.
+    if(['top-sparkle-pink','top-sparkle-charcoal'].includes(id)){
+     const mask=canvas(),m=mask.getContext('2d',{willReadFrequently:true});m.drawImage(cover,0,0,CW,CH);
+     const p=m.getImageData(0,0,CW,CH);for(let i=3;i<p.data.length;i+=4)if(p.data[i])p.data[i]=255;
+     m.putImageData(p,0,0);cover=mask;
+    }
+    ctx.rect(0,0,CW,end);ctx.clip();ctx.drawImage(cover,0,0,CW,CH);ctx.restore();
    }return c;});
  }
  function phone(s,entries){const id=s.phone;if(!id)return null;const ids=garmentSlots.filter(k=>['sweater','cardigan','jackets','wrap'].includes(k)||sleeveEnd[s[k]]>1100).map(k=>s[k]).filter(x=>x&&!sleeveless.has(x));if(!get(id).loaded||ids.some(x=>!get(x).loaded))return null;
@@ -129,12 +139,13 @@ function create({source,changed}){
    result.push({canvas:hand,z:10.2,part:'hands'});
   }
   if(s.bags==='bag-crochet'&&hand){
+   const forearm=hands(s,result,true);
    const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',');
    const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
     // Redraw the left arm and its sleeves only, not the dress/torso beside it.
     for(const e of result.filter(e=>e.part==='hands'||garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z)){
      if(e.id&&(sleeveless.has(e.id)||bareDresses.has(e.id)))continue;
-     const im=e.canvas||(e.id&&get(e.id).loaded?get(e.id).im:null);if(!im)continue;
+     const im=e.part==='hands'?forearm:e.canvas||(e.id&&get(e.id).loaded?get(e.id).im:null);if(!im)continue;
      ctx.save();ctx.beginPath();
      if(e.part==='hands')ctx.rect(0,450,445,450);
      else {ctx.moveTo(0,500);ctx.lineTo(400,500);ctx.lineTo(398,580);ctx.lineTo(384,650);ctx.lineTo(365,720);ctx.lineTo(360,785);ctx.lineTo(385,855);ctx.lineTo(0,855);ctx.closePath();}

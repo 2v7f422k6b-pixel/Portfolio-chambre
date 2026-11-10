@@ -1,3 +1,13 @@
+## Régression des hauts seuls — correction suivante
+
+Les captures de Léna ont révélé que le calque des mains repeignait des bras nus au-dessus des hauts. Les limites estimées des manches interrompaient aussi trop tôt leur masque. Les tests précédents et les contrôles de combinaisons n’avaient pas détecté cette régression.
+
+Le calque général est maintenant limité aux poignets et doigts. Les hauts masquent leur silhouette complète, sans limite arbitraire de longueur de manche. Les manches transparentes protègent aussi leurs poignets. Le sac en crochet conserve un calque de bras distinct.
+
+Contrôle visuel local des 23 pièces top-* seules, puis robe à pois/cardigan, Gabzilla/sac crochet, bustier/sac crochet, robe rayée/trench et top transparent/pantalon rose. 128 tests passent, dont un contrôle de non-régression sur les 23 hauts. Pas de vérification sur un iPad physique.
+
+---
+
 # Dressing — retours annotés du 10 novembre, quatre envois
 
 Cette passe répond aux captures IMG_6065–IMG_6104. Les corrections précédentes n'avaient pas réglé tous ces défauts.
