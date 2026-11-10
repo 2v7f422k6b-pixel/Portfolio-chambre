@@ -1,3 +1,2 @@
-/* Public collection address only. Never put credentials here.
-   Remains inactive until the collector has been deployed and reviewed. */
-window.NANA_ANALYTICS_ENDPOINT = '';
+/* Public collection address only. Never put credentials here. */
+window.NANA_ANALYTICS_ENDPOINT = 'https://nana-statistics.2v7f422k6b.workers.dev/collect';
