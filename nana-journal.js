@@ -177,7 +177,7 @@
     pager.setAttribute('aria-label',t('Feuilleter le carnet','Turn the pages'));
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
     const labels={looks:['Mes looks','My looks'],chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Écussons','Patches'],cadeaux:['Cadeaux','Gifts']};
-    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('')+'<button type="button" style="--tab:8" data-nj-newsletter aria-haspopup="dialog">'+t('Courrier','Letters')+'</button>';
+    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('');
     dialog.classList.toggle('nj-looks-open',active==='looks');
     pageTotal=1;paperLayout(pages[active]());if(active==='looks')looks.hydrate();
     const index=tabs.findIndex(x=>x[0]===active);
@@ -231,7 +231,6 @@
       else if(tabs[index+delta])goTab(tabs[index+delta][0]);
     }
     else if(target.hasAttribute('data-nj-close'))close();
-    else if(target.hasAttribute('data-nj-newsletter'))navigate('newsletter');
     else if(target.dataset.njTab)goTab(target.dataset.njTab);
     else if(target.dataset.njKeepsakeFilter){turnPage(()=>{keepsakeFilter=target.dataset.njKeepsakeFilter;selectedKeepsake=null;page=0;render();dialog.querySelector('[data-nj-keepsake-filter="'+keepsakeFilter+'"]').focus({preventScroll:true});});}
     else if(target.dataset.njKeepsake){turnPage(()=>{selectedKeepsake=target.dataset.njKeepsake;render();dialog.querySelector('.nj-poem-body')?.focus({preventScroll:true});});}
