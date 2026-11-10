@@ -5,6 +5,6 @@
   "workers_dev": true,
   "observability": { "enabled": false },
   "vars": { "SITE_ORIGIN": "https://2v7f422k6b-pixel.github.io" },
-  "d1_databases": [{ "binding": "DB", "database_name": "nana-statistics", "database_id": "REPLACE_WITH_DATABASE_ID" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "nana-statistics", "database_id": "9fd69221-07b0-475b-8b92-dbeca5cbda12" }],
   "triggers": { "crons": ["17 3 * * *"] }
 }
