@@ -18,13 +18,17 @@ test('screen and saved PNG use the same compositor and await its sources',()=>{
  assert.equal((html.match(/geometry.process\(outfitLayers\(\),slots\)/g)||[]).length,2);
  assert.match(html,/async function composeLook\(width=W\)\{await geometry.ready/);
 });
-test('approved lower contour adapts width without shifting rows or trimming the hem',async()=>{
- const geo=fixture(),s={skirts:'skirt-denim',jackets:'jacket-inspector'},entries=[{id:s.skirts,z:6},{id:s.jackets,z:12}];
- await geo.ready(entries,s);const layer=geo.process(entries,s).find(e=>e.id===s.skirts);
- const rows=layer.canvas.getContext('2d').calls.filter(c=>c.length===9);
- assert(rows.length>0);assert(rows.some(c=>c[7]<1024));
- for(const row of rows){assert.equal(row[2]/2,row[6]);assert.equal(row[4],2);assert.equal(row[8],1);assert(row[6]<1175,'bottom 24 pixels must stay untouched');}
- assert.equal(layer.fit,null);assert.equal(layer.clip,null);assert.equal(layer.rowFit,null);
+test('lower garments retain original geometry under tees and trench',async()=>{
+ for(const [key,id] of [['skirts','skirt-denim'],['pants','pants-stripes'],['dresses','dress-denim']]){
+  const geo=fixture(),s={[key]:id,jackets:'jacket-inspector'},entries=[{id,z:6},{id:s.jackets,z:12}];
+  await geo.ready(entries,s);const layer=geo.process(entries,s).find(e=>e.id===id);
+  assert.equal(layer.canvas,undefined);assert.equal(layer.fit,null);assert.equal(layer.clip,null);
+ }
+});
+test('boot shafts are hidden above the measured trouser hem',async()=>{
+ const geo=fixture(),s={pants:'pants-inspector',shoes:'shoes-dj'},entries=[{id:s.pants,z:5},{id:s.shoes,z:3}];
+ await geo.ready(entries,s);const shoe=geo.process(entries,s).find(e=>e.id===s.shoes);
+ assert.deepEqual(shoe.canvas.getContext('2d').clears.map(a=>Array.from(a)),[[0,0,500,1200],[500,0,524,1200]]);
 });
 test('a lower garment worn without an enclosing top retains its original source',async()=>{
  const geo=fixture(),s={pants:'pants-stripes',tops:'top-dj'},entries=[{id:s.pants,z:5},{id:s.tops,z:8}];
