@@ -6,7 +6,7 @@ const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','d
 const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
 function canvas(){const c=document.createElement('canvas');c.width=CW;c.height=CH;return c}
 function create({source,changed}){
- const images=new Map(),profiles=new Map(),frames=new Map();let queued=false;
+ const images=new Map(),profiles=new Map(),frames=new Map(),shoulders=new Map();let queued=false;
  function invalidate(){if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;changed()})}}
  function image(src){if(!images.has(src)){const im=new Image();im.src=src;const r={im,loaded:false};r.ready=im.decode().then(()=>{r.loaded=true;invalidate()});r.ready.catch(()=>{});images.set(src,r)}return images.get(src)}
  function get(id){return image(source(id))}
@@ -18,6 +18,25 @@ function create({source,changed}){
    rows.push(h>l?{l,h,cl:cr-cl>30?cl:l,cr:cr-cl>30?cr:h}:null);
   }
   const bottom=rows.findLastIndex(r=>r&&r.h-r.l>40);if(['jacket-inspector','jacket-george-sand','jacket-green','jacket-yukata'].includes(id))hem=bottom;const p={rows,hem,bottom};profiles.set(id,p);return p;
+ }
+ // Sample actual opacity at the strap contact, not the row's bounding box.
+ // A sustained run rejects isolated drawing specks and detached outlines.
+ function shoulder(s,x,fallback){
+  const paths=[['assets/dressing-lena/IMG_5722.png',320],...garmentSlots.map(k=>s[k]).filter(Boolean).map(id=>[source(id),id==='top-bear'?380:320])];
+  const column=Math.round(x/S);let edge=null;
+  // The bear hood rises above the load-bearing shoulder; exclude the hood.
+  for(const [src,start] of paths){const r=image(src);if(!r.loaded)continue;
+   const key=src+':'+column+':'+start;
+   if(!shoulders.has(key)){
+    const c=canvas(),ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(r.im,0,0,CW,CH);
+    const data=ctx.getImageData(column-2,start,5,450-start).data;let run=0,found=null;
+    for(let y=0;y<450-start;y++){let opaque=0;for(let dx=0;dx<5;dx++)if(data[(y*5+dx)*4+3]>90)opaque++;
+     run=opaque>=3?run+1:0;if(run===6){found=(start+y-5)*S;break;}}
+    shoulders.set(key,found);
+   }
+   const y=shoulders.get(key);if(y!==null)edge=edge===null?y:Math.min(edge,y);
+  }
+  return edge===null?fallback:edge+4;
  }
  function remember(key,make){if(frames.has(key))return frames.get(key);const c=make();if(frames.size>=8)frames.delete(frames.keys().next().value);frames.set(key,c);return c}
  // The underlayer follows the enclosing silhouette, never the narrowing last
@@ -104,9 +123,9 @@ function create({source,changed}){
   ctx.save();if(e.fit){const f=e.fit,ox=(f.ox??970)/S,oy=(f.oy||0)/S;ctx.translate(ox+(f.dx||0)/S,oy+(f.dy||0)/S);ctx.transform(f.sx,0,f.kx||0,f.sy||1,0,0);ctx.translate(-ox,-oy);}
   const points=e.localClip||e.clip;if(points){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x/S,y/S):ctx.moveTo(x/S,y/S));ctx.closePath();ctx.clip();}ctx.drawImage(im,0,0,CW,CH);ctx.restore();
  }
- function shoulderBag(entries,s){if(s.bags!=='bag-brown')return null;
-  const parts=entries.filter(e=>e.src?.includes('IMG_554'));if(garmentSlots.some(k=>s[k]&&!get(s[k]).loaded)||parts.some(e=>!image(e.src).loaded)||!image('assets/dressing-lena/IMG_5993.png').loaded)return null;
-  return remember('brown:'+JSON.stringify([s,parts.map(e=>e.fit)]),()=>{const c=canvas(),ctx=c.getContext('2d');parts.forEach(e=>paint(ctx,e));
+ function shoulderBag(entries,s){if(!['bag-brown','bag-crochet'].includes(s.bags))return null;
+  const parts=entries.filter(e=>e.src?.includes('IMG_554')||e.id==='bag-crochet');if(garmentSlots.some(k=>s[k]&&!get(s[k]).loaded)||parts.some(e=>!(e.id?get(e.id):image(e.src)).loaded)||!image('assets/dressing-lena/IMG_5993.png').loaded)return null;
+  return remember('shoulder-bag:'+JSON.stringify([s,parts.map(e=>e.fit)]),()=>{const c=canvas(),ctx=c.getContext('2d');parts.forEach(e=>paint(ctx,e));
    const mask=canvas(),m=mask.getContext('2d');m.drawImage(image('assets/dressing-lena/IMG_5993.png').im,0,0,CW,CH);
    for(const e of entries)if(garmentSlots.some(k=>s[k]===e.id))paint(m,e);
    m.fillRect(0,440,CW,CH-440);ctx.globalCompositeOperation='destination-in';ctx.drawImage(mask,0,0);return c;
@@ -129,7 +148,7 @@ function create({source,changed}){
    return c;
   });
  }
- function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5495.png'])]}
+ function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
  async function ready(entries,s){await Promise.all(sources(entries,s).map(src=>image(src).ready))}
  function process(entries,s){sources(entries,s).forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
@@ -148,7 +167,7 @@ function create({source,changed}){
   // The polka dress's tied straps are tucked under the vest at the shoulders.
   if(s.vest&&s.dresses==='dress-polka'){const e=result.find(e=>e.id==='dress-polka');if(e){const c=canvas(),ctx=c.getContext('2d');paint(ctx,e);ctx.clearRect(0,0,CW,465);e.canvas=c;e.clip=null;e.fit=null;}}
   const base=result.find(e=>e.src==='assets/dressing-lena/IMG_5993.png');if(base){const c=bodyFrame(base,s,outer);if(c)base.canvas=c;}
-  const brown=shoulderBag(result,s);if(brown){for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_554'))result.splice(i,1);result.push({canvas:brown,z:19,part:'brown-bag'});}
+  const brown=shoulderBag(result,s);if(brown){for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_554')||result[i].id==='bag-crochet')result.splice(i,1);result.push({canvas:brown,z:19,part:s.bags});}
   if(s.phone){const e=result.find(e=>e.id===s.phone),c=phone(s,result);if(e&&c)e.canvas=c;}
   const hand=hands(s,result);if(hand){
    for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_5495')||(s.gloves&&result[i].id===s.gloves))result.splice(i,1);
@@ -173,7 +192,7 @@ function create({source,changed}){
   if(s.bags==='bag-heart'&&hand){const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(hand,0,0);ctx.clearRect(0,0,550,CH);result.push({canvas:c,z:19.5,part:'handle-hand'});}
   return result.sort((a,b)=>a.z-b.z);
  }
- return {ready,process,profile};
+ return {ready,process,profile,shoulder};
 }
 window.NanaDressingGeometry={create};
 })();

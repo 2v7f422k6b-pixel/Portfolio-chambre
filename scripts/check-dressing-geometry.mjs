@@ -55,3 +55,26 @@ test('standalone tops are not covered by a foreground upper arm or a sleeve-end 
   assert(ctx.rects.every(a=>a[3]===1536),id+' must mask the entire sleeve, not an estimated sleeve length');
  }
 });
+
+test('bag shoulder contact ignores gaps and isolated specks, and follows loaded outer fabric',async()=>{
+ const env={window:{},Image:class{decode(){return Promise.resolve()}},requestAnimationFrame(){},document:{createElement(){
+  let image;return {getContext(){return {drawImage(im){image=im},getImageData(left,top,width,height){
+   const data=new Uint8ClampedArray(width*height*4);
+   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    const yy=top+y,xx=left+x;
+    const body=image.src.includes('5722');
+    // The coat has an early isolated mark and a real shoulder below it.
+    // Its other shoulder must not fill the transparent gap at x=550.
+    const opaque=body?yy>=390:image.src==='coat'?xx<500&&(yy===340||yy>=370):image.src==='top-bear'?yy>=320:false;
+    if(opaque)data[(y*width+x)*4+3]=255;
+   }return {data};}}}}}}};
+ vm.runInNewContext(code,env);
+ const geo=env.window.NanaDressingGeometry.create({source:id=>id,changed(){}});
+ assert.equal(geo.shoulder({jackets:'coat'},815,760),760,'unloaded images use the fallback');
+ await geo.ready([{id:'coat'}],{jackets:'coat'});
+ assert.equal(geo.shoulder({jackets:'coat'},815,760),744,'solid coat shoulder wins over bare skin');
+ assert.equal(geo.shoulder({jackets:'coat'},1100,760),784,'empty row interior is not a shoulder');
+ assert.equal(geo.shoulder({},815,760),784,'removing the coat restores the bare shoulder');
+ await geo.ready([{id:'top-bear'}],{tops:'top-bear'});
+ assert.equal(geo.shoulder({tops:'top-bear'},815,760),764,'the bear hood is not a shoulder');
+});

@@ -18,7 +18,7 @@ Référence : retours oraux et quatre lots IMG_6116 à IMG_6150. Ce document rem
 - [ ] Gilet fleuri : compléter les masques, notamment encolure et épaules de Miffy, préserver l'ouverture centrale.
 - [ ] Col rose + GANNI multicolore : vérifier et nettoyer les raccords autour de l'encolure.
 - [ ] Robe en jean : placer toutes les manches devant, raccorder les poignets et les mains avec les exports séparés.
-- [ ] Sac crochet : remplacer la découpe approximative de manche par les manches exactes ; régler le contact bandoulière/épaule. Ne pas couper arbitrairement la bandoulière : elle est continue avec le sac.
+- [ ] Sac crochet : remplacer la découpe approximative de manche par les manches exactes . Ne pas couper arbitrairement la bandoulière : elle est continue avec le sac.
 - [ ] Bob et haut-de-forme : utiliser les futures versions chapeau + cheveux visibles sur mannequin chauve. La découpe automatique actuelle ne constitue pas une solution validée.
 - [ ] Trench : intégrer les variantes dédiées sans toucher aux originaux utilisés ailleurs.
 - [ ] Jupe jaune : intégrer les t-shirts avec bas redessiné ; l'original lui-même ne donnait pas un résultat satisfaisant. Ne pas proposer encore une déformation.
@@ -47,3 +47,11 @@ Tous les PNG : transparents, toile complète d'origine, mêmes dimensions et coo
 ## Vérification de cette passe
 
 129 tests automatisés passent. Tests actualisés pour garantir l'absence de déformation des bas et le masquage des tiges de bottes par jambe. Contrôle dans Chrome de douze combinaisons : blouse rose/pull rose, blouse rose/GANNI sans manches, blouse rose/GANNI multicolore, trois robes seules, pantalon inspecteur/bottes marron et roses, pantalon rayé/trench, jupe jean/trench, jupe jaune/Plantasia, blouse à nœuds/robe jean. Les cas en attente ont été observés mais ne sont pas validés comme résolus. Aucun test sur iPad physique, aucune promesse de correction exhaustive de toutes les combinaisons.
+
+## Complément — deux sacs sur toute la garde-robe
+
+- [x] Sac coussin marron : point de contact mesuré sur les pixels opaques de l'épaule, toutes les couches portées prises en compte.
+- [x] Sac crochet : déplacement du dessin entier pour suivre l'épaule, sans séparer ni déformer sa bandoulière continue. Les bijoux suivent ce déplacement.
+- [x] Écarter les pixels isolés et les espaces transparents ; ne pas confondre la capuche ourson avec une épaule.
+- [x] Vérification des 47 vêtements du buste, épaules nues et 30 superpositions pour chacun des deux sacs : 156 rendus, aucune erreur de génération. Contrôle visuel dans Chrome. 20 tests ciblés passent, dont la régression capuche.
+- [ ] Les masques des manches devant le crochet restent à remplacer par les exports exacts. Ce contrôle valide le placement sur l'épaule, pas toutes les découpes ni toutes les combinaisons possibles.
