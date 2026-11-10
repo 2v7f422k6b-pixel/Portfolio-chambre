@@ -170,12 +170,17 @@
     const scene=window.NANA_ROOM_ZONES?.find(x=>'objet/'+x.id===route);
     const knownRoute=route==='night'||games.some(x=>x.route===route)||Object.hasOwn(roomRoutes,route)||scene;
     if (!knownRoute) return;
+    window.NanaAnalytics?.count('visit/'+route);
     const roomId=roomRoutes[route] || (scene?'object:'+scene.id:null);
     if(roomId) window.NanaDiscoveries?.remember(roomId);
     if(state.visits.includes(route))return;
     state.visits.push(route);save();
   }
-  function feat(id) { if(suppressed()||!allowedFeats.has(id)||hasFeat(id))return;state.feats.push(id);save(); }
+  function feat(id) {
+    if(suppressed()||!allowedFeats.has(id))return;
+    window.NanaAnalytics?.count('action/'+id);
+    if(hasFeat(id))return;state.feats.push(id);save();
+  }
   const POLAROID_KEY='nana-polaroids-viewed-v1';
   let viewedPolaroids=new Set();
   function readPolaroid(id,required){

@@ -26,7 +26,9 @@
     if(id&&!previous)return {ok:false,error:'missing'};
     const now=new Date().toISOString();
     const item={version:1,id:id||('look-'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2))),name:String(name).trim().slice(0,80),createdAt:previous?.createdAt||now,updatedAt:now,outfit:clone(outfit)};
-    return write(PREFIX+item.id,item);
+    const result=write(PREFIX+item.id,item);
+    if(result.ok&&!previous)window.NanaAnalytics?.count('action/look-saved',false);
+    return result;
   }
   function rename(id,name){const old=get(id);return old?save(name,old.outfit,id):{ok:false,error:'missing'};}
   function remove(id){

@@ -110,6 +110,15 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
   de la scène annule les animations ; fermer la boîte arrête l’audio. Navigation
   clavier, préférence de mouvement réduit, FR/EN et jour/nuit sont pris en compte.
 
+## Statistiques globales (préparées, non activées)
+
+`nana-analytics.js` compte uniquement des ouvertures et des étapes prédéfinies.
+Aucune création ni identité n’est envoyée. Le collecteur et le tableau privé
+sont dans `analytics-service/` ; son README décrit le déploiement restant sur
+un compte Cloudflare. Tant que `nana-analytics-config.js` contient une adresse
+vide, aucune mesure n’est transmise. La notice et le choix de désactivation
+sont accessibles depuis l’aide, dans `confidentialite.html`.
+
 ## Vérifications
 
 Avec Node.js 22 ou plus récent, depuis la racine du dépôt :

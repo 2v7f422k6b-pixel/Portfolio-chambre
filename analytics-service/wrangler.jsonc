@@ -1,0 +1,10 @@
+{
+  "name": "nana-statistics",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-10",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "vars": { "SITE_ORIGIN": "https://2v7f422k6b-pixel.github.io" },
+  "d1_databases": [{ "binding": "DB", "database_name": "nana-statistics", "database_id": "REPLACE_WITH_DATABASE_ID" }],
+  "triggers": { "crons": ["17 3 * * *"] }
+}
