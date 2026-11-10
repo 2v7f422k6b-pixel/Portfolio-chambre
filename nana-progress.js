@@ -86,7 +86,7 @@
     mergeDialogue();
     if(dialogue[id].includes(index))return;
     dialogue[id].push(index);
-    try {localStorage.setItem(DIALOGUE_KEY,JSON.stringify(dialogue));} catch (_) {persistent=false;}
+    try {localStorage.setItem(DIALOGUE_KEY,JSON.stringify(dialogue));} catch (_) {persistent=false;window.NanaAnalytics?.record('error/storage',1,true);}
     emit();
   }
   function isCreator() { try { return sessionStorage.getItem('nana-admin-session-v1') === '1'; } catch (_) { return false; } }
@@ -151,8 +151,9 @@
     return [...stickers.filter(x=>x.earned()).map(x=>'sticker:'+x.id),...titles.filter(x=>x.earned()).map(x=>'title:'+x.id),...outfits.filter(x=>unlockedOutfit(x.id)).map(x=>'outfit:'+x.id),...(fullRoom()?['gift:merci10']:[])];
   }
   let known = new Set(earnedIDs());
-  function emit(silent=false) {
+  function emit(silent=false,measure=true) {
     const next=earnedIDs(), added=next.filter(x=>!known.has(x));known=new Set(next);
+    if(measure&&!silent&&!suppressed())for(const id of added){const [kind,key]=id.split(':');if(kind==='sticker'||kind==='outfit')window.NanaAnalytics?.record('reward/'+kind+'/'+key);}
     for (const listener of listeners) listener({added:silent?[]:added});
   }
   function save() {
@@ -160,7 +161,7 @@
     const saved=clean(read(KEY));
     state.visits=[...new Set([...saved.visits,...state.visits])];
     state.feats=[...new Set([...saved.feats,...state.feats])];
-    try {localStorage.setItem(KEY,JSON.stringify(state));} catch (_) {persistent=false;}
+    try {localStorage.setItem(KEY,JSON.stringify(state));} catch (_) {persistent=false;window.NanaAnalytics?.record('error/storage',1,true);}
     emit();
   }
   function visit(raw) {
@@ -170,7 +171,6 @@
     const scene=window.NANA_ROOM_ZONES?.find(x=>'objet/'+x.id===route);
     const knownRoute=route==='night'||games.some(x=>x.route===route)||Object.hasOwn(roomRoutes,route)||scene;
     if (!knownRoute) return;
-    window.NanaAnalytics?.count('visit/'+route);
     const roomId=roomRoutes[route] || (scene?'object:'+scene.id:null);
     if(roomId) window.NanaDiscoveries?.remember(roomId);
     if(state.visits.includes(route))return;
@@ -178,7 +178,7 @@
   }
   function feat(id) {
     if(suppressed()||!allowedFeats.has(id))return;
-    window.NanaAnalytics?.count('action/'+id);
+    if(id==='rested')window.NanaAnalytics?.complete('do-nothing');
     if(hasFeat(id))return;state.feats.push(id);save();
   }
   const POLAROID_KEY='nana-polaroids-viewed-v1';
@@ -201,9 +201,9 @@
     subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}
   };
   window.addEventListener('storage',event=>{
-    if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};emit();}
-    else if(event.key===DIALOGUE_KEY){mergeDialogue();emit();}
-    else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit();
+    if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};emit(false,false);}
+    else if(event.key===DIALOGUE_KEY){mergeDialogue();emit(false,false);}
+    else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
 

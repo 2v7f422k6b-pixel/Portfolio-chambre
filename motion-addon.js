@@ -91,6 +91,7 @@
     $('#motion-reels-progress').value = 0;
     $('#motion-reels-time').textContent = '0:00';
     $('#motion-reels-duration').textContent = '0:00';
+    window.NanaAnalytics?.trackVideo(video,item.id);
     video.src = videoURL(item.file);
     video.muted = !soundOn;
     video.loop = true;

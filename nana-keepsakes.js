@@ -17,7 +17,7 @@
     const entries=list(),previous=entries.find(x=>x.id===item.id);
     if(!previous&&entries.length>=100)return false;
     item.created=previous?.created||Date.now();
-    try{localStorage.setItem(KEY,JSON.stringify([item,...entries.filter(x=>x.id!==item.id)]));changed();return true;}catch(_){return false;}
+    try{localStorage.setItem(KEY,JSON.stringify([item,...entries.filter(x=>x.id!==item.id)]));changed();if(!previous&&(item.kind==='poem'||item.kind==='book'))window.NanaAnalytics?.record('creation/'+item.kind);return true;}catch(_){window.NanaAnalytics?.record('error/storage',1,true);return false;}
   }
   function remove(id){if(window.NanaProgress?.suppressed())return false;try{localStorage.setItem(KEY,JSON.stringify(list().filter(x=>x.id!==id)));changed();return true;}catch(_){return false;}}
   const has=id=>list().some(x=>x.id===id);

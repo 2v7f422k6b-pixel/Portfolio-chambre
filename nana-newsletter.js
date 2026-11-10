@@ -58,13 +58,14 @@
   }
   function open(origin = 'notebook') {
     source = origin;
+    window.NanaAnalytics?.record('newsletter/open');
     note.hidden = true; save({seen:true}); localize();
     if (!dialog.open) { previousFocus = document.activeElement; dialog.showModal(); }
     (state.requested ? statusNode : email).focus({preventScroll:true});
     return true;
   }
-  function close() { if (dialog.open) dialog.close(); }
-  note.querySelector('[data-nn-dismiss]').addEventListener('click', () => { note.hidden = true; save({seen:true}); });
+  function close() { if (dialog.open) {window.NanaAnalytics?.record('newsletter/close');dialog.close();} }
+  note.querySelector('[data-nn-dismiss]').addEventListener('click', () => { window.NanaAnalytics?.record('newsletter/dismiss');note.hidden = true; save({seen:true}); });
   note.querySelector('[data-nn-open]').addEventListener('click', () => {
     source = 'room-invitation';
     if (window.NanaDeepLinks) window.NanaDeepLinks.open('newsletter'); else open(source);
@@ -98,9 +99,9 @@
     try {
       const response = await fetch(ENDPOINT, {method:'POST', body:data, headers:{Accept:'application/json'}, signal:controller.signal});
       if (!response.ok) throw new Error('Newsletter request rejected');
-      save({seen:true, requested:true});
+      window.NanaAnalytics?.record('form/newsletter/success');window.NanaAnalytics?.record('newsletter/subscribed');save({seen:true, requested:true});
       form.reset();
-    } catch (_) { status = 'error'; }
+    } catch (_) { window.NanaAnalytics?.record('form/newsletter/error');window.NanaAnalytics?.record('error/form');status = 'error'; }
     finally {
       window.clearTimeout(timeout); sending = false; localize();
       if (dialog.open) statusNode.focus({preventScroll:true});
@@ -130,7 +131,7 @@
     else if (clearSince === null) clearSince = now;
     if (state.requested || (state.seen && note.hidden)) { window.clearInterval(timer); return; }
     if (state.seen || !clear || activeMs < 60000 || now - clearSince < 2000 || !engaged()) return;
-    localize(); note.hidden = false; save({seen:true});
+    localize(); note.hidden = false; window.NanaAnalytics?.record('newsletter/shown');save({seen:true});
   }, 1000);
   window.addEventListener('storage', event => {
     if (event.key !== KEY) return;

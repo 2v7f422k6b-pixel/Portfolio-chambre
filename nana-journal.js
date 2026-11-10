@@ -167,6 +167,7 @@
   }
   function render(){
     updateTrigger();if(!dialog.open)return;
+    if(bookOpened)window.NanaAnalytics?.record('journal/tab/'+active,1,true);
     dialog.querySelector('#nj-title').textContent=t('Mon carnet de découvertes','My discovery notebook');
     dialog.querySelector('.nj-cover-label').innerHTML=t('mon petit<br>carnet','my little<br>notebook');
     dialog.querySelector('.nj-cover-note').textContent=t('des découvertes, des mots, des petits riens.','discoveries, words, little things.');
@@ -184,6 +185,7 @@
     pager.innerHTML=button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-turn="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(index===0&&page===0?'disabled':''))+'<span>'+h(t(...labels[active]))+(pageTotal>1?' · '+(page+1)+' / '+pageTotal:'')+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-turn="1" aria-label="'+t('Page suivante','Next page')+'" '+(index===tabs.length-1&&page===pageTotal-1?'disabled':''));
   }
   function unfold(){
+    window.NanaAnalytics?.record('journal/tab/'+active,1,true);
     bookOpened=true;dialog.classList.add('nj-book-open');dialog.querySelector('.nj-shell').inert=false;
     const cover=dialog.querySelector('.nj-cover');cover.inert=true;cover.setAttribute('aria-expanded','true');
     dialog.querySelector('[data-nj-tab="'+active+'"]').focus({preventScroll:true});
@@ -208,7 +210,7 @@
     if(!pages[tab])return false;
     active=tab;page=0;selectedKeepsake=null;looks.reset();
     const wasOpen=dialog.open;
-    if(!wasOpen){previousFocus=document.activeElement;dialog.showModal();}
+    if(!wasOpen){previousFocus=document.activeElement;dialog.showModal();window.NanaAnalytics?.record('journal/open');}
     notice.hidden=true;render();if(active==='dressing')loadWardrobe();
     if(!wasOpen)fold();else if(bookOpened)dialog.querySelector('[data-nj-tab="'+active+'"]').focus({preventScroll:true});
     return true;

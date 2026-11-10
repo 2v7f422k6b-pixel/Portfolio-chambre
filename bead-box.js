@@ -31,7 +31,7 @@ try{
   });attached=saved.attached===true;
  }
 }catch(_){}
-const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({beads,pendant:'rabbit',attached}));}catch(_){}};
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({beads,pendant:'rabbit',attached}));}catch(_){window.NanaAnalytics?.record('error/storage',1,true);}};
 if(needsLetterMigration)persist();
 function snapshot(){history.push(JSON.stringify({beads,attached}));if(history.length>40)history.shift();}
 function bead(type,letter='',variant=0){
@@ -96,9 +96,11 @@ function refresh(message=''){
 }
 function add(items,point=null){
  if(beads.length+items.length>MAX){announce(t().full);return;}
+ if(!beads.length)window.NanaAnalytics?.record('beads/start');
  snapshot();
  for(const item of items){const slot=point?nearestSlot(point):Array.from({length:MAX},(_,i)=>i).find(i=>!beads.some(b=>b.slot===i));beads.push({...item,...(item.type==='letter'?{variant:randomLetterVariant(),colorAssigned:true}:{}),slot});}
  persist();refresh(t().added);
+ window.NanaAnalytics?.record('beads/size/'+(beads.length<3?'1-2':beads.length<10?'3-9':'10-plus'),1,true);
  if(beads.length>=3)window.NanaProgress?.feat('beads-made');
 }
 function remove(index){if(!beads[index])return;snapshot();beads.splice(index,1);persist();refresh(t().removed);}
@@ -112,7 +114,7 @@ function panel(){const w=t();return `<section id="bead-workshop" data-no-transla
  <div class="bead-pendants"><span>${w.pendant}</span><svg width="44" height="55" viewBox="-38 -38 76 76" role="img" aria-label="${language()==='fr'?'Lapin rose':'Pink bunny'}">${bead('rabbit')}</svg><button class="bead-control" type="button" data-bead-action="swing">${w.swing}</button></div></div></div>
  <div class="bead-bottom"><div class="bead-footer"><button class="bead-control bead-attach" type="button" data-bead-action="attach">${w.attach}</button><button class="bead-control" type="button" data-bead-action="undo">${w.undo}</button><button class="bead-control" type="button" data-bead-action="reset">${w.reset}</button></div>
  <div class="bead-purchase"><button class="bead-control bead-attach" type="button" data-bead-action="shop"><svg class="bead-shop-icon" viewBox="167 157 164 194" aria-hidden="true" focusable="false"><image href="assets/dock/IMG_5002.png" width="500" height="500"/></svg><span>${w.buy}</span></button><p class="bead-note">${w.buyNote}</p></div></div><p id="bead-status" role="status" aria-live="polite"></p></section>`;}
-function open(){cancelDrag();window.openWindow(t().title,panel(),'bead-box');refresh();}
+function open(){if(beads.length)window.NanaAnalytics?.record('beads/resume');cancelDrag();window.openWindow(t().title,panel(),'bead-box');refresh();}
 function stagePoint(x,y){
  const stage=document.querySelector('#bead-charm'),matrix=stage?.getScreenCTM();if(!matrix)return null;
  const p=new DOMPoint(x,y).matrixTransform(matrix.inverse());
@@ -157,7 +159,7 @@ document.addEventListener('click',e=>{
   case 'undo':if(history.length){const prev=JSON.parse(history.pop());beads=prev.beads;attached=prev.attached;persist();refresh();}break;
   case 'reset':snapshot();beads=[];attached=false;persist();refresh();break;
   case 'shop':persist();if(window.NanaDeepLinks)window.NanaDeepLinks.open('shop/bijou-personnalise');else document.getElementById('nana-shop-bag')?.click();break;
-  case 'attach':snapshot();attached=!attached;persist();refresh();if(attached)document.querySelector('#window-close')?.click();break;
+  case 'attach':snapshot();attached=!attached;if(attached)window.NanaAnalytics?.record('beads/attach');persist();refresh();if(attached)document.querySelector('#window-close')?.click();break;
   case 'swing':{const stage=document.querySelector('#bead-charm');stage.classList.remove('bead-swing');void stage.getBoundingClientRect();stage.classList.add('bead-swing');break;}
  }
 });

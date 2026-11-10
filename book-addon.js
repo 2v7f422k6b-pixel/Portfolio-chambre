@@ -83,12 +83,13 @@ function updateControls(){
  if(prev)prev.disabled=position<=1||busy;
  if(next)next.disabled=position>=total||busy;
 }
+function measurePages(pair){for(const n of pair)if(n>0){window.NanaAnalytics?.record('book/page/'+n,1,true);if(n===pdf?.numPages)window.NanaAnalytics?.record('book/end',1,true);}}
 async function draw(p){
  const id=++token, pair=pagePair(p);
  const [left,right]=await Promise.all(pair.map(imageFor));
  if(id!==token||!$('#book-reader'))return;
  fill('left',left,pair[0]);fill('right',right,pair[1]);
- position=p;updateControls();
+ position=p;updateControls();measurePages(pair);
  for(const n of [p-2,p-1,p+1,p+2,p+3])imageFor(n).catch(()=>{});
 }
 async function turn(dir){
@@ -158,9 +159,10 @@ async function turn(dir){
   // Only now replace the folded leaf with the final, fixed spread.
   fill('left',futureLeft,future[0]);
   fill('right',futureRight,future[1]);
-  position=target;
+  position=target;measurePages(future);
   for(const n of [target-2,target-1,target+1,target+2])imageFor(n).catch(()=>{});
  }catch(err){
+  window.NanaAnalytics?.record('error/book');
   if(reader.isConnected){status(err.message||'Impossible de tourner la page',100);await draw(position);}
  }finally{
   if(sheet)sheet.remove();
@@ -168,6 +170,7 @@ async function turn(dir){
  }
 }
 function openBook(page=1){
+ window.NanaAnalytics?.record('book/open');
  if(typeof window.openWindow!=='function')return;
  window.openWindow('La Princesse Clown',
  '<section id="book-reader" class="book-reader" aria-label="Livre interactif La Princesse Clown">'+

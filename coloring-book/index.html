@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <script src="../nana-analytics-config.js?v=20261110-stats-1"></script>
-<script src="../nana-analytics.js?v=20261110-stats-1"></script>
+<script src="../nana-analytics-catalog.js?v=20261110-selected-1"></script>
+<script src="../nana-analytics.js?v=20261110-selected-1"></script>
 
   <!-- Pinterest's official site-wide opt-out (does not block screenshots or direct file URLs). -->
   <meta name="pinterest" content="nopin" description="Les illustrations de Nana Color Studio ne peuvent pas être enregistrées sur Pinterest.">
@@ -171,7 +172,7 @@ brush.addEventListener("pointerdown",e=>{if(busy)return;e.preventDefault();const
 brush.addEventListener("pointermove",e=>{if(!pressed||busy)return;e.preventDefault();const p=point(e);strokeLine(last,p);last=p});
 function finish(){if(!pressed)return;pressed=false;last=null;commit()}
 brush.addEventListener("pointerup",finish);brush.addEventListener("pointercancel",finish);brush.addEventListener("lostpointercapture",finish);
-$("download").addEventListener("click",()=>{if(!art.complete||!art.naturalWidth)return;const cv=document.createElement("canvas");cv.width=fill.width;cv.height=fill.height;const c=cv.getContext("2d");c.fillStyle=paper;c.fillRect(0,0,cv.width,cv.height);c.drawImage(fill,0,0);c.drawImage(brush,0,0);c.globalCompositeOperation="multiply";c.drawImage(art,0,0,cv.width,cv.height);cv.toBlob(blob=>{if(!blob)return;const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="coloriage-"+PAGES[index].id+".png";a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);toast("Coloriage enregistré ♡")},"image/png")});
+$("download").addEventListener("click",()=>{if(!art.complete||!art.naturalWidth)return;const cv=document.createElement("canvas");cv.width=fill.width;cv.height=fill.height;const c=cv.getContext("2d");c.fillStyle=paper;c.fillRect(0,0,cv.width,cv.height);c.drawImage(fill,0,0);c.drawImage(brush,0,0);c.globalCompositeOperation="multiply";c.drawImage(art,0,0,cv.width,cv.height);cv.toBlob(blob=>{if(!blob){window.NanaAnalytics?.record('error/export');return;}const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="coloriage-"+PAGES[index].id+".png";a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);window.NanaAnalytics?.record('creation/coloring');toast("Coloriage enregistré ♡")},"image/png")});
 async function choosePage(i){if(busy||i===index)return;if(index>=0)saved[PAGES[index].id]={state:snapshot(),undo:undo.slice(),redo:redo.slice()};busy=true;index=i;updateButtons();document.querySelectorAll(".page").forEach((b,j)=>b.classList.toggle("active",i===j));$("label").textContent="♡ "+PAGES[i].name+" ♡";const im=new Image;im.onload=async()=>{const s=Math.min(1,1100/Math.max(im.naturalWidth,im.naturalHeight));const w=Math.round(im.naturalWidth*s),h=Math.round(im.naturalHeight*s);fill.width=brush.width=w;fill.height=brush.height=h;stage.style.aspectRatio=w+"/"+h;stage.style.width="min(100%, "+Math.round(65*w/h)+"vh)";fc.clearRect(0,0,w,h);bc.clearRect(0,0,w,h);barrier=makeBarrier(im);art.src=im.src;paper="#ffffff";stage.style.background=paper;const v=saved[PAGES[i].id];if(v){await restore(v.state);undo=v.undo;redo=v.redo}else{undo=[snapshot()];redo=[]}busy=false;updateButtons()};im.onerror=()=>{busy=false;toast("Impossible de charger ce dessin")};im.src=PAGES[i].src}
 PAGES.forEach((p,i)=>{const b=document.createElement("button");b.className="page";const im=document.createElement("img");im.src=p.src;im.alt="";b.append(im,document.createTextNode((i+1)+". "+p.name));b.addEventListener("click",()=>choosePage(i));$("pages").append(b)});
 chooseTool("fill");choosePage(0);

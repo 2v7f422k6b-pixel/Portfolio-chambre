@@ -12,7 +12,7 @@
   function write(key,value){
     if(window.NanaProgress?.suppressed())return {ok:false,error:'preview'};
     try{localStorage.setItem(key,JSON.stringify(value));error=null;if(key!==LAST)changed();return {ok:true,value:clone(value)};}
-    catch(_){error='write';return {ok:false,error};}
+    catch(_){window.NanaAnalytics?.record('error/storage',1,true);error='write';return {ok:false,error};}
   }
   function get(id){if(!validId(id))return null;const item=read(PREFIX+id);return item?.version===1&&item.id===id&&item.outfit?.slots&&typeof item.name==='string'&&typeof item.createdAt==='string'&&Number.isFinite(Date.parse(item.createdAt))?item:null;}
   function list(){
@@ -27,13 +27,12 @@
     const now=new Date().toISOString();
     const item={version:1,id:id||('look-'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2))),name:String(name).trim().slice(0,80),createdAt:previous?.createdAt||now,updatedAt:now,outfit:clone(outfit)};
     const result=write(PREFIX+item.id,item);
-    if(result.ok&&!previous)window.NanaAnalytics?.count('action/look-saved',false);
     return result;
   }
   function rename(id,name){const old=get(id);return old?save(name,old.outfit,id):{ok:false,error:'missing'};}
   function remove(id){
     if(!validId(id)||window.NanaProgress?.suppressed())return {ok:false};
-    try{localStorage.removeItem(PREFIX+id);changed();return {ok:true};}catch(_){error='write';return {ok:false,error};}
+    try{localStorage.removeItem(PREFIX+id);changed();return {ok:true};}catch(_){window.NanaAnalytics?.record('error/storage',1,true);error='write';return {ok:false,error};}
   }
   function last(outfit,editingId=null){if(arguments.length)return write(LAST,{version:1,outfit:clone(outfit),editingId});const value=read(LAST);return value?.version===1&&value.outfit?.slots?value:null;}
   function defaultName(){return (document.documentElement.lang==='en'?'My look':'Mon look')+' '+(list().length+1);}

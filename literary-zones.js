@@ -896,6 +896,7 @@
     if(status)status.textContent='Ton poème est prêt à être enregistré en PNG.';
   }
   function activate(name) {
+    if(name==='word-lab')window.NanaAnalytics?.startActivity('word-lab');
     current=name;
     if(name==='reading-room'){selectedMood='surprise';selection=-1;showReading();}
     if(name==='souvenues'){poet=0;archiveFilter='toutes';archiveQuery='';renderSouvenuesGrid();showPoet();}

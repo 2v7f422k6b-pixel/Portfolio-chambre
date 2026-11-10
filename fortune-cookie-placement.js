@@ -149,6 +149,7 @@
     fortune.timer=setTimeout(()=>{toast.hidden=true;currentFortune=null;},6500);
   }
   function fortune(){
+    window.NanaAnalytics?.record('activity/open/fortune-cookie');
     currentFortune=Math.floor(Math.random()*fortunes.length);
     renderFortune();
   }

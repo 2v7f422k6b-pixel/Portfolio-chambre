@@ -34,6 +34,7 @@
     previousFocus = null;
   function close() {
     if (!overlay) return;
+    window.NanaAnalytics?.endActivity('mimilab');
     const panel = overlay;
     overlay = null;
     // Removing the iframe stops playback and releases all its audio resources.
@@ -62,6 +63,7 @@
   });
   function open() {
     if (overlay) return;
+    window.NanaAnalytics?.startActivity('mimilab');
     previousFocus = document.activeElement;
     restoreOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";

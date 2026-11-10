@@ -166,6 +166,7 @@ function chooseMode(mode,zoom=false){
  resetModeTransition();
  closeWindow();closeSpecial();
  currentMode=mode;app.className='mode-'+mode;
+ window.NanaAnalytics?.setMode(mode);
  welcome.hidden=true;desktop.hidden=false;
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const reverseZoom=zoom && previousMode==='work' && mode==='play' && !reduceMotion;
@@ -221,6 +222,7 @@ function zoomIntoIMac(){
  });
 }
 function returnToWelcome(){
+ window.NanaAnalytics?.setMode(null);
  if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
  resetModeTransition();
  closeWindow();closeSpecial();audio.pause();player.hidden=true;
@@ -233,6 +235,7 @@ function showToast(message){
 }
 
 function closeWindow(){
+ if(!shade.hidden)window.NanaAnalytics?.endActivity();
  shade.hidden=true;
  shade.style.pointerEvents='none';
  win.style.pointerEvents='none';
@@ -243,6 +246,7 @@ function closeWindow(){
 }
 let polaroidAudio=null;
 function closeSpecial(){
+ if(!specialShade.hidden)window.NanaAnalytics?.endActivity();
  $('#special-close').setAttribute('aria-label','Close');
  specialShade.classList.remove('tamagotchi-open');
  specialShade.classList.remove('polaroids-floating');
@@ -256,6 +260,9 @@ function openWindow(title,html,type='generic'){
  closeWindow();
  closeSpecial();
  currentWindow=type;
+ window.NanaAnalytics?.startActivity(type);
+ if(type==='contact')window.NanaAnalytics?.record('contact/open');
+ if(type==='mail')window.NanaAnalytics?.record('contact/form');
  win.dataset.windowType=type;
  winTitle.textContent=title;
  winContent.innerHTML=html;
@@ -497,7 +504,7 @@ function openGallery(which,index=0){
 function updateGallery(){
  if(!currentGallery)return;
  const {which,index}=currentGallery,items=which==='gabzilla'?GABZILLA:ART;
- const image=items[index];$('#viewer-image').src=image.src;$('#viewer-image').alt=image.title;
+ const image=items[index];window.NanaAnalytics?.record('art/'+(which==='gabzilla'?'gabzilla-'+index:image.filename));$('#viewer-image').src=image.src;$('#viewer-image').alt=image.title;
  $('#viewer-caption').textContent=image.title;$('#viewer-number').textContent=(index+1)+' / '+items.length;
  $('#viewer-thumbnails').innerHTML=items.map((it,i)=>`<button data-gallery-index="${i}" class="viewer-thumb ${i===index?'active':''}" aria-label="View ${it.title}"><img src="${it.src}" alt=""></button>`).join('');
  const selected=$('#viewer-thumbnails .active');if(selected)selected.scrollIntoView({block:'nearest',inline:'center'});
@@ -508,6 +515,7 @@ function openAbout(outfit){
  // Keep the game isolated from the other portfolio apps and original room artwork.
  closeWindow();
  closeSpecial();
+ window.NanaAnalytics?.startActivity('dressing');
  specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261110-looks-1'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#f8d9ee;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
@@ -574,9 +582,11 @@ function phonePage(title,html,right=''){
  p.hidden=false;p.innerHTML=`<div class="phone-bar"><button data-phone-back>‹ Back</button><strong>${title}</strong><span>${right}</span></div>${html}`;
 }
 function phoneContacts(){
+ window.NanaAnalytics?.record('contact/open');
  phonePage('Contacts',`<div class="phone-page-content"><div class="phone-avatar">L</div><h2 class="phone-name">Léna de Firmas</h2><div class="phone-contact-card"><small>Mobile</small><a href="tel:+33609630543">06 09 63 05 43</a></div><div class="phone-contact-card"><small>Mail</small><span>lena.defirmas@gmail.com</span></div><div class="phone-contact-card"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div><button class="soft-btn" data-phone-app="mail" style="margin-top:12px">✉ Write an email</button></div>`);
 }
 function phoneMail(){
+ window.NanaAnalytics?.record('contact/form');
  phonePage('New Message',`<form class="phone-compose" id="phone-mail-form"><div class="phone-fields"><label>From: <input type="email" name="email" required autocomplete="email" maxlength="254" placeholder="your@email.com"></label><label>Name: <input name="name" required maxlength="120" autocomplete="name" placeholder="Your name"></label><label>To: <span class="recipient">lena.defirmas@gmail.com</span></label><label>Subject: <input name="subject" required maxlength="180" placeholder="Subject"></label><textarea name="message" maxlength="10000" placeholder="Your message…" required aria-label="Message"></textarea><div class="phone-status-message" aria-live="polite"></div></div><div class="phone-keyboard" id="phone-keyboard" aria-label="On-screen keyboard"></div></form>`);
  const bar=$('#phone-page .phone-bar');
  bar.lastElementChild.innerHTML='<button class="send-btn" style="padding:5px 9px;border-radius:8px" type="submit" form="phone-mail-form">↑ Send</button>';
@@ -593,12 +603,14 @@ function phoneMail(){
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
  closeWindow();closeSpecial();specialShade.classList.add('tamagotchi-open');specialShade.hidden=false;specialShade.style.pointerEvents='auto';
+ window.NanaAnalytics?.startActivity('tamagotchi');
  specialHost.innerHTML='<iframe class="tama-frame" style="color-scheme:light;aspect-ratio:987/1295;width:min(540px,94vw,calc(80dvh * 987 / 1295))" title="Interactive Tamagotchi" src="tamagotchi/index.html?v=20261108-journal-1" allow="autoplay"></iframe>';
 }
 function showLatte(){
   $('#special-title').textContent='Latte Lab';
   closeSpecial();closeWindow();specialShade.hidden=false;specialShade.style.pointerEvents='auto';
-  specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261108-journal-1"></iframe>';
+  window.NanaAnalytics?.startActivity('latte');
+ specialHost.innerHTML='<iframe class="latte-frame" title="Interactive Latte Lab game" src="latte/index.html?v=20261108-journal-1"></iframe>';
   $('#special-close').setAttribute('aria-label','Close');
 }
 function showPolaroids(){
@@ -665,9 +677,10 @@ async function submitForm(form){
   const data=new FormData(form);
   const response=await fetch('https://formspree.io/f/mbggaaqo',{method:'POST',body:data,headers:{Accept:'application/json'}});
   if(!response.ok)throw new Error('Service returned '+response.status);
+  window.NanaAnalytics?.record('form/contact/success');
   form.reset();if(status){status.classList.add('success');status.textContent='✓ Message sent!'}
   const kb=$('#phone-keyboard');if(kb)kb.classList.remove('visible');
- }catch(e){if(status){status.classList.add('error');status.textContent='Could not send your message. Please try again.'}}
+ }catch(e){window.NanaAnalytics?.record('form/contact/error');window.NanaAnalytics?.record('error/form');if(status){status.classList.add('error');status.textContent='Could not send your message. Please try again.'}}
  finally{if(send)send.disabled=false}
 }
 

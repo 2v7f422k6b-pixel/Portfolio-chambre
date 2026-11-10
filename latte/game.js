@@ -11,6 +11,8 @@
 
   function goto(n) {
     step=n;
+    window.NanaAnalytics?.record('latte/step/'+n,1,true);
+    if(n===5)window.NanaAnalytics?.complete('latte');
     if(n===5)window.NanaProgress?.feat('latte-made');
     $$('[data-step]').forEach(el => el.classList.toggle('active',Number(el.dataset.step)===n));
     $$('[data-progress]').forEach(el => {
@@ -122,7 +124,7 @@
     if(step!==4||drawing||e.button>0)return;
     const p=point(e);if(!p)return;
     snapshot();drawing=true;pointer=e.pointerId;last=p;
-    canvas.setPointerCapture(e.pointerId);paint(null,p);e.preventDefault();
+    window.NanaAnalytics?.record('latte/drawing',1,true);canvas.setPointerCapture(e.pointerId);paint(null,p);e.preventDefault();
   });
   canvas.addEventListener('pointermove',e => {
     if(!drawing||e.pointerId!==pointer)return;
@@ -173,10 +175,11 @@
     try {
       const response=await fetch(form.action,{method:'POST',body:data,headers:{Accept:'application/json'},signal:controller.signal});
       if(!response.ok)throw new Error('Submission failed');
-      sent=true;status.textContent='Your latte and note have been sent to Léna ♡';
+      window.NanaAnalytics?.record('form/latte/success');sent=true;status.textContent='Your latte and note have been sent to Léna ♡';
       sendButton.hidden=true;
       $('#visitor-message').readOnly=true;$('#visitor-name').readOnly=true;
     } catch(_) {
+      window.NanaAnalytics?.record('form/latte/error');window.NanaAnalytics?.record('error/form');
       status.textContent='Your latte could not be sent. Your note is still here — please try again.';
     } finally {
       clearTimeout(timeout);sending=false;sendButton.disabled=sent;$('#restart-btn').disabled=false;
@@ -184,6 +187,7 @@
   });
   $('#restart-btn').addEventListener('click',() => {
     if(sending)return;
+    window.NanaAnalytics?.endActivity('latte');window.NanaAnalytics?.startActivity('latte');
     steam=0;poured=0;hasArt=false;drawing=false;last=null;pointer=null;undo=[];redo=[];sent=false;
     ctx.clearRect(0,0,500,500);
     ['espresso','milk','cream-ring','vanilla-swirl'].forEach(id=>$('#'+id).setAttribute('opacity','0'));

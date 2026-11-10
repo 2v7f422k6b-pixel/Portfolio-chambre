@@ -112,7 +112,11 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 
 ## Statistiques globales (préparées, non activées)
 
-`nana-analytics.js` compte uniquement des ouvertures et des étapes prédéfinies.
+`nana-analytics.js` applique les 32 mesures sélectionnées (catalogue dans
+`analytics-service/metrics.json`) : compteurs, temps actif estimé et provenance,
+appareils et pays agrégés séparément. Le tableau couvre 7, 30 ou 90 jours.
+Le CV et les liens d’achat sont signalés « à relier » tant que leurs destinations
+n’existent pas. Les anciens compteurs non sélectionnés sont désactivés.
 Aucune création ni identité n’est envoyée. Le collecteur et le tableau privé
 sont dans `analytics-service/` ; son README décrit le déploiement restant sur
 un compte Cloudflare. Tant que `nana-analytics-config.js` contient une adresse

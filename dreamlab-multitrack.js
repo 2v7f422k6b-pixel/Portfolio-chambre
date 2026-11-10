@@ -170,6 +170,7 @@
       const audio=await engine.context().decodeAudioData(await typedBlob.arrayBuffer());
       if(unloading)return;
       if(!audio.length||!audio.duration)throw Error("Empty decoded audio");
+      window.NanaAnalytics?.record('mimilab/track');
       lanes[index].audio=audio;
       lanes[index].volume=85;lanes[index].mute=false;
       invalidateMix();undoTake=null;selected=firstEmpty();
@@ -181,7 +182,7 @@
         if(!already&&progress?.unlockedOutfit("dj"))status("piste enregistrée · ta tenue DJ est débloquée dans le dressing !","track saved · your DJ outfit is unlocked in the wardrobe!");
       }
     }catch(_){
-      if(!unloading)status("impossible de sauvegarder cette prise. réessaie.","could not save this take. please try again.");
+      window.NanaAnalytics?.record('error/recording');if(!unloading)status("impossible de sauvegarder cette prise. réessaie.","could not save this take. please try again.");
     }finally{
       recording=-1;processing=false;recorder=null;chunks=[];
       if(!unloading)draw();
@@ -216,6 +217,7 @@
         status("une erreur s'est produite pendant l'enregistrement.","something went wrong during recording.");
       };
       capture.start(250);
+      window.NanaAnalytics?.record('mimilab/record');
       recording=index;
       monitorPrevious();
       started=performance.now();updateClock();clock=setInterval(updateClock,400);
@@ -245,6 +247,7 @@
       if(!makeMix())return;
       player.src=mixUrl;player.hidden=false;player.currentTime=0;
       await player.play();
+      window.NanaAnalytics?.record('mimilab/listen');
     }catch(_){status("impossible de lire le mix sur cet appareil.","could not play the mix on this device.")}
   });
   $("dl-download").addEventListener("click",()=>{
@@ -253,7 +256,7 @@
       if(!makeMix())return;
       const link=document.createElement("a");
       link.href=mixUrl;link.download="nana-mimilab-3-mix-"+new Date().toISOString().slice(0,10)+".wav";
-      document.body.append(link);link.click();link.remove();
+      document.body.append(link);link.click();link.remove();window.NanaAnalytics?.record('mimilab/export');
       status("ton mix est téléchargé !","your mix was downloaded!");
     }catch(_){status("impossible de générer le fichier WAV.","could not generate the WAV file.")}
   });
