@@ -26,13 +26,29 @@
     if(s.sheer&&s.tops&&!['top-pink','top-dj'].includes(s.tops)){
       if(changed==='tops')s.sheer=null;else s.tops=null;
     }
-    if(s.sweater&&s.cardigan){if(changed==='cardigan')s.sweater=null;else s.cardigan=null;}
+    // Only one outer knit. The inspector turtleneck is the sole knit base.
+    const knitSlots=['sweater','cardigan',...(s.vest==='top-ganni-knit'||s.vest==='vest-george-sand'?['vest']:[])];
+    const wornKnits=knitSlots.filter(k=>s[k]);
+    const keepKnit=wornKnits.includes(changed)?changed:wornKnits[0];
+    for(const k of wornKnits)if(k!==keepKnit)s[k]=null;
+    // George Sand's tailored waistcoat only layers with this collection.
+    if(s.vest==='vest-george-sand'){
+      const incompatible=['tops','sheer','sweater','cardigan','dresses','overalls','jackets','wrap'].filter(k=>s[k]&&!s[k].endsWith('george-sand'));
+      if(incompatible.includes(changed))s.vest=null;
+      else for(const k of incompatible)s[k]=null;
+    }
     // The striped coat was specifically requested without another bulky knit underneath.
     if(s.jackets==='jacket-striped-knit'){
       if(changed==='sweater'||changed==='cardigan')s.jackets=null;else{s.sweater=null;s.cardigan=null;}
     }
     if(s.vest==='jacket-floral'&&['jacket-striped-knit','jacket-cardigan'].includes(s.jackets)){
       if(changed==='vest')s.jackets=null;else s.vest=null;
+    }
+    if(s.wrap&&s.jackets&&s.jackets!=='jacket-striped-knit'){
+      if(changed==='jackets')s.wrap=null;else s.jackets=null;
+    }
+    if(s.scarves&&['jewelry-clown-ruff','jewelry-miffy-ruff','jewelry-george-sand'].includes(s.necklace)){
+      if(changed==='necklace')s.scarves=null;else s.necklace=null;
     }
     if(!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
     if(s.hat==='head-sonny-rabbit'){
