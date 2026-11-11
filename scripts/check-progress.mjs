@@ -174,7 +174,7 @@ test('Sonny and supplied hat hair use the tattooed bald body while the bear swea
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
  const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
  assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
- const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('function renderAvatar(){'));
+ const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('let avatarRevision='));
  const slots={hat:'head-sonny-rabbit',jackets:'jacket-purple',makeup:new Set()};
  const env={slots,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,FITTED:assets.fitted,SPRITES:assets.sprites,
   PULLOVERS:new Set(),raisedCollar:()=>null,bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
