@@ -114,50 +114,50 @@ html body .tabs .tab:focus-visible{outline:2px dashed #ff173b!important}
 </style><style>.special-talents{display:block!important}.talent-list{list-style:none;padding:0;margin:0;display:grid;gap:12px}.talent-list li{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5}.talent-list img{width:14px;height:14px;object-fit:contain;flex:0 0 14px;margin-top:2px}.talent-list span{min-width:0}</style><link rel="stylesheet" href="nana-looks.css?v=20261110-looks-1">
 <style id="dressing-focused-layout">
 /* Two working areas; the former character card only hosts the bag editor. */
-html body .main{grid-template-columns:minmax(0,1fr) minmax(300px,1.15fr);grid-template-rows:minmax(0,1fr);gap:20px;padding:14px 20px;align-items:stretch}
-html body .main>.profile{display:none}
-html body .main>.stage{grid-column:1;grid-row:1;height:100%;min-height:0;padding:0}
-html body .main>.wardrobe{grid-column:2;grid-row:1;height:100%;min-height:0;padding:4px 0 0 18px;border-top:0}
-html body .stage-head{display:block!important;padding:2px 4px 6px}
-html body .stage-head h1{display:block!important;font-size:28px;margin:3px 0}
-html body .stage-head .overline{font-size:13px}
-html body .wardrobe h2{display:block;font-size:23px;margin:0 0 6px}
-html body .wardrobe>p{display:block;font-size:12px;margin:6px 0 10px}
-html body #tabs{display:none}
-html body .nl-category{display:block;min-height:44px;padding:8px;background:#ffe7e9;margin:0 0 10px;font-size:14px}
-html body #save-personal-look{background:#ffdce4}
-html body .nl-inventory-pager{min-height:44px}
-html body .nl-inventory-pager button{min-width:44px;min-height:40px}
-html body .stage-foot{display:block;font-size:12px;min-height:0;padding:6px 0;border:0}
+html body.has-saved-looks .main{grid-template-columns:minmax(0,1fr) minmax(300px,1.15fr);grid-template-rows:minmax(0,1fr);gap:20px;padding:14px 20px;align-items:stretch}
+html body.has-saved-looks .main>.profile{display:none}
+html body.has-saved-looks .main>.stage{grid-column:1;grid-row:1;height:100%;min-height:0;padding:0}
+html body.has-saved-looks .main>.wardrobe{grid-column:2;grid-row:1;height:100%;min-height:0;padding:4px 0 0 18px;border-top:0}
+html body.has-saved-looks .stage-head{display:block!important;padding:2px 4px 6px}
+html body.has-saved-looks .stage-head h1{display:block!important;font-size:28px;margin:3px 0}
+html body.has-saved-looks .stage-head .overline{font-size:13px}
+html body.has-saved-looks .wardrobe h2{display:block;font-size:23px;margin:0 0 6px}
+html body.has-saved-looks .wardrobe>p{display:block;font-size:12px;margin:6px 0 10px}
+html body.has-saved-looks #tabs{display:none}
+html body.has-saved-looks .nl-category{display:block;min-height:44px;padding:8px;background:#ffe7e9;margin:0 0 10px;font-size:14px}
+html body.has-saved-looks #save-personal-look{background:#ffdce4}
+html body.has-saved-looks .nl-inventory-pager{min-height:44px}
+html body.has-saved-looks .nl-inventory-pager button{min-width:44px;min-height:40px}
+html body.has-saved-looks .stage-foot{display:block;font-size:12px;min-height:0;padding:6px 0;border:0}
 .dressing-about{margin-top:6px;font-size:12px}
 .dressing-about summary{cursor:pointer;padding:6px}
 .dressing-about .quest{margin:0;padding:6px;border:0;font-size:12px}
 .dressing-about .quest h3{margin-bottom:4px}
-html body.bag-adjusting .main{grid-template-columns:minmax(200px,.7fr) minmax(0,1fr) minmax(280px,1fr)}
-html body.bag-adjusting .main>.profile{display:flex!important;grid-column:1;grid-row:1;overflow:auto!important}
-html body.bag-adjusting .main>.stage{grid-column:2}
-html body.bag-adjusting .main>.wardrobe{grid-column:3}
+html body.has-saved-looks.bag-adjusting .main{grid-template-columns:minmax(200px,.7fr) minmax(0,1fr) minmax(280px,1fr)}
+html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;grid-column:1;grid-row:1;overflow:auto!important}
+html body.has-saved-looks.bag-adjusting .main>.stage{grid-column:2}
+html body.has-saved-looks.bag-adjusting .main>.wardrobe{grid-column:3}
 @media(min-width:1100px){
- html body .items{grid-template-columns:repeat(3,minmax(0,1fr))}
+ html body.has-saved-looks .items{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:760px){
- html body .main{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8px;padding:8px}
- html body .main>.wardrobe{padding-left:8px}
- html body .stage-head h1{font-size:22px}
- html body .wardrobe h2{font-size:19px}
- html body .wardrobe>p{display:none}
- html body .nl-category{font-size:12px}
- html body .stage-foot{font-size:10px}
- html body.bag-adjusting .main{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
- html body.bag-adjusting .main>.stage{grid-column:1}
- html body.bag-adjusting .main>.profile{grid-column:2}
- html body.bag-adjusting .main>.wardrobe{display:none!important}
+ html body.has-saved-looks .main{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8px;padding:8px}
+ html body.has-saved-looks .main>.wardrobe{padding-left:8px}
+ html body.has-saved-looks .stage-head h1{font-size:22px}
+ html body.has-saved-looks .wardrobe h2{font-size:19px}
+ html body.has-saved-looks .wardrobe>p{display:none}
+ html body.has-saved-looks .nl-category{font-size:12px}
+ html body.has-saved-looks .stage-foot{font-size:10px}
+ html body.has-saved-looks.bag-adjusting .main{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+ html body.has-saved-looks.bag-adjusting .main>.stage{grid-column:1}
+ html body.has-saved-looks.bag-adjusting .main>.profile{grid-column:2}
+ html body.has-saved-looks.bag-adjusting .main>.wardrobe{display:none!important}
 }
 @media(max-height:540px){
- html body .stage-head{display:flex!important;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;padding:0}
- html body .stage-head h1{font-size:18px;margin:0}
- html body .stage-head .overline,html body .dressing-about{display:none}
- html body #adjust-bag{margin:0}
+ html body.has-saved-looks .stage-head{display:flex!important;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;padding:0}
+ html body.has-saved-looks .stage-head h1{font-size:18px;margin:0}
+ html body.has-saved-looks .stage-head .overline,html body.has-saved-looks .dressing-about{display:none}
+ html body.has-saved-looks #adjust-bag{margin:0}
 }
 </style>
 </head><body>
