@@ -27,7 +27,7 @@
     label(byId('switch-mode'),t('Mode Work','Work mode'));
     const night=document.documentElement.dataset.theme==='night';
     const icon=byId('theme-toggle').querySelector('.theme-icon');
-    icon.innerHTML='<svg viewBox="0 0 28 28" aria-hidden="true"><path d="'+(night?'M19 9C24 16 17 23 11 19C5 16 8 6 15 7Q17 7 19 9M14 1L14 4M24 5L21 8M27 14L24 14M23 23L21 21M14 27L14 24M4 23L7 21M1 14L4 14M5 4L7 7':'M18 3C7 1 2 13 7 21C13 29 25 23 25 16C16 20 10 10 18 3Z')+'"/></svg>'; 
+    icon.innerHTML='<svg viewBox="0 0 28 28" aria-hidden="true"><path d="'+(night?'M19 9C24 16 17 23 11 19C5 16 8 6 15 7Q17 7 19 9M14 1L14 4M24 5L21 8M27 14L24 14M23 23L21 21M14 27L14 24M4 23L7 21M1 14L4 14M5 4L7 7':'M18 3C7 1 2 13 7 21C13 29 25 23 25 16C16 20 10 10 18 3Z')+'"/></svg>';
     label(byId('theme-toggle'),night?t('Passer en mode jour','Switch to day mode'):t('Passer en mode nuit','Switch to night mode'));
     label(admin,t('Ouvrir le petit atelier de Nana','Open Nana’s little workshop'));
   }
