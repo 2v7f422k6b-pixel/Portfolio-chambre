@@ -411,6 +411,15 @@ function safePresentationImage(value){
   return url.href;
  }catch{return ''}
 }
+// Skyblog iframe asks the existing desktop to open its own apps.
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin || event.source!==document.querySelector('iframe[src="nana-skyblog.html"]')?.contentWindow)return;
+ if(event.data?.type!=='nana-skyblog-action')return;
+ const action=event.data.action;
+ if(action==='finder')openFinder();
+ else if(action==='phone')openApp('phone');
+ else if(action==='book')openApp('book');
+});
 function openWorkAbout(){
  const iframe='<iframe title="xX-Nana-Studio-Xx" src="nana-skyblog.html" style="display:block;width:100%;height:100%;border:0;background:#fbe5f3" loading="eager"></iframe>';
  openWindow('À propos · xX-Nana-Studio-Xx',iframe,'skyblog');
