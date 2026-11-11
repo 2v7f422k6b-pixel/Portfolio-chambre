@@ -587,6 +587,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     }
   </style>
 <link rel="stylesheet" href="nana-looks.css?v=20261110-looks-1">
+<link rel="stylesheet" href="nana-navigation.css?v=20261111-1">
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -622,22 +623,20 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
     </section>
       <header id="menubar">
         <nav class="menu-left" aria-label="Navigation principale">
-          <button id="home-menu" class="apple-symbol" aria-label="Return to mode selection" title="Choose a mode">♥</button>
-          <button id="menu-mode" class="menu-app" type="button" aria-label="Retour à l’accueil">Accueil</button>
+          <button id="home-menu" class="apple-symbol" aria-label="Return to mode selection" title="Choose a mode"><img src="assets/drawn-ui/maison.png" alt="" aria-hidden="true"></button>
           <button id="menu-about" data-open="about" type="button" title="About Me" aria-label="About Me">About Me</button>
           <button id="menu-contact" data-open="contact" type="button" title="Contact" aria-label="Contact">Contact</button>
           <button id="menu-help" data-open="help" type="button" title="Help" aria-label="Help">Help</button>
         </nav>
         <nav class="menu-right" aria-label="Outils et préférences">
-          <button id="nana-journal-trigger" type="button" data-no-translate aria-haspopup="dialog" aria-label="Mon carnet de découvertes"><img src="assets/drawn-ui/etoile_pleine.png" alt=""><span class="nj-trigger-label">Mon carnet</span><span class="nj-trigger-count">0 %</span></button>
+          <button id="nana-journal-trigger" type="button" data-no-translate aria-haspopup="dialog" aria-label="Mon carnet de découvertes"><span class="nj-trigger-label">Carnet</span><span class="nj-trigger-count">0 %</span></button>
           <button id="nana-admin-trigger" type="button" aria-label="Ouvrir le petit atelier de Nana" title="Le petit atelier de Nana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M7.5 10.5V7.2C7.5 4.3 9.3 2.4 12 2.6c2.7.2 4.5 2.2 4.5 4.8v3.1"/><path d="M5.8 10.1 18.5 10.8 18 21 5.6 20.5Z"/><path d="M12 14.1v2.9"/></svg></button>
-          <button id="menu-copy-link" class="nana-copy-link" type="button" data-copy-link data-no-translate aria-label="Copier le lien" title="Copier le lien"><img src="assets/drawn-ui/fleche_lien_agrandir.png" alt=""></button>
           <button id="menu-search" type="button" aria-label="Search portfolio" title="Search portfolio" aria-expanded="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
           <button id="language-toggle" type="button" aria-label="Switch language to French" title="Language / Langue">FR</button>
           <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Enable night mode" title="Toggle night mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Night</span></button>
-          <button id="switch-mode" type="button" aria-label="Switch Mode" title="Switch between Work and Play modes">Passer en mode Play</button>
+          <button id="switch-mode" data-no-translate type="button" role="switch" aria-checked="false" aria-label="Switch Mode" title="Switch between Work and Play modes"><span>Play</span><span>Work</span></button>
         </nav>
-        <button id="mobile-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-panel"><span aria-hidden="true">☰</span></button>
+        <button id="mobile-menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-panel"><svg class="nav-bow" viewBox="0 0 64 48" aria-hidden="true"><path d="M29 22C15 1 2 5 5 20C6 31 20 29 29 25M35 22C48 2 62 7 59 21C57 31 45 28 35 25M27 26Q24 35 16 42L26 39L30 44L33 27M36 26Q40 35 50 40L40 39L36 44L32 27"/><path d="M28 20Q32 17 36 21L35 28Q31 30 28 26Z"/></svg><span class="nav-menu-word">Menu</span></button>
         <div id="mobile-menu-panel" aria-label="Menu mobile"></div>
       </header>
     <main id="desktop" hidden>
@@ -820,7 +819,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   <script src="nana-site-settings.js?v=20261109-poster-placement-2"></script>
   <script src="nana-progress.js?v=20261110-dressing-feedback-1" defer></script>
   <script src="nana-keepsakes.js?v=20261110-selected-1" defer></script>
-  <script src="app.js?v=20261110-selected-1" defer></script>
+  <script src="app.js?v=20261111-navigation-1" defer></script>
   <script src="do-nothing-club.js?v=20261108-journal-1" defer></script>
   <script src="literary-zones.js?v=20261110-selected-1" defer></script>
 
@@ -923,23 +922,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="global-search.js?v=20261106-code-cleanup-1" defer></script>
 <script src="i18n-extra.js?v=20261106-book-full-edition" defer></script>
 <script src="i18n.js?v=20261106-code-cleanup-1" defer></script>
-<script>
-(function(){
- const bar=document.getElementById('menubar'),toggle=document.getElementById('mobile-menu-toggle'),panel=document.getElementById('mobile-menu-panel');
- if(!bar||!toggle||!panel)return;
- const ids=['menu-about','menu-contact','menu-help','menu-copy-link','nana-admin-trigger','language-toggle','theme-toggle','switch-mode'];
- const originals=ids.map(id=>document.getElementById(id)).filter(Boolean);
- const slots=originals.map(el=>({el,parent:el.parentNode,next:el.nextSibling}));
- const mq=window.matchMedia('(max-width:760px)');
- function close(){bar.classList.remove('mobile-menu-open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Ouvrir le menu');}
- function sync(){close();if(mq.matches){originals.forEach(el=>panel.appendChild(el));}else{slots.forEach(({el,parent,next})=>{if(next&&next.parentNode===parent)parent.insertBefore(el,next);else parent.appendChild(el);});}}
- toggle.addEventListener('click',()=>{const open=bar.classList.toggle('mobile-menu-open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Fermer le menu':'Ouvrir le menu');});
- panel.addEventListener('click',e=>{if(e.target.closest('button'))close();});
- document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
- document.addEventListener('pointerdown',e=>{if(!bar.contains(e.target))close();});
- mq.addEventListener?.('change',sync);sync();
-})();
-</script>
+
 
 
 <script src="poster-fit.js?v=20261109-poster-placement-2" defer></script><script src="mirror-placement.js?v=20261107-dressing-card-3" defer></script><script src="flower-lamp-placement.js?v=20261106-code-cleanup-1" defer></script>
@@ -1031,9 +1014,10 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
 <script src="nana-art-links.js?v=20261108-routes" defer></script>
 <script src="nana-looks.js?v=20261110-selected-1" defer></script>
 <script src="nana-journal-looks.js?v=20261110-looks-1" defer></script>
-<script src="nana-journal.js?v=20261110-selected-1" defer></script>
+<script src="nana-journal.js?v=20261111-navigation-1" defer></script>
 <script src="nana-newsletter.js?v=20261110-selected-1" defer></script>
 <script src="nana-deep-links.js?v=20261109-newsletter-1" defer></script>
+<script src="nana-navigation.js?v=20261111-1" defer></script>
 </body>
 </html>
 

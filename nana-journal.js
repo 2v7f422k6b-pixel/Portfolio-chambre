@@ -146,7 +146,7 @@
   }
   const looks=window.NanaJournalLooks.create({dialog,content,t,h,button,heading,paginate,render,navigate});
   const pages={looks:looks.page,souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
-  function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent=pct+' %';trigger.querySelector('.nj-trigger-label').textContent=t('Mon carnet','My notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
+  function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent=pct+' %';trigger.querySelector('.nj-trigger-label').textContent=t('Carnet','Notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
   function paperLayout(html){
     const source=document.createElement('div');source.innerHTML=html;
     const left=document.createElement('section'),right=document.createElement('section');

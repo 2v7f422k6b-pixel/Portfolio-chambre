@@ -1,0 +1,55 @@
+/* Final, navigation-only layer over historical responsive menu rules. */
+html body #app #menubar.nana-navigation {
+  height:56px!important;min-height:56px!important;max-height:56px!important;
+  width:100%!important;padding:0 max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left))!important;
+  gap:clamp(6px,1.6vw,24px)!important;flex-direction:row!important;
+  background:#fff2f5!important;color:#ff173b!important;box-shadow:none!important;
+}
+html body #app,html body #desktop {--menubar:56px!important;--menubar-height:56px!important}
+html body #desktop > #play-viewport,html body #desktop > #work-desktop {inset:56px 0 0!important}
+html body #app #menubar.nana-navigation :is(.menu-left,.menu-right){width:auto!important;min-width:0!important;height:100%!important;min-height:0!important;gap:clamp(4px,1.2vw,18px)!important;flex:0 0 auto!important;justify-content:flex-start!important;}
+html body #app #menubar.nana-navigation .menu-right{margin-left:auto!important}
+html body #app #menubar.nana-navigation button{border:0!important;box-shadow:none!important;background:transparent!important;color:#ff173b!important;font-family:"Nana Trace UI",sans-serif!important;font-size:16px!important;line-height:1.15!important;min-height:44px!important;min-width:44px!important;padding:4px 6px!important;touch-action:manipulation;cursor:pointer;flex-shrink:0!important;}
+html body #app #menubar.nana-navigation button::before,html body #app #menubar.nana-navigation button::after{display:none!important;content:none!important}
+html body #app #menubar.nana-navigation button>.sketch-ui-svg{display:none!important}
+html body #app #menubar.nana-navigation button:focus-visible{outline:2px dashed #ff173b!important;outline-offset:1px!important}
+html body #app #menubar.nana-navigation #home-menu img{width:25px;height:28px;object-fit:contain}
+html body #app #menubar.nana-navigation .nj-trigger-label{display:inline!important}
+html body #app #menubar.nana-navigation #nana-journal-trigger{gap:5px!important}
+html body #app #menubar.nana-navigation .nj-trigger-count{font-size:14px!important}
+html body #app #menubar.nana-navigation .theme-label{display:none!important}
+html body #app #menubar.nana-navigation .theme-icon{font-size:26px!important}
+html body #app #menubar.nana-navigation #language-toggle{width:72px!important;white-space:nowrap!important}
+html body #app #menubar.nana-navigation #switch-mode{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-around!important;width:112px!important;padding:5px!important;isolation:isolate;border-radius:48% 45% 46% 43% / 48% 50% 46% 51%!important;background:#ffe0e8!important;}
+html body #app #menubar.nana-navigation #switch-mode::before{content:""!important;display:block!important;position:absolute;inset:5px auto 5px 5px;width:51px;background:#ff173b;border-radius:46% 49% 43% 48% / 47% 45% 52% 48%;transition:transform .25s ease;z-index:-1;}
+html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"]::before{transform:translateX(51px)}
+#menubar.nana-navigation #switch-mode span{width:50%;text-align:center;transition:color .25s}
+html body #menubar.nana-navigation #switch-mode[aria-checked="false"] span:first-child,html body #menubar.nana-navigation #switch-mode[aria-checked="true"] span:nth-of-type(2){color:#fff2f5!important}
+html body #app #menubar.nana-navigation #mobile-menu-toggle{display:flex!important;width:94px!important;flex:0 0 94px!important;align-items:center!important;justify-content:center!important;gap:3px!important;margin:0!important;}
+.nav-bow{width:43px;height:40px;overflow:visible;flex-shrink:0;pointer-events:none;transform-origin:50% 25%;}
+.nav-bow path{fill:#ffd0dd;stroke:#ff173b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-menu-word{display:block;clip-path:inset(0);}
+html body #app #menubar.nana-navigation #mobile-menu-panel{position:absolute!important;top:calc(100% - 3px)!important;right:max(8px,env(safe-area-inset-right))!important;left:auto!important;width:min(260px,calc(100vw - 16px))!important;max-height:calc(100dvh - 66px)!important;box-sizing:border-box!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;padding:24px 24px 26px!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:2!important;transform-origin:85% 0;isolation:isolate;}
+html body #app #menubar.nana-navigation #mobile-menu-panel[hidden]{display:none!important}
+.nav-ribbon-art{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;}
+.nav-ribbon-art path{fill:#fff4ed;stroke:#ff173b;stroke-width:1.7;vector-effect:non-scaling-stroke}
+html body #app #menubar.nana-navigation #mobile-menu-panel>button{width:100%!important;min-height:44px!important;text-align:left!important;justify-content:flex-start!important;border:0!important;white-space:normal!important;}
+html body #app #menubar.nana-navigation #mobile-menu-panel #nana-admin-trigger{width:44px!important;align-self:center;opacity:.72;display:flex!important;justify-content:center!important;margin-top:8px!important;}
+#menubar.nana-navigation #nana-admin-trigger svg{width:20px;height:20px}
+.nav-preferences{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:6px 0;}
+.nav-compact .nav-preferences{display:flex}
+html body #app #menubar.nana-navigation.nav-compact .menu-right{display:none!important}
+html body #app #menubar.nana-navigation.nav-compact #mobile-menu-toggle{margin-left:auto!important}
+#menubar.nana-navigation.mobile-menu-open #mobile-menu-panel{animation:nana-ribbon-unroll .25s ease-out both}
+.nav-attention .nav-bow{animation:nana-bow-sway 1.6s ease-in-out 2}
+.nav-attention .nav-menu-word{animation:nana-menu-write 1.5s ease-out both}
+@keyframes nana-bow-sway{0%,100%{transform:rotate(0)}30%{transform:rotate(-7deg)}65%{transform:rotate(5deg)}}
+@keyframes nana-menu-write{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+@keyframes nana-ribbon-unroll{from{opacity:0;transform:scaleY(.9) translateY(-5px)}to{opacity:1;transform:none}}
+@media(max-width:370px){html body #app #menubar.nana-navigation{padding-inline:5px!important;gap:2px!important}html body #app #menubar.nana-navigation :is(.menu-left,.menu-right){gap:0!important}html body #app #menubar.nana-navigation button{font-size:14px!important;padding-inline:3px!important}}
+@media(prefers-reduced-motion:reduce){#menubar.nana-navigation *,#menubar.nana-navigation *::before{animation:none!important;transition:none!important}}
+html body #app #menubar.nana-navigation #switch-mode::before{background:#ff173b!important;opacity:1!important;inset:5px auto 5px 5px!important;width:51px!important;height:auto!important;clip-path:none!important;}
+/* Override the previous mobile menu's hidden secondary controls. */
+html body #app #menubar.nana-navigation .menu-left > #nana-journal-trigger,
+html body #app #menubar.nana-navigation .menu-left > #menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+html body #app #menubar.nana-navigation .theme-icon svg{display:block!important;width:26px!important;height:26px!important;fill:none!important;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
