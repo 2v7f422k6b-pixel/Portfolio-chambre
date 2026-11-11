@@ -976,11 +976,11 @@ updatePlayer();
 // Open a requested portfolio destination in its own tab, without replacing Skyblog.
 (function(){
  const destination=new URLSearchParams(location.search).get('skyblogOpen');
- if(!['phone','mail','book','finder'].includes(destination))return;
+ if(!['phone','mail','book','finder','room'].includes(destination))return;
  const launch=()=>{
   chooseMode('work',false);
   // Give the work desktop a frame to become visible before opening its window.
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{openApp(destination==='mail'?'phone':destination);if(destination==='mail')phoneMail();}));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(destination==='room'){chooseMode('play',false);return;}openApp(destination==='mail'?'phone':destination);if(destination==='mail')phoneMail();}));
  };
  if(document.readyState==='complete')launch();
  else window.addEventListener('load',launch,{once:true});
