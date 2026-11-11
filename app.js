@@ -422,7 +422,7 @@ window.addEventListener('message',event=>{
 });
 function openWorkAbout(){
  const iframe='<iframe title="Nana Color Studio" src="nana-skyblog.html" style="display:block;width:100%;height:100%;border:0;background:#fbe5f3" loading="eager"></iframe>';
- openWindow('À propos · Nana Color Studio',iframe,'skyblog');
+ openWindow('À propos',iframe,'skyblog');
  const styleId='nana-skyblog-window-style';
  if(!document.getElementById(styleId)){
   const st=document.createElement('style');st.id=styleId;
