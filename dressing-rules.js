@@ -21,7 +21,7 @@
   function canWearTop(dress,top){return !dress||dress==='dress-denim'||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
   function normalize(s,changed){
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
-    if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;}
+    if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;if(!s.underwear)s.underwear='bra-blue';}
     if(s.pants)s.skirts=null;
     if(s.sheer&&s.tops&&!['top-pink','top-dj'].includes(s.tops)){
       if(changed==='tops')s.sheer=null;else s.tops=null;
@@ -56,6 +56,11 @@
     }
     if(buckets.has(s.hat)&&s.headlamp){if(changed==='headlamp')s.hat=null;else s.headlamp=null;}
     if(s.hat&&s.headphones){if(changed==='headphones')s.hat=null;else s.headphones=null;}
+    if(s.sweater==='top-bear'){
+      const conflicts=['jackets','wrap'].filter(k=>s[k]&&s[k]!=='jacket-green');
+      if(conflicts.includes(changed))s.sweater=null;
+      else for(const k of conflicts)s[k]=null;
+    }
     if(s.sweater==='top-bear'&&(s.hat||s.headphones||s.clips||s.headlamp)){
       if(['hat','headphones','clips','headlamp'].includes(changed))s.sweater=null;else{s.hat=null;s.headphones=null;s.clips=null;s.headlamp=null;}
     }

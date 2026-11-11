@@ -83,18 +83,13 @@ function create({source,changed}){
   return remember('vest:'+id+':'+outer,()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
    // Remove only the collar supplied separately, without changing the blouse.
    if(collar){ctx.globalCompositeOperation='destination-out';ctx.drawImage(collar.im,0,0,CW,CH);ctx.globalCompositeOperation='source-over';}
-   const oc=canvas(),m=oc.getContext('2d',{willReadFrequently:true});m.drawImage(o.im,0,0,CW,CH);const px=m.getImageData(0,0,CW,CH).data;
-   // Shoulder seams follow the actual vest artwork. Leave the central neck
-   // opening and sleeves outside the shoulder straps intact.
-   for(let x=350;x<650;x++){if(x>440&&x<555)continue;let edge=0;
-    for(let y=330;y<410;y++)if(px[(y*CW+x)*4+3]>100){edge=y;break;}
-    if(edge)ctx.clearRect(x,330,1,edge-330);
-   }
+   // A sleeveless vest covers the shirt naturally; its shoulder outline must
+   // never erase the underlying sleeve or reveal bare skin.
    // Conceal a shirt hem beneath the knit without cutting off its sleeves.
    if(outer==='top-ganni-knit')ctx.clearRect(410,p.bottom+1,180,CH-p.bottom-1);
    return c;});
  }
- const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier']);
+ const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining']);
  function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
   const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
   if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
@@ -106,10 +101,18 @@ function create({source,changed}){
     const e=entries.find(e=>e.id===id);
     // Only sleeves can cover arms: a dress's skirt must not erase the hands.
     const bare=sleeveless.has(id)||bareDresses.has(id)||['top-yellow','top-white','top-pink','top-dj'].includes(id);
-    const end=forearm&&bare?550:s.dresses===id?800:CH;
+    const end=id==='dress-shining'?460:forearm&&bare?550:s.dresses===id?800:CH;
     if(forearm&&['top-sparkle-pink','top-sparkle-charcoal'].includes(id))continue;
     ctx.save();ctx.beginPath();
     let cover=e?.canvas||get(id).im;
+    if(artistSleeves[id]){
+     // On the bag side, only the actual sleeve hides skin. The torso/skirt
+     // of a long coat must not erase the fingers beside its cuff.
+     const sleeveCover=canvas(),sc=sleeveCover.getContext('2d');
+     sc.drawImage(cover,0,0,CW,CH);sc.clearRect(0,0,445,CH);
+     sc.save();sc.beginPath();sc.rect(0,0,445,CH);sc.clip();
+     sc.drawImage(image(artistSleeves[id]).im,0,0,CW,CH);sc.restore();cover=sleeveCover;
+    }
     // Transparent sleeves already tint the base arm. Do not repaint skin
     // over them, including the small section overlapping the wrist.
     if(['top-sparkle-pink','top-sparkle-charcoal'].includes(id)){

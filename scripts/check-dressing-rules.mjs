@@ -73,3 +73,14 @@ test('scarves, ruffs and George Sand bow are mutually exclusive in either order'
   const s=wear(...ids);assert.ok(Object.values(s).includes(ids[1]));assert.ok(!Object.values(s).includes(ids[0]));
  }
 });
+test('paint overalls always retain a selectable bra',()=>{
+ const s=wear('suit-paint');assert.equal(s.underwear,'bra-blue');
+ r.choose(s,'bra-pink',items);assert.equal(s.underwear,'bra-pink');
+ r.choose(s,'bra-pink',items);assert.equal(s.underwear,'bra-blue');
+});
+test('bear hoodie permits only the green coat, latest choice wins',()=>{
+ for(const coat of ['jacket-george-sand','jacket-inspector','jacket-yukata','jacket-purple'])for(const ids of [['top-bear',coat],[coat,'top-bear']]){
+  const s=wear(...ids);assert.ok(Object.values(s).includes(ids[1]));assert.ok(!Object.values(s).includes(ids[0]));
+ }
+ for(const ids of [['top-bear','jacket-green'],['jacket-green','top-bear']]){const s=wear(...ids);assert.equal(s.sweater,'top-bear');assert.equal(s.jackets,'jacket-green');}
+});

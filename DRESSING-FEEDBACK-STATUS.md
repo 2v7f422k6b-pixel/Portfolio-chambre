@@ -150,3 +150,51 @@ Validation de cette passe : 26 tests ciblés passent. Vérification des composit
 - DAMSON : IMG_6239.png.
 
 Ces cinq associations remplacent les découpes provisoires devant le sac crochet. Dessins conservés à leurs coordonnées originales. Les mentions d’attente dans les bilans antérieurs sont désormais résolues pour ces cinq vêtements.
+
+## Retour du 11 novembre, 10 h 31–10 h 45 — référence actuelle
+
+Cette section prévaut sur les validations historiques. Les captures montrent des défauts persistants ; les sacs ne sont pas considérés comme validés.
+
+### Code de cette passe
+
+- [x] Retirer la découpe des épaules des blouses sous GANNI sans manches.
+- [x] Shining : conserver le bras sous la manche courte devant le sac crochet.
+- [x] Yukata : masquer la peau avec la manche séparée, pas avec le corps du manteau.
+- [x] Redingote George Sand : appliquer la même règle pour conserver les doigts.
+- [x] Ajouter une catégorie soutiens-gorge : bleu IMG_5995, rose IMG_5996, noir IMG_5997.
+- [x] Ajouter un soutien-gorge bleu par défaut sous la salopette peinture ; conserver la couleur choisie, y compris dans les looks sauvegardés.
+- [x] Classer le pull ourson dans Pyjamas.
+- [x] Classer le yukata dans Pyjamas.
+- [x] Autoriser uniquement le manteau vert par-dessus le pull ourson ; le dernier vêtement choisi remplace une combinaison incompatible.
+- [x] Contraindre les aperçus des badges dans leurs cases.
+- [ ] Vérifier sur iPad la bande rose qui recouvre le dressing dans la première capture ; cause non reproduite.
+- [ ] Valider les raccords GANNI + chemise George Sand + jupe jaune avant de demander un dessin supplémentaire.
+
+### Dessins / prochaines étapes pour Léna — une case par retouche
+
+- [ ] Jupe jaune adaptée au caraco en dentelle.
+- [ ] Jupe jaune adaptée au top vert anis.
+- [ ] Jupe jaune adaptée au gilet multicolore GANNI.
+- [ ] Relever les autres hauts qui nécessitent une variante de jupe jaune.
+- [ ] Robe des jumelles de Shining sous le trench.
+- [ ] Robe des jumelles de Shining sous la redingote George Sand.
+- [ ] Robe des jumelles de Shining sous le manteau vert long.
+- [ ] Robe bleue courte : corriger le morceau qui dépasse sous le trench.
+- [ ] Combinaison Miffy : variante sous le trench.
+- [ ] Combinaison Miffy : variante sous la redingote George Sand.
+- [ ] Combinaison Miffy : variante sous le manteau vert long.
+- [ ] Combinaison Miffy : vérifier les autres vêtements superposables avant de dessiner les variantes nécessaires.
+- [ ] Redessiner le pull à capuche ourson rose.
+- [ ] Revoir ensemble le placement du sac crochet aux épaules et aux hanches.
+- [ ] Revoir ensemble le placement du sac coussin aux épaules et aux hanches.
+- [ ] Colorier les parties des cols passant derrière le cou.
+- [ ] Inventorier les véritables dessins catalogue manquants ; distinguer les miniatures qui chargent lentement des dessins absents.
+- [ ] Fournir les versions catalogue manquantes après cet inventaire.
+
+Chemise George Sand raccourcie sous GANNI : piste à vérifier, pas une demande de nouveau dessin confirmée. Les fichiers déjà fournis restent conservés. Aucun PNG modifié dans cette passe.
+
+### Validation de cette livraison
+- 28 tests ciblés passent (règles, géométrie et corrections).
+- Aperçus contrôlés dans Chrome : GANNI avec les trois blouses, Shining, yukata, redingote, salopette avec soutien-gorge rose, haut transparent rose, ourson avec manteau vert, écussons.
+- Pas encore de validation sur un iPad physique.
+- La chemise George Sand laisse encore une petite pointe blanche sous GANNI avec la jupe jaune : ce point reste ouvert, sans déclarer le dessin à refaire obligatoirement.
