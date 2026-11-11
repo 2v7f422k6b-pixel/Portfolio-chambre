@@ -416,6 +416,7 @@ function correctedSource(id){
  if(id==='bag-crochet')return correctionFile(23);
  if(BAG_CHARM_FILES[slots.bags]?.[id])return BAG_CHARM_FILES[slots.bags][id];
  if(['jacket-inspector','jacket-green','jacket-george-sand'].includes(slots.jackets)&&COAT_CORRECTIONS[id])return correctionFile(COAT_CORRECTIONS[id]);
+ if(slots.skirts==='skirt-princess'&&id==='top-plantasia')return 'assets/dressing-lena/IMG_6235.png';
  if(slots.skirts==='skirt-princess'&&YELLOW_SKIRT_CORRECTIONS[id])return correctionFile(YELLOW_SKIRT_CORRECTIONS[id]);
  return FITTED[id]||SPRITES[id];
 }

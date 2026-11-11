@@ -12,7 +12,7 @@ test('all 35 artist exports are mapped to existing items and files',()=>{
  assert.equal(ns.size,35);for(const n of ns)assert(existsSync(new URL('../assets/dressing-lena/corrections/Illustration_sans_titre-'+n+'.png',import.meta.url)));
 });
 test('five shortened tops apply only to yellow skirt and revert on every other skirt',()=>{
- for(const [id,n]of Object.entries(env.maps.YELLOW_SKIRT_CORRECTIONS))for(const skirt of Object.keys(data.items).filter(id=>id.startsWith('skirt-'))){env.slots={skirts:skirt};assert.equal(env.resolve(id),skirt==='skirt-princess'?`assets/dressing-lena/corrections/Illustration_sans_titre-${n}.png`:data.fitted[id]||data.sprites[id]);}
+ for(const [id,n]of Object.entries(env.maps.YELLOW_SKIRT_CORRECTIONS))for(const skirt of Object.keys(data.items).filter(id=>id.startsWith('skirt-'))){env.slots={skirts:skirt};assert.equal(env.resolve(id),skirt==='skirt-princess'?(id==='top-plantasia'?'assets/dressing-lena/IMG_6235.png':`assets/dressing-lena/corrections/Illustration_sans_titre-${n}.png`):data.fitted[id]||data.sprites[id]);}
 });
 test('19 lower variants apply under all three coats and restore the original afterwards',()=>{
  for(const [id,n]of Object.entries(env.maps.COAT_CORRECTIONS))for(const coat of ['jacket-inspector','jacket-green','jacket-george-sand',null,'jacket-fleece']){env.slots={jackets:coat};assert.equal(env.resolve(id),coat&&coat!=='jacket-fleece'?`assets/dressing-lena/corrections/Illustration_sans_titre-${n}.png`:data.fitted[id]||data.sprites[id]);}
