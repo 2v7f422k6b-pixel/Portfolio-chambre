@@ -972,3 +972,16 @@ updatePlayer();
 
 
 
+
+// Open a requested portfolio destination in its own tab, without replacing Skyblog.
+(function(){
+ const destination=new URLSearchParams(location.search).get('skyblogOpen');
+ if(!['phone','book','finder'].includes(destination))return;
+ const launch=()=>{
+  chooseMode('work',false);
+  // Give the work desktop a frame to become visible before opening its window.
+  requestAnimationFrame(()=>requestAnimationFrame(()=>openApp(destination)));
+ };
+ if(document.readyState==='complete')launch();
+ else window.addEventListener('load',launch,{once:true});
+})();
