@@ -412,6 +412,16 @@ function safePresentationImage(value){
  }catch{return ''}
 }
 function openWorkAbout(){
+ const iframe='<iframe title="xX-Nana-Studio-Xx" src="nana-skyblog.html" style="display:block;width:100%;height:100%;border:0;background:#fbe5f3" loading="eager"></iframe>';
+ openWindow('À propos · xX-Nana-Studio-Xx',iframe,'skyblog');
+ const styleId='nana-skyblog-window-style';
+ if(!document.getElementById(styleId)){
+  const st=document.createElement('style');st.id=styleId;
+  st.textContent='#window:has(iframe[src="nana-skyblog.html"]){width:min(1020px,96vw)!important;height:min(790px,87dvh)!important;max-height:87dvh!important} #window:has(iframe[src="nana-skyblog.html"]) #window-content{height:calc(100% - 45px)!important;max-height:none!important;overflow:hidden!important;padding:0!important} #window:has(iframe[src="nana-skyblog.html"]) iframe{min-height:100%}';
+  document.head.appendChild(st);
+ }
+ return;
+
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
  const cardRules=[
