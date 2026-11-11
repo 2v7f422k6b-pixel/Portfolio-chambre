@@ -119,6 +119,20 @@ html body.has-saved-looks .wardrobe-head h2{margin:0;line-height:1.2}
 html body.has-saved-looks .wardrobe-head #adjust-bag{margin:0;min-height:36px;flex-shrink:0}
 html body.has-saved-looks .stage-head .overline{line-height:1.2}
 @media(max-width:760px){html body.has-saved-looks .main{padding-top:4px}}
+/* Visible family navigation replaces the category dropdown. */
+html body.has-saved-looks .nl-category-navigation{flex:none;margin:0 0 10px;min-width:0}
+html body.has-saved-looks .nl-families,html body.has-saved-looks .nl-subcategories{display:flex;flex-wrap:wrap;gap:5px}
+html body.has-saved-looks .nl-subcategories{margin-top:8px}
+html body.has-saved-looks .nl-category-navigation [hidden]{display:none!important}
+html body.has-saved-looks .nl-category-navigation .tab{border:0!important;box-shadow:none!important;min-width:0;min-height:36px;flex:0 1 auto;padding:7px 9px;font-size:12px;line-height:1.2;background:transparent}
+html body.has-saved-looks .nl-families .tab{flex:1 1 auto}
+html body.has-saved-looks .nl-category-navigation .tab.active{background:#ffdce4}
+html body.has-saved-looks .nl-category-navigation .tab:focus-visible{outline:2px dashed #ff173b;outline-offset:1px}
+html body.has-saved-looks .nl-category-navigation .sketch-ui-svg{display:none!important}
+@media(max-width:760px){
+ html body.has-saved-looks .nl-category-navigation .tab{font-size:11px;padding:6px;min-height:34px}
+ html body.has-saved-looks .nl-subcategories{max-height:116px;overflow-y:auto;align-content:flex-start}
+}
 /* Two working areas; the former character card only hosts the bag editor. */
 html body.has-saved-looks .main{grid-template-columns:minmax(0,1fr) minmax(300px,1.15fr);grid-template-rows:minmax(0,1fr);gap:20px;padding:4px 20px 8px;align-items:stretch}
 html body.has-saved-looks .main>.profile{display:none}
@@ -179,7 +193,7 @@ html body.has-saved-looks.bag-adjusting .main>.wardrobe{grid-column:3}
 <link rel="stylesheet" href="sketch-ui.css?v=20261110-looks-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
 <script src="nana-looks.js?v=20261110-selected-1"></script>
-<script src="nana-dressing-looks.js?v=20261110-looks-1"></script>
+<script src="nana-dressing-looks.js?v=20261111-families-2"></script>
 <script>
 (()=>{
 'use strict';

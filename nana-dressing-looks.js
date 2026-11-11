@@ -18,8 +18,7 @@ window.NanaDressingLooks={init(api){
     const update=dialog.querySelector('[value=update]');update.hidden=!editingId;update.textContent=t('Enregistrer les modifications','Save changes');
     dialog.querySelector('[data-cancel]').textContent=t('Annuler','Cancel');
     notice.textContent=partial?t('Certaines pièces sont indisponibles. Remplacer ce look enregistrera uniquement la tenue visible. Tu peux aussi en créer un nouveau.','Some pieces are unavailable. Replacing this look will save only the visible outfit. You can also save a new look.'):t('À retrouver dans ton carnet, sur ce navigateur.','Find it in your notebook, in this browser.');
-    chooser.setAttribute('aria-label',t('Catégorie de vêtements','Clothing category'));
-    chooser.replaceChildren(...[...$('#tabs').querySelectorAll('button')].map((button,i)=>new Option(button.textContent,api.categories[i][0])));chooser.value=api.category();
+    syncCategories();
   }
   save.addEventListener('click',()=>{if(editingId&&!store.get(editingId))editingId=null;copy();input.value=store.get(editingId)?.name||'';error.textContent='';dialog.showModal();input.focus();input.select();});
   dialog.querySelector('[data-cancel]').addEventListener('click',()=>dialog.close());
@@ -33,12 +32,50 @@ window.NanaDressingLooks={init(api){
   });
   album.addEventListener('click',()=>{if(parent!==window&&parent.NanaDeepLinks)parent.NanaDeepLinks.open('carnet/looks');else location.href='index.html#/carnet/looks';});
   // Inventory pages keep the existing garment buttons usable without window scrolling.
-  const chooser=document.createElement('select');chooser.className='nl-category';chooser.setAttribute('data-no-translate','');$('#tabs').before(chooser);
-  chooser.addEventListener('change',()=>api.setCategory(chooser.value));
+  const families=[
+    {id:'clothes',fr:'Vêtements',en:'Clothes',keys:['tops','sweaters','pyjamas','underwear','pants','skirts','dresses','jumpsuits','jackets','hosiery']},
+    {id:'shoes',fr:'Chaussures',en:'Shoes',keys:['shoes']},
+    {id:'accessories',fr:'Accessoires',en:'Accessories',keys:['bags','scarves','headwear','jewelry','bagAccessories','accessories','badges']},
+    {id:'beauty',fr:'Beauté',en:'Beauty',keys:['makeup']},
+    {id:'outfits',fr:'Tenues',en:'Outfits',keys:['sets']}
+  ];
+  const remembered={};
+  const categoryNav=document.createElement('div');categoryNav.className='nl-category-navigation';categoryNav.setAttribute('data-no-translate','');
+  const familyNav=document.createElement('nav');familyNav.className='nl-families';
+  const subNav=document.createElement('nav');subNav.className='nl-subcategories';
+  categoryNav.append(familyNav,subNav);$('#tabs').before(categoryNav);
+  const familyButtons=new Map(),subButtons=new Map();
+  for(const family of families){
+    const button=document.createElement('button');button.type='button';button.className='tab';button.dataset.family=family.id;
+    button.addEventListener('click',()=>api.setCategory(remembered[family.id]||family.keys[0]));
+    familyButtons.set(family.id,button);familyNav.append(button);
+    for(const key of family.keys){
+      const sub=document.createElement('button');sub.type='button';sub.className='tab';sub.dataset.category=key;
+      sub.addEventListener('click',()=>api.setCategory(key));subButtons.set(key,sub);subNav.append(sub);
+    }
+  }
+  function syncCategories(){
+    const active=api.category(),family=families.find(f=>f.keys.includes(active))||families[0];
+    remembered[family.id]=active;
+    familyNav.setAttribute('aria-label',t('Familles de vêtements','Wardrobe groups'));
+    subNav.setAttribute('aria-label',t('Sous-catégories','Subcategories'));
+    for(const f of families){
+      const b=familyButtons.get(f.id),selected=f===family;
+      b.textContent=t(f.fr,f.en);b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));
+    }
+    const labels=[...$('#tabs').querySelectorAll('button')];
+    for(const [i,[key]] of api.categories.entries()){
+      const b=subButtons.get(key);if(!b)continue;
+      b.textContent=labels[i]?.textContent||key;
+      b.hidden=!family.keys.includes(key);
+      b.classList.toggle('active',key===active);b.setAttribute('aria-pressed',String(key===active));
+    }
+    subNav.hidden=family.keys.length===1;
+  }
   const pager=document.createElement('nav');pager.className='nl-inventory-pager';pager.setAttribute('data-no-translate','');$('#inventory').after(pager);
   function paginate(){
     if(api.category()!==category){category=api.category();page=0;}
-    chooser.value=category;
+    syncCategories();
     const target=$('#items'),cards=[...target.children].filter(el=>el.tagName==='BUTTON'),note=target.querySelector('p');
     if(!cards.length){pager.replaceChildren();return;}
     cards.forEach(el=>el.hidden=false);
