@@ -9,7 +9,7 @@
     ['gabzilla','T-shirt Gabzilla','TSHIRT GABZILLA.PNG','[data-open="gabzilla"]'],
     ['marshall','Enceinte Marshall','MARSHALL.PNG','[data-open="music"]'],
     ['cds','CD sur l’étagère','CDS.PNG','[data-mv-open]'],
-    ['iphone','Smartphone','IPHONE.PNG','[data-open="phone"]'],
+    ['iphone','Contact','IPHONE.PNG','[data-open="phone"]'],
     ['tamagotchi','Tamagotchi','TAMAGOTCHI.PNG','[data-open="tamagotchi"]'],
     ['latte','Mug latte','MUG LATTE.PNG','[data-open="latte"]'],
     ['book','Livre La Princesse Clown','TALE.PNG','[data-open="book"]'],

@@ -20,7 +20,7 @@
       ['fenetre/interactive','Projets interactifs','Interactive projects'],['fenetre/articles','Articles'],
       ['fenetre/bibliotheque','Bibliothèque','Bookshelf'],['fenetre/souvenues','Les Souvenues'],
       ['fenetre/gearnews','Série GearNews','GearNews series'],['objet/carte-pokemon','La carte de Léna','Léna’s character card'],
-      ['fenetre/contact','Contact'],['fenetre/mail','Mail'],['fenetre/aide','Aide','Help'],
+      ['fenetre/contact','Contact'],['fenetre/aide','Aide','Help'],
       ['newsletter','La newsletter de Léna','Letters from Léna'],
       ['livre/la-princesse-clown','Lire La Princesse Clown','Read La Princesse Clown']
     ]);
@@ -33,8 +33,8 @@
     const objects = (window.NANA_ROOM_ZONES || []).map(z => ({route:'objet/'+z.id,title:z.label}));
     objects.push(...staticItems([['objet/machine-a-ecrire','Machine à écrire','Typewriter'],
       ['objet/miroir','Miroir','Mirror'],['objet/fleurs','Fleurs','Flowers'],['objet/lampe-fleur','Lampe fleur','Flower lamp'],
-      ['objet/post-it','Post-it'],['objet/corbeille','Corbeille','Trash'],['telephone/contacts','Contacts du téléphone','Phone contacts'],
-      ['telephone/mail','Mail du téléphone','Phone mail']]));
+      ['objet/post-it','Post-it'],['objet/corbeille','Corbeille','Trash'],['telephone/contacts','Contact — coordonnées','Contact — details'],
+      ['telephone/mail','Contact — écrire un message','Contact — write a message']]));
     const art = ART.map(a => ({route:'illu/'+a.filename.replace(/\.[^.]+$/,''),title:a.title}));
     art.push(...GABZILLA.map(a => ({route:'projet/gabzilla/'+a.src.split('/').pop().replace(/\.[^.]+$/,''),title:'GABZILLA — '+a.title})));
     const shots = photos.filter(p=>p.src).map(p=>({route:'photos/'+p.src.split('/').pop().replace(/\.[^.]+$/,''),title:p.title}));
