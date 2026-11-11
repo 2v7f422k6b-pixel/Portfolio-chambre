@@ -129,15 +129,24 @@ Cette section précise le statut après les captures du 11 novembre ; les points
 
 À fournir par Léna, séparément, pour le passage devant le sac crochet :
 
-- [ ] Manche du T-shirt GABZILLA.
-- [ ] Manche du T-shirt Plantasia.
-- [ ] Manche du T-shirt Pink Floyd.
-- [ ] Manche du T-shirt DAMSON très ample.
+- [x] Manche du T-shirt GABZILLA : fichier artiste intégré le 11 novembre.
+- [x] Manche du T-shirt Plantasia : fichier artiste intégré le 11 novembre.
+- [x] Manche du T-shirt Pink Floyd : fichier artiste intégré le 11 novembre.
+- [x] Manche du T-shirt DAMSON très ample : fichier artiste intégré le 11 novembre.
 
 À retrouver avant de demander un nouveau dessin :
 
-- [ ] Manche séparée de la robe mauve à rayures : non identifiée dans les fichiers disponibles au commit 95ba27c. La découpe actuelle reste provisoire ; ne pas considérer ce point comme corrigé.
+- [x] Manche séparée de la robe mauve à rayures : IMG_6231.png intégrée.
 
 Les autres dessins déjà fournis restent conservés. Les corrections des T-shirts sur la jupe jaune sont indépendantes de ces nouvelles manches. Les anciens points non cochés restent ouverts.
 
 Validation de cette passe : 26 tests ciblés passent. Vérification des compositions dans Chrome, sans test sur iPad physique. Les T-shirts et la robe mauve restent explicitement en attente.
+
+### Quatre manches supplémentaires reçues le 11 novembre
+
+- Robe mauve à rayures : IMG_6231.png.
+- Pink Floyd : IMG_6237.png.
+- GABZILLA et Plantasia : même manche blanche IMG_6238.png.
+- DAMSON : IMG_6239.png.
+
+Ces cinq associations remplacent les découpes provisoires devant le sac crochet. Dessins conservés à leurs coordonnées originales. Les mentions d’attente dans les bilans antérieurs sont désormais résolues pour ces cinq vêtements.
