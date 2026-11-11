@@ -184,7 +184,9 @@ function create({source,changed}){
    const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
     // Skin is behind fabric, but in front of the bag. Keep the complete left
     // arm, masking shoulder straps/ruffles with their real alpha silhouette.
-    if(forearm){ctx.save();ctx.beginPath();ctx.rect(0,0,445,CH);ctx.clip();ctx.drawImage(forearm,0,0);ctx.restore();}
+    if(forearm){ctx.save();ctx.beginPath();ctx.rect(0,0,445,CH);ctx.clip();ctx.drawImage(forearm,0,0);ctx.restore();
+     // Preserve translucent fabric above the bag; restore skin only over it.
+     if(brown){ctx.globalCompositeOperation='destination-in';ctx.drawImage(brown,0,0);ctx.globalCompositeOperation='source-over';}}
     const garments=result.filter(e=>e.id&&garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z);
     for(const e of garments){
      if(sleeveless.has(e.id)||bareDresses.has(e.id)||['top-yellow','top-white','top-pink','top-dj'].includes(e.id))continue;
