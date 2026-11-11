@@ -4,7 +4,7 @@ const CW=1024,CH=1536,S=2;
 const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets','wrap'];
 const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','dress-denim','suit-paint']);
 const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
-const artistSleeves={"top-sparkle-pink":"assets/dressing-lena/IMG_6182.png","jacket-inspector":"assets/dressing-lena/IMG_6183.png","top-sparkle-charcoal":"assets/dressing-lena/IMG_6184.png","jacket-green":"assets/dressing-lena/IMG_6185.png","jacket-george-sand":"assets/dressing-lena/IMG_6186.png","jacket-purple":"assets/dressing-lena/IMG_6187.png","top-george-sand":"assets/dressing-lena/IMG_6188.png","top-inspector":"assets/dressing-lena/IMG_6189.png","top-bow-knit":"assets/dressing-lena/IMG_6190.png","top-pajama-leopard":"assets/dressing-lena/IMG_6191.png","jacket-cardigan":"assets/dressing-lena/IMG_6192.png","dress-floral":"assets/dressing-lena/IMG_6193.png","jacket-fleece":"assets/dressing-lena/IMG_6194.png","top-lime":"assets/dressing-lena/IMG_6195.png","top-pajama":"assets/dressing-lena/IMG_6196.png","jacket-striped-knit":"assets/dressing-lena/IMG_6197.png","top-peter-pan":"assets/dressing-lena/IMG_6198.png","top-bow-blouse-tucked":"assets/dressing-lena/IMG_6199.png","jacket-yukata":"assets/dressing-lena/IMG_6200.png","top-pullover":"assets/dressing-lena/IMG_6201.png","jacket-blue":"assets/dressing-lena/IMG_6202.png","top-bear":"assets/dressing-lena/IMG_6203.png","jacket-badges":"assets/dressing-lena/IMG_6204.png","jacket-ganni-knit":"assets/dressing-lena/IMG_6205.png","top-pajama-blue":"assets/dressing-lena/IMG_6206.png"};
+const artistSleeves={"top-sparkle-pink":"assets/dressing-lena/IMG_6182.png","jacket-inspector":"assets/dressing-lena/IMG_6183.png","top-sparkle-charcoal":"assets/dressing-lena/IMG_6184.png","jacket-green":"assets/dressing-lena/IMG_6185.png","jacket-george-sand":"assets/dressing-lena/IMG_6186.png","jacket-purple":"assets/dressing-lena/IMG_6187.png","top-george-sand":"assets/dressing-lena/IMG_6188.png","top-inspector":"assets/dressing-lena/IMG_6189.png","top-bow-knit":"assets/dressing-lena/IMG_6190.png","top-pajama-leopard":"assets/dressing-lena/IMG_6191.png","jacket-cardigan":"assets/dressing-lena/IMG_6192.png","dress-floral":"assets/dressing-lena/IMG_6230.png","jacket-fleece":"assets/dressing-lena/IMG_6194.png","top-lime":"assets/dressing-lena/IMG_6195.png","top-pajama":"assets/dressing-lena/IMG_6196.png","jacket-striped-knit":"assets/dressing-lena/IMG_6197.png","top-peter-pan":"assets/dressing-lena/IMG_6198.png","top-bow-blouse-tucked":"assets/dressing-lena/IMG_6199.png","jacket-yukata":"assets/dressing-lena/IMG_6200.png","suit-miffy":"assets/dressing-lena/IMG_6201.png","top-pullover":"assets/dressing-lena/IMG_6227.png","jacket-blue":"assets/dressing-lena/IMG_6202.png","top-bear":"assets/dressing-lena/IMG_6203.png","jacket-badges":"assets/dressing-lena/IMG_6204.png","jacket-ganni-knit":"assets/dressing-lena/IMG_6205.png","top-pajama-blue":"assets/dressing-lena/IMG_6206.png"};
 function canvas(){const c=document.createElement('canvas');c.width=CW;c.height=CH;return c}
 function create({source,changed}){
  const images=new Map(),profiles=new Map(),frames=new Map(),shoulders=new Map();let queued=false,lastSources="";
@@ -96,16 +96,19 @@ function create({source,changed}){
  }
  const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier']);
  function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
-  const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&!sleeveless.has(id)&&!bareDresses.has(id));
+  const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
   if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
   return remember('arms:'+src+':'+forearm+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
    // The ordinary foreground layer restores wrists and fingers only. Bare
    // upper arms already exist in the body and must never repaint over tops.
-   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?450:780);
+   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:780);
    ctx.globalCompositeOperation='destination-out';for(const id of ids){
-    const e=entries.find(e=>e.id===id);ctx.save();ctx.beginPath();
+    const e=entries.find(e=>e.id===id);
     // Only sleeves can cover arms: a dress's skirt must not erase the hands.
-    const end=s.dresses===id?800:CH;
+    const bare=sleeveless.has(id)||bareDresses.has(id)||['top-yellow','top-white','top-pink','top-dj'].includes(id);
+    const end=forearm&&bare?550:s.dresses===id?800:CH;
+    if(forearm&&['top-sparkle-pink','top-sparkle-charcoal'].includes(id))continue;
+    ctx.save();ctx.beginPath();
     let cover=e?.canvas||get(id).im;
     // Transparent sleeves already tint the base arm. Do not repaint skin
     // over them, including the small section overlapping the wrist.
@@ -179,24 +182,29 @@ function create({source,changed}){
    const forearm=hands(s,result,true);
    const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',');
    const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
-    // Redraw the left arm and its sleeves only, not the dress/torso beside it.
-    for(const e of result.filter(e=>e.part==='hands'||garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z)){
-     if(e.id&&(sleeveless.has(e.id)||bareDresses.has(e.id)))continue;
-     if(e.id&&artistSleeves[e.id]){
+    // Skin is behind fabric, but in front of the bag. Keep the complete left
+    // arm, masking shoulder straps/ruffles with their real alpha silhouette.
+    if(forearm){ctx.save();ctx.beginPath();ctx.rect(0,0,445,CH);ctx.clip();ctx.drawImage(forearm,0,0);ctx.restore();}
+    const garments=result.filter(e=>e.id&&garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z);
+    for(const e of garments){
+     if(sleeveless.has(e.id)||bareDresses.has(e.id)||['top-yellow','top-white','top-pink','top-dj'].includes(e.id))continue;
+     const exact=canvas(),m=exact.getContext('2d');
+     if(artistSleeves[e.id]){
       const sleeve=image(artistSleeves[e.id]);if(!sleeve.loaded)continue;
-      const exact=canvas(),m=exact.getContext('2d');m.drawImage(sleeve.im,0,0,CW,CH);
-      // Respect the already composed garment (collars, vest and coat masks).
-      m.globalCompositeOperation='destination-in';paint(m,e);
-      m.globalCompositeOperation='destination-out';
-      for(const above of result)if(above.z>e.z&&garmentSlots.some(k=>s[k]===above.id))paint(m,above);
-      ctx.drawImage(exact,0,0);continue;
+      m.drawImage(sleeve.im,0,0,CW,CH);
+      const visible=canvas(),v=visible.getContext('2d',{willReadFrequently:true});paint(v,e);
+      const pixels=v.getImageData(0,0,CW,CH);
+      for(let i=3;i<pixels.data.length;i+=4)if(pixels.data[i])pixels.data[i]=255;
+      v.putImageData(pixels,0,0);m.globalCompositeOperation='destination-in';m.drawImage(visible,0,0);m.globalCompositeOperation='source-over';
+     }else{
+      // Legacy sleeves pending an artist layer: do not let their torso patch
+      // reappear over an outer coat. The same occlusion applies to every layer.
+      m.save();m.beginPath();m.moveTo(0,500);m.lineTo(400,500);m.lineTo(398,580);m.lineTo(384,650);m.lineTo(365,720);m.lineTo(360,785);m.lineTo(385,855);m.lineTo(0,855);m.closePath();m.clip();
+      m.beginPath();m.rect(0,0,CW,(sleeveEnd[e.id]||1600)/S);m.clip();paint(m,e);m.restore();
      }
-     const im=e.part==='hands'?forearm:e.canvas||(e.id&&get(e.id).loaded?get(e.id).im:null);if(!im)continue;
-     ctx.save();ctx.beginPath();
-     if(e.part==='hands')ctx.rect(0,450,445,450);
-     else {ctx.moveTo(0,500);ctx.lineTo(400,500);ctx.lineTo(398,580);ctx.lineTo(384,650);ctx.lineTo(365,720);ctx.lineTo(360,785);ctx.lineTo(385,855);ctx.lineTo(0,855);ctx.closePath();}
-     ctx.clip();if(e.id){ctx.beginPath();ctx.rect(0,0,CW,(sleeveEnd[e.id]||1600)/S);ctx.clip();}
-     ctx.drawImage(im,0,0,CW,CH);ctx.restore();
+     m.globalCompositeOperation='destination-out';
+     for(const above of garments)if(above.z>e.z)paint(m,above);
+     ctx.drawImage(exact,0,0);
     }return c;});result.push({canvas:c,z:19.5,part:'bag-arm'});
   }
   // Hand-held handles go behind the original fingers.
@@ -207,3 +215,4 @@ function create({source,changed}){
 }
 window.NanaDressingGeometry={create};
 })();
+

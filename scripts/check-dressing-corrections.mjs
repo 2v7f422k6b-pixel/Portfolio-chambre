@@ -18,5 +18,5 @@ test('19 lower variants apply under all three coats and restore the original aft
  for(const [id,n]of Object.entries(env.maps.COAT_CORRECTIONS))for(const coat of ['jacket-inspector','jacket-green','jacket-george-sand',null,'jacket-fleece']){env.slots={jackets:coat};assert.equal(env.resolve(id),coat&&coat!=='jacket-fleece'?`assets/dressing-lena/corrections/Illustration_sans_titre-${n}.png`:data.fitted[id]||data.sprites[id]);}
 });
 test('crochet closed-loop charms never replace cushion bag sources',()=>{
- for(const [id,src]of Object.entries(env.maps.BAG_CHARM_FILES['bag-crochet'])){env.slots={bags:'bag-crochet'};assert.equal(env.resolve(id),src);env.slots={bags:'bag-brown'};assert.equal(env.resolve(id),data.fitted[id]||data.sprites[id]);}
+ for(const [id,src]of Object.entries(env.maps.BAG_CHARM_FILES['bag-crochet'])){env.slots={bags:'bag-crochet'};assert.equal(env.resolve(id),src);env.slots={bags:'bag-brown'};assert.equal(env.resolve(id),id==='charm-treasures'?'assets/dressing-lena/IMG_6229.png':data.fitted[id]||data.sprites[id]);}
 });

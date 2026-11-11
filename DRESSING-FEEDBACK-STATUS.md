@@ -110,3 +110,34 @@ Les cases historiques « à fournir » pour ces fichiers sont désormais satisfa
 
 Validation : 24 tests ciblés passent ; 71 compositions PNG produites dans Chrome sans erreur de génération. Contrôle visuel des variantes, sans test sur iPad physique.
 
+
+
+## Retour du 11 novembre — bras, manches et sac crochet (1/2 et 2/2)
+
+Cette section précise le statut après les captures du 11 novembre ; les points ouverts ci-dessous ne sont pas validés par les anciens bilans.
+
+- [x] Pull rose ample : remplacer la manche Miffy par la nouvelle manche IMG_6227.png.
+- [x] Combinaison Miffy : lui réattribuer sa manche IMG_6201.png devant le sac crochet.
+- [x] Robe bleue à fleurs : utiliser la manche corrigée IMG_6230.png.
+- [x] Petit trésor du sac coussin : utiliser IMG_6229.png, sans redimensionnement ni décalage propre au charm ; suivre uniquement le déplacement du sac.
+- [x] Garder séparés Petit trésor du sac crochet et Petit trésor du sac coussin.
+- [x] Empêcher les morceaux de vêtements inférieurs de passer devant les manteaux au niveau du bras et de former des rectangles.
+- [x] Respecter les bretelles et volants des robes rose à pois, vichy rose, jean boutonnée et à carreaux roses et mauves lors du passage du bras devant le sac.
+- [x] Appliquer la même protection au gilet George Sand et aux hauts sans manches.
+- [x] Dessiner la peau du bras devant le sac, puis le tissu transparent par-dessus pour les deux hauts scintillants.
+- [x] Conserver les dessins originaux et leurs coordonnées ; aucun PNG redessiné ni déformé pour ces corrections.
+
+À fournir par Léna, séparément, pour le passage devant le sac crochet :
+
+- [ ] Manche du T-shirt GABZILLA.
+- [ ] Manche du T-shirt Plantasia.
+- [ ] Manche du T-shirt Pink Floyd.
+- [ ] Manche du T-shirt DAMSON très ample.
+
+À retrouver avant de demander un nouveau dessin :
+
+- [ ] Manche séparée de la robe mauve à rayures : non identifiée dans les fichiers disponibles au commit 95ba27c. La découpe actuelle reste provisoire ; ne pas considérer ce point comme corrigé.
+
+Les autres dessins déjà fournis restent conservés. Les corrections des T-shirts sur la jupe jaune sont indépendantes de ces nouvelles manches. Les anciens points non cochés restent ouverts.
+
+Validation de cette passe : 26 tests ciblés passent. Vérification des compositions dans Chrome, sans test sur iPad physique. Les T-shirts et la robe mauve restent explicitement en attente.

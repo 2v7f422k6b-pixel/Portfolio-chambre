@@ -78,3 +78,23 @@ test('bag shoulder contact ignores gaps and isolated specks, and follows loaded 
  await geo.ready([{id:'top-bear'}],{tops:'top-bear'});
  assert.equal(geo.shoulder({tops:'top-bear'},815,760),764,'the bear hood is not a shoulder');
 });
+
+test('crochet skin is drawn before translucent fabric and shoulders respect straps',async()=>{
+ for(const id of ['dress-polka','dress-gingham','dress-denim','dress-pink-check','vest-george-sand','top-sparkle-pink','top-sparkle-charcoal']){
+  const key=id.startsWith('dress-')?'dresses':id.startsWith('vest-')?'vest':'tops';
+  const geo=fixture(),s={[key]:id,bags:'bag-crochet'},entries=[{id,z:9},{id:'bag-crochet',z:19}];
+  await geo.ready(entries,s);const arm=geo.process(entries,s).find(e=>e.part==='bag-arm');assert(arm,id);
+  const calls=arm.canvas.getContext('2d').calls;const skin=calls[0][0].getContext('2d');
+  assert(skin.calls.some(c=>c[0]?.src?.endsWith('IMG_5495.png')),'skin precedes fabric');
+  if(id.includes('sparkle'))assert(!skin.calls.some(c=>c[0]?.src===id),'transparent fabric must not erase skin');
+  else assert(skin.rects.some(r=>r[3]===550),'straps mask the upper arm only');
+ }
+});
+test('pink pullover and Miffy load distinct artist sleeves',async()=>{
+ for(const [id,file] of [['top-pullover','IMG_6227.png'],['suit-miffy','IMG_6201.png'],['dress-floral','IMG_6230.png']]){
+  const geo=fixture(),s={tops:id,bags:'bag-crochet'},entries=[{id,z:9},{id:'bag-crochet',z:19}];await geo.ready(entries,s);
+  const arm=geo.process(entries,s).find(e=>e.part==='bag-arm');
+  const sleeves=arm.canvas.getContext('2d').calls.slice(1);
+  assert(sleeves.some(c=>c[0].getContext('2d').calls.some(d=>d[0]?.src?.endsWith(file))),id);
+ }
+});
