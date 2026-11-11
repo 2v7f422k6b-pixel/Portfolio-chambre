@@ -588,7 +588,37 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
   </style>
 <link rel="stylesheet" href="nana-looks.css?v=20261110-looks-1">
 <link rel="stylesheet" href="nana-navigation.css?v=20261111-layout-2">
-<style id="work-ie-icon-style">#work-desktop .work-ie-icon{display:block;width:100%;height:100%;object-fit:contain}#work-desktop .desktop-folder:has(.work-ie-icon) .folder-tile{background:transparent!important;padding:0!important;border:0!important;box-shadow:none!important}</style></head>
+<style id="work-ie-icon-style">
+#work-desktop .work-ie-icon{display:block;width:100%;height:100%;object-fit:contain}
+/* Match the specificity of the shared folder artwork, including its layout wrapper. */
+html body #work-desktop .work-desk-layout .desktop-folder .folder-tile.work-browser-tile,
+html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
+  background:none!important;padding:0!important;border:0!important;box-shadow:none!important;
+}
+</style>
+<style id="touch-page-surface-20261111">
+/* Keep touch scrolling inside the room/windows, not the pink document canvas.
+   Do not restrict native pinch zoom or the welcome screen's own scrolling. */
+@media (any-pointer:coarse){
+  html:has(#desktop:not([hidden])),
+  html body:has(#desktop:not([hidden])){
+    overflow:hidden!important;overscroll-behavior:none!important;
+  }
+  html body:has(#desktop:not([hidden])){
+    position:fixed!important;inset:0!important;width:100%!important;height:100%!important;
+  }
+  html body #app #desktop{
+    overscroll-behavior:none!important;
+  }
+  html body #app :is(#work-desktop,#play-viewport){
+    overscroll-behavior:none!important;
+  }
+  /* WebKit can leave unpainted rectangular tiles behind translucent fixed UI. */
+  html body #app :is(#dock,.player,#window-shade,#special-shade){
+    -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  }
+}
+</style></head>
 <body>
   <div id="app" class="mode-select">
     <section id="welcome" aria-labelledby="welcome-heading">
@@ -790,7 +820,7 @@ html body #app #special-shade #special-window:is(:has(.phone-device),:has(.tama-
           <button data-open="motion" class="desktop-folder"><span class="folder-tile lavender">▶</span><span>Animations</span></button>
           <button data-open="pages" class="desktop-folder"><span class="folder-tile apricot">▤</span><span>Writing & Editorial</span></button>
           <button data-open="mini-games" class="desktop-folder mini-games-folder"><span class="folder-tile">✦</span><span>Mini Games</span></button>
-          <button data-open="about" class="desktop-folder"><span class="folder-tile mint"><img src="assets/blog/IMG_6294.png" alt="" class="work-ie-icon"></span><span>About</span></button>
+          <button data-open="about" class="desktop-folder"><span class="folder-tile mint work-browser-tile"><img src="assets/blog/IMG_6294.png" alt="" class="work-ie-icon"></span><span>About</span></button>
           <button data-open="contact" class="desktop-folder"><span class="folder-tile pale">✉</span><span>Contact</span></button>
         </div>
         <button id="back-to-room" class="back-room">← Back to my room</button>
