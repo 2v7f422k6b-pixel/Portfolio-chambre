@@ -34,7 +34,7 @@
 })();
 
 /* Pinch embedded windows independently of the room. The iframe keeps its
-   layout size; only its painted content is magnified, below the close bar. */
+   layout size; only its inner document is magnified, below the close bar. */
 (() => {
   'use strict';
   const host=document.getElementById('special-host');
@@ -46,22 +46,27 @@
     if(installed.has(doc))return;
     installed.add(doc);
     let scale=1,x=0,y=0,gesture=null,moved=false;
-    const point=t=>({x:t.screenX,y:t.screenY});
+    const point=t=>({x:t.clientX,y:t.clientY});
     const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
     const midpoint=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
     function paint(){
       x=Math.min(0,Math.max(frame.offsetWidth*(1-scale),x));
       y=Math.min(0,Math.max(frame.offsetHeight*(1-scale),y));
-      frame.style.transformOrigin='0 0';
-      frame.style.transform=scale===1?'':`translate(${x}px,${y}px) scale(${scale})`;
+      // Keep the iframe viewport stationary. Transforming the iframe itself
+      // can expose unpainted tiles in WebKit after pinch/rotation.
+      frame.style.removeProperty('transform');
+      doc.body.style.transformOrigin='0 0';
+      doc.body.style.transform=scale===1?'':`translate(${x}px,${y}px) scale(${scale})`;
+      doc.documentElement.style.overflow=scale===1?'':'hidden';
       host.style.overflow=scale===1?'':'hidden';
     }
-    function begin(e){      if(e.touches.length===1)moved=false;
+    function begin(e){      if(e.target.closest?.('.bag-adjusting #avatar'))return;
+      if(e.touches.length===1)moved=false;
       if(e.touches.length===2){
         const a=point(e.touches[0]),b=point(e.touches[1]);
-        // client coordinates are in the untransformed iframe's coordinate space.
-        const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
-        const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+        // Coordinates are in the stable iframe viewport; invert the content zoom.
+        const cx=((a.x+b.x)/2-x)/scale;
+        const cy=((a.y+b.y)/2-y)/scale;
         gesture={kind:'pinch',distance:distance(a,b),mid:midpoint(a,b),scale,x,y,cx,cy};
         moved=true;e.preventDefault();e.stopImmediatePropagation();
       }else if(e.touches.length===1&&scale>1){
@@ -88,6 +93,7 @@
       gesture=null;
       if(e.touches.length)begin(e);
     }
+    window.addEventListener('resize',paint,{passive:true});
     const options={capture:true,passive:false};
     doc.addEventListener('touchstart',begin,options);
     doc.addEventListener('touchmove',move,options);

@@ -198,3 +198,15 @@ Chemise George Sand raccourcie sous GANNI : piste à vérifier, pas une demande 
 - Aperçus contrôlés dans Chrome : GANNI avec les trois blouses, Shining, yukata, redingote, salopette avec soutien-gorge rose, haut transparent rose, ourson avec manteau vert, écussons.
 - Pas encore de validation sur un iPad physique.
 - La chemise George Sand laisse encore une petite pointe blanche sous GANNI avec la jupe jaune : ce point reste ouvert, sans déclarer le dessin à refaire obligatoirement.
+
+
+## Suite du 11 novembre — réglage visuel et fenêtres iPad
+- [ ] Léna raccourcit elle-même la chemise George Sand sous GANNI. Ne plus tenter de découpe automatique pour ce point.
+- [x] Mode « Ajuster le sac » : glisser, flèches à trois précisions, superpositions en transparence, comparaison originale, annuler, remettre à zéro.
+- [x] Réglages locaux distincts pour chaque sac et combinaison de hauts ; accessoires déplacés avec le sac ; réglage conservé dans les looks/PNG.
+- [x] Export JSON des positions pour intégration ultérieure au site.
+- [x] Ne plus transformer l’iframe entière pendant le zoom ; agrandir son contenu dans un cadre stable.
+- [x] Retirer le flou derrière les fenêtres sur les écrans tactiles.
+- [ ] Confirmer sur iPad que les zones roses ne réapparaissent plus : défaut intermittent non reproduit dans Chrome distant. Les changements de zoom/flou sont une mitigation, pas une cause matériellement confirmée.
+
+Validation : déplacement direct, flèches, annulation et sauvegarde après rechargement vérifiés dans Chrome. Tests de déplacement solidaire sac/accessoires, isolation des réglages, restauration de looks et zoom intérieur avec retour à 100 %. Les fichiers PNG restent intacts.

@@ -159,3 +159,11 @@ html body #window-shade .atelier-about-copy .info-box.sketch-ui-frame::after{
   border:0!important;
 }
 
+
+/* Avoid a backdrop compositor behind scrolling/zoomed windows on touch devices.
+   Keep the existing shade; only the expensive background blur is removed. */
+@media (hover:none) and (pointer:coarse){
+ html body :is(#window-shade,#special-shade,#coloring-overlay,#nana-dreamlab-overlay){
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+ }
+}
