@@ -1,4 +1,4 @@
-/* Shared window bounds: measure the navigation instead of assuming its height. */
+/* The desktop uses layout dimensions; dialogs use the keyboard-visible area. */
 (() => {
   'use strict';
   const root=document.documentElement;
@@ -10,6 +10,11 @@
   }
   function update(){
     queued=false;
+    // Fixed inset surfaces and dvh can update at different times on iOS.
+    // Give the desktop one explicit layout height, never the keyboard/pinch
+    // visual viewport. The room and dock are sized inside that same surface.
+    const layoutHeight=Math.max(root.clientHeight||0,window.innerHeight||0);
+    if(layoutHeight>0)set('--nana-layout-height',layoutHeight);
     const viewport=window.visualViewport;
     // Pinch zoom should magnify the page, not shrink its windows again.
     const useVisual=viewport&&Math.abs(viewport.scale-1)<.01;

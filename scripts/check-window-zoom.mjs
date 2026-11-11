@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 test('pinch magnifies inner content, leaves iframe viewport stationary and resets cleanly',()=>{
  const listeners={},style=()=>({removeProperty(k){delete this[k]}}),body={style:style()},doc={body,documentElement:{style:style()},addEventListener(k,f){listeners[k]=f}};
- const frame={style:style(),offsetWidth:800,offsetHeight:600,contentDocument:doc,dataset:{},addEventListener(){}};
+ const frame={style:style(),offsetWidth:800,offsetHeight:600,contentDocument:doc,dataset:{},getAttribute:()=> 'dreamlab.html',addEventListener(){}};
  const host={style:style(),querySelectorAll:()=>[frame],querySelector:()=>frame};
  const context={document:{getElementById:()=>host},window:{addEventListener(){}},MutationObserver:class{observe(){}}};
  const src=readFileSync(new URL('../window-bounds.js',import.meta.url),'utf8');vm.runInNewContext(src.slice(src.indexOf('/* Pinch embedded')),context);

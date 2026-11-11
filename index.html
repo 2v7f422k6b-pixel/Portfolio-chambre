@@ -52,7 +52,7 @@
   <link rel="stylesheet" href="heart-theme.css?v=remove-pseudo-hearts-2">
   <link rel="stylesheet" href="sketch-ui.css?v=20261106-motion-alignment-1">
 <link rel="stylesheet" href="window-system.css?v=20261111-touch-paint-2">
-<script src="window-bounds.js?v=20261111-native-dressing-3" defer></script>
+<script src="window-bounds.js?v=20261112-layout-height-1" defer></script>
 <link rel="stylesheet" href="window-chrome.css?v=20261108-routes">
 <link id="nana-complete-lines-style" rel="stylesheet" href="sketch-lines.css?v=20261105-all-lines-2">
 <script src="window-chrome.js?v=20261108-routes" defer></script>
@@ -60,11 +60,6 @@
 
   <style id="latte-frame-style">.latte-frame{display:block;width:min(860px,94vw);height:min(540px,88dvh);max-height:88dvh;border:0;background:transparent}
   @media(max-width:700px){.latte-frame{height:min(720px,88dvh)}}
-/* Keep the illustrated room and its SVG hotspots in the same fixed ratio. */
-#play-viewport { justify-content: center; align-items: center; }
-#play-scene { width: min(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); height: auto; aspect-ratio: 1670 / 942; flex: none; margin: 0 auto; }
-#room-img, #room-night { width: 100%; height: 100%; object-fit: contain; }
-
 /* For PNG-backed objects, show true alpha boundaries rather than coarse SVG polygons. */
 #hotspots.hotspot-guide-on polygon:is([data-open="work-zoom"],[data-open="gabzilla"],[data-open="music"],[data-open="phone"],[data-open="tamagotchi"],[data-open="latte"],[data-open="book"],[data-open="about"],[data-open="contact"],[data-mv-open],[data-cat-pet]),
 #hotspots.hotspot-peek polygon:is([data-open="work-zoom"],[data-open="gabzilla"],[data-open="music"],[data-open="phone"],[data-open="tamagotchi"],[data-open="latte"],[data-open="book"],[data-open="about"],[data-open="contact"],[data-mv-open],[data-cat-pet]) { stroke:transparent !important; fill:transparent !important; filter:none !important; }
@@ -124,38 +119,10 @@
   </style>
 
   <style id="new-room-day-hotspots">
-    /* New front, 1670 × 942, with interactive artworks in illustrated frames. */
-    /* On computers, fill the entire space below the menu bar.
-       The coffee table has been moved farther back, so it stays visible.
-       Scale the artwork and SVG in the same geometry to keep every hotspot aligned. */
-    #play-scene {
-      aspect-ratio: 1670 / 942;
-      width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942));
-    }
-    @media (min-width: 761px) and (hover: hover) {
-      #play-viewport {
-        justify-content: flex-start;
-        align-items: stretch;
-        overflow: hidden;
-        background: transparent;
-      }
-      #play-scene {
-        width: 100%;
-        height: 100%;
-        aspect-ratio: auto;
-        margin: 0;
-      }
-      #room-img, #room-night {
-        width: 100%;
-        height: 100%;
-        object-fit: fill;
-      }
-    }
     #hotspots .poster-artworks, #hotspots .poster-artwork { pointer-events: none; }
     #hotspots .poster-artwork { image-rendering: auto; }
-    @media (max-width: 760px) { #play-scene { width: max(900px, 100vw, calc((100dvh - var(--menubar)) * 1670 / 942)); } }
   </style>
-  <link rel="stylesheet" href="portfolio-layout.css?v=20261106-ipad-viewport-1">
+  <link rel="stylesheet" href="portfolio-layout.css?v=20261112-layout-height-1">
 
 
 
@@ -170,44 +137,33 @@
   <link rel="stylesheet" href="work-break-typewriter.css?v=20261106-restore-outline-3">
 
 <style id="room-pan-scroll-fix-20261103">
-/* Restore native two-axis exploration while keeping the image and SVG in sync. */
-#app.mode-play #play-viewport,
-#desktop #play-viewport:not([hidden]) {
-  overflow-x:auto !important;
-  overflow-y:auto !important;
-  justify-content:flex-start !important;
-  align-items:flex-start !important;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
-  touch-action:pan-x pan-y pinch-zoom;
-}
-#play-viewport #play-scene {
-  flex:0 0 auto !important;
-  margin:0 !important;
-  min-width:100% !important;
+/* One layout surface for Play and Work. Keyboard visibility changes dialog
+   bounds, not the size of the room underneath them. */
+html body #desktop {
+  height:var(--nana-layout-height,100dvh) !important;
 }
 #play-viewport #hotspots {touch-action:pan-x pan-y pinch-zoom;}
-
-/* Keep the room in its own scroll box. Flex sizing could clamp its
-   vertical scroll range before the bottom of the illustration. */
 #app.mode-play #play-viewport {
   display: block !important;
   overflow-x: auto !important;
   overflow-y: auto !important;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action:pan-x pan-y pinch-zoom;
+  padding-bottom:0 !important;
 }
 #app.mode-play #play-viewport > #play-scene {
   display: block !important;
-  width: max(100vw, calc((100dvh - var(--menubar)) * 1670 / 942)) !important;
+  width: max(100vw, calc((var(--nana-layout-height,100dvh) - var(--menubar)) * 1670 / 942)) !important;
   height: auto !important;
-  min-height: 56.40718563vw !important;
+  min-width:100% !important;
   max-height: none !important;
   aspect-ratio: 1670 / 942 !important;
   margin: 0 !important;
 }
-/* The scene ends exactly at the image edge: no empty dark band below it. */
-#app.mode-play #play-viewport { padding-bottom: 0 !important; }
+@media (any-pointer:coarse) {
+  html body #desktop > #dock {position:absolute !important;}
+}
 </style>
 
 <style id="nana-night-decor">
