@@ -473,8 +473,9 @@ if(scarf)for(const entry of entries){
 if(slots.jackets==='jacket-badges')entries.push({canvas:badgeFrame(),z:13});
 for(const entry of entries)if(entry.id&&!entry.canvas){
  const src=correctedSource(entry.id);if(src!==(FITTED[entry.id]||SPRITES[entry.id]))entry.src=src;
- // These charms were drawn at the crochet zip: only follow the bag's movement.
- if(entry.id===slots.bagAccessories&&BAG_CHARM_FILES[slots.bags]?.[entry.id])entry.fit=entry.id==='charm-treasures'?{sx:.5,sy:.5,ox:945,oy:1100,dx:-110+bag.crochet.dx,dy:137+bag.crochet.dy}:{sx:1,dx:bag.crochet.dx,dy:bag.crochet.dy};
+ // Preserve each artist-drawn attachment point: treasures hangs from the handle,
+ // the other charms from the zip. Only follow the whole bag's movement.
+ if(entry.id===slots.bagAccessories&&BAG_CHARM_FILES[slots.bags]?.[entry.id])entry.fit={sx:1,dx:bag.crochet.dx,dy:bag.crochet.dy};
 }
 return entries.sort((a,b)=>a.z-b.z);
 }

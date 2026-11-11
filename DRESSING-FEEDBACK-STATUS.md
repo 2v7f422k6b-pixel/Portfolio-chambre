@@ -63,7 +63,7 @@ La précision de Léna prévaut : les hauts raccourcis sont pour la **jupe jaune
 
 - [x] 19 variantes de bas/robes/salopette utilisées sous le trench, le manteau vert et le manteau George Sand ; dessins originaux conservés sans ces manteaux.
 - [x] GANNI, DAMSON, Gabzilla, Plantasia et Pink Floyd corrigés uniquement avec la jupe jaune.
-- [x] Sac crochet avec zip, six sources de charms dédiées ; bijoux du sac coussin inchangés. Bijou perlé réduit uniformément et rattaché au zip.
+- [x] Sac crochet avec zip, six sources de charms dédiées ; bijoux du sac coussin inchangés. Petit trésor conservé à sa taille et à sa position dessinées sur l’anse ; seul le déplacement global du sac est appliqué.
 - [x] Mannequin chauve tatoué avec les trois chapeaux + cheveux fournis et les oreilles Sonny Angel.
 - [x] Suppression de la découpe automatique des cheveux pour ces trois chapeaux.
 - [x] Cache de composition invalidé au changement de variante ; mêmes identifiants pour les looks et même composition pour l’export PNG.
