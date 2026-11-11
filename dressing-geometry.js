@@ -186,7 +186,14 @@ function create({source,changed}){
     // arm, masking shoulder straps/ruffles with their real alpha silhouette.
     if(forearm){ctx.save();ctx.beginPath();ctx.rect(0,0,445,CH);ctx.clip();ctx.drawImage(forearm,0,0);ctx.restore();
      // Preserve translucent fabric above the bag; restore skin only over it.
-     if(brown){ctx.globalCompositeOperation='destination-in';ctx.drawImage(brown,0,0);ctx.globalCompositeOperation='source-over';}}
+     if(brown){
+      // Coverage is a binary mask: the bag's translucent pixels must not
+      // reduce the opacity of the skin drawn over them.
+      const coverage=canvas(),bc=coverage.getContext('2d',{willReadFrequently:true});
+      bc.drawImage(brown,0,0);const px=bc.getImageData(0,0,CW,CH);
+      for(let i=3;i<px.data.length;i+=4)if(px.data[i])px.data[i]=255;
+      bc.putImageData(px,0,0);ctx.globalCompositeOperation='destination-in';ctx.drawImage(coverage,0,0);ctx.globalCompositeOperation='source-over';
+     }}
     const garments=result.filter(e=>e.id&&garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z);
     for(const e of garments){
      if(sleeveless.has(e.id)||bareDresses.has(e.id)||['top-yellow','top-white','top-pink','top-dj'].includes(e.id))continue;

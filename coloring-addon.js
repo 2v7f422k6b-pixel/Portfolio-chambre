@@ -26,7 +26,7 @@ overlay.innerHTML='<section class="coloring-panel" role="dialog" aria-modal="tru
 document.body.append(overlay);
 let previousFocus=null;
 function syncTitle(){let lang="fr";try{lang=localStorage.getItem("portfolio-language-v2")==="en"?"en":"fr"}catch(_){}document.getElementById("coloring-title").textContent=lang==="fr"?"Coloriage":"Coloring Book";document.getElementById("coloring-close").setAttribute("aria-label",lang==="fr"?"Fermer le livre de coloriage":"Close Coloring Book")}
-function open(){window.NanaAnalytics?.startActivity('coloring');previousFocus=document.activeElement;syncTitle();overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
+function open(){window.NanaProgress?.visit('jeu/coloring');window.NanaAnalytics?.startActivity('coloring');previousFocus=document.activeElement;syncTitle();overlay.hidden=false;document.getElementById("coloring-close").focus({preventScroll:true})}
 function close(){if(overlay.hidden)return;window.NanaAnalytics?.endActivity('coloring');overlay.hidden=true;if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true})}
 window.NanaColoring={open,close};
 document.addEventListener("click",function(e){const trigger=e.target.closest('[data-open="coloring"]');if(!trigger)return;e.preventDefault();e.stopImmediatePropagation();open()},true);
