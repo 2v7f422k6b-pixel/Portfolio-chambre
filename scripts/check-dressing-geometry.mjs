@@ -98,3 +98,24 @@ test('pink pullover and Miffy load distinct artist sleeves',async()=>{
   assert(sleeves.some(c=>c[0].getContext('2d').calls.some(d=>d[0]?.src?.endsWith(file))),id);
  }
 });
+
+test('adjusted bags retain their full outline outside the garment shoulder',async()=>{
+ for(const bag of ['bag-crochet','bag-brown']){
+  const geo=fixture(),s={jackets:'jacket-george-sand',bags:bag};
+  const parts=bag==='bag-crochet'?[{id:bag,z:19,fit:{sx:1,dx:74,dy:-149}}]:[
+   {src:'assets/dressing-lena/IMG_5544.png',z:19,fit:{sx:1,dx:74,dy:-149}},
+   {src:'assets/dressing-lena/IMG_5545.png',z:19,fit:{sx:1,dx:74,dy:-149}}];
+  const entries=[{id:s.jackets,z:12},...parts];await geo.ready(entries,s);
+  const result=geo.process(entries,s),layer=result.find(e=>e.part===bag),ctx=layer.canvas.getContext('2d');
+  assert.equal(ctx.calls.length,parts.length,'only bag artwork is drawn; no body/coat clipping mask');
+  assert.notEqual(ctx.globalCompositeOperation,'destination-in');
+  assert(result.some(e=>e.part==='hands'),'hands are still composed separately');
+  if(bag==='bag-crochet'){
+   const arm=result.find(e=>e.part==='bag-arm');
+   const moved=entries.map(e=>e.id===bag?{...e,fit:{...e.fit,dx:140}}:e);
+   const next=geo.process(moved,s).find(e=>e.part==='bag-arm');
+   assert.notEqual(next.canvas,arm.canvas,'skin coverage is recalculated after moving the bag');
+   assert(next.z>layer.z,'arm stays in front of the bag');
+  }
+ }
+});

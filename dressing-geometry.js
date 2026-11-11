@@ -131,11 +131,12 @@ function create({source,changed}){
   const points=e.localClip||e.clip;if(points){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x/S,y/S):ctx.moveTo(x/S,y/S));ctx.closePath();ctx.clip();}ctx.drawImage(im,0,0,CW,CH);ctx.restore();
  }
  function shoulderBag(entries,s){if(!['bag-brown','bag-crochet'].includes(s.bags))return null;
-  const parts=entries.filter(e=>e.src?.includes('IMG_554')||e.id==='bag-crochet');if(garmentSlots.some(k=>s[k]&&!get(s[k]).loaded)||parts.some(e=>!(e.id?get(e.id):image(e.src)).loaded)||!image('assets/dressing-lena/IMG_5993.png').loaded)return null;
-  return remember('shoulder-bag:'+JSON.stringify([s,parts.map(e=>e.fit)]),()=>{const c=canvas(),ctx=c.getContext('2d');parts.forEach(e=>paint(ctx,e));
-   const mask=canvas(),m=mask.getContext('2d');m.drawImage(image('assets/dressing-lena/IMG_5993.png').im,0,0,CW,CH);
-   for(const e of entries)if(garmentSlots.some(k=>s[k]===e.id))paint(m,e);
-   m.fillRect(0,440,CW,CH-440);ctx.globalCompositeOperation='destination-in';ctx.drawImage(mask,0,0);return c;
+  const parts=entries.filter(e=>e.src?.includes('IMG_554')||e.id==='bag-crochet');
+  if(parts.some(e=>!(e.id?get(e.id):image(e.src)).loaded))return null;
+  // Bags retain their whole silhouette, including above/outside the shoulder.
+  // Foreground skin and sleeves are composed separately after this layer.
+  return remember('shoulder-bag:'+JSON.stringify([s,parts.map(e=>e.fit)]),()=>{
+   const c=canvas(),ctx=c.getContext('2d');parts.forEach(e=>paint(ctx,e));return c;
   });
  }
  function bodyFrame(e,s,outer){if(!image(e.src).loaded)return null;
@@ -183,7 +184,7 @@ function create({source,changed}){
   }
   if(s.bags==='bag-crochet'&&hand){
    const forearm=hands(s,result,true);
-   const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',');
+   const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',')+':'+JSON.stringify(entries.filter(e=>e.id===s.bags).map(e=>e.fit));
    const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
     // Skin is behind fabric, but in front of the bag. Keep the complete left
     // arm, masking shoulder straps/ruffles with their real alpha silhouette.
