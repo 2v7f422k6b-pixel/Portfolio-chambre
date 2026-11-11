@@ -44,7 +44,7 @@
     if(renderer)return renderer;
     renderer=new Promise((resolve,reject)=>{
       const frame=document.createElement('iframe');frame.hidden=true;frame.inert=true;frame.setAttribute('aria-hidden','true');frame.tabIndex=-1;
-      frame.src='about-me.html?v=20261110-looks-1&look-preview=1';
+      frame.src='about-me.html?v=20261112-resources-1&look-preview=1';
       const timer=setTimeout(()=>{frame.remove();renderer=null;reject(new Error('preview timeout'));},30000);
       frame.onload=()=>{const api=frame.contentWindow.NanaDressing;if(api){clearTimeout(timer);resolve(api);}else{clearTimeout(timer);frame.remove();renderer=null;reject(new Error('preview unavailable'));}};
       document.body.append(frame);

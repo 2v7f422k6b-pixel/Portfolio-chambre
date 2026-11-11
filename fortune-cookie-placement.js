@@ -25,7 +25,10 @@
   function save(){try{localStorage.setItem(key,JSON.stringify(position));}catch(_){}}
   function element(tag,attrs={}) {
     const el=document.createElementNS(NS,tag);
-    for(const [name,value] of Object.entries(attrs))el.setAttribute(name,String(value));
+    for(const [name,value] of Object.entries(attrs)){
+      if(tag==='image'&&name==='href'&&window.NanaResources)window.NanaResources.setSource(el,String(value));
+      else el.setAttribute(name,String(value));
+    }
     return el;
   }
 

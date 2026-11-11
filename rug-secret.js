@@ -9,7 +9,12 @@
   const NS='http://www.w3.org/2000/svg';
   const make=(tag,attrs={})=>{
     const n=document.createElementNS(NS,tag);
-    Object.entries(attrs).forEach(([name,value])=>n.setAttribute(name,String(value)));
+    Object.entries(attrs).forEach(([name,value])=>{
+      if(tag==='image'&&name==='href'&&window.NanaResources){
+        const theme=String(attrs.class).endsWith('-night')?'night':'day';
+        window.NanaResources.setSource(n,String(value),{theme});
+      }else n.setAttribute(name,String(value));
+    });
     return n;
   };
 
@@ -126,7 +131,7 @@
   // The file starts with 800 ms of silence, matching the spider's entrance.
   // Start playback inside the click/key gesture so it also works on iOS.
   const scream=new Audio('assets/audio/spider-scream.mp3?v=lena-upload-20261109');
-  scream.preload='auto';
+  scream.preload='none';
   scream.volume=.55;
   function stopScream(){
     scream.pause();

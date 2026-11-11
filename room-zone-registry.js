@@ -181,8 +181,7 @@
   }
   function broadcast(){window.dispatchEvent(new Event('nana-room-zones-ready'));}
   function loadZone(zone){
-    const img=new Image();img.decoding='async';
-    img.onload=()=>{
+    const prepare=img=>{
       const hit=boundsFromAlpha(img);
       if(!hit)return;
       zone.center=hit.center;
@@ -209,6 +208,11 @@
       }
       broadcast();
     };
+    if(window.NanaResources){
+      window.NanaResources.enqueueImage('play','assets/'+encodeURIComponent(zone.file),prepare);
+      return;
+    }
+    const img=new Image();img.decoding='async';img.onload=()=>prepare(img);
     img.onerror=()=>{console.warn('Missing room object zone:',zone.file);};
     img.src='assets/'+encodeURIComponent(zone.file);
   }

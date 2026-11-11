@@ -622,7 +622,8 @@
     el.setAttribute('x',x-r);el.setAttribute('y',y-r);
     el.setAttribute('width',r*2);el.setAttribute('height',r*2);
     el.setAttribute('transform',`rotate(${rotation} ${x} ${y})`);
-    el.setAttribute('href','assets/drawn-ui/etoile_mur.png');
+    if(window.NanaResources)window.NanaResources.setSource(el,'assets/drawn-ui/etoile_mur.png');
+    else el.setAttribute('href','assets/drawn-ui/etoile_mur.png');
   };
   const palette=['#ff9acb','#ffe58b','#a6e4ff','#d4a7ff','#b9e6a0','#ffb99d'];
   // PNGs use their own colour unless their alpha is painted with the wall palette.

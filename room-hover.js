@@ -9,11 +9,14 @@
   const NS = 'http://www.w3.org/2000/svg';
   function element(tag, attrs = {}) {
     const node = document.createElementNS(NS, tag);
-    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    for(const [key,value] of Object.entries(attrs)){
+      if(tag==='image'&&key==='href'&&!String(value).startsWith('data:')&&window.NanaResources)window.NanaResources.setSource(node,String(value));
+      else node.setAttribute(key,String(value));
+    }
     return node;
   }
   const overlay = element('svg', {
-    id: 'pixel-outline-overlay', viewBox: `0 0 ${W} ${H}`,
+    id: 'pixel-outline-overlay', 'data-nana-load-ignore':'', viewBox: `0 0 ${W} ${H}`,
     preserveAspectRatio: 'none', 'aria-hidden': 'true', 'pointer-events': 'none'
   });
   Object.assign(overlay.style, {

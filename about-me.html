@@ -1,4 +1,5 @@
 <!doctype html><html lang="fr"><head>
+<script src="resource-loading.js?v=20261112-resources-1"></script>
 <script src="nana-analytics-config.js?v=20261110-stats-1"></script>
 <script src="nana-analytics-catalog.js?v=20261110-selected-1"></script>
 <script src="nana-analytics.js?v=20261110-selected-1"></script>
@@ -204,9 +205,9 @@ html body.has-saved-looks header.top .actions{width:100%;justify-content:flex-en
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
 <script src="dressing-geometry.js?v=20261111-free-bag-7"></script>
-<link rel="stylesheet" href="sketch-ui.css?v=20261110-looks-1">
+<link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
-<script src="nana-looks.js?v=20261110-selected-1"></script>
+<script src="nana-looks.js?v=20261112-resources-1"></script>
 <script src="nana-dressing-looks.js?v=20261111-families-2"></script>
 <script>
 (()=>{
@@ -614,12 +615,12 @@ CATALOG_IMAGES['top-bow-blouse-tucked']=[FITTED['top-bow-blouse-tucked'],THUMBNA
 function itemThumbnail(id){
 const catalogue=CATALOG_IMAGES[id],src=catalogue?catalogue[0]:(SPRITES[id]||FITTED[id]);
 const box=catalogue?catalogue[1]:THUMBNAILS[id];
-if(!box){const im=document.createElement('img');im.src=src;im.alt='';im.loading='lazy';return im;}
+if(!box){const im=document.createElement('img');im.alt='';im.loading='lazy';window.NanaResources.lazySource(im,src);return im;}
 const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),im=document.createElementNS(ns,'image');
 svg.setAttribute('viewBox',box.join(' '));svg.setAttribute('class','garment-thumbnail');svg.setAttribute('aria-hidden','true');
-im.setAttribute('href',src);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
+window.NanaResources.lazySource(im,src,svg);im.setAttribute('width','2048');im.setAttribute('height','3072');svg.appendChild(im);return svg;
 }
-function renderItems(){const target=$('#items');target.textContent='';target.className=activeTab==='sets'?'presets':'items';
+function renderItems(){const target=$('#items');target.textContent='';window.NanaResources.pruneLazy();target.className=activeTab==='sets'?'presets':'items';
 if(activeTab==='badges'){renderBadges(target);window.NanaDressingUI?.paginate();return}
 if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.disabled=!presetUnlocked(p);const name=document.createElement('strong');name.textContent=presetText(p,'title');const rule=document.createElement('small');rule.textContent=(b.disabled?bilingual('À débloquer · ','To unlock · '):'')+presetText(p,'desc');b.append(name,document.createElement('br'),rule);b.addEventListener('click',()=>{applyPreset(i);progress?.feat('outfit-styled')});target.appendChild(b)}window.NanaDressingUI?.paginate();return}
 for(const [id,meta] of itemsIn(activeTab)){const locked=!itemUnlocked(id);const b=document.createElement('button');b.className='item'+(selected(id)?' active':'')+(locked?' item-locked':'');b.type='button';b.disabled=locked;b.title=locked?itemReward(id)?.rule[document.documentElement.lang==='en'?'en':'fr']:translate(meta[0]);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=locked?bilingual('À débloquer','To unlock'):translate(meta[0]);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
@@ -627,7 +628,7 @@ if(!target.children.length)target.textContent='Bientôt disponible.';window.Nana
 function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='accessories'?bilingual('ACCESSOIRES','ACCESSORIES'):key==='jumpsuits'?bilingual('COMBINAISONS','JUMPSUITS'):key==='hosiery'?bilingual('BAS','HOSIERY'):key==='scarves'?(document.documentElement.lang==='en'?'SCARVES':'ÉCHARPES'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
 function select(id){if(!slotFor(id)||!itemUnlocked(id))return;progress?.feat('outfit-styled');clownActive=false;rules.choose(slots,id,ITEMS);render()}
 function applyPreset(i){if(!presets[i]||!presetUnlocked(presets[i]))return;clownActive=i===2;for(const key of allSlots)slots[key]=null;slots.makeup.clear();for(const id of Object.values(presets[i].values)){const key=slotFor(id);if(key)slots[key]=id;}rules.normalize(slots);for(const id of presets[i].makeup||[])slots.makeup.add(id);render()}
-function render(){for(const key of allSlots){const id=slots[key],actual=id&&slotFor(id);if(actual&&actual!==key){slots[key]=null;slots[actual]=id;}}rules.normalize(slots);bagEditor?.update();renderAvatar();renderItems();window.NanaDressingUI?.changed()}
+function render(){for(const key of allSlots){const id=slots[key],actual=id&&slotFor(id);if(actual&&actual!==key){slots[key]=null;slots[actual]=id;}}rules.normalize(slots);bagEditor?.update();window.NanaViewReady=renderAvatar();renderItems();window.NanaDressingUI?.changed()}
 function toast(message){let e=$('#toast');e.textContent=message;e.hidden=false;clearTimeout(window.aboutToast);window.aboutToast=setTimeout(()=>e.hidden=true,2600)}
 $('#reset').addEventListener('click',()=>applyPreset(0));
 $('#random').addEventListener('click',()=>{const pick=a=>a[Math.floor(Math.random()*a.length)];clownActive=false;for(const key of allSlots)slots[key]=null;slots.makeup.clear();if(Math.random()<.25){slots.dresses=pick(itemsForSlot('dresses').map(x=>x[0]))}else{slots.tops=pick(itemsForSlot('tops').map(x=>x[0]));{const chosenBottom=Math.random()<.45?'skirts':'pants';slots[chosenBottom]=pick(itemsForSlot(chosenBottom).map(x=>x[0]))}}slots.shoes=pick(itemsForSlot('shoes').map(x=>x[0]));if(Math.random()<.6)slots.jackets=pick(itemsForSlot('jackets').map(x=>x[0]));if(Math.random()<.5)slots.hat=pick(['head-cap','head-beret']);if(Math.random()<.5)slots.bags='bag-brown';if(slots.bags&&Math.random()<.5)slots.bagAccessories=pick(itemsForSlot('bagAccessories').map(x=>x[0]));render()});

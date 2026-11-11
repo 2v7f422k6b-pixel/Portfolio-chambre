@@ -60,9 +60,8 @@
   let next = 0, active = 0;
   function pump() {
     while (active < 2 && next < files.length) {
-      const file = files[next++], image = new Image(); active++;
-      image.decoding = 'async';
-      image.onload = () => {
+      const file = files[next++]; active++;
+      const prepare = image => {
         try {
           const layer = hover.silhouette(image, undefined, {
             lineArt: true, gapRadius: gapRadii[file] ?? 2,
@@ -70,8 +69,20 @@
           });
           if (layer) {layer.outline.dataset.roomOutline = file; layers.set(file, layer);}
         } catch (error) {console.warn('Could not prepare room outline', file, error);}
-        active--; schedule(); pump();
+        schedule();
       };
+      if(window.NanaResources){
+        window.NanaResources.enqueue('play',()=>new Promise(resolve=>{
+          const image=new Image();image.decoding='async';image.fetchPriority='low';
+          const finish=()=>{clearTimeout(timer);image.onload=image.onerror=null;active--;pump();resolve();};
+          const timer=setTimeout(()=>{image.removeAttribute('src');finish();},15000);
+          image.onload=()=>{prepare(image);finish();};image.onerror=finish;
+          image.src='assets/'+encodeURIComponent(file);
+        }));
+        continue;
+      }
+      const image=new Image();image.decoding='async';
+      image.onload=()=>{prepare(image);active--;pump();};
       image.onerror = () => {active--; pump();};
       image.src = 'assets/' + encodeURIComponent(file);
     }

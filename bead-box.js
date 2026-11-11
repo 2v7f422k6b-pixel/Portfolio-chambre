@@ -214,17 +214,19 @@ window.visualViewport?.addEventListener('resize',scheduleBeadKeyboard,{passive:t
 window.visualViewport?.addEventListener('scroll',scheduleBeadKeyboard,{passive:true});
 window.addEventListener('resize',scheduleBeadKeyboard,{passive:true});
 window.NanaBeadBox={open};
+function roomMarkup(markup){return window.NanaResources?markup.replaceAll('href="assets/','data-resource-mode="play" data-resource-href="assets/'):markup;}
+function loadRoomMarkup(node){for(const image of node.querySelectorAll('image[data-resource-href]'))window.NanaResources?.setSource(image,image.dataset.resourceHref);}
 function updateRoomCharm(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
  let charm=document.querySelector('#nana-phone-charm');
  if(!charm){charm=document.createElementNS('http://www.w3.org/2000/svg','g');charm.id='nana-phone-charm';charm.setAttribute('data-open','bead-box');charm.setAttribute('role','button');charm.setAttribute('tabindex','0');charm.setAttribute('transform','translate(1153 805) rotate(8) scale(.16) translate(-272 -12)');svg.appendChild(charm);charm.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});}
- charm.setAttribute('aria-label',t().roomCharm);charm.style.display=attached&&beads.length?'':'none';charm.innerHTML=attached&&beads.length?'<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup():'';
+ charm.setAttribute('aria-label',t().roomCharm);charm.style.display=attached&&beads.length?'':'none';charm.innerHTML=attached&&beads.length?roomMarkup('<rect x="70" y="0" width="300" height="515" fill="transparent" pointer-events="all"/>'+charmMarkup()):'';loadRoomMarkup(charm);
 }
 window.NanaBeadSouvenir={preview:()=>beads.length?'<svg class="nj-charm-preview" viewBox="110 0 220 515" aria-hidden="true">'+charmMarkup()+'</svg>':'',count:()=>beads.length};
 function mount(){
  const svg=document.querySelector('#hotspots');if(!svg)return;
  const ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.id='nana-bead-box-shelf';g.setAttribute('transform','translate(278 112)');g.setAttribute('data-open','bead-box');g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t().title);
- g.innerHTML='<defs><clipPath id="bead-shelf-support-clip"><path d="M-8 -10 H60 V55.2 L-8 36.9Z"/></clipPath><filter id="bead-box-night-colors" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 .034 0 0 .008 0 .66 0 0 .008 0 .7 0 0 .208 0 0 0 1 0"/></filter></defs><g clip-path="url(#bead-shelf-support-clip)"><g class="bead-shelf-art"><image id="bead-box-shelf-ink" href="assets/IMG_5128.png" x="-2" y="3.2" width="58" height="58"/></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/></g>';
+ g.innerHTML=roomMarkup('<defs><clipPath id="bead-shelf-support-clip"><path d="M-8 -10 H60 V55.2 L-8 36.9Z"/></clipPath><filter id="bead-box-night-colors" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 .034 0 0 .008 0 .66 0 0 .008 0 .7 0 0 .208 0 0 0 1 0"/></filter></defs><g clip-path="url(#bead-shelf-support-clip)"><g class="bead-shelf-art"><image id="bead-box-shelf-ink" href="assets/IMG_5128.png" x="-2" y="3.2" width="58" height="58"/></g><use href="#bead-box-shelf-ink" class="bead-shelf-outline" filter="url(#nana-room-hover-ring)" pointer-events="none"/></g>');loadRoomMarkup(g);
  svg.appendChild(g);updateRoomCharm();
  g.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();open();}});
 }

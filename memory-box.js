@@ -15,7 +15,8 @@
   const frame='<img class="memory-frame" src="assets/drawn-ui/cadre_bouton.png" alt="" draggable="false">';
   const tin='<span class="memory-tin-body">'+frame+'<span class="memory-tin-label">Nana</span></span><span class="memory-tin-lid">'+frame+'<img class="memory-flower" src="assets/drawn-ui/fleur.png" alt=""></span>';
   const layer=document.createElement('div');layer.id='nana-memory-secret';layer.dataset.state='idle';layer.setAttribute('data-no-translate','');
-  layer.innerHTML='<div class="memory-wall"><div class="memory-cavity" aria-hidden="true"></div><button type="button" class="memory-find" hidden>'+tin+'</button><div class="memory-tile" aria-hidden="true"><svg viewBox="'+TILE.x+' '+TILE.y+' '+TILE.size+' '+TILE.size+'" preserveAspectRatio="none"><image class="memory-wall-day" href="assets/chambre%20jour.PNG" width="1670" height="942" preserveAspectRatio="none"/><image class="memory-wall-night" href="assets/chamrbe%20nuit.PNG" width="1670" height="942" preserveAspectRatio="none"/></svg>'+frame+'</div></div><button class="memory-marble" type="button"><svg class="memory-marble-art" viewBox="94 144 714 696" aria-hidden="true"><image href="assets/beads/IMG_5213.png" width="1000" height="1000"/><ellipse cx="295" cy="314" rx="87" ry="33" transform="rotate(-36 295 314)" fill="#fff5e9" opacity=".8"/></svg></button><span class="memory-status" role="status" aria-live="polite"></span>';
+  const roomMarkup=markup=>window.NanaResources?markup.replaceAll('src="assets/','data-resource-mode="play" data-resource-src="assets/').replaceAll('href="assets/','data-resource-mode="play" data-resource-href="assets/'):markup;
+  layer.innerHTML=roomMarkup('<div class="memory-wall"><div class="memory-cavity" aria-hidden="true"></div><button type="button" class="memory-find" hidden>'+tin+'</button><div class="memory-tile" aria-hidden="true"><svg viewBox="'+TILE.x+' '+TILE.y+' '+TILE.size+' '+TILE.size+'" preserveAspectRatio="none"><image class="memory-wall-day" data-resource-theme="day" href="assets/chambre%20jour.PNG" width="1670" height="942" preserveAspectRatio="none"/><image class="memory-wall-night" data-resource-theme="night" href="assets/chamrbe%20nuit.PNG" width="1670" height="942" preserveAspectRatio="none"/></svg>'+frame+'</div></div><button class="memory-marble" type="button"><svg class="memory-marble-art" viewBox="94 144 714 696" aria-hidden="true"><image href="assets/beads/IMG_5213.png" width="1000" height="1000"/><ellipse cx="295" cy="314" rx="87" ry="33" transform="rotate(-36 295 314)" fill="#fff5e9" opacity=".8"/></svg></button><span class="memory-status" role="status" aria-live="polite"></span>');
   const start=point(PATH.start),wall=point([TILE.x,TILE.y]);
   layer.style.setProperty('--memory-marble-x',start.left);layer.style.setProperty('--memory-marble-y',start.top);
   layer.style.setProperty('--memory-wall-x',wall.left);layer.style.setProperty('--memory-wall-y',wall.top);
@@ -27,18 +28,20 @@
   for(const [host,art] of [[marble,marble.querySelector('svg')],[find,find.querySelector('.memory-tin-body')]]){
     const ring=art.cloneNode(true);ring.classList.add('memory-hover');ring.setAttribute('aria-hidden','true');host.prepend(ring);
   }
+  for(const image of layer.querySelectorAll('[data-resource-src],[data-resource-href]'))window.NanaResources?.setSource(image,image.dataset.resourceSrc||image.dataset.resourceHref,{theme:image.dataset.resourceTheme});
   const dialog=document.createElement('dialog');dialog.id='nana-memory-box';dialog.setAttribute('aria-labelledby','memory-title');dialog.setAttribute('data-no-translate','');
   // Léna's box is the window itself. Only its empty transparent margins are cropped.
-  dialog.innerHTML=`<button type="button" class="memory-close memory-ui-frame"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
+  dialog.innerHTML=`<button type="button" class="memory-close memory-ui-frame"><img data-memory-src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
     <div class="memory-box-form">
       <svg class="memory-box-shape" viewBox="400 210 2200 2680" aria-hidden="true" focusable="false">
-        <image href="assets/memorybox/IMG_5749.png" width="3000" height="3000"/>
+        <image data-memory-href="assets/memorybox/IMG_5749.png" width="3000" height="3000"/>
       </svg>
       <div class="memory-lid-copy"><p class="memory-eyebrow"></p><h1 id="memory-title"></h1></div>
       <div class="memory-items"></div>
     </div>
     <div class="memory-box-controls"><button type="button" class="memory-back memory-ui-frame" hidden></button><nav class="memory-pager" hidden><button class="memory-prev memory-ui-frame" type="button"></button><span class="memory-count"></span><button class="memory-next memory-ui-frame" type="button"></button></nav><button type="button" class="memory-replay"></button></div>`;
   document.body.append(dialog);
+  const boxSurface=dialog.querySelector('.memory-box-form');
   let state='idle',run=0,page=-1,previousFocus=null;
   const animations=new Set();
   const items=()=>Array.isArray(window.NANA_MEMORY_ITEMS)?window.NANA_MEMORY_ITEMS.filter(x=>['image','audio'].includes(x.type)&&typeof x.src==='string'):[];
@@ -106,11 +109,16 @@
     dialog.querySelector('.memory-back').hidden=page<0;
     dialog.querySelector('.memory-prev').disabled=page<=0;
     dialog.querySelector('.memory-next').disabled=page>=list.length-1;
+    if(dialog.open)window.NanaSurfaces?.load(boxSurface);
   }
   function showBox(){
     if(state!=='revealed')return;
+    for(const image of dialog.querySelectorAll('[data-memory-src],[data-memory-href]')){
+      const attribute=image.localName==='image'?'href':'src';
+      image.setAttribute(attribute,image.getAttribute('data-memory-'+attribute));
+    }
     previousFocus=document.activeElement;page=-1;labels();renderItem();
-    if(!dialog.open)dialog.showModal();dialog.querySelector('.memory-close').focus({preventScroll:true});notify();
+    if(!dialog.open)dialog.showModal();window.NanaSurfaces?.load(boxSurface);dialog.querySelector('.memory-close').focus({preventScroll:true});notify();
   }
   async function animate(node,frames,duration){
     if(reduce.matches||typeof node.animate!=='function')return;
@@ -148,7 +156,7 @@
   dialog.querySelector('.memory-prev').addEventListener('click',()=>{page--;renderItem();});
   dialog.querySelector('.memory-next').addEventListener('click',()=>{page++;renderItem();});
   dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
-  dialog.addEventListener('close',()=>{stopAudio();if(state==='revealed'&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});notify();});
+  dialog.addEventListener('close',()=>{window.NanaSurfaces?.cancel(boxSurface);stopAudio();if(state==='revealed'&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});notify();});
   window.addEventListener('keydown',event=>{if(event.key==='Escape'&&state!=='idle'&&!dialog.open){event.preventDefault();event.stopImmediatePropagation();close();marble.focus({preventScroll:true});}},true);
   new MutationObserver(()=>{if(!app.classList.contains('mode-play')||app.classList.contains('nana-reality-active')){if(state!=='idle')close();}}).observe(app,{attributes:true,attributeFilter:['class']});
   // An app opened directly from the room must not leave a late animation

@@ -33,7 +33,10 @@
   };
   function make(tag,attrs) {
     const el = document.createElementNS(NS,tag);
-    for (const [k,v] of Object.entries(attrs || {})) el.setAttribute(k,String(v));
+    for(const [k,v] of Object.entries(attrs||{})){
+      if(tag==='image'&&k==='href'&&window.NanaResources)window.NanaResources.setSource(el,String(v));
+      else el.setAttribute(k,String(v));
+    }
     return el;
   }
   function pointsToString(points) { return points.map(p=>p.join(',')).join(' '); }

@@ -45,7 +45,10 @@
 
   function node(tag, attributes) {
     const el = document.createElementNS(NS, tag);
-    Object.entries(attributes || {}).forEach(([name, value]) => el.setAttribute(name, String(value)));
+    Object.entries(attributes || {}).forEach(([name, value]) => {
+      if(tag==='image'&&name==='href'&&window.NanaResources)window.NanaResources.setSource(el,String(value));
+      else el.setAttribute(name,String(value));
+    });
     return el;
   }
   function parsePoints(str) {
@@ -69,7 +72,7 @@
   const sources = new Map();
   oldArtwork.querySelectorAll('image').forEach(image => {
     const match = (image.getAttribute('clip-path') || '').match(/redraw-post-(\d+)/);
-    if (match) sources.set(Number(match[1]), image.getAttribute('href'));
+    if (match) sources.set(Number(match[1]), image.getAttribute('data-resource-href')||image.getAttribute('href'));
   });
   const originals = clickable.map((el, index) => {
     const shape = parsePoints(el.getAttribute('points'));
@@ -218,7 +221,10 @@
     const night = isPosterNight();
     tapeLayer.querySelectorAll('.poster-handdrawn-tape').forEach(image => {
       const source = image.getAttribute(night ? 'data-night-src' : 'data-day-src');
-      if (source && image.getAttribute('href') !== source) image.setAttribute('href', source);
+      if(source){
+        if(window.NanaResources)window.NanaResources.setSource(image,source);
+        else image.setAttribute('href',source);
+      }
     });
   }
   new MutationObserver(syncPosterTapeTheme).observe(document.documentElement, {

@@ -75,7 +75,8 @@
       if (!kind) return;
       const { x, y, size } = placements[kind];
       const icon = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
-      icon.setAttribute('href', heartURL);
+      if(window.NanaResources)window.NanaResources.setSource(icon,heartURL);
+      else icon.setAttribute('href',heartURL);
       icon.setAttribute('x', String(x));
       icon.setAttribute('y', String(y));
       icon.setAttribute('width', String(size));

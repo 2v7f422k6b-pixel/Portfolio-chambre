@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-const {createGate,waitForImage}=createRequire(import.meta.url)('../surface-loading.js');
+const {createGate,waitForImage,waitForView}=createRequire(import.meta.url)('../surface-loading.js');
 function deferred(){let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});return {promise,resolve,reject};}
 class FakeImage extends EventTarget {
   complete=false;naturalWidth=0;decoded=deferred();
@@ -46,4 +46,9 @@ test('cached images still decode on re-entry, including after browser memory evi
   image.decode=async()=>{decodes++;};
   for(let i=0;i<20;i++)await waitForImage(image);
   assert.equal(decodes,20);
+});
+
+test('an embedded avatar cannot leave its parent loader waiting forever',async()=>{
+  await waitForView(Promise.resolve());
+  await assert.rejects(waitForView(new Promise(()=>{}),5),/View timeout/);
 });

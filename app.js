@@ -64,6 +64,11 @@ function applyTheme(theme){
  if(root.dataset.theme===target||!visible||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
    applyThemeInstant(target);return;
  }
+ // A first visit to the other theme may need several large originals. Use the
+ // loading gate then; a browser View Transition can time out on a slow download.
+ if(window.NanaResources&&!window.NanaResources.themeReady('play',target)){
+   applyThemeInstant(target);return;
+ }
  // Capture the whole composed room, rather than fading each nested layer.
  root.classList.add('nana-room-theme-transition');
  try {
@@ -75,8 +80,9 @@ function applyTheme(theme){
      await new Promise(resolve=>setTimeout(resolve,0));
      const scene=document.getElementById('play-scene');
      if(scene) {
-       const images=[...scene.querySelectorAll('img')];
-       const urls=new Set([...scene.querySelectorAll('image')].map(el=>el.getAttribute('href')).filter(Boolean));
+       const needed=image=>!window.NanaResources||window.NanaResources.required(image);
+       const images=[...scene.querySelectorAll('img[src]')].filter(needed);
+       const urls=new Set([...scene.querySelectorAll('image')].filter(needed).map(el=>el.getAttribute('href')).filter(Boolean));
        for(const url of urls){const image=new Image();image.src=url;images.push(image);}
        await Promise.all(images.map(image=>image.decode?image.decode().catch(()=>{}):Promise.resolve()));
      }
@@ -84,6 +90,7 @@ function applyTheme(theme){
    roomThemeTransition=transition;
    transition.finished.catch(()=>{}).finally(()=>{
      roomThemeTransition=null;root.classList.remove('nana-room-theme-transition');
+     if(currentMode==='play'&&!play.classList.contains('nana-surface-pending'))window.NanaResources?.ready('play');
      const next=queuedRoomTheme;queuedRoomTheme=null;
      if(next&&next!==root.dataset.theme)applyTheme(next);
    });
@@ -128,6 +135,7 @@ function roomSnapshotTransition(update) {
 }
 function applyThemeInstant(theme){
  const night=theme==='night';
+ window.NanaResources?.activate(currentMode,night?'night':'day');
  // The Work wallpaper layers stay mounted in both themes. The theme switch
  // changes only their opacity, not the layout or the scroll position.
  const workArea=document.getElementById('work-desktop');
@@ -166,6 +174,7 @@ function chooseMode(mode,zoom=false){
  resetModeTransition();
  closeWindow();closeSpecial();
  currentMode=mode;app.className='mode-'+mode;
+ window.NanaResources?.activate(mode,document.documentElement.dataset.theme||'day');
  window.NanaAnalytics?.setMode(mode);
  welcome.hidden=true;desktop.hidden=false;
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -226,6 +235,7 @@ function returnToWelcome(){
  resetModeTransition();
  closeWindow();closeSpecial();audio.pause();player.hidden=true;
  desktop.hidden=true;welcome.hidden=false;app.className='mode-select';currentMode=null;
+ window.NanaResources?.activate(null);
 }
 function switchMode(){if(currentMode==='play')zoomIntoIMac();else if(currentMode==='work')chooseMode('play',true);else returnToWelcome()}
 function showToast(message){
@@ -534,7 +544,7 @@ function openAbout(outfit){
  closeWindow();
  closeSpecial();
  window.NanaAnalytics?.startActivity('dressing');
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261111-raised-name-6'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#fff4e8;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=20261112-resources-1'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#fff4e8;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});

@@ -960,10 +960,17 @@ html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer {
 }
 html body #work-desktop > .work-wallpaper > .work-bg-layer--day,
 html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--day {
- background-image:url("assets/work%20mode%20jour.png")!important;
+ background-image:var(--nana-work-background,none)!important;
 }
 html body #work-desktop > .work-wallpaper > .work-bg-layer--night,
 html[data-theme="night"] body #work-desktop > .work-wallpaper > .work-bg-layer--night {
+ background-image:var(--nana-work-background,none)!important;
+}
+/* Older previews and cached HTML still use the original eager wallpaper markup. */
+html body #work-desktop > .work-wallpaper > .work-bg-layer--day:not([data-resource-background]) {
+ background-image:url("assets/work%20mode%20jour.png")!important;
+}
+html body #work-desktop > .work-wallpaper > .work-bg-layer--night:not([data-resource-background]) {
  background-image:url("assets/work%20mode%20nuit.png")!important;
 }
 html:not([data-theme="night"]) body #work-desktop > .work-wallpaper > .work-bg-layer--day {opacity:1!important}
