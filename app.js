@@ -520,14 +520,10 @@ function openAbout(outfit){
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});
 }
-function openContacts(){
- // Both entry points share the same live form, including an unsent message.
- if(currentWindow==='contact'&&!shade.hidden){winContent.querySelector('input')?.focus({preventScroll:true});return;}
- openWindow('Contact',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p class="contact-direct-links"><strong>Léna de Firmas</strong><br><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a> · <a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio</a></p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'contact');
-}
+function openContacts(){showPhone();}
 function mailFields(){return `<label>Your name<span class="mail-field-box"><input type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></span></label><label>Your email<span class="mail-field-box"><input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></span></label><label>Subject<span class="mail-field-box"><input type="text" name="subject" required maxlength="180" placeholder="Hello!"></span></label><label>Message<span class="mail-field-box"><textarea name="message" required maxlength="10000" placeholder="Write your message here…"></textarea></span></label>`}
-// Retain old Mail links while using one Contact window and submission handler.
-function openMail(){openContacts();}
+// Contact and Mail both lead to the three-app smartphone home screen.
+function openMail(){showPhone();}
 function helpContent(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
@@ -591,15 +587,61 @@ function phoneMail(){
  phonePage('New Message',`<form class="phone-compose" id="phone-mail-form"><div class="phone-fields"><label>From: <input type="email" name="email" required autocomplete="email" maxlength="254" placeholder="your@email.com"></label><label>Name: <input name="name" required maxlength="120" autocomplete="name" placeholder="Your name"></label><label>To: <span class="recipient">lena.defirmas@gmail.com</span></label><label>Subject: <input name="subject" required maxlength="180" placeholder="Subject"></label><textarea name="message" maxlength="10000" placeholder="Your message…" required aria-label="Message"></textarea><div class="phone-status-message" aria-live="polite"></div></div><div class="phone-keyboard" id="phone-keyboard" aria-label="On-screen keyboard"></div></form>`);
  const bar=$('#phone-page .phone-bar');
  bar.lastElementChild.innerHTML='<button class="send-btn" style="padding:5px 9px;border-radius:8px" type="submit" form="phone-mail-form">↑ Send</button>';
- const kb=$('#phone-keyboard');
- for(const row of ['qwertyuiop','asdfghjkl','⇧zxcvbnm⌫']){
-  const el=document.createElement('div');el.className='phone-keyrow';
-  for(const ch of row){const b=document.createElement('button');b.type='button';b.dataset.k=ch;b.textContent=ch;el.append(b)}
-  kb.append(el);
+ phoneKeyboardInput=null;phoneKeyboardShift=false;phoneKeyboardNumbers=false;
+ // Read-only fields never summon iPad's software keyboard. The illustrated
+ // keyboard edits their values; hardware keyboard input is handled below.
+ $('#phone-mail-form').querySelectorAll('input,textarea').forEach(field=>{
+  field.readOnly=true;field.inputMode='none';field.setAttribute('aria-controls','phone-keyboard');
+ });
+ renderPhoneKeyboard();
+}
+let phoneKeyboardShift=false,phoneKeyboardNumbers=false;
+function renderPhoneKeyboard(){
+ const kb=$('#phone-keyboard');if(!kb)return;
+ const en=document.documentElement.lang==='en';
+ const rows=phoneKeyboardNumbers?['1234567890','@#€&_-+()/',".,?!:;\"'⌫"]:
+  (en?['qwertyuiop','asdfghjkl','⇧zxcvbnm⌫']:['azertyuiop','qsdfghjklm','⇧wxcvbn⌫']);
+ kb.replaceChildren();kb.setAttribute('data-no-translate','');
+ const addRow=keys=>{
+  const row=document.createElement('div');row.className='phone-keyrow';
+  for(const [label,key] of keys){const button=document.createElement('button');button.type='button';button.dataset.k=key;button.textContent=label;
+   const names={'⌫':en?'Delete':'Effacer','⇧':en?'Uppercase':'Majuscules','hide':en?'Hide keyboard':'Masquer le clavier','\n':en?'Next field or new line':'Champ suivant ou nouvelle ligne',' ':en?'Space':'Espace'};
+   button.setAttribute('aria-label',names[key]||label);
+   if(key==='⇧')button.setAttribute('aria-pressed',String(phoneKeyboardShift));
+   row.append(button);
+  }kb.append(row);
+ };
+ for(const row of rows)addRow([...row].map(key=>[phoneKeyboardShift&&!phoneKeyboardNumbers?key.toUpperCase():key,key]));
+ if(!phoneKeyboardNumbers&&!en)addRow([...'éèêàçù'].map(key=>[phoneKeyboardShift?key.toUpperCase():key,key]));
+ addRow([[phoneKeyboardNumbers?'ABC':'123', '123'],['@','@'],[en?'space':'espace',' '],['.','.'],['↵','\n'],['⌄','hide']]);
+}
+function editPhoneField(input,key){
+ if(!input?.isConnected)return;
+ const start=input.selectionStart??input.value.length,end=input.selectionEnd??input.value.length;
+ let from=start,to=end,value=key;
+ if(key==='Backspace'||key==='⌫'){from=start===end?Math.max(0,start-1):start;value='';}
+ if(key==='Delete'){to=start===end?Math.min(input.value.length,start+1):end;value='';}
+ if(input.maxLength>=0&&input.value.length-(to-from)+value.length>input.maxLength)return;
+ input.value=input.value.slice(0,from)+value+input.value.slice(to);
+ try{input.setSelectionRange(from+value.length,from+value.length);}catch(_){} // email fields have no selection API
+ input.removeAttribute('aria-invalid');input.dispatchEvent(new Event('input',{bubbles:true}));
+}
+function nextPhoneField(input){
+ const fields=[...$('#phone-mail-form').querySelectorAll('input,textarea')];
+ (fields[fields.indexOf(input)+1]||input).focus({preventScroll:true});
+}
+function validatePhoneForm(form){
+ let invalid=null;
+ for(const field of form.querySelectorAll('input,textarea')){
+  // Read-only fields are excluded from native validation; enable only for this
+  // synchronous check, then restore before focusing (no native keyboard).
+  field.readOnly=false;const valid=field.checkValidity();field.readOnly=true;
+  field.setAttribute('aria-invalid',String(!valid));if(!valid&&!invalid)invalid=field;
  }
- const end=document.createElement('div');end.className='phone-keyrow';
- for(const [label,k] of [['123','123'],['space',' '],['.','.'],['↵','\n']]){const b=document.createElement('button');b.type='button';b.dataset.k=k;b.textContent=label;end.append(b)}
- kb.append(end);
+ if(!invalid)return true;
+ const status=form.querySelector('.phone-status-message');status.classList.add('error');
+ status.textContent=document.documentElement.lang==='en'?'Please complete every field and enter a valid email address.':'Complète tous les champs et saisis une adresse e-mail valide.';
+ invalid.focus({preventScroll:true});return false;
 }
 function showTamagotchi(){
  $('#special-title').textContent='Tamagotchi';
@@ -671,7 +713,7 @@ function updatePlayer(){
 
 async function submitForm(form){
  const status=form.querySelector('.form-status,.phone-status-message');const send=form.querySelector('[type="submit"]')||document.querySelector('[form="phone-mail-form"]');
- if(!form.reportValidity())return;
+ if(form.id==='phone-mail-form'){if(!validatePhoneForm(form))return;}else if(!form.reportValidity())return;
  if(status){status.className=status.className.replace(/\b(error|success)\b/g,'').trim();status.textContent='Sending…'}
  if(send)send.disabled=true;
  try{
@@ -718,17 +760,15 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-phone-back]')){$('#phone-page').hidden=true;phoneKeyboardInput=null;return}
  const phoneApp=e.target.closest('[data-phone-app]');
  if(phoneApp){const val=phoneApp.dataset.phoneApp;if(val==='contacts')phoneContacts();if(val==='mail')phoneMail();if(val==='instagram')window.open('https://www.instagram.com/nanacolorstudio/','_blank','noopener,noreferrer');return}
- const key=e.target.closest('[data-k]');
- if(key&&phoneKeyboardInput){
+ const key=e.target.closest('#phone-keyboard [data-k]');
+ if(key){
   const k=key.dataset.k,input=phoneKeyboardInput;
-  if(k==='⇧'||k==='123')return;
-  if(input instanceof HTMLTextAreaElement ||input instanceof HTMLInputElement){
-   const start=input.selectionStart??input.value.length,end=input.selectionEnd??input.value.length;
-   if(k==='⌫'){input.setRangeText('',start===end?Math.max(0,start-1):start,end,'end')}
-   else if(k==='\n'&&input instanceof HTMLInputElement){input.blur();return}
-   else{input.setRangeText(k,start,end,'end')}
-   input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();
-  }
+  if(k==='hide'){$('#phone-keyboard')?.classList.remove('visible');input?.blur();return;}
+  if(k==='⇧'){phoneKeyboardShift=!phoneKeyboardShift;renderPhoneKeyboard();return;}
+  if(k==='123'){phoneKeyboardNumbers=!phoneKeyboardNumbers;renderPhoneKeyboard();return;}
+  if(!input?.isConnected)return;
+  if(k==='\n'&&input instanceof HTMLInputElement){nextPhoneField(input);return;}
+  editPhoneField(input,phoneKeyboardShift?k.toUpperCase():k);input.focus({preventScroll:true});
   return;
  }
  const prev=e.target.closest('[data-gallery-dir]');if(prev){changeGallery(Number(prev.dataset.galleryDir));return}
@@ -741,6 +781,20 @@ document.addEventListener('click',e=>{
   openApp(name);return
  }
 });
+// Keep the insertion point when tapping the drawn keys.
+document.addEventListener('pointerdown',e=>{if(e.target.closest('#phone-keyboard button'))e.preventDefault();});
+document.addEventListener('keydown',e=>{
+ const field=e.target;
+ if(!field.matches('#phone-mail-form input,#phone-mail-form textarea')||!field.readOnly)return;
+ if(e.ctrlKey||e.metaKey||e.altKey||e.isComposing)return;
+ if(e.key==='Enter'){e.preventDefault();if(field instanceof HTMLTextAreaElement)editPhoneField(field,'\n');else nextPhoneField(field);}
+ else if(e.key.length===1||e.key==='Backspace'||e.key==='Delete'){e.preventDefault();editPhoneField(field,e.key);}
+});
+document.addEventListener('paste',e=>{
+ if(!e.target.matches('#phone-mail-form input,#phone-mail-form textarea'))return;
+ e.preventDefault();editPhoneField(e.target,e.clipboardData.getData('text'));
+});
+document.addEventListener('portfolio-language-change',()=>{if($('#phone-keyboard'))renderPhoneKeyboard();});
 document.addEventListener('focusin',e=>{
  if(e.target.closest('#phone-mail-form') && e.target.matches('input,textarea')){
   phoneKeyboardInput=e.target;const kb=$('#phone-keyboard');if(kb)kb.classList.add('visible');
