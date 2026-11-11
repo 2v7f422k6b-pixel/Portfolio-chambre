@@ -170,23 +170,24 @@ test('Sonny hood and headlamp require their own discoveries and survive reload',
  const reloaded=browser({storage}).p;
  assert.equal(reloaded.unlockedOutfit('sonny'),true);assert.equal(reloaded.unlockedOutfit('night-explorer'),true);
 });
-test('Sonny hides hair while the bear sweater keeps it visible',()=>{
+test('Sonny and supplied hat hair use the tattooed bald body while the bear sweater keeps hair',()=>{
  const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
  const assets=JSON.parse(html.split('id="assets">')[1].split('</script>')[0]);
  assert.ok(existsSync(new URL('../'+assets.hairlessBase,import.meta.url)));
  const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('function renderAvatar(){'));
  const slots={hat:'head-sonny-rabbit',jackets:'jacket-purple',makeup:new Set()};
- const env={slots,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,
+ const env={slots,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,FITTED:assets.fitted,SPRITES:assets.sprites,
   PULLOVERS:new Set(),raisedCollar:()=>null,bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
+ vm.runInNewContext(html.slice(html.indexOf('const correctionFile='),html.indexOf('const collarCache')),env);
  const layers=vm.runInNewContext('('+fn.trim()+')',env);
  for(const jacket of ['jacket-purple',null]){
   slots.jackets=jacket;
   const bodies=layers().filter(x=>x.z===1||x.z===13);
-  assert.equal(bodies.length,jacket?3:2);
-  assert.equal(bodies[0].src,assets.base);
-  assert.equal(bodies[0].clip[0][1],690);
-  assert.ok(bodies.slice(1).every(x=>x.src===assets.hairlessBase));
+  assert.equal(bodies.length,jacket?2:1);
+  assert.ok(bodies.every(x=>x.src==='assets/dressing-lena/corrections/Illustration_sans_titre-35.png'));
+  assert.equal(bodies[0].clip,undefined);
  }
+ for(const hat of ['head-bucket-blue','head-bucket-beige','head-george-sand']){slots.hat=hat;assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src.endsWith('Illustration_sans_titre-35.png')));}
  slots.hat=null;slots.sweater='top-bear';slots.jackets='jacket-purple';
  assert.ok(layers().filter(x=>x.z===1||x.z===13).every(x=>x.src===assets.base));
  assert.ok(layers().some(x=>x.id==='top-bear'&&x.hood&&x.z>13));
