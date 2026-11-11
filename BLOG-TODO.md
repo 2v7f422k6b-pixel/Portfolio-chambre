@@ -4,8 +4,9 @@ Mis à jour le 11 novembre 2026. Liste des éléments restant à fournir, dessin
 
 ## Dessins et images à fournir
 - [ ] Dessiner l'icône Internet Explorer pour le bouton « À propos » du portfolio, puis l'intégrer.
-- [ ] Dessiner la bannière du blog, avec ton propre trait et ton rouge.
-- [ ] Choisir une photo personnelle existante (les Polaroïds de la chambre peuvent être réutilisés) pour l'article « Heyyy, c'est moi » ; ne pas redessiner sans nécessité.
+- [ ] Ajouter dans assets les deux bannières fournies (Hello Kitty rose et strass multicolores), puis les tester comme variantes sur le blog.
+- [ ] Ajouter dans assets les deux cadres de profil fournis (baroque rose rectangulaire, ovale bleu et rose), puis les tester sans photo.
+- [ ] Choisir une photo personnelle existante (les Polaroïds de la chambre peuvent être réutilisés) pour le profil ; ne pas redessiner sans nécessité.
 - [ ] Choisir/dessiner une petite illustration pour « Ma life » (sans résumer tous les métiers).
 - [ ] Dessiner une petite Nana jonglant avec des étoiles pour « Ce que je sais faire », dans ton style personnel.
 - [ ] Réaliser un mini-collage de tes propres illustrations et animations pour « Mes créas ».
@@ -24,11 +25,11 @@ Mis à jour le 11 novembre 2026. Liste des éléments restant à fournir, dessin
 ## Liens et fonctionnalités
 - [ ] Fournir et intégrer le vrai lien du CV, remplacer « bientôt ».
 - [ ] Vérifier les liens LinkedIn et Malt en situation réelle.
-- [ ] Ajouter les liens publics vérifiés de La Pépite, Calvi on the Rocks, Pyrène, Live Me If You Can, Tomasz Bura et Gearnews Instagram, si souhaité.
+- [ ] Faire confirmer les bons profils pour La Pépite, Pyrène et Live Me If You Can avant de les intégrer (Calvi on the Rocks et Tomasz Bura déjà reliés).
 - [ ] Tester sur iPad le lien « Écris-moi » : nouvel onglet du portfolio, smartphone ouvert directement sur Mail, sans fermer le blog.
 - [ ] Tester « La Princesse Clown » et « Découvrir mes projets » dans de nouveaux onglets.
 - [ ] Activer le vrai livre d'or public (lecture et publication des commentaires) et sa modération dans l'Atelier de Nana ; pour l'instant la publication est désactivée.
-- [ ] Tester les versions française et anglaise, leurs liens et leur sélecteur de langue.
+- [ ] Tester les versions française et anglaise, leurs liens et leur sélecteur de langue. (Textes FR/EN harmonisés dans le code.)
 
 ## Affichage et finitions
 - [ ] Tester sur iPad la colonne de gauche jusqu'aux cinq besties et à la navigation complète.
@@ -47,3 +48,8 @@ Mis à jour le 11 novembre 2026. Liste des éléments restant à fournir, dessin
 - [x] Dix petits boulots et compétences « + XP » sans chiffres.
 - [x] Emplacements des smileys MSN pour les humeurs et du Bunny (chargement externe à remplacer).
 - [x] Liens LinkedIn et Malt sous le CV.
+
+## Dernier état (11 novembre 2026)
+- [x] Harmoniser la version anglaise avec les dernières corrections françaises (texte, XP, liens, hiérarchie, outils, livre d'or).
+- [ ] Dès que les quatre nouvelles images sont dans assets, les repérer et intégrer les deux bannières et les deux cadres en variantes à comparer.
+- [ ] Vérifier que les comptes externes proposés sont bien ceux des anciennes structures avant publication.
