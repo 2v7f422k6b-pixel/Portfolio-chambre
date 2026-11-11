@@ -53,3 +53,18 @@ html body #app #menubar.nana-navigation #switch-mode::before{background:#ff173b!
 html body #app #menubar.nana-navigation .menu-left > #nana-journal-trigger,
 html body #app #menubar.nana-navigation .menu-left > #menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;}
 html body #app #menubar.nana-navigation .theme-icon svg{display:block!important;width:26px!important;height:26px!important;fill:none!important;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+
+/* House/menu, a centered notebook, and tools: three stable navigation groups. */
+html body #app #menubar.nana-navigation{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:12px!important;}
+html body #app.mode-select #menubar.nana-navigation{display:none!important;}
+html body #app #menubar.nana-navigation .menu-left{grid-column:1;grid-row:1;justify-self:start;gap:4px!important;}
+html body #app #menubar.nana-navigation > #nana-journal-trigger{grid-column:2;grid-row:1;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;}
+html body #app #menubar.nana-navigation .menu-right{grid-column:3;grid-row:1;justify-self:end;gap:8px!important;margin:0!important;}
+html body #app #menubar.nana-navigation.nav-compact{grid-template-columns:auto minmax(0,1fr) auto!important;gap:4px!important;}
+html body #app #menubar.nana-navigation.nav-compact .menu-right{display:flex!important;}
+html body #app #menubar.nana-navigation.nav-compact #mobile-menu-toggle{margin:0!important;width:84px!important;flex-basis:84px!important;}
+html body #app #menubar.nana-navigation #mobile-menu-panel{left:max(12px,env(safe-area-inset-left))!important;right:auto!important;transform-origin:84px 0;}
+#window[data-window-type="contact"] .contact-direct-links{overflow-wrap:anywhere;line-height:1.6;}
+#window[data-window-type="contact"] .mail-form{max-width:100%;}
+html body #app #menubar.nana-navigation > #nana-journal-trigger{justify-self:center!important;width:max-content!important;}
+html body #app #menubar.nana-navigation .menu-left > #mobile-menu-toggle{display:flex!important;}

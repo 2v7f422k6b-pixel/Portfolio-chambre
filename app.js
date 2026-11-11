@@ -521,12 +521,13 @@ function openAbout(outfit){
  $('#special-close').focus({preventScroll:true});
 }
 function openContacts(){
- openWindow('Contact',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p>You can contact me directly, or <button type="button" class="contact-mail-link" data-open="mail">use the Mail application</button> to write a message without leaving this website.</p><div class="contact-list"><div class="contact-row"><div class="contact-row-inner"><small>Name</small><strong>Léna de Firmas</strong></div></div><div class="contact-row"><div class="contact-row-inner"><small>Email</small><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a></div></div><div class="contact-row"><div class="contact-row-inner"><small>Instagram</small><a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio ↗</a></div></div></div>`,'contact');
+ // Both entry points share the same live form, including an unsent message.
+ if(currentWindow==='contact'&&!shade.hidden){winContent.querySelector('input')?.focus({preventScroll:true});return;}
+ openWindow('Contact',`<h2 class="nana-script-heading"><span class="nana-hand nana-hand--work-together" data-nana-script="work-together">Let's work together</span></h2><p class="contact-direct-links"><strong>Léna de Firmas</strong><br><a href="mailto:lena.defirmas@gmail.com">lena.defirmas@gmail.com</a> · <a href="https://www.instagram.com/nanacolorstudio/" target="_blank" rel="noopener noreferrer">@nanacolorstudio</a></p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'contact');
 }
 function mailFields(){return `<label>Your name<span class="mail-field-box"><input type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></span></label><label>Your email<span class="mail-field-box"><input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></span></label><label>Subject<span class="mail-field-box"><input type="text" name="subject" required maxlength="180" placeholder="Hello!"></span></label><label>Message<span class="mail-field-box"><textarea name="message" required maxlength="10000" placeholder="Write your message here…"></textarea></span></label>`}
-function openMail(){
- openWindow('Mail — New Message',`<div class="eyebrow">To / lena.defirmas@gmail.com</div><h2>New message</h2><p>Send a message directly from the portfolio using a secure Formspree form.</p><form class="mail-form" id="desktop-mail-form">${mailFields()}<p class="form-status" aria-live="polite"></p><button class="send-btn" type="submit">Send message ↗</button></form>`,'mail');
-}
+// Retain old Mail links while using one Contact window and submission handler.
+function openMail(){openContacts();}
 function helpContent(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;

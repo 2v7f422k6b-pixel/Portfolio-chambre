@@ -10,8 +10,10 @@
   const admin=byId('nana-admin-trigger');
   ['menu-about','menu-contact','menu-help'].forEach(id=>panel.append(byId(id)));
   const settings=document.createElement('div');settings.className='nav-preferences';panel.append(settings,admin);
-  left.append(byId('nana-journal-trigger'),byId('menu-search'));
-  panel.insertAdjacentHTML('afterbegin','<svg class="nav-ribbon-art" viewBox="0 0 280 400" preserveAspectRatio="none" aria-hidden="true"><path d="M9 5Q70 10 137 5T271 6Q278 60 271 115T273 220Q266 290 273 391L207 378Q142 399 74 381L8 393Q15 320 8 253T10 128Q3 65 9 5Z"/></svg>');
+  left.append(toggle);
+  bar.insertBefore(byId('nana-journal-trigger'),right);
+  right.prepend(byId('menu-search'));
+  panel.insertAdjacentHTML('afterbegin','<svg class="nav-ribbon-art" viewBox="0 0 280 400" preserveAspectRatio="none" aria-hidden="true"><path d="M12 7C75 3 204 10 267 6C279 75 265 130 271 203C278 268 265 322 269 378C223 399 180 381 137 387C91 394 43 380 12 389C3 323 16 270 9 201C3 127 16 70 12 7Z"/></svg>');
   [toggle,panel,byId('theme-toggle'),byId('home-menu')].forEach(el=>el.setAttribute('data-no-translate',''));
   let open=false,compact=false;
   const t=(fr,en)=>document.documentElement.lang==='en'?en:fr;
@@ -22,8 +24,8 @@
     label(byId('home-menu'),t('Retour à l’accueil','Return home'));
     byId('menu-about').textContent=t('À propos','About');label(byId('menu-about'),t('À propos','About'));
     byId('menu-contact').textContent='Contact';label(byId('menu-contact'),'Contact');
-    byId('menu-help').textContent=t('Aide & Réglages','Help & Settings');
-    label(byId('menu-help'),t('Aide & Réglages','Help & Settings'));
+    byId('menu-help').textContent=t('Aide','Help');
+    label(byId('menu-help'),t('Aide','Help'));
     label(byId('switch-mode'),t('Mode Work','Work mode'));
     const night=document.documentElement.dataset.theme==='night';
     const icon=byId('theme-toggle').querySelector('.theme-icon');
@@ -45,7 +47,8 @@
   // Measure the actual bar, including translated labels, instead of device names.
   function fit(){
     const available=bar.clientWidth-24;
-    const required=left.scrollWidth+toggle.offsetWidth+preferences.reduce((sum,el)=>sum+Math.max(el.offsetWidth,el.id==='switch-mode'?112:el.id==='language-toggle'?72:44),0)+70;
+    const toolsWidth=44+preferences.reduce((sum,el)=>sum+Math.max(el.offsetWidth,el.id==='switch-mode'?112:el.id==='language-toggle'?72:44),0)+24;
+    const required=2*Math.max(148,toolsWidth)+byId('nana-journal-trigger').offsetWidth+24;
     const next=available<required;
     if(next===compact)return;
     const focus=document.activeElement;compact=next;bar.classList.toggle('nav-compact',compact);
