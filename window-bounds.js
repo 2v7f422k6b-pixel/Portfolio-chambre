@@ -45,6 +45,32 @@
     try{doc=frame.contentDocument;if(!doc?.body)return;}catch(_){return;}
     if(installed.has(doc))return;
     installed.add(doc);
+    // Do not transform the dressing document root. WebKit may retain a clipped
+    // backing surface after pinch/resize. Keep native pinch zoom and size the
+    // layout from the actual iframe client box rather than a stale dvh value.
+    if(/(?:^|\/)about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||'')){
+      const style=doc.createElement('style');
+      style.id='nana-dressing-frame-size';
+      style.textContent=`
+        html,html body{width:var(--nana-embed-width,100%)!important;height:var(--nana-embed-height,100%)!important;min-height:0!important;margin:0!important;background:#fff4e8!important;transform:none!important}
+        html body.has-saved-looks .frame{width:100%!important;height:var(--nana-embed-height,100dvh)!important;min-height:0!important;max-height:none!important}
+      `;
+      doc.head.append(style);
+      let pending=false;
+      function fit(){
+        pending=false;if(!frame.isConnected)return;
+        const width=frame.clientWidth,height=frame.clientHeight;
+        if(!width||!height)return;
+        doc.documentElement.style.setProperty('--nana-embed-width',width+'px');
+        doc.documentElement.style.setProperty('--nana-embed-height',height+'px');
+      }
+      function scheduleFit(){if(!pending){pending=true;requestAnimationFrame(fit);}}
+      if(typeof ResizeObserver!=='undefined')new ResizeObserver(scheduleFit).observe(frame);
+      doc.defaultView.addEventListener('resize',scheduleFit,{passive:true});
+      doc.defaultView.visualViewport?.addEventListener('resize',scheduleFit,{passive:true});
+      fit();
+      return;
+    }
     let scale=1,x=0,y=0,gesture=null,moved=false;
     const point=t=>({x:t.clientX,y:t.clientY});
     const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
