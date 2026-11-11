@@ -4,11 +4,12 @@ const CW=1024,CH=1536,S=2;
 const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets','wrap'];
 const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','dress-denim','suit-paint']);
 const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
+const artistSleeves={"top-sparkle-pink":"assets/dressing-lena/IMG_6182.png","jacket-inspector":"assets/dressing-lena/IMG_6183.png","top-sparkle-charcoal":"assets/dressing-lena/IMG_6184.png","jacket-green":"assets/dressing-lena/IMG_6185.png","jacket-george-sand":"assets/dressing-lena/IMG_6186.png","jacket-purple":"assets/dressing-lena/IMG_6187.png","top-george-sand":"assets/dressing-lena/IMG_6188.png","top-inspector":"assets/dressing-lena/IMG_6189.png","top-bow-knit":"assets/dressing-lena/IMG_6190.png","top-pajama-leopard":"assets/dressing-lena/IMG_6191.png","jacket-cardigan":"assets/dressing-lena/IMG_6192.png","dress-floral":"assets/dressing-lena/IMG_6193.png","jacket-fleece":"assets/dressing-lena/IMG_6194.png","top-lime":"assets/dressing-lena/IMG_6195.png","top-pajama":"assets/dressing-lena/IMG_6196.png","jacket-striped-knit":"assets/dressing-lena/IMG_6197.png","top-peter-pan":"assets/dressing-lena/IMG_6198.png","top-bow-blouse-tucked":"assets/dressing-lena/IMG_6199.png","jacket-yukata":"assets/dressing-lena/IMG_6200.png","top-pullover":"assets/dressing-lena/IMG_6201.png","jacket-blue":"assets/dressing-lena/IMG_6202.png","top-bear":"assets/dressing-lena/IMG_6203.png","jacket-badges":"assets/dressing-lena/IMG_6204.png","jacket-ganni-knit":"assets/dressing-lena/IMG_6205.png","top-pajama-blue":"assets/dressing-lena/IMG_6206.png"};
 function canvas(){const c=document.createElement('canvas');c.width=CW;c.height=CH;return c}
 function create({source,changed}){
  const images=new Map(),profiles=new Map(),frames=new Map(),shoulders=new Map();let queued=false,lastSources="";
  function invalidate(){if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;changed()})}}
- function image(src){if(!images.has(src)){const im=new Image();im.src=src;const r={im,loaded:false};r.ready=im.decode().then(()=>{r.loaded=true;invalidate()});r.ready.catch(()=>{});images.set(src,r)}return images.get(src)}
+ function image(src){if(!images.has(src)){const im=new Image();im.src=src;const r={im,loaded:false};r.ready=im.decode().then(()=>{r.loaded=true;frames.clear();invalidate()});r.ready.catch(()=>{});images.set(src,r)}return images.get(src)}
  function get(id){return image(source(id))}
  function profile(id){const key=source(id);if(profiles.has(key))return profiles.get(key);const r=get(id);if(!r.loaded)return null;
   const c=canvas(),ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(r.im,0,0,CW,CH);const px=ctx.getImageData(0,0,CW,CH).data,rows=[];let hem=0;
@@ -149,7 +150,7 @@ function create({source,changed}){
    return c;
   });
  }
- function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
+ function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...ids.filter(id=>artistSleeves[id]).map(id=>artistSleeves[id]),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
  async function ready(entries,s){await Promise.all(sources(entries,s).map(src=>image(src).ready))}
  function process(entries,s){const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
@@ -181,6 +182,15 @@ function create({source,changed}){
     // Redraw the left arm and its sleeves only, not the dress/torso beside it.
     for(const e of result.filter(e=>e.part==='hands'||garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z)){
      if(e.id&&(sleeveless.has(e.id)||bareDresses.has(e.id)))continue;
+     if(e.id&&artistSleeves[e.id]){
+      const sleeve=image(artistSleeves[e.id]);if(!sleeve.loaded)continue;
+      const exact=canvas(),m=exact.getContext('2d');m.drawImage(sleeve.im,0,0,CW,CH);
+      // Respect the already composed garment (collars, vest and coat masks).
+      m.globalCompositeOperation='destination-in';paint(m,e);
+      m.globalCompositeOperation='destination-out';
+      for(const above of result)if(above.z>e.z&&garmentSlots.some(k=>s[k]===above.id))paint(m,above);
+      ctx.drawImage(exact,0,0);continue;
+     }
      const im=e.part==='hands'?forearm:e.canvas||(e.id&&get(e.id).loaded?get(e.id).im:null);if(!im)continue;
      ctx.save();ctx.beginPath();
      if(e.part==='hands')ctx.rect(0,450,445,450);
