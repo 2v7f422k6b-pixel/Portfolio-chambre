@@ -15,7 +15,10 @@
     'nana-wall-stars-layout-v1',
     'nana-fortune-cookie-position-v2',
     'nana-ipad-clock-placement-v1',
-    'nana-ribbon-per-artwork-v2'
+    'nana-ribbon-per-artwork-v2',
+    'nana-work-icon-layout-v1',
+    'nana-blog-draft-fr',
+    'nana-blog-draft-en'
   ];
   const SALT = 'ncoLvsCGvPz8g4p96QUO7g==';
   const HASH = '1Ps6jDfdyidhOO66fOAhLfRS98iRHp7ktX4Zvjkr1BQ=';
@@ -137,7 +140,7 @@
       '  try { isEditing=sessionStorage.getItem("nana-admin-session-v1")==="1"; } catch (_) {}\n' +
       '  if (isEditing) return;\n' +
       '  for(const [key,value] of Object.entries(window.NANA_PUBLISHED_SETTINGS)){\n' +
-      '    if(!key.startsWith("nana-")) continue;\n' +
+      '    if(!key.startsWith("nana-") || key.startsWith("nana-blog-draft-") || key==="nana-work-icon-layout-v1") continue;\n' +
       '    try { localStorage.setItem(key,JSON.stringify(value)); } catch (_) {}\n' +
       '  }\n' +
       '})();\n';
@@ -299,6 +302,9 @@
     dialog.innerHTML = heading() +
       '<p>Choisis un objet à régler. Tu retrouves les boîtes de dialogue et les poignées de placement déjà créées.</p>' +
       '<div class="nana-admin-grid">' +
+      '<a class="nana-admin-action" href="nana-skyblog.html?atelier=1">Modifier le blog · Français</a>' +
+      '<a class="nana-admin-action" href="nana-blog-en.html?atelier=1">Modifier le blog · English</a>' +
+      '<button class="nana-admin-action" data-tool="workIcons">Déplacer les icônes Work</button>' +
       '<button class="nana-admin-action" data-tool="posterEdit">Affiches et miroir</button>' +
       '<button class="nana-admin-action" data-tool="lampEdit">Lampe murale</button>' +
       '<button class="nana-admin-action" data-tool="starsEdit">Étoiles fluorescentes</button>' +
@@ -312,9 +318,9 @@
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
       '<div class="nana-admin-divider"><strong>Enregistrer et publier</strong>' +
-      '<p class="nana-admin-note">Les réglages et les photos sont d’abord sauvegardés dans ce navigateur. Exporte-les ensemble en sauvegarde, ou publie-les avec une autorisation GitHub pour les rendre visibles par tous.</p>' +
+      '<p class="nana-admin-note">Les textes du blog, les positions des icônes, les autres réglages et les photos sont d’abord sauvegardés dans ce navigateur. Exporte-les ensemble en sauvegarde, ou publie-les avec une autorisation GitHub pour les rendre visibles par tous.</p>' +
       '<div class="nana-admin-actions">' +
-      '<button class="nana-admin-action" id="nana-admin-export">Exporter réglages et photos (.json)</button>' +
+      '<button class="nana-admin-action" id="nana-admin-export">Exporter textes, réglages et photos (.json)</button>' +
       '<button class="nana-admin-action nana-admin-primary" id="nana-admin-publish-toggle">Publier sur le site</button>' +
       '</div><div id="nana-admin-publish-box" hidden>' +
       '<p>Utilise un jeton d’accès personnel GitHub <strong>fine-grained</strong>, limité à <strong>Portfolio-chambre</strong>, autorisation <strong>Contents: Read and write</strong>. Ne saisis jamais ton mot de passe GitHub.</p>' +
@@ -327,6 +333,7 @@
     dialog.querySelectorAll('[data-tool]').forEach(button=>{
       button.addEventListener('click',()=>{
         const action=button.dataset.tool;
+        if(action==='workIcons') { dialog.close(); window.NanaWorkLayout?.start(); return; }
         if(action==='polaroids') { editPolaroids(); return; }
         if(action==='conte') { location.assign('atelier-conte/'); return; }
         if(action==='ribbons') {
@@ -358,10 +365,15 @@
       changeTool(null);
     });
   }
+  if(new URLSearchParams(location.search).get('atelierOpen')==='1') {
+    const url=new URL(location.href);url.searchParams.delete('atelierOpen');history.replaceState(null,'',url);
+    setTimeout(()=>entry.click(),0);
+  }
   entry.addEventListener('click',()=>{
     if(dialog.open){dialog.close();return;}
     if(isUnlocked())showTools();else showLogin();
     if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
   });
 })();
+
 

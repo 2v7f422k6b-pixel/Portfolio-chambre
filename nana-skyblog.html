@@ -152,23 +152,26 @@ document.querySelectorAll("[data-portfolio-action]").forEach(a=>{const action=a.
  const observer=new ResizeObserver(entries=>entries.forEach(e=>{const o=all.find(x=>x.el===e.target);if(o)draw(o)}));
  all.forEach(o=>{observer.observe(o.el);draw(o)});
 })();
-</script><script id="blog-inline-editor-script">
+</script><script src="nana-site-settings.js?v=20261112-blog-work-1"></script><script id="blog-inline-editor-script">
 (()=>{
 const params=new URLSearchParams(location.search);
-if(params.get('atelier')!=='1')return;
-document.body.classList.add('blog-edit-mode');
+let unlocked=false;try{unlocked=sessionStorage.getItem('nana-admin-session-v1')==='1'}catch(_){}
+const editing=params.get('atelier')==='1'&&unlocked;
+if(editing)document.body.classList.add('blog-edit-mode');
 const key='nana-blog-draft-'+document.documentElement.lang;
 const selectors=['.mast h1','.mast .mast-content p','.mast .mast-content small','.sidebar .side-title','.sidebar>p','.sidebar .sidebar-guestbook p','.sidebar .note','.sidebar .mood-line span','.post h2','.post h3','.post>p','.post li','.post dt','.post dd','.tool-groups p','.quest-line span','.quest-line strong'];
 const els=[...new Set(selectors.flatMap(sel=>[...document.querySelectorAll(sel)]))].filter(el=>!el.closest('.blog-edit-toolbar'));
-let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
-els.forEach((el,i)=>{el.dataset.blogEditable='1';el.dataset.blogEditId='t'+i;if(saved['t'+i]!==undefined)el.innerHTML=saved['t'+i];const b=document.createElement('button');b.className='blog-edit-pencil';b.type='button';b.textContent='✎';b.setAttribute('aria-label','Edit text');b.onclick=()=>openEditor(el);el.appendChild(b)});
+let saved=window.NANA_PUBLISHED_SETTINGS?.[key]||{};if(editing){try{saved=JSON.parse(localStorage.getItem(key)||JSON.stringify(saved))}catch(e){}}
+function setHtml(el,value){const frames=[...el.children].filter(x=>x.matches('.nana-handrule,.nana-handstroke'));el.innerHTML=value;frames.forEach(x=>el.appendChild(x));}
+if(!editing){els.forEach((el,i)=>{if(typeof saved['t'+i]==='string')setHtml(el,saved['t'+i])});return;}
+els.forEach((el,i)=>{el.dataset.blogEditable='1';el.dataset.blogEditId='t'+i;if(saved['t'+i]!==undefined)setHtml(el,saved['t'+i]);const b=document.createElement('button');b.className='blog-edit-pencil';b.type='button';b.textContent='✎';b.setAttribute('aria-label','Edit text');b.onclick=()=>openEditor(el);el.appendChild(b)});
 function getHtml(el){const clone=el.cloneNode(true);clone.querySelectorAll('.blog-edit-pencil,.nana-handrule,.nana-handstroke').forEach(x=>x.remove());return clone.innerHTML}
-const dlg=document.createElement('div');dlg.className='blog-edit-dialog';dlg.hidden=true;dlg.innerHTML='<section><strong>Modifier le texte</strong><textarea></textarea><div><button data-save>Enregistrer sur cet appareil</button> <button data-cancel>Annuler</button></div><small>Brouillon local : pas encore publié sur GitHub.</small></section>';document.body.appendChild(dlg);
+const dlg=document.createElement('div');dlg.className='blog-edit-dialog';dlg.hidden=true;dlg.innerHTML='<section><strong>Modifier le texte</strong><textarea></textarea><div><button data-save>Enregistrer sur cet appareil</button> <button data-cancel>Annuler</button></div><small>Brouillon local. Pour le rendre visible à tous, retourne dans l’atelier puis choisis « Publier sur le site ».</small></section>';document.body.appendChild(dlg);
 let current=null;function openEditor(el){current=el;dlg.querySelector('textarea').value=getHtml(el);dlg.hidden=false;dlg.querySelector('textarea').focus()}
 dlg.querySelector('[data-cancel]').onclick=()=>dlg.hidden=true;
-dlg.querySelector('[data-save]').onclick=()=>{if(!current)return;const id=current.dataset.blogEditId;const value=dlg.querySelector('textarea').value;saved[id]=value;localStorage.setItem(key,JSON.stringify(saved));current.innerHTML=value;const b=document.createElement('button');b.className='blog-edit-pencil';b.textContent='✎';b.type='button';b.onclick=()=>openEditor(current);current.appendChild(b);dlg.hidden=true};
-const bar=document.createElement('div');bar.className='blog-edit-toolbar';bar.innerHTML='<b>Atelier · brouillon local</b> <button data-export>Exporter mes textes</button> <button data-exit>Quitter</button>';document.body.appendChild(bar);
+dlg.querySelector('[data-save]').onclick=()=>{if(!current)return;const id=current.dataset.blogEditId;const value=dlg.querySelector('textarea').value;saved[id]=value;localStorage.setItem(key,JSON.stringify(saved));setHtml(current,value);const b=document.createElement('button');b.className='blog-edit-pencil';b.textContent='✎';b.type='button';const edited=current;b.onclick=()=>openEditor(edited);current.appendChild(b);dlg.hidden=true};
+const bar=document.createElement('div');bar.className='blog-edit-toolbar';bar.innerHTML='<b>Atelier · brouillon local</b> <button data-export>Exporter mes textes</button> <button data-exit>Retour à l’atelier</button>';document.body.appendChild(bar);
 bar.querySelector('[data-export]').onclick=()=>{const blob=new Blob([JSON.stringify({page:location.pathname,changes:saved},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='nana-blog-edits-'+document.documentElement.lang+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-bar.querySelector('[data-exit]').onclick=()=>{const u=new URL(location.href);u.searchParams.delete('atelier');location.href=u.href};
+bar.querySelector('[data-exit]').onclick=()=>{location.href='index.html?atelierOpen=1'};
 })();
 </script></body></html>
