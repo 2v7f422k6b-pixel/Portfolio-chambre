@@ -19,6 +19,9 @@ const translations={
   "Day": "Jour",
   "Portfolio": "Portfolio",
   "Léna’s creative world ♡": "L’univers créatif de Léna ♡",
+  "Illustration, writing & music communications": "Illustration, écriture & communication musicale",
+  "My creations": "Mes créations",
+  "Léna de Firmas — Illustration, writing & music communications | Nana Color Studio": "Léna de Firmas — Illustration, écriture & communication musicale | Nana Color Studio",
   "Illustration · Animation · Music & Visuals · Writing · Mini Games": "Illustration · Animation · Musique & visuels · Écriture · Mini-jeux",
   "Illustration · Animation · Writing": "Illustration · Animation · Écriture",
   "Search my work": "Rechercher dans mes créations",
@@ -412,6 +415,8 @@ window.addEventListener('message',event=>{
 });
 function apply(){
 document.documentElement.lang=lang;
+const welcomeAbout=document.querySelector('[data-welcome-about]');
+if(welcomeAbout)welcomeAbout.href=lang==='en'?'nana-blog-en.html':'nana-skyblog.html';
 document.title=translateString(originalDocumentTitle,lang);
 syncDressUpFrames();
 const button=document.getElementById('language-toggle');

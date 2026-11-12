@@ -1,0 +1,8 @@
+/* Readable identity and ordinary links, alongside the artist's existing drawings. */
+html body #welcome h1.welcome-title-cloud{padding:0!important;line-height:0!important}
+html body #welcome .welcome-profession{font:400 clamp(14px,1.5vw,20px)/1.4 "Nana Trace UI",Arial,sans-serif!important;color:#e60024!important;margin:8px auto 0!important;max-width:90%}
+html body #welcome .welcome-direct-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 22px;margin:8px 0;font:400 15px/1.5 "Nana Trace UI",Arial,sans-serif;position:relative;z-index:2}
+html body #welcome .welcome-direct-links a{color:#e60024;text-decoration:underline;text-underline-offset:4px}
+html body #welcome{overflow-y:auto!important}
+html body #welcome .welcome-panel{max-height:none!important;flex-shrink:0}
+@media(max-height:650px){html body #welcome{justify-content:flex-start!important}}
