@@ -20,11 +20,6 @@ html body #app #menubar.nana-navigation .nj-trigger-count{font-size:14px!importa
 html body #app #menubar.nana-navigation .theme-label{display:none!important}
 html body #app #menubar.nana-navigation .theme-icon{font-size:26px!important}
 html body #app #menubar.nana-navigation #language-toggle{width:72px!important;white-space:nowrap!important}
-html body #app #menubar.nana-navigation #switch-mode{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-around!important;width:112px!important;padding:5px!important;isolation:isolate;border-radius:48% 45% 46% 43% / 48% 50% 46% 51%!important;background:#ffe0e8!important;}
-html body #app #menubar.nana-navigation #switch-mode::before{content:""!important;display:block!important;position:absolute;inset:5px auto 5px 5px;width:51px;background:#ff173b;border-radius:46% 49% 43% 48% / 47% 45% 52% 48%;transition:transform .25s ease;z-index:-1;}
-html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"]::before{transform:translateX(51px)}
-#menubar.nana-navigation #switch-mode span{width:50%;text-align:center;transition:color .25s}
-html body #menubar.nana-navigation #switch-mode[aria-checked="false"] span:first-child,html body #menubar.nana-navigation #switch-mode[aria-checked="true"] span:nth-of-type(2){color:#fff2f5!important}
 html body #app #menubar.nana-navigation #mobile-menu-toggle{display:flex!important;width:94px!important;flex:0 0 94px!important;align-items:center!important;justify-content:center!important;gap:3px!important;margin:0!important;}
 .nav-bow{width:43px;height:40px;overflow:visible;flex-shrink:0;pointer-events:none;transform-origin:50% 25%;}
 .nav-bow path{fill:#ffd0dd;stroke:#ff173b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -48,7 +43,6 @@ html body #app #menubar.nana-navigation.nav-compact #mobile-menu-toggle{margin-l
 @keyframes nana-ribbon-unroll{from{opacity:0;transform:scaleY(.9) translateY(-5px)}to{opacity:1;transform:none}}
 @media(max-width:370px){html body #app #menubar.nana-navigation{padding-inline:5px!important;gap:2px!important}html body #app #menubar.nana-navigation :is(.menu-left,.menu-right){gap:0!important}html body #app #menubar.nana-navigation button{font-size:14px!important;padding-inline:3px!important}}
 @media(prefers-reduced-motion:reduce){#menubar.nana-navigation *,#menubar.nana-navigation *::before{animation:none!important;transition:none!important}}
-html body #app #menubar.nana-navigation #switch-mode::before{background:#ff173b!important;opacity:1!important;inset:5px auto 5px 5px!important;width:51px!important;height:auto!important;clip-path:none!important;}
 /* Override the previous mobile menu's hidden secondary controls. */
 html body #app #menubar.nana-navigation .menu-left > #nana-journal-trigger,
 html body #app #menubar.nana-navigation .menu-left > #menu-search{display:inline-flex!important;align-items:center!important;justify-content:center!important;}
@@ -68,3 +62,29 @@ html body #app #menubar.nana-navigation #mobile-menu-panel{left:max(12px,env(saf
 #window[data-window-type="contact"] .mail-form{max-width:100%;}
 html body #app #menubar.nana-navigation > #nana-journal-trigger{justify-self:center!important;width:max-content!important;}
 html body #app #menubar.nana-navigation .menu-left > #mobile-menu-toggle{display:flex!important;}
+
+/* Nana's two drawings share a 600 × 300 canvas: keep their original alignment. */
+html body #app #menubar.nana-navigation #switch-mode{
+  position:relative!important;display:block!important;isolation:isolate;
+  width:112px!important;height:56px!important;min-height:56px!important;
+  padding:0!important;border-radius:0!important;overflow:visible!important;
+  background:transparent url("assets/drawn-ui/IMG_6312.png") center / 112px 56px no-repeat!important;
+}
+html body #app #menubar.nana-navigation #switch-mode::before{
+  content:""!important;display:block!important;position:absolute!important;
+  inset:0!important;width:100%!important;height:100%!important;
+  background:transparent url("assets/drawn-ui/IMG_6313.png") center / 112px 56px no-repeat!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  opacity:1!important;clip-path:none!important;pointer-events:none;z-index:-1;
+  transform:translateX(0)!important;transition:transform .25s ease;
+}
+html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"]::before{
+  transform:translateX(41.333333%)!important;
+}
+html body #app #menubar.nana-navigation #switch-mode span{
+  position:absolute;top:50%;left:6.5%;width:47.833333%;
+  transform:translateY(-50%);text-align:center;transition:color .25s;
+}
+html body #app #menubar.nana-navigation #switch-mode span:nth-of-type(2){left:47.833333%}
+html body #app #menubar.nana-navigation #switch-mode[aria-checked="false"] span:first-child,
+html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"] span:nth-of-type(2){color:#fff2f5!important}
