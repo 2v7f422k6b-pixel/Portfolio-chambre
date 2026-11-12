@@ -2,17 +2,29 @@
 #window-content,#special-host{position:relative}
 html body .nana-surface-pending > :not(.nana-surface-loader){visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 html body .nana-surface-loader{
-  position:absolute;inset:0;z-index:1000;display:flex;flex-direction:column;
+  box-sizing:border-box;position:absolute;inset:0;z-index:1000;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:16px;min-height:110px;
   background:#fff2f5;color:#ff173b;font:18px/1.5 "Nana Trace UI",sans-serif;
   text-align:center;padding:20px;pointer-events:auto;
 }
 html[data-theme="night"] body .nana-surface-loader{background:#151226;color:#fff2f5}
-.nana-surface-loader [role="status"]{animation:nana-loading-breathe 1.2s ease-in-out infinite}
+/* Keep the loading status accessible while showing only Léna's drawing. */
+.nana-surface-loader [role="status"]{font-size:0;line-height:0}
+.nana-surface-loader [role="status"]::before{
+  content:"";display:block;width:48px;height:48px;
+  background:url('assets/heart-lena.svg') center / contain no-repeat;
+  animation:nana-loading-heartbeat 1.2s ease-in-out 2s infinite;
+}
 .nana-surface-loader button{font:inherit;color:inherit;border:0;background:transparent;text-decoration:underline;padding:10px 20px}
-.nana-surface-loader.nana-load-error [role="status"]{animation:none}
-@keyframes nana-loading-breathe{0%,100%{opacity:.45}50%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.nana-surface-loader [role="status"]{animation:none}}
+.nana-surface-loader.nana-load-error [role="status"]{font-size:inherit;line-height:inherit}
+.nana-surface-loader.nana-load-error [role="status"]::before{content:none;animation:none}
+@keyframes nana-loading-heartbeat{
+  0%,40%,100%{transform:scale(1)}
+  12%{transform:scale(1.12)}
+  24%{transform:scale(1)}
+  32%{transform:scale(1.08)}
+}
+@media(prefers-reduced-motion:reduce){.nana-surface-loader [role="status"]::before{animation:none}}
 
 /* Preserve scene geometry while inactive theme sources have no URL yet. */
 [data-resource-src]:not([src]){visibility:hidden}
