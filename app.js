@@ -388,13 +388,13 @@ function openSocialProjects(){
 }
 function openMiniGames(){
  const fr=!document.documentElement.lang.toLowerCase().startsWith('en');
- const games=[["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends un moment pour prendre soin de toi.","Take a little time to care for yourself."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
+ const games=[["dressup","Dressing","Dressing Room","Essaie les vêtements, compose une tenue et sauvegarde tes looks.","Try on clothes, put together an outfit and save your looks."],["bead-box","Boîte à perles","Bead Box","Compose ton bijou de téléphone avec des perles, des lettres et des petits pendentifs.","Make a phone charm with beads, letters and tiny pendants."],["mimilab","Mimilab 3","Mimilab 3","Joue, compose et télécharge ta musique avec le clavier et le mini DAW.","Play, compose and download your music with the keyboard and mini DAW."],["coloring","Coloriage","Coloring Book","Colorie cinq de mes dessins au pinceau ou au pot de peinture.","Color five of my drawings using the paint bucket and freehand brush."],["tamagotchi","Tamagotchi","Tamagotchi","Prends un moment pour prendre soin de toi.","Take a little time to care for yourself."],["latte","Atelier latte","Latte Lab","Prépare ton café et dessine un cœur dans la mousse.","Make your own tiny coffee and finish it with a foam heart."],["do-nothing","Le club du rien","Do Nothing Club","Offre-toi une minute de pause. Le monde peut attendre.","Take a minute to rest. The world can wait."],["word-lab","Le Laboratoire des mots","Word Lab","Assemble des mots et télécharge ton poème.","Arrange words and download your poem."]];
  openWindow(fr?'MINI-JEUX':'MINI GAMES',`<section class="mini-games-section" aria-labelledby="mini-games-heading">
   <div class="eyebrow">${fr?'MODE WORK / MINI-JEUX':'WORK MODE / MINI GAMES'}</div>
   <h2 id="mini-games-heading">${fr?'Mini-jeux':'Mini Games'}</h2>
-  <p class="mini-games-intro">${fr?'Des petits jeux pour créer, explorer et faire une pause. Clique sur une carte pour commencer.':'Little games to create, explore and take a break. Click a card to start.'}</p>
+  <p class="mini-games-intro">${fr?'Huit petits jeux et ateliers pour créer, explorer et faire une pause. Tout est accessible ici, sans avoir à le chercher dans la chambre.':'Eight little games and workshops to create, explore and take a break. Open them all here without having to find them in the room.'}</p>
   <div class="mini-game-grid">${games.map(([id,nameFr,nameEn,descriptionFr,descriptionEn])=>`
-    <button class="mini-game-card" type="button" data-open="${id}">
+    <button class="mini-game-card" type="button" data-open="${id}" data-mini-game="${id}">
       <span class="mini-game-preview mini-game-placeholder">${fr?'Illustration à venir':'Illustration incoming'}</span>
       <span class="mini-game-name">${fr?nameFr:nameEn}</span>
       <span class="mini-game-description">${fr?descriptionFr:descriptionEn}</span>
@@ -576,6 +576,7 @@ function openHelp(){
  openWindow(document.documentElement.lang==='en'?'Help':'Aide',helpContent(),'help');
 }
 document.addEventListener('portfolio-language-change',()=>{
+ if(currentWindow==='mini-games'&&!shade.hidden)openMiniGames();
  if(currentWindow==='help'&&!shade.hidden){
   const opened=[...winContent.querySelectorAll('details')].map(el=>el.open);
   winTitle.textContent=document.documentElement.lang==='en'?'Help':'Aide';
