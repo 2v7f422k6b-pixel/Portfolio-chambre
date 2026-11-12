@@ -2,6 +2,20 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import test from 'node:test';
+test('dressing follows its own viewport without a parent pixel-size snapshot or custom pinch handler',()=>{
+ const styles=[],listeners=[];
+ const doc={body:{},head:{append:node=>styles.push(node)},createElement:()=>({}),addEventListener:name=>listeners.push(name)};
+ const frame={contentDocument:doc,dataset:{},getAttribute:()=> 'about-me.html?v=test',addEventListener(){},
+   get clientWidth(){throw new Error('Parent layout may be stale during pinch/rotation');}};
+ const host={querySelectorAll:()=>[frame],querySelector:()=>frame};
+ const context={document:{getElementById:()=>host},window:{},MutationObserver:class{observe(){}}};
+ const src=readFileSync(new URL('../window-bounds.js',import.meta.url),'utf8');
+ vm.runInNewContext(src.slice(src.indexOf('/* Pinch embedded')),context);
+ assert.equal(styles.length,1);
+ assert.match(styles[0].textContent,/width:100%!important;height:100%!important/);
+ assert.doesNotMatch(styles[0].textContent,/nana-embed-width|nana-embed-height/);
+ assert.deepEqual(listeners,[]);
+});
 test('pinch magnifies inner content, leaves iframe viewport stationary and resets cleanly',()=>{
  const listeners={},style=()=>({removeProperty(k){delete this[k]}}),body={style:style()},doc={body,documentElement:{style:style()},addEventListener(k,f){listeners[k]=f}};
  const frame={style:style(),offsetWidth:800,offsetHeight:600,contentDocument:doc,dataset:{},getAttribute:()=> 'dreamlab.html',addEventListener(){}};

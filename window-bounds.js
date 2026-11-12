@@ -15,12 +15,16 @@
     // visual viewport. The room and dock are sized inside that same surface.
     const layoutHeight=Math.max(root.clientHeight||0,window.innerHeight||0);
     if(layoutHeight>0)set('--nana-layout-height',layoutHeight);
+    // The root client box is the layout viewport, unlike a pinch-reduced
+    // visualViewport or innerWidth inflated by overflowing content.
+    const layoutWidth=root.clientWidth||window.innerWidth;
+    if(layoutWidth>0)set('--nana-layout-width',layoutWidth);
     const viewport=window.visualViewport;
     // Pinch zoom should magnify the page, not shrink its windows again.
     const useVisual=viewport&&Math.abs(viewport.scale-1)<.01;
     const visibleTop=useVisual?viewport.offsetTop:0;
     const visibleBottom=useVisual?Math.min(window.innerHeight,visibleTop+viewport.height):window.innerHeight;
-    const gap=window.innerWidth<=760?8:12;
+    const gap=layoutWidth<=760?8:12;
     const menuBottom=bar?.getBoundingClientRect().bottom||0;
     set('--nana-window-top-safe',Math.max(menuBottom,visibleTop)+gap);
     set('--nana-window-viewport-bottom',visibleBottom);
@@ -32,9 +36,13 @@
   }
   window.addEventListener('resize',schedule,{passive:true});
   window.addEventListener('pageshow',schedule);
+  window.addEventListener('orientationchange',schedule,{passive:true});
   window.visualViewport?.addEventListener('resize',schedule,{passive:true});
   window.visualViewport?.addEventListener('scroll',schedule,{passive:true});
-  if(bar&&typeof ResizeObserver!=='undefined')new ResizeObserver(schedule).observe(bar);
+  if(typeof ResizeObserver!=='undefined'){
+    const observer=new ResizeObserver(schedule);observer.observe(root);
+    if(bar)observer.observe(bar);
+  }
   update();
 })();
 
@@ -51,29 +59,16 @@
     if(installed.has(doc))return;
     installed.add(doc);
     // Do not transform the dressing document root. WebKit may retain a clipped
-    // backing surface after pinch/resize. Keep native pinch zoom and size the
-    // layout from the actual iframe client box rather than a stale dvh value.
+    // backing surface after pinch/resize. Percentages follow the iframe's own
+    // viewport, without copying a parent's temporarily stale pixel measurement.
     if(/(?:^|\/)about-me\.html(?:[?#]|$)/.test(frame.getAttribute('src')||'')){
       const style=doc.createElement('style');
       style.id='nana-dressing-frame-size';
       style.textContent=`
-        html,html body{width:var(--nana-embed-width,100%)!important;height:var(--nana-embed-height,100%)!important;min-height:0!important;margin:0!important;background:#fff4e8!important;transform:none!important}
-        html body.has-saved-looks .frame{width:100%!important;height:var(--nana-embed-height,100dvh)!important;min-height:0!important;max-height:none!important}
+        html,html body{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;margin:0!important;background:#fff4e8!important;transform:none!important}
+        html body.has-saved-looks .frame{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-height:none!important}
       `;
       doc.head.append(style);
-      let pending=false;
-      function fit(){
-        pending=false;if(!frame.isConnected)return;
-        const width=frame.clientWidth,height=frame.clientHeight;
-        if(!width||!height)return;
-        doc.documentElement.style.setProperty('--nana-embed-width',width+'px');
-        doc.documentElement.style.setProperty('--nana-embed-height',height+'px');
-      }
-      function scheduleFit(){if(!pending){pending=true;requestAnimationFrame(fit);}}
-      if(typeof ResizeObserver!=='undefined')new ResizeObserver(scheduleFit).observe(frame);
-      doc.defaultView.addEventListener('resize',scheduleFit,{passive:true});
-      doc.defaultView.visualViewport?.addEventListener('resize',scheduleFit,{passive:true});
-      fit();
       return;
     }
     let scale=1,x=0,y=0,gesture=null,moved=false;

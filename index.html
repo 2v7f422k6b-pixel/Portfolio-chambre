@@ -56,7 +56,7 @@
   <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <link rel="stylesheet" href="window-system.css?v=20261111-touch-paint-2">
 <script src="resource-loading.js?v=20261112-resources-1"></script>
-<script src="window-bounds.js?v=20261112-layout-height-1" defer></script>
+<script src="window-bounds.js?v=20261112-viewport-width-1" defer></script>
 <link rel="stylesheet" href="surface-loading.css?v=20261112-resources-1">
 <script src="surface-loading.js?v=20261112-resources-1" defer></script>
 <link rel="stylesheet" href="window-chrome.css?v=20261108-routes">
@@ -567,7 +567,18 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
     overflow:hidden!important;overscroll-behavior:none!important;
   }
   html body:has(#desktop:not([hidden])){
-    position:fixed!important;inset:0!important;width:100%!important;height:100%!important;
+    position:relative!important;inset:auto!important;
+    width:100%!important;height:var(--nana-layout-height,100dvh)!important;
+    min-height:0!important;
+  }
+  /* A fixed body plus nested fixed surfaces can retain a clipped WebKit layer.
+     Keep the document in normal flow; only the actual desktop/windows are fixed. */
+  html body #app,
+  html body #app #desktop,
+  html body #app #menubar.nana-navigation,
+  html body #app #window-shade:not([hidden]),
+  html body #app #special-shade:not([hidden]){
+    width:var(--nana-layout-width,100%)!important;
   }
   html body #app #desktop{
     overscroll-behavior:none!important;
@@ -576,7 +587,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
     overscroll-behavior:none!important;
   }
   /* WebKit can leave unpainted rectangular tiles behind translucent fixed UI. */
-  html body #app :is(#dock,.player,#window-shade,#special-shade){
+  html body #app :is(#menubar,#dock,.player,#window-shade,#special-shade){
     -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
   }
 }
