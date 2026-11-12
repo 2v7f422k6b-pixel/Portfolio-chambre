@@ -25,8 +25,7 @@
     ['bead-box', 'Boîte à perles', 'Bead box', 'fleur'],
     ['do-nothing', 'Le club du rien', 'Do Nothing Club', 'nuage_jour_01'],
     ['word-lab', 'Le laboratoire des mots', 'Word lab', 'lettre_A'],
-    ['mimilab', 'Mimilab', 'Mimilab', 'notes_musique'],
-    ['fortune-cookie', 'Fortune cookie', 'Fortune cookie', 'etincelle_pleine']
+    ['mimilab', 'Mimilab', 'Mimilab', 'notes_musique']
   ].map(([id, fr, en, image]) => ({id, name:pair(fr,en), route:'jeu/'+id, image:art(image)}));
   const secrets = [
     {id:'secret-rug', name:pair('Une colocataire sous le tapis','A roommate under the rug'), image:art('araignee_jour'), route:'objet/tapis'},
