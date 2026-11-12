@@ -84,7 +84,7 @@ html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"]::befor
 }
 html body #app #menubar.nana-navigation #switch-mode span{
   position:absolute;top:50%;left:6.5%;width:47.833333%;
-  transform:translateY(-50%);text-align:center;transition:color .25s;
+  transform:translate(-3px,-50%);text-align:center;transition:color .25s;
 }
 html body #app #menubar.nana-navigation #switch-mode span:nth-of-type(2){left:47.833333%}
 html body #app #menubar.nana-navigation #switch-mode[aria-checked="false"] span:first-child,
