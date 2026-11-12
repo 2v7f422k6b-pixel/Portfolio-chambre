@@ -530,6 +530,10 @@ const body=hairless?correctionFile(35):BASE;
 const entries=[{src:body,z:1,body:true}];
 if(!slots.underwear&&![slots.tops,slots.dresses,slots.overalls,slots.sweater,slots.cardigan,slots.vest,slots.jackets,slots.wrap].some(Boolean))entries.push({src:'assets/dressing-lena/IMG_5995.png',z:2});
 if(slots.wrap==='jacket-yukata')entries.unshift({src:'assets/dressing-lena/IMG_5639.png',z:0});
+// Artist-drawn back panels sit behind the body and every worn garment.
+// Resolve from the current coat so removing or replacing it also removes its back.
+const coatBack={'jacket-inspector':'assets/dressing-lena/IMG_6329.png','jacket-george-sand':'assets/dressing-lena/IMG_6328.png'}[slots.jackets];
+if(coatBack)entries.unshift({src:coatBack,z:0});
 const jewelryZ=slots.cardigan==='jacket-blue'?11.5:['top-yellow','top-dj','top-inspector','top-george-sand'].includes(slots.tops)||slots.sheer?8.8:4;
 const ordered=[['underwear',1.8],['hosiery',2],['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['bracelets',7.5],['gloves',slots.sheer?8.7:7.8],['tops',8],['sheer',8.5],['dresses',9],['overalls',9],['sweater',10.9],['cardigan',11],['vest',11.2],['jackets',12],['wrap',12.5],['earrings',jewelryZ],['necklace',['jewelry-miffy-ruff','jewelry-george-sand','jewelry-clown-ruff'].includes(slots.necklace)?44:jewelryZ],['bags',19],['bagAccessories',20],['phone',22],['hat',23],['headlamp',23.5],['headphones',24],['clips',22.5],['glasses',26],['scarves',40],['camera',43]];
 const bag=bagFits();
