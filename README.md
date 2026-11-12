@@ -141,3 +141,23 @@ Pour une modification visuelle, comparer aussi les vues Play/Work, les deux
 langues et les deux thèmes aux formats téléphone, iPad portrait/paysage et ordinateur.
 Les contrôles automatisés ne remplacent pas cette comparaison ni un essai sur Safari iOS.
 
+
+
+## Référencement : version de préparation non indexable
+
+Le site actuel doit rester hors des résultats des moteurs. Toutes les pages HTML
+contiennent un bloc `PRELAUNCH-NOINDEX` avec `noindex, noimageindex, follow`.
+Conserver ce bloc dans chaque nouvelle page tant que cette version sert de préparation.
+Les titres, descriptions, textes alternatifs, données structurées et sitemap sont
+conservés pour préparer le SEO du futur site. Ne pas soumettre ce site à l'indexation.
+Ne pas bloquer l'exploration des pages dans robots.txt : les moteurs doivent pouvoir
+lire la directive noindex. Cette directive ne rend pas les fichiers privés et ne
+garantit pas le retrait des images ou PDF accessibles directement par leur URL.
+
+Lors du lancement du duplicata final uniquement :
+1. Remplacer les anciennes URL par le domaine final dans les canonical, données
+   structurées, métadonnées sociales, liens de langues et sitemap.
+2. Retirer uniquement les blocs `PRELAUNCH-NOINDEX` des pages destinées au public.
+   Conserver les autres directives noindex des prototypes, outils et pages internes.
+3. Vérifier le résultat sur le domaine final, puis configurer Search Console et
+   soumettre son sitemap. Garder le site de préparation en noindex.
