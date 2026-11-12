@@ -89,20 +89,24 @@
     location.assign(url.pathname+url.search+url.hash);
   }
   function readSettings() {
+    const pending={settings:{}};
+    window.dispatchEvent(new CustomEvent('nana:collect-drafts',{detail:pending}));
     const result={};
     for(const key of SETTINGS){
+      if(Object.prototype.hasOwnProperty.call(pending.settings,key)){result[key]=pending.settings[key];continue;}
       try {
         const raw=localStorage.getItem(key);
         if(raw!==null){result[key]=JSON.parse(raw);continue;}
-      }catch(_){}
+      }catch(_){throw new Error('Lecture impossible du réglage '+key+'. Export interrompu pour éviter une sauvegarde incomplète.');}
       if(Object.prototype.hasOwnProperty.call(window.NANA_PUBLISHED_SETTINGS||{},key))
         result[key]=window.NANA_PUBLISHED_SETTINGS[key];
     }
     return result;
   }
   async function downloadSettings() {
-    let photos=photoDraft;
+    let photos=photoDraft,settings;
     try {
+      settings=readSettings();
       if(!photos) {
         const saved=localStorage.getItem(PHOTO_DRAFT);
         if(saved) photos=JSON.parse(saved);
@@ -117,13 +121,15 @@
       alert('Export interrompu : '+error.message+' Les photos doivent être incluses dans la sauvegarde.');
       return;
     }
-    const payload={version:1,exportedAt:new Date().toISOString(),repository:REPO,settings:readSettings(),polaroids:{photos}};
+    const payload={version:2,exportedAt:new Date().toISOString(),repository:REPO,settings,polaroids:{photos},included:Object.keys(settings)};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url;a.download='nana-reglages-'+new Date().toISOString().slice(0,10)+'.json';
+    a.href=url;a.download='nana-atelier-complet-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';
     document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1500);
+    const status=dialog.querySelector('#nana-admin-export-status');
+    if(status)status.textContent='Export complet téléchargé : '+exportSummary(settings,photos.length)+'.';
   }
   function encodedBase64(string) {
     const bytes=new TextEncoder().encode(string);
@@ -202,11 +208,11 @@
         if (!Array.isArray(photoDraft)) throw new Error('Format des photos invalide.');
       } catch (error) { alert(error.message); return; }
     }
-    dialog.innerHTML = heading() + '<h3>Polaroïds</h3><p>Ajoute tes photos et écris au dos. Enregistre le brouillon, puis utilise « Publier sur le site » dans l’atelier pour les rendre visibles par tous.</p><label>Ajouter des photos<input id="nana-photo-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div id="nana-photo-list"></div><p id="nana-photo-status" role="status"></p><div class="nana-admin-actions"><button class="nana-admin-action" id="nana-photo-save">Enregistrer le brouillon</button><button class="nana-admin-action" id="nana-photo-back">Retour à l’atelier</button></div>';
+    dialog.innerHTML = heading() + '<h3>Polaroïds</h3><p>Ajoute tes photos et écris au dos. Les modifications sont sauvegardées automatiquement. Utilise « Publier sur le site » dans l’atelier pour les rendre visibles par tous.</p><label>Ajouter des photos<input id="nana-photo-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div id="nana-photo-list"></div><p id="nana-photo-status" role="status"></p><div class="nana-admin-actions"><button class="nana-admin-action" id="nana-photo-save">Enregistrer le brouillon</button><button class="nana-admin-action" id="nana-photo-back">Retour à l’atelier</button></div>';
     wireClose();
     const status = dialog.querySelector('#nana-photo-status');
     function save() {
-      try { localStorage.setItem(PHOTO_DRAFT, JSON.stringify(photoDraft)); status.textContent='Brouillon enregistré dans ce navigateur. Il reste à le publier.'; return true; }
+      try { localStorage.setItem(PHOTO_DRAFT, JSON.stringify(photoDraft)); status.textContent='Sauvegarde automatique sur cet appareil · incluse dans l’export global.'; return true; }
       catch (_) { status.textContent='Le navigateur manque de place. Garde cette fenêtre ouverte et publie depuis l’atelier.'; return false; }
     }
     function render() {
@@ -229,7 +235,7 @@
           const label=document.createElement('label');label.textContent=title;
           const output=document.createElement('output');const slider=document.createElement('input');slider.type='range';slider.min=min;slider.max=max;slider.step=step;slider.value=crop[key]??(key==='zoom'?1:50);
           const refresh=()=>{output.value=Math.round(Number(slider.value)*(key==='zoom'?100:1))+' %';};refresh();
-          slider.addEventListener('input',()=>{crop[key]=Number(slider.value);refresh();updateCrop();});
+          slider.addEventListener('input',()=>{crop[key]=Number(slider.value);refresh();updateCrop();save();});
           slider.addEventListener('change',save);label.append(output,slider);cropFields.append(label);sliders.push({key,slider,refresh});
         }
         const reset=document.createElement('button');reset.type='button';reset.className='nana-admin-action';reset.textContent='Réinitialiser le recadrage';
@@ -238,7 +244,7 @@
         for (const [key,label] of [['title','Titre'],['date','Date'],['note','Texte au dos'],['alt','Description de la photo (accessibilité)']]) {
           const field=document.createElement('label'); field.textContent=label;
           const input=document.createElement(key==='note'?'textarea':'input'); input.value=photo[key]||'';
-          input.addEventListener('input',()=>{photo[key]=input.value; status.textContent='Modifications à enregistrer.';});
+          input.addEventListener('input',()=>{photo[key]=input.value;save();});
           input.addEventListener('change',save);
           field.append(input); card.append(field);
         }
@@ -298,6 +304,12 @@
     photoDraft=published;
     try { localStorage.removeItem(PHOTO_DRAFT); } catch (_) {}
   }
+  function exportSummary(settings, photoCount) {
+    const work=settings['nana-work-icon-layout-v1']||{};
+    const icons=Object.values(work).reduce((sum,group)=>sum+Object.keys(group||{}).length,0);
+    const texts=['fr','en'].reduce((sum,lang)=>sum+Object.keys(settings['nana-blog-draft-'+lang]||{}).length,0);
+    return icons+' position(s) d’icône Work, '+texts+' texte(s) de blog modifié(s), '+photoCount+' polaroïd(s), et les réglages de la chambre';
+  }
   function showTools() {
     dialog.innerHTML = heading() +
       '<p>Choisis un objet à régler. Tu retrouves les boîtes de dialogue et les poignées de placement déjà créées.</p>' +
@@ -318,11 +330,11 @@
       '<button class="nana-admin-action" data-tool="normal">Voir le site sans éditeur</button>' +
       '</div>' +
       '<div class="nana-admin-divider"><strong>Enregistrer et publier</strong>' +
-      '<p class="nana-admin-note">Les textes du blog, les positions des icônes, les autres réglages et les photos sont d’abord sauvegardés dans ce navigateur. Exporte-les ensemble en sauvegarde, ou publie-les avec une autorisation GitHub pour les rendre visibles par tous.</p>' +
+      '<p class="nana-admin-note">Tes modifications sont sauvegardées automatiquement sur cet appareil. Un seul fichier regroupe les textes du blog, les icônes Work, les réglages de la chambre, les rubans et les polaroïds. Publier les rend visibles par tous.</p>' +
       '<div class="nana-admin-actions">' +
-      '<button class="nana-admin-action" id="nana-admin-export">Exporter textes, réglages et photos (.json)</button>' +
+      '<button class="nana-admin-action" id="nana-admin-export">Tout exporter (.json)</button>' +
       '<button class="nana-admin-action nana-admin-primary" id="nana-admin-publish-toggle">Publier sur le site</button>' +
-      '</div><div id="nana-admin-publish-box" hidden>' +
+      '</div><p id="nana-admin-export-status" role="status"></p><div id="nana-admin-publish-box" hidden>' +
       '<p>Utilise un jeton d’accès personnel GitHub <strong>fine-grained</strong>, limité à <strong>Portfolio-chambre</strong>, autorisation <strong>Contents: Read and write</strong>. Ne saisis jamais ton mot de passe GitHub.</p>' +
       '<label for="nana-admin-github-token">Jeton GitHub (non sauvegardé)</label>' +
       '<input id="nana-admin-github-token" type="password" autocomplete="off" placeholder="github_pat_…">' +
