@@ -1234,6 +1234,22 @@ window.NANA_PUBLISHED_SETTINGS = {
     "size": 15.5,
     "angle": 118,
     "skew": 20
+  },
+  "nana-work-icon-layout-v1": {
+    "large": {
+      "about": {
+        "x": 0.6113902847571189,
+        "y": 0.6978763544891641
+      },
+      "contact": {
+        "x": 0.8848408710217756,
+        "y": 0.7017463235294118
+      }
+    }
+  },
+  "nana-blog-draft-fr": {
+    "t45": "Je suis les <strong>statistiques</strong>, prépare des <strong>tableaux de bord</strong> et des <strong>bilans de performance</strong> pour ajuster les contenus et les campagnes.",
+    "t1": "Bienvenue sur mon blog !"
   }
 };
 (() => {
@@ -1243,7 +1259,7 @@ window.NANA_PUBLISHED_SETTINGS = {
   try { isEditing = sessionStorage.getItem('nana-admin-session-v1') === '1'; } catch (_) {}
   if (isEditing) return;
   for (const [key, value] of Object.entries(data)) {
-    if (!key.startsWith('nana-')) continue;
+    if (!key.startsWith('nana-') || key.startsWith('nana-blog-draft-') || key === 'nana-work-icon-layout-v1') continue;
     try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {}
   }
 })();
