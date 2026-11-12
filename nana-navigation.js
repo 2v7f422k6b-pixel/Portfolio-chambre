@@ -8,7 +8,12 @@
   const byId=id=>document.getElementById(id);
   const preferences=['language-toggle','theme-toggle','switch-mode'].map(byId);
   const admin=byId('nana-admin-trigger');
-  ['menu-about','menu-contact','menu-help'].forEach(id=>panel.append(byId(id)));
+  const creations=document.createElement('button');
+  creations.id='menu-creations';creations.type='button';creations.dataset.open='finder';
+  const shop=document.createElement('button');
+  shop.id='menu-shop';shop.type='button';
+  shop.addEventListener('click',()=>window.NanaDeepLinks.open('shop'));
+  panel.append(byId('menu-about'),creations,byId('menu-contact'),shop,byId('menu-help'));
   const settings=document.createElement('div');settings.className='nav-preferences';panel.append(settings,admin);
   left.append(toggle);
   bar.insertBefore(byId('nana-journal-trigger'),right);
@@ -23,6 +28,8 @@
     panel.setAttribute('aria-label',t('Menu secondaire','Secondary navigation'));
     label(byId('home-menu'),t('Retour à l’accueil','Return home'));
     byId('menu-about').textContent=t('À propos','About');label(byId('menu-about'),t('À propos','About'));
+    creations.textContent=t('Mes créations','My creations');label(creations,t('Mes créations','My creations'));
+    shop.textContent=t('Boutique','Shop');label(shop,t('Boutique','Shop'));
     byId('menu-contact').textContent='Contact';label(byId('menu-contact'),'Contact');
     byId('menu-help').textContent=t('Aide','Help');
     label(byId('menu-help'),t('Aide','Help'));
