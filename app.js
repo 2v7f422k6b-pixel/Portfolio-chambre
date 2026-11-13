@@ -135,6 +135,7 @@ function roomSnapshotTransition(update) {
 }
 function applyThemeInstant(theme){
  const night=theme==='night';
+ if(night)window.NanaProgress?.visit('night');
  window.NanaResources?.activate(currentMode,night?'night':'day');
  // The Work wallpaper layers stay mounted in both themes. The theme switch
  // changes only their opacity, not the layout or the scroll position.
@@ -996,3 +997,4 @@ updatePlayer();
  if(document.readyState==='complete')launch();
  else window.addEventListener('load',launch,{once:true});
 })();
+

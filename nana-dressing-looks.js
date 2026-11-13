@@ -73,6 +73,17 @@ window.NanaDressingLooks={init(api){
     subNav.hidden=family.keys.length===1;
   }
   const pager=document.createElement('nav');pager.className='nl-inventory-pager';pager.setAttribute('data-no-translate','');$('#inventory').after(pager);
+  const undo=document.createElement('button');undo.type='button';undo.id='undo-outfit';undo.className='action nl-frame';$('#reset').before(undo);
+  const worn=document.createElement('details');worn.className='nl-worn';worn.setAttribute('data-no-translate','');$('.stage').append(worn);
+  let previous=null,history=[],restoring=false;
+  function controls(){
+    undo.textContent=t('Annuler','Undo');undo.disabled=!history.length;
+    worn.replaceChildren();const summary=document.createElement('summary');summary.textContent=t('Pièces portées','Worn pieces')+' ('+api.worn().length+')';
+    const list=document.createElement('div');list.className='nl-worn-list';
+    for(const item of api.worn()){const b=document.createElement('button');b.type='button';b.textContent=item.name+' ×';b.setAttribute('aria-label',t('Retirer ','Remove ')+item.name);b.onclick=()=>api.remove(item.id);list.append(b);}
+    worn.append(summary,list);
+  }
+  undo.addEventListener('click',()=>{if(!history.length)return;const state=history.pop();restoring=true;api.restore(state);api.render();restoring=false;controls();});
   function paginate(){
     if(api.category()!==category){category=api.category();page=0;}
     syncCategories();
@@ -82,23 +93,33 @@ window.NanaDressingLooks={init(api){
     const columns=getComputedStyle(target).gridTemplateColumns.split(' ').length;
     const gap=parseFloat(getComputedStyle(target).rowGap)||8;
     const available=$('#inventory').clientHeight-(note?note.offsetHeight+gap:0);
-    const height=Math.max(...cards.map(el=>el.getBoundingClientRect().height));
-    const size=Math.max(columns,Math.floor((available+gap)/(height+gap))*columns),total=Math.max(1,Math.ceil(cards.length/size));page=Math.min(page,total-1);
+    const height=Math.max(1,...cards.map(el=>el.getBoundingClientRect().height));
+    const size=matchMedia('(max-width:600px)').matches?8:Math.max(columns,Math.floor((available+gap)/(height+gap))*columns),total=Math.max(1,Math.ceil(cards.length/size));page=Math.min(page,total-1);
     cards.forEach((el,i)=>el.hidden=i<page*size||i>=(page+1)*size);
+    // Bind visible thumbnail URLs immediately, including SVG images. They remain
+    // attached to each new card when a selection rebuilds the inventory.
+    for(const card of cards.filter(el=>!el.hidden))for(const im of card.querySelectorAll('[data-resource-href],[data-resource-src]')){
+      if(im.dataset.resourceHref)im.setAttribute('href',im.dataset.resourceHref);
+      if(im.dataset.resourceSrc)im.setAttribute('src',im.dataset.resourceSrc);
+    }
     pager.innerHTML='<button class="action nl-frame" type="button" data-page="-1" aria-label="'+t('Vêtements précédents','Previous clothes')+'">←</button><span>'+(page+1)+' / '+total+'</span><button class="action nl-frame" type="button" data-page="1" aria-label="'+t('Vêtements suivants','Next clothes')+'">→</button>';
     pager.querySelector('[data-page="-1"]').disabled=page===0;pager.querySelector('[data-page="1"]').disabled=page===total-1;
   }
   pager.addEventListener('click',event=>{const b=event.target.closest('[data-page]');if(b&&!b.disabled){page+=Number(b.dataset.page);paginate();}});
   function changed(){
     paginate();if(!ready)return;
-    const outfit=api.snapshot(),json=JSON.stringify([outfit,editingId]);if(json===lastJSON)return;
+    const outfit=api.snapshot();
+    if(previous&&JSON.stringify(outfit)!==JSON.stringify(previous)&&!restoring){history.push(previous);if(history.length>50)history.shift();}
+    previous=structuredClone(outfit);controls();
+    const json=JSON.stringify([outfit,editingId]);if(json===lastJSON)return;
     const result=store.last(outfit,editingId);if(result.ok){lastJSON=json;storageWarned=false;}else if(!storageWarned){storageWarned=true;api.toast(t('Ce navigateur ne peut pas conserver ta tenue.','This browser cannot keep your outfit.'));}
   }
   const requested=store.takeWear(),saved=requested?store.get(requested):null,last=saved?{outfit:saved.outfit,editingId:saved.id}:store.last();
   if(last){editingId=store.get(last.editingId)?.id||null;const missing=api.restore(last.outfit);partial=missing.length>0;api.render();lastJSON=JSON.stringify([api.snapshot(),editingId]);if(partial)api.toast(t('Certaines pièces sont indisponibles ou à débloquer. Le look original reste dans ton carnet.','Some pieces are unavailable or locked. The original look remains in your notebook.'));}
-  ready=true;copy();paginate();
+  ready=true;previous=structuredClone(api.snapshot());copy();paginate();controls();
   if(requested&&last)store.last(last.outfit,editingId);
   new ResizeObserver(()=>paginate()).observe($('#inventory'));
-  document.addEventListener('portfolio-language-change',()=>{copy();paginate();});
+  document.addEventListener('portfolio-language-change',()=>{copy();paginate();controls();});
   return {changed,paginate};
 }};
+

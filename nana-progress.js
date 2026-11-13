@@ -34,6 +34,9 @@
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
+    {id:'george-sand',image:crop('assets/dressing-lena/IMG_5979.png',[693, 77, 527, 539],2048,3072),name:pair('George Sand','George Sand'),visit:'objet/souvenues',pieces:['head-george-sand','jewelry-george-sand','jacket-george-sand','vest-george-sand','pants-george-sand','top-george-sand','shoes-george-sand'],values:{hat:'head-george-sand',necklace:'jewelry-george-sand',jackets:'jacket-george-sand',vest:'vest-george-sand',pants:'pants-george-sand',tops:'top-george-sand',shoes:'shoes-george-sand'},rule:pair('Ouvrir Les Sous-vêtus, les livres du milieu.','Open Les Sous-vêtus, the middle books.')},
+    {id:'inspector',image:crop('assets/dressing-lena/IMG_5990.png',[742, 197, 522, 311],2048,3072),name:pair('Inspectrice','Inspector'),exploration:.75,pieces:['jacket-inspector','pants-inspector','head-inspector-glasses','top-inspector','head-inspector','shoes-inspector'],values:{jackets:'jacket-inspector',pants:'pants-inspector',glasses:'head-inspector-glasses',tops:'top-inspector',hat:'head-inspector',shoes:'shoes-inspector'},rule:pair('Explorer 75 % de la chambre.','Explore 75% of the room.')},
+
     {id:'sonny',name:pair('Sonny Angel lapin','Bunny Sonny Angel'),dialogue:'sonny-angel',image:crop('assets/dressing-lena/IMG_5719.png',[825,13,348,627],2048,3072),pieces:['head-sonny-rabbit'],values:{hat:'head-sonny-rabbit'},makeup:['makeup-blush'],rule:pair('Lire les six phrases du Sonny Angel dans la chambre.','Read all six Sonny Angel lines in the room.')},
     {id:'night-explorer',name:pair('Exploratrice nocturne','Night explorer'),visit:'night',image:crop('assets/dressing-lena/IMG_5720.png',[801,203,604,560],2048,3072),pieces:['head-headlamp'],values:{hat:'head-headlamp',tops:'top-pullover',pants:'pants-pajama',shoes:'shoes-bunny'},rule:pair('Découvrir la chambre en mode nuit.','Discover the room at night.')},
     {id:"miffy",name:pair("Miffy clown","Miffy clown"),dialogue:'miffy',image:crop('assets/dressing-lena/IMG_5709.png',[852, 129, 238, 248],2048,3072),pieces:["head-miffy", "suit-miffy", "jewelry-miffy-ruff"],values:{"dresses": "suit-miffy", "hat": "head-miffy", "necklace": "jewelry-miffy-ruff"},rule:pair("Lire les six phrases de Miffy dans la chambre.","Read all six of Miffy's lines in the room.")},
@@ -43,8 +46,8 @@
     {id:'shining',name:pair('Les jumelles de Shining','The Shining twins'),feat:'secret-typewriter',image:crop('assets/dressing-lena/IMG_5726.png',[598,701,826,1407],2048,3072),pieces:['dress-shining','head-shining-flower','shoes-shining','hosiery-shining'],values:{dresses:'dress-shining',clips:'head-shining-flower',shoes:'shoes-shining',hosiery:'hosiery-shining'},rule:pair('Découvrir la machine à écrire de Shining.','Discover the Shining typewriter.')},
     {id:'atelier', name:pair('Atelier en bazar','A messy studio'), visit:'jeu/coloring', image:crop('assets/dressing-lena/IMG_5735.png',[673,740,609,1888],2048,3072), pieces:['suit-paint'], values:{tops:'top-white',overalls:'suit-paint',hat:'head-beret',shoes:'shoes-bambi'}, rule:pair('Découvrir le jeu de coloriage.','Discover the colouring book.')},
     {id:'photographer',name:pair('Souvenirs instantanés','Instant memories'),feat:'polaroids-all',image:crop('assets/dressing-lena/IMG_5739.png',[848,700,253,555],2048,3072),pieces:['accessory-camera'],values:{camera:'accessory-camera',tops:'top-plantasia',pants:'pants-barrel',shoes:'shoes-bambi'},rule:pair('Consulter tous les polaroïds.','View every Polaroid.')},
-    {id:'flower',name:pair('Fleur de chambre','Room flower'),visit:'objet/lampe-fleur',image:crop('assets/dressing-lena/IMG_5734.png',[717,724,581,812],2048,3072),pieces:['jacket-floral'],values:{vest:'jacket-floral',dresses:'dress-polka',shoes:'shoes-docs'},rule:pair('Cliquer sur la lampe fleur.','Click the flower lamp.')},
-    {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), pieces:['accessory-phone'], values:{phone:'accessory-phone',tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-pink',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
+    {id:'flower',name:pair('Fleur de chambre','Room flower'),available:false,visit:'objet/plante-fleur',image:crop('assets/dressing-lena/IMG_5734.png',[717,724,581,812],2048,3072),pieces:['jacket-floral','dress-floral','bag-blue-floral'],values:{vest:'jacket-floral',dresses:'dress-floral',bags:'bag-blue-floral'},rule:pair('Cliquer sur le pot de fleurs (à venir).','Click the flower pot (coming soon).')},
+    {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), pieces:['accessory-phone'], values:{phone:'accessory-phone',tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-treasures',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
   ];
   const roomRoutes = {
     'objet/miffy':'object:miffy', 'jeu/dressing':'mirror', 'jeu/latte':'object:latte', 'jeu/tamagotchi':'object:tamagotchi',
@@ -108,8 +111,9 @@
   function hasFeat(id) { return state.feats.includes(id); }
   function unlockedOutfit(id, preview=false) {
     const outfit=outfits.find(x=>x.id===id);
-    return !!outfit && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
+    return !!outfit && outfit.available!==false && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.exploration?explorationRatio()>=outfit.exploration:outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
   }
+  function explorationRatio(){const r=roomSnapshot();return r.required.length?r.required.filter(x=>r.discovered.includes(x)).length/r.required.length:0;}
   function fullRoom() { const r=roomSnapshot();return r.required.length>0 && r.required.every(x=>r.discovered.includes(x)); }
   // Five exploration milestones, using exact regions of Léna's original sheet.
   // Keep the historical collection API so old notebook links continue to work.
@@ -205,5 +209,6 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
