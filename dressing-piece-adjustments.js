@@ -5,7 +5,7 @@ const bound=(n,min,max)=>Number.isFinite(n)?Math.max(min,Math.min(max,n)):0;
 function cleanPieces(raw,cleanMask){const out=Object.create(null);if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
  for(const [id,r] of Object.entries(raw).slice(0,64)){if(!validId(id)||!r||typeof r!=='object')continue;
   const mode=['auto','before','after','front','back'].includes(r.mode)?r.mode:'auto',reference=validId(r.reference)&&r.reference!==id?r.reference:'';
-  out[id]={dx:bound(r.dx,-700,700),dy:bound(r.dy,-1000,1000),mode:['before','after'].includes(mode)&&!reference?'auto':mode,reference,mask:cleanMask(r.mask)};
+  out[id]={dx:bound(r.dx,-700,700),dy:bound(r.dy,-1000,1000),mode:['before','after'].includes(mode)&&!reference?'auto':mode,reference,maskWhen:r.maskWhen==='shoes'||id==='hosiery-cafe'?'shoes':'always',mask:cleanMask(r.mask)};
  }return out;
 }
 function wornIds(s){return [...new Set([...Object.values(s).filter(x=>typeof x==='string'),...(Object.prototype.toString.call(s.makeup)==='[object Set]'||Array.isArray(s.makeup)?s.makeup:[])])];}
@@ -28,7 +28,8 @@ function depths(entries,pieces,s){const base=new Map();for(const e of entries){c
  }
  for(const id of base.keys())get(id);return {base,resolved};
 }
-function applyPieces(entries,s,pieces,helpers){if(!Object.values(pieces).some(active))return entries;
+function applicablePieces(pieces,s){return Object.fromEntries(Object.entries(pieces).map(([id,r])=>[id,r.maskWhen==='shoes'&&!s.shoes?{...r,mask:[]}:r]));}
+function applyPieces(entries,s,pieces,helpers){pieces=applicablePieces(pieces,s);if(!Object.values(pieces).some(active))return entries;
  // Split a cached bag contact overlay only when manual calibration needs its
  // individual sleeves. Ordinary rendering keeps the original compositor.
  let expanded=entries.flatMap(e=>e.part==='bag-arm'&&e.canvas?.nanaSleeveCopies?[{...e,canvas:e.canvas.nanaArmBase,unmaskedArm:e.canvas.nanaUnmaskedArm},...e.canvas.nanaSleeveCopies.map(copy=>({...copy,z:e.z,part:'sleeve-copy'}))]:[e]);
@@ -51,6 +52,6 @@ function applyPieces(entries,s,pieces,helpers){if(!Object.values(pieces).some(ac
  }
  return result.sort((a,b)=>a.z-b.z);
 }
-const core={validId,cleanPieces,wornIds,ownerOf,active,offset,rasterEntry,depths,applyPieces};
+const core={validId,cleanPieces,wornIds,ownerOf,active,offset,rasterEntry,depths,applicablePieces,applyPieces};
 if(typeof module!=='undefined'&&module.exports)module.exports=core;else window.NanaPieceAdjustments=core;
 })();

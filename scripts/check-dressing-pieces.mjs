@@ -43,3 +43,25 @@ test('badge placement is saved per garment and remains independent of the chosen
  const out=p.applyPieces(entries,a,clean({...settings.pieces,coat:{dx:20,dy:10}}),helpers);assert.deepEqual(out.find(x=>x.owner==='badge-placement').fit,{sx:1,dx:55,dy:-15});
  const front=p.applyPieces(entries,a,clean({'badge-placement':{mode:'front'}}),helpers);assert(front.find(x=>x.owner==='badge-placement').z>12.2);
 });
+
+test('existing sock masks apply with any shoes and disappear barefoot without losing strokes',()=>{
+ const stroke={mode:'hide',radius:42,points:[[936,2841],[928,2841]]},raw={format:'nana-layer-adjustments',version:1,records:[{scope:'item',ids:['hosiery-cafe'],settings:{mask:[stroke],pieces:{'hosiery-cafe':{mask:[stroke]}}}}]};
+ const records=e.decode(raw,()=>true),stored=records.get(e.key('item',['hosiery-cafe']));
+ assert.equal(stored.settings.maskWhen,'shoes');assert.equal(stored.settings.pieces['hosiery-cafe'].maskWhen,'shoes');
+ const base={hosiery:'hosiery-cafe',underwear:'bra-blue'},sock={id:'hosiery-cafe',canvas:canvas(),z:3},body={canvas:canvas(),body:true,z:1},hand={canvas:canvas(),part:'hands',z:21};
+ const barefoot=e.resolve(records,base);assert.equal(barefoot.mask.length,0);
+ assert.equal(p.applyPieces([sock],base,barefoot.pieces,helpers)[0],sock);
+ for(const shoes of ['shoes-bunny','shoes-boots','shoes-sandals']){
+  const slots={...base,shoes},settings=e.resolve(records,slots);assert.equal(settings.mask.length,1);
+  const out=p.applyPieces([body,sock,hand],slots,settings.pieces,helpers);assert.notEqual(out.find(x=>x.id==='hosiery-cafe').canvas,sock.canvas);assert.equal(out.find(x=>x.body),body);assert.equal(out.find(x=>x.part==='hands'),hand);
+ }
+ assert.deepEqual(stored.settings.mask,[stroke]);assert.deepEqual(stored.settings.pieces['hosiery-cafe'].mask,[stroke]);
+ const round=e.decode(JSON.parse(JSON.stringify({format:raw.format,version:1,records:[...records.values()]})),()=>true);
+ assert.deepEqual(round.get(e.key('item',['hosiery-cafe'])),stored);
+});
+test('barefoot socks retain position while unrelated masks still apply',()=>{
+ const stroke={mode:'hide',radius:30,points:[[900,2800]]},records=e.decode({format:'nana-layer-adjustments',version:1,records:[{scope:'item',ids:['hosiery-cafe'],settings:{mask:[stroke],pieces:{'hosiery-cafe':{dx:10,mask:[stroke]}}}},{scope:'item',ids:['shirt'],settings:{mask:[stroke],pieces:{shirt:{mask:[stroke]}}}}]},()=>true);
+ const s={hosiery:'hosiery-cafe',tops:'shirt'},settings=e.resolve(records,s);assert.equal(settings.mask.length,1);let maskCalls=0;
+ const out=p.applyPieces([{id:'hosiery-cafe',canvas:canvas(),z:3},{id:'shirt',canvas:canvas(),z:8}],s,settings.pieces,{...helpers,mask:(c)=>{maskCalls++;return c}});
+ assert.equal(maskCalls,1);assert.equal(out.find(x=>x.id==='hosiery-cafe').fit.dx,10);
+});
