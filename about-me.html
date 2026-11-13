@@ -218,7 +218,7 @@ html body.has-saved-looks .nl-worn{max-height:62px;padding:2px;font-size:10px}
 html body.has-saved-looks .nl-worn button{padding:4px}
 html body.has-saved-looks .nl-inventory-pager{min-height:30px;height:30px}
 html body.has-saved-looks .nl-inventory-pager button{min-height:28px;padding:3px}
-html body.has-saved-looks .nl-mobile-category{display:block;flex:none;width:calc(100% - 110px);min-height:36px;font:inherit;font-size:12px;color:#ff173b;background:#fff4e8;border:1px solid #ff173b;margin:0 0 4px}
+html body.has-saved-looks .nl-mobile-category{display:block;flex:none;width:100%;min-height:36px;font:inherit;font-size:12px;color:#ff173b;background:#fff4e8;border:1px solid #ff173b;margin:0 0 4px}
 html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;grid-column:1;grid-row:2;height:100%;overflow:auto!important}
 }
 @media(min-width:601px){.nl-mobile-category{display:none}}
@@ -238,12 +238,12 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
 <link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-2">
-<script src="dressing-layer-editor.js?v=20261113-2"></script>
+<script src="dressing-layer-editor.js?v=20261113-private-20261113-2"></script>
 <script src="dressing-geometry.js?v=20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
 <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1"></script>
-<script src="nana-dressing-looks.js?v=20261113-review2-20261113-usability-20261111-families-2"></script>
+<script src="nana-dressing-looks.js?v=20261113-private-20261113-review2-20261113-usability-20261111-families-2"></script>
 <script>
 (()=>{
 'use strict';
@@ -718,18 +718,18 @@ document.addEventListener('portfolio-language-change',()=>{renderTabs();render()
 
 // The same five earned exploration patches appear individually in the dressing.
 const BADGE_KEY='nana-jacket-badges-v1';
-const BADGE_PLACES=[[825,1030],[1115,1030],[825,1175],[1115,1175],[825,1390]];
+const BADGE_PLACES=[[1125,900]];
 let badgeSelection=[];
 let badgePlaces=BADGE_PLACES.map(point=>[...point]);
 try{const saved=JSON.parse(localStorage.getItem(BADGE_KEY)||'[]');if(Array.isArray(saved))badgeSelection=[...new Set(saved.filter(id=>(progress?.stickers||[]).some(b=>b.id===id)))].slice(0,BADGE_PLACES.length)}catch{}
 const badgeImages=new Map();
-function badgeAllowed(b){return b.earned()||progress?.isCreator()}
+function badgeAllowed(b){return b.earned()}
 function badgeCarrier(){return slots.wrap||slots.jackets||slots.vest||slots.cardigan;}
 function wornBadges(){return badgeSelection.map(id=>progress?.stickers.find(b=>b.id===id)).filter(b=>b&&badgeAllowed(b))}
 function toggleBadge(id){
  const b=progress?.stickers.find(b=>b.id===id);if(!b||!badgeAllowed(b))return;
  if(badgeSelection.includes(id))badgeSelection=badgeSelection.filter(x=>x!==id);
- else{if(badgeSelection.length>=BADGE_PLACES.length){toast(bilingual('Cinq écussons maximum : retire-en un pour changer.','Five patches maximum: remove one to swap.'));return}badgeSelection.push(id);if(!badgeCarrier())slots.jackets='jacket-badges'}
+ else{badgeSelection=[id];if(!badgeCarrier())slots.jackets='jacket-badges'}
  try{localStorage.setItem(BADGE_KEY,JSON.stringify(badgeSelection))}catch{}
  render();
 }
@@ -760,7 +760,7 @@ function badgeFrame(){
 }
 function renderBadges(target){
  const available=(progress?.stickers||[]).filter(badgeAllowed);
- const note=document.createElement('p');note.style.gridColumn='1 / -1';note.textContent=available.length?bilingual('Choisis les écussons à accrocher à ta veste. Touche un écusson porté pour le retirer.','Choose the patches to pin to your jacket. Tap a worn patch to remove it.'):bilingual('Ton premier écusson apparaîtra ici après ta première découverte dans la chambre.','Your first patch will appear here after your first discovery in the room.');target.appendChild(note);
+ const note=document.createElement('p');note.style.gridColumn='1 / -1';note.textContent=available.length?bilingual('Choisis un seul badge parmi ceux que tu as obtenus. Un autre choix remplace le badge porté ; touche-le à nouveau pour le retirer.','Choose one earned badge. Another choice replaces it; tap the worn badge again to remove it.'):bilingual('Ton premier écusson apparaîtra ici après ta première découverte dans la chambre.','Your first patch will appear here after your first discovery in the room.');target.appendChild(note);
  for(const b of available){
   const button=document.createElement('button'),allowed=badgeAllowed(b),chosen=badgeSelection.includes(b.id);button.type='button';button.style.overflow='hidden';button.className='item'+(chosen?' active':'')+(!allowed?' item-locked':'');button.disabled=!allowed;button.setAttribute('aria-pressed',String(chosen));
   const art=badgeImage(b).canvas;if(art){const c=document.createElement('canvas');c.width=art.width;c.height=art.height;c.className='garment-thumbnail';c.style.cssText='display:block;width:100%;max-width:100%;min-height:0;object-fit:contain;flex:1 1 0';c.getContext('2d').drawImage(art,0,0);button.appendChild(c)}
@@ -777,7 +777,7 @@ const stopCount=!lookPreview&&progress?.subscribe(updateUnlockCount);window.addE
 function snapshotOutfit(){return {slots:Object.fromEntries(allSlots.map(key=>[key,slots[key]])),makeup:[...slots.makeup],badges:[...badgeSelection],layout:{version:1,bagAdjustment:bagEditor?.snapshot(),badgePlaces:badgePlaces.map(point=>[...point])}};}
 function restoreOutfit(saved){
  const unavailable=[];
- badgePlaces=BADGE_PLACES.map((fallback,i)=>{const point=saved?.layout?.badgePlaces?.[i];return Array.isArray(point)&&point.length===2&&point.every((n,j)=>Number.isFinite(n)&&n>=0&&n<=[2048,3072][j])?[...point]:[...fallback];});
+ badgePlaces=BADGE_PLACES.map(point=>[...point]);
  const resolve=id=>data.aliases?.[id]||id;
  const allowed=raw=>{const id=resolve(raw),reward=itemReward(id);if(!ITEMS[id]||!SPRITES[id]||data.unavailable?.includes(id)||(reward&&!dressingTest&&!progress?.unlockedOutfit(reward.id))){unavailable.push(raw);return null;}return id;};
  for(const key of allSlots)slots[key]=null;slots.makeup.clear();clownActive=false;
@@ -802,11 +802,11 @@ window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,
  }
 };
 bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>translate(ITEMS[id][0])).join(' + ')});
- window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),previewOnly:lookPreview});
+ window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
 if(!lookPreview){
- bagEditor.init();
  renderTabs();applyPreset(0);
  window.NanaDressingUI=window.NanaDressingLooks.init(window.NanaDressing);
+ if(new URLSearchParams(location.search).get('layerEdit')==='1')window.NanaLayerEditor.open();
  const requestedOutfit=new URLSearchParams(location.search).get('outfit');
  const requestedIndex=presets.findIndex(p=>p.reward===requestedOutfit);
  if(requestedIndex>=0){activeTab='sets';renderTabs();if(presetUnlocked(presets[requestedIndex]))applyPreset(requestedIndex);else renderItems();}
@@ -814,6 +814,7 @@ if(!lookPreview){
 
 })();
 </script><script id="nana-native-i18n-extra" src="i18n-extra.js?v=20261107-dressing-copy-1" defer></script><script id="nana-native-i18n" src="i18n.js?v=20261107-dressing-copy-1" defer></script><script>(()=>{const update=()=>{const lang=document.documentElement.lang==='en'?'en':'fr';document.querySelectorAll('.talent-list [data-fr], [data-dressing-copy]').forEach(el=>{el.textContent=el.dataset[lang]})};document.addEventListener('portfolio-language-change',update);update()})();</script></body></html>
+
 
 
 

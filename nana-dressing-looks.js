@@ -5,13 +5,12 @@ window.NanaDressingLooks={init(api){
   let editingId=null,ready=false,lastJSON='',page=0,category='',storageWarned=false,partial=false;
   document.body.classList.add('has-saved-looks');
   const save=document.createElement('button');save.type='button';save.id='save-personal-look';save.className='action nl-frame';save.setAttribute('data-no-translate','');$('#save').before(save);
-  const album=document.createElement('button');album.type='button';album.id='open-my-looks';album.className='action nl-frame';album.setAttribute('data-no-translate','');save.after(album);
   const dialog=document.createElement('dialog');dialog.className='nl-save-dialog nl-frame';dialog.setAttribute('data-no-translate','');dialog.setAttribute('aria-labelledby','nl-save-title');
   dialog.innerHTML='<form><h2 id="nl-save-title"></h2><label for="nl-look-name"></label><div class="nl-frame nl-input"><input id="nl-look-name" maxlength="80" autocomplete="off"></div><p class="nl-save-note"></p><p class="nl-save-error" role="alert"></p><div class="nl-dialog-actions"><button class="action nl-frame" type="submit" value="new"></button><button class="action nl-frame" type="submit" value="update"></button><button class="action nl-frame" type="button" data-cancel></button></div></form>';
   document.body.append(dialog);
   const input=dialog.querySelector('input'),notice=dialog.querySelector('.nl-save-note'),error=dialog.querySelector('[role=alert]');
   function copy(){
-    save.textContent=t('Sauvegarder ce look','Save this look');album.textContent=t('Mes looks','My looks');
+    save.textContent=t('Sauvegarder ce look','Save this look');
     dialog.querySelector('h2').textContent=t('Un petit nom pour ce look ?','A little name for this look?');
     dialog.querySelector('label').textContent=t('Nom du look','Look name');input.placeholder=store.defaultName();
     dialog.querySelector('[value=new]').textContent=t(editingId?'Créer un nouveau look':'Sauvegarder',editingId?'Save as a new look':'Save');
@@ -30,7 +29,6 @@ window.NanaDressingLooks={init(api){
     if(!result.ok){error.textContent=result.error==='preview'?t('Les essais en aperçu créatrice ne sont pas enregistrés.','Creator previews are not saved.'):t('La sauvegarde a échoué. Ton ancien look est conservé. Vérifie l’espace ou les autorisations de ce navigateur.','Could not save. Your previous look is safe. Check this browser’s storage or permissions.');return;}
     editingId=result.value.id;partial=false;lastJSON='';changed();dialog.close();api.toast(t('Look glissé dans ton carnet.','Look tucked into your notebook.'));
   });
-  album.addEventListener('click',()=>{if(parent!==window&&parent.NanaDeepLinks)parent.NanaDeepLinks.open('carnet/looks');else location.href='index.html#/carnet/looks';});
   // Inventory pages keep the existing garment buttons usable without window scrolling.
   const families=[
     {id:'clothes',fr:'Vêtements',en:'Clothes',keys:['tops','sweaters','pyjamas','underwear','pants','skirts','dresses','jumpsuits','jackets','hosiery']},
@@ -127,5 +125,6 @@ window.NanaDressingLooks={init(api){
   document.addEventListener('portfolio-language-change',()=>{copy();paginate();controls();});
   return {changed,paginate};
 }};
+
 
 

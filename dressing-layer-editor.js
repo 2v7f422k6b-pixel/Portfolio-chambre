@@ -54,7 +54,9 @@ const ids=()=>Object.values(api.slots()).filter(x=>typeof x==='string').sort();
 const current=()=>{const sc=scope.value;return {scope:sc,ids:sc==='item'?[target.value]:ids()};};
 const currentKey=()=>{const c=current();return key(c.scope,c.ids);};
 const activeRecords=()=>{const m=new Map(records);if(opened)for(const [k,v] of drafts)m.set(k,v);return m;};
-const effective=s=>compare?clean(null):resolve(activeRecords(),s);
+function authorized(){return api?.authorized?.()===true;}
+const effective=s=>!authorized()||compare?clean(null):resolve(activeRecords(),s);
+function syncAccess(){if(!button)return;if(!authorized()){if(opened)open(false);button.hidden=true;button.style.setProperty('display','none','important');}}
 function status(text){$('[role=status]').textContent=text;}
 function stored(){return {format:'nana-layer-adjustments',version:1,records:[...records.values()]};}
 function persist(next){try{localStorage.setItem(KEY,JSON.stringify({format:'nana-layer-adjustments',version:1,records:[...next.values()]}));records=next;return true;}catch(_){status(t('Enregistrement impossible dans ce navigateur. Tes essais restent visibles : tu peux les exporter.','Could not save in this browser. Your trials remain visible and can be exported.'));return false;}}
@@ -74,14 +76,14 @@ function controls(){const entry=drafts.get(currentKey())||records.get(currentKey
  $('[data-count]').textContent=t(records.size+' réglages enregistrés dans ce navigateur.',records.size+' adjustments saved in this browser.');
 }
 function readControls(){const v={};for(const name of ['left','right'])v[name]={mode:$(`[data-side=${name}]`).value,from:Number($(`[data-${name}-from]`).value),to:Number($(`[data-${name}-to]`).value)};v.bag={mode:$('[data-bag-mode]').value,dx:Number($('[data-bag-dx]').value),dy:Number($('[data-bag-dy]').value)};return clean(v);}
-function edit(){const c=current();drafts.set(currentKey(),{...c,settings:readControls()});compare=false;$('[data-compare]').checked=false;status(t('Essai non enregistré.','Unsaved trial.'));controls();preview();}
-function open(on){opened=on;compare=false;document.body.classList.toggle('layer-editing',on);panel.hidden=!on;button.setAttribute('aria-expanded',String(on));$('[data-compare]').checked=false;
+function edit(){if(!authorized()){syncAccess();return;}const c=current();drafts.set(currentKey(),{...c,settings:readControls()});compare=false;$('[data-compare]').checked=false;status(t('Essai non enregistré.','Unsaved trial.'));controls();preview();}
+function open(on){if(on&&(!authorized()||!panel))return;opened=on;compare=false;document.body.classList.toggle('layer-editing',on);panel.hidden=!on;button.setAttribute('aria-expanded',String(on));$('[data-compare]').checked=false;
  if(on){if(document.body.classList.contains('bag-adjusting'))document.querySelector('#adjust-bag')?.click();const worn=ORDER.map(k=>api.slots()[k]).filter(Boolean);target.replaceChildren();for(const id of worn){const o=document.createElement('option');o.value=id;o.textContent=api.name(id);target.append(o);}if(!worn.length){status(t('Porte d’abord un vêtement ou un sac.','Wear a garment or bag first.'));open(false);return;}target.value=api.slots().wrap||api.slots().jackets||api.slots().dresses||api.slots().skirts||worn[0];controls();status(t('Gauche et droite désignent les côtés de l’image.','Left and right refer to the image.'));}
  else{drafts.clear();document.querySelectorAll('.nle-guide').forEach(e=>e.remove());button.focus({preventScroll:true});}preview();
 }
 function download(value){const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nana-reglages-superpositions.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 function init(options){if(api)return;api=options;try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw)records=decode(raw,id=>api.has(id));}catch(_){}
- if(options.previewOnly)return;
+ if(options.previewOnly||!authorized())return;
  button=document.createElement('button');button.id='adjust-layers';button.type='button';button.className='action';button.textContent=t('Superpositions','Layers');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','layer-adjust-panel');document.querySelector('.actions').prepend(button);
  panel=document.createElement('section');panel.id='layer-adjust-panel';panel.hidden=true;panel.setAttribute('data-no-translate','');panel.setAttribute('aria-label',t('Réglage des superpositions','Layer adjustment'));
  const range=(attr,label,min,max,step,value)=>`<label>${label} <output data-${attr}-value>${value}</output><input type="range" data-${attr} min="${min}" max="${max}" step="${step}" value="${value}"></label>`;
@@ -92,12 +94,15 @@ function init(options){if(api)return;api=options;try{const raw=JSON.parse(localS
  for(const select of [target,scope])select.onchange=()=>{controls();preview();};
  panel.querySelectorAll('[data-side],[data-left-from],[data-left-to],[data-right-from],[data-right-to],[data-bag-mode],[data-bag-dx],[data-bag-dy]').forEach(el=>el.addEventListener('input',edit));
  $('[data-guides]').onchange=guides;$('[data-compare]').onchange=e=>{compare=e.target.checked;preview();};
- $('[data-save]').onclick=()=>{const c=current(),k=currentKey(),next=new Map(records);next.set(k,{...c,settings:readControls()});if(persist(next)){drafts.delete(k);controls();status(t('Réglage enregistré. Tu peux passer à une autre pièce.','Saved. You can adjust another piece.'));preview();}};
+ $('[data-save]').onclick=()=>{if(!authorized()){syncAccess();return;}const c=current(),k=currentKey(),next=new Map(records);next.set(k,{...c,settings:readControls()});if(persist(next)){drafts.delete(k);controls();status(t('Réglage enregistré. Tu peux passer à une autre pièce.','Saved. You can adjust another piece.'));preview();}};
  $('[data-cancel]').onclick=()=>{drafts.delete(currentKey());compare=false;$('[data-compare]').checked=false;controls();status(t('Essais annulés.','Trials discarded.'));preview();};
  $('[data-reset]').onclick=()=>{const c=current();drafts.set(currentKey(),{...c,settings:clean(null)});controls();compare=false;preview();status(t('Retour à l’automatique en aperçu. Enregistre pour le conserver.','Automatic preview. Save to keep it.'));};
- $('[data-export]').onclick=()=>{let legacyBagAdjustments={};try{legacyBagAdjustments=JSON.parse(localStorage.getItem('nana-bag-adjustments-v1')||'{}');}catch(_){}download({...stored(),records:[...activeRecords().values()],legacyBagAdjustments});status(t('Tous les réglages et les essais en cours ont été exportés.','All saved adjustments and current trials exported.'));};
- $('[data-import]').onclick=()=>$('[data-file]').click();$('[data-file]').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;if(file.size>2000000)throw Error('size');const incoming=decode(JSON.parse(await file.text()),id=>api.has(id)),next=new Map(records);for(const [k,v] of incoming)next.set(k,v);if(persist(next)){drafts.clear();controls();preview();status(t('Réglages importés.','Adjustments imported.'));}}catch(_){status(t('Fichier non reconnu : tes réglages existants sont conservés.','Unrecognized file. Existing adjustments were kept.'));}finally{e.target.value='';}};
+ $('[data-export]').onclick=()=>{if(!authorized()){syncAccess();return;}let legacyBagAdjustments={};try{legacyBagAdjustments=JSON.parse(localStorage.getItem('nana-bag-adjustments-v1')||'{}');}catch(_){}download({...stored(),records:[...activeRecords().values()],legacyBagAdjustments});status(t('Tous les réglages et les essais en cours ont été exportés.','All saved adjustments and current trials exported.'));};
+ $('[data-import]').onclick=()=>$('[data-file]').click();$('[data-file]').onchange=async e=>{try{if(!authorized()){syncAccess();return;}const file=e.target.files[0];if(!file)return;if(file.size>2000000)throw Error('size');const incoming=decode(JSON.parse(await file.text()),id=>api.has(id)),next=new Map(records);for(const [k,v] of incoming)next.set(k,v);if(persist(next)){drafts.clear();controls();preview();status(t('Réglages importés.','Adjustments imported.'));}}catch(_){status(t('Fichier non reconnu : tes réglages existants sont conservés.','Unrecognized file. Existing adjustments were kept.'));}finally{e.target.value='';}};
+ window.addEventListener('pageshow',syncAccess);window.addEventListener('focus',syncAccess);
+ window.addEventListener('storage',e=>{if(e.key==='nana-admin-session-v1')syncAccess();});
  document.addEventListener('keydown',e=>{if(opened&&e.key==='Escape'){e.stopImmediatePropagation();open(false);}},true);
 }
-window.NanaLayerEditor={init,prepare:(entries,s)=>api?position(entries,s,effective(s)):entries,apply:(entries,s)=>api?compose(entries,s,effective(s),{canvas:frame,arm:armRecord(s).im}):entries,ready:s=>api?armRecord(s).ready:Promise.resolve()};
+window.NanaLayerEditor={init,open:()=>open(true),prepare:(entries,s)=>api&&authorized()?position(entries,s,effective(s)):entries,apply:(entries,s)=>api&&authorized()?compose(entries,s,effective(s),{canvas:frame,arm:armRecord(s).im}):entries,ready:s=>api&&authorized()?armRecord(s).ready:Promise.resolve()};
 })();
+
