@@ -195,7 +195,7 @@ html body.has-saved-looks header.top .actions{width:100%;justify-content:flex-en
 }
 </style>
 <style id="dressing-usability">
-html body.has-saved-looks .top>.stage-head{display:none!important}
+html body.has-saved-looks header.top{display:flex!important;justify-content:flex-end}
 .nl-worn{flex:none;max-height:130px;overflow:auto;width:100%;padding:4px;box-sizing:border-box;font-size:12px}
 .nl-worn summary{cursor:pointer;min-height:32px}.nl-worn-list{display:flex;flex-wrap:wrap;gap:6px}.nl-worn button{font:inherit;color:inherit;background:#fff4e8;border:1px solid currentColor;border-radius:8px;padding:7px;text-align:left}
 html body.has-saved-looks .actions{flex-wrap:wrap}
@@ -206,7 +206,7 @@ html body.has-saved-looks .top{flex:none;padding:4px 30px 4px 4px}
 html body.has-saved-looks .stage-head{display:none!important}
 html body.has-saved-looks .actions{margin:0;gap:3px}
 html body.has-saved-looks .actions .action{font-size:10px;padding:5px;min-height:30px}
-html body.has-saved-looks .main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(150px,.95fr) minmax(160px,1.05fr);overflow:hidden;gap:4px;padding:4px}
+html body.has-saved-looks .main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(150px,1.15fr) minmax(160px,.85fr);overflow:hidden;gap:4px;padding:4px}
 html body.has-saved-looks .main>.stage{grid-column:1;grid-row:1;height:100%;max-height:100%;min-height:0;overflow:hidden}
 html body.has-saved-looks .avatar-area{height:0;min-height:0;flex:1}
 html body.has-saved-looks .main>.wardrobe{position:relative;grid-column:1;grid-row:2;height:100%;min-height:0;overflow:hidden;padding:0}
@@ -225,7 +225,7 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 </style>
 </head><body>
 <div class="frame">
-<header class="top"><div class="stage-head"><div class="overline">Dans mon dressing</div><h1 data-no-translate>Léna</h1></div><div class="actions"><button id="reset" class="action" type="button">↶ Reset</button><button id="save" class="action primary" type="button">Enregistrer en PNG</button><button id="close" class="action close" type="button" title="Fermer" aria-label="Fermer"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></div></header>
+<header class="top"><div class="actions"><button id="reset" class="action" type="button">↶ Reset</button><button id="save" class="action primary" type="button">Enregistrer en PNG</button><button id="close" class="action close" type="button" title="Fermer" aria-label="Fermer"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></div></header>
 <div class="ornate" aria-hidden="true">✧ ♡ ✧</div>
 <main class="main">
 <aside class="profile panel" aria-label="Réglage du sac"></aside>
