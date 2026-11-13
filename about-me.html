@@ -237,8 +237,9 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 <script src="dressing-rules.js?v=20261113-new-pieces-18"></script>
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
-<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-2">
-<script src="dressing-layer-editor.js?v=20261113-private-20261113-2"></script>
+<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-paint-20261113-2">
+<script src="dressing-layer-painter.js?v=20261113-1"></script>
+<script src="dressing-layer-editor.js?v=20261113-paint-20261113-private-20261113-2"></script>
 <script src="dressing-geometry.js?v=20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
 <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
@@ -271,6 +272,7 @@ Object.assign(newGarmentNames,{"Long flower necklace":"Collier long à fleur","P
 Object.assign(newGarmentNames,{"Pink military cap":"Casquette rose à chaîne","Purple square-neck top":"Haut violet à col carré","Red coat":"Manteau rouge","Dark bow shoulder bag":"Sac sombre à nœud","Blue gingham bow bag":"Sac vichy bleu à nœud","Red lace-up tall boots":"Bottes rouges à lacets","Pink polka dot bow bag":"Sac rose à pois et nœud","Front crossbody pouch":"Sacoche portée sur le torse","Purple star mini skirt":"Mini-jupe violette à étoiles","Blue celestial dress":"Robe de chambre bleue céleste","Open leopard coat":"Manteau léopard ouvert","Long pink coat":"Manteau long rose","Hello Kitty baby tee":"Baby tee Hello Kitty","Pink satin dress":"Robe rose satinée","Pink high-top sneakers":"Baskets montantes roses"});
 Object.assign(newGarmentNames,{"Pink striped pyjama shirt": "Chemise de pyjama rose à rayures", "Clown princess corset": "Corsage Princesse Clown", "White lace blouse": "Blouse en dentelle blanche", "Lace camisole": "Caraco en dentelle", "GABZILLA T-shirt": "T-shirt GABZILLA", "Oversized pink sweater": "Pull rose ample", "Pink velvet pants": "Pantalon en velours rose", "Pink striped pants": "Pantalon rose à rayures", "Loose green pants": "Pantalon vert ample", "Floral maxi skirt": "Jupe longue à fleurs", "Clown princess skirt": "Jupe Princesse Clown", "Short blue dress": "Robe bleue courte", "Blue floral dress": "Robe bleue à fleurs", "Long green quilted coat": "Manteau matelassé vert", "Take a Trip jacket": "Veste Take a Trip", "Brown cushion bag": "Sac coussin marron", "Tall brown boots": "Bottes hautes marron", "Black floral sandals": "Sandales noires à fleurs", "Bambi sneakers": "Baskets Bambi", "Pink bear slippers": "Chaussons oursons roses", "Pale pink Kangol beret": "Béret Kangol rose pâle", "GAP cap": "Casquette GAP", "Blue AirPods Max": "Casque AirPods Max bleu", "Star hair clips": "Barrettes étoiles", "Pearl orb necklace": "Collier de perles à orbe", "Colourful beaded necklace": "Collier de perles multicolores", "Hello Kitty lipstick": "Rouge à lèvres Hello Kitty", "Pink blush": "Blush rose", "Pink My Melody": "My Melody rose", "Purple Kuromi": "Kuromi violet", "Yellow Pompompurin": "Pompompurin jaune", "Blue Hello Kitty": "Hello Kitty bleu", "Écharpe à carreaux": "Écharpe à carreaux", "Loose leopard trousers": "Pantalon léopard ample", "Flared denim skirt": "Jupe en jean évasée", "Oversized pink and burgundy cardigan": "Gilet oversize rose et bordeaux", "Purple striped dress": "Robe mauve à rayures", "Pink bear doll": "Poupée ourson rose", "Clown nose": "Nez de clown", "Clown princess ruff": "Collerette Princesse Clown"});
 const translate=text=>newGarmentNames[text]?(document.documentElement.lang==='en'?text:newGarmentNames[text]):text==='Clown nose'?(document.documentElement.lang==='en'?text:'Nez de clown'):text==='Clown princess ruff'?(document.documentElement.lang==='en'?text:'Collerette Princesse Clown'):text==='Pale pink Kangol beret'?(document.documentElement.lang==='en'?text:'Béret Kangol rose pâle'):text==='Pink bear doll'?(document.documentElement.lang==='en'?text:'Poupée ourson rose'):text==='Oversized pink and burgundy cardigan'?(document.documentElement.lang==='en'?text:'Gilet oversize rose et bordeaux'):text==='Purple striped dress'?(document.documentElement.lang==='en'?text:'Robe mauve à rayures'):text==='Flared denim skirt'?(document.documentElement.lang==='en'?text:'Jupe en jean évasée'):text==='Loose leopard trousers'?(document.documentElement.lang==='en'?text:'Pantalon léopard ample'):text==='Écharpe à carreaux'?(document.documentElement.lang==='en'?'Checkered scarf':text):(window.portfolioTranslate?.(text)||text);
+function itemName(id){return window.NanaLayerEditor?.name(id,translate(ITEMS[id]?.[0]||id))||translate(ITEMS[id]?.[0]||id);}
 if(window.parent!==window)document.documentElement.classList.add('embedded');
 const W=1365,H=2048;
 const lookPreview=new URLSearchParams(location.search).has('look-preview');
@@ -645,7 +647,7 @@ await Promise.all([...node.querySelectorAll('img')].map(im=>im.decode()));
 if(revision!==avatarRevision)return;
 visible.replaceChildren(...node.childNodes);visible.removeAttribute('aria-busy');
 const chosen=presets.find(p=>allSlots.every(k=>(p.values[k]||null)===slots[k])&&slots.makeup.size===(p.makeup||[]).length&&(p.makeup||[]).every(id=>slots.makeup.has(id)));
-const pieces=[slots.wrap,slots.sweater,slots.cardigan,slots.sheer,slots.tops,slots.vest,slots.pants,slots.skirts,slots.dresses,slots.overalls,slots.jackets,slots.shoes,slots.hat,slots.headlamp].filter(Boolean).map(id=>translate(ITEMS[id][0]));
+const pieces=[slots.wrap,slots.sweater,slots.cardigan,slots.sheer,slots.tops,slots.vest,slots.pants,slots.skirts,slots.dresses,slots.overalls,slots.jackets,slots.shoes,slots.hat,slots.headlamp].filter(Boolean).map(id=>itemName(id));
 
 visible.setAttribute('aria-label',(document.documentElement.lang==='en'?'Léna is wearing ':'Léna porte ')+pieces.join(', '));
 }catch(error){if(revision===avatarRevision){visible.removeAttribute('aria-busy');if(!lookPreview)toast(bilingual('La tenue précédente reste affichée : une image n’a pas pu être chargée.','The previous outfit remains visible: an image could not load.'));}}
@@ -672,7 +674,7 @@ function renderItems(){const target=$('#items');
  inventorySignature=signature;target.textContent='';window.NanaResources.pruneLazy();target.className=activeTab==='sets'?'presets':'items';
 if(activeTab==='badges'){renderBadges(target);window.NanaDressingUI?.paginate();return}
 if(activeTab==='sets'){for(let i=0;i<presets.length;i++){const p=presets[i],b=document.createElement('button');b.className='preset';b.type='button';b.disabled=!presetUnlocked(p);const name=document.createElement('strong');name.textContent=presetText(p,'title');const rule=document.createElement('small');rule.textContent=(b.disabled?bilingual('À débloquer · ','To unlock · '):'')+presetText(p,'desc');b.append(name,document.createElement('br'),rule);b.addEventListener('click',()=>{applyPreset(i);progress?.feat('outfit-styled')});target.appendChild(b)}window.NanaDressingUI?.paginate();return}
-for(const [id,meta] of itemsIn(activeTab).sort((a,b)=>Number(!itemUnlocked(a[0]))-Number(!itemUnlocked(b[0]))||(newGarmentNames[a[1][0]]||a[1][0]).localeCompare(newGarmentNames[b[1][0]]||b[1][0],'fr',{sensitivity:'base',numeric:true}))){const locked=!itemUnlocked(id);const b=document.createElement('button');b.className='item'+(selected(id)?' active':'')+(locked?' item-locked':'');b.dataset.itemId=id;b.type='button';b.disabled=locked;b.title=locked?itemReward(id)?.rule[document.documentElement.lang==='en'?'en':'fr']:translate(meta[0]);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=locked?bilingual('À débloquer','To unlock'):translate(meta[0]);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
+for(const [id,meta] of itemsIn(activeTab).sort((a,b)=>Number(!itemUnlocked(a[0]))-Number(!itemUnlocked(b[0]))||window.NanaLayerEditor.name(a[0],newGarmentNames[a[1][0]]||a[1][0]).localeCompare(window.NanaLayerEditor.name(b[0],newGarmentNames[b[1][0]]||b[1][0]),'fr',{sensitivity:'base',numeric:true}))){const locked=!itemUnlocked(id);const b=document.createElement('button');b.className='item'+(selected(id)?' active':'')+(locked?' item-locked':'');b.dataset.itemId=id;b.type='button';b.disabled=locked;b.title=locked?itemReward(id)?.rule[document.documentElement.lang==='en'?'en':'fr']:itemName(id);b.setAttribute('aria-pressed',String(selected(id)));b.appendChild(itemThumbnail(id));const text=document.createElement('span');text.className='label';text.textContent=locked?bilingual('À débloquer','To unlock'):itemName(id);b.appendChild(text);b.addEventListener('click',()=>select(id));target.appendChild(b)}
 if(!target.children.length)target.textContent='Bientôt disponible.';window.NanaDressingUI?.paginate()}
 function renderTabs(){const host=$('#tabs');host.textContent='';for(const [key,label] of categories){const b=document.createElement('button');b.type='button';b.textContent=key==='accessories'?bilingual('ACCESSOIRES','ACCESSORIES'):key==='jumpsuits'?bilingual('COMBINAISONS','JUMPSUITS'):key==='hosiery'?bilingual('BAS','HOSIERY'):key==='scarves'?(document.documentElement.lang==='en'?'SCARVES':'ÉCHARPES'):translate(label);b.className='tab'+(activeTab===key?' active':'');b.setAttribute('aria-pressed',String(activeTab===key));b.addEventListener('click',()=>{activeTab=key;renderTabs();renderItems()});host.appendChild(b)}}
 function select(id){if(!slotFor(id)||!itemUnlocked(id))return;progress?.feat('outfit-styled');clownActive=false;rules.choose(slots,id,ITEMS);render()}
@@ -792,7 +794,7 @@ function restoreOutfit(saved){
 window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,categories,
  setCategory:key=>{if(categories.some(x=>x[0]===key)){activeTab=key;renderTabs();renderItems();}},
  category:()=>activeTab,
- worn:()=>[...allSlots.map(k=>slots[k]),...slots.makeup].filter(Boolean).map(id=>({id,name:translate(ITEMS[id][0])})),
+ worn:()=>[...allSlots.map(k=>slots[k]),...slots.makeup].filter(Boolean).map(id=>({id,name:itemName(id)})),
  remove:id=>{if(!selected(id))return;if(id.startsWith('makeup-'))slots.makeup.delete(id);else slots[slotFor(id)]=null;clownActive=false;render();},
  async preview(saved){
   if(!lookPreview)throw new Error('Preview requires an isolated dressing');
@@ -801,8 +803,8 @@ window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,
   if(!blob)throw new Error('Preview unavailable');return {blob,unavailable};
  }
 };
-bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>translate(ITEMS[id][0])).join(' + ')});
- window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
+bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>itemName(id)).join(' + ')});
+ window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),catalogue:()=>Object.keys(ITEMS).map(id=>({id})),renamed:()=>{inventorySignature='';renderItems();window.NanaDressingUI?.changed();renderAvatar();},previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
 if(!lookPreview){
  renderTabs();applyPreset(0);
  window.NanaDressingUI=window.NanaDressingLooks.init(window.NanaDressing);
@@ -814,6 +816,7 @@ if(!lookPreview){
 
 })();
 </script><script id="nana-native-i18n-extra" src="i18n-extra.js?v=20261107-dressing-copy-1" defer></script><script id="nana-native-i18n" src="i18n.js?v=20261107-dressing-copy-1" defer></script><script>(()=>{const update=()=>{const lang=document.documentElement.lang==='en'?'en':'fr';document.querySelectorAll('.talent-list [data-fr], [data-dressing-copy]').forEach(el=>{el.textContent=el.dataset[lang]})};document.addEventListener('portfolio-language-change',update);update()})();</script></body></html>
+
 
 
 
