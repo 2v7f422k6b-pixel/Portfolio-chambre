@@ -237,10 +237,11 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 <script src="dressing-rules.js?v=20261113-new-pieces-18"></script>
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
-<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-paint-20261113-2">
-<script src="dressing-layer-painter.js?v=20261113-1"></script>
-<script src="dressing-layer-editor.js?v=20261113-paint-20261113-private-20261113-2"></script>
-<script src="dressing-geometry.js?v=20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
+<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-all-pieces-20261113-paint-20261113-2">
+<script src="dressing-layer-painter.js?v=20261113-all-pieces-20261113-1"></script>
+<script src="dressing-piece-adjustments.js?v=20261113-1"></script>
+<script src="dressing-layer-editor.js?v=20261113-all-pieces-20261113-paint-20261113-private-20261113-2"></script>
+<script src="dressing-geometry.js?v=20261113-all-pieces-20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
 <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1"></script>
@@ -566,18 +567,18 @@ const hairless=slots.hat==='head-sonny-rabbit'||!!HAT_HAIR_CORRECTIONS[slots.hat
 const body=hairless?correctionFile(35):BASE;
 const entries=[{src:body,z:1,body:true}];
 if(!slots.underwear&&![slots.tops,slots.dresses,slots.overalls,slots.sweater,slots.cardigan,slots.vest,slots.jackets,slots.wrap].some(Boolean))entries.push({src:'assets/dressing-lena/IMG_5995.png',z:2});
-if(slots.wrap==='jacket-yukata')entries.unshift({src:'assets/dressing-lena/IMG_5639.png',z:0});
+if(slots.wrap==='jacket-yukata')entries.unshift({src:'assets/dressing-lena/IMG_5639.png',z:0,owner:slots.wrap,role:'back'});
 // Artist-drawn back panels sit behind the body and every worn garment.
 // Resolve from the current coat so removing or replacing it also removes its back.
 const coatBack={'jacket-inspector':'assets/dressing-lena/IMG_6329.png','jacket-george-sand':'assets/dressing-lena/IMG_6328.png'}[slots.jackets];
-if(coatBack)entries.unshift({src:coatBack,z:0});
+if(coatBack)entries.unshift({src:coatBack,z:0,owner:slots.jackets,role:'back'});
 const jewelryZ=slots.cardigan==='jacket-blue'?11.5:['top-yellow','top-dj','top-inspector','top-george-sand'].includes(slots.tops)||slots.sheer?8.8:4;
 const ordered=[['underwear',1.8],['hosiery',2],['shoes',slots.shoes==='shoes-bunny'?11:3],['pants',5],['skirts',6],['bracelets',7.5],['gloves',slots.sheer?8.7:7.8],['tops',8],['sheer',8.5],['dresses',9],['overalls',9],['sweater',10.9],['cardigan',11],['vest',11.2],['jackets',12],['wrap',12.5],['earrings',jewelryZ],['necklace',slots.necklace==='jewelry-flower-long'?18:['jewelry-miffy-ruff','jewelry-george-sand','jewelry-clown-ruff'].includes(slots.necklace)?44:jewelryZ],['bags',19],['bagAccessories',20],['phone',22],['hat',23],['headlamp',23.5],['headphones',24],['clips',22.5],['glasses',26],['scarves',40],['camera',43]];
 const bag=bagFits();
 const scarf=slots.scarves?scarfFrame():null;
 for(const [key,z] of ordered)if(slots[key]){
  if(key==='scarves'&&scarf){
-  entries.push({canvas:scarf.canvas,z});
+  entries.push({canvas:scarf.canvas,z,owner:slots.scarves});
  }else if(key==='bags'&&slots.bags==='bag-brown'){
   entries.push({src:'assets/dressing-lena/IMG_5544.png',z,fit:bag.body});
   entries.push({src:'assets/dressing-lena/IMG_5545.png',z,fit:bag.strap,localClip:bag.strapClip});
@@ -605,7 +606,7 @@ if(scarf)for(const entry of entries){
  const category=ITEMS[entry.id]?.[1];
  if(entry.z<40&&!entry.hood&&(['tops','dresses','jumpsuits','jackets','jewelry'].includes(category)||entry.src==='assets/dressing-lena/IMG_5448.png'))entry.cover=scarf.cover;
 }
-if(slots.wrap||slots.jackets||slots.vest||slots.cardigan)entries.push({canvas:badgeFrame(),z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
+if(slots.wrap||slots.jackets||slots.vest||slots.cardigan)entries.push({canvas:badgeFrame(),owner:slots.wrap||slots.jackets||slots.vest||slots.cardigan,role:'decoration',z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
 for(const entry of entries)if(entry.id&&!entry.canvas){
  const src=correctedSource(entry.id);if(src!==(FITTED[entry.id]||SPRITES[entry.id]))entry.src=src;
  // Preserve each artist-drawn attachment point: treasures hangs from the handle,
@@ -804,7 +805,7 @@ window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,
  }
 };
 bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>itemName(id)).join(' + ')});
- window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),catalogue:()=>Object.keys(ITEMS).map(id=>({id})),renamed:()=>{inventorySignature='';renderItems();window.NanaDressingUI?.changed();renderAvatar();},previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
+ window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,placement:id=>!FITTED[id]&&FITS[id]?FITS[id].map((v,i)=>v/(i%2?H:W)*(i%2?1536:1024)):null,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),catalogue:()=>Object.keys(ITEMS).map(id=>({id})),renamed:()=>{inventorySignature='';renderItems();window.NanaDressingUI?.changed();renderAvatar();},previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
 if(!lookPreview){
  renderTabs();applyPreset(0);
  window.NanaDressingUI=window.NanaDressingLooks.init(window.NanaDressing);
@@ -816,6 +817,7 @@ if(!lookPreview){
 
 })();
 </script><script id="nana-native-i18n-extra" src="i18n-extra.js?v=20261107-dressing-copy-1" defer></script><script id="nana-native-i18n" src="i18n.js?v=20261107-dressing-copy-1" defer></script><script>(()=>{const update=()=>{const lang=document.documentElement.lang==='en'?'en':'fr';document.querySelectorAll('.talent-list [data-fr], [data-dressing-copy]').forEach(el=>{el.textContent=el.dataset[lang]})};document.addEventListener('portfolio-language-change',update);update()})();</script></body></html>
+
 
 
 

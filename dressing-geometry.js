@@ -160,7 +160,7 @@ function create({source,changed}){
   });
  }
  function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...ids.filter(id=>artistSleeves[id]).map(id=>artistSleeves[id]),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
- async function ready(entries,s){await Promise.all([...sources(entries,s).map(src=>image(src).ready),window.NanaLayerEditor?.ready(s)])}
+ async function ready(entries,s){await Promise.all([...sources(entries,s).map(src=>image(src).ready),window.NanaLayerEditor?.ready(s,entries)])}
  function process(entries,s){entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
@@ -182,16 +182,18 @@ function create({source,changed}){
   if(s.phone){const e=result.find(e=>e.id===s.phone),c=phone(s,result);if(e&&c)e.canvas=c;}
   const hand=hands(s,result);if(hand){
    for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_5495')||(s.gloves&&result[i].id===s.gloves))result.splice(i,1);
-   result.push({canvas:hand,z:(s.jackets||s.wrap)?13.2:11.3,part:'hands'});
+   result.push({canvas:hand,z:(s.jackets||s.wrap)?13.2:11.3,part:'hands',owner:s.gloves||undefined});
   }
   if(shoulderBags.has(s.bags)&&hand){
    const forearm=hands(s,result,true);
    const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',')+':'+JSON.stringify(entries.filter(e=>e.id===s.bags).map(e=>e.fit));
-   const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
+   const manual=window.NanaLayerEditor?.pieceEditing?.(s)||false;
+   const c=remember(key+':manual:'+manual,()=>{const c=canvas(),ctx=c.getContext('2d');if(manual)c.nanaSleeveCopies=[];
     // Skin is behind fabric, but in front of the bag. Keep the complete left
     // arm, masking shoulder straps/ruffles with their real alpha silhouette.
     if(forearm){ctx.save();ctx.beginPath();ctx.rect(0,0,445,CH);ctx.clip();ctx.drawImage(forearm,0,0);ctx.restore();
      // Preserve translucent fabric above the bag; restore skin only over it.
+     if(manual){c.nanaUnmaskedArm=canvas();c.nanaUnmaskedArm.getContext('2d').drawImage(c,0,0);}
      if(brown){
       // Coverage is a binary mask: the bag's translucent pixels must not
       // reduce the opacity of the skin drawn over them.
@@ -200,6 +202,7 @@ function create({source,changed}){
       for(let i=3;i<px.data.length;i+=4)if(px.data[i])px.data[i]=255;
       bc.putImageData(px,0,0);ctx.globalCompositeOperation='destination-in';ctx.drawImage(coverage,0,0);ctx.globalCompositeOperation='source-over';
      }}
+    if(manual){c.nanaArmBase=canvas();c.nanaArmBase.getContext('2d').drawImage(c,0,0);}
     const garments=result.filter(e=>e.id&&garmentSlots.some(k=>s[k]===e.id)).sort((a,b)=>a.z-b.z);
     for(const e of garments){
      if(sleeveless.has(e.id)||bareDresses.has(e.id)||['top-yellow','top-white','top-pink','top-dj'].includes(e.id))continue;
@@ -219,8 +222,8 @@ function create({source,changed}){
      }
      m.globalCompositeOperation='destination-out';
      for(const above of garments)if(above.z>e.z)paint(m,above);
-     ctx.drawImage(exact,0,0);
-    }return c;});result.push({canvas:c,z:19.5,part:'bag-arm'});
+     ctx.drawImage(exact,0,0);if(manual)c.nanaSleeveCopies.push({owner:e.id,canvas:exact});
+    }return c;});if(manual)for(const [k,v] of frames)if(v!==c&&v.nanaSleeveCopies)frames.delete(k);result.push({canvas:c,z:19.5,part:'bag-arm'});
   }
   // Hand-held handles go behind the original fingers.
   if(s.bags==='bag-heart'&&hand){const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(hand,0,0);ctx.clearRect(0,0,550,CH);result.push({canvas:c,z:19.5,part:'handle-hand'});}
@@ -230,6 +233,7 @@ function create({source,changed}){
 }
 window.NanaDressingGeometry={create};
 })();
+
 
 
 

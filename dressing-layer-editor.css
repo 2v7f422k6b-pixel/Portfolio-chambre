@@ -26,3 +26,8 @@ html body.has-saved-looks.layer-editing .wardrobe>#layer-adjust-panel{display:bl
 html body.has-saved-looks.layer-painting .avatar-area{display:block!important;overflow:auto!important;overscroll-behavior:contain;touch-action:pan-x pan-y;min-width:0}
 .nle-paint-wrap{position:relative;flex:none;max-width:none;max-height:none;margin:0 auto}
 .nle-paint-overlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;z-index:20000;touch-action:none;cursor:crosshair}
+
+#layer-adjust-panel .nle-legacy-controls{margin:12px 0;border-top:1px solid #ff173b;padding-top:8px}
+#layer-adjust-panel .nle-legacy-controls summary{cursor:pointer;min-height:36px}
+#layer-adjust-panel .nle-piece-controls .nle-buttons{align-items:center}
+#layer-adjust-panel .nle-piece-controls [data-piece-move]{min-width:42px;min-height:42px}
