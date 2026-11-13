@@ -208,7 +208,7 @@ html body.has-saved-looks .actions .action{font-size:10px;padding:5px;min-height
 html body.has-saved-looks .main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(150px,.95fr) minmax(160px,1.05fr);overflow:hidden;gap:4px;padding:4px}
 html body.has-saved-looks .main>.stage{grid-column:1;grid-row:1;height:100%;max-height:100%;min-height:0;overflow:hidden}
 html body.has-saved-looks .avatar-area{height:0;min-height:0;flex:1}
-html body.has-saved-looks .main>.wardrobe{grid-column:1;grid-row:2;height:100%;min-height:0;overflow:hidden;padding:0}
+html body.has-saved-looks .main>.wardrobe{position:relative;grid-column:1;grid-row:2;height:100%;min-height:0;overflow:hidden;padding:0}
 html body.has-saved-looks .wardrobe-head h2,html body.has-saved-looks #dressing-unlocks,html body.has-saved-looks .nl-category-navigation{display:none}
 html body.has-saved-looks .wardrobe-head{position:absolute;right:4px;top:4px}
 html body.has-saved-looks .wardrobe-head #adjust-bag{font-size:10px;min-height:28px}
@@ -217,7 +217,7 @@ html body.has-saved-looks .nl-worn{max-height:62px;padding:2px;font-size:10px}
 html body.has-saved-looks .nl-worn button{padding:4px}
 html body.has-saved-looks .nl-inventory-pager{min-height:30px;height:30px}
 html body.has-saved-looks .nl-inventory-pager button{min-height:28px;padding:3px}
-html body.has-saved-looks .nl-mobile-category{display:block;flex:none;width:100%;min-height:36px;font:inherit;font-size:12px;color:#ff173b;background:#fff4e8;border:1px solid #ff173b;margin:0 0 4px}
+html body.has-saved-looks .nl-mobile-category{display:block;flex:none;width:calc(100% - 110px);min-height:36px;font:inherit;font-size:12px;color:#ff173b;background:#fff4e8;border:1px solid #ff173b;margin:0 0 4px}
 html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;grid-column:1;grid-row:2;height:100%;overflow:auto!important}
 }
 @media(min-width:601px){.nl-mobile-category{display:none}}
@@ -599,7 +599,7 @@ if(scarf)for(const entry of entries){
  const category=ITEMS[entry.id]?.[1];
  if(entry.z<40&&!entry.hood&&(['tops','dresses','jumpsuits','jackets','jewelry'].includes(category)||entry.src==='assets/dressing-lena/IMG_5448.png'))entry.cover=scarf.cover;
 }
-if(badgeCarrier())entries.push({canvas:badgeFrame(),z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
+if(slots.wrap||slots.jackets||slots.vest||slots.cardigan)entries.push({canvas:badgeFrame(),z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
 for(const entry of entries)if(entry.id&&!entry.canvas){
  const src=correctedSource(entry.id);if(src!==(FITTED[entry.id]||SPRITES[entry.id]))entry.src=src;
  // Preserve each artist-drawn attachment point: treasures hangs from the handle,
