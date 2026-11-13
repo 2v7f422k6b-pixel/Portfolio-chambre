@@ -50,7 +50,7 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/<script type="application\/json" id="assets">([^]*?)<\/script>/)[1]);
 function dressing(earned=[]){
  const allSlots=JSON.parse(html.match(/const allSlots=(\[[^;]+\]);/)[1].replaceAll("'",'"'));
- const context={dressingTest:false,data:copy(data),ITEMS:data.items,SPRITES:data.sprites,allSlots,slots:{makeup:new Set()},BADGE_PLACES:[[825,1030],[1115,1030],[825,1175],[1115,1175],[825,1390]],badgeSelection:[],PULLOVERS:new Set(['top-bow-knit','top-pullover','top-lime','top-bear']),clownActive:false,progress:{stickers:[{id:'glance',earned:()=>earned.includes('glance')}],unlockedOutfit:id=>earned.includes(id)},itemReward:id=>['suit-paint','accessory-camera','accessory-phone','top-dj'].includes(id)?{id}:null};
+ const context={dressingTest:false,data:copy(data),ITEMS:data.items,SPRITES:data.sprites,allSlots,slots:{makeup:new Set()},BADGE_PLACES:JSON.parse(html.match(/const BADGE_PLACES=(.*?);/)[1]),badgeSelection:[],PULLOVERS:new Set(['top-bow-knit','top-pullover','top-lime','top-bear']),clownActive:false,progress:{stickers:[{id:'glance',earned:()=>earned.includes('glance')}],unlockedOutfit:id=>earned.includes(id)},itemReward:id=>['suit-paint','accessory-camera','accessory-phone','top-dj'].includes(id)?{id}:null};
  context.window={};context.localStorage={getItem:()=>null};vm.createContext(context);vm.runInContext(readFileSync(new URL('../dressing-bag-editor.js',import.meta.url),'utf8'),context);context.bagEditor=context.window.NanaBagEditor.create({slots:()=>context.slots});vm.runInContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),context);context.rules=context.window.NanaWardrobeRules;
  vm.runInContext(html.match(/function slotFor\(id\)\{[^\n]+/)[0]+ '\n'+html.slice(html.indexOf('function snapshotOutfit(){'),html.indexOf('window.NanaDressing=')),context);
  return context;
@@ -60,12 +60,12 @@ test('restoration enforces reward gates, keeps missing references in saved data 
  d.data.aliases={'old-blouse':'top-white'};const original=copy(saved),missing=d.restoreOutfit(saved);
  assert.equal(d.slots.tops,'top-white');assert.equal(d.slots.camera,null);assert.equal(d.slots.phone,null);assert.ok(missing.includes('gone'));assert.ok(missing.includes('glance'));assert.deepEqual(saved,original);
 });
-test('layered blouse, GANNI knit, overalls, accessories, pyjamas, makeup and ordered patches round-trip',()=>{
+test('layered blouse, GANNI knit, overalls, accessories, pyjamas, makeup and a single chest badge round-trip',()=>{
  const d=dressing(['suit-paint','accessory-camera','accessory-phone','glance']);
  const saved={slots:{tops:'top-peter-pan',vest:'top-ganni-knit',overalls:'suit-paint',camera:'accessory-camera',phone:'accessory-phone',shoes:'shoes-bambi',jackets:'jacket-badges',bags:'bag-heart'},makeup:['makeup-blush'],badges:['glance'],layout:{version:1,badgePlaces:[[811,1062]]}};
  assert.equal(d.restoreOutfit(saved).length,0);let result=d.snapshotOutfit();
  for(const [key,id] of Object.entries(saved.slots))assert.equal(result.slots[key],id);
- assert.deepEqual(copy(result.makeup),saved.makeup);assert.deepEqual(copy(result.badges),saved.badges);assert.deepEqual(copy(result.layout.badgePlaces[0]),[811,1062]);
+ assert.deepEqual(copy(result.makeup),saved.makeup);assert.deepEqual(copy(result.badges),saved.badges);assert.deepEqual(copy(result.layout.badgePlaces[0]),[1125,900]);
  d.restoreOutfit({slots:{tops:'top-pajama-blue',pants:'pants-pajama-leopard'},makeup:[],badges:[]});assert.equal(d.slots.tops,'top-pajama-blue');assert.equal(d.slots.pants,'pants-pajama-leopard');
  d.restoreOutfit({slots:{tops:'top-peter-pan',dresses:'dress-denim'}});assert.equal(d.slots.tops,'top-peter-pan');assert.equal(d.slots.dresses,'dress-denim');
  d.restoreOutfit({slots:{tops:'top-white',dresses:'dress-blue',pants:'pants-pajama'}});assert.equal(d.slots.tops,null);assert.equal(d.slots.pants,null);
