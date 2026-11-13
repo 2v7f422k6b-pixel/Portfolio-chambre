@@ -14,3 +14,8 @@ html body.has-saved-looks.layer-editing .wardrobe>*:not(#layer-adjust-panel){dis
 html body.has-saved-looks.layer-editing .wardrobe>#layer-adjust-panel{display:block!important;flex:1;min-height:0;height:100%}
 #adjust-layers[aria-expanded=true]{background:#ffdce4}
 @media(max-width:600px){#layer-adjust-panel{font-size:12px;padding:5px}#layer-adjust-panel fieldset{margin:8px 0}#layer-adjust-panel p{font-size:11px}.has-saved-looks #adjust-layers{order:-2}}
+
+#layer-adjust-panel .nle-heading{position:sticky;top:-1px;z-index:2;flex-wrap:wrap;background:#fff4e8;padding:4px 0;border-bottom:1px solid #ff173b}
+#layer-adjust-panel .nle-heading>strong{flex:1}
+#layer-adjust-panel .nle-heading>button{flex:0 1 auto!important}
+#layer-adjust-panel .nle-heading>[data-save]{background:#ffdce4}
