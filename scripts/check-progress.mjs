@@ -242,7 +242,7 @@ test('camera needs distinct photos across visits; phone and waistcoat have separ
  for(const id of ids.slice(1,6))p.readPolaroid(id,ids);
  const q=browser({storage}).p;assert.equal(q.unlockedOutfit('photographer'),false);q.readPolaroid('g',ids);assert.equal(q.unlockedOutfit('photographer'),true);
  assert.equal(q.unlockedOutfit('flower'),false);assert.equal(q.unlockedOutfit('tresors'),false);
- q.visit('objet/lampe-fleur');assert.equal(q.unlockedOutfit('flower'),true);assert.equal(q.unlockedOutfit('tresors'),false);
+ q.visit('objet/lampe-fleur');assert.equal(q.unlockedOutfit('flower'),false);assert.equal(q.unlockedOutfit('tresors'),false);
  q.feat('beads-made');assert.equal(q.unlockedOutfit('tresors'),true);
  const creator=browser({creator:true}).p;for(const id of ids)creator.readPolaroid(id,ids);assert.equal(creator.unlockedOutfit('photographer'),false);
 });
@@ -306,4 +306,23 @@ test('denim dress, overalls and GANNI accept a blouse in both selection orders',
   assert.equal(env.slots.tops,'top-peter-pan');assert.ok(Object.values(env.slots).includes(outer));
  }
  env.select('dress-blue');assert.equal(env.slots.tops,null);assert.equal(env.slots.vest,'top-ganni-knit');
+});
+
+
+test('George Sand follows the middle books and Inspector requires 75 percent of required discoveries',()=>{
+ const {p,env}=browser();
+ assert.equal(p.unlockedOutfit('george-sand'),false);
+ p.visit('objet/souvenues');assert.equal(p.unlockedOutfit('george-sand'),true);
+ let discovered=['a','b','extra'];
+ env.NanaDiscoveries={snapshot:()=>({required:['a','b','c','d'],discovered})};
+ assert.equal(p.unlockedOutfit('inspector'),false);
+ discovered.push('c');assert.equal(p.unlockedOutfit('inspector'),true);
+});
+test('flower look awaits the future plant and treasures use the beaded bunny charm',()=>{
+ const {p}=browser();p.visit('objet/lampe-fleur');
+ assert.equal(p.unlockedOutfit('flower'),false);
+ assert.equal(p.outfits.find(x=>x.id==='flower').available,false);
+ assert.deepEqual(Array.from(p.outfits.find(x=>x.id==='flower').pieces),['jacket-floral','dress-floral','bag-blue-floral']);
+ assert.equal(p.outfits.find(x=>x.id==='tresors').values.bagAccessories,'charm-treasures');
+ p.visit('night');assert.equal(p.unlockedOutfit('night-explorer'),true);
 });
