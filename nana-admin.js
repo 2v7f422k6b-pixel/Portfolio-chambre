@@ -316,7 +316,7 @@
       '<div class="nana-admin-grid">' +
       '<a class="nana-admin-action" href="nana-skyblog.html?atelier=1">Modifier le blog · Français</a>' +
       '<a class="nana-admin-action" href="nana-blog-en.html?atelier=1">Modifier le blog · English</a>' +
-      '<a class="nana-admin-action" href="about-me.html?layerEdit=1">Dressing : superpositions des bras et des sacs</a>' +
+      '<a class="nana-admin-action" href="about-me.html?layerEdit=1">Dressing : retouches, superpositions et position du badge</a>' +
       '<button class="nana-admin-action" data-tool="workIcons">Déplacer les icônes Work</button>' +
       '<button class="nana-admin-action" data-tool="posterEdit">Affiches et miroir</button>' +
       '<button class="nana-admin-action" data-tool="lampEdit">Lampe murale</button>' +

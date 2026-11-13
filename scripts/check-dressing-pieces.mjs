@@ -34,3 +34,12 @@ test('piece settings round-trip and combinations override the corresponding piec
  const map=e.decode(JSON.parse(JSON.stringify({format:'nana-layer-adjustments',version:1,records})),id=>['necklace','shirt'].includes(id)),v=e.resolve(map,{tops:'shirt',necklace:'necklace'});
  assert.equal(v.pieces.necklace.dx,15);assert.equal(v.pieces.shirt.dy,20);assert.throws(()=>e.decode({format:'nana-layer-adjustments',version:1,records:[{scope:'item',ids:['shirt'],settings:{pieces:{unknown:{dx:1}}}}]},id=>id==='shirt'));
 });
+
+test('badge placement is saved per garment and remains independent of the chosen earned badge',()=>{
+ const settings={pieces:{'badge-placement':{dx:35,dy:-25}}},records=e.decode({format:'nana-layer-adjustments',version:1,records:[{scope:'item',ids:['coat'],settings}]},id=>['coat','badge-placement'].includes(id));
+ const a={jackets:'coat',badgePlacement:'badge-placement'},b={jackets:'other-coat',badgePlacement:'badge-placement'};
+ assert.equal(e.resolve(records,a).pieces['badge-placement'].dx,35);assert.equal(e.resolve(records,b).pieces['badge-placement'],undefined);
+ const entries=[{id:'coat',canvas:canvas(),z:12},{owner:'badge-placement',role:'decoration',canvas:canvas(),z:12.2}];
+ const out=p.applyPieces(entries,a,clean({...settings.pieces,coat:{dx:20,dy:10}}),helpers);assert.deepEqual(out.find(x=>x.owner==='badge-placement').fit,{sx:1,dx:55,dy:-15});
+ const front=p.applyPieces(entries,a,clean({'badge-placement':{mode:'front'}}),helpers);assert(front.find(x=>x.owner==='badge-placement').z>12.2);
+});

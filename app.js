@@ -782,7 +782,7 @@ document.addEventListener('click',e=>{
   return;
  }
  if(e.target.id==='special-shade'){
-  if(e.detail===0 || lastPointerDownTarget===specialShade)closeSpecial();
+  if(!specialHost.querySelector('iframe[src^="about-me.html"]')&&(e.detail===0 || lastPointerDownTarget===specialShade))closeSpecial();
   return;
  }
  if(e.target.closest('#player-play')){toggleMusic();return}
@@ -841,7 +841,7 @@ document.addEventListener('submit',e=>{
  if(e.target.matches('#desktop-mail-form,#phone-mail-form')){e.preventDefault();submitForm(e.target)}
 });
 document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow();else if(currentMode)returnToWelcome()}
+ if(e.key==='Escape'){if(!specialShade.hidden&&specialHost.querySelector('iframe[src^="about-me.html"]'))return;if(!specialShade.hidden)closeSpecial();else if(!shade.hidden)closeWindow();else if(currentMode)returnToWelcome()}
  if(!shade.hidden && currentWindow==='gallery' && ['ArrowLeft','ArrowRight'].includes(e.key))changeGallery(e.key==='ArrowRight'?1:-1);
  if(e.key==='Enter' || e.key===' '){if(e.target.matches('#hotspots polygon')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}}
 });

@@ -237,11 +237,11 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 <script src="dressing-rules.js?v=20261113-new-pieces-18"></script>
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
-<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-all-pieces-20261113-paint-20261113-2">
-<script src="dressing-layer-painter.js?v=20261113-all-pieces-20261113-1"></script>
-<script src="dressing-piece-adjustments.js?v=20261113-1"></script>
-<script src="dressing-layer-editor.js?v=20261113-all-pieces-20261113-paint-20261113-private-20261113-2"></script>
-<script src="dressing-geometry.js?v=20261113-all-pieces-20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
+<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-editor-help-20261113-paint-20261113-2">
+<script src="dressing-layer-painter.js?v=20261113-editor-help-20261113-1"></script>
+<script src="dressing-piece-adjustments.js?v=20261113-badge"></script>
+<script src="dressing-layer-editor.js?v=20261113-editor-help-20261113-paint-20261113-private-20261113-2"></script>
+<script src="dressing-geometry.js?v=20261113-editor-help-20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
 <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1"></script>
@@ -606,7 +606,7 @@ if(scarf)for(const entry of entries){
  const category=ITEMS[entry.id]?.[1];
  if(entry.z<40&&!entry.hood&&(['tops','dresses','jumpsuits','jackets','jewelry'].includes(category)||entry.src==='assets/dressing-lena/IMG_5448.png'))entry.cover=scarf.cover;
 }
-if(slots.wrap||slots.jackets||slots.vest||slots.cardigan)entries.push({canvas:badgeFrame(),owner:slots.wrap||slots.jackets||slots.vest||slots.cardigan,role:'decoration',z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
+if(slots.wrap||slots.jackets||slots.vest||slots.cardigan)entries.push({canvas:badgeFrame(),owner:'badge-placement',role:'decoration',z:slots.wrap?12.7:slots.jackets?12.2:slots.vest?11.4:11.2});
 for(const entry of entries)if(entry.id&&!entry.canvas){
  const src=correctedSource(entry.id);if(src!==(FITTED[entry.id]||SPRITES[entry.id]))entry.src=src;
  // Preserve each artist-drawn attachment point: treasures hangs from the handle,
@@ -619,13 +619,13 @@ let avatarRevision=0;
 async function renderAvatar(){const revision=++avatarRevision,visible=$('#avatar');
 visible.setAttribute('aria-busy','true');
 try{
- await geometry.ready(outfitLayers(),slots);
+ await geometry.ready(outfitLayers(),editorSlots());
  if(slots.tops&&COLLAR_PATHS[slots.tops]&&(slots.vest||slots.sweater||slots.cardigan||slots.overalls||slots.dresses==='dress-denim'))await garmentImage(slots.tops).ready;
  if(slots.scarves)await scarfReady;
  if(badgeCarrier())await Promise.all(wornBadges().map(b=>badgeImage(b).ready));
  if(revision!==avatarRevision)return;
  const node=document.createElement('div');
-for(const entry of geometry.process(outfitLayers(),slots)){
+for(const entry of geometry.process(outfitLayers(),editorSlots())){
  if(entry.rowFit){const fitted=fittedGarment(entry.id,entry.rowFit);if(fitted)entry.canvas=fitted;}
  let im;
  if(entry.canvas){
@@ -692,7 +692,7 @@ function randomStarter(){
 }
 $('#close').addEventListener('click',()=>{if(window.parent!==window){window.parent.postMessage({type:'close-about-me'},location.origin==='null'?'*':location.origin)}else if(history.length>1)history.back();else location.href='index.html'});
 function decode(url){return new Promise((ok,no)=>{let img=new Image();img.onload=()=>ok(img);img.onerror=no;img.src=url})}
-async function composeLook(width=W){await geometry.ready(outfitLayers(),slots);if(slots.tops&&COLLAR_PATHS[slots.tops]&&(slots.vest||slots.sweater||slots.cardigan||slots.overalls||slots.dresses==='dress-denim'))await garmentImage(slots.tops).ready;if(slots.scarves)await scarfReady;if(badgeCarrier()){await Promise.all(wornBadges().map(b=>badgeImage(b).ready));if(wornBadges().some(b=>!badgeImage(b).canvas))throw new Error('Badge image unavailable');}const scale=width/W,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of geometry.process(outfitLayers(),slots)){
+async function composeLook(width=W){await geometry.ready(outfitLayers(),editorSlots());if(slots.tops&&COLLAR_PATHS[slots.tops]&&(slots.vest||slots.sweater||slots.cardigan||slots.overalls||slots.dresses==='dress-denim'))await garmentImage(slots.tops).ready;if(slots.scarves)await scarfReady;if(badgeCarrier()){await Promise.all(wornBadges().map(b=>badgeImage(b).ready));if(wornBadges().some(b=>!badgeImage(b).canvas))throw new Error('Badge image unavailable');}const scale=width/W,c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const ctx=c.getContext('2d');ctx.scale(scale,scale);for(const entry of geometry.process(outfitLayers(),editorSlots())){
 const src=entry.src||(entry.id&&correctedSource(entry.id));if(!src&&!entry.canvas)continue;
 if(entry.rowFit){await garmentImage(entry.id).ready;entry.canvas=fittedGarment(entry.id,entry.rowFit);}
 const img=entry.canvas||await decode(src);
@@ -716,7 +716,7 @@ const u=URL.createObjectURL(blob),link=document.createElement('a');link.href=u;l
 }catch(e){toast('Impossible d’enregistrer la tenue');console.error(e)}finally{btn.disabled=false}}
 
 $('#save').addEventListener('click',saveLook);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.querySelector('dialog[open]'))$('#close').click()});
+// Dressing exits only through its explicit close button; stray keys keep it open.
 document.addEventListener('portfolio-language-change',()=>{renderTabs();render()});
 
 // The same five earned exploration patches appear individually in the dressing.
@@ -727,6 +727,7 @@ let badgePlaces=BADGE_PLACES.map(point=>[...point]);
 try{const saved=JSON.parse(localStorage.getItem(BADGE_KEY)||'[]');if(Array.isArray(saved))badgeSelection=[...new Set(saved.filter(id=>(progress?.stickers||[]).some(b=>b.id===id)))].slice(0,BADGE_PLACES.length)}catch{}
 const badgeImages=new Map();
 function badgeAllowed(b){return b.earned()}
+function editorSlots(){return {...slots,badgePlacement:badgeCarrier()&&wornBadges().length?'badge-placement':null};}
 function badgeCarrier(){return slots.wrap||slots.jackets||slots.vest||slots.cardigan;}
 function wornBadges(){return badgeSelection.map(id=>progress?.stickers.find(b=>b.id===id)).filter(b=>b&&badgeAllowed(b))}
 function toggleBadge(id){
@@ -805,7 +806,7 @@ window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,
  }
 };
 bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>itemName(id)).join(' + ')});
- window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,placement:id=>!FITTED[id]&&FITS[id]?FITS[id].map((v,i)=>v/(i%2?H:W)*(i%2?1536:1024)):null,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),catalogue:()=>Object.keys(ITEMS).map(id=>({id})),renamed:()=>{inventorySignature='';renderItems();window.NanaDressingUI?.changed();renderAvatar();},previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
+ window.NanaLayerEditor.init({slots:editorSlots,badgeCarrier,render:renderAvatar,source:correctedSource,placement:id=>!FITTED[id]&&FITS[id]?FITS[id].map((v,i)=>v/(i%2?H:W)*(i%2?1536:1024)):null,name:id=>id==='badge-placement'?bilingual('Badge porté','Worn badge'):translate(ITEMS[id]?.[0]||id),has:id=>id==='badge-placement'||Object.hasOwn(ITEMS,id),catalogue:()=>Object.keys(ITEMS).map(id=>({id})),renamed:()=>{inventorySignature='';renderItems();window.NanaDressingUI?.changed();renderAvatar();},previewOnly:lookPreview,authorized:()=>progress?.isCreator()===true});
 if(!lookPreview){
  renderTabs();applyPreset(0);
  window.NanaDressingUI=window.NanaDressingLooks.init(window.NanaDressing);

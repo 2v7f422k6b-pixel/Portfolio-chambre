@@ -15,7 +15,7 @@ function fixture(){
  vm.runInNewContext(code,env);return env.window.NanaDressingGeometry.create({source:id=>id,changed(){}});
 }
 test('screen and saved PNG use the same compositor and await its sources',()=>{
- assert.equal((html.match(/geometry.process\(outfitLayers\(\),slots\)/g)||[]).length,2);
+ assert.equal((html.match(/geometry.process\(outfitLayers\(\),editorSlots\(\)\)/g)||[]).length,2);
  assert.match(html,/async function composeLook\(width=W\)\{await geometry.ready/);
 });
 test('lower garments retain original geometry under tees and trench',async()=>{

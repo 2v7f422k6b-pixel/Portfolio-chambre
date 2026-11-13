@@ -31,3 +31,8 @@ html body.has-saved-looks.layer-painting .avatar-area{display:block!important;ov
 #layer-adjust-panel .nle-legacy-controls summary{cursor:pointer;min-height:36px}
 #layer-adjust-panel .nle-piece-controls .nle-buttons{align-items:center}
 #layer-adjust-panel .nle-piece-controls [data-piece-move]{min-width:42px;min-height:42px}
+
+.nle-paint-wrap{outline:2px dashed #ff173b;outline-offset:-2px}
+.nle-paint-active{position:absolute;top:3px;left:3px;z-index:20001;background:#fff4e8;color:#ff173b;font-size:11px;padding:3px;pointer-events:none}
+#layer-adjust-panel [data-close]{font-size:24px;min-width:40px;order:3}
+#layer-adjust-panel [data-piece-help]{background:#ffe4eb;padding:6px}

@@ -22,3 +22,13 @@ test('old saved looks migrate to one earned badge at the fixed upper right chest
  vm.runInNewContext('let badgePlaces=[],badgeSelection=[],clownActive=false;'+fn+';this.restore=restoreOutfit;this.badges=()=>badgeSelection;this.places=()=>badgePlaces;',env);
  env.restore({badges:['a','b'],layout:{badgePlaces:[[825,1390],[1115,1390]]}});assert.deepEqual(Array.from(env.badges()),['a']);assert.equal(JSON.stringify(env.places()),JSON.stringify(places));
 });
+
+test('dressing backdrop and Escape keep it open while other windows retain their dismissal',()=>{
+ const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
+ const backdrop=app.slice(app.indexOf("if(e.target.id==='special-shade'){"),app.indexOf("if(e.target.closest('#player-play'))"));
+ const escape=app.slice(app.indexOf("if(e.key==='Escape'){if(!specialShade.hidden"),app.indexOf("if(e.key==='Escape'){if(!specialShade.hidden")+app.slice(app.indexOf("if(e.key==='Escape'){if(!specialShade.hidden")).indexOf('\n'));
+ for(const dressing of [true,false]){let closed=0;const specialShade={hidden:false},env={e:{target:{id:'special-shade'},detail:0,key:'Escape'},specialShade,lastPointerDownTarget:specialShade,specialHost:{querySelector:()=>dressing?{}:null},closeSpecial:()=>closed++,shade:{hidden:true},currentMode:null};
+  vm.runInNewContext('(function(){'+backdrop+'})()',env);assert.equal(closed,dressing?0:1);
+  closed=0;vm.runInNewContext('(function(){'+escape+'})()',env);assert.equal(closed,dressing?0:1);
+ }
+});
