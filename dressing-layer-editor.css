@@ -1,0 +1,16 @@
+#layer-adjust-panel[hidden]{display:none!important}
+#layer-adjust-panel{box-sizing:border-box;min-width:0;overflow:auto;overscroll-behavior:contain;padding:8px;color:#ff173b;font-size:13px;text-align:left}
+#layer-adjust-panel .nle-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#layer-adjust-panel p{font-size:12px;line-height:1.4;margin:8px 0}
+#layer-adjust-panel label{display:block;margin:8px 0}
+#layer-adjust-panel select{display:block;width:100%;box-sizing:border-box;font:inherit;color:inherit;background:#fff4e8;border:1px solid currentColor;border-radius:5px;min-height:36px;margin-top:4px}
+#layer-adjust-panel input[type=range]{display:block;width:100%;min-height:32px;accent-color:#ff173b}
+#layer-adjust-panel fieldset{min-width:0;border:1px solid #ff173b;border-radius:6px;margin:12px 0;padding:8px}
+#layer-adjust-panel legend{padding:0 5px}#layer-adjust-panel output{float:right}
+#layer-adjust-panel .nle-buttons{display:flex;flex-wrap:wrap;gap:6px}
+#layer-adjust-panel button{white-space:normal;min-height:36px;font:inherit;font-size:12px}
+#layer-adjust-panel [role=status]{min-height:1.4em}
+html body.has-saved-looks.layer-editing .wardrobe>*:not(#layer-adjust-panel){display:none!important}
+html body.has-saved-looks.layer-editing .wardrobe>#layer-adjust-panel{display:block!important;flex:1;min-height:0;height:100%}
+#adjust-layers[aria-expanded=true]{background:#ffdce4}
+@media(max-width:600px){#layer-adjust-panel{font-size:12px;padding:5px}#layer-adjust-panel fieldset{margin:8px 0}#layer-adjust-panel p{font-size:11px}.has-saved-looks #adjust-layers{order:-2}}

@@ -160,8 +160,8 @@ function create({source,changed}){
   });
  }
  function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...ids.filter(id=>artistSleeves[id]).map(id=>artistSleeves[id]),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
- async function ready(entries,s){await Promise.all(sources(entries,s).map(src=>image(src).ready))}
- function process(entries,s){const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
+ async function ready(entries,s){await Promise.all([...sources(entries,s).map(src=>image(src).ready),window.NanaLayerEditor?.ready(s)])}
+ function process(entries,s){entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
   const result=entries.map(e=>{if(!e.id||e.hood||e.canvas)return {...e};
@@ -224,11 +224,12 @@ function create({source,changed}){
   }
   // Hand-held handles go behind the original fingers.
   if(s.bags==='bag-heart'&&hand){const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(hand,0,0);ctx.clearRect(0,0,550,CH);result.push({canvas:c,z:19.5,part:'handle-hand'});}
-  return result.sort((a,b)=>a.z-b.z);
+  return window.NanaLayerEditor?.apply(result,s)||result.sort((a,b)=>a.z-b.z);
  }
  return {ready,process,profile,shoulder};
 }
 window.NanaDressingGeometry={create};
 })();
+
 
 

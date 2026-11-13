@@ -237,7 +237,9 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 <script src="dressing-rules.js?v=20261113-new-pieces-18"></script>
 <link rel="stylesheet" href="dressing-bag-editor.css?v=20261111-1">
 <script src="dressing-bag-editor.js?v=20261111-right-2"></script>
-<script src="dressing-geometry.js?v=20261113-review2-20261111-free-bag-7"></script>
+<link rel="stylesheet" href="dressing-layer-editor.css?v=20261113-1">
+<script src="dressing-layer-editor.js?v=20261113-1"></script>
+<script src="dressing-geometry.js?v=20261113-layer-editor-20261113-review2-20261111-free-bag-7"></script>
 <link rel="stylesheet" href="sketch-ui.css?v=20261112-resources-1">
 <script src="sketch-ui.js?v=20261110-looks-1" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1"></script>
@@ -800,6 +802,7 @@ window.NanaDressing={snapshot:snapshotOutfit,restore:restoreOutfit,render,toast,
  }
 };
 bagEditor=window.NanaBagEditor.create({slots:()=>slots,render:renderAvatar,changed:()=>window.NanaDressingUI?.changed(),selectBag:id=>{if(slots.bags!==id)select(id)},names:s=>['wrap','jackets','vest','cardigan','sweater','dresses','overalls','sheer','tops'].map(k=>s[k]).filter(Boolean).map(id=>translate(ITEMS[id][0])).join(' + ')});
+ window.NanaLayerEditor.init({slots:()=>slots,render:renderAvatar,source:correctedSource,name:id=>translate(ITEMS[id]?.[0]||id),has:id=>Object.hasOwn(ITEMS,id),previewOnly:lookPreview});
 if(!lookPreview){
  bagEditor.init();
  renderTabs();applyPreset(0);
