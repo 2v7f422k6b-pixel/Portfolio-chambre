@@ -65,3 +65,17 @@ test('barefoot socks retain position while unrelated masks still apply',()=>{
  const out=p.applyPieces([{id:'hosiery-cafe',canvas:canvas(),z:3},{id:'shirt',canvas:canvas(),z:8}],s,settings.pieces,{...helpers,mask:(c)=>{maskCalls++;return c}});
  assert.equal(maskCalls,1);assert.equal(out.find(x=>x.id==='hosiery-cafe').fit.dx,10);
 });
+
+test('automatic mask coverage excludes the body, the selected piece and rear panels',()=>{
+ const source=canvas(),other=canvas(),body=canvas(),rear=canvas(),make=()=>canvas(),entries=[{body:true,canvas:body,z:1},{id:'shirt',canvas:source,z:8},{owner:'coat',role:'back',canvas:rear,z:0},{id:'coat',canvas:other,z:12}];
+ const coverage=p.overlapCoverage(entries,{tops:'shirt',jackets:'coat'},clean({shirt:{dx:100},coat:{dx:20,dy:40}}),{...helpers,canvas:make},'shirt',{dx:100,dy:0});
+ const draws=coverage.getContext().calls.filter(x=>x[0]==='draw');assert.equal(draws.length,1);assert.equal(draws[0][2],-40);assert.equal(draws[0][3],20);
+ assert.equal(source.getContext().calls.length,0);assert.equal(body.getContext().calls.length,0);
+});
+test('all new masks and legacy unconditional masks use overlap while strokes survive exports',()=>{
+ const stroke={mode:'hide',radius:20,points:[[700,900]]};
+ for(const id of ['shirt','dress','necklace','bag','skirt']){for(const previous of [undefined,'always']){
+ const value=clean({[id]:{maskWhen:previous,mask:[stroke]}})[id];assert.equal(value.maskWhen,'overlap');assert.deepEqual(value.mask,[stroke]);
+ assert.deepEqual(clean({[id]:JSON.parse(JSON.stringify(value))})[id],value);
+ }}
+});

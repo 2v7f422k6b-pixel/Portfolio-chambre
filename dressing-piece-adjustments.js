@@ -5,7 +5,7 @@ const bound=(n,min,max)=>Number.isFinite(n)?Math.max(min,Math.min(max,n)):0;
 function cleanPieces(raw,cleanMask){const out=Object.create(null);if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
  for(const [id,r] of Object.entries(raw).slice(0,64)){if(!validId(id)||!r||typeof r!=='object')continue;
   const mode=['auto','before','after','front','back'].includes(r.mode)?r.mode:'auto',reference=validId(r.reference)&&r.reference!==id?r.reference:'';
-  out[id]={dx:bound(r.dx,-700,700),dy:bound(r.dy,-1000,1000),mode:['before','after'].includes(mode)&&!reference?'auto':mode,reference,maskWhen:r.maskWhen==='shoes'||id==='hosiery-cafe'?'shoes':'always',mask:cleanMask(r.mask)};
+  out[id]={dx:bound(r.dx,-700,700),dy:bound(r.dy,-1000,1000),mode:['before','after'].includes(mode)&&!reference?'auto':mode,reference,maskWhen:r.maskWhen==='shoes'||id==='hosiery-cafe'?'shoes':'overlap',mask:cleanMask(r.mask)};
  }return out;
 }
 function wornIds(s){return [...new Set([...Object.values(s).filter(x=>typeof x==='string'),...(Object.prototype.toString.call(s.makeup)==='[object Set]'||Array.isArray(s.makeup)?s.makeup:[])])];}
@@ -29,6 +29,16 @@ function depths(entries,pieces,s){const base=new Map();for(const e of entries){c
  for(const id of base.keys())get(id);return {base,resolved};
 }
 function applicablePieces(pieces,s){return Object.fromEntries(Object.entries(pieces).map(([id,r])=>[id,r.maskWhen==='shoes'&&!s.shoes?{...r,mask:[]}:r]));}
+function overlapCoverage(entries,s,pieces,helpers,excludeId=null,localShift={dx:0,dy:0}){
+ const coverage=helpers.canvas(),ctx=coverage.getContext('2d');
+ for(const entry of entries){const id=ownerOf(entry,s);if(!id||id===excludeId||entry.body||entry.role==='back')continue;
+  const c=rasterEntry(entry,helpers);if(!c)continue;const shift=offset(id,pieces,s);
+  ctx.drawImage(c,(shift.dx-localShift.dx)/2,(shift.dy-localShift.dy)/2);
+ }
+ // The other piece triggers the retouch wherever its drawing exists. The body,
+ // its foreground arm copies and transparent holes never trigger a mask.
+ const pixels=ctx.getImageData(0,0,1024,1536);for(let i=3;i<pixels.data.length;i+=4)if(pixels.data[i])pixels.data[i]=255;ctx.putImageData(pixels,0,0);return coverage;
+}
 function applyPieces(entries,s,pieces,helpers){pieces=applicablePieces(pieces,s);if(!Object.values(pieces).some(active))return entries;
  // Split a cached bag contact overlay only when manual calibration needs its
  // individual sleeves. Ordinary rendering keeps the original compositor.
@@ -38,7 +48,7 @@ function applyPieces(entries,s,pieces,helpers){pieces=applicablePieces(pieces,s)
  for(const e of expanded){const id=ownerOf(e,s),r=pieces[id],parent=pieces[parentOf(id,s)];
   if(!active(r)&&!active(parent)){result.push(e);continue;}
   let c=rasterEntry(e,helpers);if(!c){result.push(e);continue;}
-  if(r?.mask?.length)c=helpers.mask(c,r.mask);
+  if(r?.mask?.length)c=helpers.mask(c,r.mask,r.maskWhen==='overlap'?overlapCoverage(expanded,s,pieces,helpers,id,offset(id,pieces,s)):null);
   const shift=offset(id,pieces,s),delta=(resolved.get(id)??base.get(id)??e.z)-(base.get(id)??e.z),parentDelta=parent&&!active(r)?(resolved.get(parentOf(id,s))??base.get(parentOf(id,s))??19)-(base.get(parentOf(id,s))??19):0;
   result.push({...e,canvas:c,src:undefined,clip:null,localClip:null,cover:null,rowFit:null,fit:{sx:1,dx:shift.dx,dy:shift.dy},z:e.role==='back'?Math.min(e.z,.9):r&&r.mode!=='auto'?(resolved.get(id)??e.z)+Math.max(-.02,Math.min(.02,e.z-(base.get(id)??e.z))):parent&&parent.mode!=='auto'&&!active(r)?(resolved.get(parentOf(id,s))??19)+.02:e.z+delta+parentDelta});
  }
@@ -52,6 +62,6 @@ function applyPieces(entries,s,pieces,helpers){pieces=applicablePieces(pieces,s)
  }
  return result.sort((a,b)=>a.z-b.z);
 }
-const core={validId,cleanPieces,wornIds,ownerOf,active,offset,rasterEntry,depths,applicablePieces,applyPieces};
+const core={validId,cleanPieces,wornIds,ownerOf,active,offset,rasterEntry,depths,applicablePieces,overlapCoverage,applyPieces};
 if(typeof module!=='undefined'&&module.exports)module.exports=core;else window.NanaPieceAdjustments=core;
 })();

@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><title>Vérification des masques conditionnels</title><h1>Vérification des masques conditionnels</h1><pre id="result">En cours…</pre><script src="../../dressing-layer-painter.js"></script><script src="../../dressing-piece-adjustments.js"></script><script>
+const p=NanaPieceAdjustments,m=NanaLayerPainter,canvas=()=>{const c=document.createElement('canvas');c.width=1024;c.height=1536;return c},shape=(x,y,w,h)=>{const c=canvas(),t=c.getContext('2d');t.fillStyle='blue';t.fillRect(x,y,w,h);return c},alpha=(c,x,y)=>c.getContext('2d').getImageData(x,y,1,1).data[3];
+const helpers={canvas,image:()=>null,mask:(c,strokes,limit)=>m.maskEntries([{canvas:c,part:'hands'}],strokes,canvas,limit)[0].canvas};
+const stroke={mode:'hide',radius:80,points:[[200,300],[450,300]]},shirt={id:'shirt',canvas:shape(100,100,200,100),z:8},coat={id:'coat',canvas:shape(150,100,100,100),z:12},body={body:true,canvas:shape(0,0,1024,1536),z:1},rules=p.cleanPieces({shirt:{mask:[stroke]}},m.cleanMask),results=[];
+function test(name,fn){fn();results.push('OK · '+name)}function eq(a,b){if(a!==b)throw Error(a+' ≠ '+b)}
+try{
+test('Une pièce seule reste entière, même au-dessus du mannequin',()=>{const a=p.applyPieces([body,shirt],{tops:'shirt'},rules,helpers).find(x=>x.id==='shirt');eq(alpha(a.canvas,175,150),255)});
+test('Une chaussure ailleurs ne déclenche pas le masque du haut',()=>{const a=p.applyPieces([shirt,{id:'shoe',canvas:shape(100,1200,200,100),z:3}],{tops:'shirt',shoes:'shoe'},rules,helpers).find(x=>x.id==='shirt');eq(alpha(a.canvas,175,150),255)});
+test('Le masque ne cache que les pixels recouverts par une autre pièce',()=>{const a=p.applyPieces([shirt,coat],{tops:'shirt',jackets:'coat'},rules,helpers).find(x=>x.id==='shirt');eq(alpha(a.canvas,125,150),255);eq(alpha(a.canvas,175,150),0);eq(alpha(a.canvas,275,150),255)});
+test('Retirer cette pièce restitue le dessin et conserve les traits',()=>{const a=p.applyPieces([shirt],{tops:'shirt'},rules,helpers)[0];eq(alpha(a.canvas,175,150),255);eq(rules.shirt.mask.length,1);eq(alpha(shirt.canvas,175,150),255)});
+test('Le masque tient compte des déplacements des vêtements',()=>{const moved=p.cleanPieces({shirt:{dx:100,mask:[stroke]}},m.cleanMask),a=p.applyPieces([shirt,coat],{tops:'shirt',jackets:'coat'},moved,helpers).find(x=>x.id==='shirt');eq(alpha(a.canvas,125,150),0);eq(alpha(a.canvas,225,150),255)});
+test('Rétablir retire le masque dans la zone choisie',()=>{const restored=p.cleanPieces({shirt:{mask:[stroke,{mode:'show',radius:30,points:[[350,300]]}]}},m.cleanMask),a=p.applyPieces([shirt,coat],{tops:'shirt',jackets:'coat'},restored,helpers).find(x=>x.id==='shirt');eq(alpha(a.canvas,175,150),255)});
+document.querySelector('#result').textContent=results.join('\n')+'\n6/6 vérifications réussies';
+}catch(e){document.querySelector('#result').textContent=results.join('\n')+'\nÉCHEC '+e.stack}
+</script>

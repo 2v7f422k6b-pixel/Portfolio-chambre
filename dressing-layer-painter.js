@@ -13,10 +13,10 @@ function drawCoverage(ctx,strokes){ctx.clearRect(0,0,1024,1536);ctx.lineCap='rou
  }ctx.globalCompositeOperation='source-over';
 }
 const caches=new WeakMap();
-function maskEntries(entries,strokes,canvas){if(!strokes?.length)return entries;
+function maskEntries(entries,strokes,canvas,constraint=null){if(!strokes?.length)return entries;
  let cache=caches.get(canvas);if(!cache){cache=new Map();caches.set(canvas,cache);}const key=JSON.stringify(strokes);
  if(!cache.has(key)){const c=canvas();drawCoverage(c.getContext('2d'),strokes);if(cache.size>=2)cache.delete(cache.keys().next().value);cache.set(key,c);}
- const coverage=cache.get(key);
+ let coverage=cache.get(key);if(constraint){const limited=canvas(),ctx=limited.getContext('2d');ctx.drawImage(coverage,0,0);ctx.globalCompositeOperation='destination-in';ctx.drawImage(constraint,0,0);coverage=limited;}
  return entries.map(e=>{if(!e.canvas||!['hands','bag-arm','handle-hand','manual-left','manual-right'].includes(e.part))return e;
   const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(e.canvas,0,0);ctx.globalCompositeOperation='destination-out';ctx.drawImage(coverage,0,0);return {...e,canvas:c};
  });
