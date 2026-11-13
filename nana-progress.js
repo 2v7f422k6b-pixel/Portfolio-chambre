@@ -38,7 +38,7 @@
     {id:'inspector',image:crop('assets/dressing-lena/IMG_5990.png',[742, 197, 522, 311],2048,3072),name:pair('Inspectrice','Inspector'),exploration:.75,pieces:['jacket-inspector','pants-inspector','head-inspector-glasses','top-inspector','head-inspector','shoes-inspector'],values:{jackets:'jacket-inspector',pants:'pants-inspector',glasses:'head-inspector-glasses',tops:'top-inspector',hat:'head-inspector',shoes:'shoes-inspector'},rule:pair('Explorer 75 % de la chambre.','Explore 75% of the room.')},
 
     {id:'sonny',name:pair('Sonny Angel lapin','Bunny Sonny Angel'),dialogue:'sonny-angel',image:crop('assets/dressing-lena/IMG_5719.png',[825,13,348,627],2048,3072),pieces:['head-sonny-rabbit'],values:{hat:'head-sonny-rabbit'},makeup:['makeup-blush'],rule:pair('Lire les six phrases du Sonny Angel dans la chambre.','Read all six Sonny Angel lines in the room.')},
-    {id:'night-explorer',name:pair('Exploratrice nocturne','Night explorer'),visit:'night',image:crop('assets/dressing-lena/IMG_5720.png',[801,203,604,560],2048,3072),pieces:['head-headlamp'],values:{hat:'head-headlamp',tops:'top-pullover',pants:'pants-pajama',shoes:'shoes-bunny'},rule:pair('Découvrir la chambre en mode nuit.','Discover the room at night.')},
+    {id:'night-explorer',name:pair('Exploratrice nocturne','Night explorer'),visit:'night',image:crop('assets/dressing-lena/IMG_5720.png',[801,203,604,560],2048,3072),pieces:['head-headlamp'],values:{headlamp:'head-headlamp',dresses:'dress-celestial'},rule:pair('Découvrir la chambre en mode nuit.','Discover the room at night.')},
     {id:"miffy",name:pair("Miffy clown","Miffy clown"),dialogue:'miffy',image:crop('assets/dressing-lena/IMG_5709.png',[852, 129, 238, 248],2048,3072),pieces:["head-miffy", "suit-miffy", "jewelry-miffy-ruff"],values:{"dresses": "suit-miffy", "hat": "head-miffy", "necklace": "jewelry-miffy-ruff"},rule:pair("Lire les six phrases de Miffy dans la chambre.","Read all six of Miffy's lines in the room.")},
     {id:"dj",name:pair("DJ Minilab","Minilab DJ"),feat:'minilab-composed',image:crop('assets/dressing-lena/IMG_5716.png',[775, 733, 405, 523],2048,3072),pieces:["shoes-dj", "hosiery-dj", "top-dj", "jewelry-dj-bracelets", "skirt-dj"],values:{"tops": "top-dj", "skirts": "skirt-dj", "shoes": "shoes-dj", "hosiery": "hosiery-dj", "bracelets": "jewelry-dj-bracelets","clips":"head-stars"},makeup:["makeup-blush","makeup-lipstick"],rule:pair("Enregistrer une piste musicale dans le Minilab.","Record a musical track in the Minilab.")},
     {id:'clown', name:pair('Princesse Clown','Clown Princess'), visit:'livre/la-princesse-clown', image:crop('assets/dressing-lena/IMG_5381.png',[639,724,657,713],2048,3072), pieces:['top-clown','skirt-princess','jewelry-clown-ruff','makeup-clown-nose'], values:{tops:'top-clown',skirts:'skirt-princess',shoes:'shoes-bunny',necklace:'jewelry-clown-ruff'}, makeup:['makeup-clown-nose','makeup-blush'], rule:pair('Ouvrir le conte illustré.','Open the illustrated story.')},
@@ -209,6 +209,7 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 

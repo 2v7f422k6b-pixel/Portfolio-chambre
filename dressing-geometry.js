@@ -2,8 +2,10 @@
 (()=>{'use strict';
 const CW=1024,CH=1536,S=2;
 const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets','wrap'];
+const openOuters=new Set(['jacket-blue-open','jacket-leopard-open','jacket-pink-long','jacket-cardigan','jacket-fleece']);
+const shoulderBags=new Set(['bag-crochet','bag-star-purple','bag-blue-floral']);
 const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','dress-denim','suit-paint']);
-const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-floral':1600,'dress-striped':1620};
+const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-celestial':1480,'jacket-leopard-open':1600,'jacket-pink-long':1600,'dress-floral':1600,'dress-striped':1620};
 const artistSleeves={"dress-striped":"assets/dressing-lena/IMG_6231.png","top-pink-floyd":"assets/dressing-lena/IMG_6237.png","top-gabzilla":"assets/dressing-lena/IMG_6238.png","top-plantasia":"assets/dressing-lena/IMG_6238.png","top-damson":"assets/dressing-lena/IMG_6239.png","top-sparkle-pink":"assets/dressing-lena/IMG_6182.png","jacket-inspector":"assets/dressing-lena/IMG_6183.png","top-sparkle-charcoal":"assets/dressing-lena/IMG_6184.png","jacket-green":"assets/dressing-lena/IMG_6185.png","jacket-george-sand":"assets/dressing-lena/IMG_6186.png","jacket-purple":"assets/dressing-lena/IMG_6187.png","top-george-sand":"assets/dressing-lena/IMG_6188.png","top-inspector":"assets/dressing-lena/IMG_6189.png","top-bow-knit":"assets/dressing-lena/IMG_6190.png","top-pajama-leopard":"assets/dressing-lena/IMG_6191.png","jacket-cardigan":"assets/dressing-lena/IMG_6192.png","dress-floral":"assets/dressing-lena/IMG_6230.png","jacket-fleece":"assets/dressing-lena/IMG_6194.png","top-lime":"assets/dressing-lena/IMG_6195.png","top-pajama":"assets/dressing-lena/IMG_6196.png","jacket-striped-knit":"assets/dressing-lena/IMG_6197.png","top-peter-pan":"assets/dressing-lena/IMG_6198.png","top-bow-blouse-tucked":"assets/dressing-lena/IMG_6199.png","jacket-yukata":"assets/dressing-lena/IMG_6200.png","suit-miffy":"assets/dressing-lena/IMG_6201.png","top-pullover":"assets/dressing-lena/IMG_6227.png","jacket-blue":"assets/dressing-lena/IMG_6202.png","top-bear":"assets/dressing-lena/IMG_6203.png","jacket-badges":"assets/dressing-lena/IMG_6204.png","jacket-ganni-knit":"assets/dressing-lena/IMG_6205.png","top-pajama-blue":"assets/dressing-lena/IMG_6206.png"};
 function canvas(){const c=document.createElement('canvas');c.width=CW;c.height=CH;return c}
 function create({source,changed}){
@@ -89,19 +91,19 @@ function create({source,changed}){
    if(outer==='top-ganni-knit')ctx.clearRect(410,p.bottom+1,180,CH-p.bottom-1);
    return c;});
  }
- const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining']);
+ const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining','dress-pink-satin']);
  function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
   const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
   if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
   return remember('arms:'+src+':'+forearm+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
    // The ordinary foreground layer restores wrists and fingers only. Bare
    // upper arms already exist in the body and must never repaint over tops.
-   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:780);
+   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:650);
    ctx.globalCompositeOperation='destination-out';for(const id of ids){
     const e=entries.find(e=>e.id===id);
     // Only sleeves can cover arms: a dress's skirt must not erase the hands.
     const bare=sleeveless.has(id)||bareDresses.has(id)||['top-yellow','top-white','top-pink','top-dj'].includes(id);
-    const end=id==='dress-shining'?460:forearm&&bare?550:s.dresses===id?800:CH;
+    const end=id==='dress-shining'?460:forearm&&bare?550:id==='dress-celestial'?700:s.dresses===id?800:CH;
     if(forearm&&['top-sparkle-pink','top-sparkle-charcoal'].includes(id))continue;
     ctx.save();ctx.beginPath();
     let cover=e?.canvas||get(id).im;
@@ -130,8 +132,8 @@ function create({source,changed}){
   ctx.save();if(e.fit){const f=e.fit,ox=(f.ox??970)/S,oy=(f.oy||0)/S;ctx.translate(ox+(f.dx||0)/S,oy+(f.dy||0)/S);ctx.transform(f.sx,0,f.kx||0,f.sy||1,0,0);ctx.translate(-ox,-oy);}
   const points=e.localClip||e.clip;if(points){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x/S,y/S):ctx.moveTo(x/S,y/S));ctx.closePath();ctx.clip();}ctx.drawImage(im,0,0,CW,CH);ctx.restore();
  }
- function shoulderBag(entries,s){if(!['bag-brown','bag-crochet'].includes(s.bags))return null;
-  const parts=entries.filter(e=>e.src?.includes('IMG_554')||e.id==='bag-crochet');
+ function shoulderBag(entries,s){if(s.bags!=='bag-brown'&&!shoulderBags.has(s.bags))return null;
+  const parts=entries.filter(e=>e.src?.includes('IMG_554')||shoulderBags.has(e.id));
   if(parts.some(e=>!(e.id?get(e.id):image(e.src)).loaded))return null;
   // Bags retain their whole silhouette, including above/outside the shoulder.
   // Foreground skin and sleeves are composed separately after this layer.
@@ -168,7 +170,7 @@ function create({source,changed}){
    if(['top-ganni-knit','jacket-floral'].includes(outer)&&e.id!==outer&&e.z<z&&['tops','sheer','dresses'].includes(key)){const c=underVest(e.id,outer);if(c)return {...e,canvas:c,clip:null,fit:null};}
    // Hands occlude the original lower garment; never reshape it to clear wrists.
    if(['pants','skirts','overalls'].includes(key)){return {...e,clip:null,localClip:null,rowFit:null,fit:null};}
-   if(outer&&!sleeveless.has(outer)&&e.id!==outer&&e.z<z&&['tops','sheer','sweater','cardigan','vest','dresses'].includes(key)){
+   if(outer&&!sleeveless.has(outer)&&!openOuters.has(outer)&&e.id!==outer&&e.z<z&&['tops','sheer','sweater','cardigan','vest','dresses'].includes(key)){
     const c=key==='dresses'?null:contained(e.id,outer,true);if(c)return {id:e.id,z:e.z,canvas:c,cover:e.cover};
    }
    return ['tops','sheer','dresses','overalls','sweater','cardigan','vest'].includes(key)?{...e,clip:null,rowFit:null,fit:null}:{...e};
@@ -176,13 +178,13 @@ function create({source,changed}){
   // The polka dress's tied straps are tucked under the vest at the shoulders.
   if(s.vest&&s.dresses==='dress-polka'){const e=result.find(e=>e.id==='dress-polka');if(e){const c=canvas(),ctx=c.getContext('2d');paint(ctx,e);ctx.clearRect(0,0,CW,465);e.canvas=c;e.clip=null;e.fit=null;}}
   const base=result.find(e=>e.body);if(base){const c=bodyFrame(base,s,outer);if(c)base.canvas=c;}
-  const brown=shoulderBag(result,s);if(brown){for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_554')||result[i].id==='bag-crochet')result.splice(i,1);result.push({canvas:brown,z:19,part:s.bags});}
+  const brown=shoulderBag(result,s);if(brown){for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_554')||shoulderBags.has(result[i].id))result.splice(i,1);result.push({canvas:brown,z:19,part:s.bags});}
   if(s.phone){const e=result.find(e=>e.id===s.phone),c=phone(s,result);if(e&&c)e.canvas=c;}
   const hand=hands(s,result);if(hand){
    for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_5495')||(s.gloves&&result[i].id===s.gloves))result.splice(i,1);
-   result.push({canvas:hand,z:10.2,part:'hands'});
+   result.push({canvas:hand,z:(s.jackets||s.wrap)?13.2:11.3,part:'hands'});
   }
-  if(s.bags==='bag-crochet'&&hand){
+  if(shoulderBags.has(s.bags)&&hand){
    const forearm=hands(s,result,true);
    const key='crochet:'+(s.gloves||'')+':'+garmentSlots.map(k=>s[k]||'').join(',')+':'+JSON.stringify(entries.filter(e=>e.id===s.bags).map(e=>e.fit));
    const c=remember(key,()=>{const c=canvas(),ctx=c.getContext('2d');
@@ -228,4 +230,5 @@ function create({source,changed}){
 }
 window.NanaDressingGeometry={create};
 })();
+
 

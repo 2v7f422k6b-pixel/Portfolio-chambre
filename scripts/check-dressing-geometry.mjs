@@ -51,7 +51,7 @@ test('standalone tops are not covered by a foreground upper arm or a sleeve-end 
   const result=geo.process(entries,s),top=result.find(e=>e.id===id),hands=result.find(e=>e.part==='hands');
   assert.equal(top.canvas,undefined,id+' retains its original artwork');
   const ctx=hands.canvas.getContext('2d');
-  assert(ctx.clears.some(a=>a[0]===0&&a[1]===0&&a[2]===1024&&a[3]===780),id+' must not repaint upper arms');
+  assert(ctx.clears.some(a=>a[0]===0&&a[1]===0&&a[2]===1024&&a[3]===650),id+' must not repaint upper arms');
   assert(ctx.rects.every(a=>a[3]===1536),id+' must mask the entire sleeve, not an estimated sleeve length');
  }
 });
@@ -117,5 +117,26 @@ test('adjusted bags retain their full outline outside the garment shoulder',asyn
    assert.notEqual(next.canvas,arm.canvas,'skin coverage is recalculated after moving the bag');
    assert(next.z>layer.z,'arm stays in front of the bag');
   }
+ }
+});
+
+
+test('open outerwear preserves the whole underlayer',async()=>{
+ for(const outer of ['jacket-blue-open','jacket-leopard-open','jacket-pink-long','jacket-cardigan','jacket-fleece']){
+  const geo=fixture(),s={tops:'top-baby-white',jackets:outer},entries=[{id:s.tops,z:8},{id:outer,z:12}];
+  await geo.ready(entries,s);assert.equal(geo.process(entries,s).find(e=>e.id===s.tops).canvas,undefined);
+ }
+});
+test('wrists are restored above skirts and celestial robe starts before the wrist',async()=>{
+ for(const [key,id] of [['skirts','skirt-denim'],['dresses','dress-celestial']]){
+  const geo=fixture(),s={[key]:id},entries=[{id,z:9}];await geo.ready(entries,s);
+  const hand=geo.process(entries,s).find(e=>e.part==='hands');assert(hand.z>9);
+  assert(hand.canvas.getContext('2d').clears.some(a=>a[3]===650));
+ }
+});
+test('star and floral shoulder bags retain the foreground arm',async()=>{
+ for(const bag of ['bag-star-purple','bag-blue-floral']){
+  const geo=fixture(),s={bags:bag,tops:'top-baby-white'},entries=[{id:s.tops,z:8},{id:bag,z:19}];await geo.ready(entries,s);
+  assert(geo.process(entries,s).some(e=>e.part==='bag-arm'&&e.z>19));
  }
 });

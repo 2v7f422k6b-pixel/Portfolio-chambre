@@ -54,6 +54,8 @@ window.NanaDressingLooks={init(api){
       sub.addEventListener('click',()=>api.setCategory(key));subButtons.set(key,sub);subNav.append(sub);
     }
   }
+  const mobileCategory=document.createElement('select');mobileCategory.className='nl-mobile-category';mobileCategory.setAttribute('data-no-translate','');categoryNav.after(mobileCategory);
+  mobileCategory.addEventListener('change',()=>api.setCategory(mobileCategory.value));
   function syncCategories(){
     const active=api.category(),family=families.find(f=>f.keys.includes(active))||families[0];
     remembered[family.id]=active;
@@ -71,14 +73,17 @@ window.NanaDressingLooks={init(api){
       b.classList.toggle('active',key===active);b.setAttribute('aria-pressed',String(key===active));
     }
     subNav.hidden=family.keys.length===1;
+    mobileCategory.setAttribute('aria-label',t('Catégorie du catalogue','Catalogue category'));mobileCategory.replaceChildren();
+    for(const f of families){const group=document.createElement('optgroup');group.label=t(f.fr,f.en);for(const key of f.keys){const button=subButtons.get(key);if(!button)continue;const option=document.createElement('option');option.value=key;option.textContent=button.textContent;option.selected=key===active;group.append(option);}mobileCategory.append(group);}
+
   }
   const pager=document.createElement('nav');pager.className='nl-inventory-pager';pager.setAttribute('data-no-translate','');$('#inventory').after(pager);
   const undo=document.createElement('button');undo.type='button';undo.id='undo-outfit';undo.className='action nl-frame';$('#reset').before(undo);
-  const worn=document.createElement('details');worn.className='nl-worn';worn.setAttribute('data-no-translate','');$('.stage').append(worn);
+  const worn=document.createElement('div');worn.className='nl-worn';worn.setAttribute('data-no-translate','');$('.stage').append(worn);
   let previous=null,history=[],restoring=false;
   function controls(){
     undo.textContent=t('Annuler','Undo');undo.disabled=!history.length;
-    worn.replaceChildren();const summary=document.createElement('summary');summary.textContent=t('Pièces portées','Worn pieces')+' ('+api.worn().length+')';
+    worn.replaceChildren();const summary=document.createElement('span');summary.textContent=t('Pièces portées','Worn pieces')+' ('+api.worn().length+')';
     const list=document.createElement('div');list.className='nl-worn-list';
     for(const item of api.worn()){const b=document.createElement('button');b.type='button';b.textContent=item.name+' ×';b.setAttribute('aria-label',t('Retirer ','Remove ')+item.name);b.onclick=()=>api.remove(item.id);list.append(b);}
     worn.append(summary,list);
@@ -122,4 +127,5 @@ window.NanaDressingLooks={init(api){
   document.addEventListener('portfolio-language-change',()=>{copy();paginate();controls();});
   return {changed,paginate};
 }};
+
 
