@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const sweaters=new Set(['top-pullover','top-lime','top-bear','top-bow-knit']);
-  const cardigans=new Set(['jacket-blue','jacket-ganni-knit','jacket-blue-open','jacket-pink-button','jacket-red-button']);
+  const cardigans=new Set(['jacket-miffy-knit','jacket-green-bolero','jacket-blue','jacket-ganni-knit','jacket-blue-open','jacket-pink-button','jacket-red-button']);
   const vests=new Set(['top-ganni-knit','vest-george-sand','jacket-floral']);
   const sparkles=new Set(['top-sparkle-pink','top-sparkle-charcoal']);
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
@@ -14,6 +14,10 @@
     if(sparkles.has(id))return 'sheer';
     const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
     if(fixed[id])return fixed[id];
+    if(id.startsWith('held-'))return 'handObject';
+    if(id==='head-oval-glasses')return 'glasses';
+    if(id==='head-miffy-clips')return 'clips';
+    if(['head-star-headphones','head-cassette-green'].includes(id))return 'headphones';
     if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';
     if(id.startsWith('jewelry-'))return 'necklace';
     return items[id]?.[1]||null;
@@ -82,4 +86,5 @@
   }
   window.NanaWardrobeRules={sweaters,cardigans,vests,sparkles,buckets,collars,slotFor,normalize,choose,canWearTop};
 })();
+
 
