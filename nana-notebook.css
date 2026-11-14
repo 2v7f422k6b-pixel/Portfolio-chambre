@@ -245,3 +245,15 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
  #nana-journal .nj-tabs button{font-size:clamp(7px,1.3vw,11px)!important;padding:1.5em 0 0!important}
  #nana-journal .nj-cut-space{flex-basis:6px}
 }
+
+/* Private alignment tool for the eight illustrated tab labels. */
+#nana-journal .nj-tabs button{transform:translateX(-50%) translateY(var(--nj-admin-y,0px)) scale(var(--nj-admin-scale,1))!important}
+#nana-journal.nj-tab-editing .nj-tabs button{touch-action:none;cursor:grab;outline:1px dashed #ed2347;outline-offset:1px}
+#nj-tab-editor-open[hidden],#nj-tab-editor[hidden]{display:none!important}
+#nj-tab-editor-open{position:fixed;right:18px;bottom:18px;z-index:2147483600;background:#fff0f5;color:#bd2347;border:2px solid #ed2347;border-radius:9px;padding:12px;font-size:14px}
+#nj-tab-editor{position:fixed;right:12px;bottom:12px;z-index:2147483601;width:min(340px,calc(100vw - 24px));max-height:80dvh;overflow:auto;background:#fff7f5;border:2px solid #ed2347;border-radius:10px;padding:15px;color:#7d2545;font:14px/1.4 Arial,sans-serif;box-shadow:0 8px 25px #0003}
+#nj-tab-editor .nj-te-head{display:flex;justify-content:space-between;align-items:center}
+#nj-tab-editor label{display:block;margin:12px 0}
+#nj-tab-editor input,#nj-tab-editor select{display:block;width:100%;margin-top:5px}
+#nj-tab-editor button{background:#ffe0ea;border:1px solid #ed2347;border-radius:5px;color:#7d2545;padding:7px;cursor:pointer}
+#nj-tab-editor .nj-te-actions{display:flex;flex-wrap:wrap;gap:6px}
