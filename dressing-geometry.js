@@ -92,11 +92,11 @@ function create({source,changed}){
    return c;});
  }
  const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining','dress-pink-satin']);
- function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
+ function hands(s,entries,forearm=false,replacement=null){const src=replacement||(s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png'),r=image(src);
   const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
   if(!r.loaded||(s.handObject&&!image('assets/dressing-lena/IMG_6651.png').loaded)||ids.some(id=>!get(id).loaded))return null;
   return remember('arms:'+src+':'+forearm+':'+(s.handObject||'')+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
-   if(s.handObject){ctx.clearRect(CW/2,0,CW/2,CH);ctx.drawImage(image('assets/dressing-lena/IMG_6651.png').im,1024,0,1024,3072,CW/2,0,CW/2,CH);}
+   if(s.handObject&&!replacement){ctx.clearRect(CW/2,0,CW/2,CH);ctx.drawImage(image('assets/dressing-lena/IMG_6651.png').im,1024,0,1024,3072,CW/2,0,CW/2,CH);}
    // The ordinary foreground layer restores wrists and fingers only. Bare
    // upper arms already exist in the body and must never repaint over tops.
    if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:650);
@@ -186,7 +186,7 @@ function create({source,changed}){
  function process(entries,s){entries=cassette(entries,s);entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
-  const result=entries.map(e=>{if(!e.id||e.hood||e.canvas)return {...e};
+  const result=entries.map(e=>{if(e.role==='held-wrist'){const c=hands(s,entries,false,e.src);return {...e,canvas:c||undefined};}if(!e.id||e.hood||e.canvas)return {...e};
    const key=Object.keys(s).find(k=>s[k]===e.id);
    if(key==='shoes'&&s.pants&&['shoes-boots','shoes-dj','shoes-green','shoes-george-sand'].includes(e.id)){const c=boots(e.id,s.pants);return {...e,canvas:c||undefined};}
    if(['top-ganni-knit','jacket-floral'].includes(outer)&&e.id!==outer&&e.z<z&&['tops','sheer','dresses'].includes(key)){const c=underVest(e.id,outer);if(c)return {...e,canvas:c,clip:null,fit:null};}
@@ -259,6 +259,7 @@ function create({source,changed}){
 }
 window.NanaDressingGeometry={create};
 })();
+
 
 
 
