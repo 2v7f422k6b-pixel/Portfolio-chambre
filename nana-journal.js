@@ -153,7 +153,7 @@
     left.className='nj-leaf nj-leaf-left';right.className='nj-leaf nj-leaf-right';
     const makeInside=leaf=>{const inner=document.createElement('div');inner.className='nj-leaf-inner';leaf.append(inner);return inner;};
     const a=makeInside(left),b=makeInside(right);
-    if(small.matches){a.append(...source.childNodes);content.replaceChildren(left);return;}
+    // Keep both pages on every screen: the Procreate spread is one indivisible canvas.
     for(const node of [...source.children]){
       if(node.matches('.nj-grid,.nj-sticker-grid,.nj-titles')){
         const first=node.cloneNode(false),second=node.cloneNode(false),items=[...node.children],split=Math.ceil(items.length/2);
