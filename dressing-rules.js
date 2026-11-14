@@ -24,6 +24,7 @@
   };
   function canWearTop(dress,top){return !dress||dress==='dress-denim'||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
   function normalize(s,changed){
+    if(s.handObject&&(s.gloves||s.phone)){if(changed==='gloves'||changed==='phone')s.handObject=null;else{s.gloves=null;s.phone=null;}}
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
     if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;if(!s.underwear)s.underwear='bra-blue';}
     if(s.pants)s.skirts=null;
