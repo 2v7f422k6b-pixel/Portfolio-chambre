@@ -8,6 +8,10 @@
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(id))return 'bagAccessories';
+    if(id==='jewelry-flower-long')return 'bags';
+    if(['hosiery-dj','hosiery-blue-lace'].includes(id))return 'hosieryOverlay';
+    if(['shoes-pink-lace','hosiery-cafe','hosiery-shining','hosiery-pink-knee','hosiery-brown-stripes'].includes(id))return 'socks';
     if(sweaters.has(id))return 'sweater';
     if(cardigans.has(id))return 'cardigan';
     if(vests.has(id))return 'vest';
@@ -24,6 +28,8 @@
   };
   function canWearTop(dress,top){return !dress||dress==='dress-denim'||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
   function normalize(s,changed){
+    const conflict=s.clips&&(s.hat==='head-clown-wig'||s.clips==='head-miffy-clips'&&(s.headlamp||['head-cap','head-george-sand','head-band-white','head-band-pink','head-band-blue'].includes(s.hat)));
+    if(conflict){if(changed==='clips'){s.hat=null;s.headlamp=null;}else s.clips=null;}
     if(s.handObject&&(s.gloves||s.phone)){if(changed==='gloves'||changed==='phone')s.handObject=null;else{s.gloves=null;s.phone=null;}}
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
     if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;if(!s.underwear)s.underwear='bra-blue';}
@@ -55,7 +61,7 @@
     if(s.scarves&&['jewelry-clown-ruff','jewelry-miffy-ruff','jewelry-george-sand'].includes(s.necklace)){
       if(changed==='necklace')s.scarves=null;else s.necklace=null;
     }
-    if(!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
+    if(!s.bags||!['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(s.bagAccessories)&&!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
     if(s.hat==='head-sonny-rabbit'){
       if(changed==='clips'||changed==='headlamp'||changed==='headphones')s.hat=null;else{s.clips=null;s.headlamp=null;s.headphones=null;}
     }
@@ -81,7 +87,7 @@
       if(key==='skirts'){s.dresses=null;s.overalls=null;s.pants=null;}
       if(key==='dresses')s.overalls=null;
       if(key==='overalls')s.dresses=null;
-      if(key==='bagAccessories'&&!['bag-brown','bag-crochet'].includes(s.bags))s.bags='bag-brown';
+      if(key==='bagAccessories'&&(!s.bags||!['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(id)&&!['bag-brown','bag-crochet'].includes(s.bags)))s.bags='bag-brown';
     }
     normalize(s,key);
   }
