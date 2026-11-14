@@ -94,8 +94,9 @@ function create({source,changed}){
  const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining','dress-pink-satin']);
  function hands(s,entries,forearm=false){const src=s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png',r=image(src);
   const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
-  if(!r.loaded||ids.some(id=>!get(id).loaded))return null;
-  return remember('arms:'+src+':'+forearm+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
+  if(!r.loaded||(s.handObject&&!image('assets/dressing-lena/IMG_6651.png').loaded)||ids.some(id=>!get(id).loaded))return null;
+  return remember('arms:'+src+':'+forearm+':'+(s.handObject||'')+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
+   if(s.handObject){ctx.clearRect(CW/2,0,CW/2,CH);ctx.drawImage(image('assets/dressing-lena/IMG_6651.png').im,1024,0,1024,3072,CW/2,0,CW/2,CH);}
    // The ordinary foreground layer restores wrists and fingers only. Bare
    // upper arms already exist in the body and must never repaint over tops.
    if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:650);
@@ -159,9 +160,28 @@ function create({source,changed}){
    return c;
   });
  }
- function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...ids.filter(id=>artistSleeves[id]).map(id=>artistSleeves[id]),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png'])]}
+ function sources(entries,s){const ids=garmentSlots.map(k=>s[k]).filter(Boolean);if(s.phone)ids.push(s.phone);if(s.gloves)ids.push(s.gloves);if(s.pants)ids.push(s.pants);if(s.hat)ids.push(s.hat);if(s.bags)ids.push(s.bags);if(s.shoes)ids.push(s.shoes);if(s.skirts)ids.push(s.skirts);return [...new Set([...ids.map(source),...ids.filter(id=>artistSleeves[id]).map(id=>artistSleeves[id]),...entries.filter(e=>e.src).map(e=>e.src),'assets/dressing-lena/IMG_5999.png','assets/dressing-lena/IMG_5994.png','assets/dressing-lena/IMG_5993.png','assets/dressing-lena/IMG_5722.png','assets/dressing-lena/IMG_5495.png',...(s.handObject?['assets/dressing-lena/IMG_6651.png']:[])])]}
  async function ready(entries,s){await Promise.all([...sources(entries,s).map(src=>image(src).ready),window.NanaLayerEditor?.ready(s,entries)])}
- function process(entries,s){entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
+ function cassette(entries,s){
+  if(s.headphones!=='head-cassette-green')return entries;
+  const bottom=s.pants||s.skirts||s.overalls;
+  const p=bottom?profile(bottom):null;let dx=0,dy=0;
+  if(p){for(let y=480;y<850;y++){const row=p.rows[y];if(!row||row.h-row.l<90||row.l>550||row.h<500)continue;
+    const stable=p.rows[y+8];if(!stable||stable.h-stable.l<90)continue;
+    dx=Math.round(row.h*2-75-1100);dy=Math.round(y*2+25-1187);break;}}
+  return entries.map(e=>{
+    if(e.role==='cassette-player')return {...e,fit:{sx:1,sy:1,dx,dy,ox:0,oy:0}};
+    if(e.role!=='cassette-wire')return e;
+    const r=image(e.src);if(!r.loaded)return e;
+    const c=canvas(),ctx=c.getContext('2d');
+    // Warp the supplied cable only: preserve the headphone endpoint, attach
+    // the lower endpoint to the moved player. No new line is drawn.
+    const y0=609,y1=1210,scale=Math.max(.1,(y1+dy-y0)/(y1-y0));
+    for(let y=y0;y<y1;y+=2){const t=(y-y0)/(y1-y0);ctx.drawImage(r.im,0,y,2048,2,dx*t/S,(y0+(y-y0)*scale)/S,CW,Math.max(1,2*scale/S));}
+    return {...e,canvas:c};
+  });
+ }
+ function process(entries,s){entries=cassette(entries,s);entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
   const outer=s.wrap||s.jackets||s.vest||s.cardigan||s.sweater||(s.dresses==='dress-denim'?s.dresses:s.overalls)||(['top-damson','top-gabzilla','top-plantasia','top-pink-floyd'].includes(s.tops)?s.tops:null);
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
   const result=entries.map(e=>{if(!e.id||e.hood||e.canvas)return {...e};
@@ -233,6 +253,7 @@ function create({source,changed}){
 }
 window.NanaDressingGeometry={create};
 })();
+
 
 
 
