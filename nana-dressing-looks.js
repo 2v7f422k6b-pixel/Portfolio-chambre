@@ -102,8 +102,8 @@ window.NanaDressingLooks={init(api){
     // Bind visible thumbnail URLs immediately, including SVG images. They remain
     // attached to each new card when a selection rebuilds the inventory.
     for(const card of cards.filter(el=>!el.hidden))for(const im of card.querySelectorAll('[data-resource-href],[data-resource-src]')){
-      if(im.dataset.resourceHref)im.setAttribute('href',im.dataset.resourceHref);
-      if(im.dataset.resourceSrc)im.setAttribute('src',im.dataset.resourceSrc);
+      if(im.dataset.resourceHref&&im.getAttribute('href')!==im.dataset.resourceHref)im.setAttribute('href',im.dataset.resourceHref);
+      if(im.dataset.resourceSrc&&im.getAttribute('src')!==im.dataset.resourceSrc)im.setAttribute('src',im.dataset.resourceSrc);
     }
     pager.innerHTML='<button class="action nl-frame" type="button" data-page="-1" aria-label="'+t('Vêtements précédents','Previous clothes')+'">←</button><span>'+(page+1)+' / '+total+'</span><button class="action nl-frame" type="button" data-page="1" aria-label="'+t('Vêtements suivants','Next clothes')+'">→</button>';
     pager.querySelector('[data-page="-1"]').disabled=page===0;pager.querySelector('[data-page="1"]').disabled=page===total-1;
@@ -125,6 +125,7 @@ window.NanaDressingLooks={init(api){
   document.addEventListener('portfolio-language-change',()=>{copy();paginate();controls();});
   return {changed,paginate};
 }};
+
 
 
 

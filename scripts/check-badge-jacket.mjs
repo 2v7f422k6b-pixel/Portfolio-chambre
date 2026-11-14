@@ -22,3 +22,5 @@ console.log('Badge selection, reward gating, persistence, capacity and syntax ch
 
 
 env.slots={cardigan:'jacket-miffy-knit'};assert.equal(run('badgeCarrier()'),null);env.slots={jackets:'jacket-toggle-purple'};assert.equal(run('badgeCarrier()'),null);env.slots={jackets:'jacket-inspector'};assert.equal(run('badgeCarrier()'),'jacket-inspector');
+for(const slots of [{cardigan:'jacket-green-bolero'},{vest:'jacket-floral'},{vest:'vest-george-sand'},{jackets:'jacket-george-sand'},{sweater:'top-pullover'}]){env.slots=slots;assert.equal(run('badgeCarrier()'),null);}
+assert(html.includes("if(badgeCarrier())entries.push({canvas:badgeFrame()"),'rendering uses the same badge eligibility as the editor and export');

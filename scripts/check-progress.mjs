@@ -194,7 +194,7 @@ test('Sonny and supplied hat hair use the tattooed bald body while the bear swea
  const fn=html.slice(html.indexOf('function outfitLayers(){'),html.indexOf('let avatarRevision='));
  const slots={hat:'head-sonny-rabbit',jackets:'jacket-purple',makeup:new Set()};
  const env={slots,data:assets,BASE:assets.base,HAIRLESS_BASE:assets.hairlessBase,ITEMS:assets.items,FITTED:assets.fitted,SPRITES:assets.sprites,
-  PULLOVERS:new Set(),badgeFrame:()=>null,raisedCollar:()=>null,bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
+  PULLOVERS:new Set(),badgeCarrier:()=>null,badgeFrame:()=>null,raisedCollar:()=>null,bagFits:()=>({}),underJacketClip:()=>null,GREEN_COAT_BOTTOM_FITS:{},FACE_FOREGROUND:[]};
  vm.runInNewContext(html.slice(html.indexOf('const correctionFile='),html.indexOf('const collarCache')),env);
  const layers=vm.runInNewContext('('+fn.trim()+')',env);
  for(const jacket of ['jacket-purple',null]){
@@ -220,6 +220,12 @@ test('Sonny and supplied hat hair use the tattooed bald body while the bear swea
  assert.equal(layers().filter(x=>/^held-/.test(x.role||'')).length,3);
  slots.hat=null;
  assert.equal(layers().find(x=>x.body).src,'assets/dressing-lena/IMG_6650.png');
+ slots.handObject=null;slots.glasses='head-pink-glasses';slots.bracelets='jewelry-dj-bracelets';
+ for(const hat of ['head-pink-hood','head-band-pink','head-band-blue','head-clown-wig','head-cap']){
+  slots.hat=hat;const entries=layers();
+  assert(entries.find(e=>e.id===slots.glasses).z<entries.find(e=>e.id===hat).z);
+  assert(entries.find(e=>e.id===slots.bracelets).z>19.5);
+ }
 });
 
 test('paint overalls unlock with the existing atelier activity and retain that saved discovery',()=>{
