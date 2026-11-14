@@ -5,7 +5,8 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 for(const [,attrs,body] of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){if(attrs.includes('application/json'))JSON.parse(body);else new vm.Script(body)}
 const block=html.slice(html.indexOf('const BADGE_KEY='),html.indexOf('function badgeImage('));
 const storage=new Map(),earned=new Set(['a','b','c','d','e','f','g']);
-const env={progress:{stickers:[...'abcdefgh'].map(id=>({id,earned:()=>earned.has(id)})),isCreator:()=>false},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},slots:{},render(){},toast(){},bilingual:fr=>fr};
+const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
+const env={ITEMS:data.items,KNITWEAR:vm.runInNewContext(html.match(/const KNITWEAR=(.*?);/)[1]),PYJAMAS:vm.runInNewContext(html.match(/const PYJAMAS=(.*?);/)[1]),progress:{stickers:[...'abcdefgh'].map(id=>({id,earned:()=>earned.has(id)})),isCreator:()=>false},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},slots:{},render(){},toast(){},bilingual:fr=>fr};
 vm.createContext(env);vm.runInContext(block,env);
 const run=code=>vm.runInContext(code,env);
 run("toggleBadge('h')");assert.equal(run('badgeSelection.length'),0,'locked reward rejected');
@@ -18,3 +19,6 @@ earned.delete('g');assert.equal(run('wornBadges().length'),0,'revoked rewards hi
 run("toggleBadge('b');toggleBadge('c')");assert.equal(run("badgeSelection.includes('c')"),true,'replace selected badge');
 env.progress.isCreator=()=>true;run("toggleBadge('h')");assert.equal(run("badgeSelection.includes('h')"),false,'creator preview cannot equip an unearned badge');
 console.log('Badge selection, reward gating, persistence, capacity and syntax checks passed.');
+
+
+env.slots={cardigan:'jacket-miffy-knit'};assert.equal(run('badgeCarrier()'),null);env.slots={jackets:'jacket-toggle-purple'};assert.equal(run('badgeCarrier()'),null);env.slots={jackets:'jacket-inspector'};assert.equal(run('badgeCarrier()'),'jacket-inspector');
