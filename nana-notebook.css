@@ -91,3 +91,61 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
 }
 @media(max-height:600px){#nana-journal .nj-cover{gap:10px;padding-top:18px;padding-bottom:18px}#nana-journal .nj-cover-label{font-size:30px;padding:12px 20px}#nana-journal .nj-cover-note{font-size:12px}#nana-journal .nj-cover-star img{width:35px;height:35px}#nana-journal .nj-cover-invitation{padding-top:5px}}
 @media(prefers-reduced-motion:reduce){#nana-journal .nj-cover,#nana-journal .nj-shell,#nana-journal .nj-tabs button{transition:none!important}#nana-journal.nj-book-open .nj-cover{visibility:hidden}}
+
+
+/* Nana's hand-drawn diary assets, first visual integration (November 2026).
+   Keep the existing progress, navigation and page-turn mechanics untouched. */
+#nana-journal .nj-cover{
+  background: url("assets/diary/IMG_6940.png") center / 100% 100% no-repeat;
+  border:0;box-shadow:none;border-radius:0;
+  color:transparent;
+}
+#nana-journal .nj-cover-grain,
+#nana-journal .nj-cover-elastic,
+#nana-journal .nj-cover-stamp,
+#nana-journal .nj-cover-label,
+#nana-journal .nj-cover-star,
+#nana-journal .nj-cover-note,
+#nana-journal .nj-cover-invitation{display:none!important}
+#nana-journal .nj-shell{
+  background: url("assets/diary/IMG_6945.png") center / 100% 100% no-repeat;
+  box-shadow:none;border-radius:0;
+}
+#nana-journal .nj-shell::before{display:none}
+#nana-journal .nj-leaf,
+#nana-journal .nj-leaf-right{
+  background-color:transparent;
+  background-image:none;
+  border-radius:0;
+}
+#nana-journal .nj-leaf-left{
+  background:url("assets/diary/IMG_6943.png") center / 100% 100% no-repeat;
+}
+#nana-journal .nj-leaf-right{
+  background:url("assets/diary/IMG_6942.png") center / 100% 100% no-repeat;
+}
+#nana-journal .nj-leaf-inner{
+  background:none;
+  padding-top:45px;
+}
+#nana-journal .nj-main::after{
+  content:"";position:absolute;top:0;bottom:0;left:50%;
+  width:5.5%;transform:translateX(-50%);
+  background:url("assets/diary/IMG_6944.png") center / 100% 100% no-repeat;
+  pointer-events:none;z-index:2;
+}
+#nana-journal .nj-tabs button,
+#nana-journal .nj-tabs button[data-nj-newsletter]{
+  background:none!important;
+  box-shadow:none;border-radius:0;
+  border:2px solid #ed2347;
+  border-bottom:0;
+  background-color:var(--tab-color)!important;
+}
+#nana-journal .nj-turn-front,
+#nana-journal .nj-turn-reverse{background:#fff!important}
+@media(max-width:760px){
+  #nana-journal .nj-main::after{display:none}
+  #nana-journal .nj-leaf-left{background:url("assets/diary/IMG_6943.png") center / 100% 100% no-repeat}
+  #nana-journal .nj-leaf-inner{padding-top:35px}
+}
