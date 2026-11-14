@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const CW=1024,CH=1536,S=2;
 const garmentSlots=['tops','sheer','dresses','overalls','sweater','cardigan','vest','jackets','wrap'];
-const openOuters=new Set(['jacket-blue-open','jacket-leopard-open','jacket-pink-long','jacket-cardigan','jacket-fleece']);
+const openOuters=new Set(['jacket-green-bolero','jacket-blue-open','jacket-leopard-open','jacket-pink-long','jacket-cardigan','jacket-fleece']);
 const shoulderBags=new Set(['bag-crochet','bag-star-purple','bag-blue-floral']);
 const sleeveless=new Set(['top-ganni-knit','vest-george-sand','jacket-floral','dress-denim','suit-paint']);
 const sleeveEnd={ 'top-bear':1640,'jacket-blue':1510,'top-pullover':1590,'top-lime':1590,'top-pajama':1590,'top-pajama-blue':1590,'top-pajama-leopard':1590,'top-yellow':900,'top-white':900,'top-pink':800,'top-dj':800,'top-clown':1120,'top-gabzilla':1060,'top-plantasia':1060,'top-pink-floyd':1060,'top-damson':1140,'top-peter-pan':1570,'top-bow-blouse-tucked':1580,'top-george-sand':1590,'top-inspector':1590,'top-sparkle-pink':1620,'top-sparkle-charcoal':1620,'dress-celestial':1480,'jacket-leopard-open':1600,'jacket-pink-long':1600,'dress-floral':1600,'dress-striped':1620};
@@ -165,12 +165,14 @@ function create({source,changed}){
  function cassette(entries,s){
   if(s.headphones!=='head-cassette-green')return entries;
   const bottom=s.pants||s.skirts||s.overalls;
+  if(!bottom)return entries.filter(e=>!['cassette-player','cassette-wire'].includes(e.role));
+  const covered=!!(s.wrap||s.jackets||s.cardigan||s.vest);
   const p=bottom?profile(bottom):null;let dx=0,dy=0;
   if(p){for(let y=480;y<850;y++){const row=p.rows[y];if(!row||row.h-row.l<90||row.l>550||row.h<500)continue;
     const stable=p.rows[y+8];if(!stable||stable.h-stable.l<90)continue;
-    dx=Math.round(row.h*2-75-1100);dy=Math.round(y*2+25-1187);break;}}
+    dx=Math.round(row.h*2-75-1100);dy=Math.round(y*2+(s.skirts?-20:25)-1187);break;}}
   return entries.map(e=>{
-    if(e.role==='cassette-player')return {...e,fit:{sx:1,sy:1,dx,dy,ox:0,oy:0}};
+    if(e.role==='cassette-player')return {...e,z:covered?10.96:e.z,fit:{sx:1,sy:1,dx,dy,ox:0,oy:0}};
     if(e.role!=='cassette-wire')return e;
     const r=image(e.src);if(!r.loaded)return e;
     const c=canvas(),ctx=c.getContext('2d');
@@ -178,7 +180,7 @@ function create({source,changed}){
     // the lower endpoint to the moved player. No new line is drawn.
     const y0=609,y1=1210,scale=Math.max(.1,(y1+dy-y0)/(y1-y0));
     for(let y=y0;y<y1;y+=2){const t=(y-y0)/(y1-y0);ctx.drawImage(r.im,0,y,2048,2,dx*t/S,(y0+(y-y0)*scale)/S,CW,Math.max(1,2*scale/S));}
-    return {...e,canvas:c};
+    return {...e,z:covered?10.95:e.z,canvas:c};
   });
  }
  function process(entries,s){entries=cassette(entries,s);entries=window.NanaLayerEditor?.prepare(entries,s)||entries;const paths=sources(entries,s),signature=JSON.stringify(paths);if(signature!==lastSources){frames.clear();lastSources=signature;}paths.forEach(image);
@@ -197,6 +199,10 @@ function create({source,changed}){
   });
   // The polka dress's tied straps are tucked under the vest at the shoulders.
   if(s.vest&&s.dresses==='dress-polka'){const e=result.find(e=>e.id==='dress-polka');if(e){const c=canvas(),ctx=c.getContext('2d');paint(ctx,e);ctx.clearRect(0,0,CW,465);e.canvas=c;e.clip=null;e.fit=null;}}
+  if(s.bagAccessories&&['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(s.bagAccessories)&&s.bags){
+   const p=profile(s.bags),entry=result.find(e=>e.id===s.bagAccessories);
+   if(p&&entry){const y=p.rows.findIndex(r=>r&&r.h-r.l>6);const row=p.rows[y];if(row){const scale=.4,ox=s.bagAccessories==='jewelry-coffee-lanyard'?790:805,oy=1165;entry.fit={sx:scale,sy:scale,ox:0,oy:0,dx:(row.l+row.h)-ox*scale,dy:y*2+35-oy*scale};}}
+  }
   const base=result.find(e=>e.body);if(base){const c=bodyFrame(base,s,outer);if(c)base.canvas=c;}
   const brown=shoulderBag(result,s);if(brown){for(let i=result.length-1;i>=0;i--)if(result[i].src?.includes('IMG_554')||shoulderBags.has(result[i].id))result.splice(i,1);result.push({canvas:brown,z:19,part:s.bags});}
   if(s.phone){const e=result.find(e=>e.id===s.phone),c=phone(s,result);if(e&&c)e.canvas=c;}
