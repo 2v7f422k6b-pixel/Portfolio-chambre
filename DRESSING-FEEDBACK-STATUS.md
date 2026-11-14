@@ -210,3 +210,12 @@ Chemise George Sand raccourcie sous GANNI : piste à vérifier, pas une demande 
 - [ ] Confirmer sur iPad que les zones roses ne réapparaissent plus : défaut intermittent non reproduit dans Chrome distant. Les changements de zoom/flou sont une mitigation, pas une cause matériellement confirmée.
 
 Validation : déplacement direct, flèches, annulation et sauvegarde après rechargement vérifiés dans Chrome. Tests de déplacement solidaire sac/accessoires, isolation des réglages, restauration de looks et zoom intérieur avec retour à 100 %. Les fichiers PNG restent intacts.
+
+
+## Retour d’essayage du 14 novembre 2026
+
+- Gourde Miffy : Léna souhaite éventuellement remonter légèrement la main/le raccord ; dessin à reprendre si elle le souhaite.
+- Objets à main : prochaine amélioration, deux PNG alignés au canevas original, objet et main/poignet séparés. La manche masque le poignet, l’objet reste devant. Ne pas déplacer le bras du mannequin.
+- Pyjama lavande : ensemble retrouvé (pantalon + haut violet à brandebourgs), aucun export manquant identifié.
+- Tote bag Nana Color Studio : récompense après achat. Réservé au catalogue, condition purchase-confirmed ; raccord avec la confirmation réelle de commande à réaliser lorsque le paiement de la boutique sera établi. Un clic boutique ne suffit pas.
+- Lecteur cassette : casque seul sans bas/avec robes ou combinaison Miffy. Option à dessiner si souhaitée : lecteur tenu en main. Salopette peinture conserve la fixation existante ; jupes, clip remonté ; boîtier et fil derrière vestes/gilets/manteaux.
