@@ -193,6 +193,7 @@
   // Trigger the original site theme button: both artwork and interface stay in sync.
   hit.addEventListener('click',event=>{
     if(editing) return;
+    window.NanaProgress?.visit('objet/lampe-fleur');
     event.preventDefault();
     event.stopImmediatePropagation();
     const themeButton=document.getElementById('theme-toggle');
@@ -357,3 +358,4 @@
     enterPlay.click();
   }
 })();
+

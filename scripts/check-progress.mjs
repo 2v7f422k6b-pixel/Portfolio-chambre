@@ -5,6 +5,23 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('new smiley and Tamagotchi rewards require their real interactions and persist',()=>{
+  for(const action of ['feed','sleep','draw','music','cuddle']){
+    const storage=new Map(),{p}=browser({storage});
+    assert.equal(p.unlockedOutfit('smiley'),false);
+    assert.equal(p.unlockedOutfit('tamagotchi'),false);
+    p.visit('jeu/tamagotchi');
+    assert.equal(p.unlockedOutfit('tamagotchi'),false);
+    p.feat('care-'+action);
+    assert.equal(p.unlockedOutfit('tamagotchi'),true);
+    assert.equal(p.unlockedOutfit('smiley'),false);
+    p.visit('objet/lampe-fleur');
+    assert.equal(p.unlockedOutfit('smiley'),true);
+    const saved=browser({storage}).p;
+    assert.equal(saved.unlockedOutfit('smiley'),true);
+    assert.equal(saved.unlockedOutfit('tamagotchi'),true);
+  }
+});
 function browser({storage=new Map(),blocked=false,creator=false,search=''}={}){
   const handlers=new Map();
   const env={URLSearchParams,location:{search},
@@ -326,3 +343,4 @@ test('flower look awaits the future plant and treasures use the beaded bunny cha
  assert.equal(p.outfits.find(x=>x.id==='tresors').values.bagAccessories,'charm-treasures');
  p.visit('night');assert.equal(p.unlockedOutfit('night-explorer'),true);
 });
+

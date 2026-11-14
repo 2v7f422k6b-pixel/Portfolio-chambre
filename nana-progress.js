@@ -34,6 +34,8 @@
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
+    {id:'smiley',name:pair('Sourire fleuri','Flower smile'),visit:'objet/lampe-fleur',image:crop('assets/dressing-lena/IMG_6721.png',[640,728,669,840],2048,3072),pieces:['top-smiley'],values:{tops:'top-smiley'},rule:pair('Appuyer sur la lampe fleur.','Press the flower lamp.')},
+    {id:'tamagotchi',name:pair('Petit compagnon','Little companion'),featsAny:['care-feed','care-sleep','care-draw','care-music','care-cuddle'],image:crop('assets/dressing-lena/IMG_6726.png',[1216,1650,139,262],2048,3072),pieces:['held-tamagotchi'],values:{handObject:'held-tamagotchi'},rule:pair('Jouer avec le Tamagotchi : effectuer une première action.','Play with the Tamagotchi: try your first action.')},
     {id:'george-sand',image:crop('assets/dressing-lena/IMG_5979.png',[693, 77, 527, 539],2048,3072),name:pair('George Sand','George Sand'),visit:'objet/souvenues',pieces:['head-george-sand','jewelry-george-sand','jacket-george-sand','vest-george-sand','pants-george-sand','top-george-sand','shoes-george-sand'],values:{hat:'head-george-sand',necklace:'jewelry-george-sand',jackets:'jacket-george-sand',vest:'vest-george-sand',pants:'pants-george-sand',tops:'top-george-sand',shoes:'shoes-george-sand'},rule:pair('Ouvrir Les Sous-vêtus, les livres du milieu.','Open Les Sous-vêtus, the middle books.')},
     {id:'inspector',image:crop('assets/dressing-lena/IMG_5990.png',[742, 197, 522, 311],2048,3072),name:pair('Inspectrice','Inspector'),exploration:.75,pieces:['jacket-inspector','pants-inspector','head-inspector-glasses','top-inspector','head-inspector','shoes-inspector'],values:{jackets:'jacket-inspector',pants:'pants-inspector',glasses:'head-inspector-glasses',tops:'top-inspector',hat:'head-inspector',shoes:'shoes-inspector'},rule:pair('Explorer 75 % de la chambre.','Explore 75% of the room.')},
 
@@ -111,7 +113,7 @@
   function hasFeat(id) { return state.feats.includes(id); }
   function unlockedOutfit(id, preview=false) {
     const outfit=outfits.find(x=>x.id===id);
-    return !!outfit && outfit.available!==false && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.exploration?explorationRatio()>=outfit.exploration:outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
+    return !!outfit && outfit.available!==false && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.exploration?explorationRatio()>=outfit.exploration:outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.featsAny?outfit.featsAny.some(hasFeat):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
   }
   function explorationRatio(){const r=roomSnapshot();return r.required.length?r.required.filter(x=>r.discovered.includes(x)).length/r.required.length:0;}
   function fullRoom() { const r=roomSnapshot();return r.required.length>0 && r.required.every(x=>r.discovered.includes(x)); }
@@ -209,6 +211,7 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 
