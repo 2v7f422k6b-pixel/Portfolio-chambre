@@ -173,3 +173,43 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
  #nana-journal .nj-tabs button{font-size:clamp(6px,1.3vw,10px)!important;padding:1.6em 0 0!important}
  #nana-journal .nj-leaf-inner{top:11%;bottom:7%;left:18%;right:5%;padding:0}
 }
+
+/* Final alignment pass: overlay text on the eight original drawn tabs. */
+#nana-journal .nj-tabs{top:-1.8%;height:8.5%;left:8%;width:84%;z-index:9}
+#nana-journal .nj-tabs button,#nana-journal .nj-tabs button[data-nj-newsletter]{
+ display:flex!important;align-items:center;justify-content:center;
+ padding:1.4em 0 0!important;
+ font-size:clamp(10px,1.12vw,14px)!important;
+ color:#ed2347!important;
+ text-align:center;white-space:nowrap;letter-spacing:-.02em;
+ text-decoration:none!important;
+}
+#nana-journal .nj-tabs button[aria-current=page]{font-weight:700}
+#nana-journal .nj-art-turn{top:0;bottom:0}
+#nana-journal .nj-art-turn .nj-turn-front,
+#nana-journal .nj-art-turn .nj-turn-reverse{
+ background-color:transparent!important;
+ background-repeat:no-repeat!important;
+ background-size:200% 100%!important;
+ border:0;box-shadow:none;
+}
+#nana-journal .nj-art-turn:not(.nj-turn-back) .nj-turn-front{
+ background-image:url("assets/diary/IMG_6942.png")!important;
+ background-position:right center!important;
+}
+#nana-journal .nj-art-turn:not(.nj-turn-back) .nj-turn-reverse{
+ background-image:url("assets/diary/IMG_6943.png")!important;
+ background-position:left center!important;
+}
+#nana-journal .nj-art-turn.nj-turn-back .nj-turn-front{
+ background-image:url("assets/diary/IMG_6943.png")!important;
+ background-position:left center!important;
+}
+#nana-journal .nj-art-turn.nj-turn-back .nj-turn-reverse{
+ background-image:url("assets/diary/IMG_6942.png")!important;
+ background-position:right center!important;
+}
+@media(max-width:760px){
+ #nana-journal .nj-tabs{top:-1.8%;height:8.5%;left:8%;width:84%}
+ #nana-journal .nj-tabs button{font-size:clamp(8px,1.45vw,12px)!important;padding:1.4em 0 0!important}
+}
