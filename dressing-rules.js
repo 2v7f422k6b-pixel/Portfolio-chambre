@@ -6,6 +6,8 @@
   const vests=new Set(['top-ganni-knit','vest-george-sand','jacket-floral']);
   const sparkles=new Set(['top-sparkle-pink','top-sparkle-charcoal']);
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
+  const hairlessHeads=new Set(['head-clown-wig','head-sonny-rabbit','head-pink-hood']);
+  const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
     if(['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(id))return 'bagAccessories';
@@ -19,7 +21,7 @@
     const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
     if(fixed[id])return fixed[id];
     if(id.startsWith('held-'))return 'handObject';
-    if(id==='head-oval-glasses')return 'glasses';
+    if(['head-oval-glasses','head-pink-glasses'].includes(id))return 'glasses';
     if(id==='head-miffy-clips')return 'clips';
     if(['head-star-headphones','head-cassette-green'].includes(id))return 'headphones';
     if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';
@@ -28,7 +30,7 @@
   };
   function canWearTop(dress,top){return !dress||dress==='dress-denim'||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
   function normalize(s,changed){
-    const conflict=s.clips&&(s.hat==='head-clown-wig'||s.clips==='head-miffy-clips'&&(s.headlamp||['head-cap','head-george-sand','head-band-white','head-band-pink','head-band-blue'].includes(s.hat)));
+    const conflict=s.clips&&(hairlessHeads.has(s.hat)||s.clips==='head-miffy-clips'&&(s.headlamp||['head-cap','head-george-sand','head-band-white','head-band-pink','head-band-blue'].includes(s.hat)));
     if(conflict){if(changed==='clips'){s.hat=null;s.headlamp=null;}else s.clips=null;}
     if(s.handObject&&(s.gloves||s.phone)){if(changed==='gloves'||changed==='phone')s.handObject=null;else{s.gloves=null;s.phone=null;}}
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
@@ -62,7 +64,7 @@
       if(changed==='necklace')s.scarves=null;else s.necklace=null;
     }
     if(!s.bags||!['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(s.bagAccessories)&&!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
-    if(s.hat==='head-sonny-rabbit'){
+    if(hoods.has(s.hat)){
       if(changed==='clips'||changed==='headlamp'||changed==='headphones')s.hat=null;else{s.clips=null;s.headlamp=null;s.headphones=null;}
     }
     if(buckets.has(s.hat)&&s.headlamp){if(changed==='headlamp')s.hat=null;else s.headlamp=null;}
@@ -91,7 +93,7 @@
     }
     normalize(s,key);
   }
-  window.NanaWardrobeRules={sweaters,cardigans,vests,sparkles,buckets,collars,slotFor,normalize,choose,canWearTop};
+  window.NanaWardrobeRules={sweaters,cardigans,vests,sparkles,buckets,collars,hairlessHeads,hoods,slotFor,normalize,choose,canWearTop};
 })();
 
 
