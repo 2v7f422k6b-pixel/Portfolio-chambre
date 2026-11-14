@@ -149,3 +149,47 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
   #nana-journal .nj-leaf-left{background:url("assets/diary/IMG_6943.png") center / 100% 100% no-repeat}
   #nana-journal .nj-leaf-inner{padding-top:35px}
 }
+
+/* Correction from Nana's Procreate assembly reference: original layer order. */
+#nana-journal .nj-cover{
+  background-image:url("assets/diary/IMG_6945.png");
+  background-size:100% 100%;
+  background-position:center;
+}
+#nana-journal .nj-shell{
+  background-image:url("assets/diary/IMG_6940.png");
+  background-size:100% 100%;
+  background-position:center;
+}
+#nana-journal .nj-main{overflow:visible}
+#nana-journal .nj-content{
+  position:absolute;
+  inset:4% 3% 4% 3%;
+  width:94%;height:92%;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+#nana-journal .nj-leaf-left{
+  background-image:url("assets/diary/IMG_6943.png");
+  background-size:100% 100%;
+  background-position:center;
+}
+#nana-journal .nj-leaf-right{
+  background-image:url("assets/diary/IMG_6942.png");
+  background-size:100% 100%;
+  background-position:center;
+}
+#nana-journal .nj-main::after{
+  left:50%;width:8%;top:0;bottom:0;
+  background-image:url("assets/diary/IMG_6944.png");
+  background-size:100% 100%;
+  z-index:5;
+}
+#nana-journal .nj-tabs{
+  top:-34px;left:4%;right:4%;z-index:1;
+}
+#nana-journal .nj-leaf-inner{padding:8% 10% 7%;background:none}
+@media(max-width:760px){
+  #nana-journal .nj-content{inset:3% 4%;width:92%;height:94%;grid-template-columns:1fr}
+  #nana-journal .nj-leaf-left{background-image:url("assets/diary/IMG_6943.png")}
+  #nana-journal .nj-main::after{display:none}
+}
