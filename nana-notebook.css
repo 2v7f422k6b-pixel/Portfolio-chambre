@@ -219,3 +219,29 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
 #nana-journal .nj-cut-letter{display:inline-block;flex:none;width:clamp(18px,2.1vw,30px);height:clamp(18px,2.1vw,30px);background-image:url("assets/diary/diary-letters-atlas.png");background-size:1300% 800%;background-repeat:no-repeat}
 #nana-journal .nj-cut-space{display:inline-block;width:13px;height:20px}
 @media(max-width:760px){#nana-journal .nj-cut-letter{width:clamp(13px,3.2vw,21px);height:clamp(13px,3.2vw,21px)}#nana-journal .nj-cut-space{width:8px}}
+
+/* Exact tab centers measured from Nana's full spread; the final pink tab is decorative. */
+#nana-journal .nj-tabs{left:0;right:0;width:100%;top:-1.8%;height:9%;display:block}
+#nana-journal .nj-tabs button,#nana-journal .nj-tabs button[data-nj-newsletter]{
+ position:absolute;top:0;width:10%;height:100%;
+ display:flex!important;align-items:center;justify-content:center;
+ padding:1.5em 0 0!important;transform:translateX(-50%)!important;
+ color:#ed2347!important;font-size:clamp(9px,1.12vw,13px)!important;
+ white-space:nowrap;text-decoration:none!important;
+}
+#nana-journal .nj-tabs button:nth-child(1){left:8.7%}
+#nana-journal .nj-tabs button:nth-child(2){left:18.8%}
+#nana-journal .nj-tabs button:nth-child(3){left:29.8%}
+#nana-journal .nj-tabs button:nth-child(4){left:41.5%}
+#nana-journal .nj-tabs button:nth-child(5){left:51.7%}
+#nana-journal .nj-tabs button:nth-child(6){left:60.4%}
+#nana-journal .nj-tabs button:nth-child(7){left:69.6%}
+#nana-journal .nj-tabs button:nth-child(8){left:80%}
+#nana-journal .nj-cut-word{display:inline-flex;align-items:center;flex:none;white-space:nowrap;break-inside:avoid}
+#nana-journal .nj-cut-title{display:flex;flex-wrap:wrap;align-items:center;column-gap:0;row-gap:2px}
+#nana-journal .nj-cut-space{flex:0 0 10px}
+@media(max-width:760px){
+ #nana-journal .nj-tabs{left:0;right:0;width:100%;top:-1.8%;height:9%;display:block}
+ #nana-journal .nj-tabs button{font-size:clamp(7px,1.3vw,11px)!important;padding:1.5em 0 0!important}
+ #nana-journal .nj-cut-space{flex-basis:6px}
+}
