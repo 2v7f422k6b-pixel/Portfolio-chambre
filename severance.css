@@ -1,0 +1,25 @@
+#nana-mdr{color:#d5f5ee;background:#102e3a;padding:clamp(14px,3vw,28px);font-family:monospace;max-width:900px;margin:auto}
+#nana-mdr .mdr-heading{display:flex;justify-content:space-between;gap:18px;align-items:center}
+#nana-mdr h2{font:inherit;font-size:clamp(17px,3vw,24px);margin:5px 0 15px;color:inherit}
+#nana-mdr .mdr-company{letter-spacing:.15em;font-size:12px}#nana-mdr .mdr-file{text-align:right;white-space:nowrap;font-size:13px}
+#nana-mdr progress{width:100%;height:8px;accent-color:#a6e7d5}#nana-mdr .mdr-instructions{font-size:13px;line-height:1.6}#nana-mdr .mdr-clue{color:#fff5ce;font-size:15px;min-height:1.5em}
+#nana-mdr .mdr-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px;margin:12px 0 20px}
+#nana-mdr .mdr-grid button{border:0;background:transparent;color:#9ebcbf;font:20px monospace;min-width:0;min-height:44px;padding:6px;cursor:pointer;touch-action:manipulation}
+#nana-mdr .mdr-grid .mdr-target{color:#fff5ce;font-weight:bold;animation:mdr-tremble 2.2s ease-in-out infinite}
+#nana-mdr .mdr-grid button[aria-pressed=true]{color:#102e3a;background:#d5f5ee;border-radius:8px;animation:none}
+#nana-mdr button:focus-visible{outline:2px dashed #ffb8ce;outline-offset:-3px}
+#nana-mdr .mdr-bins{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#nana-mdr .nj-frame{position:relative;border:0;background:#ffedf2;color:#e92349;cursor:pointer;font:inherit;padding:12px;min-height:48px}
+#nana-mdr .mdr-bins button{display:grid;gap:6px;text-align:center;padding:12px 4px}#nana-mdr .mdr-bins span{font-size:12px}#nana-mdr .mdr-bins button:disabled{opacity:.5;cursor:default}
+#nana-mdr .mdr-status{min-height:2.8em;font-size:13px;line-height:1.5;color:#fff5ce}#nana-mdr footer{font-size:11px;line-height:1.5;color:#a8c5c7}#nana-mdr .mdr-complete{padding:36px 0;text-align:center}#nana-mdr .mdr-complete button{margin:8px}
+@keyframes mdr-tremble{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){#nana-mdr .mdr-target{animation:none;text-decoration:underline}}
+@media(max-width:430px){#nana-mdr{padding:12px}#nana-mdr .mdr-heading{align-items:start}#nana-mdr .mdr-file{font-size:11px}#nana-mdr .mdr-bins{gap:5px}}
+/* Keep the terminal readable despite the portfolio's global red handwriting rules. */
+html body #nana-mdr,html body #nana-mdr *{font-family:monospace!important;color:#d5f5ee!important}
+html body #nana-mdr .mdr-clue,html body #nana-mdr .mdr-status,html body #nana-mdr .mdr-target{color:#fff5ce!important}
+html body #nana-mdr .mdr-grid button{color:#a8c5c7!important}
+html body #nana-mdr .mdr-grid .mdr-target{color:#fff5ce!important}
+html body #nana-mdr .mdr-grid button[aria-pressed=true]{background:#d5f5ee!important;color:#102e3a!important}
+html body #nana-mdr .nj-frame,html body #nana-mdr .nj-frame *{color:#e92349!important}
+#nana-mdr progress::-webkit-progress-bar{background:#30515d}#nana-mdr progress::-webkit-progress-value{background:#a6e7d5}#nana-mdr progress::-moz-progress-bar{background:#a6e7d5}
