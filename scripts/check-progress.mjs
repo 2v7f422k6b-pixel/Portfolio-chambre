@@ -5,6 +5,15 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Gokinjo six-piece collection is gated by its Happy Berry cushion',()=>{
+ const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='gokinjo');
+ assert.equal(outfit.pieces.length,6);assert.equal(Object.values(outfit.values).length,6);
+ assert.equal(p.unlockedOutfit('gokinjo'),false);
+ p.feat('kero-awake');p.feat('paprika-butterfly');assert.equal(p.unlockedOutfit('gokinjo'),false);
+ p.feat('gokinjo-happy-berry');assert.equal(p.unlockedOutfit('gokinjo'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('gokinjo'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('gokinjo',true),true);
+});
 test('Sakura pyjamas are a distinct two-piece collection gated by Kero',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='sakura-pyjama');
  assert.equal(outfit.pieces.length,2);assert.equal(Object.values(outfit.values).length,2);

@@ -6,6 +6,16 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
 const env={window:{}};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);
 const rules=env.window.NanaWardrobeRules;
+test('Gokinjo pinafore keeps its turtleneck in either order and yellow gloves use the glove slot',()=>{
+ for(const order of [['top-gokinjo','dress-gokinjo'],['dress-gokinjo','top-gokinjo']]){
+  const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);
+  for(const id of ['hosiery-gokinjo','shoes-gokinjo','accessory-gokinjo-gloves','head-gokinjo-bobbles'])rules.choose(s,id,data.items);
+  assert.equal(s.tops,'top-gokinjo');assert.equal(s.dresses,'dress-gokinjo');
+  assert.equal(s.gloves,'accessory-gokinjo-gloves');assert.equal(s.clips,'head-gokinjo-bobbles');
+  assert.equal(s.hat,undefined,'the supplied bobbles are not a wig');
+  rules.choose(s,'held-book',data.items);assert.equal(s.gloves,null);
+ }
+});
 test('Paprika pieces remain independently selectable and share the waist accessory slot',()=>{
  const pieces=['top-paprika','pants-paprika','jewelry-paprika-belt','shoes-paprika'];
  for(const order of [pieces,[...pieces].reverse()]){

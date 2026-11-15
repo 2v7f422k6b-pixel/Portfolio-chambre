@@ -10,6 +10,8 @@
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='accessory-gokinjo-gloves')return 'gloves';
+    if(id==='head-gokinjo-bobbles')return 'clips';
     if(id==='top-hachi-turtleneck')return 'sheer';
     if(id==='hosiery-hachi-stripes')return 'socks';
     if(id==='hosiery-hachi-legwarmers')return 'legwarmers';
@@ -32,7 +34,7 @@
     if(id.startsWith('jewelry-'))return 'necklace';
     return items[id]?.[1]||null;
   };
-  function canWearTop(dress,top){return !dress||dress==='dress-denim'||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
+  function canWearTop(dress,top){return !dress||['dress-denim','dress-gokinjo'].includes(dress)||sparkles.has(top)&&['dress-polka','dress-pink-bustier'].includes(dress);}
   function normalize(s,changed){
     const conflict=s.clips&&(hairlessHeads.has(s.hat)||s.clips==='head-miffy-clips'&&(s.headlamp||['head-cap','head-george-sand','head-band-white','head-band-pink','head-band-blue'].includes(s.hat)));
     if(conflict){if(changed==='clips'){s.hat=null;s.headlamp=null;}else s.clips=null;}
