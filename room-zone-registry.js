@@ -37,7 +37,8 @@
     // Keep 45 retired (former flower-gallery shortcut), preserving existing object IDs.
     ['cv','CV',null,'[data-cv-paper]',null,46],
     ['happy-berry','Coussin Happy Berry','IMG_7121.png',null,'happy-berry',47],
-    ['blast','Billet de concert BLAST','IMG_7126.png',null,'blast',48]
+    ['blast','Billet de concert BLAST','IMG_7126.png',null,'blast',48],
+    ['kero','Kéro','IMG_7131.png',null,'kero',49]
   ].map(([id,label,file,selector,destination,number],i) => ({
     id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -59,9 +60,13 @@
   const toast=document.getElementById('toast');
   let toastTimer;
   const scene = document.getElementById('play-scene');
+  // Keep the supplied shelf under Kero, and both drawings above movable wall decor.
+  // The mirror itself and all its editor settings remain available to the artist.
+  const sakuraShelf=document.getElementById('sakura-shelf-art');
+  if(sakuraShelf)svg.appendChild(sakuraShelf);
 
   // A single discovery works in either theme and persists before future pieces arrive.
-  const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast'};
+  const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake'};
   svg.addEventListener('click',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
     const id=target?.dataset.roomZoneId,feat=outfitDiscoveries[id];
@@ -218,6 +223,10 @@
           poly.setAttribute('role','button');
           poly.setAttribute('aria-label','Billet BLAST — découvrir les tenues de Hachi et Nana');
         }
+        if(zone.id==='kero'){
+          poly.setAttribute('role','button');
+          poly.setAttribute('aria-label','Kéro — découvrir les deux tenues Cardcaptor Sakura');
+        }
         if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
         if(zone.id==='vase') poly.dataset.vasePetal='';
@@ -228,7 +237,7 @@
         else if(zone.destination) poly.dataset.open=zone.destination;
         else poly.dataset.zonePending='';
         // Figurines and vase must stay clickable, even when other object zones overlap.
-        if(['vase','miffy','sonny-angel','happy-berry','blast'].includes(zone.id)) svg.appendChild(poly);
+        if(['vase','miffy','sonny-angel','happy-berry','blast','kero'].includes(zone.id)) svg.appendChild(poly);
         else if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
         zone.element=poly;
