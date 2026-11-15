@@ -830,11 +830,11 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <button id="paprika-butterfly" type="button" aria-label="Papillon — découvrir la tenue Paprika">
             <svg viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
               <defs><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
-                <feMorphology in="SourceAlpha" operator="dilate" radius="25" result="outer"/>
+                <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="outer"/>
                 <feComposite in="outer" in2="SourceAlpha" operator="out" result="edge"/>
                 <feFlood flood-color="#fff" result="ink"/>
                 <feComposite in="ink" in2="edge" operator="in" result="white-edge"/>
-                <feGaussianBlur in="white-edge" stdDeviation="30" result="glow"/>
+                <feGaussianBlur in="white-edge" stdDeviation="2.4" result="glow"/>
                 <feMerge><feMergeNode in="glow"/><feMergeNode in="white-edge"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter></defs>
               <image class="butterfly-wing butterfly-wing--left" data-resource-mode="play" data-resource-href="assets/IMG_7137.png" width="1000" height="1000"/>
