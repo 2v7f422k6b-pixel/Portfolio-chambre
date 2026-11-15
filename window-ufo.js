@@ -20,9 +20,9 @@
   function tick(){
     const now=performance.now(),delta=Math.min(now-last,1000);last=now;if(!active())return;elapsed+=delta;
     if(phase==='waiting'&&elapsed>=(preview?500:first?18000:90000)){first=false;change(reduced.matches?'observing':'arriving');}
-    else if(phase==='arriving'&&elapsed>=1200)change('observing');
-    else if(phase==='observing'&&elapsed>=12000)change('leaving');
-    else if(phase==='leaving'&&elapsed>=(reduced.matches?200:450))change('waiting');
+    else if(phase==='arriving'&&elapsed>=1900)change('observing');
+    else if(phase==='observing'&&elapsed>=19000)change('leaving');
+    else if(phase==='leaving'&&elapsed>=(reduced.matches?200:1000))change('waiting');
   }
   const flee=event=>{
     event.preventDefault();event.stopPropagation();
@@ -42,4 +42,5 @@
   if(preview&&document.documentElement.dataset.theme!=='night')document.getElementById('theme-toggle')?.click();
   setInterval(tick,100);
 })();
+
 

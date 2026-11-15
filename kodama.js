@@ -1,51 +1,55 @@
-/* Five woodland visitors. Their visit advances only while the room is open. */
+/* Local sprite motion and first-priority touch handling: no room hotspot receives a sprite tap. */
 (() => {
   'use strict';
   const root=document.getElementById('kodama-spirits');
   if(!root)return;
-  // The shop link sits above the main SVG: keep the spirits above that link,
-  // with only their small polygons accepting pointer input.
-  const layer=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  layer.id='kodama-layer';layer.setAttribute('viewBox','0 0 1670 942');
-  layer.setAttribute('preserveAspectRatio','none');
-  layer.appendChild(root);document.getElementById('play-scene').appendChild(layer);
   const spirits=[...root.querySelectorAll('.kodama')],progress=window.NanaProgress;
+  const dog=document.getElementById('preacher-dog-sprite');
   let elapsed=0,last=performance.now(),departure=null,returnAt=null,returnEnds=null;
   const active=()=>!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')
-    &&!document.getElementById('play-viewport')?.hidden
-    &&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
+    &&!document.getElementById('play-viewport')?.hidden&&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
   const complete=()=>progress?.hasFeat('mononoke-kodama');
   const localize=()=>spirits.forEach((spirit,i)=>{
     const found=progress?.hasFeat('kodama-'+(i+1));
-    spirit.querySelector('polygon').setAttribute('aria-label',document.documentElement.lang.startsWith('en')
+    spirit.setAttribute('aria-label',document.documentElement.lang.startsWith('en')
       ?`Kodama ${i+1} of 5${found?' — already found':''}`:`Kodama ${i+1} sur 5${found?' — déjà trouvé':''}`);
   });
-  const shown=new WeakMap();
+  const shown=new WeakMap(),motions=new WeakMap();
   const show=(spirit,visible)=>{
     if(shown.get(spirit)===visible)return;shown.set(spirit,visible);
     spirit.classList.toggle('is-visible',visible);spirit.setAttribute('aria-hidden',String(!visible));
-    spirit.querySelector('polygon').setAttribute('tabindex',visible?'0':'-1');
+    spirit.disabled=!visible;spirit.setAttribute('tabindex',visible?'0':'-1');
   };
   const wiggle=spirit=>{
-    const head=spirit.querySelector('.kodama-head');
-    if(head?.animate){
-      head.getAnimations().forEach(animation=>animation.cancel());
-      const gentle=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      head.animate((gentle?[0,-12,0]:[0,-34,29,-24,17,-8,0]).map(angle=>({transform:`rotate(${angle}deg)`})),{duration:gentle?280:700,easing:'cubic-bezier(.15,.85,.25,1)'});
-    }else{spirit.classList.remove('is-wiggling');spirit.classList.add('is-wiggling');}
+    const head=spirit.querySelector('.kodama-head');if(!head?.animate)return;
+    motions.get(head)?.cancel();
+    const gentle=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const angles=gentle?[0,-12,0]:[0,-38,36,-30,24,-15,0];
+    motions.set(head,head.animate(angles.map(angle=>({transform:`translate3d(0,0,0) rotate(${angle}deg)`})),
+      {duration:gentle?320:1050,easing:'cubic-bezier(.12,.8,.2,1)'}));
   };
-  spirits.forEach((spirit,i)=>{
-    const button=spirit.querySelector('polygon');
-    button.addEventListener('pointerenter',()=>wiggle(spirit));
-    button.addEventListener('focus',()=>wiggle(spirit));
-    button.addEventListener('click',event=>{
-      event.preventDefault();event.stopPropagation();if(!spirit.classList.contains('is-visible'))return;
-      wiggle(spirit);progress?.feat('kodama-'+(i+1));localize();
-    });
-    button.addEventListener('keydown',event=>{
-      if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();button.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
-    });
-  });
+  for(const spirit of spirits){
+    spirit.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')wiggle(spirit);});
+    spirit.addEventListener('focus',()=>wiggle(spirit));
+  }
+  const targetFor=event=>event.target.closest?.('.room-sprite-hit');
+  const stop=event=>{event.preventDefault();event.stopImmediatePropagation();};
+  function activate(target){
+    if(!active())return;
+    const index=spirits.indexOf(target);
+    if(index>=0){
+      if(!shown.get(target))return;
+      wiggle(target);progress?.feat('kodama-'+(index+1));localize();
+    }else if(target===dog){progress?.visit('objet/preacher-dog');progress?.feat('preacher-dog');}
+  }
+  // Window capture runs before all document/scene alpha-hit and hotspot handlers,
+  // including the synthetic click Safari sends after a touch.
+  for(const type of ['pointerdown','pointerup','touchstart','touchend'])window.addEventListener(type,event=>{if(targetFor(event))event.stopImmediatePropagation();},true);
+  window.addEventListener('click',event=>{const target=targetFor(event);if(!target)return;stop(event);activate(target);},true);
+  window.addEventListener('keydown',event=>{
+    const target=targetFor(event);if(!target||!['Enter',' '].includes(event.key))return;
+    stop(event);if(!event.repeat)activate(target);
+  },true);
   function tick(){
     const now=performance.now(),delta=Math.min(now-last,1000);last=now;if(!active())return;elapsed+=delta;
     if(complete()&&departure===null)departure=Math.max(elapsed,39000)+10000;
@@ -56,7 +60,7 @@
     }
     spirits.forEach((spirit,i)=>show(spirit,elapsed>=15000+i*6000&&(departure===null||elapsed<departure||returnEnds!==null)));
   }
+  const visibility=()=>{last=performance.now();dog?.classList.toggle('is-idle',document.hidden);};
   progress?.subscribe(localize);document.addEventListener('portfolio-language-change',localize);
-  document.addEventListener('visibilitychange',()=>{last=performance.now();});localize();setInterval(tick,250);
+  document.addEventListener('visibilitychange',visibility);localize();visibility();setInterval(tick,250);
 })();
-

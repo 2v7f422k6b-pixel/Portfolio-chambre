@@ -1,13 +1,21 @@
-#play-scene > #kodama-layer{position:absolute;inset:0;width:100%;height:100%;z-index:31;pointer-events:none}
-#kodama-layer .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.8s ease,visibility 1.8s}
+/* Local HTML sprites: heads composite independently of the large room SVG. */
+#play-scene > #kodama-layer{position:absolute;inset:0;z-index:41;pointer-events:none}
+#play-scene .room-sprite-hit{position:absolute;display:block;box-sizing:border-box;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;line-height:0;min-width:0!important;min-height:0!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#kodama-layer .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.2s ease,visibility 1.2s}
 #kodama-layer .kodama.is-visible{opacity:1;visibility:visible;pointer-events:auto}
-#kodama-layer .kodama-art{opacity:.8}
-html[data-theme="night"] #kodama-layer .kodama-art{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #ffffff70)}
-#kodama-layer #kodama-spirits polygon{fill:transparent!important;stroke:none!important;outline:none!important;outline-offset:0!important;cursor:pointer}
-#kodama-layer .kodama-outline{opacity:0;pointer-events:none}
-#kodama-layer .kodama:hover .kodama-outline,#kodama-layer .kodama:focus-within .kodama-outline{opacity:1}
-#kodama-layer .kodama-head{transform-box:view-box;transform-origin:var(--kodama-x) var(--kodama-y)}
-#kodama-layer .kodama.is-wiggling .kodama-head{animation:kodama-head-rattle .7s cubic-bezier(.15,.85,.25,1)}
-@keyframes kodama-head-rattle{0%,100%{transform:rotate(0)}20%{transform:rotate(-34deg)}40%{transform:rotate(29deg)}60%{transform:rotate(-24deg)}80%{transform:rotate(17deg)}}
-@media(prefers-reduced-motion:reduce){#kodama-layer .kodama{transition:opacity .15s,visibility .15s}#kodama-layer .kodama.is-wiggling .kodama-head{animation:none}}
-
+#play-scene .sprite-part{position:absolute;display:block;pointer-events:none;transform:translate3d(0,0,0)}
+#play-scene .sprite-part img{position:absolute;display:block;max-width:none;pointer-events:none;user-select:none;-webkit-user-drag:none}
+#play-scene .sprite-ink{inset:0;width:100%;height:100%}
+#kodama-layer .sprite-ink{opacity:.8}
+#play-scene .sprite-halo{opacity:0}
+html[data-theme="night"] #kodama-layer .sprite-halo{opacity:.55}
+#play-scene .room-sprite-hit:is(:hover,:focus-visible) .sprite-halo{opacity:1}
+#kodama-layer .kodama.is-visible .kodama-head{will-change:transform}
+#play-scene > #preacher-dog-sprite{z-index:32;pointer-events:auto}
+#preacher-dog-sprite .sprite-night{display:none}
+html[data-theme="night"] #preacher-dog-sprite .sprite-day{display:none}
+html[data-theme="night"] #preacher-dog-sprite .sprite-night{display:block}
+#preacher-dog-sprite .dog-head{will-change:transform;animation:preacher-local-nod 2.4s ease-in-out infinite}
+#app:not(.mode-play) #preacher-dog-sprite .dog-head,#preacher-dog-sprite.is-idle .dog-head{animation-play-state:paused}
+@keyframes preacher-local-nod{0%,100%{transform:translate3d(0,0,0) rotate(-14deg)}50%{transform:translate3d(0,0,0) rotate(14deg)}}
+@media(prefers-reduced-motion:reduce){#kodama-layer .kodama{transition:opacity .15s,visibility .15s}#preacher-dog-sprite .dog-head{animation:none}}
