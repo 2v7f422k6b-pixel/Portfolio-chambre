@@ -8,7 +8,7 @@
     'gearnews-series','phone','reading-room','souvenues','pages','motion']) {
     appRoutes.set('objet/' + name, name);
   }
-  for (const name of ['coloring','bead-box','word-lab','latte','tamagotchi','do-nothing','mimilab']) {
+  for (const name of ['coloring','bead-box','word-lab','latte','tamagotchi','do-nothing','mimilab','severance']) {
     appRoutes.set('jeu/' + name, name);
   }
   appRoutes.set('jeu/dressing', 'dressup');
