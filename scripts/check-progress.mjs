@@ -5,6 +5,15 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Sakura main outfit and pyjamas are distinct collections unlocked by Kero',()=>{
+ const storage=new Map(),{p}=browser({storage}),main=p.outfits.find(o=>o.id==='sakura-main'),pyjama=p.outfits.find(o=>o.id==='sakura-pyjama');
+ assert.equal(main.pieces.length,8);assert.equal(Object.values(main.values).length,8);
+ assert.equal(pyjama.pieces.length,2);assert(!main.pieces.some(id=>pyjama.pieces.includes(id)));
+ assert.equal(p.unlockedOutfit('sakura-main'),false);assert.equal(p.unlockedOutfit('sakura-pyjama'),false);
+ p.feat('kero-awake');assert.equal(p.unlockedOutfit('sakura-main'),true);assert.equal(p.unlockedOutfit('sakura-pyjama'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('sakura-main'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('sakura-main',true),true);
+});
 test('Olive Hoover five-piece collection unlocks only with its yellow miniature van',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='little-miss-sunshine');
  assert.equal(outfit.pieces.length,5);assert.equal(Object.values(outfit.values).length,5);

@@ -91,15 +91,19 @@ function create({source,changed}){
    if(outer==='top-ganni-knit')ctx.clearRect(410,p.bottom+1,180,CH-p.bottom-1);
    return c;});
  }
- const bareDresses=new Set(['dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining','dress-pink-satin']);
+ const bareDresses=new Set(['dress-sakura-main','dress-blue','dress-polka','dress-gingham','dress-denim','dress-pink-check','dress-pink-bustier','dress-shining','dress-pink-satin']);
  function hands(s,entries,forearm=false,replacement=null){const src=replacement||(s.gloves?source(s.gloves):'assets/dressing-lena/IMG_5495.png'),r=image(src);
   const ids=garmentSlots.map(k=>s[k]).filter(id=>id&&(forearm||(!sleeveless.has(id)&&!bareDresses.has(id))));
   if(!r.loaded||(s.handObject&&!image('assets/dressing-lena/IMG_6651.png').loaded)||ids.some(id=>!get(id).loaded))return null;
-  return remember('arms:'+src+':'+forearm+':'+(s.handObject||'')+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');ctx.drawImage(r.im,0,0,CW,CH);
+  return remember('arms:'+src+':'+forearm+':'+(s.handObject||'')+':'+ids.join(','),()=>{const c=canvas(),ctx=c.getContext('2d');
+   // Short Sakura gloves cover the hands only: retain the original forearms in front of wide skirts.
+   const shortGloves=s.gloves==='accessory-sakura-gloves'&&!replacement;
+   if(shortGloves)ctx.drawImage(image('assets/dressing-lena/IMG_5495.png').im,0,0,CW,CH);
+   ctx.drawImage(r.im,0,0,CW,CH);
    if(s.handObject&&!replacement){ctx.clearRect(CW/2,0,CW/2,CH);ctx.drawImage(image('assets/dressing-lena/IMG_6651.png').im,1024,0,1024,3072,CW/2,0,CW/2,CH);}
    // The ordinary foreground layer restores wrists and fingers only. Bare
    // upper arms already exist in the body and must never repaint over tops.
-   if(!s.gloves)ctx.clearRect(0,0,CW,forearm?350:650);
+   if(!s.gloves||shortGloves||(s.handObject&&!replacement))ctx.clearRect(0,0,CW,forearm?350:650);
    ctx.globalCompositeOperation='destination-out';for(const id of ids){
     const e=entries.find(e=>e.id===id);
     // Only sleeves can cover arms: a dress's skirt must not erase the hands.

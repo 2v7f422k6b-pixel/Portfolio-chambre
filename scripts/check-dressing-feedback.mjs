@@ -6,6 +6,22 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
 const env={window:{}};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);
 const rules=env.window.NanaWardrobeRules;
+test('Sakura scepter supports its own gloves in both orders and switches back on removal',()=>{
+ const glove='accessory-sakura-gloves',scepter='held-sakura-scepter';
+ for(const order of [[glove,scepter],[scepter,glove]]){
+  const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);
+  assert.equal(s.gloves,glove);assert.equal(s.handObject,scepter);
+  rules.choose(s,glove,data.items);assert.equal(s.gloves,null);assert.equal(s.handObject,scepter);
+  rules.choose(s,glove,data.items);rules.choose(s,scepter,data.items);
+  assert.equal(s.gloves,glove);assert.equal(s.handObject,null);
+ }
+ for(const other of ['held-book','held-vivienne']){
+  const s={gloves:glove,handObject:scepter,makeup:new Set()};rules.choose(s,other,data.items);
+  assert.equal(s.handObject,other);assert.equal(s.gloves,null);
+ }
+ const s={gloves:glove,handObject:scepter,makeup:new Set()};rules.choose(s,'accessory-gokinjo-gloves',data.items);
+ assert.equal(s.gloves,'accessory-gokinjo-gloves');assert.equal(s.handObject,null);
+});
 test('Olive Hoover clothes and accessories coexist in either selection order',()=>{
  const pieces=['top-olive','pants-olive-shorts','shoes-olive','jewelry-olive-wristbands','head-olive-glasses'];
  for(const order of [pieces,[...pieces].reverse()]){

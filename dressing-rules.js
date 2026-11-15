@@ -10,6 +10,9 @@
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='accessory-sakura-gloves')return 'gloves';
+    if(id==='accessory-sakura-wings')return 'wings';
+    if(id==='hosiery-sakura-main')return 'socks';
     if(id==='jewelry-olive-wristbands')return 'bracelets';
     if(id==='accessory-gokinjo-gloves')return 'gloves';
     if(id==='head-gokinjo-bobbles')return 'clips';
@@ -39,7 +42,8 @@
   function normalize(s,changed){
     const conflict=s.clips&&(hairlessHeads.has(s.hat)||s.clips==='head-miffy-clips'&&(s.headlamp||['head-cap','head-george-sand','head-band-white','head-band-pink','head-band-blue'].includes(s.hat)));
     if(conflict){if(changed==='clips'){s.hat=null;s.headlamp=null;}else s.clips=null;}
-    if(s.handObject&&(s.gloves||s.phone)){if(changed==='gloves'||changed==='phone')s.handObject=null;else{s.gloves=null;s.phone=null;}}
+    const matchingGloveGrip=s.handObject==='held-sakura-scepter'&&s.gloves==='accessory-sakura-gloves';
+    if(s.handObject&&(s.phone||(s.gloves&&!matchingGloveGrip))){if(changed==='gloves'||changed==='phone')s.handObject=null;else{s.gloves=null;s.phone=null;}}
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
     if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;if(!s.underwear)s.underwear='bra-blue';}
     if(s.pants)s.skirts=null;
@@ -67,7 +71,7 @@
     if(s.wrap&&s.jackets&&s.jackets!=='jacket-striped-knit'){
       if(changed==='jackets')s.wrap=null;else s.jackets=null;
     }
-    if(s.scarves&&['jewelry-clown-ruff','jewelry-miffy-ruff','jewelry-george-sand'].includes(s.necklace)){
+    if(s.scarves&&['jewelry-clown-ruff','jewelry-miffy-ruff','jewelry-george-sand','jewelry-sakura-bow'].includes(s.necklace)){
       if(changed==='necklace')s.scarves=null;else s.necklace=null;
     }
     if(!s.bags||!['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(s.bagAccessories)&&!['bag-brown','bag-crochet'].includes(s.bags))s.bagAccessories=null;
