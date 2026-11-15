@@ -5,6 +5,11 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Kikujiro discovery persists before the future outfit exists',()=>{
+ const storage=new Map(),{p}=browser({storage});p.visit('objet/clochette-kikujiro');p.feat('kikujiro-chime');
+ const restored=browser({storage}).p;assert(restored.hasFeat('kikujiro-chime'));assert(restored.hasVisit('objet/clochette-kikujiro'));
+ assert(!restored.outfits.some(o=>o.id==='kikujiro'),'No empty outfit is advertised before the artist supplies the pieces');
+});
 test('BLAST unlocks Hachi, persists for future Nana pieces and preserves the legacy toast reward',()=>{
  const storage=new Map(),{p}=browser({storage});
  assert.equal(p.unlockedOutfit('hachi'),false);p.feat('nana-blast');assert.equal(p.unlockedOutfit('hachi'),true);

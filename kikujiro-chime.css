@@ -1,0 +1,29 @@
+#hotspots #nana-kikujiro-chime {cursor:pointer;outline:none!important;outline-offset:0!important}
+#nana-kikujiro-chime .chime-night {opacity:0}
+html[data-theme="night"] #nana-kikujiro-chime .chime-day {opacity:0}
+html[data-theme="night"] #nana-kikujiro-chime .chime-night {opacity:1}
+#nana-kikujiro-chime .chime-body {
+  transform-box:view-box;transform-origin:1117.14px 85.39px;
+  animation:kikujiro-breeze 5.4s ease-in-out infinite;
+}
+#nana-kikujiro-chime .chime-clappers {
+  transform-box:view-box;transform-origin:1126.35px 116.93px;
+  animation:kikujiro-clappers 3.6s ease-in-out -.7s infinite;
+}
+#nana-kikujiro-chime.is-ringing .chime-body {animation:kikujiro-ring 1.8s ease-out}
+#nana-kikujiro-chime.is-ringing .chime-clappers {animation:kikujiro-clappers .45s ease-in-out 4}
+#nana-kikujiro-chime .chime-white-outline {opacity:0;pointer-events:none;transition:opacity .15s ease}
+#nana-kikujiro-chime:is(:hover,:focus-visible,.is-ringing) .chime-white-outline,
+#hotspots.hotspot-guide-on #nana-kikujiro-chime .chime-white-outline,
+#hotspots.hotspot-peek #nana-kikujiro-chime .chime-white-outline {opacity:1}
+#app:not(.mode-play) #nana-kikujiro-chime .chime-body,
+#app:not(.mode-play) #nana-kikujiro-chime .chime-clappers,
+#nana-kikujiro-chime.is-idle .chime-body,
+#nana-kikujiro-chime.is-idle .chime-clappers {animation-play-state:paused}
+@keyframes kikujiro-breeze {0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
+@keyframes kikujiro-clappers {0%,100%{transform:rotate(3deg)}50%{transform:rotate(-3deg)}}
+@keyframes kikujiro-ring {0%,100%{transform:rotate(0)}15%{transform:rotate(5deg)}35%{transform:rotate(-4deg)}55%{transform:rotate(2.8deg)}75%{transform:rotate(-1.5deg)}}
+@media(prefers-reduced-motion:reduce) {
+  #nana-kikujiro-chime .chime-body,#nana-kikujiro-chime .chime-clappers {animation:none!important;transform:none!important}
+  #nana-kikujiro-chime .chime-white-outline {transition:none}
+}

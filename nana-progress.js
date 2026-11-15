@@ -68,9 +68,10 @@
     'objet/marshall':'object:marshall', 'objet/music-visuals':'object:cds',
     'objet/phone':'object:iphone', 'objet/gabzilla':'object:gabzilla',
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
-    'objet/papillon-paprika':'paprika-butterfly', 'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
+    'objet/clochette-kikujiro':'kikujiro-chime', 'objet/papillon-paprika':'paprika-butterfly', 'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
   };
-  const allowedFeats = new Set(['nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  // Future Kikujiro outfit pieces use feat:'kikujiro-chime'; discovery is saved before their release.
+  const allowedFeats = new Set(['kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
