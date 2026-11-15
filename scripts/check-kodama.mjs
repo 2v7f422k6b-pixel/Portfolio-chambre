@@ -9,7 +9,7 @@ function room(){
   const classes=new Set(),handlers={},attrs={};const button={setAttribute:(k,v)=>attrs[k]=v,addEventListener:(k,v)=>handlers[k]=v};
   return{classes,handlers,attrs,querySelector:()=>button,setAttribute(){},addEventListener(){},getBoundingClientRect(){return{};},classList:{toggle:(k,on)=>on?classes.add(k):classes.delete(k),add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k)}};
  });
- const document={hidden:false,documentElement:{lang:'fr'},addEventListener(){},getElementById:id=>id==='kodama-spirits'?{querySelectorAll:()=>spirits}:id==='app'?{classList:{contains:()=>active}}:{getClientRects:()=>[1]}};
+ const document={hidden:false,documentElement:{lang:'fr'},createElementNS:()=>({setAttribute(){},appendChild(){}}),addEventListener(){},getElementById:id=>id==='kodama-spirits'?{querySelectorAll:()=>spirits}:id==='app'?{classList:{contains:()=>active}}:{getClientRects:()=>[1],appendChild(){}}};
  const p={hasFeat:id=>id==='mononoke-kodama'?done:false,subscribe(){},feat:id=>clicks.push(id)};
  vm.runInNewContext(source,{document,window:{NanaProgress:p},performance:{now:()=>time},location:{hash:'#/room'},setInterval:fn=>tick=fn});
  return{spirits,clicks,advance(ms){for(let n=0;n<ms;n+=250){time+=250;tick();}},pause(on){active=!on;},complete(){done=true;}};

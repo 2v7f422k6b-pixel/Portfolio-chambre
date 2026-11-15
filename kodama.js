@@ -3,6 +3,12 @@
   'use strict';
   const root=document.getElementById('kodama-spirits');
   if(!root)return;
+  // The shop link sits above the main SVG: keep the spirits above that link,
+  // with only their small polygons accepting pointer input.
+  const layer=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  layer.id='kodama-layer';layer.setAttribute('viewBox','0 0 1670 942');
+  layer.setAttribute('preserveAspectRatio','none');
+  layer.appendChild(root);document.getElementById('play-scene').appendChild(layer);
   const spirits=[...root.querySelectorAll('.kodama')],progress=window.NanaProgress;
   let elapsed=0,last=performance.now(),departure=null,returnAt=null,returnEnds=null;
   const active=()=>!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')

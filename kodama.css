@@ -1,11 +1,12 @@
-#hotspots .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.8s ease,visibility 1.8s}
-#hotspots .kodama.is-visible{opacity:1;visibility:visible;pointer-events:auto}
-#hotspots .kodama-art{opacity:.8}
-html[data-theme="night"] #hotspots .kodama-art{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #ffffff70)}
-#hotspots #kodama-spirits polygon{fill:transparent!important;stroke:none!important;outline:none!important;outline-offset:0!important;cursor:pointer}
-#hotspots .kodama-outline{opacity:0;pointer-events:none}
-#hotspots .kodama:hover .kodama-outline,#hotspots .kodama:focus-within .kodama-outline{opacity:1}
-#hotspots .kodama-head{transform-box:view-box;transform-origin:var(--kodama-x) var(--kodama-y)}
-#hotspots .kodama.is-wiggling .kodama-head{animation:kodama-head-rattle .8s ease-in-out}
+#play-scene > #kodama-layer{position:absolute;inset:0;width:100%;height:100%;z-index:31;pointer-events:none}
+#kodama-layer .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.8s ease,visibility 1.8s}
+#kodama-layer .kodama.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+#kodama-layer .kodama-art{opacity:.8}
+html[data-theme="night"] #kodama-layer .kodama-art{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #ffffff70)}
+#kodama-layer #kodama-spirits polygon{fill:transparent!important;stroke:none!important;outline:none!important;outline-offset:0!important;cursor:pointer}
+#kodama-layer .kodama-outline{opacity:0;pointer-events:none}
+#kodama-layer .kodama:hover .kodama-outline,#kodama-layer .kodama:focus-within .kodama-outline{opacity:1}
+#kodama-layer .kodama-head{transform-box:view-box;transform-origin:var(--kodama-x) var(--kodama-y)}
+#kodama-layer .kodama.is-wiggling .kodama-head{animation:kodama-head-rattle .8s ease-in-out}
 @keyframes kodama-head-rattle{0%,100%{transform:rotate(0)}20%{transform:rotate(-13deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
-@media(prefers-reduced-motion:reduce){#hotspots .kodama{transition:opacity .15s,visibility .15s}#hotspots .kodama.is-wiggling .kodama-head{animation:none}}
+@media(prefers-reduced-motion:reduce){#kodama-layer .kodama{transition:opacity .15s,visibility .15s}#kodama-layer .kodama.is-wiggling .kodama-head{animation:none}}
