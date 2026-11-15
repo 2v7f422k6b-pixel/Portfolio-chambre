@@ -444,3 +444,18 @@ test('flower look awaits the future plant and treasures use the beaded bunny cha
 });
 
 
+
+
+ test('five distinct Kodama clicks unlock Mononoke and persist across visits',()=>{
+ const storage=new Map(),a=browser({storage});
+ for(let n=1;n<5;n++){a.p.feat('kodama-'+n);a.p.feat('kodama-'+n);assert.equal(a.p.unlockedOutfit('mononoke'),false);}
+ const b=browser({storage});assert(b.p.hasFeat('kodama-4'));b.p.feat('kodama-5');
+ assert(b.p.unlockedOutfit('mononoke'));assert(browser({storage}).p.unlockedOutfit('mononoke'));
+ for(const options of [{creator:true},{search:'?previewReward=1'}]){const c=browser(options);for(let n=1;n<=5;n++)c.p.feat('kodama-'+n);assert(!c.p.hasFeat('mononoke-kodama'));}
+ });
+ test('Kodama discoveries merge between tabs without losing the reward',()=>{
+ const storage=new Map(),a=browser({storage}),b=browser({storage});
+ for(let n=1;n<=3;n++)a.p.feat('kodama-'+n);
+ b.p.feat('kodama-4');b.p.feat('kodama-5');a.emit('storage',{key:a.p.KEY});
+ assert(a.p.unlockedOutfit('mononoke'));assert(browser({storage}).p.unlockedOutfit('mononoke'));
+ });

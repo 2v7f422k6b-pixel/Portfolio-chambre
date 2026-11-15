@@ -38,7 +38,7 @@
     // Artwork pending: the existing discovery also credits visitors who already found the box.
     {id:'amelie-poulain',image:art('fleur'),name:pair('Amélie Poulain','Amélie Poulain'),available:false,feat:'secret-memory-box',pieces:[],values:{},rule:pair('Découvrir la boîte à souvenirs cachée derrière le carreau du mur.','Discover the memory box hidden behind the wall tile.')},
     {id:'severance',name:pair('Helly R. — Severance','Helly R. — Severance'),feat:'severance-refined',image:crop('assets/dressing-lena/IMG_7108.png',[927,1239,95,205],2048,3072),pieces:['hosiery-helly','shoes-helly','top-helly','skirt-helly','jewelry-helly-badge'],values:{hosiery:'hosiery-helly',shoes:'shoes-helly',tops:'top-helly',skirts:'skirt-helly',necklace:'jewelry-helly-badge'},rule:pair('Terminer les quatre catégories de Macrodata Refinement en mode Work.','Complete the four Macrodata Refinement categories in Work mode.')},
-    {id:'mononoke',name:pair('San — Princesse Mononoké','San — Princess Mononoke'),feat:'mononoke-kodama',image:crop('assets/dressing-lena/IMG_7088.png',[860,244,332,263],2048,3072),pieces:["cape-mononoke", "dress-mononoke", "top-mononoke-tabard", "shoes-mononoke", "held-mononoke-knife", "makeup-mononoke", "head-mononoke-band", "jewelry-mononoke-earrings", "jewelry-mononoke-ashitaka", "jewelry-mononoke-teeth", "jewelry-mononoke-armbands", "head-mononoke-mask"],values:{"cape": "cape-mononoke", "dresses": "dress-mononoke", "vest": "top-mononoke-tabard", "shoes": "shoes-mononoke", "handObject": "held-mononoke-knife", "clips": "head-mononoke-band", "earrings": "jewelry-mononoke-earrings", "pendant": "jewelry-mononoke-ashitaka", "necklace": "jewelry-mononoke-teeth", "bracelets": "jewelry-mononoke-armbands", "hat": "head-mononoke-mask"},makeup:['makeup-mononoke'],rule:pair('Cliquer sur le dernier Kodama apparu dans la chambre — interaction à venir.','Click the last Kodama to appear in the room — interaction coming soon.')},
+    {id:'mononoke',name:pair('San — Princesse Mononoké','San — Princess Mononoke'),feat:'mononoke-kodama',image:crop('assets/dressing-lena/IMG_7088.png',[860,244,332,263],2048,3072),pieces:["cape-mononoke", "dress-mononoke", "top-mononoke-tabard", "shoes-mononoke", "held-mononoke-knife", "makeup-mononoke", "head-mononoke-band", "jewelry-mononoke-earrings", "jewelry-mononoke-ashitaka", "jewelry-mononoke-teeth", "jewelry-mononoke-armbands", "head-mononoke-mask"],values:{"cape": "cape-mononoke", "dresses": "dress-mononoke", "vest": "top-mononoke-tabard", "shoes": "shoes-mononoke", "handObject": "held-mononoke-knife", "clips": "head-mononoke-band", "earrings": "jewelry-mononoke-earrings", "pendant": "jewelry-mononoke-ashitaka", "necklace": "jewelry-mononoke-teeth", "bracelets": "jewelry-mononoke-armbands", "hat": "head-mononoke-mask"},makeup:['makeup-mononoke'],rule:pair('Trouver et toucher les cinq Kodama dans la chambre.','Find and touch all five Kodama in the bedroom.')},
     {id:'sakura-main',name:pair('Cardcaptor Sakura — Tenue principale','Cardcaptor Sakura — Main outfit'),feat:'kero-awake',image:crop('assets/dressing-lena/IMG_7054.png',[379,698,1241,1115],2048,3072),pieces:["dress-sakura-main", "jewelry-sakura-bow", "hosiery-sakura-main", "shoes-sakura-main", "accessory-sakura-gloves", "accessory-sakura-wings", "held-sakura-scepter", "head-sakura-main"],values:{"dresses": "dress-sakura-main", "necklace": "jewelry-sakura-bow", "socks": "hosiery-sakura-main", "shoes": "shoes-sakura-main", "gloves": "accessory-sakura-gloves", "wings": "accessory-sakura-wings", "handObject": "held-sakura-scepter", "hat": "head-sakura-main"},rule:pair('Cliquer sur Kéro posé sur l’étagère au-dessus de l’iMac.','Click Kero on the shelf above the iMac.')},
     {id:'little-miss-sunshine',name:pair('Olive Hoover — Little Miss Sunshine','Olive Hoover — Little Miss Sunshine'),feat:'olive-van-started',image:crop('assets/dressing-lena/IMG_7043.png',[653,727,649,830],2048,3072),pieces:["shoes-olive", "pants-olive-shorts", "top-olive", "jewelry-olive-wristbands", "head-olive-glasses"],values:{"tops": "top-olive", "pants": "pants-olive-shorts", "shoes": "shoes-olive", "bracelets": "jewelry-olive-wristbands", "glasses": "head-olive-glasses"},rule:pair('Cliquer sur le van Volkswagen miniature de la chambre.','Click the miniature Volkswagen van in the room.')},
     {id:'gokinjo',name:pair('Mikako — Gokinjo','Mikako — Gokinjo'),feat:'gokinjo-happy-berry',image:crop('assets/dressing-lena/IMG_7031.png',[725,738,512,979],2048,3072),pieces:["hosiery-gokinjo", "shoes-gokinjo", "top-gokinjo", "dress-gokinjo", "accessory-gokinjo-gloves", "head-gokinjo-bobbles"],values:{"tops": "top-gokinjo", "dresses": "dress-gokinjo", "hosiery": "hosiery-gokinjo", "shoes": "shoes-gokinjo", "gloves": "accessory-gokinjo-gloves", "clips": "head-gokinjo-bobbles"},rule:pair('Cliquer sur le coussin Happy Berry du lit.','Click the Happy Berry cushion on the bed.')},
@@ -74,7 +74,7 @@
     'objet/clochette-kikujiro':'kikujiro-chime', 'objet/papillon-paprika':'paprika-butterfly', 'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
   };
   // Future Kikujiro outfit pieces use feat:'kikujiro-chime'; discovery is saved before their release.
-  const allowedFeats = new Set(['preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -197,7 +197,9 @@
   function feat(id) {
     if(suppressed()||!allowedFeats.has(id))return;
     if(id==='rested')window.NanaAnalytics?.complete('do-nothing');
-    if(hasFeat(id))return;state.feats.push(id);save();
+    if(hasFeat(id))return;state.feats.push(id);
+    if([1,2,3,4,5].every(n=>hasFeat('kodama-'+n))&&!hasFeat('mononoke-kodama'))state.feats.push('mononoke-kodama');
+    save();
   }
   const POLAROID_KEY='nana-polaroids-viewed-v1';
   let viewedPolaroids=new Set();
@@ -219,11 +221,12 @@
     subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}
   };
   window.addEventListener('storage',event=>{
-    if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};emit(false,false);}
+    if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};if(!suppressed()&&[1,2,3,4,5].every(n=>hasFeat('kodama-'+n))&&!hasFeat('mononoke-kodama')){state.feats.push('mononoke-kodama');save();}else emit(false,false);}
     else if(event.key===DIALOGUE_KEY){mergeDialogue();emit(false,false);}
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 
