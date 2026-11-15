@@ -5,6 +5,17 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Hachi collection has nine pieces, locks until the strawberry toast and persists together',()=>{
+ const storage=new Map(),{p}=browser({storage}),hachi=p.outfits.find(o=>o.id==='hachi');
+ assert.equal(hachi.pieces.length,9);assert.equal(Object.values(hachi.values).length,9);
+ assert.equal(p.unlockedOutfit('hachi'),false);
+ p.visit('jeu/dressing');p.visit('objet/lampe-fleur');
+ assert.equal(p.unlockedOutfit('hachi'),false);
+ p.feat('nana-toast');assert.equal(p.unlockedOutfit('hachi'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('hachi'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('hachi',true),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('hachi'),false);
+});
 test('new smiley and Tamagotchi rewards require their real interactions and persist',()=>{
   for(const action of ['feed','sleep','draw','music','cuddle']){
     const storage=new Map(),{p}=browser({storage});
@@ -356,4 +367,5 @@ test('flower look awaits the future plant and treasures use the beaded bunny cha
  assert.equal(p.outfits.find(x=>x.id==='tresors').values.bagAccessories,'charm-treasures');
  p.visit('night');assert.equal(p.unlockedOutfit('night-explorer'),true);
 });
+
 

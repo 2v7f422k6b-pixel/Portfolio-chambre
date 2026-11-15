@@ -10,6 +10,10 @@
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='top-hachi-turtleneck')return 'sheer';
+    if(id==='hosiery-hachi-stripes')return 'socks';
+    if(id==='hosiery-hachi-legwarmers')return 'legwarmers';
+    if(id==='jewelry-hachi-belt')return 'belt';
     if(['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(id))return 'bagAccessories';
     if(id==='jewelry-flower-long')return 'bags';
     if(['hosiery-dj','hosiery-blue-lace'].includes(id))return 'hosieryOverlay';
@@ -36,7 +40,7 @@
     if(s.dresses){s.pants=null;s.skirts=null;s.overalls=null;if(s.tops&&!canWearTop(s.dresses,s.tops))s.tops=null;if(s.sheer&&!canWearTop(s.dresses,s.sheer))s.sheer=null;}
     if(s.overalls){s.dresses=null;s.pants=null;s.skirts=null;if(!s.underwear)s.underwear='bra-blue';}
     if(s.pants)s.skirts=null;
-    if(s.sheer&&s.tops&&!['top-pink','top-dj'].includes(s.tops)){
+    if(s.sheer&&s.sheer!=='top-hachi-turtleneck'&&s.tops&&!['top-pink','top-dj'].includes(s.tops)){
       if(changed==='tops')s.sheer=null;else s.tops=null;
     }
     // Only one outer knit. The inspector turtleneck is the sole knit base.
@@ -95,5 +99,6 @@
   }
   window.NanaWardrobeRules={sweaters,cardigans,vests,sparkles,buckets,collars,hairlessHeads,hoods,slotFor,normalize,choose,canWearTop};
 })();
+
 
 

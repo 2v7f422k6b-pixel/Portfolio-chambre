@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
-test('eleven held props use three distinct, aligned artist exports and retain stable IDs',()=>{
- assert.equal(Object.keys(data.heldParts).length,11);
+test('twelve held props use three distinct, aligned artist exports and retain stable IDs',()=>{
+ assert.equal(Object.keys(data.heldParts).length,12);
  for(const [id,parts]of Object.entries(data.heldParts)){
   assert(data.items[id]);assert.equal(data.fitted[id],parts.object);
   assert.equal(data.sprites[id],parts.object);
@@ -28,3 +28,4 @@ test('Nana Color Studio T-shirt is an independent top',()=>{
  assert.equal(data.items['top-nana-color-studio'][1],'tops');
  assert.equal(data.fitted['top-nana-color-studio'],'assets/dressing-lena/IMG_6658.png');
 });
+

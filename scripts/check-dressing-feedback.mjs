@@ -6,6 +6,15 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
 const env={window:{}};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);
 const rules=env.window.NanaWardrobeRules;
+test('Hachi turtleneck, Seven tee, striped stockings, warmers and belt coexist in every order',()=>{
+ const pieces=['top-hachi-turtleneck','top-hachi-seven','hosiery-hachi-stripes','hosiery-hachi-legwarmers','jewelry-hachi-belt'];
+ for(const order of [pieces,[...pieces].reverse()]){
+  const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);
+  assert.equal(s.sheer,'top-hachi-turtleneck');assert.equal(s.tops,'top-hachi-seven');
+  assert.equal(s.socks,'hosiery-hachi-stripes');assert.equal(s.legwarmers,'hosiery-hachi-legwarmers');
+  assert.equal(s.belt,'jewelry-hachi-belt');
+ }
+});
 test('pink hood hides hair and excludes clips, headphones and headlamp in either order',()=>{
  assert(rules.hairlessHeads.has('head-pink-hood'));
  for(const other of ['head-miffy-clips','head-stars','head-airpods','head-headlamp']){
@@ -39,3 +48,4 @@ test('bag charms and flower bag use their correct wearing slots',()=>{
  for(const id of ['jewelry-coffee-lanyard','jewelry-piano-lanyard']){const s={bags:'bag-heart',makeup:new Set()};rules.choose(s,id,data.items);assert.equal(s.bags,'bag-heart');assert.equal(s.bagAccessories,id);}
 });
 test('old layered shirt migrates to Rock shirt',()=>{assert(!data.items['top-layered-pink']);assert.equal(data.aliases['top-layered-pink'],'top-rock-layered');});
+
