@@ -76,9 +76,9 @@
     if(!feat)return;
     event.preventDefault();event.stopImmediatePropagation();
     window.NanaProgress?.visit('objet/'+id);
-    const already=window.NanaProgress?.hasFeat(feat);
+    const already=window.NanaProgress?.hasFeat?.(feat);
     window.NanaProgress?.feat(feat);
-    if(id==='preacher-dog'&&!already&&window.NanaProgress?.hasFeat(feat)&&toast){toast.textContent='Découverte mémorisée pour la future tenue Preacher.';toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},3000);}
+    if(id==='preacher-dog'&&!already&&window.NanaProgress?.hasFeat?.(feat)&&toast){toast.textContent='Découverte mémorisée pour la future tenue Preacher.';toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},3000);}
   },true);
   svg.addEventListener('keydown',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
@@ -269,3 +269,4 @@
   batch();
   broadcast();
 })();
+
