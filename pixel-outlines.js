@@ -19,6 +19,7 @@
   ]);
   // Both Happy Berry exports share exactly the same silhouette and registration.
   files.push('IMG_7121.png');
+  files.push('IMG_7126.png');
   const layers = new Map();
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
@@ -134,10 +135,10 @@
     client = [event.clientX, event.clientY]; updatePointer();
   }, {passive: true});
   scene.addEventListener('pointerleave', () => {pointer = client = target = null; schedule();});
-  // Touch has no hover: show the same white silhouette briefly on a cushion tap.
+  // Touch has no hover: show the same white silhouette briefly on reward-object taps.
   let cushionTapTimer;
   scene.addEventListener('pointerdown', event => {
-    if(event.pointerType!=='touch'||!event.target.closest?.('[data-room-zone-id="happy-berry"]'))return;
+    if(event.pointerType!=='touch'||!event.target.closest?.('[data-room-zone-id="happy-berry"],[data-room-zone-id="blast"]'))return;
     clearTimeout(cushionTapTimer);
     client=[event.clientX,event.clientY];updatePointer();
     cushionTapTimer=setTimeout(()=>{pointer=client=target=null;schedule();},900);

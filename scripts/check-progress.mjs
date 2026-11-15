@@ -5,6 +5,13 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('BLAST unlocks Hachi, persists for future Nana pieces and preserves the legacy toast reward',()=>{
+ const storage=new Map(),{p}=browser({storage});
+ assert.equal(p.unlockedOutfit('hachi'),false);p.feat('nana-blast');assert.equal(p.unlockedOutfit('hachi'),true);
+ const restored=browser({storage}).p;assert.equal(restored.unlockedOutfit('hachi'),true);assert.equal(restored.hasFeat('nana-blast'),true);
+ const legacy=browser().p;legacy.feat('nana-toast');assert.equal(legacy.unlockedOutfit('hachi'),true);
+ const outfit=restored.outfits.find(o=>o.id==='hachi');assert(!outfit.rule.fr.includes('fraises'));assert.equal(outfit.pieces.length,9);
+});
 test('Helly five-piece collection unlocks through Macrodata Refinement and supports creator preview',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='severance');
  assert.equal(outfit.pieces.length,5);assert.equal(Object.values(outfit.values).length,5);

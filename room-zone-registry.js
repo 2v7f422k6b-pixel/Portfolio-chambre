@@ -36,7 +36,8 @@
     ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality'],
     // Keep 45 retired (former flower-gallery shortcut), preserving existing object IDs.
     ['cv','CV',null,'[data-cv-paper]',null,46],
-    ['happy-berry','Coussin Happy Berry','IMG_7121.png',null,'happy-berry',47]
+    ['happy-berry','Coussin Happy Berry','IMG_7121.png',null,'happy-berry',47],
+    ['blast','Billet de concert BLAST','IMG_7126.png',null,'blast',48]
   ].map(([id,label,file,selector,destination,number],i) => ({
     id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -59,16 +60,19 @@
   let toastTimer;
   const scene = document.getElementById('play-scene');
 
-  // One discovery in either theme unlocks the complete Mikako collection.
+  // A single discovery works in either theme and persists before future pieces arrive.
+  const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast'};
   svg.addEventListener('click',event=>{
-    const cushion=event.target.closest?.('polygon[data-room-zone-id="happy-berry"]');
-    if(!cushion)return;
+    const target=event.target.closest?.('polygon[data-room-zone-id]');
+    const id=target?.dataset.roomZoneId,feat=outfitDiscoveries[id];
+    if(!feat)return;
     event.preventDefault();event.stopImmediatePropagation();
-    window.NanaProgress?.visit('objet/happy-berry');
-    window.NanaProgress?.feat('gokinjo-happy-berry');
+    window.NanaProgress?.visit('objet/'+id);
+    window.NanaProgress?.feat(feat);
   },true);
   svg.addEventListener('keydown',event=>{
-    if(!['Enter',' '].includes(event.key)||!event.target.closest?.('polygon[data-room-zone-id="happy-berry"]'))return;
+    const target=event.target.closest?.('polygon[data-room-zone-id]');
+    if(!['Enter',' '].includes(event.key)||!outfitDiscoveries[target?.dataset.roomZoneId])return;
     event.preventDefault();event.stopImmediatePropagation();
     event.target.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
   },true);
@@ -210,6 +214,10 @@
           poly.setAttribute('role','button');
           poly.setAttribute('aria-label','Coussin Happy Berry — découvrir la tenue de Mikako');
         }
+        if(zone.id==='blast'){
+          poly.setAttribute('role','button');
+          poly.setAttribute('aria-label','Billet BLAST — découvrir les tenues de Hachi et Nana');
+        }
         if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
         if(zone.id==='vase') poly.dataset.vasePetal='';
@@ -220,7 +228,7 @@
         else if(zone.destination) poly.dataset.open=zone.destination;
         else poly.dataset.zonePending='';
         // Figurines and vase must stay clickable, even when other object zones overlap.
-        if(['vase','miffy','sonny-angel','happy-berry'].includes(zone.id)) svg.appendChild(poly);
+        if(['vase','miffy','sonny-angel','happy-berry','blast'].includes(zone.id)) svg.appendChild(poly);
         else if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
         zone.element=poly;
