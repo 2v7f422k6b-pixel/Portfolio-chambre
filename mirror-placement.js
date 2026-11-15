@@ -198,6 +198,32 @@
     label.textContent='Miroir : glisse le centre pour déplacer ; tire les 4 ronds pour la perspective.';
     label.style.marginBottom='6px';
     section.append(label);
+    // Preview only: bring the mirror above other SVG decorations while placing it.
+    const layerAnchor = document.createComment('mirror editor layer');
+    let previewFront = false;
+    const previewButton = document.createElement('button');
+    previewButton.type = 'button';
+    previewButton.textContent = 'Faire passer le miroir devant pour le régler';
+    previewButton.setAttribute('aria-pressed', 'false');
+    previewButton.style.cssText = 'display:block;margin-bottom:8px;padding:6px 8px;cursor:pointer;font:12px system-ui,sans-serif';
+    previewButton.addEventListener('click', () => {
+      previewFront = !previewFront;
+      if (previewFront) {
+        svg.insertBefore(layerAnchor, group);
+        svg.appendChild(group);
+      } else {
+        svg.insertBefore(group, layerAnchor);
+        layerAnchor.remove();
+      }
+      previewButton.setAttribute('aria-pressed', String(previewFront));
+      previewButton.textContent = previewFront
+        ? 'Rétablir les superpositions'
+        : 'Faire passer le miroir devant pour le régler';
+    });
+    section.append(previewButton);
+    const moveHint = document.createElement('div');
+    moveHint.textContent = 'Déplacer le miroir : 5 unités par clic, même s’il est caché.';
+    section.append(moveHint);
     const controls=document.createElement('div');
     controls.style.cssText='display:flex;flex-wrap:wrap;gap:6px';
     function button(text,fn){
@@ -217,6 +243,14 @@
       ]);
       render();store();
     }
+    function move(dx,dy) {
+      state.quad=state.quad.map(([x,y])=>[x+dx,y+dy]);
+      render();store();
+    }
+    button('← Gauche',()=>move(-5,0));
+    button('↑ Haut',()=>move(0,-5));
+    button('↓ Bas',()=>move(0,5));
+    button('→ Droite',()=>move(5,0));
     button('− Petit',()=>scale(.91));
     button('+ Grand',()=>scale(1.1));
     button('Redresser',()=>{
