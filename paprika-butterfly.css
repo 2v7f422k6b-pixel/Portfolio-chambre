@@ -34,3 +34,9 @@
   #play-scene #paprika-butterfly {left:54%;top:32%;transform:none;animation:none}
   #paprika-butterfly .butterfly-wing {animation:none;transform:none}
 }
+
+
+/* Each artist-drawn nocturnal layer follows exactly the same wing animation. */
+#paprika-butterfly .butterfly-night{display:none}
+html[data-theme="night"] #paprika-butterfly .butterfly-day{display:none}
+html[data-theme="night"] #paprika-butterfly .butterfly-night{display:inline}

@@ -1,0 +1,10 @@
+/* The original full-scene export stays registered to the room, clipped by its glass. */
+#window-life #window-ufo{pointer-events:none;opacity:0;transform-box:view-box;animation:nana-ufo-passage 90s linear 8s infinite}
+#window-life #window-ufo.is-idle,#app:not(.mode-play) #window-life #window-ufo{animation-play-state:paused}
+@keyframes nana-ufo-passage{
+  0%{opacity:1;transform:translate(-100px,0)}
+  5%{opacity:1;transform:translate(55px,-8px)}
+  10%{opacity:1;transform:translate(210px,0)}
+  10.01%,100%{opacity:0;transform:translate(210px,0)}
+}
+@media(prefers-reduced-motion:reduce){#window-life #window-ufo{animation:none;opacity:1;transform:translate(55px,0)}}
