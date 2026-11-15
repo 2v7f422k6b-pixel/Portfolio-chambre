@@ -311,6 +311,7 @@ function openApp(name,index){
   case 'motion':window.openMotion?.();break;
   case 'pages':window.openEditorialPages?.();break;
   case 'about':openWorkAbout();break;
+  case 'pokemon':openPokemonCard();break;
   case 'book':window.openBook?.();break;
    case 'do-nothing':window.NanaDoNothing?.open();break;
   case 'reading-room':
@@ -441,8 +442,8 @@ function openWorkAbout(){
   st.textContent='#window:has(iframe[src="nana-skyblog.html"]){width:min(1020px,96vw)!important;height:min(790px,87dvh)!important;max-height:87dvh!important} #window:has(iframe[src="nana-skyblog.html"]) #window-content{height:calc(100% - 45px)!important;max-height:none!important;overflow:hidden!important;padding:0!important} #window:has(iframe[src="nana-skyblog.html"]) iframe{min-height:100%}';
   document.head.appendChild(st);
  }
- return;
-
+}
+function openPokemonCard(){
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
  const cardRules=[
@@ -514,7 +515,7 @@ function openWorkAbout(){
  </dl>
  <p class="card-anecdote">${t('Les petits objets lui paraissent systématiquement nécessaires.','Small objects always seem essential to her.')}</p>
  <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>${t('Exemplaire unique','One of a kind')} · 001 / 001</span></footer>
- </article>`,'work-about');
+ </article>`,'pokemon-card');
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;

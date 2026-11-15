@@ -755,7 +755,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             <image class="sakura-day kero-art" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7131.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
             <image class="sakura-night kero-art" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7132.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
           </g>
-          <g id="nana-kikujiro-chime" role="button" tabindex="0" aria-label="Faire tinter la clochette — découvrir la future tenue Kikujiro">
+          <g id="nana-kikujiro-chime" transform="translate(-65 0)" role="button" tabindex="0" aria-label="Faire tinter la clochette — découvrir la future tenue Kikujiro">
             <use href="#kikujiro-chime-visual" class="chime-white-outline room-hover-outline" filter="url(#nana-room-hover-ring)" aria-hidden="true" pointer-events="none"/>
             <g id="kikujiro-chime-visual" pointer-events="none" aria-hidden="true">
               <image class="chime-day chime-strap" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7144.png" width="1670" height="942" preserveAspectRatio="none"/>
@@ -771,6 +771,18 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             </g>
             <rect x="1098" y="2" width="58" height="151" rx="9" fill="transparent" stroke="none" pointer-events="all"/>
           </g>
+          <style>
+            .new-room-night{opacity:0}html[data-theme="night"] .new-room-day{opacity:0}html[data-theme="night"] .new-room-night{opacity:1}
+            #hotspots .new-room-outline{opacity:0;pointer-events:none;transition:opacity .15s}
+            #hotspots .new-room-object:is(:hover,:focus-within) .new-room-outline,#hotspots.hotspot-guide-on .new-room-outline,#hotspots.hotspot-peek .new-room-outline{opacity:1}
+            #hotspots .new-room-object polygon{outline:none!important;stroke:none!important;fill:transparent!important;cursor:pointer}
+            #preacher-head{transform-box:view-box;transform-origin:1598px 529px;animation:preacher-nod 5s ease-in-out infinite}
+            @keyframes preacher-nod{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+            @media(prefers-reduced-motion:reduce){#preacher-head{animation:none}}
+          </style>
+<g class="new-room-object" id="room-pokeball"><use class="new-room-outline room-hover-outline" href="#pokeball-visual" filter="url(#nana-room-hover-ring)" pointer-events="none" aria-hidden="true"/><g id="pokeball-visual" aria-hidden="true" pointer-events="none"><image class="new-room-day" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7183.png" width="1670" height="942" preserveAspectRatio="none"/><image class="new-room-night" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7184.png" width="1670" height="942" preserveAspectRatio="none"/></g><polygon data-room-zone-id="pokeball" data-open="pokemon" points="1411,197 1466,197 1466,249 1411,249" role="button" tabindex="0" aria-label="Ouvrir la carte Pokémon de Léna"/></g>
+<g class="new-room-object" id="room-volkswagen"><use class="new-room-outline room-hover-outline" href="#volkswagen-visual" filter="url(#nana-room-hover-ring)" pointer-events="none" aria-hidden="true"/><g id="volkswagen-visual" aria-hidden="true" pointer-events="none"><image class="new-room-day" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7182.png" width="1670" height="942" preserveAspectRatio="none"/><image class="new-room-night" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7181.png" width="1670" height="942" preserveAspectRatio="none"/></g><polygon data-room-zone-id="volkswagen" points="1453,202 1528,202 1528,247 1453,247" role="button" tabindex="0" aria-label="Van Volkswagen — découvrir Little Miss Sunshine"/></g>
+<g class="new-room-object" id="room-preacher-dog"><use class="new-room-outline room-hover-outline" href="#preacher-dog-visual" filter="url(#nana-room-hover-ring)" pointer-events="none" aria-hidden="true"/><g id="preacher-dog-visual" aria-hidden="true" pointer-events="none"><image class="new-room-day" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7180.png" width="1670" height="942" preserveAspectRatio="none"/><image class="new-room-night" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7178.png" width="1670" height="942" preserveAspectRatio="none"/><g id="preacher-head"><image class="new-room-day" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7179.png" width="1670" height="942" preserveAspectRatio="none"/><image class="new-room-night" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7177.png" width="1670" height="942" preserveAspectRatio="none"/></g></g><polygon data-room-zone-id="preacher-dog" points="1580,509 1657,509 1657,578 1580,578" role="button" tabindex="0" aria-label="Chien — découvrir la future tenue Preacher"/></g>
           <g class="poster-artworks" pointer-events="none"><image class="poster-artwork" data-resource-mode="play" data-resource-href="assets/previews/photos/bubblegum.webp" x="358.4" y="133.1" width="69" height="138" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-0)" aria-hidden="true"/>
             <image class="poster-artwork" data-resource-mode="play" data-resource-href="assets/previews/photos/soap-bubbles.webp" x="341.9" y="-8.1" width="108.1" height="181.4" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-1)" aria-hidden="true"/>
             <image class="poster-artwork" data-resource-mode="play" data-resource-href="assets/previews/photos/butterflies-grass.webp" x="481.8" y="39.3" width="83.2" height="203.7" preserveAspectRatio="xMidYMid slice" clip-path="url(#redraw-post-2)" aria-hidden="true"/>
@@ -900,9 +912,9 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261112-blog-work-1"></script>
-  <script src="nana-progress.js?v=20261115-severance-1" defer></script>
+  <script src="nana-progress.js?v=20261115-new-objects" defer></script>
   <script src="nana-keepsakes.js?v=20261110-selected-1" defer></script>
-  <script src="app.js?v=20261115-severance-1" defer></script>
+  <script src="app.js?v=20261115-new-objects" defer></script>
   <script src="do-nothing-club.js?v=20261108-journal-1" defer></script>
   <script src="literary-zones.js?v=20261110-selected-1" defer></script>
 
@@ -1015,7 +1027,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="glow-stars.js?v=20261112-resources-1" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="room-zone-registry.js?v=20261115-kero" defer></script>
+<script src="room-zone-registry.js?v=20261115-new-objects" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
   <script src="rug-secret.js?v=20261112-resources-1" defer></script>
   <script src="twist-reality.js?v=20261108-journal-1" defer></script>
@@ -1096,7 +1108,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
 <script src="memory-box-content.js?v=20261109-drawn-memories-1" defer></script>
 <script src="memory-box.js?v=20261112-resources-1" defer></script>
-<script src="nana-room-links.js?v=20261115-severance" defer></script>
+<script src="nana-room-links.js?v=20261115-new-objects" defer></script>
 <script src="nana-link-directory.js?v=20261111-contact-labels-4" defer></script>
 <script src="nana-art-links.js?v=20261108-routes" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1" defer></script>

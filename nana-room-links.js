@@ -12,7 +12,7 @@
     appRoutes.set('jeu/' + name, name);
   }
   appRoutes.set('jeu/dressing', 'dressup');
-  appRoutes.set('objet/carte-pokemon', 'about');
+  appRoutes.set('objet/carte-pokemon', 'pokemon');
   appRoutes.set('jeux', 'mini-games');
   appRoutes.set('livre/la-princesse-clown', 'book');
 
@@ -140,7 +140,7 @@
         if (q('.lit-souvenues')) return 'objet/souvenues';
         if (q('.lit-lab')) return 'jeu/word-lab';
       }
-      const app = {'work-about':'about','music-visual-design':'music-visuals','pages-library':'pages'}[type] || type;
+      const app = {'pokemon-card':'pokemon','work-about':'about','music-visual-design':'music-visuals','pages-library':'pages'}[type] || type;
       return app === 'music-visuals' ? 'objet/music-visuals' : routeByApp.get(app) || null;
     }
     const desk = visible('.desk-panel');

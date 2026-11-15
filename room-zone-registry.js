@@ -38,7 +38,10 @@
     ['cv','CV',null,'[data-cv-paper]',null,46],
     ['happy-berry','Coussin Happy Berry','IMG_7121.png',null,'happy-berry',47],
     ['blast','Billet de concert BLAST','IMG_7126.png',null,'blast',48],
-    ['kero','Kéro','IMG_7131.png',null,'kero',49]
+    ['kero','Kéro','IMG_7131.png',null,'kero',49],
+    ['pokeball','Pokéball',null,'[data-room-zone-id="pokeball"]',null,50],
+    ['volkswagen','Van Volkswagen',null,'[data-room-zone-id="volkswagen"]',null,51],
+    ['preacher-dog','Chien Preacher',null,'[data-room-zone-id="preacher-dog"]',null,52]
   ].map(([id,label,file,selector,destination,number],i) => ({
     id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -66,14 +69,16 @@
   if(sakuraShelf)svg.appendChild(sakuraShelf);
 
   // A single discovery works in either theme and persists before future pieces arrive.
-  const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake'};
+  const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake',volkswagen:'olive-van-started','preacher-dog':'preacher-dog'};
   svg.addEventListener('click',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
     const id=target?.dataset.roomZoneId,feat=outfitDiscoveries[id];
     if(!feat)return;
     event.preventDefault();event.stopImmediatePropagation();
     window.NanaProgress?.visit('objet/'+id);
+    const already=window.NanaProgress?.hasFeat(feat);
     window.NanaProgress?.feat(feat);
+    if(id==='preacher-dog'&&!already&&window.NanaProgress?.hasFeat(feat)&&toast){toast.textContent='Découverte mémorisée pour la future tenue Preacher.';toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},3000);}
   },true);
   svg.addEventListener('keydown',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
