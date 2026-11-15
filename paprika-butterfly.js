@@ -3,6 +3,15 @@
   'use strict';
   const butterfly=document.getElementById('paprika-butterfly');
   if(!butterfly)return;
+  // Measure only when the room changes size, including rotation and returning to Play.
+  const scene=butterfly.parentElement;
+  const resize=()=>{
+    butterfly.style.setProperty('--flight-x',`${scene.clientWidth/100}px`);
+    butterfly.style.setProperty('--flight-y',`${scene.clientHeight/100}px`);
+  };
+  if(window.ResizeObserver)new ResizeObserver(resize).observe(scene);
+  else window.addEventListener('resize',resize,{passive:true});
+  resize();
   let releaseTimer;
   const localize=()=>butterfly.setAttribute('aria-label',document.documentElement.lang.startsWith('en')
     ?'Butterfly — discover the Paprika outfit':'Papillon — découvrir la tenue Paprika');
