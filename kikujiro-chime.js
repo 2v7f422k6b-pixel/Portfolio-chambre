@@ -18,11 +18,13 @@
     if(!Type||document.hidden)return;
     // Browsers may require a click before sound is permitted on hover.
     if(!gesture&&context?.state!=='running'&&!navigator.userActivation?.hasBeenActive)return;
-    const now=performance.now();if(now-lastSound<700)return;lastSound=now;
+    if(performance.now()-lastSound<700)return;
     try{
       if(!context||context.state==='closed')context=new Type();
       if(context.state==='suspended')await context.resume();
       if(context.state!=='running'||document.hidden)return;
+      // A blocked hover must never swallow the first real click on Safari.
+      const ready=performance.now();if(ready-lastSound<700)return;lastSound=ready;
       const start=context.currentTime+.015;
       for(const [note,offset] of [[1174.66,0],[1567.98,.085]]){
         for(const [ratio,level,decay] of [[1,.045,1.8],[2.71,.012,1.1],[4.07,.004,.65]]){
