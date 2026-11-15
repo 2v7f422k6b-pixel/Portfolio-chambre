@@ -12,7 +12,7 @@
   transform-box:view-box;transform-origin:530px 530px;
   animation:paprika-wings .8s ease-in-out infinite alternate;
 }
-#paprika-butterfly:is(:hover,:focus-within,.is-paused,.is-idle),
+#play-scene #paprika-butterfly:is(:hover,:focus-within,.is-paused,.is-idle),
 #paprika-butterfly:is(:hover,:focus-within,.is-paused,.is-idle) .butterfly-wing,
 #app:not(.mode-play) #paprika-butterfly,
 #app:not(.mode-play) #paprika-butterfly .butterfly-wing {animation-play-state:paused}
