@@ -12,7 +12,7 @@
   const spirits=[...root.querySelectorAll('.kodama')],progress=window.NanaProgress;
   let elapsed=0,last=performance.now(),departure=null,returnAt=null,returnEnds=null;
   const active=()=>!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')
-    &&!!document.getElementById('play-viewport')?.getClientRects().length
+    &&!document.getElementById('play-viewport')?.hidden
     &&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
   const complete=()=>progress?.hasFeat('mononoke-kodama');
   const localize=()=>spirits.forEach((spirit,i)=>{
@@ -20,12 +20,19 @@
     spirit.querySelector('polygon').setAttribute('aria-label',document.documentElement.lang.startsWith('en')
       ?`Kodama ${i+1} of 5${found?' — already found':''}`:`Kodama ${i+1} sur 5${found?' — déjà trouvé':''}`);
   });
+  const shown=new WeakMap();
   const show=(spirit,visible)=>{
+    if(shown.get(spirit)===visible)return;shown.set(spirit,visible);
     spirit.classList.toggle('is-visible',visible);spirit.setAttribute('aria-hidden',String(!visible));
     spirit.querySelector('polygon').setAttribute('tabindex',visible?'0':'-1');
   };
   const wiggle=spirit=>{
-    spirit.classList.remove('is-wiggling');void spirit.getBoundingClientRect();spirit.classList.add('is-wiggling');
+    const head=spirit.querySelector('.kodama-head');
+    if(head?.animate){
+      head.getAnimations().forEach(animation=>animation.cancel());
+      const gentle=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      head.animate((gentle?[0,-12,0]:[0,-34,29,-24,17,-8,0]).map(angle=>({transform:`rotate(${angle}deg)`})),{duration:gentle?280:700,easing:'cubic-bezier(.15,.85,.25,1)'});
+    }else{spirit.classList.remove('is-wiggling');spirit.classList.add('is-wiggling');}
   };
   spirits.forEach((spirit,i)=>{
     const button=spirit.querySelector('polygon');
@@ -52,3 +59,4 @@
   progress?.subscribe(localize);document.addEventListener('portfolio-language-change',localize);
   document.addEventListener('visibilitychange',()=>{last=performance.now();});localize();setInterval(tick,250);
 })();
+

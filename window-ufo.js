@@ -8,7 +8,7 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let phase='waiting',elapsed=0,last=performance.now(),first=true;
   const active=()=>!document.hidden&&document.documentElement.dataset.theme==='night'
-    &&app.classList.contains('mode-play')&&!!document.getElementById('play-viewport')?.getClientRects().length
+    &&app.classList.contains('mode-play')&&!document.getElementById('play-viewport')?.hidden
     &&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
   const change=next=>{
     phase=next;elapsed=0;ufo.dataset.phase=next;
@@ -20,9 +20,9 @@
   function tick(){
     const now=performance.now(),delta=Math.min(now-last,1000);last=now;if(!active())return;elapsed+=delta;
     if(phase==='waiting'&&elapsed>=(preview?500:first?18000:90000)){first=false;change(reduced.matches?'observing':'arriving');}
-    else if(phase==='arriving'&&elapsed>=3000)change('observing');
-    else if(phase==='observing'&&elapsed>=30000)change('leaving');
-    else if(phase==='leaving'&&elapsed>=(reduced.matches?200:800))change('waiting');
+    else if(phase==='arriving'&&elapsed>=1200)change('observing');
+    else if(phase==='observing'&&elapsed>=12000)change('leaving');
+    else if(phase==='leaving'&&elapsed>=(reduced.matches?200:450))change('waiting');
   }
   const flee=event=>{
     event.preventDefault();event.stopPropagation();
@@ -42,3 +42,4 @@
   if(preview&&document.documentElement.dataset.theme!=='night')document.getElementById('theme-toggle')?.click();
   setInterval(tick,100);
 })();
+

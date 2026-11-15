@@ -60,7 +60,8 @@
     {id:'shining',name:pair('Les jumelles de Shining','The Shining twins'),feat:'secret-typewriter',image:crop('assets/dressing-lena/IMG_5726.png',[598,701,826,1407],2048,3072),pieces:['dress-shining','head-shining-flower','shoes-shining','hosiery-shining'],values:{dresses:'dress-shining',clips:'head-shining-flower',shoes:'shoes-shining',hosiery:'hosiery-shining'},rule:pair('Découvrir la machine à écrire de Shining.','Discover the Shining typewriter.')},
     {id:'atelier', name:pair('Atelier en bazar','A messy studio'), visit:'jeu/coloring', image:crop('assets/dressing-lena/IMG_5735.png',[673,740,609,1888],2048,3072), pieces:['suit-paint'], values:{tops:'top-white',overalls:'suit-paint',hat:'head-beret',shoes:'shoes-bambi'}, rule:pair('Découvrir le jeu de coloriage.','Discover the colouring book.')},
     {id:'photographer',name:pair('Souvenirs instantanés','Instant memories'),feat:'polaroids-all',image:crop('assets/dressing-lena/IMG_5739.png',[848,700,253,555],2048,3072),pieces:['accessory-camera'],values:{camera:'accessory-camera',tops:'top-plantasia',pants:'pants-barrel',shoes:'shoes-bambi'},rule:pair('Consulter tous les polaroïds.','View every Polaroid.')},
-    {id:'flower',name:pair('Fleur de chambre','Room flower'),visit:'objet/plante-fleur',image:crop('assets/dressing-lena/IMG_5734.png',[717,724,581,812],2048,3072),pieces:['jacket-floral','dress-floral','bag-blue-floral'],values:{vest:'jacket-floral',dresses:'dress-floral',bags:'bag-blue-floral'},rule:pair('Toucher la plante suspendue dans la chambre.','Touch the hanging plant in the bedroom.')},
+    {id:'plantasia',name:pair('T-shirt Plantasia','Plantasia T-shirt'),visit:'objet/plante-fleur',image:crop('assets/dressing-lena/IMG_5593.png',[544,720,849,834],2048,3072),pieces:['top-plantasia'],values:{tops:'top-plantasia'},rule:pair('Toucher la plante suspendue dans la chambre.','Touch the hanging plant in the bedroom.')},
+    {id:'flower',available:false,name:pair('Fleur de chambre','Room flower'),visit:'objet/plante-fleur',image:crop('assets/dressing-lena/IMG_5734.png',[717,724,581,812],2048,3072),pieces:['jacket-floral','dress-floral','bag-blue-floral'],values:{vest:'jacket-floral',dresses:'dress-floral',bags:'bag-blue-floral'},rule:pair('Toucher la plante suspendue dans la chambre.','Touch the hanging plant in the bedroom.')},
     {id:'tresors', name:pair('Petits trésors','Little treasures'), feat:'beads-made', image:crop('assets/dressing-lena/IMG_5354.png',[857,720,192,68],2048,3072), pieces:['accessory-phone'], values:{phone:'accessory-phone',tops:'top-pink',skirts:'skirt-floral',necklace:'jewelry-beads',bags:'bag-brown',bagAccessories:'charm-treasures',shoes:'shoes-docs'}, rule:pair('Enfiler au moins trois perles.','Thread at least three beads.')}
   ];
   const roomRoutes = {
@@ -227,6 +228,7 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 

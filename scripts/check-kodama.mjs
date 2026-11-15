@@ -6,12 +6,12 @@ const source=readFileSync(new URL('../kodama.js',import.meta.url),'utf8');
 function room(){
  let time=0,tick,active=true,done=false;const clicks=[];
  const spirits=Array.from({length:5},()=>{
-  const classes=new Set(),handlers={},attrs={};const button={setAttribute:(k,v)=>attrs[k]=v,addEventListener:(k,v)=>handlers[k]=v};
-  return{classes,handlers,attrs,querySelector:()=>button,setAttribute(){},addEventListener(){},getBoundingClientRect(){return{};},classList:{toggle:(k,on)=>on?classes.add(k):classes.delete(k),add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k)}};
+  const classes=new Set(),handlers={},attrs={},animations=[];const head={getAnimations:()=>[],animate:(frames,options)=>animations.push({frames,options})};const button={setAttribute:(k,v)=>attrs[k]=v,addEventListener:(k,v)=>handlers[k]=v};
+  return{classes,handlers,attrs,animations,querySelector:selector=>selector==='.kodama-head'?head:button,setAttribute(){},addEventListener(){},getBoundingClientRect(){return{};},classList:{toggle:(k,on)=>on?classes.add(k):classes.delete(k),add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k)}};
  });
  const document={hidden:false,documentElement:{lang:'fr'},createElementNS:()=>({setAttribute(){},appendChild(){}}),addEventListener(){},getElementById:id=>id==='kodama-spirits'?{querySelectorAll:()=>spirits}:id==='app'?{classList:{contains:()=>active}}:{getClientRects:()=>[1],appendChild(){}}};
  const p={hasFeat:id=>id==='mononoke-kodama'?done:false,subscribe(){},feat:id=>clicks.push(id)};
- vm.runInNewContext(source,{document,window:{NanaProgress:p},performance:{now:()=>time},location:{hash:'#/room'},setInterval:fn=>tick=fn});
+ vm.runInNewContext(source,{document,window:{NanaProgress:p,matchMedia:()=>({matches:false})},performance:{now:()=>time},location:{hash:'#/room'},setInterval:fn=>tick=fn});
  return{spirits,clicks,advance(ms){for(let n=0;n<ms;n+=250){time+=250;tick();}},pause(on){active=!on;},complete(){done=true;}};
 }
 test('Kodama appear progressively, wait for the fifth discovery and later return',()=>{
@@ -24,6 +24,7 @@ test('Kodama appear progressively, wait for the fifth discovery and later return
 test('hover animates without counting and visible clicks target the correct spirit',()=>{
  const r=room();const e={preventDefault(){},stopPropagation(){}};
  r.spirits[0].handlers.click(e);assert.equal(r.clicks.length,0);r.advance(15000);
- r.spirits[0].handlers.pointerenter();assert.equal(r.clicks.length,0);assert(r.spirits[0].classes.has('is-wiggling'));
+ r.spirits[0].handlers.pointerenter();assert.equal(r.clicks.length,0);assert.equal(r.spirits[0].animations.length,1);assert(r.spirits[0].animations[0].frames.some(f=>f.transform==='rotate(-34deg)'));
  r.spirits[0].handlers.click(e);assert.deepEqual(r.clicks,['kodama-1']);
 });
+
