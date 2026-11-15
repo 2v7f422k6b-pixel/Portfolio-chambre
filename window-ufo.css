@@ -3,7 +3,7 @@
 #ufo-window-layer #window-ufo{opacity:0;pointer-events:none;transform:translate(-110px,0);transform-box:view-box}
 html[data-theme="night"] #ufo-window-layer #window-ufo:is([data-phase="arriving"],[data-phase="observing"],[data-phase="leaving"]){opacity:1}
 #window-ufo[data-phase="arriving"]{animation:ufo-arrive 3s cubic-bezier(.16,.7,.2,1) both}
-#window-ufo[data-phase="observing"]{transform:translate(55px,-5px)}
+#ufo-window-layer #window-ufo[data-phase="observing"]{transform:translate(55px,-5px)}
 #window-ufo[data-phase="observing"] .ufo-hover{animation:ufo-curiosity 4s ease-in-out infinite;transform-box:view-box;transform-origin:1016px 123px}
 #window-ufo[data-phase="leaving"]{animation:ufo-escape .8s cubic-bezier(.55,0,1,.45) both}
 #window-ufo[data-phase="leaving"] .ufo-neon{animation:ufo-startle .65s ease-out both}
