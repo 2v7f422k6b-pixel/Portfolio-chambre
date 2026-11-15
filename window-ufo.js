@@ -3,6 +3,7 @@
   'use strict';
   const ufo=document.getElementById('window-ufo'),app=document.getElementById('app');
   if(!ufo||!app)return;
+  if(new URLSearchParams(location.search).get('ufoPreview')==='1')ufo.dataset.preview='true';
   const pause=()=>ufo.classList.toggle('is-idle',document.hidden||!app.classList.contains('mode-play')
     ||(!!location.hash&&!/^#\/(?:room)?$/.test(location.hash)));
   document.addEventListener('visibilitychange',pause);
@@ -10,3 +11,4 @@
   new MutationObserver(pause).observe(app,{attributes:true,attributeFilter:['class']});
   pause();
 })();
+

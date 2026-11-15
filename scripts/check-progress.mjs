@@ -434,10 +434,10 @@ test('George Sand follows the middle books and Inspector requires 75 percent of 
  assert.equal(p.unlockedOutfit('inspector'),false);
  discovered.push('c');assert.equal(p.unlockedOutfit('inspector'),true);
 });
-test('flower look awaits the future plant and treasures use the beaded bunny charm',()=>{
+test('hanging plant unlocks the flower look and treasures use the beaded bunny charm',()=>{
  const {p}=browser();p.visit('objet/lampe-fleur');
  assert.equal(p.unlockedOutfit('flower'),false);
- assert.equal(p.outfits.find(x=>x.id==='flower').available,false);
+ p.visit('objet/plante-fleur');assert.equal(p.unlockedOutfit('flower'),true);
  assert.deepEqual(Array.from(p.outfits.find(x=>x.id==='flower').pieces),['jacket-floral','dress-floral','bag-blue-floral']);
  assert.equal(p.outfits.find(x=>x.id==='tresors').values.bagAccessories,'charm-treasures');
  p.visit('night');assert.equal(p.unlockedOutfit('night-explorer'),true);
@@ -459,3 +459,4 @@ test('flower look awaits the future plant and treasures use the beaded bunny cha
  b.p.feat('kodama-4');b.p.feat('kodama-5');a.emit('storage',{key:a.p.KEY});
  assert(a.p.unlockedOutfit('mononoke'));assert(browser({storage}).p.unlockedOutfit('mononoke'));
  });
+

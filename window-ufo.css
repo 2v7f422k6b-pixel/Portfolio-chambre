@@ -7,4 +7,7 @@
   10%{opacity:1;transform:translate(210px,0)}
   10.01%,100%{opacity:0;transform:translate(210px,0)}
 }
-@media(prefers-reduced-motion:reduce){#window-life #window-ufo{animation:none;opacity:1;transform:translate(55px,0)}}
+#window-life #window-ufo[data-preview="true"]{animation-name:nana-ufo-preview;animation-duration:12s;animation-delay:0s}
+@keyframes nana-ufo-preview{0%{opacity:1;transform:translate(-100px,0)}37.5%{opacity:1;transform:translate(55px,-8px)}75%{opacity:1;transform:translate(210px,0)}75.01%,100%{opacity:0;transform:translate(210px,0)}}
+@media(prefers-reduced-motion:reduce){#window-life #window-ufo,#window-life #window-ufo[data-preview="true"]{animation:none;opacity:1;transform:translate(55px,0)}}
+

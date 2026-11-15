@@ -41,7 +41,8 @@
     ['kero','Kéro','IMG_7131.png',null,'kero',49],
     ['pokeball','Pokéball',null,'[data-room-zone-id="pokeball"]',null,50],
     ['volkswagen','Van Volkswagen',null,'[data-room-zone-id="volkswagen"]',null,51],
-    ['preacher-dog','Chien Preacher',null,'[data-room-zone-id="preacher-dog"]',null,52]
+    ['preacher-dog','Chien Preacher',null,'[data-room-zone-id="preacher-dog"]',null,52],
+    ['plante-fleur','Plante suspendue',null,'[data-room-zone-id="plante-fleur"]',null,53]
   ].map(([id,label,file,selector,destination,number],i) => ({
     id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -67,13 +68,14 @@
   // The mirror itself and all its editor settings remain available to the artist.
   const sakuraShelf=document.getElementById('sakura-shelf-art');
   if(sakuraShelf)svg.appendChild(sakuraShelf);
-  for(const id of ['room-pokeball','room-volkswagen','room-preacher-dog']){const object=document.getElementById(id);if(object)svg.appendChild(object);}
+  for(const id of ['room-pokeball','room-volkswagen','room-preacher-dog','room-hanging-plant']){const object=document.getElementById(id);if(object)svg.appendChild(object);}
 
   // A single discovery works in either theme and persists before future pieces arrive.
   const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake',volkswagen:'olive-van-started','preacher-dog':'preacher-dog'};
   svg.addEventListener('click',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
     const id=target?.dataset.roomZoneId,feat=outfitDiscoveries[id];
+    if(id==='plante-fleur'){event.preventDefault();event.stopImmediatePropagation();window.NanaProgress?.visit('objet/plante-fleur');return;}
     if(!feat)return;
     event.preventDefault();event.stopImmediatePropagation();
     window.NanaProgress?.visit('objet/'+id);
@@ -83,7 +85,7 @@
   },true);
   svg.addEventListener('keydown',event=>{
     const target=event.target.closest?.('polygon[data-room-zone-id]');
-    if(!['Enter',' '].includes(event.key)||!outfitDiscoveries[target?.dataset.roomZoneId])return;
+    if(!['Enter',' '].includes(event.key)||(!outfitDiscoveries[target?.dataset.roomZoneId]&&target?.dataset.roomZoneId!=='plante-fleur'))return;
     event.preventDefault();event.stopImmediatePropagation();
     event.target.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
   },true);
@@ -270,4 +272,5 @@
   batch();
   broadcast();
 })();
+
 
