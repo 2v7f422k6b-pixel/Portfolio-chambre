@@ -5,6 +5,14 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Helly five-piece collection unlocks through Macrodata Refinement and supports creator preview',()=>{
+ const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='severance');
+ assert.equal(outfit.pieces.length,5);assert.equal(Object.values(outfit.values).length,5);
+ assert.equal(p.unlockedOutfit('severance'),false);p.feat('mononoke-kodama');assert.equal(p.unlockedOutfit('severance'),false);
+ p.feat('severance-refined');assert.equal(p.unlockedOutfit('severance'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('severance'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('severance',true),true);
+});
 test('Mononoke twelve-piece collection is gated by the last Kodama and supports creator previews',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='mononoke');
  assert.equal(outfit.pieces.length,12);assert.equal(Object.values(outfit.values).length+outfit.makeup.length,12);
