@@ -607,6 +607,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#lena-de-firmas", "name": "Léna de Firmas", "alternateName": "Nana", "url": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/", "jobTitle": "Illustration, écriture & communication musicale", "sameAs": ["https://www.instagram.com/nanacolorstudio/", "https://fr.linkedin.com/in/lena-de-firmas", "https://www.malt.fr/profile/lenadefirmas"]}, {"@type": "WebSite", "@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#website", "url": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/", "name": "Nana Color Studio", "alternateName": "Portfolio de Léna de Firmas", "creator": {"@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#lena-de-firmas"}}, {"@type": "WebPage", "@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#webpage", "url": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/", "name": "Léna de Firmas — Illustration, écriture & communication musicale | Nana Color Studio", "description": "Le portfolio de Léna de Firmas, alias Nana Color Studio : illustrations, animations, écriture et communication musicale pour les artistes et les marques.", "inLanguage": "fr", "isPartOf": {"@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#website"}, "about": {"@id": "https://2v7f422k6b-pixel.github.io/Portfolio-chambre/#lena-de-firmas"}}]}</script>
 <link rel="stylesheet" href="portfolio-seo.css?v=20261112-1">
+  <link rel="stylesheet" href="paprika-butterfly.css?v=20261115-1">
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -826,7 +827,21 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             <path class="cat-heart cat-heart--two" d="M 600 578 C 589 568 591 563 597 566 Q 600 567 601 570 C 606 562 613 565 611 571 Q 609 576 600 578 Z"/>
           </g>
           </svg>
-
+          <button id="paprika-butterfly" type="button" aria-label="Papillon — découvrir la tenue Paprika">
+            <svg viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+              <defs><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="25" result="outer"/>
+                <feComposite in="outer" in2="SourceAlpha" operator="out" result="edge"/>
+                <feFlood flood-color="#fff" result="ink"/>
+                <feComposite in="ink" in2="edge" operator="in" result="white-edge"/>
+                <feGaussianBlur in="white-edge" stdDeviation="30" result="glow"/>
+                <feMerge><feMergeNode in="glow"/><feMergeNode in="white-edge"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter></defs>
+              <image class="butterfly-wing butterfly-wing--left" data-resource-mode="play" data-resource-href="assets/IMG_7137.png" width="1000" height="1000"/>
+              <image class="butterfly-wing butterfly-wing--right" data-resource-mode="play" data-resource-href="assets/IMG_7136.png" width="1000" height="1000"/>
+              <image class="butterfly-body" data-resource-mode="play" data-resource-href="assets/IMG_7138.png" width="1000" height="1000"/>
+            </svg>
+          </button>
 
         </div>
         <div class="play-caption">Tap the objects to explore · Open the iMac to enter Work Mode</div>
@@ -866,7 +881,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
   <script src="nana-site-settings.js?v=20261112-blog-work-1"></script>
-  <script src="nana-progress.js?v=20261115-kero" defer></script>
+  <script src="nana-progress.js?v=20261115-paprika" defer></script>
   <script src="nana-keepsakes.js?v=20261110-selected-1" defer></script>
   <script src="app.js?v=20261113-dressing-close-20261113-dressing-20261112-work-games-1" defer></script>
   <script src="do-nothing-club.js?v=20261108-journal-1" defer></script>
@@ -994,7 +1009,8 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261112-autosave-2"></script>
   <script src="nana-admin.js?v=20261113-editor-help-20261113-private-dressing-20261112-autosave-2" defer></script>
-<script src="nana-discoveries.js?v=20261109-tight-room-zones" defer></script>
+<script src="paprika-butterfly.js?v=20261115-1" defer></script>
+<script src="nana-discoveries.js?v=20261115-paprika" defer></script>
   <script src="dreamlab-launcher.js?v=20261110-selected-1" defer></script>
 
 <script id="nana-minilab-day-layer">

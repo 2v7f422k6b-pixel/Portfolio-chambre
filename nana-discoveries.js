@@ -10,7 +10,7 @@
     .map(el => 'poster:' + el.dataset.index);
   const objects = (window.NANA_ROOM_ZONES || []).map(zone => 'object:' + zone.id);
   // Only reachable room objects count; the old flower-gallery shortcut was removed.
-  const required = new Set([...posters, ...objects, 'mirror', 'wall-lamp', 'fortune-cookie']);
+  const required = new Set([...posters, ...objects, 'mirror', 'wall-lamp', 'fortune-cookie', 'paprika-butterfly']);
   if (!required.size) return;
 
   let stored = {};
@@ -46,7 +46,9 @@
   }
 
   function idForClick(target) {
-    if (!(target instanceof Element) || !svg.contains(target)) return null;
+    if (!(target instanceof Element)) return null;
+    if(target.closest('#paprika-butterfly'))return 'paprika-butterfly';
+    if(!svg.contains(target))return null;
     const zone = target.closest('[data-room-zone-id]');
     if (zone) return 'object:' + zone.dataset.roomZoneId;
     const poster = target.closest('polygon[data-type="poster"]');
