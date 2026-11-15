@@ -3,7 +3,7 @@
   position:absolute;left:10%;top:30%;z-index:8;
   width:clamp(64px,5.2%,92px);aspect-ratio:1;
   padding:0!important;border:0!important;background:transparent!important;
-  box-shadow:none!important;outline:none;appearance:none;cursor:pointer;
+  box-shadow:none!important;outline:none!important;outline-offset:0!important;appearance:none;cursor:pointer;
   touch-action:manipulation;line-height:0;
   animation:paprika-flight 38s ease-in-out infinite;
 }
