@@ -188,7 +188,7 @@ function create({source,changed}){
   const outEntry=entries.find(e=>e.id===outer),z=outEntry?.z;
   const result=entries.map(e=>{if(e.role==='held-wrist'){const c=hands(s,entries,false,e.src);return {...e,canvas:c||undefined};}if(!e.id||e.hood||e.canvas)return {...e};
    const key=Object.keys(s).find(k=>s[k]===e.id);
-   if(key==='shoes'&&s.pants&&['shoes-boots','shoes-dj','shoes-green','shoes-george-sand'].includes(e.id)){const c=boots(e.id,s.pants);return {...e,canvas:c||undefined};}
+   if(key==='shoes'&&s.pants&&['shoes-boots','shoes-dj','shoes-green','shoes-george-sand','shoes-olive'].includes(e.id)){const c=boots(e.id,s.pants);return {...e,canvas:c||undefined};}
    if(['top-ganni-knit','jacket-floral'].includes(outer)&&e.id!==outer&&e.z<z&&['tops','sheer','dresses'].includes(key)){const c=underVest(e.id,outer);if(c)return {...e,canvas:c,clip:null,fit:null};}
    // Hands occlude the original lower garment; never reshape it to clear wrists.
    if(['pants','skirts','overalls'].includes(key)){return {...e,clip:null,localClip:null,rowFit:null,fit:null};}

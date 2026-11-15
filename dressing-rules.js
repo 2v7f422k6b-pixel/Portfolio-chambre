@@ -10,6 +10,7 @@
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='jewelry-olive-wristbands')return 'bracelets';
     if(id==='accessory-gokinjo-gloves')return 'gloves';
     if(id==='head-gokinjo-bobbles')return 'clips';
     if(id==='top-hachi-turtleneck')return 'sheer';
@@ -27,7 +28,7 @@
     const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
     if(fixed[id])return fixed[id];
     if(id.startsWith('held-'))return 'handObject';
-    if(['head-oval-glasses','head-pink-glasses'].includes(id))return 'glasses';
+    if(['head-oval-glasses','head-pink-glasses','head-olive-glasses'].includes(id))return 'glasses';
     if(id==='head-miffy-clips')return 'clips';
     if(['head-star-headphones','head-cassette-green'].includes(id))return 'headphones';
     if(id.startsWith('head-'))return id==='head-airpods'?'headphones':['head-stars','head-shining-flower'].includes(id)?'clips':'hat';

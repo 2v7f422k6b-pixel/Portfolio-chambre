@@ -6,6 +6,16 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
 const env={window:{}};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);
 const rules=env.window.NanaWardrobeRules;
+test('Olive Hoover clothes and accessories coexist in either selection order',()=>{
+ const pieces=['top-olive','pants-olive-shorts','shoes-olive','jewelry-olive-wristbands','head-olive-glasses'];
+ for(const order of [pieces,[...pieces].reverse()]){
+  const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);
+  assert.equal(s.tops,'top-olive');assert.equal(s.pants,'pants-olive-shorts');assert.equal(s.shoes,'shoes-olive');
+  assert.equal(s.bracelets,'jewelry-olive-wristbands');assert.equal(s.glasses,'head-olive-glasses');
+  rules.choose(s,'head-band-pink',data.items);assert.equal(s.glasses,'head-olive-glasses');
+ }
+ assert.equal(data.items['head-olive-glasses'][1],'jewelry');
+});
 test('Gokinjo pinafore keeps its turtleneck in either order and yellow gloves use the glove slot',()=>{
  for(const order of [['top-gokinjo','dress-gokinjo'],['dress-gokinjo','top-gokinjo']]){
   const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);

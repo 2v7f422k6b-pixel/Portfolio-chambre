@@ -5,6 +5,15 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Olive Hoover five-piece collection unlocks only with its yellow miniature van',()=>{
+ const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='little-miss-sunshine');
+ assert.equal(outfit.pieces.length,5);assert.equal(Object.values(outfit.values).length,5);
+ assert.equal(p.unlockedOutfit('little-miss-sunshine'),false);
+ p.feat('gokinjo-happy-berry');p.feat('kero-awake');assert.equal(p.unlockedOutfit('little-miss-sunshine'),false);
+ p.feat('olive-van-started');assert.equal(p.unlockedOutfit('little-miss-sunshine'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('little-miss-sunshine'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('little-miss-sunshine',true),true);
+});
 test('Gokinjo six-piece collection is gated by its Happy Berry cushion',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='gokinjo');
  assert.equal(outfit.pieces.length,6);assert.equal(Object.values(outfit.values).length,6);
