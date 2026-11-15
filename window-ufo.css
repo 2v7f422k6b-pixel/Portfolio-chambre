@@ -1,13 +1,21 @@
-/* The original full-scene export stays registered to the room, clipped by its glass. */
-#window-life #window-ufo{pointer-events:none;opacity:0;transform-box:view-box;animation:nana-ufo-passage 90s linear 8s infinite}
-#window-life #window-ufo.is-idle,#app:not(.mode-play) #window-life #window-ufo{animation-play-state:paused}
-@keyframes nana-ufo-passage{
-  0%{opacity:1;transform:translate(-100px,0)}
-  5%{opacity:1;transform:translate(55px,-8px)}
-  10%{opacity:1;transform:translate(210px,0)}
-  10.01%,100%{opacity:0;transform:translate(210px,0)}
-}
-#window-life #window-ufo[data-preview="true"]{animation-name:nana-ufo-preview;animation-duration:12s;animation-delay:0s}
-@keyframes nana-ufo-preview{0%{opacity:1;transform:translate(-100px,0)}37.5%{opacity:1;transform:translate(55px,-8px)}75%{opacity:1;transform:translate(210px,0)}75.01%,100%{opacity:0;transform:translate(210px,0)}}
-@media(prefers-reduced-motion:reduce){#window-life #window-ufo,#window-life #window-ufo[data-preview="true"]{animation:none;opacity:1;transform:translate(55px,0)}}
-
+/* Only the supplied night-time visitor and its local light cross the glass. */
+#play-scene > #ufo-window-layer{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
+#ufo-window-layer #window-ufo{opacity:0;pointer-events:none;transform:translate(-110px,0);transform-box:view-box}
+html[data-theme="night"] #ufo-window-layer #window-ufo:is([data-phase="arriving"],[data-phase="observing"],[data-phase="leaving"]){opacity:1}
+#window-ufo[data-phase="arriving"]{animation:ufo-arrive 3s cubic-bezier(.16,.7,.2,1) both}
+#window-ufo[data-phase="observing"]{transform:translate(55px,-5px)}
+#window-ufo[data-phase="observing"] .ufo-hover{animation:ufo-curiosity 4s ease-in-out infinite;transform-box:view-box;transform-origin:1016px 123px}
+#window-ufo[data-phase="leaving"]{animation:ufo-escape .8s cubic-bezier(.55,0,1,.45) both}
+#window-ufo[data-phase="leaving"] .ufo-neon{animation:ufo-startle .65s ease-out both}
+#window-ufo .ufo-neon{opacity:.6;animation:ufo-neon-breath 2.7s ease-in-out infinite}
+#window-ufo .ufo-hit{pointer-events:none;fill:transparent!important;stroke:none!important;outline:none!important;cursor:pointer}
+html[data-theme="night"] #window-ufo:is([data-phase="arriving"],[data-phase="observing"]) .ufo-hit{pointer-events:all}
+#window-ufo .ufo-outline{opacity:0}
+#window-ufo:has(.ufo-hit:hover) .ufo-outline,#window-ufo:focus-within .ufo-outline{opacity:1}
+#window-ufo.is-idle,#window-ufo.is-idle *{animation-play-state:paused!important}
+@keyframes ufo-arrive{from{transform:translate(-110px,0)}to{transform:translate(55px,-5px)}}
+@keyframes ufo-curiosity{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-3px) rotate(-7deg)}45%{transform:translateY(1px) rotate(6deg)}70%{transform:translateY(-2px) rotate(-3deg)}}
+@keyframes ufo-neon-breath{0%,100%{opacity:.45}50%{opacity:.8}}
+@keyframes ufo-startle{0%{opacity:.6}25%{opacity:1}100%{opacity:.2}}
+@keyframes ufo-escape{0%{transform:translate(55px,-5px)}20%{transform:translate(43px,-8px)}100%{transform:translate(270px,-70px)}}
+@media(prefers-reduced-motion:reduce){#ufo-window-layer #window-ufo,#window-ufo *{animation:none!important}#ufo-window-layer #window-ufo{transform:translate(55px,-5px)}}
