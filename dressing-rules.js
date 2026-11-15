@@ -3,13 +3,19 @@
   'use strict';
   const sweaters=new Set(['top-pullover','top-lime','top-bear','top-bow-knit']);
   const cardigans=new Set(['jacket-miffy-knit','jacket-green-bolero','jacket-blue','jacket-ganni-knit','jacket-blue-open','jacket-pink-button','jacket-red-button']);
-  const vests=new Set(['top-ganni-knit','vest-george-sand','jacket-floral']);
+  const vests=new Set(['top-mononoke-tabard','top-ganni-knit','vest-george-sand','jacket-floral']);
   const sparkles=new Set(['top-sparkle-pink','top-sparkle-charcoal']);
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
   const hairlessHeads=new Set(['head-clown-wig','head-sonny-rabbit','head-pink-hood']);
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='cape-mononoke')return 'cape';
+    if(id==='top-mononoke-tabard')return 'vest';
+    if(id==='head-mononoke-band')return 'clips';
+    if(id==='jewelry-mononoke-earrings')return 'earrings';
+    if(id==='jewelry-mononoke-ashitaka')return 'pendant';
+    if(id==='jewelry-mononoke-armbands')return 'bracelets';
     if(id==='accessory-sakura-gloves')return 'gloves';
     if(id==='accessory-sakura-wings')return 'wings';
     if(id==='hosiery-sakura-main')return 'socks';

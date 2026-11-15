@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
-test('thirteen held props use three distinct, aligned artist exports and retain stable IDs',()=>{
- assert.equal(Object.keys(data.heldParts).length,13);
+test('fourteen held props use three distinct, aligned artist exports and retain stable IDs',()=>{
+ assert.equal(Object.keys(data.heldParts).length,14);
  for(const [id,parts]of Object.entries(data.heldParts)){
   assert(data.items[id]);assert.equal(data.fitted[id],parts.object);
   assert.equal(data.sprites[id],parts.object);
