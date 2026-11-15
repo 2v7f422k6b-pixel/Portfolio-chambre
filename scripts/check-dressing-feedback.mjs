@@ -6,6 +6,16 @@ const html=readFileSync(new URL('../about-me.html',import.meta.url),'utf8');
 const data=JSON.parse(html.match(/id="assets">(.*?)<\/script>/s)[1]);
 const env={window:{}};vm.runInNewContext(readFileSync(new URL('../dressing-rules.js',import.meta.url),'utf8'),env);
 const rules=env.window.NanaWardrobeRules;
+test('Paprika pieces remain independently selectable and share the waist accessory slot',()=>{
+ const pieces=['top-paprika','pants-paprika','jewelry-paprika-belt','shoes-paprika'];
+ for(const order of [pieces,[...pieces].reverse()]){
+  const s={makeup:new Set()};for(const id of order)rules.choose(s,id,data.items);
+  assert.equal(s.tops,'top-paprika');assert.equal(s.pants,'pants-paprika');
+  assert.equal(s.belt,'jewelry-paprika-belt');assert.equal(s.shoes,'shoes-paprika');
+  rules.choose(s,'jewelry-hachi-belt',data.items);assert.equal(s.belt,'jewelry-hachi-belt');
+  assert.equal(s.pants,'pants-paprika');
+ }
+});
 test('Hachi turtleneck, Seven tee, striped stockings, warmers and belt coexist in every order',()=>{
  const pieces=['top-hachi-turtleneck','top-hachi-seven','hosiery-hachi-stripes','hosiery-hachi-legwarmers','jewelry-hachi-belt'];
  for(const order of [pieces,[...pieces].reverse()]){

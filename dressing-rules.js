@@ -13,7 +13,7 @@
     if(id==='top-hachi-turtleneck')return 'sheer';
     if(id==='hosiery-hachi-stripes')return 'socks';
     if(id==='hosiery-hachi-legwarmers')return 'legwarmers';
-    if(id==='jewelry-hachi-belt')return 'belt';
+    if(['jewelry-hachi-belt','jewelry-paprika-belt'].includes(id))return 'belt';
     if(['jewelry-coffee-lanyard','jewelry-piano-lanyard'].includes(id))return 'bagAccessories';
     if(id==='jewelry-flower-long')return 'bags';
     if(['hosiery-dj','hosiery-blue-lace'].includes(id))return 'hosieryOverlay';

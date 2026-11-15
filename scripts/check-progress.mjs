@@ -5,6 +5,16 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Paprika four-piece collection requires the butterfly, independently of Hachi',()=>{
+ const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='paprika');
+ assert.equal(outfit.pieces.length,4);assert.equal(Object.values(outfit.values).length,4);
+ assert.equal(p.unlockedOutfit('paprika'),false);
+ p.visit('jeu/dressing');p.feat('nana-toast');assert.equal(p.unlockedOutfit('paprika'),false);
+ p.feat('paprika-butterfly');assert.equal(p.unlockedOutfit('paprika'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('paprika'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('paprika',true),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('paprika'),false);
+});
 test('Hachi collection has nine pieces, locks until the strawberry toast and persists together',()=>{
  const storage=new Map(),{p}=browser({storage}),hachi=p.outfits.find(o=>o.id==='hachi');
  assert.equal(hachi.pieces.length,9);assert.equal(Object.values(hachi.values).length,9);

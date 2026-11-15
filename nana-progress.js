@@ -34,6 +34,7 @@
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
+    {id:'paprika',name:pair('Paprika','Paprika'),feat:'paprika-butterfly',image:crop('assets/dressing-lena/IMG_7020.png',[657,750,628,697],2048,3072),pieces:["pants-paprika", "jewelry-paprika-belt", "top-paprika", "shoes-paprika"],values:{"tops": "top-paprika", "pants": "pants-paprika", "belt": "jewelry-paprika-belt", "shoes": "shoes-paprika"},rule:pair('Cliquer sur le papillon bleu qui traverse la chambre — interaction à venir.','Click the blue butterfly flying through the room — interaction coming soon.')},
     {id:'hachi',name:pair('Hachi — Nana','Hachi — Nana'),feat:'nana-toast',image:crop('assets/dressing-lena/IMG_6989.png',[670,743,596,627],2048,3072),pieces:["hosiery-hachi-stripes", "shoes-hachi-pompoms", "hosiery-hachi-legwarmers", "skirt-hachi", "held-hachi-vivienne", "top-hachi-turtleneck", "top-hachi-seven", "jewelry-hachi-belt", "scarf-hachi"],values:{"sheer": "top-hachi-turtleneck", "tops": "top-hachi-seven", "skirts": "skirt-hachi", "socks": "hosiery-hachi-stripes", "legwarmers": "hosiery-hachi-legwarmers", "shoes": "shoes-hachi-pompoms", "handObject": "held-hachi-vivienne", "belt": "jewelry-hachi-belt", "scarves": "scarf-hachi"},rule:pair('Faire trinquer les deux verres à fraises — interaction à venir.','Clink the two strawberry glasses — interaction coming soon.')},
     {id:'smiley',name:pair('Sourire fleuri','Flower smile'),visit:'objet/lampe-fleur',image:crop('assets/dressing-lena/IMG_6721.png',[640,728,669,840],2048,3072),pieces:['top-smiley'],values:{tops:'top-smiley'},rule:pair('Appuyer sur la lampe fleur.','Press the flower lamp.')},
     {id:'tamagotchi',name:pair('Petit compagnon','Little companion'),featsAny:['care-feed','care-sleep','care-draw','care-music','care-cuddle'],image:crop('assets/dressing-lena/IMG_6726.png',[1216,1650,139,262],2048,3072),pieces:['held-tamagotchi'],values:{handObject:'held-tamagotchi'},rule:pair('Jouer avec le Tamagotchi : effectuer une première action.','Play with the Tamagotchi: try your first action.')},
@@ -62,7 +63,7 @@
     'objet/gearnews-series':'object:ring-light', 'objet/imac':'object:imac',
     'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
   };
-  const allowedFeats = new Set(['nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
