@@ -5,6 +5,16 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Sakura pyjamas are a distinct two-piece collection gated by Kero',()=>{
+ const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='sakura-pyjama');
+ assert.equal(outfit.pieces.length,2);assert.equal(Object.values(outfit.values).length,2);
+ assert.equal(outfit.values.tops,'top-sakura-pyjama');assert.equal(outfit.values.pants,'pants-sakura-pyjama');
+ assert.equal(p.unlockedOutfit('sakura-pyjama'),false);
+ p.feat('paprika-butterfly');p.feat('nana-toast');assert.equal(p.unlockedOutfit('sakura-pyjama'),false);
+ p.feat('kero-awake');assert.equal(p.unlockedOutfit('sakura-pyjama'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('sakura-pyjama'),true);
+ assert.equal(browser({creator:true}).p.unlockedOutfit('sakura-pyjama',true),true);
+});
 test('Paprika four-piece collection requires the butterfly, independently of Hachi',()=>{
  const storage=new Map(),{p}=browser({storage}),outfit=p.outfits.find(o=>o.id==='paprika');
  assert.equal(outfit.pieces.length,4);assert.equal(Object.values(outfit.values).length,4);
