@@ -35,7 +35,8 @@
     ['sonny-angel','Sonny Angel','SONNY ANGEL.PNG',null],
     ['bretzel','Vase bretzel','BRETZEL.PNG',null,'twist-reality'],
     // Keep 45 retired (former flower-gallery shortcut), preserving existing object IDs.
-    ['cv','CV',null,'[data-cv-paper]',null,46]
+    ['cv','CV',null,'[data-cv-paper]',null,46],
+    ['happy-berry','Coussin Happy Berry','IMG_7121.png',null,'happy-berry',47]
   ].map(([id,label,file,selector,destination,number],i) => ({
     id,label,file,selector,destination,number:number ?? 16+i,
     element: selector ? svg.querySelector('polygon'+selector) : null,
@@ -57,6 +58,20 @@
   const toast=document.getElementById('toast');
   let toastTimer;
   const scene = document.getElementById('play-scene');
+
+  // One discovery in either theme unlocks the complete Mikako collection.
+  svg.addEventListener('click',event=>{
+    const cushion=event.target.closest?.('polygon[data-room-zone-id="happy-berry"]');
+    if(!cushion)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    window.NanaProgress?.visit('objet/happy-berry');
+    window.NanaProgress?.feat('gokinjo-happy-berry');
+  },true);
+  svg.addEventListener('keydown',event=>{
+    if(!['Enter',' '].includes(event.key)||!event.target.closest?.('polygon[data-room-zone-id="happy-berry"]'))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    event.target.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+  },true);
 
   // One quiet interaction for the vase: a single hand-drawn poppy petal falls.
   // No modal, message, or fortune is attached to it.
@@ -191,6 +206,10 @@
         poly.setAttribute('points',hit.points);
         poly.setAttribute('aria-label',zone.id==='vase' ? 'Vase de coquelicots — faire tomber un pétale' : zone.destination === 'toggle-theme' ? zone.label+' — activer ou désactiver le mode nuit' : zone.destination ? zone.label+' — ouvrir '+({ 'reading-room':'La libraire vous conseille',souvenues:'Les Souvenues','word-lab':'Le laboratoire des mots',coloring:'le jeu de coloriage'}[zone.destination]||zone.label) : zone.label+' — destination à définir');
         poly.setAttribute('tabindex','0');
+        if(zone.id==='happy-berry'){
+          poly.setAttribute('role','button');
+          poly.setAttribute('aria-label','Coussin Happy Berry — découvrir la tenue de Mikako');
+        }
         if(zone.id==='bretzel') poly.setAttribute('aria-label','Vase bretzel — Twist Reality');
         poly.dataset.roomZoneId=zone.id;
         if(zone.id==='vase') poly.dataset.vasePetal='';
@@ -201,7 +220,7 @@
         else if(zone.destination) poly.dataset.open=zone.destination;
         else poly.dataset.zonePending='';
         // Figurines and vase must stay clickable, even when other object zones overlap.
-        if(zone.id==='vase'||zone.id==='miffy'||zone.id==='sonny-angel') svg.appendChild(poly);
+        if(['vase','miffy','sonny-angel','happy-berry'].includes(zone.id)) svg.appendChild(poly);
         else if(firstPoster)svg.insertBefore(poly,firstPoster);
         else svg.appendChild(poly);
         zone.element=poly;

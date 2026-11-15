@@ -17,6 +17,8 @@
     ...['BOOKS 2.PNG', 'BAMBI LAMP.PNG', 'MARSHALL.PNG', 'CDS.PNG'].map(file => [file, 1]),
     ...['BOOKS 1.PNG', 'SONNY ANGEL.PNG', 'JELLY LAMP.PNG'].map(file => [file, 2])
   ]);
+  // Both Happy Berry exports share exactly the same silhouette and registration.
+  files.push('IMG_7121.png');
   const layers = new Map();
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
@@ -132,6 +134,14 @@
     client = [event.clientX, event.clientY]; updatePointer();
   }, {passive: true});
   scene.addEventListener('pointerleave', () => {pointer = client = target = null; schedule();});
+  // Touch has no hover: show the same white silhouette briefly on a cushion tap.
+  let cushionTapTimer;
+  scene.addEventListener('pointerdown', event => {
+    if(event.pointerType!=='touch'||!event.target.closest?.('[data-room-zone-id="happy-berry"]'))return;
+    clearTimeout(cushionTapTimer);
+    client=[event.clientX,event.clientY];updatePointer();
+    cushionTapTimer=setTimeout(()=>{pointer=client=target=null;schedule();},900);
+  },{passive:true});
   scene.addEventListener('pointercancel', () => {pointer = client = target = null; schedule();});
   document.getElementById('play-viewport')?.addEventListener('scroll', updatePointer, {passive: true});
   window.addEventListener('resize', updatePointer, {passive: true});

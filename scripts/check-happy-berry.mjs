@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+test('Happy Berry room zone unlocks Gokinjo by click, Enter and Space, without opening another app',()=>{
+ const events=new Map(),actions=[];
+ const svg={querySelector:()=>null,addEventListener(type,fn){const all=events.get(type)||[];all.push(fn);events.set(type,all);}};
+ const window={NanaResources:{enqueueImage(){}},NanaProgress:{visit:r=>actions.push(['visit',r]),feat:r=>actions.push(['feat',r])},dispatchEvent(){}};
+ const document={getElementById:id=>id==='hotspots'?svg:null};
+ class Event{constructor(type,options){this.type=type;Object.assign(this,options);}}
+ vm.runInNewContext(readFileSync(new URL('../room-zone-registry.js',import.meta.url),'utf8'),{window,document,setTimeout(){},Event,MouseEvent:Event});
+ const zone=window.NANA_ROOM_ZONES.find(z=>z.id==='happy-berry');assert.equal(zone.file,'IMG_7121.png');assert.equal(zone.number,47);
+ const target={closest:selector=>selector.includes('happy-berry')?target:null,dispatchEvent:e=>dispatch(e.type)};
+ function dispatch(type,key){const event={type,key,target,preventDefault(){},stopImmediatePropagation(){this.stopped=true;}};for(const fn of events.get(type)||[]){fn(event);if(event.stopped)break;}}
+ for(const [type,key] of [['click'],['keydown','Enter'],['keydown',' ']]){actions.length=0;dispatch(type,key);assert.deepEqual(actions,[['visit','objet/happy-berry'],['feat','gokinjo-happy-berry']]);}
+ actions.length=0;dispatch('keydown','Escape');assert.equal(actions.length,0);
+});
+test('Happy Berry day and night exports keep the same full-room canvas and use the shared white contour',()=>{
+ for(const n of [7121,7122]){const file=readFileSync(new URL('../assets/IMG_'+n+'.png',import.meta.url));assert.equal(file.readUInt32BE(16),3072);assert.equal(file.readUInt32BE(20),1732);}
+ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ assert.match(html,/class="berry-day"[^>]+data-resource-theme="day"[^>]+IMG_7121/);
+ assert.match(html,/class="berry-night"[^>]+data-resource-theme="night"[^>]+IMG_7122/);
+ const outlines=readFileSync(new URL('../pixel-outlines.js',import.meta.url),'utf8');assert.match(outlines,/files.push\('IMG_7121.png'\)/);assert.match(outlines,/cushionTapTimer/);
+});
