@@ -4,9 +4,9 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 test('butterfly pauses on touch, respects page visibility and unlocks Paprika only on activation',()=>{
  const events=new Map(),docEvents=new Map(),classes=new Set(),actions=[],timers=new Map();let next=0;
- const button={setAttribute(k,v){this[k]=v},classList:{add:c=>classes.add(c),remove:c=>classes.delete(c),toggle(c,on){on?classes.add(c):classes.delete(c)}},addEventListener:(name,fn)=>events.set(name,fn)};
+ const button={parentElement:{clientWidth:1200,clientHeight:800},style:{setProperty(){}},setAttribute(k,v){this[k]=v},classList:{add:c=>classes.add(c),remove:c=>classes.delete(c),toggle(c,on){on?classes.add(c):classes.delete(c)}},addEventListener:(name,fn)=>events.set(name,fn)};
  const document={documentElement:{lang:'fr'},hidden:false,getElementById:()=>button,addEventListener:(name,fn)=>docEvents.set(name,fn)};
- vm.runInNewContext(readFileSync(new URL('../paprika-butterfly.js',import.meta.url),'utf8'),{document,window:{NanaProgress:{visit:id=>actions.push(['visit',id]),feat:id=>actions.push(['feat',id])}},setTimeout:fn=>{timers.set(++next,fn);return next},clearTimeout:id=>timers.delete(id)});
+ vm.runInNewContext(readFileSync(new URL('../paprika-butterfly.js',import.meta.url),'utf8'),{document,window:{addEventListener(){},NanaProgress:{visit:id=>actions.push(['visit',id]),feat:id=>actions.push(['feat',id])}},setTimeout:fn=>{timers.set(++next,fn);return next},clearTimeout:id=>timers.delete(id)});
  events.get('pointerdown')();assert(classes.has('is-paused'));assert.equal(actions.length,0);
  events.get('pointerup')();for(const fn of timers.values())fn();assert(!classes.has('is-paused'));
  document.hidden=true;docEvents.get('visibilitychange')();assert(classes.has('is-idle'));
