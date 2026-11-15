@@ -67,6 +67,7 @@
   // The mirror itself and all its editor settings remain available to the artist.
   const sakuraShelf=document.getElementById('sakura-shelf-art');
   if(sakuraShelf)svg.appendChild(sakuraShelf);
+  for(const id of ['room-pokeball','room-volkswagen','room-preacher-dog']){const object=document.getElementById(id);if(object)svg.appendChild(object);}
 
   // A single discovery works in either theme and persists before future pieces arrive.
   const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake',volkswagen:'olive-van-started','preacher-dog':'preacher-dog'};
