@@ -5,6 +5,7 @@
   padding:0!important;border:0!important;background:transparent!important;
   box-shadow:none!important;outline:none!important;outline-offset:0!important;appearance:none;cursor:pointer;
   touch-action:manipulation;line-height:0;
+  will-change:transform;
   animation:paprika-flight 38s ease-in-out infinite;
 }
 #paprika-butterfly svg {display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
@@ -20,13 +21,14 @@
 #hotspots.hotspot-guide-on ~ #paprika-butterfly svg,
 #hotspots.hotspot-peek ~ #paprika-butterfly svg {filter:url(#paprika-butterfly-ring)}
 @keyframes paprika-wings {from{transform:scaleX(1)}to{transform:scaleX(.18)}}
+/* Translate a composited layer; never relayout the room on every frame. */
 @keyframes paprika-flight {
-  0%,100%{left:10%;top:30%;transform:rotate(-14deg)}
-  15%{left:27%;top:19%;transform:rotate(8deg)}
-  34%{left:48%;top:37%;transform:rotate(-7deg)}
-  52%{left:76%;top:24%;transform:rotate(12deg)}
-  70%{left:85%;top:47%;transform:rotate(-9deg)}
-  86%{left:42%;top:56%;transform:rotate(7deg)}
+  0%,100%{transform:translate3d(0,0,0) rotate(-14deg)}
+  15%{transform:translate3d(calc(var(--flight-x, 0px)*17),calc(var(--flight-y, 0px)*-11),0) rotate(8deg)}
+  34%{transform:translate3d(calc(var(--flight-x, 0px)*38),calc(var(--flight-y, 0px)*7),0) rotate(-7deg)}
+  52%{transform:translate3d(calc(var(--flight-x, 0px)*66),calc(var(--flight-y, 0px)*-6),0) rotate(12deg)}
+  70%{transform:translate3d(calc(var(--flight-x, 0px)*75),calc(var(--flight-y, 0px)*17),0) rotate(-9deg)}
+  86%{transform:translate3d(calc(var(--flight-x, 0px)*32),calc(var(--flight-y, 0px)*26),0) rotate(7deg)}
 }
 @media(prefers-reduced-motion:reduce) {
   #play-scene #paprika-butterfly {left:54%;top:32%;transform:none;animation:none}
