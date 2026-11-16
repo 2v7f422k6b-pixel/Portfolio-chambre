@@ -1,0 +1,11 @@
+/* Only Léna's drawings: each string pivots at its original attachment. */
+#fish-mobile{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;overflow:visible}
+#fish-mobile *{pointer-events:none}
+.fish-mobile-night{display:none}
+html[data-theme="night"] .fish-mobile-day{display:none}
+html[data-theme="night"] .fish-mobile-night{display:block}
+.fish-mobile-frame{transform-box:view-box;transform-origin:777px 0;animation:fish-mobile-sway 8.6s ease-in-out infinite;--fish-angle:.65deg}
+.fish-mobile-pendant{transform-box:view-box;animation:fish-mobile-sway var(--fish-duration) ease-in-out var(--fish-delay) infinite}
+@keyframes fish-mobile-sway{0%,100%{transform:rotate(calc(-1 * var(--fish-angle)))}50%{transform:rotate(var(--fish-angle))}}
+#app:not(.mode-play) #fish-mobile g{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){#fish-mobile g{animation:none}}
