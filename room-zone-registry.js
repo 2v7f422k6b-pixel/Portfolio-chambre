@@ -48,6 +48,8 @@
     element: selector ? svg.querySelector('polygon'+selector) : null,
     center: null
   }));
+  // Retire only this pot; keep stable numbering and the other coloring entrances.
+  zones.splice(zones.findIndex(zone=>zone.id==='crayons-1'),1);
   window.NANA_ROOM_ZONES = zones;
   for (const zone of zones) {
     if (zone.element) {

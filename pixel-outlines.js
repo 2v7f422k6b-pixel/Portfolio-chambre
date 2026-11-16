@@ -4,7 +4,7 @@
   const scene = document.getElementById('play-scene'), svg = document.getElementById('hotspots');
   const hover = window.NanaRoomHover;
   if (!scene || !svg || !hover) return;
-  const files = ['IMAC.PNG','TSHIRT GABZILLA.PNG','MARSHALL.PNG','CDS.PNG','IPHONE.PNG','TAMAGOTCHI.PNG','MUG LATTE.PNG','TALE.PNG','RILAKKUMA.PNG','GUITARE.PNG','RING LIGHT.PNG','CAT.PNG','INSTAX.PNG','VASE.PNG','STARS LAMP.PNG','JELLY LAMP.PNG','CRAYONS 1.PNG','CRAYONS 2.PNG','CRAYONS 3.PNG','BOOKS 1.PNG','BOOKS 2.PNG','BOOKS 3.PNG','OFFICE LAMP.PNG','IPAD.PNG','RUG.PNG','MIFFY.PNG','BAMBI LAMP.PNG','SONNY ANGEL.PNG','BRETZEL.PNG'];
+  const files = ['IMAC.PNG','TSHIRT GABZILLA.PNG','MARSHALL.PNG','CDS.PNG','IPHONE.PNG','TAMAGOTCHI.PNG','MUG LATTE.PNG','TALE.PNG','RILAKKUMA.PNG','GUITARE.PNG','RING LIGHT.PNG','CAT.PNG','INSTAX.PNG','VASE.PNG','STARS LAMP.PNG','JELLY LAMP.PNG','CRAYONS 2.PNG','CRAYONS 3.PNG','BOOKS 1.PNG','BOOKS 2.PNG','BOOKS 3.PNG','OFFICE LAMP.PNG','IPAD.PNG','RUG.PNG','MIFFY.PNG','BAMBI LAMP.PNG','SONNY ANGEL.PNG','BRETZEL.PNG'];
   // These source tracings have wider interruptions where objects overlap.
   // Close the mask only; the visible edge still follows the supplied drawing.
   const gapRadii = {'BAMBI LAMP.PNG': 6, 'INSTAX.PNG': 12, 'GUITARE.PNG': 20,
@@ -24,7 +24,7 @@
   const layers = new Map();
   const extra = [];
   let pointer = null, client = null, target = null, queued = false;
-  const independent = '#nana-shop-bag,#nana-wall-mirror,#nana-wall-lamp,#nana-fortune-cookie,polygon[data-type="poster"]';
+  const independent = '#room-gachapon,#nana-shop-bag,#nana-wall-mirror,#nana-wall-lamp,#nana-fortune-cookie,polygon[data-type="poster"]';
   let maskedGuitar = null;
   function updateOcclusion(night) {
     const guitar = layers.get('GUITARE.PNG');

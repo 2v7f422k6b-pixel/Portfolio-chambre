@@ -1,0 +1,16 @@
+/* Coordinates keep the artist's original registration above the left pencil pot. */
+#room-gachapon{position:absolute;left:76.62760417%;top:40.87759815%;width:5.59895833%;height:17.26327945%;z-index:9;display:block;margin:0;padding:0;border:0;background:transparent;box-shadow:none;border-radius:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#room-gachapon>svg{display:block;width:100%;height:100%;overflow:visible}
+#room-gachapon:hover .gacha-art,#room-gachapon:focus-visible .gacha-art{filter:url(#nana-room-hover-ring)}
+#room-gachapon:focus-visible{outline:none}
+.gacha-handle{transform-box:fill-box;transform-origin:center}
+.gacha-ball{transform-box:fill-box;transform-origin:center}
+.gacha-prize{opacity:0;transform:translate(-43px,165px)}
+#room-gachapon.has-capsule .gacha-prize{opacity:1}
+#room-gachapon.is-turning .gacha-handle{animation:gacha-turn .8s ease-in-out}
+#room-gachapon.is-turning .gacha-ball{animation:gacha-mix .2s ease-in-out var(--gacha-delay) 4 alternate}
+#room-gachapon.is-turning .gacha-prize{animation:gacha-drop .7s .65s both}
+@keyframes gacha-turn{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes gacha-mix{from{transform:translate(-1px,0) rotate(-3deg)}to{transform:translate(1px,-3px) rotate(3deg)}}
+@keyframes gacha-drop{0%{opacity:1;transform:translate(-43px,100px)}65%{opacity:1;transform:translate(-43px,165px)}82%{opacity:1;transform:translate(-43px,157px)}100%{opacity:1;transform:translate(-43px,165px)}}
+@media(prefers-reduced-motion:reduce){#room-gachapon *{animation:none!important}}
