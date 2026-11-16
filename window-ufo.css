@@ -1,6 +1,6 @@
 /* A small GPU-composited sprite, clipped to the glass and lowered below the chime. */
 #play-scene > #ufo-window-layer{position:absolute;left:59.52096%;top:1.80467%;width:10.53892%;height:48.83227%;z-index:7;pointer-events:none;clip-path:polygon(0 8.7%,100% 0,100% 100%,0 99.5%)}
-#ufo-window-layer #window-ufo{position:absolute;left:16%;top:24%;width:54%;aspect-ratio:174/114;opacity:0;pointer-events:none;transform:translate3d(-68%,-95%,0) scale(.04);transition:transform 1.25s cubic-bezier(.16,.7,.2,1),opacity 1.25s ease}
+#ufo-window-layer #window-ufo{position:absolute;left:16%;top:31%;width:54%;aspect-ratio:174/114;opacity:0;pointer-events:none;transform:translate3d(-68%,-95%,0) scale(.04);transition:transform 1.25s cubic-bezier(.16,.7,.2,1),opacity 1.25s ease}
 html[data-theme="night"] #ufo-window-layer #window-ufo:is([data-phase="arriving"],[data-phase="observing"],[data-phase="leaving"]){opacity:1;will-change:transform}
 #ufo-window-layer #window-ufo[data-phase="arriving"]{animation:ufo-arrive 1.3s cubic-bezier(.16,.7,.2,1) both}
 #ufo-window-layer #window-ufo[data-phase="observing"]{transform:translate3d(0,0,0)}

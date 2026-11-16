@@ -143,9 +143,8 @@ Après recolorisation/remplacement de ces originaux, relancer
 
 Ouvrir la carte de Léna ajoute une entrée unique dans « Mes souvenirs ».
 `nana-card-export.js` attend l'affichage complet puis exporte le dessin et les textes
-de la carte en PNG de 1260 × 2000 pixels environ. Le lien « Ouvrir l'image » permet
-aussi l'enregistrement par le navigateur ; le partage de fichier est proposé
-uniquement si l'appareil le prend en charge. Aucun service externe ne reçoit la carte.
+de la carte en PNG de 1260 × 2000 pixels environ. Un seul petit bouton
+« Télécharger le PNG » permet de conserver l'image. Aucun service externe ne reçoit la carte.
 Les nouvelles tenues ouvrent directement `#/jeu/dressing/tenue/<id>` depuis leur
 notification. Le van et Happy Berry rejouent leur réaction et proposent la tenue
 déjà débloquée, sans ajouter de récompense en double.

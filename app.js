@@ -496,7 +496,7 @@ function openPokemonCard(){
  @keyframes nana-card-foil{0%,100%{transform:translate3d(-25%,0,0)}50%{transform:translate3d(25%,0,0)}}
  @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}}
 .nana-card-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px auto 0;max-width:440px;color:#cf123a;text-align:center}
- .nana-card-actions a,.nana-card-actions button{font:inherit;color:inherit;background:#fff2f5;padding:7px 10px;border:0;border-image:url('assets/drawn-ui/cadre_bouton.png') 20 / 3px / 0 stretch;text-decoration:none;min-height:40px;box-sizing:border-box;cursor:pointer}
+ .nana-card-actions a,.nana-card-actions button{font:inherit;font-size:14px;color:inherit;background:#fff2f5;padding:5px 9px;border:0;border-image:url('assets/drawn-ui/cadre_bouton.png') 20 / 3px / 0 stretch;text-decoration:none;min-height:32px;box-sizing:border-box;cursor:pointer}
  .nana-card-actions [hidden]{display:none!important}.nana-card-actions p{width:100%;margin:0;font-size:13px}.nana-card-actions [role=status]:empty{display:none}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
  <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
@@ -523,8 +523,6 @@ function openPokemonCard(){
  </article><div class="nana-card-actions" data-no-translate>
  <p>${saved?t('Ajoutée à Mes souvenirs dans ton carnet.','Added to My keepsakes in your notebook.'):t('Tu peux garder cette carte en PNG.','You can keep this card as a PNG.')}</p>
  <a data-card-download hidden>${t('Télécharger le PNG','Download PNG')}</a>
- <a data-card-preview target="_blank" rel="noopener" hidden>${t('Ouvrir l’image','Open image')}</a>
- <button type="button" data-card-share hidden>${t('Partager / Enregistrer l’image','Share / Save image')}</button>
  <button type="button" data-card-retry hidden>${t('Réessayer','Try again')}</button><p role="status"></p>
  </div>`,'pokemon-card');
  window.NanaCardExport?.prepare(document.querySelector('.nana-profile-card'),document.querySelector('.nana-card-actions'));

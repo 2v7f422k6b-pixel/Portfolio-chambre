@@ -72,21 +72,14 @@
   async function prepare(card,controls){
     const token=++revision,en=document.documentElement.lang==='en';
     const status=controls.querySelector('[role="status"]'),download=controls.querySelector('[data-card-download]');
-    const preview=controls.querySelector('[data-card-preview]'),share=controls.querySelector('[data-card-share]'),retry=controls.querySelector('[data-card-retry]');
+    const retry=controls.querySelector('[data-card-retry]');
     status.textContent=en?'Preparing your PNG…':'Préparation du PNG…';retry.hidden=true;
     try{
       const blob=await render(card);if(token!==revision||!card.isConnected)return;
       if(lastURL)URL.revokeObjectURL(lastURL);lastURL=URL.createObjectURL(blob);
       const filename=en?'lena-character-card.png':'carte-lena.png';
-      download.href=preview.href=lastURL;download.download=filename;download.hidden=preview.hidden=false;
+      download.href=lastURL;download.download=filename;download.hidden=false;
       status.textContent='';
-      const file=new File([blob],filename,{type:'image/png'});
-      if(navigator.canShare?.({files:[file]})){
-        share.hidden=false;share.onclick=async()=>{
-          try{await navigator.share({files:[file],title:en?'Léna’s card':'La carte de Léna'});}
-          catch(error){if(error.name!=='AbortError')status.textContent=en?'Use Download PNG or open the image.':'Utilise Télécharger le PNG ou ouvre l’image.';}
-        };
-      }
     }catch(_){
       if(token!==revision||!card.isConnected)return;
       status.textContent=en?'The PNG could not be prepared. Please try again.':'Le PNG n’a pas pu être préparé. Tu peux réessayer.';
