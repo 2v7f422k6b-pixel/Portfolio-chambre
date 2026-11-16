@@ -5,6 +5,14 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Kokeshi unlocks the yukata only after activation and remembers it',()=>{
+ const storage=new Map(),{p}=browser({storage});
+ assert.equal(p.unlockedOutfit('yukata'),false);
+ p.visit('objet/kokeshi');assert.equal(p.unlockedOutfit('yukata'),false);
+ p.feat('kokeshi-yukata');assert.equal(p.unlockedOutfit('yukata'),true);
+ assert.equal(browser({storage}).p.unlockedOutfit('yukata'),true);
+ assert.deepEqual(Array.from(p.outfits.find(o=>o.id==='yukata').pieces),['jacket-yukata']);
+});
 test('Kikujiro discovery persists before the future outfit exists',()=>{
  const storage=new Map(),{p}=browser({storage});p.visit('objet/clochette-kikujiro');p.feat('kikujiro-chime');
  const restored=browser({storage}).p;assert(restored.hasFeat('kikujiro-chime'));assert(restored.hasVisit('objet/clochette-kikujiro'));

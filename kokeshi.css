@@ -1,0 +1,11 @@
+#hotspots #nana-kokeshi{cursor:pointer;outline:none!important}
+.kokeshi-night{opacity:0}
+html[data-theme="night"] .kokeshi-day{opacity:0}
+html[data-theme="night"] .kokeshi-night{opacity:1}
+#nana-kokeshi .kokeshi-head{transform-box:view-box;transform-origin:1556.3834635416665px 89.74018475750578px}
+#nana-kokeshi.is-shy .kokeshi-head{animation:kokeshi-shy 1.8s ease-in-out}
+.kokeshi-outline{opacity:0;pointer-events:none;transition:opacity .15s}
+#nana-kokeshi:is(:hover,:focus-visible) .kokeshi-outline,
+#hotspots:is(.hotspot-guide-on,.hotspot-peek) .kokeshi-outline{opacity:1}
+@keyframes kokeshi-shy{0%,100%{transform:rotate(0)}32%,48%{transform:rotate(-8deg)}75%{transform:rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){#nana-kokeshi .kokeshi-head{animation:none!important}.kokeshi-outline{transition:none}}
