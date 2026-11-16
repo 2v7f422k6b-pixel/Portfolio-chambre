@@ -4,7 +4,11 @@
 #nana-fifi-horse{transform-box:view-box;transform-origin:1217.7083333333333px 772.8533487297921px}
 #nana-zola-book{transform-box:view-box;transform-origin:1565.625px 243.12471131639723px}
 #nana-fifi-horse.is-playing{animation:fifi-little-hops 1.3s ease-in-out}
-#nana-zola-book.is-playing{animation:zola-book-rock 1.2s ease-in-out}
+#nana-zola-book .zola-cover{transform-box:view-box;transform-origin:1536.23046875px 203px}
+#nana-zola-book .zola-pages{opacity:0}
+#nana-zola-book.is-playing .zola-pages{opacity:1}
+html[data-theme="night"] #nana-zola-book .zola-pages{filter:brightness(.5) sepia(1) saturate(5) hue-rotate(165deg)}
+#nana-zola-book.is-playing .zola-cover{animation:zola-book-open 2s ease-in-out}
 @keyframes fifi-little-hops{0%,45%,80%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-16px) rotate(-5deg)}63%{transform:translateY(-9px) rotate(3deg)}90%{transform:rotate(-1deg)}}
-@keyframes zola-book-rock{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}55%{transform:rotate(4deg)}78%{transform:rotate(-1.5deg)}}
-@media(prefers-reduced-motion:reduce){#nana-fifi-horse.is-playing,#nana-zola-book.is-playing{animation:none}.shelf-toy-outline{transition:none}}
+@keyframes zola-book-open{0%,100%{transform:scaleX(1)}30%,65%{transform:scaleX(.22)}}
+@media(prefers-reduced-motion:reduce){#nana-fifi-horse.is-playing,#nana-zola-book.is-playing .zola-cover{animation:none}.shelf-toy-outline{transition:none}}

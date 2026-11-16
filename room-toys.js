@@ -3,7 +3,7 @@
   'use strict';
   for(const [id,fr,en,duration] of [
     ['nana-fifi-horse','Faire bondir le cheval de Fifi Brindacier',"Make Pippi Longstocking’s horse hop",1300],
-    ['nana-zola-book','Animer le livre Nana d’Émile Zola','Animate Nana by Émile Zola',1200]
+    ['nana-zola-book','Ouvrir le livre Nana d’Émile Zola','Open Nana by Émile Zola',2000]
   ]){
     const toy=document.getElementById(id);if(!toy)continue;
     let timer;
