@@ -1,17 +1,29 @@
 /* Coordinates keep the artist's original registration above the left pencil pot. */
-#room-gachapon{position:absolute;left:76.62760417%;top:40.87759815%;width:5.59895833%;height:17.26327945%;z-index:9;display:block;margin:0;padding:0;border:0;background:transparent;box-shadow:none;border-radius:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#room-gachapon{position:absolute;left:76.62760417%;top:40.87759815%;width:5.59895833%;height:17.26327945%;z-index:9;clip-path:url(#gacha-front-clip);display:block;margin:0;padding:0;border:0;background:transparent;box-shadow:none;border-radius:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #room-gachapon>svg{display:block;width:100%;height:100%;overflow:visible}
 .gacha-outline{opacity:0;pointer-events:none}
-#room-gachapon:hover .gacha-outline,#room-gachapon:focus-visible .gacha-outline{opacity:1}
+#room-gachapon:hover .gacha-outline,#room-gachapon:focus-within .gacha-outline{opacity:1}
 #room-gachapon:focus-visible{outline:none}
 .gacha-handle{transform-box:fill-box;transform-origin:center}
 .gacha-ball{transform-box:fill-box;transform-origin:center}
 .gacha-prize{opacity:0;transform:translate(-60px,153px)}
 #room-gachapon.has-capsule .gacha-prize{opacity:1}
 #room-gachapon.is-turning .gacha-handle{animation:gacha-turn .8s ease-in-out}
-#room-gachapon.is-turning .gacha-ball{animation:gacha-mix .2s ease-in-out var(--gacha-delay) 4 alternate}
+#room-gachapon.is-turning .gacha-ball{animation:gacha-mix .26s ease-in-out var(--gacha-delay) 4 alternate}
 #room-gachapon.is-turning .gacha-prize{animation:gacha-drop .7s .65s both}
 @keyframes gacha-turn{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes gacha-mix{from{transform:translate(-1px,0) rotate(-3deg)}to{transform:translate(1px,-3px) rotate(3deg)}}
+@keyframes gacha-mix{from{transform:translate(-3px,0) rotate(-8deg)}to{transform:translate(3px,-5px) rotate(8deg)}}
 @keyframes gacha-drop{0%{opacity:1;transform:translate(-60px,100px)}65%{opacity:1;transform:translate(-60px,153px)}82%{opacity:1;transform:translate(-60px,145px)}100%{opacity:1;transform:translate(-60px,153px)}}
 @media(prefers-reduced-motion:reduce){#room-gachapon *{animation:none!important}}
+
+#room-gachapon .gacha-turn-button,#room-gachapon .gacha-capsule-button{position:absolute;display:block;padding:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer;min-width:0;min-height:0;touch-action:manipulation}
+#room-gachapon .gacha-turn-button{inset:0;width:100%;height:100%}
+#room-gachapon .gacha-capsule-button{left:10%;top:66%;width:37%;height:23%;z-index:1}
+#room-gachapon .gacha-capsule-button[hidden]{display:none}
+#room-gachapon.has-capsule .gacha-turn-button{cursor:default}
+.gacha-open-dialog{border:0;background:transparent;color:#ff173b;padding:24px;overflow:visible;text-align:center}
+.gacha-open-dialog::backdrop{background:#23122699}
+.gacha-open-dialog img{display:block;width:210px;max-width:65vw;height:auto;margin:0 auto 24px;image-rendering:auto;animation:gacha-open .35s ease-out}
+.gacha-open-dialog button{font:inherit;color:#ff173b;background:#fff3f7;border:0;padding:10px 24px;cursor:pointer}
+@keyframes gacha-open{from{opacity:0;transform:scale(.7) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){.gacha-open-dialog img{animation:none}}
