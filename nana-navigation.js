@@ -13,7 +13,9 @@
   const shop=document.createElement('button');
   shop.id='menu-shop';shop.type='button';
   shop.addEventListener('click',()=>window.NanaDeepLinks.open('shop'));
-  panel.append(byId('menu-about'),creations,byId('menu-contact'),shop,byId('menu-help'));
+  const newsletter=document.createElement('button');newsletter.id='menu-newsletter';newsletter.type='button';
+  newsletter.addEventListener('click',()=>window.NanaDeepLinks.open('newsletter'));
+  panel.append(byId('menu-about'),creations,byId('menu-contact'),shop,newsletter,byId('menu-help'));
   const settings=document.createElement('div');settings.className='nav-preferences';panel.append(settings,admin);
   left.append(toggle);
   bar.insertBefore(byId('nana-journal-trigger'),right);
@@ -30,6 +32,7 @@
     byId('menu-about').textContent=t('À propos','About');label(byId('menu-about'),t('À propos','About'));
     creations.textContent=t('Mes créations','My creations');label(creations,t('Mes créations','My creations'));
     shop.textContent=t('Boutique','Shop');label(shop,t('Boutique','Shop'));
+    newsletter.textContent=t('La newsletter','Newsletter');label(newsletter,t('La newsletter','Newsletter'));
     byId('menu-contact').textContent='Contact';label(byId('menu-contact'),'Contact');
     byId('menu-help').textContent=t('Aide','Help');
     label(byId('menu-help'),t('Aide','Help'));

@@ -82,6 +82,18 @@
     if(id==='kero'&&window.NanaKeroWake){void window.NanaKeroWake.activate();return;}
     const already=window.NanaProgress?.hasFeat?.(feat);
     window.NanaProgress?.feat(feat);
+    if(id==='volkswagen'||id==='happy-berry'){
+      const visual=document.getElementById(id==='volkswagen'?'volkswagen-visual':'happy-berry-art');
+      if(visual?.animate&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        visual.getAnimations().forEach(animation=>animation.cancel());
+        visual.style.transformBox='fill-box';visual.style.transformOrigin='50% 90%';
+        visual.animate(id==='volkswagen'?
+          [{transform:'translateX(0) rotate(0)'},{transform:'translateX(-4px) rotate(-3deg)'},{transform:'translateX(12px) rotate(2deg)'},{transform:'translateX(0) rotate(0)'}]:
+          [{transform:'scale(1)'},{transform:'scale(1.06,.88)'},{transform:'scale(.98,1.04)'},{transform:'scale(1)'}],
+          {duration:id==='volkswagen'?1000:700,easing:'ease-in-out'});
+      }
+      if(already)window.NanaJournal?.remindOutfit(id==='volkswagen'?'little-miss-sunshine':'gokinjo');
+    }
     if(id==='preacher-dog'&&!already&&window.NanaProgress?.hasFeat?.(feat)&&toast){toast.textContent='La tenue Preacher est disponible dans le dressing.';toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},3000);}
   },true);
   svg.addEventListener('keydown',event=>{

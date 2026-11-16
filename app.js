@@ -445,6 +445,7 @@ function openWorkAbout(){
  }
 }
 function openPokemonCard(){
+ const saved=window.NanaKeepsakes?.keep({id:'lena-character-card',kind:'card',title:'La carte de Léna',author:'Nana Color Studio',route:'objet/carte-pokemon'});
  const en=document.documentElement.lang==='en';
  const t=(fr,english)=>en?english:fr;
  const cardRules=[
@@ -464,7 +465,7 @@ function openPokemonCard(){
  html body #window-shade #window:has(.nana-profile-card) #window-content{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important}
  html body #window-shade #window:has(.nana-profile-card) #window-content>.sketch-ui-svg{display:none!important}
 
- html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 160px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:7.5% 8% 7.5%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:5% / 3.15%!important;overflow:hidden;isolation:isolate;font-family:inherit}
+ html body #window .nana-profile-card{position:relative;width:min(440px,calc((100dvh - 250px)*.63),100%);aspect-ratio:63/100;box-sizing:border-box;margin:0 auto;padding:7.5% 8% 7.5%;display:flex;flex-direction:column;container-type:inline-size;color:#cf123a;background:#ffd4e4!important;border-radius:5% / 3.15%!important;overflow:hidden;isolation:isolate;font-family:inherit}
  html body #window .nana-profile-card::before{content:none!important}
  .nana-profile-card>.card-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
  .nana-profile-card .card-edition{font-size:2.6cqw;font-weight:700;line-height:1.1}
@@ -494,6 +495,9 @@ function openPokemonCard(){
 .nana-profile-card::after{content:"";position:absolute;inset:-35%;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 8%,rgba(98,211,255,.5) 23%,rgba(255,235,143,.45) 32%,rgba(255,255,255,.8) 37%,rgba(255,126,219,.48) 43%,rgba(150,130,255,.5) 51%,rgba(121,255,212,.4) 59%,transparent 73%);background-size:100% 100%;opacity:.35;will-change:transform;animation:nana-card-foil 7s ease-in-out infinite}
  @keyframes nana-card-foil{0%,100%{transform:translate3d(-25%,0,0)}50%{transform:translate3d(25%,0,0)}}
  @media(prefers-reduced-motion:reduce){.nana-profile-card::after{animation:none;background-position:50% 50%}}
+.nana-card-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px auto 0;max-width:440px;color:#cf123a;text-align:center}
+ .nana-card-actions a,.nana-card-actions button{font:inherit;color:inherit;background:#fff2f5;padding:7px 10px;border:0;border-image:url('assets/drawn-ui/cadre_bouton.png') 20 / 3px / 0 stretch;text-decoration:none;min-height:40px;box-sizing:border-box;cursor:pointer}
+ .nana-card-actions [hidden]{display:none!important}.nana-card-actions p{width:100%;margin:0;font-size:13px}.nana-card-actions [role=status]:empty{display:none}
 </style><article class="nana-profile-card" data-no-translate aria-label="${t('Carte de personnage de Léna','Léna’s character card')}">
  <svg class="card-outline" viewBox="0 0 630 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M34 15 Q170 13 315 15 T596 15 Q615 15 615 34 Q613 270 615 500 T615 966 Q615 985 596 985 Q460 987 315 985 T34 985 Q15 985 15 966 Q17 730 15 500 T15 34 Q15 15 34 15Z" fill="none" stroke="#f58bb0" stroke-width="24"/><path d="M35 28 Q170 26 315 28 T595 28 Q602 28 602 36 Q600 270 602 500 T602 964 Q602 972 594 972 Q460 974 315 972 T36 972 Q28 972 28 964 Q30 730 28 500 T28 36 Q28 28 35 28Z" fill="none" stroke="#cf123a" stroke-width="1.7"/></svg>
  <div class="card-edition">${t('Édition limitée','Limited edition')}</div>
@@ -516,7 +520,14 @@ function openPokemonCard(){
  </dl>
  <p class="card-anecdote">${t('Les petits objets lui paraissent systématiquement nécessaires.','Small objects always seem essential to her.')}</p>
  <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>${t('Exemplaire unique','One of a kind')} · 001 / 001</span></footer>
- </article>`,'pokemon-card');
+ </article><div class="nana-card-actions" data-no-translate>
+ <p>${saved?t('Ajoutée à Mes souvenirs dans ton carnet.','Added to My keepsakes in your notebook.'):t('Tu peux garder cette carte en PNG.','You can keep this card as a PNG.')}</p>
+ <a data-card-download hidden>${t('Télécharger le PNG','Download PNG')}</a>
+ <a data-card-preview target="_blank" rel="noopener" hidden>${t('Ouvrir l’image','Open image')}</a>
+ <button type="button" data-card-share hidden>${t('Partager / Enregistrer l’image','Share / Save image')}</button>
+ <button type="button" data-card-retry hidden>${t('Réessayer','Try again')}</button><p role="status"></p>
+ </div>`,'pokemon-card');
+ window.NanaCardExport?.prepare(document.querySelector('.nana-profile-card'),document.querySelector('.nana-card-actions'));
 }
 function renderArtTiles(filtered=ART){
  const host=$('#art-tiles');if(!host)return;

@@ -69,11 +69,15 @@ par rubrique : `secrets`, `jeux`, `dressing`, `stickers`, `titres`, `cadeaux`.
 ## Newsletter
 
 - `nana-newsletter.js` / `.css` proposent un petit courrier mensuel, en FR/EN.
-  Le formulaire est accessible dans le carnet et par `#/newsletter`.
+  Le formulaire est accessible dans le menu « La newsletter », le carnet et par `#/newsletter`.
 - Une invitation non modale apparaît une seule fois par navigateur, après au
   moins une minute de Play visible et une activité réalisée (dressing, latte,
   perles, musique, repos ou tous les polaroïds), ou 25 % des objets explorés.
   Elle attend le retour à la chambre, sans jeu, fenêtre ni récompense ouverte.
+  Une apparition interrompue avant huit secondes peut revenir. L'invitation est
+  mémorisée après huit secondes visibles ou une fermeture/ouverture explicite.
+  Les anciens indicateurs « vue » peuvent afficher une invitation supplémentaire
+  après cette correction ; les demandes d'inscription déjà envoyées sont conservées.
   Les sessions de création et d’aperçu sont exclues.
 - Les demandes utilisent le formulaire Formspree existant `mbggaaqo`, avec un
   sujet Newsletter, le consentement affiché, sa version, sa date et la langue.
@@ -124,6 +128,29 @@ vide, aucune mesure n’est transmise. La notice et le choix de désactivation
 sont accessibles depuis l’aide, dans `confidentialite.html`.
 
 ## Vérifications
+
+### Calques de chambre sans marges transparentes
+
+Les 20 images de `assets/room-compact/` sont des recadrages PNG sans perte des
+originaux `assets/IMG_*.png`. Le dessin conserve sa résolution et ses coordonnées
+dans la chambre. Seules les marges transparentes sont retirées : 2,39 Mo deviennent
+0,38 Mo pour ce lot ; 106,4 millions de pixels deviennent 0,90 million à décoder.
+Après recolorisation/remplacement de ces originaux, relancer
+`python scripts/generate-room-crops.py` (Pillow requis). Le manifeste et le test
+`check-room-crops.mjs` détectent une version dérivée qui ne correspond plus à sa source.
+
+### Carte et tenues
+
+Ouvrir la carte de Léna ajoute une entrée unique dans « Mes souvenirs ».
+`nana-card-export.js` attend l'affichage complet puis exporte le dessin et les textes
+de la carte en PNG de 1260 × 2000 pixels environ. Le lien « Ouvrir l'image » permet
+aussi l'enregistrement par le navigateur ; le partage de fichier est proposé
+uniquement si l'appareil le prend en charge. Aucun service externe ne reçoit la carte.
+Les nouvelles tenues ouvrent directement `#/jeu/dressing/tenue/<id>` depuis leur
+notification. Le van et Happy Berry rejouent leur réaction et proposent la tenue
+déjà débloquée, sans ajouter de récompense en double.
+
+### Contrôles du code
 
 Avec Node.js 22 ou plus récent, depuis la racine du dépôt :
 

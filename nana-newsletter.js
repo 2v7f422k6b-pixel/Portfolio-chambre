@@ -10,7 +10,7 @@
   const t = (fr, en) => english() ? en : fr;
   function read() {
     try { const value = JSON.parse(localStorage.getItem(KEY) || '{}');
-      return {seen:value?.seen === true, requested:value?.requested === true};
+      return {seen:value?.seen === true && value?.invitationVersion === 2, requested:value?.requested === true};
     } catch (_) { return {seen:false, requested:false}; }
   }
   let state = read(), previousFocus, sending = false, status = '', source = 'notebook';
@@ -18,7 +18,7 @@
     const saved = read();
     state = {seen:state.seen || saved.seen, requested:state.requested || saved.requested, ...update};
     // Only display preferences are stored here, never the visitor's email address.
-    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
+    try { localStorage.setItem(KEY, JSON.stringify({...state, invitationVersion:2})); } catch (_) {}
   }
   const note = document.createElement('aside');
   note.id = 'nana-newsletter-note'; note.className = 'nn-paper nn-frame'; note.hidden = true;
@@ -121,17 +121,20 @@
   }
   // Wait for a real activity, at least a minute of visible Play, and a quiet return to the room.
   // Never take focus, cover a game, or show this invitation again after it was seen.
-  let activeMs = 0, lastTick = performance.now(), clearSince = null;
+  let activeMs = 0, lastTick = performance.now(), clearSince = null, shownSince = null;
   const timer = window.setInterval(() => {
     const now = performance.now();
     if (!document.hidden && document.getElementById('app')?.classList.contains('mode-play')) activeMs += Math.min(1500, now - lastTick);
     lastTick = now;
     const clear = roomIsClear();
-    if (!clear) { clearSince = null; note.hidden = true; }
+    if (!clear) { clearSince = null; shownSince = null; note.hidden = true; }
     else if (clearSince === null) clearSince = now;
+    // A tap can open a window immediately after the invitation appears on iPad.
+    // Count it as seen only after eight uninterrupted seconds on screen.
+    if(!note.hidden&&shownSince!==null&&now-shownSince>=8000)save({seen:true});
     if (state.requested || (state.seen && note.hidden)) { window.clearInterval(timer); return; }
     if (state.seen || !clear || activeMs < 60000 || now - clearSince < 2000 || !engaged()) return;
-    localize(); note.hidden = false; window.NanaAnalytics?.record('newsletter/shown');save({seen:true});
+    if(note.hidden){localize();note.hidden=false;shownSince=now;window.NanaAnalytics?.record('newsletter/shown');}
   }, 1000);
   window.addEventListener('storage', event => {
     if (event.key !== KEY) return;

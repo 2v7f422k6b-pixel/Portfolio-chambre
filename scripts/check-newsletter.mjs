@@ -55,8 +55,15 @@ test('invitation requires engagement and visible time; it never interrupts an op
   b.ui.blocked = false; b.advance(2); assert.equal(b.note.hidden,true);
   b.advance(1); assert.equal(b.note.hidden,false); assert.equal(b.ui.focus,null);
   b.ui.blocked = true; b.advance(1); assert.equal(b.note.hidden,true);
-  b.ui.blocked = false; b.advance(90); assert.equal(b.note.hidden,true);
+  b.ui.blocked = false; b.advance(3); assert.equal(b.note.hidden,false,'an interrupted invitation returns');
+  assert.equal(JSON.parse(b.storage.get(KEY)||'{}').seen,undefined,'a brief flash is not remembered as seen');
+  b.advance(8); assert.equal(JSON.parse(b.storage.get(KEY)).seen,true);
+  b.ui.blocked = true; b.advance(1);b.ui.blocked=false;b.advance(90);assert.equal(b.note.hidden,true);
   assert.equal(browser({storage:b.storage}).note.hidden,true);
+});
+test('a legacy seen flag can be shown once again, but a subscription is always preserved',()=>{
+  const b=browser({storage:new Map([[KEY,JSON.stringify({seen:true})]])});b.ui.feats.push('latte-made');b.advance(60);assert.equal(b.note.hidden,false);
+  const subscribed=browser({storage:new Map([[KEY,JSON.stringify({seen:true,requested:true})]])});subscribed.ui.feats.push('latte-made');subscribed.advance(90);assert.equal(subscribed.note.hidden,true);
 });
 test('a quarter of unique required objects qualifies, duplicate and unknown discoveries do not', () => {
   const b = browser(); b.ui.required = ['a','b','c','d','e']; b.ui.discovered = ['a','a','unknown'];

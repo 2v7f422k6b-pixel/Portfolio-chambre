@@ -1,0 +1,382 @@
+[
+  {
+    "source": "assets/IMG_7121.png",
+    "target": "assets/room-compact/IMG_7121.png",
+    "source_sha256": "27871301169ec6e65cc67b1de05d996d513992b897713afc117ccea97c038fde",
+    "box": [
+      701,
+      942,
+      962,
+      1093
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      261,
+      151
+    ]
+  },
+  {
+    "source": "assets/IMG_7122.png",
+    "target": "assets/room-compact/IMG_7122.png",
+    "source_sha256": "f4f7529a1b92875b2b3e0540de2b15cdd5efc6404d489f12d1b5b24af974289b",
+    "box": [
+      701,
+      942,
+      962,
+      1093
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      261,
+      151
+    ]
+  },
+  {
+    "source": "assets/IMG_7126.png",
+    "target": "assets/room-compact/IMG_7126.png",
+    "source_sha256": "0f8365ed16b92f60fca58d14519eec2f792ec475bad23b8e909a4fc52f4bd83a",
+    "box": [
+      2379,
+      525,
+      2562,
+      631
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      183,
+      106
+    ]
+  },
+  {
+    "source": "assets/IMG_7127.png",
+    "target": "assets/room-compact/IMG_7127.png",
+    "source_sha256": "a25886b1fc9270a65b8022acae391636fbd0d880692b91848ab2262601610728",
+    "box": [
+      2379,
+      525,
+      2562,
+      631
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      183,
+      106
+    ]
+  },
+  {
+    "source": "assets/IMG_7133.png",
+    "target": "assets/room-compact/IMG_7133.png",
+    "source_sha256": "ff36707a6dd3da7a925e726b84c8b590a4d8f2c34e1266297458226e42856c79",
+    "box": [
+      2398,
+      431,
+      2978,
+      527
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      580,
+      96
+    ]
+  },
+  {
+    "source": "assets/IMG_7134.png",
+    "target": "assets/room-compact/IMG_7134.png",
+    "source_sha256": "79d5ed1571679c74a9f3f2736a14250145bb425fc1c02d3b93669041116b4e2c",
+    "box": [
+      2398,
+      431,
+      2978,
+      527
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      580,
+      96
+    ]
+  },
+  {
+    "source": "assets/IMG_7144.png",
+    "target": "assets/room-compact/IMG_7144.png",
+    "source_sha256": "340501c777c8bcc9fd7663af76ec7584376af2d43e24074de1391997d23bc52a",
+    "box": [
+      2036,
+      4,
+      2074,
+      164
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      38,
+      160
+    ]
+  },
+  {
+    "source": "assets/IMG_7139.png",
+    "target": "assets/room-compact/IMG_7139.png",
+    "source_sha256": "1e560e44298fc6d281018209a729b56489b45c00f39b446f3720029a43fc7e36",
+    "box": [
+      2036,
+      4,
+      2074,
+      164
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      38,
+      160
+    ]
+  },
+  {
+    "source": "assets/IMG_7142.png",
+    "target": "assets/room-compact/IMG_7142.png",
+    "source_sha256": "2d9f4ed71bada689cec37a5f3e959c3046971dde7f758878a936e49232a8d348",
+    "box": [
+      2063,
+      213,
+      2090,
+      257
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      27,
+      44
+    ]
+  },
+  {
+    "source": "assets/IMG_7141.png",
+    "target": "assets/room-compact/IMG_7141.png",
+    "source_sha256": "19ffacf42030d1c1486baec0db6a41d2cd371c790f8d1b1565004a40cd0931e6",
+    "box": [
+      2063,
+      213,
+      2090,
+      257
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      27,
+      44
+    ]
+  },
+  {
+    "source": "assets/IMG_7143.png",
+    "target": "assets/room-compact/IMG_7143.png",
+    "source_sha256": "2381ac11429eb88314d37fb5e4969c725ce6ace4c42d41476359bbc40aaea8c6",
+    "box": [
+      2036,
+      155,
+      2108,
+      268
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      72,
+      113
+    ]
+  },
+  {
+    "source": "assets/IMG_7140.png",
+    "target": "assets/room-compact/IMG_7140.png",
+    "source_sha256": "dbca03d4bb262035627557abc43f6b567b1d8ef4927fedee1fa0e2861f5c1bfc",
+    "box": [
+      2036,
+      155,
+      2108,
+      268
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      72,
+      113
+    ]
+  },
+  {
+    "source": "assets/IMG_7183.png",
+    "target": "assets/room-compact/IMG_7183.png",
+    "source_sha256": "642a2d1774d77886f250aef6a7c043eeaf71b671960c437a1b945f3d0d8873e4",
+    "box": [
+      2594,
+      361,
+      2698,
+      459
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      104,
+      98
+    ]
+  },
+  {
+    "source": "assets/IMG_7184.png",
+    "target": "assets/room-compact/IMG_7184.png",
+    "source_sha256": "e857a7405a0ce467f80c2b06a2e9c7749466ce2c3b76c2a06333f5e01d81f29a",
+    "box": [
+      2594,
+      361,
+      2698,
+      459
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      104,
+      98
+    ]
+  },
+  {
+    "source": "assets/IMG_7182.png",
+    "target": "assets/room-compact/IMG_7182.png",
+    "source_sha256": "5163967f1101ec685a0f193fb0e59b68f4d092c6ccee8042ebfb6be2be95a88a",
+    "box": [
+      2670,
+      370,
+      2812,
+      456
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      142,
+      86
+    ]
+  },
+  {
+    "source": "assets/IMG_7181.png",
+    "target": "assets/room-compact/IMG_7181.png",
+    "source_sha256": "1023036a82f39a0db8bf04570230facf63a7681bef98d7bd4b2c47b83970473f",
+    "box": [
+      2670,
+      370,
+      2812,
+      456
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      142,
+      86
+    ]
+  },
+  {
+    "source": "assets/IMG_5760.png",
+    "target": "assets/room-compact/IMG_5760.png",
+    "source_sha256": "77eecf17b4b4cde288e1e178f88cb5e4e139545c63d323c0ff594f4bcd46bbc2",
+    "box": [
+      765,
+      1197,
+      992,
+      1339
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      227,
+      142
+    ]
+  },
+  {
+    "source": "assets/IMG_5761.png",
+    "target": "assets/room-compact/IMG_5761.png",
+    "source_sha256": "b15dad44eea15e65c12764569f3a8f53723b6db260e3b985c3566bfbad39858a",
+    "box": [
+      765,
+      1197,
+      992,
+      1339
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      227,
+      142
+    ]
+  },
+  {
+    "source": "assets/IMG_7204.png",
+    "target": "assets/room-compact/IMG_7204.png",
+    "source_sha256": "04ee2ec36a646b38d0ba36f2c099e39dcafa0ee43aba04d6e9ef262be1665649",
+    "box": [
+      1412,
+      0,
+      1722,
+      849
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      310,
+      849
+    ]
+  },
+  {
+    "source": "assets/IMG_7205.png",
+    "target": "assets/room-compact/IMG_7205.png",
+    "source_sha256": "00f772367db0639b2f97541c35ca658203de18844eb41392b32f282b7897452f",
+    "box": [
+      1412,
+      0,
+      1722,
+      849
+    ],
+    "original_size": [
+      3072,
+      1732
+    ],
+    "size": [
+      310,
+      849
+    ]
+  }
+]

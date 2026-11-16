@@ -2,12 +2,12 @@
 (() => {
   'use strict';
   const KEY='nana-keepsakes-v1', DRAFT_KEY='nana-word-lab-draft-v1';
-  const kinds=new Set(['poem','book','excerpt']);
+  const kinds=new Set(['poem','book','excerpt','card']);
   const text=(v,max)=>typeof v==='string'?v.slice(0,max):'';
   function read(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback;}catch(_){return fallback;}}
   function clean(item){
     if(!item||!kinds.has(item.kind)||typeof item.id!=='string'||!item.id.length)return null;
-    return {id:text(item.id,120),kind:item.kind,title:text(item.title,180),author:text(item.author,180),body:text(item.body,12000),route:/^(objet\/(reading-room|souvenues)\/[a-z0-9-]+|jeu\/word-lab)$/.test(item.route)?item.route:'',created:Number.isFinite(item.created)?item.created:0};
+    return {id:text(item.id,120),kind:item.kind,title:text(item.title,180),author:text(item.author,180),body:text(item.body,12000),route:/^(objet\/(reading-room|souvenues)\/[a-z0-9-]+|objet\/carte-pokemon|jeu\/word-lab)$/.test(item.route)?item.route:'',created:Number.isFinite(item.created)?item.created:0};
   }
   function list(){const value=read(KEY,[]);return Array.isArray(value)?value.map(clean).filter(Boolean).slice(0,100):[];}
   function changed(){document.dispatchEvent(new Event('nana-keepsakes-change'));}

@@ -8,11 +8,11 @@ function setup({night=false,reduced=false}={}){
 }
 async function flush(){for(let i=0;i<15;i++)await Promise.resolve()}
 test('day and night blink twice before smiling, reward once, then return to sleep',async()=>{
- for(const night of [false,true]){const h=setup({night});const done=h.activate();await flush();assert.equal(h.poses.dataset.keroState,'waking');assert.equal(h.feats.length,0);await h.activate();assert.equal(h.sources.length,2);assert(h.sources.every(s=>s.endsWith(night?'-night.png':'-day.png')));await h.tick(180);assert.equal(h.poses.dataset.keroState,'asleep');await h.tick(120);assert.equal(h.poses.dataset.keroState,'waking');await h.tick(180);await done;assert.equal(h.poses.dataset.keroState,'awake');assert.deepEqual(h.feats,['kero-awake']);await h.tick(2200);assert.equal(h.poses.dataset.keroState,'asleep');}
+ for(const night of [false,true]){const h=setup({night});const done=h.activate();await flush();assert.equal(h.poses.dataset.keroState,'waking');assert.equal(h.feats.length,0);await h.activate();assert.equal(h.sources.length,2);assert(h.sources.every(s=>s.endsWith(night?'-night.png':'-day.png')));await h.tick(650);assert.equal(h.poses.dataset.keroState,'asleep');await h.tick(300);assert.equal(h.poses.dataset.keroState,'waking');await h.tick(650);await done;assert.equal(h.poses.dataset.keroState,'awake');assert.deepEqual(h.feats,['kero-awake']);await h.tick(4200);assert.equal(h.poses.dataset.keroState,'asleep');}
 });
 test('reduced motion awards immediately; hiding the page cancels an unfinished wake',async()=>{
  const r=setup({reduced:true});await r.activate();assert.equal(r.poses.dataset.keroState,'awake');assert.equal(r.feats.length,1);
- const h=setup();const done=h.activate();await flush();h.document.hidden=true;h.listeners.visibilitychange();await h.tick(180);await done;assert.equal(h.feats.length,0);assert.equal(h.poses.dataset.keroState,'asleep');
+ const h=setup();const done=h.activate();await flush();h.document.hidden=true;h.listeners.visibilitychange();await h.tick(650);await done;assert.equal(h.feats.length,0);assert.equal(h.poses.dataset.keroState,'asleep');
 });
 test('six compact poses keep day/night classes and the original shelf registration',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const rows=[...html.matchAll(/<image[^>]*data-kero-pose="([^"]+)"[^>]*>/g)];assert.equal(rows.length,6);for(const [tag,state]of rows){assert(tag.includes('assets/kero/'+state+'-'));assert(tag.includes('width="138.623046875"'));assert(tag.includes('x="1295.4459635416667"'));}

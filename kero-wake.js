@@ -34,7 +34,7 @@
     if(loaded.every(Boolean)){
       const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if(!reduced){
-        for(const [state,duration] of [['waking',180],['asleep',120],['waking',180]]){
+        for(const [state,duration] of [['waking',650],['asleep',300],['waking',650]]){
           show(state);await wait(duration);
           if(token!==revision||document.hidden){busy=false;return;}
         }
@@ -42,7 +42,7 @@
       show('awake');
     }
     discover();busy=false;
-    resetTimer=setTimeout(()=>{if(token===revision)show('asleep');},2200);
+    resetTimer=setTimeout(()=>{if(token===revision)show('asleep');},4200);
   }
   window.NanaKeroWake={activate};
   // Load alternate poses when Kero is about to be used, not during room startup.

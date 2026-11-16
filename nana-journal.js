@@ -130,7 +130,7 @@
     '</article><p class="nj-bottom-note">'+t('Les tenues bonus et les stickers gagnés restent dans leurs collections.','Your bonus looks and stickers stay in their collections.')+'</p>';
   }
   let keepsakeFilter='all',selectedKeepsake=null;
-  const kindLabel=kind=>kind==='poem'?t('Poème','Poem'):kind==='book'?t('Livre favori','Favourite book'):t('Texte favori','Favourite text');
+  const kindLabel=kind=>kind==='card'?t('Carte à collectionner','Collectible card'):kind==='poem'?t('Poème','Poem'):kind==='book'?t('Livre favori','Favourite book'):t('Texte favori','Favourite text');
   function keepsakesPage(){
     const all=window.NanaKeepsakes?.list()||[],selected=all.find(x=>x.id===selectedKeepsake);
     if(selected?.kind==='poem')return heading(t('Un poème à garder','A poem to keep'),selected.title)+
@@ -140,7 +140,7 @@
     const draft=window.NanaKeepsakes?.draft(),draftCount=Array.isArray(draft?.poem)?draft.poem.length:0;
     const beadCount=window.NanaBeadSouvenir?.count()||0;
     const filters='<nav class="nj-keepsake-filters" aria-label="'+t('Filtrer les souvenirs','Filter keepsakes')+'">'+[['all',t('Tout','All')],['poems',t('Mes poèmes','My poems')],['favourites',t('Mes favoris','My favourites')]].map(([id,label])=>button(label,'data-nj-keepsake-filter="'+id+'" aria-pressed="'+(keepsakeFilter===id)+'"')).join('')+'</nav>';
-    const works=filtered.length?paginate(filtered,item=>'<article class="nj-keepsake nj-frame"><small>'+h(kindLabel(item.kind))+'</small><h3>'+h(item.title)+'</h3>'+(item.author?'<p>'+h(item.author)+'</p>':'')+(item.kind==='poem'?'<p class="nj-keepsake-excerpt">'+h(item.body.slice(0,140))+(item.body.length>140?'…':'')+'</p>'+button(t('Relire','Read again'),'data-nj-keepsake="'+h(item.id)+'"'):routeButton(item.route,t('Ouvrir la fiche','Open the page')))+'</article>',{size:small.matches?2:4,cls:'nj-grid nj-keepsakes-grid'}):'<div class="nj-keepsake-empty"><p>'+t('Tes petits souvenirs trouveront leur place ici.','Your little keepsakes will find a home here.')+'</p><p>'+t('Garde un poème dans le laboratoire des mots, ou ajoute un livre et un texte des Souvenues à tes favoris.','Keep a poem from the word lab, or save a book or a Souvenues text to your favourites.')+'</p>'+routeButton('jeu/word-lab',t('Composer un poème','Make a poem'))+' '+routeButton('objet/reading-room',t('Choisir un livre','Choose a book'))+'</div>';
+    const works=filtered.length?paginate(filtered,item=>'<article class="nj-keepsake nj-frame"><small>'+h(kindLabel(item.kind))+'</small>'+(item.kind==='card'?img('assets/dressing-lena/lena-card-illustration-v2.jpeg','nj-keepsake-card-art'):'')+'<h3>'+h(item.kind==='card'?t('La carte de Léna','Léna’s card'):item.title)+'</h3>'+(item.author?'<p>'+h(item.author)+'</p>':'')+(item.kind==='poem'?'<p class="nj-keepsake-excerpt">'+h(item.body.slice(0,140))+(item.body.length>140?'…':'')+'</p>'+button(t('Relire','Read again'),'data-nj-keepsake="'+h(item.id)+'"'):routeButton(item.route,item.kind==='card'?t('Revoir la carte','View the card'):t('Ouvrir la fiche','Open the page')))+'</article>',{size:small.matches?2:4,cls:'nj-grid nj-keepsakes-grid'}):'<div class="nj-keepsake-empty"><p>'+t('Tes petits souvenirs trouveront leur place ici.','Your little keepsakes will find a home here.')+'</p><p>'+t('Garde un poème dans le laboratoire des mots, ou ajoute un livre et un texte des Souvenues à tes favoris.','Keep a poem from the word lab, or save a book or a Souvenues text to your favourites.')+'</p>'+routeButton('jeu/word-lab',t('Composer un poème','Make a poem'))+' '+routeButton('objet/reading-room',t('Choisir un livre','Choose a book'))+'</div>';
     const inProgress=keepsakeFilter==='all'?'<div class="nj-keepsake-current">'+(draftCount?'<article><p>'+t('Ton poème en cours','Your poem in progress')+'</p>'+routeButton('jeu/word-lab',t('Reprendre mon brouillon','Continue my draft'))+'</article>':'')+(beadCount?'<article class="nj-current-charm">'+window.NanaBeadSouvenir.preview()+'<div><p>'+t('Ton bijou en cours','Your charm in progress')+'</p>'+routeButton('jeu/bead-box',t('Retrouver mon bijou','Revisit my charm'))+'</div></article>':'')+'</div>':'';
     return heading(t('Mes petits souvenirs','My little keepsakes'),t('Tes créations et tes lectures à retrouver.','Your creations and saved reading.'))+filters+works+inProgress+'<p class="nj-bottom-note">'+t('Conservés sur ce navigateur. Les poèmes déjà téléchargés avant cette nouveauté ne peuvent pas être récupérés automatiquement.','Saved in this browser. Poems downloaded before this feature cannot be recovered automatically.')+'</p>';
   }
@@ -270,12 +270,12 @@
     if(!added.length||dialog.open||document.querySelector('dialog[open]'))return;
     if(added.includes('gift:merci10')){notice.hidden=true;clearTimeout(toastTimer);return;}
     const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
-    const destination=outfit?'dressing':badge?'stickers':title?'titres':'stickers';
+    const destination=outfit?'jeu/dressing/tenue/'+outfit.slice(7):'carnet/'+(badge?'stickers':title?'titres':'stickers');
     notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Tu as gagné un nouvel écusson d’exploration.','You earned a new exploration patch.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
     const btn=notice.querySelector('button');btn.textContent=t('Voir','See');btn.dataset.njNotice=destination;
-    notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,4200);
+    notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,8000);
   });
-  notice.querySelector('button').addEventListener('click',event=>navigate('carnet/'+event.currentTarget.dataset.njNotice));
+  notice.querySelector('button').addEventListener('click',event=>{notice.hidden=true;navigate(event.currentTarget.dataset.njNotice);});
   document.addEventListener('portfolio-language-change',()=>{notice.hidden=true;render();if(currentMilestone){renderMilestone();milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});}});
   document.addEventListener('nana-looks-change',()=>{if(dialog.open&&active==='looks'&&!dialog.querySelector('.nl-rename'))render();});
   document.addEventListener('nana-keepsakes-change',()=>{if(dialog.open&&active==='souvenirs')render();});
@@ -284,7 +284,14 @@
   // Theme transitions may apply their new state asynchronously. Observe the actual theme.
   new MutationObserver(recordNight).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   recordNight();
-  window.NanaJournal={open,close,current:()=>dialog.open?'carnet/'+active:null};
+  function remindOutfit(id){
+    const outfit=progress.outfits.find(item=>item.id===id);
+    if(!outfit||!progress.unlockedOutfit(id)||progress.suppressed()||dialog.open||document.querySelector('dialog[open]'))return;
+    notice.querySelector('[role=status]').textContent=name(outfit.name)+t(' t’attend dans le dressing.',' is waiting in your wardrobe.');
+    const btn=notice.querySelector('button');btn.textContent=t('Essayer la tenue','Try it on');btn.dataset.njNotice='jeu/dressing/tenue/'+id;
+    notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,6500);
+  }
+  window.NanaJournal={open,close,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
 
