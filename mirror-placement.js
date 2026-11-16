@@ -12,7 +12,7 @@
   const key = 'nana-wall-mirror-perspective-v1';
   const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
   // Coordinates approved by the artist, in the 1670 × 942 room grid.
-  const defaultQuad = [[1322.9421302303758,212.60360032394615],[1434.095914604014,201.2034456191082],[1438.4527009202245,315.53787883400656],[1322.9421302303758,325.7088107239462]];
+  const defaultQuad = [[708.0420782193042,217.20798534356365],[809.1920219993151,206.83384456216112],[813.1566975470666,310.87817878771864],[708.0420782193042,320.13372680756373]];
 
   const copy = points => points.map(p => [p[0], p[1]]);
   const valid = points =>
