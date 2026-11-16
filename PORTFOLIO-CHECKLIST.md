@@ -67,3 +67,12 @@ Quatre tests couvrent l’orientation du parent, le changement d’orientation, 
 - [ ] Dessiner l’icône Lumon : piste proposée, goutte d’eau avec le nom à l’intérieur.
 - [ ] Dessiner l’icône document du CV et fournir le CV pour relier le raccourci Work.
 - [ ] Vérifier sur l’iPad de Léna : rotation des têtes Kodama au toucher, battement du papillon, arrivée et départ de l’OVNI, chute de la bille et ouverture de la boîte.
+
+## Retour ordinateur du 16 novembre — plante, araignée, Lumon et images
+- [x] Balancement très léger de la plante existante, sans nouveau dessin. Le calque contient le pot et les feuilles ; séparer ces éléments permettra ensuite de ne bouger que les feuilles.
+- [x] Araignée agrandie, trajet remontant sur le tapis et apparition de 5,8 secondes.
+- [x] Lumon : fenêtre bornée par la hauteur disponible, contenu ajusté pour garder le jeu entier accessible sans scroll.
+- [x] Souvenirs visuels : aperçu PNG avec partage natif si disponible, appui long/clic droit et téléchargement de secours (certificat, coloriage, poèmes, carte).
+- [ ] Vérifier ces changements sur l’iPad de Léna (partage vers Photos) et sur son ordinateur.
+- [ ] Tenue à débloquer en Work de nuit : intention confirmée, tenue et déclencheur à choisir.
+- [x] Dimensions du fond vérifiées : conserver le ratio du dessin actuel ; ne pas recadrer pour supprimer le scroll accepté par Léna.

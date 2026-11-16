@@ -890,8 +890,7 @@
     }
     ctx.fillStyle='#ff173b';ctx.font='24px Georgia,serif';
     ctx.fillText(localized('Nana Color Studio · poésie de hasard'),114,1383);
-    const a=document.createElement('a');a.download=language==='en'?'my-poem-nana-color-studio.png':'mon-poeme-nana-color-studio.png';
-    a.href=canvas.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();
+    window.NanaImageSave.show(canvas.toDataURL('image/png'),language==='en'?'my-poem-nana-color-studio.png':'mon-poeme-nana-color-studio.png');
     const status=appRoot()?.querySelector('#lit-lab-status');
     if(status)status.textContent='Ton poème est prêt à être enregistré en PNG.';
   }

@@ -48,7 +48,7 @@
       pointer-events:none;
     }
     #nana-rug-secret.is-open .rug-spider-run{
-      animation:nana-spider-dash 2.25s .62s both linear;
+      animation:nana-spider-dash 5.8s .62s both linear;
     }
     #nana-rug-secret .rug-spider-legs{
       transform-origin:0 0;
@@ -71,14 +71,13 @@
       stroke:#141418;
     }
     @keyframes nana-spider-dash{
-      0%,7%  {opacity:0;transform:translate(610px,900px) rotate(10deg) scale(.28)}
-      13%    {opacity:1;transform:translate(598px,904px) rotate(-12deg) scale(.42)}
-      25%    {opacity:1;transform:translate(579px,918px) rotate(9deg) scale(.44)}
-      38%    {opacity:1;transform:translate(562px,936px) rotate(-11deg) scale(.45)}
-      52%    {opacity:1;transform:translate(539px,958px) rotate(9deg) scale(.44)}
-      68%    {opacity:1;transform:translate(514px,986px) rotate(-10deg) scale(.43)}
-      84%    {opacity:1;transform:translate(490px,1018px) rotate(8deg) scale(.40)}
-      100%   {opacity:0;transform:translate(462px,1060px) rotate(-9deg) scale(.36)}
+      0%     {opacity:0;transform:translate(610px,890px) rotate(10deg) scale(.7)}
+      10%    {opacity:1;transform:translate(598px,867px) rotate(-12deg) scale(1.1)}
+      28%    {opacity:1;transform:translate(568px,818px) rotate(9deg) scale(1.15)}
+      45%,62%{opacity:1;transform:translate(540px,785px) rotate(-11deg) scale(1.15)}
+      78%    {opacity:1;transform:translate(568px,818px) rotate(170deg) scale(1.1)}
+      94%    {opacity:1;transform:translate(600px,867px) rotate(170deg) scale(1)}
+      100%   {opacity:0;transform:translate(610px,890px) rotate(170deg) scale(.7)}
     }
     @keyframes nana-spider-scuttle{
       from{transform:rotate(-8deg) scaleX(.91)}
@@ -88,7 +87,7 @@
       #nana-rug-secret .rug-nana-fold{transition:none!important}
       #nana-rug-secret.is-open .rug-spider-run{
         animation:none!important;opacity:1;
-        transform:translate(640px,918px) scale(.42)!important;
+        transform:translate(540px,785px) scale(1.15)!important;
       }
       #nana-rug-secret .rug-spider-legs{animation:none!important}
     }

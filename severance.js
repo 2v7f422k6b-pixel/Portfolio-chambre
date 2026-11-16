@@ -15,11 +15,24 @@
   }
   const names=()=>[t('Chagrin','Woe'),t('Joie','Frolic'),t('Peur','Dread'),t('Colère','Malice')];
   const clues=()=>[t('Ces nombres te rendent triste.','These numbers make you sad.'),t('Ces nombres te donnent envie de rire.','These numbers make you want to laugh.'),t('Ces nombres te font peur.','These numbers scare you.'),t('Ces nombres te mettent en colère.','These numbers make you angry.')];
-  function message(text){root.querySelector('[data-mdr-status]').textContent=text;}
+  let fitObserver;
+  function fit(){
+    if(!root?.isConnected)return;
+    const frame=root.parentElement;
+    const width=Math.min(720,frame.clientWidth);
+    root.style.width=width+'px';
+    const scale=Math.min(1,frame.clientHeight/root.offsetHeight);
+    root.style.transform=`scale(${scale})`;
+    root.style.left=((frame.clientWidth-width*scale)/2)+'px';
+  }
+  window.addEventListener('resize',()=>requestAnimationFrame(fit),{passive:true});
+  document.fonts?.ready.then(()=>requestAnimationFrame(fit));
+  function message(text){root.querySelector('[data-mdr-status]').textContent=text;requestAnimationFrame(fit);}
   function finish(){window.NanaProgress?.feat('severance-refined');}
   function render(){
     if(!root?.isConnected)return;
     const done=counts.reduce((a,b)=>a+b,0),complete=done===12;
+    requestAnimationFrame(fit);
     root.innerHTML=`<header class="mdr-heading"><div><p class="mdr-company">LUMON INDUSTRIES</p><h2>Macrodata Refinement</h2></div><div class="mdr-file">${t('Fichier','File')} : MASSILIA<br><strong>${Math.round(done/12*100)} %</strong></div></header>
     <progress max="12" value="${done}" aria-label="${t('Raffinage du fichier','File refinement')}"></progress>
     ${complete?`<section class="mdr-complete"><p class="mdr-company">100 % · FILE COMPLETE</p><h3>${t('Votre travail est apprécié.','Your work is appreciated.')}</h3><p>${t('Fichier raffiné. La tenue de Helly R. est débloquée dans le dressing.','File refined. Helly R.’s outfit is unlocked in the wardrobe.')}</p><button class="nj-frame" data-mdr-look>${t('Voir la tenue de Helly','See Helly’s outfit')}</button><button class="nj-frame" data-mdr-replay>${t('Raffiner un nouveau fichier','Refine a new file')}</button></section>`:
@@ -29,8 +42,11 @@
   function open(){
     read();selected.clear();round=nextRound();
     window.NanaProgress?.visit('jeu/severance');
-    window.openWindow('Lumon — Macrodata Refinement', '<section id="nana-mdr" data-no-translate></section>','severance');
+    window.openWindow('Lumon — Macrodata Refinement', '<div class="mdr-fit"><section id="nana-mdr" data-no-translate></section></div>','severance');
     root=document.getElementById('nana-mdr');
+    fitObserver?.disconnect();
+    fitObserver=new ResizeObserver(()=>requestAnimationFrame(fit));
+    fitObserver.observe(root.parentElement);
     if(!round)finish();
     render();
     root.addEventListener('click',event=>{

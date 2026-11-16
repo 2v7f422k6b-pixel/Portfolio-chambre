@@ -23,3 +23,17 @@ html body #nana-mdr .mdr-grid .mdr-target{color:#fff5ce!important}
 html body #nana-mdr .mdr-grid button[aria-pressed=true]{background:#d5f5ee!important;color:#102e3a!important}
 html body #nana-mdr .nj-frame,html body #nana-mdr .nj-frame *{color:#e92349!important}
 #nana-mdr progress::-webkit-progress-bar{background:#30515d}#nana-mdr progress::-webkit-progress-value{background:#a6e7d5}#nana-mdr progress::-moz-progress-bar{background:#a6e7d5}
+
+/* Fit the complete terminal below the window title bar, including short laptops. */
+html body #app #window-shade #window:has(#nana-mdr){width:min(760px,96vw)!important;height:min(650px,var(--nana-window-available-height))!important}
+html body #window-shade #window:has(#nana-mdr)>#window-content{padding:0!important;overflow:hidden!important;display:flex!important}
+.mdr-fit{position:relative;flex:1;min-width:0;min-height:0;overflow:hidden;background:#102e3a}
+#nana-mdr{position:absolute;top:0;box-sizing:border-box;margin:0;padding:12px 18px;transform-origin:top left}
+#nana-mdr .mdr-company{margin:4px 0}
+#nana-mdr h2{margin:4px 0 8px}
+#nana-mdr .mdr-instructions{margin:8px 0;line-height:1.35}
+#nana-mdr .mdr-clue{margin:6px 0}
+#nana-mdr .mdr-grid{margin:6px 0 10px}
+#nana-mdr .mdr-grid button{min-height:36px;padding:3px;font-size:22px}
+#nana-mdr .mdr-bins button{padding:7px 4px;gap:3px}
+#nana-mdr .mdr-status{margin:8px 0;min-height:2.8em;line-height:1.35}

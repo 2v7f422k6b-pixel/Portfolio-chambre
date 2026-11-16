@@ -134,7 +134,7 @@
   function keepsakesPage(){
     const all=window.NanaKeepsakes?.list()||[],selected=all.find(x=>x.id===selectedKeepsake);
     if(selected?.kind==='poem')return heading(t('Un poème à garder','A poem to keep'),selected.title)+
-      '<article class="nj-poem-sheet"><p class="nj-poem-body" tabindex="0">'+h(selected.body)+'</p></article><div class="nj-keepsake-actions">'+button(t('Copier le poème','Copy poem'),'data-nj-poem-copy')+button(t('Télécharger en texte','Download as text'),'data-nj-poem-download')+button(t('Retour aux souvenirs','Back to keepsakes'),'data-nj-keepsake-back')+'</div>';
+      '<article class="nj-poem-sheet"><p class="nj-poem-body" tabindex="0">'+h(selected.body)+'</p></article><div class="nj-keepsake-actions">'+button(t('Copier le poème','Copy poem'),'data-nj-poem-copy')+button(t('Enregistrer en image','Save as image'),'data-nj-poem-download')+button(t('Retour aux souvenirs','Back to keepsakes'),'data-nj-keepsake-back')+'</div>';
     selectedKeepsake=null;
     const filtered=all.filter(x=>keepsakeFilter==='all'||(keepsakeFilter==='poems'?x.kind==='poem':x.kind!=='poem'));
     const draft=window.NanaKeepsakes?.draft(),draftCount=Array.isArray(draft?.poem)?draft.poem.length:0;
@@ -243,7 +243,7 @@
       if(target.hasAttribute('data-nj-poem-copy')){
         try{await navigator.clipboard.writeText(poem.body);target.textContent=t('Copié !','Copied!');}
         catch(_){const range=document.createRange();range.selectNodeContents(dialog.querySelector('.nj-poem-body'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);target.textContent=t('Sélectionné : copie le texte','Selected: copy the text');}
-      }else{const url=URL.createObjectURL(new Blob([poem.body],{type:'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=t('mon-poeme.txt','my-poem.txt');document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
+      }else{await window.NanaImageSave.textImage(poem.body,t('mon-poeme.png','my-poem.png'));}
     }
     else if(target.dataset.njRoute)navigate(target.dataset.njRoute);
     else if(target.dataset.njOutfit)navigate('jeu/dressing/tenue/'+target.dataset.njOutfit);

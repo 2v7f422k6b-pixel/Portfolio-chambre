@@ -96,3 +96,9 @@
 #window-shade #motion-reels .motion-reels-label strong {
   max-width:clamp(130px,23vw,285px);
 }
+
+/* A barely perceptible sway, using only Léna's existing plant drawing. */
+#room-hanging-plant{transform-box:view-box;transform-origin:852px 0;animation:nana-plant-sway 9s ease-in-out infinite}
+@keyframes nana-plant-sway{0%,100%{transform:rotate(-.3deg)}50%{transform:rotate(.3deg)}}
+@media(prefers-reduced-motion:reduce){#room-hanging-plant{animation:none}}
+#app:not(.mode-play) #room-hanging-plant{animation-play-state:paused}

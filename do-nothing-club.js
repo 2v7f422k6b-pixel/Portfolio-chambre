@@ -212,14 +212,7 @@
 
       const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
       if (!blob) throw new Error('PNG export unavailable');
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fr ? 'certificat-de-flemme-intersiderale.png' : 'certificate-of-intergalactic-laziness.png';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+      await window.NanaImageSave.show(blob, fr ? 'certificat-de-flemme-intersiderale.png' : 'certificate-of-intergalactic-laziness.png');
     } catch (error) {
       console.error('Could not export the Do Nothing certificate', error);
       window.alert(fr ? 'Impossible de télécharger le certificat pour le moment.' : 'Could not download the certificate right now.');
