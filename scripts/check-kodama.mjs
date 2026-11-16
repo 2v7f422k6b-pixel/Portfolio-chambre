@@ -28,7 +28,7 @@ test('touch and synthetic click are intercepted before underlying hotspots and r
  const r=room(),spirit=r.spirits[0];r.emit('click',spirit);assert.equal(r.clicks.length,0);r.advance(15000);
  for(const type of ['pointerdown','pointerup','touchstart','touchend'])assert.equal(r.emit(type,spirit).stopped,true);
  const click=r.emit('click',spirit);assert(click.stopped&&click.prevented);assert.deepEqual(r.clicks,['kodama-1']);
- assert(spirit.animations[0].frames.some(f=>f.transform.includes('rotate(-38deg)')));
+ assert(spirit.animations[0].frames.some(f=>f.transform.includes('rotate(175deg)')));
  r.emit('keydown',spirit,{key:'Enter',repeat:false});assert(spirit.animations[0].cancelled);assert.equal(spirit.animations.length,2);
  const outside={closest:()=>null};assert.equal(r.emit('click',outside).stopped,false);
 });

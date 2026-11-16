@@ -44,7 +44,7 @@
     if(nextMode!==mode||nextTheme!==theme)ready=false;
     mode=nextMode;theme=nextTheme;
     for(const element of document.querySelectorAll(selector)){
-      if(!element.hasAttribute('data-nana-lazy')&&matchesView(resource(element),mode,theme))hydrate(element);
+      if(!element.closest('[data-resource-deferred]')&&!element.hasAttribute('data-nana-lazy')&&matchesView(resource(element),mode,theme))hydrate(element);
     }
   }
   function setSource(element,url,{mode:target='play',theme:variant}={}){
@@ -55,7 +55,7 @@
     if(matchesView(resource(element),mode,theme))hydrate(element);
   }
   function required(element){
-    return !element.closest('[data-nana-load-ignore]')&&matchesView(resource(element),mode,theme);
+    return !element.closest('[data-nana-load-ignore],[data-resource-deferred]')&&matchesView(resource(element),mode,theme);
   }
   function themeReady(target,variant){
     const images=[...document.querySelectorAll('img[data-resource-theme]')].filter(image=>matchesView(resource(image),target,variant));
@@ -111,7 +111,11 @@
       image.onerror=finish;image.src=url;
     }));
   }
-  window.NanaResources={activate,setSource,required,themeReady,lazySource,loadVisible,inViewport,pruneLazy,
+  function revealDeferred(root){
+    if(!root)return;root.removeAttribute('data-resource-deferred');
+    for(const element of root.querySelectorAll(selector))if(matchesView(resource(element),mode,theme))hydrate(element);
+  }
+  window.NanaResources={revealDeferred,activate,setSource,required,themeReady,lazySource,loadVisible,inViewport,pruneLazy,
     enqueueImage,
     enqueue:(target,run)=>queue.add(target,run),
     hold(target){if(target===mode)ready=false;},

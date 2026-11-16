@@ -1,6 +1,7 @@
 /* Local sprite motion and first-priority touch handling: no room hotspot receives a sprite tap. */
 (() => {
   'use strict';
+  window.NanaResources?.enqueue?.('play',()=>window.NanaResources.revealDeferred(document.getElementById('kodama-layer')));
   const root=document.getElementById('kodama-spirits');
   if(!root)return;
   const spirits=[...root.querySelectorAll('.kodama')],progress=window.NanaProgress;
@@ -24,9 +25,9 @@
     const head=spirit.querySelector('.kodama-head');if(!head?.animate)return;
     motions.get(head)?.cancel();
     const gentle=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const angles=gentle?[0,-12,0]:[0,-38,36,-30,24,-15,0];
+    const angles=gentle?[0,90,0]:[0,-35,175,175,140,185,0];
     motions.set(head,head.animate(angles.map(angle=>({transform:`translate3d(0,0,0) rotate(${angle}deg)`})),
-      {duration:gentle?320:1050,easing:'cubic-bezier(.12,.8,.2,1)'}));
+      {duration:gentle?420:780,easing:'steps(1,end)'}));
   };
   for(const spirit of spirits){
     spirit.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')wiggle(spirit);});
@@ -44,8 +45,15 @@
   }
   // Window capture runs before all document/scene alpha-hit and hotspot handlers,
   // including the synthetic click Safari sends after a touch.
-  for(const type of ['pointerdown','pointerup','touchstart','touchend'])window.addEventListener(type,event=>{if(targetFor(event))event.stopImmediatePropagation();},true);
-  window.addEventListener('click',event=>{const target=targetFor(event);if(!target)return;stop(event);activate(target);},true);
+  let lastTap=null,lastTapAt=-Infinity;
+  const tap=event=>{const target=targetFor(event);if(!target)return;stop(event);
+    const now=performance.now();if(target===lastTap&&now-lastTapAt<650)return;
+    lastTap=target;lastTapAt=now;activate(target);
+  };
+  for(const type of ['pointerdown','touchstart'])window.addEventListener(type,event=>{if(targetFor(event))event.stopImmediatePropagation();},true);
+  window.addEventListener('pointerup',tap,true);
+  window.addEventListener('touchend',tap,true);
+  window.addEventListener('click',tap,true);
   window.addEventListener('keydown',event=>{
     const target=targetFor(event);if(!target||!['Enter',' '].includes(event.key))return;
     stop(event);if(!event.repeat)activate(target);

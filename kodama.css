@@ -1,14 +1,14 @@
 /* Local HTML sprites: heads composite independently of the large room SVG. */
 #play-scene > #kodama-layer{position:absolute;inset:0;z-index:41;pointer-events:none}
 #play-scene .room-sprite-hit{position:absolute;display:block;box-sizing:border-box;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;line-height:0;min-width:0!important;min-height:0!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#kodama-layer .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.2s ease,visibility 1.2s}
+#kodama-layer .kodama{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.8s ease,visibility 1.8s}
 #kodama-layer .kodama.is-visible{opacity:1;visibility:visible;pointer-events:auto}
 #play-scene .sprite-part{position:absolute;display:block;pointer-events:none;transform:translate3d(0,0,0)}
 #play-scene .sprite-part img{position:absolute;display:block;max-width:none;pointer-events:none;user-select:none;-webkit-user-drag:none}
 #play-scene .sprite-ink{inset:0;width:100%;height:100%}
 #kodama-layer .sprite-ink{opacity:.8}
 #play-scene .sprite-halo{opacity:0}
-html[data-theme="night"] #kodama-layer .sprite-halo{opacity:.55}
+html[data-theme="night"] #kodama-layer .sprite-halo{opacity:.3}
 #play-scene .room-sprite-hit:is(:hover,:focus-visible) .sprite-halo{opacity:1}
 #kodama-layer .kodama.is-visible .kodama-head{will-change:transform}
 #play-scene > #preacher-dog-sprite{z-index:32;pointer-events:auto}
@@ -19,3 +19,7 @@ html[data-theme="night"] #preacher-dog-sprite .sprite-night{display:block}
 #app:not(.mode-play) #preacher-dog-sprite .dog-head,#preacher-dog-sprite.is-idle .dog-head{animation-play-state:paused}
 @keyframes preacher-local-nod{0%,100%{transform:translate3d(0,0,0) rotate(-14deg)}50%{transform:translate3d(0,0,0) rotate(14deg)}}
 @media(prefers-reduced-motion:reduce){#kodama-layer .kodama{transition:opacity .15s,visibility .15s}#preacher-dog-sprite .dog-head{animation:none}}
+
+/* A soft ambient glow is separate from the white interaction outline. */
+#kodama-layer .sprite-halo{filter:blur(5px);transform:scale(1.18);transform-origin:center}
+#kodama-layer .room-sprite-hit:is(:hover,:focus-visible) .sprite-halo{opacity:.45}

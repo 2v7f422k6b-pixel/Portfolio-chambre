@@ -7,7 +7,7 @@ html body .nana-surface-loader{
   background:#fff2f5;color:#ff173b;font:18px/1.5 "Nana Trace UI",sans-serif;
   text-align:center;padding:20px;pointer-events:auto;
 }
-html[data-theme="night"] body .nana-surface-loader{background:#151226;color:#fff2f5}
+html[data-theme="night"] body .nana-surface-loader{background:#fff2f5;color:#ff173b}
 /* Keep the loading status accessible while showing only Léna's drawing. */
 .nana-surface-loader [role="status"]{font-size:0;line-height:0}
 .nana-surface-loader [role="status"]::before{

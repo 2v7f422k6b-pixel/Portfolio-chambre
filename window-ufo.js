@@ -1,6 +1,7 @@
 /* A curious night visitor; all timings count only time actually spent in the room. */
 (() => {
   'use strict';
+  window.NanaResources?.enqueue?.('play',()=>window.NanaResources.revealDeferred(document.getElementById('ufo-window-layer')));
   const ufo=document.getElementById('window-ufo'),app=document.getElementById('app');
   if(!ufo||!app)return;
   const button=ufo.querySelector('.ufo-hit');
@@ -19,10 +20,10 @@
   const sync=()=>{ufo.classList.toggle('is-idle',!active());last=performance.now();};
   function tick(){
     const now=performance.now(),delta=Math.min(now-last,1000);last=now;if(!active())return;elapsed+=delta;
-    if(phase==='waiting'&&elapsed>=(preview?500:first?18000:90000)){first=false;change(reduced.matches?'observing':'arriving');}
-    else if(phase==='arriving'&&elapsed>=1900)change('observing');
-    else if(phase==='observing'&&elapsed>=19000)change('leaving');
-    else if(phase==='leaving'&&elapsed>=(reduced.matches?200:1000))change('waiting');
+    if(phase==='waiting'&&elapsed>=(preview?500:first?18000:90000)){first=false;change('arriving');}
+    else if(phase==='arriving'&&elapsed>=1300)change('observing');
+    else if(phase==='observing'&&elapsed>=13000)change('leaving');
+    else if(phase==='leaving'&&elapsed>=900)change('waiting');
   }
   const flee=event=>{
     event.preventDefault();event.stopPropagation();

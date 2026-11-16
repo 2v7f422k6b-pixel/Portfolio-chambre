@@ -16,9 +16,9 @@ test('saucer waits for night, approaches, observes, escapes on click and saves d
  r.root.dataset.theme='night';r.advance(18000);assert.equal(r.ufo.dataset.phase,'arriving');r.advance(1900);assert.equal(r.ufo.dataset.phase,'observing');assert.equal(r.attrs.tabindex,'0');
  assert.equal(r.feats.length,0);r.events.click({preventDefault(){},stopPropagation(){}});assert.equal(r.ufo.dataset.phase,'leaving');assert.deepEqual(r.feats,['ufo-encounter']);r.advance(1000);assert.equal(r.ufo.dataset.phase,'waiting');assert.equal(r.attrs.tabindex,'-1');
 });
-test('preview is immediate and never awards; hidden pages pause; reduced motion skips approach',()=>{
- const r=room({preview:true,reduced:true});r.document.hidden=true;r.advance(5000);assert.equal(r.ufo.dataset.phase,undefined);r.document.hidden=false;r.advance(500);assert.equal(r.ufo.dataset.phase,'observing');
- r.events.keydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(r.ufo.dataset.phase,'leaving');assert.equal(r.feats.length,0);r.advance(200);assert.equal(r.ufo.dataset.phase,'waiting');
+test('preview is immediate and never awards; hidden pages pause; reduced motion keeps a short fade',()=>{
+ const r=room({preview:true,reduced:true});r.document.hidden=true;r.advance(5000);assert.equal(r.ufo.dataset.phase,undefined);r.document.hidden=false;r.advance(500);assert.equal(r.ufo.dataset.phase,'arriving');r.advance(1300);assert.equal(r.ufo.dataset.phase,'observing');
+ r.events.keydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(r.ufo.dataset.phase,'leaving');assert.equal(r.feats.length,0);r.advance(900);assert.equal(r.ufo.dataset.phase,'waiting');
 });
 
 

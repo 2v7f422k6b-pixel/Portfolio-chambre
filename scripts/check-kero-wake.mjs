@@ -8,7 +8,7 @@ function setup({night=false,reduced=false}={}){
 }
 async function flush(){for(let i=0;i<15;i++)await Promise.resolve()}
 test('day and night wake in two drawn steps, reward once, then return to sleep',async()=>{
- for(const night of [false,true]){const h=setup({night});const done=h.activate();await flush();assert.equal(h.poses.dataset.keroState,'waking');assert.equal(h.feats.length,0);await h.activate();assert.equal(h.sources.length,2);assert(h.sources.every(s=>s.endsWith(night?'-night.png':'-day.png')));await h.tick(420);await done;assert.equal(h.poses.dataset.keroState,'awake');assert.deepEqual(h.feats,['kero-awake']);await h.tick(4200);assert.equal(h.poses.dataset.keroState,'asleep');}
+ for(const night of [false,true]){const h=setup({night});const done=h.activate();await flush();assert.equal(h.poses.dataset.keroState,'waking');assert.equal(h.feats.length,0);await h.activate();assert.equal(h.sources.length,2);assert(h.sources.every(s=>s.endsWith(night?'-night.png':'-day.png')));await h.tick(180);await done;assert.equal(h.poses.dataset.keroState,'awake');assert.deepEqual(h.feats,['kero-awake']);await h.tick(2200);assert.equal(h.poses.dataset.keroState,'asleep');}
 });
 test('reduced motion awards immediately; hiding the page cancels an unfinished wake',async()=>{
  const r=setup({reduced:true});await r.activate();assert.equal(r.poses.dataset.keroState,'awake');assert.equal(r.feats.length,1);
