@@ -100,7 +100,7 @@
     }catch(error){if(error.name!=='SecurityError')throw error;}
   }
   function makeState(surface){
-    let loader=null;
+    let loader=null,pendingTimer=null;
     function position(){
       if(!loader)return;
       loader.style.transform=`translate(${surface.scrollLeft}px,${surface.scrollTop}px)`;
@@ -121,12 +121,15 @@
       });
       loader.append(label,retry);surface.append(loader);position();
     }
-    const state={clear(){surface.classList.remove('nana-surface-pending');surface.removeAttribute('aria-busy');loader?.remove();},gate:createGate({
+    const state={clear(){clearTimeout(pendingTimer);surface.classList.remove('nana-surface-pending');surface.removeAttribute('aria-busy');loader?.remove();},gate:createGate({
       pending(){
         window.NanaResources?.hold(surface.id==='play-viewport'?'play':surface.id==='work-desktop'?'work':null);
-        mount();position();surface.classList.add('nana-surface-pending');surface.setAttribute('aria-busy','true');
-        loader.classList.remove('nana-load-error');
-        loader.firstChild.textContent=language()?'Chargement…':'Loading…';loader.lastChild.hidden=true;
+        clearTimeout(pendingTimer);surface.setAttribute('aria-busy','true');
+        pendingTimer=setTimeout(()=>{
+          mount();position();surface.classList.add('nana-surface-pending');
+          loader.classList.remove('nana-load-error');
+          loader.firstChild.textContent=language()?'Chargement…':'Loading…';loader.lastChild.hidden=true;
+        },surface.classList.contains('memory-box-form')?120:0);
       },
       async prepare(){
         // Hold decoded SVG/background sources until the complete view is painted.
@@ -136,11 +139,13 @@
         held.length=0;
       },
       reveal(){
+        clearTimeout(pendingTimer);
         surface.classList.remove('nana-surface-pending');surface.setAttribute('aria-busy','false');loader?.remove();
         window.NanaResources?.ready(surface.id==='play-viewport'?'play':surface.id==='work-desktop'?'work':null);
       },
       failed(){
-        mount();surface.setAttribute('aria-busy','false');loader.classList.add('nana-load-error');
+        clearTimeout(pendingTimer);
+        mount();surface.classList.add('nana-surface-pending');surface.setAttribute('aria-busy','false');loader.classList.add('nana-load-error');
         loader.firstChild.textContent=language()?'Le chargement n’a pas abouti.':'This view could not finish loading.';
         loader.lastChild.textContent=language()?'Réessayer':'Try again';loader.lastChild.hidden=false;
       }

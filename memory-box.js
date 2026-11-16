@@ -16,7 +16,7 @@
   const tin='<span class="memory-tin-body">'+frame+'<span class="memory-tin-label">Nana</span></span><span class="memory-tin-lid">'+frame+'<img class="memory-flower" src="assets/drawn-ui/fleur.png" alt=""></span>';
   const layer=document.createElement('div');layer.id='nana-memory-secret';layer.dataset.state='idle';layer.setAttribute('data-no-translate','');
   const roomMarkup=markup=>window.NanaResources?markup.replaceAll('src="assets/','data-resource-mode="play" data-resource-src="assets/').replaceAll('href="assets/','data-resource-mode="play" data-resource-href="assets/'):markup;
-  layer.innerHTML=roomMarkup('<div class="memory-wall"><div class="memory-cavity" aria-hidden="true"></div><button type="button" class="memory-find" hidden>'+tin+'</button><div class="memory-tile" aria-hidden="true"><svg viewBox="'+TILE.x+' '+TILE.y+' '+TILE.size+' '+TILE.size+'" preserveAspectRatio="none"><image class="memory-wall-day" data-resource-theme="day" href="assets/chambre%20jour.PNG" width="1670" height="942" preserveAspectRatio="none"/><image class="memory-wall-night" data-resource-theme="night" href="assets/chamrbe%20nuit.PNG" width="1670" height="942" preserveAspectRatio="none"/></svg>'+frame+'</div></div><button class="memory-marble" type="button"><svg class="memory-marble-art" viewBox="94 144 714 696" aria-hidden="true"><image href="assets/beads/IMG_5213.png" width="1000" height="1000"/><ellipse cx="295" cy="314" rx="87" ry="33" transform="rotate(-36 295 314)" fill="#fff5e9" opacity=".8"/></svg></button><span class="memory-status" role="status" aria-live="polite"></span>');
+  layer.innerHTML=roomMarkup('<div class="memory-wall"><div class="memory-cavity" aria-hidden="true"></div><button type="button" class="memory-find" hidden>'+tin+'</button><div class="memory-tile" aria-hidden="true"><svg viewBox="'+TILE.x+' '+TILE.y+' '+TILE.size+' '+TILE.size+'" preserveAspectRatio="none"><image class="memory-wall-day" data-resource-theme="day" href="assets/web/room-day.lossless.webp" width="1670" height="942" preserveAspectRatio="none"/><image class="memory-wall-night" data-resource-theme="night" href="assets/web/room-night.lossless.webp" width="1670" height="942" preserveAspectRatio="none"/></svg>'+frame+'</div></div><button class="memory-marble" type="button"><svg class="memory-marble-art" viewBox="94 144 714 696" aria-hidden="true"><image href="assets/beads/IMG_5213.png" width="1000" height="1000"/><ellipse cx="295" cy="314" rx="87" ry="33" transform="rotate(-36 295 314)" fill="#fff5e9" opacity=".8"/></svg></button><span class="memory-status" role="status" aria-live="polite"></span>');
   const start=point(PATH.start),wall=point([TILE.x,TILE.y]);
   layer.style.setProperty('--memory-marble-x',start.left);layer.style.setProperty('--memory-marble-y',start.top);
   layer.style.setProperty('--memory-wall-x',wall.left);layer.style.setProperty('--memory-wall-y',wall.top);
@@ -45,6 +45,15 @@
   let state='idle',run=0,page=-1,previousFocus=null;
   const animations=new Set();
   const items=()=>Array.isArray(window.NANA_MEMORY_ITEMS)?window.NANA_MEMORY_ITEMS.filter(x=>['image','audio'].includes(x.type)&&typeof x.src==='string'):[];
+  let warmPromise=null;
+  function warmBox(){
+    if(warmPromise)return warmPromise;
+    const urls=[...new Set(['assets/memorybox/IMG_5749.png','assets/portfolio-ux/IMG_5035.png',...items().map(item=>item.thumbnail||(item.type==='image'?item.src:null)).filter(Boolean)])];
+    warmPromise=Promise.all(urls.map(src=>new Promise(resolve=>{const image=new Image();image.onload=()=>{if(image.decode)image.decode().catch(()=>{}).then(resolve);else resolve();};image.onerror=resolve;image.src=src;})));
+    return warmPromise;
+  }
+  window.NanaResources?.enqueue?.('play',warmBox);
+  marble.addEventListener('pointerenter',warmBox,{once:true});
   function setState(next){state=next;layer.dataset.state=next;}
   function labels(){
     marble.setAttribute('aria-label',t('Toucher la petite bille','Touch the little marble'));
@@ -122,6 +131,15 @@
   }
   async function animate(node,frames,duration){
     if(reduce.matches||typeof node.animate!=='function')return;
+    if(node===marble){
+      const rect=scene.getBoundingClientRect();
+      frames=frames.map(frame=>{
+        const {left,top,...rest}=frame;
+        const dx=(parseFloat(left)-parseFloat(start.left))*rect.width/100;
+        const dy=(parseFloat(top)-parseFloat(start.top))*rect.height/100;
+        return {...rest,transform:`translate3d(${dx}px,${dy}px,0) ${rest.transform||'translate(-50%,-50%)'}`};
+      });
+    }
     const animation=node.animate(frames,{duration,fill:'forwards',easing:'linear'});animations.add(animation);
     try{await animation.finished;}catch(_){}finally{animations.delete(animation);}
   }
@@ -130,7 +148,7 @@
   async function discover(openAfter=false){
     if(state==='revealed'){if(openAfter)showBox();return;}
     if(state!=='idle')return;
-    const ticket=++run;setState('falling');marble.disabled=true;
+    const ticket=++run;void warmBox();setState('falling');marble.disabled=true;
     marble.scrollIntoView({block:'nearest',inline:'center',behavior:'instant'});notify();
     await animate(marble,[{...point(PATH.start),transform:'translate(-50%,-50%) rotate(0)'},{...point(PATH.edge),offset:.28},{...point(PATH.fall),offset:.62},{...point(PATH.hit),transform:'translate(-50%,-50%) rotate(-220deg)'}],1080);
     if(ticket!==run)return;setState('opening');

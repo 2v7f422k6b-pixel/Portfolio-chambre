@@ -9,7 +9,7 @@
   let elapsed=0,last=performance.now(),departure=null,returnAt=null,returnEnds=null;
   const active=()=>!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')
     &&!document.getElementById('play-viewport')?.hidden&&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
-  const complete=()=>progress?.hasFeat('mononoke-kodama');
+
   const localize=()=>spirits.forEach((spirit,i)=>{
     const found=progress?.hasFeat('kodama-'+(i+1));
     spirit.setAttribute('aria-label',document.documentElement.lang.startsWith('en')
@@ -27,13 +27,24 @@
     const gentle=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const angles=gentle?[0,90,0]:[0,-35,175,175,140,185,0];
     motions.set(head,head.animate(angles.map(angle=>({transform:`translate3d(0,0,0) rotate(${angle}deg)`})),
-      {duration:gentle?420:780,easing:'steps(1,end)'}));
+      {duration:gentle?420:900,easing:'ease-in-out'}));
   };
   for(const spirit of spirits){
     spirit.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')wiggle(spirit);});
     spirit.addEventListener('focus',()=>wiggle(spirit));
   }
-  const targetFor=event=>event.target.closest?.('.room-sprite-hit');
+  const targetFor=event=>{
+    const direct=event.target.closest?.('.room-sprite-hit');if(direct)return direct;
+    // iPad may report the underlying SVG when a tap falls just beside a small head.
+    if(!active()||event.target.closest?.('dialog,#menubar,#dock,#window-shade,#special-shade'))return null;
+    const point=event.changedTouches?.[0]||event;
+    if(!Number.isFinite(point.clientX)||!Number.isFinite(point.clientY))return null;
+    return spirits.find(spirit=>{
+      if(!shown.get(spirit))return false;
+      const r=spirit.getBoundingClientRect(),pad=Math.max(0,(44-r.width)/2);
+      return point.clientX>=r.left-pad&&point.clientX<=r.right+pad&&point.clientY>=r.top-8&&point.clientY<=r.bottom+8;
+    });
+  };
   const stop=event=>{event.preventDefault();event.stopImmediatePropagation();};
   function activate(target){
     if(!active())return;
@@ -60,10 +71,10 @@
   },true);
   function tick(){
     const now=performance.now(),delta=Math.min(now-last,1000);last=now;if(!active())return;elapsed+=delta;
-    if(complete()&&departure===null)departure=Math.max(elapsed,39000)+10000;
+    if(departure===null)departure=59000;
     if(departure!==null&&elapsed>=departure){
       if(returnAt===null)returnAt=departure+120000;
-      if(elapsed>=returnAt&&returnEnds===null)returnEnds=elapsed+35000;
+      if(elapsed>=returnAt&&returnEnds===null)returnEnds=elapsed+20000;
       if(returnEnds!==null&&elapsed>=returnEnds){returnAt=elapsed+120000;returnEnds=null;}
     }
     spirits.forEach((spirit,i)=>show(spirit,elapsed>=15000+i*6000&&(departure===null||elapsed<departure||returnEnds!==null)));

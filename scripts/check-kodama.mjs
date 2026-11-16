@@ -17,12 +17,12 @@ function room(){
  vm.runInNewContext(source,{document,window:{NanaProgress:p,matchMedia:()=>({matches:false}),addEventListener:(type,fn,capture)=>{assert.equal(capture,true);windowEvents.set(type,fn);}},performance:{now:()=>time},location:{hash:'#/room'},setInterval:fn=>tick=fn});
  return{spirits,clicks,windowEvents,dog,emit(type,target,extras={}){const e={target,prevented:false,stopped:false,preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;},...extras};windowEvents.get(type)(e);return e;},advance(ms){for(let n=0;n<ms;n+=250){time+=250;tick();}},pause(on){active=!on;},complete(){done=true;}};
 }
-test('Kodama appear progressively, wait for the fifth discovery and later return',()=>{
+test('Kodama appear progressively, leave even without discovery and later return',()=>{
  const r=room(),visible=()=>r.spirits.filter(s=>s.classes.has('is-visible')).length;
  r.advance(14750);assert.equal(visible(),0);r.advance(250);assert.equal(visible(),1);
  r.pause(true);r.advance(20000);assert.equal(visible(),1);r.pause(false);r.advance(24000);assert.equal(visible(),5);
- r.advance(60000);assert.equal(visible(),5);r.complete();r.advance(10000);assert.equal(visible(),5);r.advance(250);assert.equal(visible(),0);
- r.advance(120000);assert.equal(visible(),5);r.advance(35000);assert.equal(visible(),0);
+ r.advance(19750);assert.equal(visible(),5);r.advance(250);assert.equal(visible(),0);
+ r.advance(120000);assert.equal(visible(),5);r.advance(20000);assert.equal(visible(),0);
 });
 test('touch and synthetic click are intercepted before underlying hotspots and restart a strong local motion',()=>{
  const r=room(),spirit=r.spirits[0];r.emit('click',spirit);assert.equal(r.clicks.length,0);r.advance(15000);

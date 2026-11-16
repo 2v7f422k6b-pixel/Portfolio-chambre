@@ -59,3 +59,11 @@ node --test scripts/check-studio-layout.mjs
 ```
 
 Quatre tests couvrent l’orientation du parent, le changement d’orientation, le cas autonome, le repli pour un parent inaccessible et le message de fermeture. La syntaxe des scripts JavaScript modifiés a été vérifiée. Les références littérales `src`/`href` de six pages d’entrée ont également été contrôlées contre l’inventaire du dépôt (125 références, aucun chemin manquant).
+
+
+## Retour de visite du 16 novembre 2026
+
+- [ ] Remplacer deux des trois pots à crayons du bureau par d’autres objets dessinés par Léna.
+- [ ] Dessiner l’icône Lumon : piste proposée, goutte d’eau avec le nom à l’intérieur.
+- [ ] Dessiner l’icône document du CV et fournir le CV pour relier le raccourci Work.
+- [ ] Vérifier sur l’iPad de Léna : rotation des têtes Kodama au toucher, battement du papillon, arrivée et départ de l’OVNI, chute de la bille et ouverture de la boîte.

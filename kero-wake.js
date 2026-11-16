@@ -17,7 +17,12 @@
       image.onerror=()=>done(false);image.src=src;
     });cache.set(src,ready);ready.then(ok=>{if(!ok)cache.delete(src);});return ready;
   }
-  const ready=()=>Promise.all(frames[theme()].slice(1).map(preload));
+  const ready=()=>{
+    for(const image of poses.querySelectorAll?.('[data-resource-deferred]')||[]){
+      window.NanaResources?.setSource(image,image.dataset.resourceHref,{theme:image.dataset.resourceTheme});
+    }
+    return Promise.all(frames[theme()].slice(1).map(preload));
+  };
   const show=state=>{poses.dataset.keroState=state;};
   const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   function discover(){window.NanaProgress?.feat('kero-awake');}
@@ -28,7 +33,12 @@
     if(token!==revision||document.hidden){busy=false;return;}
     if(loaded.every(Boolean)){
       const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(!reduced){show('waking');await wait(180);if(token!==revision||document.hidden){busy=false;return;}}
+      if(!reduced){
+        for(const [state,duration] of [['waking',180],['asleep',120],['waking',180]]){
+          show(state);await wait(duration);
+          if(token!==revision||document.hidden){busy=false;return;}
+        }
+      }
       show('awake');
     }
     discover();busy=false;

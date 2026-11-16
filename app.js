@@ -299,6 +299,7 @@ function openApp(name,index){
   case 'social':openSocialProjects();break;
   case 'interactive':openInteractiveProjects();break;
   case 'mini-games':openMiniGames();break;
+  case 'cv':openWindow('CV — Léna de Firmas',document.documentElement.lang==='en'?'<p>Léna’s CV will be available here soon.</p>':'<p>Le CV de Léna sera bientôt disponible ici.</p>','cv');break;
   case 'severance':window.NanaSeverance?.open();break;
   case 'coloring':window.NanaColoring?.open();break;
   case 'bead-box':window.NanaBeadBox?.open();break;

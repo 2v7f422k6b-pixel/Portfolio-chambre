@@ -2,10 +2,10 @@
 #play-scene > #ufo-window-layer{position:absolute;left:59.52096%;top:1.80467%;width:10.53892%;height:48.83227%;z-index:7;pointer-events:none;clip-path:polygon(0 8.7%,100% 0,100% 100%,0 99.5%)}
 #ufo-window-layer #window-ufo{position:absolute;left:16%;top:36%;width:54%;aspect-ratio:174/114;opacity:0;pointer-events:none;transform:translate3d(12%,-20%,0) scale(.04);transition:transform 1.25s cubic-bezier(.16,.7,.2,1),opacity 1.25s ease}
 html[data-theme="night"] #ufo-window-layer #window-ufo:is([data-phase="arriving"],[data-phase="observing"],[data-phase="leaving"]){opacity:1;will-change:transform}
-#ufo-window-layer #window-ufo[data-phase="arriving"]{transform:translate3d(0,0,0) scale(1)}
+#ufo-window-layer #window-ufo[data-phase="arriving"]{animation:ufo-arrive 1.3s cubic-bezier(.16,.7,.2,1) both}
 #ufo-window-layer #window-ufo[data-phase="observing"]{transform:translate3d(0,0,0)}
 #ufo-window-layer #window-ufo[data-phase="observing"] .ufo-hit{animation:ufo-curiosity 2.6s ease-in-out infinite;transform-origin:50% 50%}
-#ufo-window-layer #window-ufo[data-phase="leaving"]{transform:translate3d(16%,-35%,0) scale(.025);opacity:0!important;transition:transform .9s ease-in,opacity .9s ease-in}
+#ufo-window-layer #window-ufo[data-phase="leaving"]{animation:ufo-escape .9s ease-in both;transition:none}
 #window-ufo .ufo-hit{display:block;position:relative;width:100%;height:100%;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;outline:none!important;cursor:pointer;pointer-events:none;touch-action:manipulation}
 html[data-theme="night"] #window-ufo:is([data-phase="arriving"],[data-phase="observing"]) .ufo-hit{pointer-events:auto}
 #window-ufo .ufo-hover{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
@@ -19,5 +19,5 @@ html[data-theme="night"] #window-ufo:is([data-phase="arriving"],[data-phase="obs
 @keyframes ufo-neon-breath{0%,100%{opacity:.45}50%{opacity:.85}}
 @keyframes ufo-startle{0%{opacity:.65}25%{opacity:1}100%{opacity:.2}}
 @keyframes ufo-escape{0%{opacity:1;transform:translate3d(0,0,0) scale(1)}75%{opacity:1;transform:translate3d(12%,-25%,0) scale(.2)}100%{opacity:0;transform:translate3d(16%,-35%,0) scale(.025)}}
-@media(prefers-reduced-motion:reduce){#ufo-window-layer #window-ufo,#window-ufo *{animation:none!important}#ufo-window-layer #window-ufo{transform:none!important;transition:opacity .6s ease!important}}
+@media(prefers-reduced-motion:reduce){#ufo-window-layer #window-ufo,#window-ufo *{animation:none!important}#ufo-window-layer #window-ufo{transform:none!important;transition:opacity .6s ease!important}#ufo-window-layer #window-ufo[data-phase="leaving"]{opacity:0!important}}
 

@@ -3,7 +3,7 @@
 #app:not(.mode-play) #nana-memory-secret,#app.nana-reality-active #nana-memory-secret{display:none}
 #nana-memory-secret button{border:0;padding:0;background:none;color:inherit;cursor:pointer;touch-action:manipulation;pointer-events:auto}
 #nana-memory-secret [hidden],#nana-memory-box [hidden]{display:none!important}
-.memory-marble{position:absolute;left:var(--memory-marble-x);top:var(--memory-marble-y);transform:translate(-50%,-50%);width:max(44px,2.63%);aspect-ratio:1;display:grid;place-items:center}
+.memory-marble{will-change:transform;position:absolute;left:var(--memory-marble-x);top:var(--memory-marble-y);transform:translate(-50%,-50%);width:max(44px,2.63%);aspect-ratio:1;display:grid;place-items:center}
 .memory-marble-art{width:max(13px,1.12cqw);height:max(13px,1.12cqw);overflow:visible}
 .memory-hover{pointer-events:none!important;filter:url(#nana-room-hover-ring)!important;opacity:0;transition:opacity 150ms ease}
 .memory-marble .memory-hover{position:absolute}
