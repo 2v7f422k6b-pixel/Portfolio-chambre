@@ -6,8 +6,8 @@
   const vests=new Set(['top-mononoke-tabard','top-ganni-knit','vest-george-sand','jacket-floral']);
   const sparkles=new Set(['top-sparkle-pink','top-sparkle-charcoal']);
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
-  const hairlessHeads=new Set(['head-clown-wig','head-sonny-rabbit','head-pink-hood']);
-  const hoods=new Set(['head-sonny-rabbit','head-pink-hood']);
+  const hairlessHeads=new Set(['head-clown-wig','head-sonny-rabbit','head-pink-hood','head-preacher-dog']);
+  const hoods=new Set(['head-sonny-rabbit','head-pink-hood','head-preacher-dog']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
     if(id==='cape-mononoke')return 'cape';
@@ -34,7 +34,7 @@
     if(cardigans.has(id))return 'cardigan';
     if(vests.has(id))return 'vest';
     if(sparkles.has(id))return 'sheer';
-    const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
+    const fixed={'jacket-yukata':'wrap','head-inspector-glasses':'glasses','head-headlamp':'headlamp','accessory-preacher-gloves':'gloves','head-preacher-goggles':'glasses','accessory-pink-gloves':'gloves','accessory-camera':'camera','accessory-phone':'phone','suit-paint':'overalls','jewelry-dj-bracelets':'bracelets'};
     if(fixed[id])return fixed[id];
     if(id.startsWith('held-'))return 'handObject';
     if(['head-oval-glasses','head-pink-glasses','head-olive-glasses'].includes(id))return 'glasses';
