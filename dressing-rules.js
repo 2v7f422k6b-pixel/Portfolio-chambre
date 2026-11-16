@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const sweaters=new Set(['top-pullover','top-lime','top-bear','top-bow-knit']);
-  const cardigans=new Set(['jacket-miffy-knit','jacket-green-bolero','jacket-blue','jacket-ganni-knit','jacket-blue-open','jacket-pink-button','jacket-red-button']);
+  const cardigans=new Set(['jacket-amelie','jacket-miffy-knit','jacket-green-bolero','jacket-blue','jacket-ganni-knit','jacket-blue-open','jacket-pink-button','jacket-red-button']);
   const vests=new Set(['top-mononoke-tabard','top-ganni-knit','vest-george-sand','jacket-floral']);
   const sparkles=new Set(['top-sparkle-pink','top-sparkle-charcoal']);
   const buckets=new Set(['head-bucket-beige','head-bucket-blue']);
