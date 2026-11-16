@@ -5,9 +5,9 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const frame=(offset,x=0,y=0,angle=0)=>({offset,transform:`translate(${x}px,${y}px) rotate(${angle}deg)`});
   const berryFlight=[frame(0),frame(.08,0,3,-2),frame(.24,-4,-38,3),frame(.42,7,-65,-3),frame(.61,14,-58,3),frame(.77,4,-35,-2),frame(.94,0,2,1),frame(1)];
-  // Reverse into the empty shelf space on the right, then drive back to park.
-  // Kero and the Pokéball occupy the left side; the wheels follow the shelf slope.
-  const vanTrip=[frame(0),frame(.045,-2,0,-3),frame(.09,2,0,2),frame(.14,-3,0,-3),frame(.19,0,0,1),frame(.25,9,-.6,-2),frame(.40,40,-2.8,1),frame(.53,72,-5,-2),frame(.59,75,-5.2,2),frame(.66,75,-5.2,0),frame(.80,37,-2.6,1),frame(.94,-2,0,-1),frame(1)];
+  // Start in place, tip over the front edge, then fall behind the iMac.
+  // Nothing travels into the shelf space reserved for future objects on the right.
+  const vanTrip=[frame(0),frame(.05,-1,0,-3),frame(.10,1,0,2),frame(.15,-1,1,-5),frame(.23,0,6,-12),frame(.31,-5,18,-28),frame(.43,-9,58,-65),frame(.55,-12,138,-100),frame(.64,-12,218,-115),frame(.65,-12,218,-115),frame(.82),frame(.89),frame(1)].map((step,i)=>({...step,opacity:i>=9&&i<=11?0:1}));
   function element(tag,attrs){
     const el=document.createElementNS(NS,tag);
     for(const [key,value]of Object.entries(attrs||{}))el.setAttribute(key,value);
@@ -40,6 +40,16 @@
     drawing.forEach(el=>{el.style.visibility='hidden';});
     return {wings,restore(){parts.remove();drawing.forEach((el,i)=>{el.style.visibility=previous[i];});}};
   }
+  function hideBehindIMac(art){
+    const group=art.parentElement,imac=document.querySelector('polygon[data-open="work-zoom"]');
+    if(!group||!imac)return null;
+    const oldMask=group.getAttribute('mask'),defs=element('defs');
+    const mask=element('mask',{id:'van-fall-imac-mask',maskUnits:'userSpaceOnUse',x:0,y:0,width:1670,height:942});
+    mask.append(element('rect',{x:0,y:0,width:1670,height:942,fill:'white'}));
+    mask.append(element('polygon',{points:imac.getAttribute('points'),fill:'black'}));
+    defs.append(mask);group.prepend(defs);group.setAttribute('mask','url(#van-fall-imac-mask)');
+    return{restore(){defs.remove();if(oldMask===null)group.removeAttribute('mask');else group.setAttribute('mask',oldMask);}};
+  }
   function play(id,hit){
     if(active.has(id))return true;
     if(reduced.matches)return false;
@@ -52,10 +62,11 @@
     art.style.transformOrigin=`${box.x+box.width/2}px ${box.y+box.height*.85}px`;
     const scene=document.getElementById('play-scene'),animations=[];
     const pieces=berry?berryWings(art):null;
+    const occlusion=berry?null:hideBehindIMac(art);
     let done=false;
     function cleanup(){
       if(done)return;done=true;
-      animations.forEach(animation=>animation.cancel());pieces?.restore();
+      animations.forEach(animation=>animation.cancel());pieces?.restore();occlusion?.restore();
       art.style.transformBox=previous.box;art.style.transformOrigin=previous.origin;
       art.removeAttribute('data-motion-playing');
       if(berry)scene?.removeAttribute('data-berry-flying');
@@ -63,10 +74,11 @@
     }
     active.set(id,cleanup);art.setAttribute('data-motion-playing',id);
     if(berry)scene?.setAttribute('data-berry-flying','');
-    const frames=berry?berryFlight:vanTrip,options={duration:berry?3400:4200,easing:'ease-in-out'};
+    const frames=berry?berryFlight:vanTrip,options={duration:berry?3400:4200,easing:berry?'ease-in-out':'linear'};
     const main=art.animate(frames,options);animations.push(main);
-    // Keep the touch / keyboard target alongside the moving object.
-    if(hit?.animate){
+    // Follow the flying cushion. The van keeps its shelf target so an invisible
+    // hit area cannot cover the iMac while it falls behind the screen.
+    if(berry&&hit?.animate){
       const oldBox=hit.style.transformBox,oldOrigin=hit.style.transformOrigin;
       hit.style.transformBox='view-box';hit.style.transformOrigin=art.style.transformOrigin;
       const follow=hit.animate(frames,options);animations.push(follow);
