@@ -14,7 +14,7 @@
   const editing = new URLSearchParams(location.search).get('lampEdit') === '1';
   if (editing) document.documentElement.classList.add('lamp-edit-mode');
   // Artist-approved permanent placement, in the 1670 × 942 bedroom coordinate system.
-  const defaultQuad = [[679.1610611167739,189.70320567843726],[754.0449185287739,177.702325716768],[756.5410471091737,254.8932494609382],[681.0331575520739,262.71496665513723]];
+  const defaultQuad = [[591.9101376286098,182.7765347081036],[661.0664195264413,170.77565474643436],[663.5625481068412,247.96657849060455],[589.4878371617797,254.70355066880535]];
 
   const copy = points => points.map(p => [p[0], p[1]]);
   const valid = points =>
