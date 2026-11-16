@@ -76,3 +76,11 @@ Quatre tests couvrent l’orientation du parent, le changement d’orientation, 
 - [ ] Vérifier ces changements sur l’iPad de Léna (partage vers Photos) et sur son ordinateur.
 - [ ] Tenue à débloquer en Work de nuit : intention confirmée, tenue et déclencheur à choisir.
 - [x] Dimensions du fond vérifiées : conserver le ratio du dessin actuel ; ne pas recadrer pour supprimer le scroll accepté par Léna.
+
+
+## Ajustements du retour suivant — 16 novembre
+- [x] Araignée : parcours sur le sol vers la gauche, devant le bas des objets, sans remonter sur le lit ; taille réduite de 1,15 à 0,95.
+- [x] Lumon : indice centré sous les nombres et juste au-dessus des boîtes ; fichier MARSEILLE (anciennement MASSILIA).
+- [x] Exports : téléchargement PNG direct en une action, sans aperçu supplémentaire ni options de partage.
+- [x] Plante : oscillation légèrement renforcée, de ±0,3° à ±0,55°.
+- [ ] Validation visuelle par Léna.

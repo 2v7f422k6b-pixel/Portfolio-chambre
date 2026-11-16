@@ -71,13 +71,13 @@
       stroke:#141418;
     }
     @keyframes nana-spider-dash{
-      0%     {opacity:0;transform:translate(610px,890px) rotate(10deg) scale(.7)}
-      10%    {opacity:1;transform:translate(598px,867px) rotate(-12deg) scale(1.1)}
-      28%    {opacity:1;transform:translate(568px,818px) rotate(9deg) scale(1.15)}
-      45%,62%{opacity:1;transform:translate(540px,785px) rotate(-11deg) scale(1.15)}
-      78%    {opacity:1;transform:translate(568px,818px) rotate(170deg) scale(1.1)}
-      94%    {opacity:1;transform:translate(600px,867px) rotate(170deg) scale(1)}
-      100%   {opacity:0;transform:translate(610px,890px) rotate(170deg) scale(.7)}
+      0%   {opacity:0;transform:translate(610px,890px) rotate(-70deg) scale(.7)}
+      10%  {opacity:1;transform:translate(580px,921px) rotate(-85deg) scale(.95)}
+      30%  {opacity:1;transform:translate(450px,925px) rotate(-90deg) scale(.95)}
+      52%  {opacity:1;transform:translate(300px,922px) rotate(-87deg) scale(.95)}
+      76%  {opacity:1;transform:translate(150px,905px) rotate(-92deg) scale(.95)}
+      96%  {opacity:1;transform:translate(0px,905px) rotate(-90deg) scale(.95)}
+      100% {opacity:0;transform:translate(-30px,905px) rotate(-90deg) scale(.95)}
     }
     @keyframes nana-spider-scuttle{
       from{transform:rotate(-8deg) scaleX(.91)}
@@ -87,7 +87,7 @@
       #nana-rug-secret .rug-nana-fold{transition:none!important}
       #nana-rug-secret.is-open .rug-spider-run{
         animation:none!important;opacity:1;
-        transform:translate(540px,785px) scale(1.15)!important;
+        transform:translate(450px,925px) scale(.95)!important;
       }
       #nana-rug-secret .rug-spider-legs{animation:none!important}
     }
@@ -115,7 +115,7 @@
   spider.appendChild(make('image',{class:'rug-spider-day',href:'assets/drawn-ui/araignee_jour.png',x:-16,y:-14,width:32,height:28}));
   spider.appendChild(make('image',{class:'rug-spider-night',href:'assets/drawn-ui/araignee_nuit.png',x:-16,y:-14,width:32,height:28}));
   // Clip only the spider (not the rug fold) at the room's lower edge,
-  // so it vanishes naturally as it scuttles off the bottom of the screen.
+  // so it vanishes naturally as it scuttles off the left edge along the floor.
   const spiderClip=make('clipPath',{id:'nana-rug-spider-clip',clipPathUnits:'userSpaceOnUse'});
   spiderClip.appendChild(make('rect',{x:0,y:0,width:1670,height:942}));
   const definitions=make('defs');
