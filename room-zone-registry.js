@@ -79,6 +79,7 @@
     if(!feat)return;
     event.preventDefault();event.stopImmediatePropagation();
     window.NanaProgress?.visit('objet/'+id);
+    if(id==='kero'&&window.NanaKeroWake){void window.NanaKeroWake.activate();return;}
     const already=window.NanaProgress?.hasFeat?.(feat);
     window.NanaProgress?.feat(feat);
     if(id==='preacher-dog'&&!already&&window.NanaProgress?.hasFeat?.(feat)&&toast){toast.textContent='La tenue Preacher est disponible dans le dressing.';toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},3000);}

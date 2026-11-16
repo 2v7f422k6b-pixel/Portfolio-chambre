@@ -748,6 +748,10 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             <image class="blast-night" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7127.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
           </g>
           <style>
+            #kero-poses .kero-art{display:none}
+            #kero-poses[data-kero-state="asleep"] [data-kero-pose="asleep"],
+            #kero-poses[data-kero-state="waking"] [data-kero-pose="waking"],
+            #kero-poses[data-kero-state="awake"] [data-kero-pose="awake"]{display:inline}
             #sakura-shelf-art .sakura-night{opacity:0}
             html[data-theme="night"] #sakura-shelf-art .sakura-day{opacity:0}
             html[data-theme="night"] #sakura-shelf-art .sakura-night{opacity:1}
@@ -755,8 +759,14 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <g id="sakura-shelf-art" aria-hidden="true" pointer-events="none">
             <image class="sakura-day shelf-art" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7133.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
             <image class="sakura-night shelf-art" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7134.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
-            <image class="sakura-day kero-art" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/IMG_7131.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
-            <image class="sakura-night kero-art" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/IMG_7132.png" x="0" y="0" width="1670" height="942" preserveAspectRatio="none"/>
+            <g id="kero-poses" data-kero-state="asleep">
+              <image class="sakura-day kero-art" data-kero-pose="asleep" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/kero/asleep-day.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+              <image class="sakura-night kero-art" data-kero-pose="asleep" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/kero/asleep-night.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+              <image class="sakura-day kero-art" data-kero-pose="waking" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/kero/waking-day.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+              <image class="sakura-night kero-art" data-kero-pose="waking" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/kero/waking-night.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+              <image class="sakura-day kero-art" data-kero-pose="awake" data-resource-mode="play" data-resource-theme="day" data-resource-href="assets/kero/awake-day.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+              <image class="sakura-night kero-art" data-kero-pose="awake" data-resource-mode="play" data-resource-theme="night" data-resource-href="assets/kero/awake-night.png" x="1295.4459635416667" y="177.30484988452656" width="138.623046875" height="123.46073903002309" preserveAspectRatio="none"/>
+            </g>
           </g>
           <g id="nana-kikujiro-chime" transform="translate(-65 0)" role="button" tabindex="0" aria-label="Faire tinter la clochette — découvrir la future tenue Kikujiro">
             <use href="#kikujiro-chime-visual" class="chime-white-outline room-hover-outline" filter="url(#nana-room-hover-ring)" aria-hidden="true" pointer-events="none"/>
@@ -1041,7 +1051,8 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="glow-stars.js?v=20261112-resources-1" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="room-zone-registry.js?v=20261116-preacher-1" defer></script>
+<script src="kero-wake.js?v=20261116-kero-poses-1" defer></script>
+<script src="room-zone-registry.js?v=20261116-kero-poses-1" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>
   <script src="rug-secret.js?v=20261112-resources-1" defer></script>
   <script src="twist-reality.js?v=20261108-journal-1" defer></script>
