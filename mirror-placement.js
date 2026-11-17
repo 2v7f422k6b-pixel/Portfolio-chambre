@@ -3,6 +3,7 @@
    The user's mirror artwork stays in its separate SVG asset. */
 (function () {
   'use strict';
+  if (new URLSearchParams(location.search).get('chambreV2') === '1') return;
   const svg = document.getElementById('hotspots');
   if (!svg || document.getElementById('nana-wall-mirror')) return;
 

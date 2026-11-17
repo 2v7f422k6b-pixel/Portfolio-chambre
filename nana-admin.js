@@ -8,6 +8,11 @@
   const FILE = 'nana-site-settings.js';
   const TOOL_FLAGS = ['posterEdit','lampEdit','starsEdit','cookieEdit','ipadClockEdit','zones'];
   const SETTINGS = [
+    'nana-poster-alignment-room-v2',
+    'nana-poster-collection-room-v2',
+    'nana-wall-mirror-perspective-room-v2',
+    'nana-wall-lamp-perspective-room-v2',
+    'nana-ipad-clock-placement-room-v2',
     'nana-poster-alignment-v1',
     'nana-poster-collection-v1',
     'nana-wall-mirror-perspective-v1',
@@ -85,7 +90,9 @@
   function changeTool(flag) {
     const url = new URL(location.href);
     TOOL_FLAGS.forEach(name=>url.searchParams.delete(name));
-    if(flag)url.searchParams.set(flag,'1');
+    if(flag === 'v2Mirror') url.searchParams.set('posterEdit','mirror');
+    else if(flag) url.searchParams.set(flag,'1');
+    if (url.searchParams.get('chambreV2') === '1' && ['v2Mirror','lampEdit','posterEdit','ipadClockEdit'].includes(flag)) url.hash = '/room';
     location.assign(url.pathname+url.search+url.hash);
   }
   function readSettings() {
@@ -318,8 +325,10 @@
       '<a class="nana-admin-action" href="nana-blog-en.html?atelier=1">Modifier le blog · English</a>' +
       '<a class="nana-admin-action" href="about-me.html?layerEdit=1">Dressing : retouches, superpositions et position du badge</a>' +
       '<button class="nana-admin-action" data-tool="workIcons">Déplacer les icônes Work</button>' +
-      '<button class="nana-admin-action" data-tool="posterEdit">Affiches et miroir</button>' +
-      '<button class="nana-admin-action" data-tool="lampEdit">Lampe murale</button>' +
+      (new URLSearchParams(location.search).get('chambreV2') === '1'
+        ? '<button class="nana-admin-action" data-tool="posterEdit">Affiches</button><button class="nana-admin-action" data-tool="v2Mirror">Miroir rond</button>'
+        : '<button class="nana-admin-action" data-tool="posterEdit">Affiches et miroir</button>') +
+      '<button class="nana-admin-action" data-tool="lampEdit">Lampe fleur</button>' +
       '<button class="nana-admin-action" data-tool="starsEdit">Étoiles fluorescentes</button>' +
       '<button class="nana-admin-action" data-tool="cookieEdit">Fortune cookie</button>' +
       '<button class="nana-admin-action" data-tool="ipadClockEdit">Horloge de l’iPad</button>' +

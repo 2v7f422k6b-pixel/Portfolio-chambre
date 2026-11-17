@@ -10,12 +10,13 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261118-interactions');
+  const response = await fetch(folder + 'objets.svg?v=20261118-atelier');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
   const [underlay] = await Promise.all([
-    loadImage('fond-mouvements.webp'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp')
+    loadImage('fond-mouvements.webp?v=20261118-atelier'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
+    loadImage('miroir.webp'), loadImage('lampe-fleur.webp')
   ]);
   underlay.id = 'room-v2-underlay';
   underlay.dataset.roomV2Layer = '';
@@ -34,14 +35,12 @@
   document.addEventListener('portfolio-language-change', setLabels);
 
   const hands = Object.fromEntries(Array.from(svg.querySelectorAll('[data-hand]'), el => [el.dataset.hand, el]));
-  const ipad = svg.querySelector('.v2-ipad-time');
   function showTime() {
     const now = new Date();
     const s = now.getSeconds(), m = now.getMinutes() + s / 60;
     hands.hour.setAttribute('transform', `rotate(${(now.getHours() % 12 + m / 60) * 30 + 110} 490 692)`);
     hands.minute.setAttribute('transform', `rotate(${m * 6 - 107} 490 692)`);
     hands.second.setAttribute('transform', `translate(-1 -5) rotate(${s * 6 + 133} 491 697)`);
-    ipad.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
   }
   let clock;
   function syncClock() {
