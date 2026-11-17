@@ -24,4 +24,19 @@
 <g data-hand="minute"><svg x="486" y="686" width="38" height="20" viewBox="914 849 38 20" overflow="hidden"><use href="#v2-atlas"/></svg></g>
 <g data-hand="second"><svg x="472" y="696" width="21" height="19" viewBox="891 849 21 19" overflow="hidden"><use href="#v2-atlas"/></svg></g></g>
   <text class="v2-ipad-time" transform="translate(1118 1172) rotate(2) skewX(-27)" aria-hidden="true"></text>
+  <g data-object="kero" data-kero-state="asleep" role="button" tabindex="0" aria-label="Réveiller Kéro" data-label-en="Wake Kero">
+    <svg x="2430" y="419" width="60" height="42" overflow="hidden" aria-hidden="true">
+      <image class="v2-kero-faces" href="assets/room-redraw/kero-visages.webp" width="60" height="84"/>
+    </svg>
+    <polygon class="v2-hit" points="2395,415 2407,402 2433,401 2480,375 2496,377 2508,394 2546,376 2587,362 2597,362 2598,372 2581,383 2601,381 2602,398 2588,418 2561,424 2579,451 2578,464 2563,485 2547,493 2530,506 2534,523 2526,542 2511,531 2510,512 2527,488 2558,472 2567,456 2558,471 2432,482 2424,470 2427,457 2405,446 2394,431"/>
+  </g>
+  <g data-open="mini-games" role="button" tabindex="0" aria-label="Game Boy · Ouvrir les mini-jeux" data-label-en="Game Boy · Open mini games">
+    <polygon class="v2-hit" points="2606,330 2696,323 2702,334 2705,468 2695,474 2612,477 2606,447"/>
+  </g>
+  <g data-open="bead-box" role="button" tabindex="0" aria-label="Boîte à perles · Ouvrir l’atelier" data-label-en="Bead box · Open the bead workshop">
+    <polygon class="v2-hit" points="2654,145 2796,124 2840,147 2843,256 2652,269"/>
+  </g>
+  <g data-open="pokemon" role="button" tabindex="0" aria-label="Pokéball · Découvrir la carte de Léna" data-label-en="Poké Ball · Discover Léna’s card">
+    <polygon class="v2-hit" points="2722,404 2731,380 2748,364 2770,358 2791,360 2806,367 2824,389 2827,424 2822,438 2809,452 2747,456 2727,433"/>
+  </g>
 </svg>

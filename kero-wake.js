@@ -23,13 +23,15 @@
     }
     return Promise.all(frames[theme()].slice(1).map(preload));
   };
-  const show=state=>{poses.dataset.keroState=state;};
+  let visiblePoses=poses;
+  const show=state=>{visiblePoses.dataset.keroState=state;};
   const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   function discover(){window.NanaProgress?.feat('kero-awake');}
-  async function activate(){
+  async function activate(target=poses){
     if(busy)return;
-    busy=true;const token=++revision;clearTimeout(resetTimer);
-    const loaded=await ready();
+    busy=true;visiblePoses=target;const token=++revision;clearTimeout(resetTimer);
+    // The redrawn room loads its face strip before mounting the touch target.
+    const loaded=target===poses ? await ready() : [true];
     if(token!==revision||document.hidden){busy=false;return;}
     if(loaded.every(Boolean)){
       const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
