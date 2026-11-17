@@ -22,8 +22,9 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const WIDTH = 1670, HEIGHT = 942;
-  const KEY = 'nana-poster-alignment-v1';
-  const COLLECTION_KEY = 'nana-poster-collection-v1';
+  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const KEY = redrawn ? 'nana-poster-alignment-room-v2' : 'nana-poster-alignment-v1';
+  const COLLECTION_KEY = redrawn ? 'nana-poster-collection-room-v2' : 'nana-poster-collection-v1';
   const BASE_COUNT = clickable.length;
   const hiddenPosters = new Set();
   let refreshChooser = () => {};
@@ -106,8 +107,8 @@
   ];
   posterIds.forEach((posterId, index) => {
     const [quad, shape] = firstCalibration[posterId];
-    originals[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
-    current[index] = {quad:copyPoints(quad),shape:copyPoints(shape || quad)};
+    originals[index] = {quad:copyPoints(quad),shape:copyPoints(redrawn ? quad : (shape || quad))};
+    current[index] = {quad:copyPoints(quad),shape:copyPoints(redrawn ? quad : (shape || quad))};
   });
   function validPoints(points, length) {
     return Array.isArray(points) && points.length === length &&
@@ -323,7 +324,7 @@
     tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
-      const hidden=hiddenPosters.has(posterIds[index]);
+      const hidden = hiddenPosters.has(posterIds[index]) || (redrawn && [12, 14].includes(posterIds[index]));
       clickable[index].style.display=hidden?'none':'';
       clickable[index].setAttribute('data-type',hidden?'poster-hidden':'poster');
       if(hidden)return;

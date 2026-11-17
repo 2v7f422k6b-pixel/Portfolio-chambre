@@ -1,0 +1,49 @@
+#room-v2-underlay, #room-v2-ambient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#room-v2-underlay { z-index: 2; }
+#room-v2-ambient { z-index: 6; overflow: hidden; }
+.room-redraw-preview #hotspots > :not(defs, style, .poster-perspective-artworks, .poster-tape-layer, polygon[data-type="poster"]) {
+  display: none !important;
+}
+.room-redraw-preview #hotspots { pointer-events: none; }
+.room-redraw-preview #hotspots > :is(.poster-perspective-artworks, .poster-tape-layer, polygon[data-type="poster"]) {
+  clip-path: url(#v2-wall-surface);
+}
+.room-redraw-preview #hotspots > polygon[data-type="poster"] { pointer-events: all; }
+#room-v2-ambient .v2-hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+#room-v2-ambient [data-object]:focus-visible .v2-hit { stroke: white; stroke-width: 3px; }
+#room-v2-ambient .v2-sway {
+  transform-box: view-box;
+  animation: room-v2-sway var(--period) ease-in-out var(--offset) infinite alternate;
+}
+#room-v2-ambient .v2-ferry {
+  animation: room-v2-crossing 58s linear -29s infinite;
+}
+#room-v2-ambient .v2-ipad-time {
+  fill: #a91343;
+  font: bold 23px "Courier New", monospace;
+  paint-order: stroke;
+  stroke: #fff2ee;
+  stroke-width: 1.2px;
+}
+@keyframes room-v2-sway {
+  from { transform: rotate(calc(-1 * var(--arc))); }
+  to { transform: rotate(var(--arc)); }
+}
+@keyframes room-v2-crossing {
+  from { transform: translateX(-445px); }
+  to { transform: translateX(340px); }
+}
+#app:not(.mode-play) #room-v2-ambient :is(.v2-sway,.v2-ferry) { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  #room-v2-ambient :is(.v2-sway,.v2-ferry) { animation: none; }
+}

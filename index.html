@@ -716,6 +716,15 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               preview.addEventListener('load', () => {
                 preview.hidden = false;
                 viewport.classList.add('room-redraw-preview');
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = 'room-v2-ambient.css';
+                style.onload = () => {
+                  const script = document.createElement('script');
+                  script.src = 'room-v2-ambient.js';
+                  document.head.append(script);
+                };
+                document.head.append(style);
               }, { once: true });
               preview.addEventListener('error', () => preview.remove(), { once: true });
               preview.hidden = true;
@@ -1119,7 +1128,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 
 
 
-<script src="poster-fit.js?v=20261112-resources-1" defer></script><script src="mirror-placement.js?v=20261116-desktop-review-1" defer></script><script src="flower-lamp-placement.js?v=20261116-desktop-review-1" defer></script>
+<script src="poster-fit.js?v=20261118-room-v2" defer></script><script src="mirror-placement.js?v=20261116-desktop-review-1" defer></script><script src="flower-lamp-placement.js?v=20261116-desktop-review-1" defer></script>
 <script src="fortune-cookie-placement.js?v=20261112-resources-1" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261116-stars-layout-2" defer></script>
