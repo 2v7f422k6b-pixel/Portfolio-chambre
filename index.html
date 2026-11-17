@@ -228,9 +228,17 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       pointer-events: none;
       user-select: none;
     }
-    #play-viewport.room-redraw-preview #play-scene > :not(#room-redraw-preview),
+    #play-viewport.room-redraw-preview #play-scene > :not(#room-redraw-preview, [data-room-v2-layer]),
     #play-viewport.room-redraw-preview #hotspot-guide {
       display: none !important;
+    }
+    /* Confine the outdoor drawings to the sky behind the skyline and chime. */
+    .room-redraw-preview #window-life {
+      -webkit-mask: url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+      mask: url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+    }
+    .room-redraw-preview #window-life > g[clip-path] {
+      clip-path: none;
     }
   </style>
 
@@ -747,7 +755,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <img id="room-img" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/web/room-day.lossless.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
           <img id="room-night" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/web/room-night.lossless.webp" alt="" aria-hidden="true" decoding="async">
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
-          <svg id="window-life" viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <svg id="window-life" data-room-v2-layer viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <defs>
               <filter id="lena-day-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fffcff" flood-opacity=".89"/><feComposite in2="SourceAlpha" operator="in"/></filter>
               <filter id="lena-bird-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#233c73" flood-opacity="1"/><feComposite in2="SourceAlpha" operator="in"/></filter>
@@ -950,7 +958,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   </button>
  </div>
 </div>
-          <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+          <svg data-room-v2-layer width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
                 <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="outer"/>
                 <feComposite in="outer" in2="SourceAlpha" operator="out" result="edge"/>
                 <feFlood flood-color="#fff" result="ink"/>
@@ -958,7 +966,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <feGaussianBlur in="white-edge" stdDeviation="2.4" result="glow"/>
                 <feMerge><feMergeNode in="glow"/><feMergeNode in="white-edge"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter></defs></svg>
-          <button id="paprika-butterfly" type="button" aria-label="Papillon — découvrir la tenue Paprika">
+          <button id="paprika-butterfly" data-room-v2-layer type="button" aria-label="Papillon — découvrir la tenue Paprika">
             <img class="butterfly-wing butterfly-wing--left butterfly-day" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/IMG_7137.png" alt="" draggable="false"/><img class="butterfly-wing butterfly-wing--left butterfly-night" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/IMG_7199.png" alt="" draggable="false"/><img class="butterfly-wing butterfly-wing--right butterfly-day" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/IMG_7136.png" alt="" draggable="false"/><img class="butterfly-wing butterfly-wing--right butterfly-night" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/IMG_7201.png" alt="" draggable="false"/><img class="butterfly-body butterfly-day" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/IMG_7138.png" alt="" draggable="false"/><img class="butterfly-body butterfly-night" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/IMG_7200.png" alt="" draggable="false"/>
           </button>
 
