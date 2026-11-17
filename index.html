@@ -218,6 +218,22 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
   </style>
 
+  <style id="room-redraw-preview-style">
+    #play-scene > #room-redraw-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+    }
+    #play-viewport.room-redraw-preview #play-scene > :not(#room-redraw-preview),
+    #play-viewport.room-redraw-preview #hotspot-guide {
+      display: none !important;
+    }
+  </style>
+
 <!-- Mobile Work fit: fixed canvas, compact search and fully visible folders (2026-11-04) -->
 <style id="work-mobile-fit-20261104">
 @media (max-width: 760px) {
@@ -676,6 +692,28 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
       <div id="global-search-popover" hidden><label for="global-search-input">Search my portfolio</label><input id="global-search-input" type="search" placeholder="Search artworks, projects, games…" autocomplete="off"><div id="global-search-results" aria-live="polite"></div></div>
       <div id="play-viewport" hidden>
         <div id="play-scene">
+          <template id="room-redraw-preview-image">
+            <img id="room-redraw-preview" src="assets/room-redraw/apercu-jour.webp"
+                 alt="La chambre de Nana Color Studio redessinée de jour, avec Marseille par la fenêtre."
+                 draggable="false" nopin="nopin">
+          </template>
+          <script>
+            (() => {
+              if (new URLSearchParams(location.search).get('chambreV2') !== '1') return;
+
+              const template = document.getElementById('room-redraw-preview-image');
+              const preview = template.content.firstElementChild.cloneNode(true);
+              const viewport = document.getElementById('play-viewport');
+
+              preview.addEventListener('load', () => {
+                preview.hidden = false;
+                viewport.classList.add('room-redraw-preview');
+              }, { once: true });
+              preview.addEventListener('error', () => preview.remove(), { once: true });
+              preview.hidden = true;
+              template.after(preview);
+            })();
+          </script>
           <!-- Marseille is a full-scene backdrop, behind the transparent bedroom artwork. -->
           <img id="marseille-day" class="marseille-backdrop" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/web/city-day.lossless.webp" alt="" aria-hidden="true" decoding="async">
           <img id="marseille-night" class="marseille-backdrop" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/web/city-night.lossless.webp" alt="" aria-hidden="true" decoding="async">
