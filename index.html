@@ -718,10 +718,10 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 viewport.classList.add('room-redraw-preview');
                 const style = document.createElement('link');
                 style.rel = 'stylesheet';
-                style.href = 'room-v2-ambient.css';
+                style.href = 'room-v2-ambient.css?v=20261118-interactions';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js';
+                  script.src = 'room-v2-ambient.js?v=20261118-interactions';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1134,7 +1134,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="glow-stars.js?v=20261116-stars-layout-2" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
-<script src="kero-wake.js?v=20261116-desktop-review-1" defer></script>
+<script src="kero-wake.js?v=20261118-interactions" defer></script>
 <script src="room-object-motion.js?v=20261116-van-fall-1" defer></script>
 <script src="room-zone-registry.js?v=20261116-gachapon-1" defer></script>
 <script src="ipad-clock.js?v=20261106-clock-seams-glow-1" defer></script>

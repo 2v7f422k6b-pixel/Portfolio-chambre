@@ -20,7 +20,9 @@
   pointer-events: all;
   cursor: pointer;
 }
-#room-v2-ambient [data-object]:focus-visible .v2-hit { stroke: white; stroke-width: 3px; }
+#room-v2-ambient [role="button"]:focus-visible .v2-hit { stroke: white; stroke-width: 3px; }
+#room-v2-ambient [data-kero-state="waking"] .v2-kero-faces { visibility: hidden; }
+#room-v2-ambient [data-kero-state="awake"] .v2-kero-faces { transform: translateY(-42px); }
 #room-v2-ambient .v2-sway {
   transform-box: view-box;
   animation: room-v2-sway var(--period) ease-in-out var(--offset) infinite alternate;
