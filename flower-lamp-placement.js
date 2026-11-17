@@ -1,20 +1,22 @@
-/* Interactive illustrated smiley flower wall lamp, with four-corner perspective calibration.
-   Works in the same 1670 x 942 room coordinates as the poster editor.
-   The user's flower lamp artwork stays in its separate transparent image asset. */
-(function () {
+(() => {
+/* Four-corner placement in the 1670 × 942 room coordinate system.
+   V2 uses the original transparent cutouts for both wall decorations. */
+function mountWallDecoration(kind, redrawn) {
   'use strict';
+  const mirror = kind === 'mirror';
+  const id = 'wall-' + kind;
   const svg = document.getElementById('hotspots');
-  if (!svg || document.getElementById('nana-wall-lamp')) return;
-
+  if (!svg || document.getElementById('nana-' + id)) return;
   const NS = 'http://www.w3.org/2000/svg';
-  const W = 256, H = 246;
   const roomW = 1670, roomH = 942;
-  const key = 'nana-wall-lamp-perspective-v1';
-  // The lamp has its OWN editor URL, independent of the poster and mirror editor.
-  const editing = new URLSearchParams(location.search).get('lampEdit') === '1';
-  if (editing) document.documentElement.classList.add('lamp-edit-mode');
-  // Artist-approved permanent placement, in the 1670 × 942 bedroom coordinate system.
-  const defaultQuad = [[591.9101376286098,182.7765347081036],[661.0664195264413,170.77565474643436],[663.5625481068412,247.96657849060455],[589.4878371617797,254.70355066880535]];
+  const key = 'nana-' + id + (redrawn ? '-perspective-room-v2' : '-perspective-v1');
+  const query = new URLSearchParams(location.search);
+  const editing = mirror ? query.get('posterEdit') === 'mirror' : query.get('lampEdit') === '1';
+  if (editing) document.documentElement.classList.add(kind + '-edit-mode');
+  const [x, y, W, H] = redrawn ? (mirror ? [1261,411,282,287] : [1171,289,136,136]) : [0,0,256,246];
+  const defaultQuad = redrawn
+    ? [[x,y],[x+W,y],[x+W,y+H],[x,y+H]].map(([u,v]) => [u*roomW/3072,v*roomH/1732])
+    : [[591.9101376286098,182.7765347081036],[661.0664195264413,170.77565474643436],[663.5625481068412,247.96657849060455],[589.4878371617797,254.70355066880535]];
 
   const copy = points => points.map(p => [p[0], p[1]]);
   const valid = points =>
@@ -25,7 +27,7 @@
   const state = { quad: copy(defaultQuad) };
   try {
     // Later adjustments in the same browser take precedence over the approved default.
-    const saved = JSON.parse(localStorage.getItem(key) || 'null');
+    const saved = JSON.parse(localStorage.getItem(key) || 'null') ?? window.NANA_PUBLISHED_SETTINGS?.[key];
     if (saved && valid(saved.quad)) state.quad = copy(saved.quad);
   } catch (_) { /* Private browsing may restrict storage. */ }
   const store = () => {
@@ -56,18 +58,18 @@
     ];
   }
 
-  const group = make('g',{id:'nana-wall-lamp','data-wall-decoration':'flower-lamp'});
+  const group = make('g',{id:'nana-'+id,'data-wall-decoration':kind});
   const defs = make('defs');
   const visual = make('g',{'pointer-events':'none',class:'nana-wall-lamp-visual'});
   const triangles = [0,1].map(index => {
-    const id = 'nana-wall-lamp-triangle-' + index;
+    const id = 'nana-wall-' + kind + '-triangle-' + index;
     const clipPath = make('clipPath',{id,clipPathUnits:'userSpaceOnUse'});
     const area = make('polygon');
     clipPath.appendChild(area);
     defs.appendChild(clipPath);
     const clipped = make('g',{'clip-path':'url(#'+id+')'});
     const image = make('image',{
-      href:'assets/decor/smiley-flower-lamp.svg',
+      href:redrawn ? 'assets/room-redraw/' + (mirror ? 'miroir' : 'lampe-fleur') + '.webp' : 'assets/decor/smiley-flower-lamp.svg',
       x:0,y:0,width:W,height:H,
       preserveAspectRatio:'none',
       'aria-hidden':'true','pointer-events':'none'
@@ -77,14 +79,14 @@
     return {area,image};
   });
   const hit = make('path',{
-    id:'wall-lamp-hit',
+    id:id+'-hit',
     role:'button',tabindex:0,
-    'aria-label':'Allumer ou éteindre la lampe et basculer Jour / Nuit',
+    'aria-label':mirror ? 'Ouvrir le dressing' : 'Allumer ou éteindre la lampe et basculer Jour / Nuit',
     fill:'transparent',stroke:'transparent',
     'pointer-events':'all'
   });
   hit.style.cssText='cursor:pointer;touch-action:none';
-  const editorLayer = make('g',{id:'nana-wall-lamp-editor'});
+  const editorLayer = make('g',{id:'nana-'+id+'-editor'});
   editorLayer.style.pointerEvents='none';
   const guide = make('polygon',{
     fill:'none',stroke:'#ff173b','stroke-width':2.5,
@@ -94,22 +96,22 @@
   // Transparent editor-only drag surface, above all other wall zones.
   // A visible central grip provides a reliable alternative to grabbing the artwork.
   const dragSurface = make('polygon',{
-    id:'wall-lamp-drag-surface',
+    id:id+'-drag-surface',
     'data-lamp-drag':'true',
     fill:'rgba(255,255,255,0.002)',
     stroke:'none',
     'pointer-events':'all',
-    'aria-label':'Déplacer la lampe fleur'
+    'aria-label':mirror ? 'Déplacer le miroir' : 'Déplacer la lampe fleur'
   });
   dragSurface.style.cssText='cursor:move;touch-action:none;pointer-events:all!important;fill:rgba(255,255,255,.002)!important';
   const dragGrip = make('circle',{
-    id:'wall-lamp-center-grip',
+    id:id+'-center-grip',
     'data-lamp-drag':'true',
     r:13,
     fill:'#fff4fa',stroke:'#ff173b','stroke-width':3,
     'vector-effect':'non-scaling-stroke',
     'pointer-events':'all',
-    'aria-label':'Déplacer la lampe entière'
+    'aria-label':mirror ? 'Déplacer le miroir entier' : 'Déplacer la lampe entière'
   });
   dragGrip.style.cssText='cursor:move;touch-action:none;pointer-events:all!important';
   const handles = [0,1,2,3].map(index => {
@@ -118,7 +120,7 @@
       r:10,fill:'#fff4fa',stroke:'#ff173b',
       'stroke-width':3,'vector-effect':'non-scaling-stroke',
       'pointer-events':'all',
-      'aria-label':'Coin '+(index+1)+' de la lampe'
+      'aria-label':'Coin '+(index+1)+(mirror ? ' du miroir' : ' de la lampe')
     });
     handle.style.cssText='cursor:crosshair;touch-action:none;pointer-events:all';
     return handle;
@@ -129,9 +131,20 @@
   for (const [offset,color,opacity] of [['0%','#fff9d5',.9],['22%','#ffefad',.7],['48%','#ffdb82',.36],['75%','#ffd16e',.12],['100%','#ffd16e',0]]) {
     glowGradient.appendChild(make('stop',{offset,'stop-color':color,'stop-opacity':opacity}));
   }
-  defs.appendChild(glowGradient);
+  if (!redrawn) defs.appendChild(glowGradient);
   const wallLight=make('ellipse',{class:'nana-flower-wall-light',fill:'url(#nana-flower-wall-light)','pointer-events':'none','aria-hidden':'true'});
-  group.append(defs,wallLight,visual,hit,editorLayer);
+  if (redrawn) {
+    group.classList.add('v2-wall-object');
+    const surface = make('g', {class:'v2-wall-surface'});
+    surface.append(visual);
+    if (mirror) {
+      if (!editing) hit.setAttribute('data-open','dressup');
+      surface.append(hit);
+    }
+    group.append(defs, surface, editorLayer);
+  } else {
+    group.append(defs,wallLight,visual,hit,editorLayer);
+  }
   // The mirror is the final SVG layer so it remains clickable above room hotspots.
   svg.appendChild(group);
   const style=document.createElement('style');
@@ -145,7 +158,7 @@
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
     'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 8px rgba(255,244,171,.85)) drop-shadow(0 0 20px rgba(255,211,93,.55))}'
   ].join('\n');
-  document.head.appendChild(style);
+  if (!redrawn) document.head.appendChild(style);
 
   function render() {
     const p=state.quad;
@@ -192,7 +205,7 @@
 
   // Trigger the original site theme button: both artwork and interface stay in sync.
   hit.addEventListener('click',event=>{
-    if(editing) return;
+    if(editing || redrawn) return;
     window.NanaProgress?.visit('objet/lampe-fleur');
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -261,8 +274,8 @@
 
   // A dedicated panel means the lamp link never opens the mirror/poster editor.
   const panel=document.createElement('section');
-  panel.id='wall-lamp-editor-panel';
-  panel.setAttribute('aria-label','Réglage de la lampe fleur');
+  panel.id=id+'-editor-panel';
+  panel.setAttribute('aria-label',mirror ? 'Réglage du miroir' : 'Réglage de la lampe fleur');
   panel.style.cssText =
     'position:fixed;z-index:100010;top:56px;left:12px;' +
     'width:min(310px,calc(100vw - 30px));max-height:calc(100dvh - 78px);' +
@@ -273,7 +286,7 @@
   const bar=document.createElement('div');
   bar.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:10px';
   const title=document.createElement('strong');
-  title.textContent='LAMPE FLEUR — Réglage';
+  title.textContent=mirror ? 'Placement du miroir' : 'Placement de la lampe fleur';
   title.style.flex='1';
   bar.appendChild(title);
   const side=document.createElement('button');
@@ -293,10 +306,10 @@
 
   {
     const section=document.createElement('div');
-    section.id='wall-lamp-editor-controls';
+    section.id=id+'-editor-controls';
     section.style.cssText='margin-top:10px;padding-top:10px;border-top:1px solid #ff173b;font:12px/1.4 system-ui,sans-serif';
     const label=document.createElement('div');
-    label.textContent='Pour déplacer toute la lampe, glisse le rond central ou la fleur. Les quatre ronds aux angles règlent sa perspective.';
+    label.textContent='Glisse le rond central pour déplacer le dessin. Les quatre coins règlent sa perspective.';
     label.style.marginBottom='6px';
     section.append(label);
     const controls=document.createElement('div');
@@ -341,12 +354,12 @@
       render();store();
     });
     button('Copier les coins',()=>{
-      const data=JSON.stringify({lamp:'wall',corners:state.quad},null,2);
+      const data=JSON.stringify({[kind]:'wall',corners:state.quad},null,2);
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(data).then(()=>{
-          label.textContent='Coins de la lampe copiés. Tu peux me les envoyer ici.';
-        }).catch(()=>window.prompt('Copie les coins de la lampe :',data));
-      } else window.prompt('Copie les coins de la lampe :',data);
+          label.textContent='Coins copiés.';
+        }).catch(()=>window.prompt('Copie les coordonnées des coins.',data));
+      } else window.prompt('Copie les coordonnées des coins.',data);
     });
     section.append(controls);
     panel.appendChild(section);
@@ -357,5 +370,8 @@
   if (enterPlay && !document.getElementById('app')?.classList.contains('mode-play')) {
     enterPlay.click();
   }
+}
+  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  if (redrawn) mountWallDecoration('mirror', true);
+  mountWallDecoration('lamp', redrawn);
 })();
-

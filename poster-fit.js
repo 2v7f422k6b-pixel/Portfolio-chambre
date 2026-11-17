@@ -27,6 +27,7 @@
   const COLLECTION_KEY = redrawn ? 'nana-poster-collection-room-v2' : 'nana-poster-collection-v1';
   const BASE_COUNT = clickable.length;
   const hiddenPosters = new Set();
+  const retired = id => redrawn && (id === 12 || id === 14);
   let refreshChooser = () => {};
   const editing = new URLSearchParams(location.search).get('posterEdit') === '1';
 
@@ -116,7 +117,7 @@
         p.every(n => typeof n === 'number' && Number.isFinite(n) && Math.abs(n) < 10000));
   }
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    const saved = JSON.parse(localStorage.getItem(KEY) || 'null') ?? window.NANA_PUBLISHED_SETTINGS?.[KEY];
     // Keep previous layouts from both the 19- and 16-poster editor versions.
     const previousPosterIds = [0,1,2,4,5,6,7,8,9,10,11,12,13,14,15,17];
     if (Array.isArray(saved) && [current.length, 16, 19].includes(saved.length)) {
@@ -145,7 +146,7 @@
     return true;
   }
   try {
-    const collection=JSON.parse(localStorage.getItem(COLLECTION_KEY)||'null');
+    const collection=JSON.parse(localStorage.getItem(COLLECTION_KEY)||'null') ?? window.NANA_PUBLISHED_SETTINGS?.[COLLECTION_KEY];
     if(collection) {
       for(const id of collection.hidden||[])if(Number.isInteger(id))hiddenPosters.add(id);
       for(const entry of collection.added||[])addPosterRecord(entry);
@@ -324,7 +325,7 @@
     tapeLayer.replaceChildren();
     current.forEach((rec, index) => {
       clickable[index].setAttribute('points', polygon(rec.shape));
-      const hidden = hiddenPosters.has(posterIds[index]) || (redrawn && [12, 14].includes(posterIds[index]));
+      const hidden = hiddenPosters.has(posterIds[index]) || retired(posterIds[index]);
       clickable[index].style.display=hidden?'none':'';
       clickable[index].setAttribute('data-type',hidden?'poster-hidden':'poster');
       if(hidden)return;
@@ -388,7 +389,7 @@
     overlay.replaceChildren();
     // An editor-only transparent pick layer sits ABOVE other interactive room objects.
     current.forEach((entry, index) => {
-      if (index === selected || hiddenPosters.has(posterIds[index])) return;
+      if (index === selected || retired(posterIds[index]) || hiddenPosters.has(posterIds[index])) return;
       overlay.appendChild(node('polygon', {
         'data-poster-pick': index,
         points: polygon(entry.shape),
@@ -396,7 +397,7 @@
       }));
     });
     const rec = current[selected];
-    if(!rec || hiddenPosters.has(posterIds[selected]))return;
+    if(!rec || retired(posterIds[selected]) || hiddenPosters.has(posterIds[selected]))return;
     overlay.appendChild(node('polygon', {
       'data-poster-pick': selected,
       points: polygon(rec.shape),
@@ -546,6 +547,7 @@
     refreshChooser=()=>{
       chooser.replaceChildren();
       clickable.forEach((_,i)=>{
+        if(retired(posterIds[i]))return;
         const opt=document.createElement('option');opt.value=String(i);
         opt.textContent='Poster '+(posterIds[i]+1)+(hiddenPosters.has(posterIds[i])?' (supprimé)':'')+(sources.has(posterIds[i])?'':' (image manquante)');
         chooser.appendChild(opt);
@@ -622,7 +624,7 @@
       const payload = current.map((rec, i) => ({
         poster: posterIds[i] + 1, image: sources.get(posterIds[i]) || null,
         corners: rec.quad, visibleShape: rec.shape
-      }));
+      })).filter(entry => !retired(entry.poster - 1));
       const json = JSON.stringify(payload, null, 2);
       try {
         await navigator.clipboard.writeText(json);

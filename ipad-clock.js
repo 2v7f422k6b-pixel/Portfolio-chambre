@@ -8,7 +8,8 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const ROOM_W = 1670, ROOM_H = 942;
-  const STORAGE_KEY = 'nana-ipad-clock-placement-v1';
+  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const STORAGE_KEY = redrawn ? 'nana-ipad-clock-placement-room-v2' : 'nana-ipad-clock-placement-v1';
   const editing = new URLSearchParams(location.search).get('ipadClockEdit') === '1';
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const svgEl = (tag, attrs = {}) => {
@@ -24,6 +25,7 @@
     preserveAspectRatio: 'none',
     'aria-label': 'Heure actuelle sur l’iPad'
   });
+  if (redrawn) layer.dataset.roomV2Layer = '';
   layer.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:7;overflow:visible;pointer-events:none;';
   const group = svgEl('g', { id: 'nana-ipad-clock-transform' });
   const time = svgEl('text', {
@@ -58,10 +60,16 @@
     document.head.appendChild(style);
   }
 
+  let position = null;
+  let defaults = null;
+  let panel = null;
+
   function updateTime() {
     const date = new Date();
-    time.textContent = String(date.getHours()).padStart(2, '0') + ':' +
-      String(date.getMinutes()).padStart(2, '0');
+    const minutes = (date.getHours()*60 + date.getMinutes() + (position?.offsetMinutes || 0) + 1440) % 1440;
+    time.textContent = String(Math.floor(minutes / 60)).padStart(2, '0') + ':' + String(minutes % 60).padStart(2, '0');
+    const field = panel?.querySelector('[data-ipad-time]');
+    if (field && field !== document.activeElement) field.value = time.textContent;
   }
   updateTime();
   let timer = setInterval(updateTime, 15000);
@@ -69,12 +77,10 @@
   window.addEventListener('pageshow', () => { updateTime(); clearInterval(timer); timer = setInterval(updateTime, 15000); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) updateTime(); });
 
-  let position = null;
-  let defaults = null;
-  let panel = null;
 
   function render() {
     if (!position) return;
+    updateTime();
     group.setAttribute('transform',
       'translate(' + position.x + ' ' + position.y + ')' +
       ' rotate(' + position.angle + ') skewX(' + position.skew + ')');
@@ -122,6 +128,7 @@
     panel.innerHTML =
       '<strong style="font-size:15px">Heure de l’iPad</strong>' +
       '<p style="line-height:1.4;margin:7px 0 12px">Glisse l’heure directement sur l’iPad pour la déplacer.</p>' +
+      (redrawn ? '<label>Heure affichée <input type="time" data-ipad-time></label> <button type="button" data-ipad-local>Heure locale</button>' : '') +
       '<div data-ipad-position style="margin-bottom:10px;font-size:12px"></div>' +
       '<label style="display:block;margin-bottom:12px">Rotation : <output data-ipad-angle-value></output>' +
       '<input data-ipad-angle type="range" min="-180" max="180" step="1" style="display:block;width:100%;accent-color:#ff173b"></label>' +
@@ -132,7 +139,7 @@
       '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
       '<button type="button" data-ipad-copy>Copier les réglages</button>' +
       '<button type="button" data-ipad-reset>Réinitialiser</button></div>' +
-      '<small style="display:block;margin-top:9px;line-height:1.3">Réglages conservés sur cet appareil. Copie-les pour les publier pour tous les visiteurs.</small>';
+      '<small style="display:block;margin-top:9px;line-height:1.3">Réglages conservés sur cet appareil. Utilise « Publier sur le site » dans l’Atelier pour les partager.</small>';
     panel.querySelectorAll('button').forEach(button => {
       button.style.cssText =
         'font:inherit;color:#ff173b;background:white;border:1px solid #ff173b;' +
@@ -142,6 +149,21 @@
     for (const key of ['angle', 'size', 'skew']) {
       panel.querySelector('[data-ipad-' + key + ']').addEventListener('input', event =>
         setSetting(key, Number(event.target.value)));
+    }
+    if (redrawn) {
+      panel.querySelector('[data-ipad-time]').addEventListener('change', event => {
+        if (!event.target.value) return;
+        const [hours, minutes] = event.target.value.split(':').map(Number);
+        const now = new Date();
+        position.offsetMinutes = (hours - now.getHours())*60 + minutes - now.getMinutes();
+        updateTime();
+        save();
+      });
+      panel.querySelector('[data-ipad-local]').addEventListener('click', () => {
+        position.offsetMinutes = 0;
+        updateTime();
+        save();
+      });
     }
     panel.querySelector('[data-ipad-reset]').addEventListener('click', () => {
       position = { ...defaults };
@@ -201,7 +223,7 @@
   function initializeFromIpad() {
     if (position) return;
     // Published coordinates are independent of async hit-zone loading and visibility.
-    defaults = {
+    defaults = redrawn ? {x:1118*ROOM_W/3072, y:1172*ROOM_H/1732, size:23*ROOM_H/1732, angle:2, skew:-27, offsetMinutes:0} : {
       x: 696.7055941360986,
       y: 631.4392347011353,
       size: 15.5,
@@ -210,14 +232,15 @@
     };
     position = { ...defaults };
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') ?? window.NANA_PUBLISHED_SETTINGS?.[STORAGE_KEY];
       if (saved && ['x', 'y', 'size', 'angle', 'skew'].every(k => Number.isFinite(saved[k]))) {
         position = {
           x: clamp(saved.x, 0, ROOM_W),
           y: clamp(saved.y, 0, ROOM_H),
           size: clamp(saved.size, 4, 60),
           angle: clamp(saved.angle, -180, 180),
-          skew: clamp(saved.skew, -65, 65)
+          skew: clamp(saved.skew, -65, 65),
+          ...(redrawn ? {offsetMinutes: Number.isInteger(saved.offsetMinutes) ? clamp(saved.offsetMinutes,-1439,1439) : 0} : {})
         };
       }
     } catch (_) {}
