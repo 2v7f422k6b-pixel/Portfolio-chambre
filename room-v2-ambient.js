@@ -37,7 +37,7 @@
     const nightImages = [];
     for (const use of svg.querySelectorAll('svg[viewBox] > use')) {
       const crop = use.parentNode;
-      if (crop.parentNode === svg || crop.closest('mask, .v2-ferry')) continue;
+      if (crop.parentNode === svg || crop.closest('mask, .v2-ferry, [data-hand]')) continue;
       const ref = use.getAttribute('href');
       if (!['#v2-atlas','#five-atlas','#character-art','#v2-cookie-parts'].includes(ref)) continue;
       const [u,v] = crop.getAttribute('viewBox').split(/\s+/);
@@ -47,7 +47,10 @@
       image.classList.add('v2-piece-night');
       crop.classList.add('v2-piece-day');
       crop.after(image);
-      nightImages.push([image, pieces + ref.slice(1) + '-' + u + '-' + v + '.webp']);
+      const nightUrl = crop.parentNode.classList.contains('clock-shake')
+        ? folderNight + 'reveil-nuit-jelly.webp'
+        : pieces + ref.slice(1) + '-' + u + '-' + v + '.webp';
+      nightImages.push([image, nightUrl]);
     }
     const textures = Array.from(svg.querySelectorAll('#v2-van-visual, .v2-kero-faces'), image => {
       const day = image.getAttribute('href');
@@ -80,6 +83,7 @@
     svg.classList.add('v2-baked-lighting');
     const rules = document.createElement('style');
     rules.textContent = `
+      .v2-baked-lighting .clock-shake .v2-clock-reflection { display:none; }
       .v2-piece-night { display:none; }
       #play-scene > .v2-sky-sparkles { display:none; position:absolute; pointer-events:none; mask-repeat:no-repeat; -webkit-mask-repeat:no-repeat; }
       html[data-theme="night"] #play-scene:not([data-landscape="pink"]) > .v2-sky-sparkles { display:block; }
