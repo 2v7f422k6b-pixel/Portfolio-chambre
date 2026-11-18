@@ -137,13 +137,18 @@
   svg.querySelector('[data-object="kokeshi"]').addEventListener('pointerenter', e => {
     if (e.pointerType !== 'touch') shy();
   });
+  const desertTemplate = document.getElementById('v2-desert-template');
+  desertTemplate.replaceWith(desertTemplate.content);
   let dialAngle = 0;
   function spinDial() {
     const wheel = svg.querySelector('.landscape-wheel');
     if (wheel.getAnimations().some(a => a.playState === 'running')) return;
     const start = dialAngle;
     dialAngle = start + 720 + 90 * Math.floor(Math.random()*4);
-    motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
+    const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
+    spin.onfinish = () => {
+      scene.dataset.landscape = dialAngle % 360 === 180 ? 'pink' : 'marseille';
+    };
   }
   const machine = svg.querySelector('[data-object="gashapon"]');
   const prize = machine.querySelector('.gasha-prize');

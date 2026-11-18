@@ -238,6 +238,20 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #room-v2-ambient [data-object="van"]:focus { outline:none!important; }
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     html:not([data-theme="night"]) #room-v2-ambient [data-object="office"] text { fill: #ff173b; }
+    #play-scene > #v2-desert { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:4; pointer-events:none; }
+    .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
+    #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    .desert-crescent { animation:desert-crescent-drift 62s ease-in-out infinite alternate; }
+    .desert-round-moon { animation:desert-round-drift 41s ease-in-out infinite alternate; }
+    @keyframes desert-crescent-drift {
+      0% { transform:translate(0,0); } 50% { transform:translate(61px,-26px); } 100% { transform:translate(126px,-9px); }
+    }
+    @keyframes desert-round-drift {
+      0% { transform:translate(0,0); } 50% { transform:translate(-21px,36px); } 100% { transform:translate(-72px,54px); }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      #v2-desert image { animation:none; }
+    }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
     .v2-mirror-night,.v2-mirror-reflection { display:none; }
@@ -776,7 +790,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=tenues-redraw-1';
+                  script.src = 'room-v2-ambient.js?v=desert-rose1';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -819,6 +833,14 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <img id="room-img" data-resource-mode="play" data-resource-theme="day" data-resource-src="assets/web/room-day.lossless.webp" alt="An illustrated pink-and-blue bedroom, with a city view, a desk with an iMac, a sleeping cat, a Hello Kitty clock, a teddy bear, an illustrated book, a Tamagotchi and a GABZILLA t-shirt.">
           <img id="room-night" data-resource-mode="play" data-resource-theme="night" data-resource-src="assets/web/room-night.lossless.webp" alt="" aria-hidden="true" decoding="async">
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
+          <template id="v2-desert-template"><svg id="v2-desert" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs><clipPath id="v2-desert-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath></defs>
+            <g clip-path="url(#v2-desert-window)">
+              <image href="assets/room-redraw/desert-rose.webp" x="1723" y="0" width="495" height="933"/>
+              <image class="desert-crescent" href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
+              <image class="desert-round-moon" href="assets/room-redraw/lune-ronde.png" x="2063" y="257" width="59" height="59"/>
+            </g>
+          </svg></template>
           <svg id="window-life" data-room-v2-layer viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <defs>
               <filter id="lena-day-cloud-ink" color-interpolation-filters="sRGB"><feFlood flood-color="#fffcff" flood-opacity=".89"/><feComposite in2="SourceAlpha" operator="in"/></filter>
