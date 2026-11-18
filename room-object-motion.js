@@ -55,14 +55,15 @@
     if(reduced.matches)return false;
     const berry=id==='happy-berry';
     if(!berry&&id!=='volkswagen')return false;
-    const art=document.getElementById(berry?'happy-berry-art':'volkswagen-visual');
+    const redrawnVan=hit?.querySelector('#v2-van-visual');
+    const art=redrawnVan || document.getElementById(berry?'happy-berry-art':'volkswagen-visual');
     if(!art?.animate)return false;
     const box=art.getBBox(),previous={box:art.style.transformBox,origin:art.style.transformOrigin};
     art.style.transformBox='view-box';
     art.style.transformOrigin=`${box.x+box.width/2}px ${box.y+box.height*.85}px`;
     const scene=document.getElementById('play-scene'),animations=[];
     const pieces=berry?berryWings(art):null;
-    const occlusion=berry?null:hideBehindIMac(art);
+    const occlusion=berry||redrawnVan?null:hideBehindIMac(art);
     let done=false;
     function cleanup(){
       if(done)return;done=true;
@@ -74,7 +75,9 @@
     }
     active.set(id,cleanup);art.setAttribute('data-motion-playing',id);
     if(berry)scene?.setAttribute('data-berry-flying','');
-    const frames=berry?berryFlight:vanTrip,options={duration:berry?3400:4200,easing:berry?'ease-in-out':'linear'};
+    // The V2 van faces right at the far left of the room. Tip forward into the room.
+    const redrawnTrip=redrawnVan && [frame(0),frame(.08,1,-1,-2),frame(.18,7,0,2),frame(.30,14,8,15),frame(.45,25,52,49),frame(.64,38,188,92),frame(.72,40,242,102),frame(.83),frame(1)].map((step,i)=>({...step,opacity:i===6||i===7?0:1}));
+    const frames=berry?berryFlight:redrawnTrip||vanTrip,options={duration:berry?3400:4200,easing:berry?'ease-in-out':'linear'};
     const main=art.animate(frames,options);animations.push(main);
     // Follow the flying cushion. The van keeps its shelf target so an invisible
     // hit area cannot cover the iMac while it falls behind the screen.
