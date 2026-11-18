@@ -1262,7 +1262,7 @@
     group.style.setProperty('pointer-events','auto','important');
     const notice=document.createElement('div');
     notice.style.cssText='position:fixed;top:175px;left:12px;z-index:99999;background:#fff2fc;color:#ff173b;border:2px solid #ff173b;padding:10px;font:14px sans-serif;max-width:270px';
-    notice.innerHTML='<div id="nana-stars-drag-handle" style="padding:7px 8px;margin:-5px -5px 8px;background:#ff173b;color:white;cursor:move;touch-action:none;user-select:none;font-weight:bold">⠿ Placement des étoiles · déplacer</div><p>Glisse une étoile pour la déplacer. Double-tape une étoile pour la supprimer.</p>';
+    notice.innerHTML='<div id="nana-stars-drag-handle" style="padding:7px 8px;margin:-5px -5px 8px;background:#ff173b;color:white;cursor:move;touch-action:none;user-select:none;font-weight:bold">⠿ Placement des étoiles · déplacer</div><p>Glisse une étoile pour la déplacer.</p>';
     const handle=notice.querySelector('#nana-stars-drag-handle');
     let moving=null;
     handle.addEventListener('pointerdown',e=>{
@@ -1284,63 +1284,90 @@
     handle.addEventListener('pointercancel',stopMoving);
     const save=document.createElement('button');save.textContent='Enregistrer';
     const add=document.createElement('button');add.textContent='+ Étoile';
+    const remove=document.createElement('button');remove.textContent='Retirer une étoile';
     const reset=document.createElement('button');reset.textContent='Réinitialiser';
     const copy=document.createElement('button');copy.textContent='Copier les coordonnées';
-    [save,add,copy,reset].forEach(b=>{b.style.cssText='margin:4px;padding:5px;background:white;border:1px solid #ff173b;color:#ff173b';notice.appendChild(b)});
+    [save,add,remove,copy,reset].forEach(b=>{b.style.cssText='margin:4px;padding:5px;background:white;border:1px solid #ff173b;color:#ff173b';notice.appendChild(b)});
     document.body.appendChild(notice);
     const persist=()=>{localStorage.setItem(storageKey,JSON.stringify(stars));};
-    const refresh=()=>{elements.forEach((el,i)=>{if(!el)return;const v=stars[i];positionStar(el,...v);el.style.display=v[2]>0?'':'none';});};
+    const status=notice.querySelector('p');
+    status.setAttribute('role','status');
     const coords=e=>{const rect=layer.getBoundingClientRect();return [(e.clientX-rect.left)*1670/rect.width,(e.clientY-rect.top)*942/rect.height];};
-    let active=-1;
-    elements.forEach((el,i)=>{
-      el.style.setProperty('pointer-events','all','important');el.style.touchAction='none';el.style.cursor='grab';
-      el.addEventListener('pointerdown',e=>{active=i;el.setPointerCapture(e.pointerId);e.preventDefault()});
-      el.addEventListener('pointermove',e=>{if(active!==i)return;const [x,y]=coords(e);stars[i][0]=Math.max(0,Math.min(1670,x));stars[i][1]=Math.max(0,Math.min(942,y));refresh();e.preventDefault()});
-      el.addEventListener('pointerup',()=>{active=-1;persist()});
-      el.addEventListener('dblclick',()=>{stars[i][2]=0;refresh();persist()});
-    });
-    save.onclick=()=>{persist();notice.querySelector('p').textContent='Positions enregistrées !'};
-    const addStarAt=(x,y)=>{
-      // Place each new star at a different visible location, then make it draggable.
-      const count=stars.length;
-      const v=[Math.max(0,Math.min(1670,x)),Math.max(0,Math.min(942,y)),7,0];
-      stars.push(v);
-      const el=document.createElementNS(NS,'image');
-      el.setAttribute('class','nana-phosphor-star');
-      el.style.setProperty('--day-star-filter',`url(#nana-wall-star-ink-${count%palette.length})`);
-      positionStar(el,...v);
+    const limit=(x,y)=>[Math.max(0,Math.min(1670,x)),Math.max(0,Math.min(942,y))];
+    let tool='move';
+    const setTool=next=>{
+      tool=next;
+      for(const [button,mode] of [[add,'add'],[remove,'remove']]){
+        const pressed=mode===tool;
+        button.setAttribute('aria-pressed',String(pressed));
+        button.style.background=pressed?'#ff173b':'white';
+        button.style.color=pressed?'white':'#ff173b';
+      }
+      for(const el of elements)el.style.cursor=tool==='remove'?'crosshair':'grab';
+      status.textContent={
+        move:'Glisse une étoile pour la déplacer.',
+        add:'Touche un emplacement libre pour ajouter une étoile.',
+        remove:'Touche une étoile pour la retirer. Retouche le bouton pour quitter ce mode.'
+      }[tool];
+    };
+    function wireStar(el,index){
+      let dragId=null;
       el.style.setProperty('pointer-events','all','important');
       el.style.touchAction='none';
-      el.style.cursor='grab';
-      group.appendChild(el);
-      elements.push(el);
-      const index=stars.length-1;
-      let dragging=false;
+      el.style.cursor=tool==='remove'?'crosshair':'grab';
+      const discard=()=>{
+        if(stars[index][2]<=0)return;
+        stars[index][2]=0;
+        el.style.display='none';
+        persist();
+        status.textContent='Étoile retirée.';
+      };
+      el.addEventListener('click',e=>{
+        if(tool==='remove'){e.stopPropagation();discard();}
+      });
+      el.addEventListener('dblclick',()=>{if(tool==='move')discard();});
       el.addEventListener('pointerdown',e=>{
-        dragging=true;
-        el.setPointerCapture(e.pointerId);
+        if(tool!=='move'||!e.isPrimary||e.button!==0)return;
+        dragId=e.pointerId;
+        el.setPointerCapture(dragId);
         e.preventDefault();
       });
       el.addEventListener('pointermove',e=>{
-        if(!dragging)return;
-        const [x,y]=coords(e);
-        stars[index][0]=Math.max(0,Math.min(1670,x));
-        stars[index][1]=Math.max(0,Math.min(942,y));
+        if(dragId!==e.pointerId)return;
+        const [x,y]=limit(...coords(e));
+        stars[index][0]=x;
+        stars[index][1]=y;
         positionStar(el,...stars[index]);
         e.preventDefault();
       });
-      const finish=()=>{if(dragging){dragging=false;persist();}};
+      const finish=e=>{
+        if(dragId!==e.pointerId)return;
+        dragId=null;
+        persist();
+      };
       el.addEventListener('pointerup',finish);
       el.addEventListener('pointercancel',finish);
-      el.addEventListener('dblclick',()=>{stars[index][2]=0;el.style.display='none';persist()});
-      persist();
-      notice.querySelector('p').textContent='Étoile ajoutée !';
-    };
-    add.onclick=()=>{notice.querySelector('p').textContent='Touche un emplacement libre de la chambre';};
+    }
+    elements.forEach(wireStar);
+    setTool('move');
+    save.onclick=()=>{persist();status.textContent='Positions enregistrées !';};
+    add.onclick=()=>setTool(tool==='add'?'move':'add');
+    remove.onclick=()=>setTool(tool==='remove'?'move':'remove');
     layer.addEventListener('pointerdown',e=>{
-      if(e.target.closest('.nana-phosphor-star'))return;
-      const [x,y]=coords(e);
-      addStarAt(x,y);
+      if(tool!=='add'||!e.isPrimary||e.button!==0||e.target.closest('.nana-phosphor-star'))return;
+      const index=stars.length;
+      const v=[...limit(...coords(e)),7,0];
+      const el=document.createElementNS(NS,'image');
+      el.setAttribute('class','nana-phosphor-star');
+      el.style.setProperty('--twinkle-delay',(index%9)*-.7+'s');
+      el.style.setProperty('--day-star-filter',`url(#nana-wall-star-ink-${index%palette.length})`);
+      positionStar(el,...v);
+      stars.push(v);
+      elements.push(el);
+      group.appendChild(el);
+      wireStar(el,index);
+      persist();
+      status.textContent='Étoile ajoutée !';
       e.preventDefault();
     });
     copy.onclick=async()=>{
