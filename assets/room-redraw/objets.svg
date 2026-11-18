@@ -38,4 +38,13 @@
   <g data-open="pokemon" role="button" tabindex="0" aria-label="Pokéball · Découvrir la carte de Léna" data-label-en="Poké Ball · Discover Léna’s card">
     <polygon class="v2-hit" points="2722,404 2731,380 2748,364 2770,358 2791,360 2806,367 2824,389 2827,424 2822,438 2809,452 2747,456 2727,433"/>
   </g>
+  <g data-open="work-zoom" class="v2-device" role="button" tabindex="0" aria-label="iMac · Entrer dans le mode Work" data-label-en="iMac · Enter Work mode">
+    <polygon class="v2-hit" points="2530,652 2848,629 2837,845 2510,845"/>
+  </g>
+  <g data-open="phone" class="v2-device" role="button" tabindex="0" aria-label="Téléphone rose · Ouvrir Contact" data-label-en="Pink phone · Open Contact">
+    <polygon class="v2-hit" points="2111,1373 2171,1376 2174,1385 2117,1443 2100,1444 2046,1438 2042,1433 2043,1427"/>
+  </g>
+  <g data-open="polaroids" class="v2-device" role="button" tabindex="0" aria-label="Instax · Ouvrir les sept polaroïds" data-label-en="Instax · Open the seven Polaroids">
+    <polygon class="v2-hit" points="483,172 498,174 501,183 548,194 560,203 566,219 563,270 558,289 450,260 450,225 455,196 465,183 480,179"/>
+  </g>
 </svg>

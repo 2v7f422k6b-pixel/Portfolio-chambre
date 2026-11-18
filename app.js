@@ -169,6 +169,21 @@ function resetModeTransition(){
  play.style.zIndex='';play.style.pointerEvents='';
  work.style.zIndex='';work.style.pointerEvents='';
 }
+// On the redrawn room, frame the illustrated screen even after the visitor pans.
+function imacZoomTransforms(scene){
+ const screen=scene.querySelector('#room-v2-ambient [data-open="work-zoom"] .v2-hit')?.getBoundingClientRect();
+ if(!screen?.width || !screen.height)return ['scale(1.25)','scale(3.4)'];
+ const room=scene.getBoundingClientRect(),view=play.getBoundingClientRect();
+ const screenX=screen.left+screen.width/2,screenY=screen.top+screen.height/2;
+ const offsetX=screenX-(room.left+room.width/2),offsetY=screenY-(room.top+room.height/2);
+ const panX=view.left+play.clientWidth/2-screenX,panY=view.top+play.clientHeight/2-screenY;
+ const scale=Math.max(3.4,Math.min(play.clientWidth/screen.width,play.clientHeight/screen.height));
+ function frame(factor,pan){
+  const x=pan*panX-(factor-1)*offsetX,y=pan*panY-(factor-1)*offsetY;
+  return `translate(${x}px,${y}px) scale(${factor})`;
+ }
+ return [frame(1.25,.2),frame(scale,1)];
+}
 function chooseMode(mode,zoom=false){
  const previousMode=currentMode;
  if(imacZoomAnimation){const animation=imacZoomAnimation;imacZoomAnimation=null;animation.cancel()}
@@ -189,9 +204,10 @@ function chooseMode(mode,zoom=false){
   play.style.zIndex='2';work.style.zIndex='1';
   play.style.pointerEvents='auto';work.style.pointerEvents='none';
   const scene=$('#play-scene');
+  const [approach,closeup]=imacZoomTransforms(scene);
   const roomAnimation=scene.animate([
-   {transform:'scale(3.4)',opacity:0,filter:'blur(3px)'},
-   {transform:'scale(1.25)',opacity:1,filter:'blur(0)'},
+   {transform:closeup,opacity:0,filter:'blur(3px)'},
+   {transform:approach,opacity:1,filter:'blur(0)'},
    {transform:'scale(1)',opacity:1,filter:'blur(0)'}
   ],{duration:550,easing:'cubic-bezier(.55,.05,.45,1)'});
   const desktopAnimation=work.animate([{opacity:1},{opacity:0}],
@@ -216,10 +232,11 @@ function zoomIntoIMac(){
  if(imacZoomAnimation)return;
  const scene=$('#play-scene');
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){chooseMode('work',false);return}
+ const [approach,closeup]=imacZoomTransforms(scene);
  const anim=scene.animate([
   {transform:'scale(1)',opacity:1,filter:'blur(0)'},
-  {transform:'scale(1.25)',opacity:1,filter:'blur(0)'},
-  {transform:'scale(3.4)',opacity:.5,filter:'blur(3px)'}
+  {transform:approach,opacity:1,filter:'blur(0)'},
+  {transform:closeup,opacity:.5,filter:'blur(3px)'}
  ],{duration:550,easing:'cubic-bezier(.55,.05,.45,1)',fill:'none'});
  imacZoomAnimation=anim;
  anim.finished.then(()=>{
