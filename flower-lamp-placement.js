@@ -77,7 +77,7 @@ function mountWallDecoration(kind, redrawn) {
     if (redrawn && mirror) {
       const sprites=make('g');
       const night=image.cloneNode(false);
-      night.setAttribute('href','assets/room-redraw/miroir-nuit.webp');
+      night.setAttribute('href','assets/room-redraw/miroir-nuit.webp?v=verre7');
       night.classList.add('v2-mirror-night');
       image.classList.add('v2-mirror-day');
       sprites.append(image,night);
@@ -157,8 +157,17 @@ function mountWallDecoration(kind, redrawn) {
     surface.append(visual);
     if (mirror) {
       visual.id='v2-mirror-glass';
-      const reflection=make('use',{href:'#v2-mirror-glass',mask:'url(#v2-flower-poster-mask)',class:'v2-mirror-reflection','pointer-events':'none'});
-      surface.appendChild(reflection);
+      const gradient=make('radialGradient',{id:'v2-mirror-corner-gradient',cx:'.17',cy:'.17',r:'.35'});
+      for (const [offset,opacity] of [[0,.85],[.48,.48],[1,0]]) {
+        gradient.appendChild(make('stop',{offset,'stop-color':'white','stop-opacity':opacity}));
+      }
+      const corner=make('mask',{id:'v2-mirror-corner',maskContentUnits:'objectBoundingBox'});
+      corner.appendChild(make('rect',{width:1,height:1,fill:'url(#v2-mirror-corner-gradient)'}));
+      defs.append(gradient,corner);
+      const spill=make('g',{mask:'url(#v2-flower-poster-mask)','pointer-events':'none'});
+      const reflection=make('use',{href:'#v2-mirror-glass',mask:'url(#v2-mirror-corner)',class:'v2-mirror-reflection'});
+      spill.appendChild(reflection);
+      surface.appendChild(spill);
     }
     if (mirror && !editing) hit.setAttribute('data-open','dressup');
     surface.append(hit);
