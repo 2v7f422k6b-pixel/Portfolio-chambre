@@ -6,7 +6,7 @@ test('Happy Berry, BLAST and Kero unlock their own collections by click, Enter a
  const events=new Map(),actions=[];
  const svg={querySelector:()=>null,addEventListener(type,fn){const all=events.get(type)||[];all.push(fn);events.set(type,all);}};
  const window={NanaResources:{enqueueImage(){}},NanaProgress:{visit:r=>actions.push(['visit',r]),feat:r=>actions.push(['feat',r])},dispatchEvent(){}};
- const document={getElementById:id=>id==='hotspots'?svg:null};
+ const document={getElementById:id=>['hotspots','play-scene'].includes(id)?svg:id==='nana-poppy-petal-style'?{}:null};
  class Event{constructor(type,options){this.type=type;Object.assign(this,options);}}
  vm.runInNewContext(readFileSync(new URL('../room-zone-registry.js',import.meta.url),'utf8'),{window,document,setTimeout(){},Event,MouseEvent:Event});
  const zone=window.NANA_ROOM_ZONES.find(z=>z.id==='happy-berry');assert.equal(zone.file,'IMG_7121.png');assert.equal(zone.number,47);
