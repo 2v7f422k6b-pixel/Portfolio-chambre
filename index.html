@@ -253,9 +253,16 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       filter:url(#desert-moonlight);
     }
     @media (prefers-reduced-motion:no-preference) {
+      #v2-desert .desert-starlight rect {
+        animation:desert-starlight var(--period) ease-in-out var(--delay) infinite alternate;
+      }
       #v2-desert .crystal-glint {
         animation:desert-crystal-glint var(--period) ease-in-out var(--delay) infinite;
       }
+    }
+    @keyframes desert-starlight {
+      from { opacity:0; }
+      to { opacity:.69; }
     }
     @keyframes desert-crystal-glint {
       0%, 52%, 100% { opacity:.12; }
@@ -876,7 +883,17 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             <g clip-path="url(#v2-desert-window)">
               <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp?v=ciel-violet-7" x="1723" y="0" width="495" height="933"/>
               <image class="desert-day" href="assets/room-redraw/desert-rose.webp" x="1723" y="0" width="495" height="933"/>
-              <g class="desert-night" transform="translate(1723 0)">
+              <!-- Fade the seven painted stars with the exact flat sky colour. -->
+              <g class="desert-night desert-starlight" transform="translate(1723 0)" fill="#20104a">
+                <rect x="255" y="111" width="15" height="15" opacity="0" style="--period:2.4s;--delay:-1.1s"/>
+                <rect x="282" y="125" width="9" height="9" opacity="0" style="--period:3.1s;--delay:-2.6s"/>
+                <rect x="310" y="104" width="12" height="12" opacity="0" style="--period:2.8s;--delay:-3.3s"/>
+                <rect x="90" y="360" width="13" height="13" opacity="0" style="--period:2.6s;--delay:-0.2s"/>
+                <rect x="283" y="451" width="10" height="10" opacity="0" style="--period:3.4s;--delay:-2.1s"/>
+                <rect x="142" y="146" width="8" height="8" opacity="0" style="--period:2.9s;--delay:-1.6s"/>
+                <rect x="367" y="402" width="7" height="7" opacity="0" style="--period:3.6s;--delay:-4.0s"/>
+              </g>
+              <g transform="translate(1723 0)">
                 <g fill="url(#desert-crystal-halo)">
                   <ellipse cx="370" cy="819" rx="76" ry="61"/>
                   <ellipse cx="59" cy="671" rx="58" ry="48"/>
