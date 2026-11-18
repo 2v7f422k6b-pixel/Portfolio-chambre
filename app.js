@@ -133,7 +133,7 @@ function roomSnapshotTransition(update) {
  }).finally(()=>layer.remove());
  return {finished};
 }
-function applyThemeInstant(theme){
+function applyThemeInstant(theme, persist=true){
  const night=theme==='night';
  if(night)window.NanaProgress?.visit('night');
  window.NanaResources?.activate(currentMode,night?'night':'day');
@@ -150,7 +150,7 @@ function applyThemeInstant(theme){
   toggle.querySelector('.theme-icon').textContent=night?'☀':'☾';
   toggle.querySelector('.theme-label').textContent=night?'Day':'Night';
  }
- try{localStorage.setItem(THEME_KEY,night?'night':'day')}catch(e){}
+ if(persist)try{localStorage.setItem(THEME_KEY,night?'night':'day')}catch(e){}
  // The previous rectangle-based correction itself caused a scroll jump
  // whenever the folder heading or background recomputed during a theme change.
  if(scrollBefore!==null&&workArea.scrollTop!==scrollBefore)
@@ -158,7 +158,10 @@ function applyThemeInstant(theme){
 }
 let savedTheme='day';
 try{savedTheme=localStorage.getItem(THEME_KEY)||'day'}catch(e){}
-applyTheme(savedTheme);
+const roomLink = new URLSearchParams(location.search);
+const linkTheme = roomLink.get('chambreV2') === '1' && roomLink.get('theme');
+if (linkTheme === 'night' || linkTheme === 'day') applyThemeInstant(linkTheme, false);
+else applyTheme(savedTheme);
 
 // Keep the existing iMac zoom; only polish the reverse direction and interruption handling.
 let imacZoomAnimation=null,modeTransitionAnimations=[],modeTransitionId=0;

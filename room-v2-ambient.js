@@ -139,16 +139,22 @@
   });
   const desertTemplate = document.getElementById('v2-desert-template');
   desertTemplate.replaceWith(desertTemplate.content);
-  let dialAngle = 0;
+  const wheel = svg.querySelector('.landscape-wheel');
+  const landscape = new URLSearchParams(location.search).get('landscape');
+  let dialAngle = landscape === 'desert-rose' ? 180 : 0;
+  function showLandscape() {
+    scene.dataset.landscape = dialAngle % 360 === 180 ? 'pink' : 'marseille';
+  }
+  wheel.style.transformBox = 'view-box';
+  wheel.style.transformOrigin = '1931px 990px';
+  wheel.style.transform = 'rotate(' + dialAngle + 'deg)';
+  showLandscape();
   function spinDial() {
-    const wheel = svg.querySelector('.landscape-wheel');
     if (wheel.getAnimations().some(a => a.playState === 'running')) return;
     const start = dialAngle;
     dialAngle = start + 720 + 90 * Math.floor(Math.random()*4);
     const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
-    spin.onfinish = () => {
-      scene.dataset.landscape = dialAngle % 360 === 180 ? 'pink' : 'marseille';
-    };
+    spin.onfinish = showLandscape;
   }
   const machine = svg.querySelector('[data-object="gashapon"]');
   const prize = machine.querySelector('.gasha-prize');
