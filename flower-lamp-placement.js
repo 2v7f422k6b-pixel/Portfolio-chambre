@@ -165,7 +165,7 @@ function mountWallDecoration(kind, redrawn) {
     const lampWidth=(Math.hypot(p[1][0]-p[0][0],p[1][1]-p[0][1])+Math.hypot(p[2][0]-p[3][0],p[2][1]-p[3][1]))/2;
     const lampHeight=(Math.hypot(p[3][0]-p[0][0],p[3][1]-p[0][1])+Math.hypot(p[2][0]-p[1][0],p[2][1]-p[1][1]))/2;
     wallLight.setAttribute('cx',lampCenter[0]);wallLight.setAttribute('cy',lampCenter[1]);
-    wallLight.setAttribute('rx',lampWidth*1.65);wallLight.setAttribute('ry',lampHeight*1.6);
+    wallLight.setAttribute('rx',lampWidth*(redrawn ? 2.55 : 1.65));wallLight.setAttribute('ry',lampHeight*(redrawn ? 2.5 : 1.6));
     const first=[p[0],p[1],p[3]];
     const second=[p[1],p[2],p[3]];
     // Overlap the shared diagonal slightly to close the antialiasing seam.
