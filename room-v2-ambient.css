@@ -53,7 +53,7 @@
 html:is(.poster-edit-mode,.lamp-edit-mode,.mirror-edit-mode) .room-redraw-preview #room-v2-ambient .v2-hit { pointer-events: none; }
 html.poster-edit-mode .room-redraw-preview .v2-wall-surface { pointer-events: none; }
 html.poster-edit-mode .room-redraw-preview #wall-mirror-hit { pointer-events: none; }
-.room-redraw-preview #nana-ipad-time { fill: #a91343; stroke: #fff2ee; font-family: "Courier New", monospace; font-weight: bold; filter: none; }
+.room-redraw-preview #nana-ipad-time { fill: #a91343; stroke: #fff2ee; filter: none; }
 
 .room-redraw-preview #cat-response .cat-heart { transform-box: fill-box; transform-origin: center; }
 #room-v2-ambient .v2-cookie-pose { visibility: hidden; }
