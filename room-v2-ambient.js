@@ -31,25 +31,74 @@
   const bakedLighting = new URLSearchParams(location.search).get('renduNuit') === 'dessins';
   if (bakedLighting) {
     const folderNight = folder + 'nuit-objets/';
-    const textures = Array.from(svg.querySelectorAll(
-      '#v2-atlas, #five-atlas, #character-art, #v2-cookie-parts, #v2-van-visual, .v2-kero-faces'
-    ), image => {
+    const pieces = folderNight + 'pieces/';
+    // Each moving part has its own room-sized crop. Keep the original masks
+    // and hit targets, and avoid updating an atlas inside a SVG <use> tree.
+    const nightImages = [];
+    for (const use of svg.querySelectorAll('svg[viewBox] > use')) {
+      const crop = use.parentNode;
+      if (crop.parentNode === svg || crop.closest('mask, .v2-ferry')) continue;
+      const ref = use.getAttribute('href');
+      if (!['#v2-atlas','#five-atlas','#character-art','#v2-cookie-parts'].includes(ref)) continue;
+      const [u,v] = crop.getAttribute('viewBox').split(/\s+/);
+      const image = document.createElementNS(svg.namespaceURI,'image');
+      for (const attr of ['x','y','width','height']) image.setAttribute(attr,crop.getAttribute(attr) || '0');
+      image.setAttribute('pointer-events','none');
+      image.classList.add('v2-piece-night');
+      crop.classList.add('v2-piece-day');
+      crop.after(image);
+      nightImages.push([image, pieces + ref.slice(1) + '-' + u + '-' + v + '.webp']);
+    }
+    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, .v2-kero-faces'), image => {
       const day = image.getAttribute('href');
       return { image, day, night: folderNight + day.split('/').pop() };
     });
+    const sceneRoot = scene.closest('#play-viewport');
+    sceneRoot.classList.add('v2-baked-test');
+    for (const image of scene.querySelectorAll('#paprika-butterfly .butterfly-night')) {
+      const file = image.dataset.resourceSrc.match(/IMG_(\d+)\.png$/);
+      if (!file) continue;
+      const url = pieces + 'paprika-' + file[1] + '.webp';
+      if (window.NanaResources) window.NanaResources.setSource(image,url,{theme:'night'});
+      else image.src = url;
+    }
+    let requested = false;
     function syncTextures() {
       const night = document.documentElement.dataset.theme === 'night';
+      if (night && !requested) {
+        requested = true;
+        for (const [image,url] of nightImages) image.setAttribute('href',url);
+      }
       for (const texture of textures) texture.image.setAttribute('href', night ? texture.night : texture.day);
     }
     syncTextures();
     new MutationObserver(syncTextures).observe(document.documentElement, {
       attributes:true, attributeFilter:['data-theme']
     });
+    const cushion = svg.querySelector('[data-object="happy-berry"]');
+    cushion.appendChild(cushion.querySelector('.v2-hit'));
     svg.classList.add('v2-baked-lighting');
     const rules = document.createElement('style');
     rules.textContent = `
+      .v2-piece-night { display:none; }
+      #play-scene > .v2-sky-sparkles { display:none; position:absolute; pointer-events:none; mask-repeat:no-repeat; -webkit-mask-repeat:no-repeat; }
+      html[data-theme="night"] #play-scene:not([data-landscape="pink"]) > .v2-sky-sparkles { display:block; }
+      .v2-sky-sparkles img { position:absolute; pointer-events:none; will-change:transform,opacity; animation:window-star-twinkle 3.6s ease-in-out infinite; }
+      .v2-sky-sparkles img:nth-child(2n) { animation-delay:-1.7s; }
+      .v2-sky-sparkles img:nth-child(3n) { animation-delay:-3.4s; }
+      .v2-sky-sparkles img:nth-child(5n) { animation-duration:6.2s; }
+      @media(prefers-reduced-motion:reduce) { .v2-sky-sparkles img { animation:none; } }
+      html[data-theme="night"] .v2-baked-lighting .v2-piece-day { display:none; }
+      html[data-theme="night"] .v2-baked-lighting .v2-piece-night { display:inline; }
+      html[data-theme="night"] #play-viewport.v2-baked-test #paprika-butterfly,
       html[data-theme="night"] #play-viewport.room-redraw-preview #room-v2-ambient.v2-baked-lighting { filter:none; }
       html[data-theme="night"] .v2-baked-lighting :is([data-object="office"] > rect:not(.v2-hit), [data-object="office"] > g, [data-cat-effects]) { filter:url(#room-v2-night-ink); }
+      html[data-theme="night"] .v2-baked-test #window-life .outside-day,
+      html:not([data-theme="night"]) .v2-baked-test #window-life .outside-night { display:none; }
+      @media (hover:none) {
+        #room-v2-ambient.v2-baked-lighting [data-object="happy-berry"]:not(:focus-visible) .v2-hit { stroke:none; }
+        #room-v2-ambient.v2-baked-lighting [data-object="happy-berry"]:not(:focus-visible) { outline:none; }
+      }
     `;
     document.head.appendChild(rules);
   }
@@ -123,19 +172,33 @@
   const stars = windowLife.querySelectorAll('.night-star');
   const skyPoints = [[950,83],[978,142],[1144,89],[1126,55],[946,210],
     [1146,193],[1001,207],[1061,164],[981,121],[1069,111]];
+  let skyStars;
+  if (bakedLighting) {
+    skyStars = document.createElement('div');
+    skyStars.className = 'v2-sky-sparkles';
+    skyStars.dataset.roomV2Layer = '';
+    skyStars.setAttribute('aria-hidden','true');
+    skyStars.style.cssText = windowLife.style.cssText;
+    skyStars.style.zIndex = getComputedStyle(windowLife).zIndex;
+    const skyMask = 'url("assets/room-redraw/masque-ciel.png")';
+    skyStars.style.webkitMaskImage = skyMask;
+    skyStars.style.maskImage = skyMask;
+    windowLife.before(skyStars);
+  }
   stars.forEach((star, i) => {
     if (bakedLighting) {
-      // A transparent eight-unit border carries the pre-rendered glow.
-      const ink = document.createElementNS(svg.namespaceURI, 'image');
-      ink.setAttribute('class','night-star');
-      ink.setAttribute('preserveAspectRatio','none');
-      ink.style.filter = 'none';
-      ink.setAttribute('href', folder + 'nuit-objets/ciel-' + String(i+1).padStart(2,'0') + '.webp');
-      ink.setAttribute('x',skyPoints[i][0]-8);
-      ink.setAttribute('y',skyPoints[i][1]-8);
-      ink.setAttribute('width',Number(star.getAttribute('width'))+16);
-      ink.setAttribute('height',Number(star.getAttribute('height'))+16);
-      star.replaceWith(ink);
+      const [x,y] = skyPoints[i];
+      const box = windowLife.viewBox.baseVal;
+      const img = new Image();
+      img.alt = '';
+      img.src = folder + 'nuit-objets/ciel-' + String(i+1).padStart(2,'0') + '.webp';
+      Object.assign(img.style, {
+        left:percent(x-8-box.x,box.width), top:percent(y-8-box.y,box.height),
+        width:percent(Number(star.getAttribute('width'))+16,box.width),
+        height:percent(Number(star.getAttribute('height'))+16,box.height)
+      });
+      skyStars.appendChild(img);
+      star.remove();
       return;
     }
     star.setAttribute('x',skyPoints[i][0]); star.setAttribute('y',skyPoints[i][1]);

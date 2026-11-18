@@ -74,10 +74,16 @@ function mountWallDecoration(kind, redrawn) {
       preserveAspectRatio:'none',
       'aria-hidden':'true','pointer-events':'none'
     });
-    if (redrawn && mirror) {
+    const trialLamp = redrawn && !mirror && query.get('renduNuit') === 'dessins';
+    if (redrawn && (mirror || trialLamp)) {
       const sprites=make('g');
       const night=image.cloneNode(false);
-      night.setAttribute('href','assets/room-redraw/miroir-nuit.webp?v=verre7');
+      const nightUrl = mirror ? 'assets/room-redraw/miroir-nuit.webp?v=verre7' : 'assets/room-redraw/nuit-objets/pieces/lampe-fleur.webp';
+      if (query.get('renduNuit') === 'dessins' && window.NanaResources) {
+        night.removeAttribute('href');
+        window.NanaResources.setSource(night,nightUrl,{theme:'night'});
+      }
+      else night.setAttribute('href',nightUrl);
       night.classList.add('v2-mirror-night');
       image.classList.add('v2-mirror-day');
       sprites.append(image,night);
