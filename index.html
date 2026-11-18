@@ -235,7 +235,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] #room-v2-ambient > svg[viewBox],
     html[data-theme="night"] #room-v2-ambient image[href$="-fond.webp"] { display:none; }
     /* Keep keyboard focus on the drawn van hit area while its image falls. */
-    #room-v2-ambient [data-object="van"]:focus { outline:none; }
+    #room-v2-ambient [data-object="van"]:focus { outline:none!important; }
+    #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
     .v2-mirror-night,.v2-mirror-reflection { display:none; }
