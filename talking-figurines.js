@@ -5,7 +5,6 @@
   const scene = document.getElementById('play-scene');
   if (!scene) return;
 
-  const W = 1670, H = 942;
   const figurines = {
     miffy: {
       index: -1,
@@ -107,6 +106,7 @@
 
   const bubble = document.createElement('div');
   bubble.className = 'figurine-speech';
+  bubble.dataset.roomV2Layer = '';
   bubble.setAttribute('role', 'status');
   bubble.setAttribute('aria-live', 'polite');
   bubble.setAttribute('data-no-translate', '');
@@ -133,16 +133,17 @@
     figure.index = unread>=0 ? unread : (figure.index + 1) % figure[lang].length;
     bubble.textContent = figure[lang][figure.index];
 
-    // The zone polygon and artwork use the same 1670 × 942 room coordinates.
+    const room = target.ownerSVGElement.viewBox.baseVal;
     const box = target.getBBox();
     const x = box.x + box.width / 2;
-    const above = box.y > 175;
-    const y = above ? box.y - 18 : box.y + box.height + 18;
+    const above = box.y / room.height > 175 / 942;
+    const gap = room.height * 18 / 942;
+    const y = above ? box.y - gap : box.y + box.height + gap;
 
     bubble.dataset.side = above ? 'above' : 'below';
     bubble.hidden = false;
-    const scaleX = scene.clientWidth / W;
-    const scaleY = scene.clientHeight / H;
+    const scaleX = scene.clientWidth / room.width;
+    const scaleY = scene.clientHeight / room.height;
     const half = bubble.offsetWidth / 2;
     const px = clamp(x * scaleX, half + 8, Math.max(half + 8, scene.clientWidth - half - 8));
     bubble.style.left = px + 'px';
@@ -156,13 +157,13 @@
   // Registered Miffy and Sonny polygons get priority over generic pending-zone handlers.
   // Event delegation keeps working when the registry adds its polygons asynchronously.
   scene.addEventListener('click', event => {
-    const polygon = event.target.closest?.('polygon[data-figurine-speech]');
-    if (!polygon) return;
-    const id = polygon.dataset.figurineSpeech;
+    const target = event.target.closest?.('[data-figurine-speech]');
+    if (!target) return;
+    const id = target.dataset.figurineSpeech;
     if (!figurines[id]) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    speak(id, polygon);
+    speak(id, target);
   }, true);
 
   document.addEventListener('portfolio-language-change', hide);

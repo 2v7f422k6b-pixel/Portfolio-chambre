@@ -50,7 +50,7 @@
   const isPencil = id => id?.startsWith('crayons-');
   let selected = null, pending = null;
 
-  const redrawnObjects = new Set(['chat','vase','fortune-cookie']);
+  const redrawnObjects = new Set(['chat','vase','fortune-cookie','miffy','sonny-angel']);
   function hotspot(id) {
     if (redrawnObjects.has(id) && new URLSearchParams(location.search).get('chambreV2') === '1')
       return q('#room-v2-ambient [data-room-zone-id="'+id+'"]');
