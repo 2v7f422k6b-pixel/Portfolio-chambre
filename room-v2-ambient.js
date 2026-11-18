@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=tenues-redraw-1');
+  const response = await fetch(folder + 'objets.svg?v=20261119-aiguilles');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -28,7 +28,7 @@
   // Isolated iPad comparison. Keep lamp coordinates fixed in the room while
   // limiting the filter output to each object's bounds.
   const localLighting = new URLSearchParams(location.search).get('renduNuit') === 'local';
-  const bakedLighting = new URLSearchParams(location.search).get('renduNuit') === 'dessins';
+  const bakedLighting = !localLighting;
   if (bakedLighting) {
     const folderNight = folder + 'nuit-objets/';
     const pieces = folderNight + 'pieces/';
@@ -65,9 +65,19 @@
       if (window.NanaResources) window.NanaResources.setSource(image,url,{theme:'night'});
       else image.src = url;
     }
+    const handDrawing = svg.querySelector('[data-hand="hour"]').parentNode;
+    const handMask = svg.querySelector('#sailor-hand-mask');
+    const nightHands = svg.querySelector('#sailor-night-hands');
     let requested = false;
     function syncTextures() {
       const night = document.documentElement.dataset.theme === 'night';
+      if (night) {
+        handMask.appendChild(handDrawing);
+        nightHands.removeAttribute('display');
+      } else {
+        nightHands.setAttribute('display','none');
+        nightHands.before(handDrawing);
+      }
       if (night && !requested) {
         requested = true;
         for (const [image,url] of nightImages) image.setAttribute('href',url);
