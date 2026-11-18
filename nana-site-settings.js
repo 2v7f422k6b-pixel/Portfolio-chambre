@@ -1,6 +1,14 @@
 /* Published placement settings. Updated only by an authorized GitHub commit.
    These values are public display data, never passwords or access tokens. */
 window.NANA_PUBLISHED_SETTINGS = {
+  "nana-ipad-clock-placement-room-v2": {
+    "x": 598.7348281249392,
+    "y": 660.7989938704535,
+    "size": 14,
+    "angle": -54,
+    "skew": 25,
+    "offsetMinutes": 0
+  },
   "nana-wall-stars-layout-room-v2": [
     [319.4,68.78,7,10],
     [316,210,6,-8],
