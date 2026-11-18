@@ -27,6 +27,44 @@
   scene.append(underlay, svg);
   hotspots.dataset.roomV2Layer = '';
 
+  const windowLife = scene.querySelector('#window-life');
+  const stars = windowLife.querySelectorAll('.night-star');
+  const skyPoints = [[950,83],[978,142],[1144,89],[1126,55],[946,210],
+    [1146,193],[1001,207],[1061,164],[981,121],[1069,111]];
+  stars.forEach((star, i) => {
+    star.setAttribute('x',skyPoints[i][0]); star.setAttribute('y',skyPoints[i][1]);
+  });
+  const ns = 'http://www.w3.org/2000/svg';
+  const streak = windowLife.querySelector('.shooting-star');
+  const meteor = document.createElementNS(ns,'g');
+  meteor.classList.add('v2-meteor');
+  meteor.setAttribute('role','button');
+  meteor.setAttribute('tabindex','0');
+  const labelMeteor = () => meteor.setAttribute('aria-label',document.documentElement.lang === 'en' ? 'Catch the shooting star' : 'Attraper l’étoile filante');
+  labelMeteor();
+  document.addEventListener('portfolio-language-change',labelMeteor);
+  windowLife.removeAttribute('aria-hidden');
+  streak.replaceWith(meteor);
+  streak.removeAttribute('class');
+  const hit = document.createElementNS(ns,'rect');
+  for(const [node,x,y,size] of [[streak,1115,56,31],[hit,1101,42,60]]) {
+    node.setAttribute('x',x);node.setAttribute('y',y);
+    node.setAttribute('width',size);node.setAttribute('height',size);
+  }
+  hit.setAttribute('fill','transparent');
+  meteor.append(streak,hit);
+  const catchMeteor = event => {
+    if(event.type === 'keydown' && !['Enter',' '].includes(event.key)) return;
+    if(document.documentElement.dataset.theme !== 'night' || meteor.classList.contains('caught')) return;
+    event.preventDefault();event.stopPropagation();
+    window.NanaProgress?.feat('shooting-star-encounter');
+    meteor.classList.add('caught');
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches) setTimeout(()=>meteor.classList.remove('caught'),25000);
+  };
+  meteor.addEventListener('click',catchMeteor);
+  meteor.addEventListener('keydown',catchMeteor);
+  meteor.addEventListener('animationiteration',()=>meteor.classList.remove('caught'));
+
   const labels = [...svg.querySelectorAll('[data-label-en]')];
   for (const item of labels) item.dataset.labelFr = item.getAttribute('aria-label');
   function setLabels() {
