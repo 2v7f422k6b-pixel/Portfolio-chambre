@@ -241,6 +241,11 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-scene > #v2-desert { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    #desert-window-light { display:none; }
+    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-window-light {
+      display:block; position:absolute; inset:0; width:100%; height:100%;
+      pointer-events:none; z-index:7; mix-blend-mode:color;
+    }
     .desert-night { display:none; }
     html[data-theme="night"] #v2-desert .desert-night { display:inline; }
     html[data-theme="night"] #v2-desert .desert-day { display:none; }
@@ -253,8 +258,9 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       }
     }
     @keyframes desert-crystal-glint {
-      0%, 72%, 96%, 100% { opacity:0; }
-      84% { opacity:.92; }
+      0%, 52%, 100% { opacity:.12; }
+      74% { opacity:1; }
+      85% { opacity:.65; }
     }
     .desert-crescent { animation:desert-crescent-drift 62s ease-in-out infinite alternate; }
     .desert-round-moon { animation:desert-round-drift 41s ease-in-out infinite alternate; }
@@ -850,6 +856,13 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
           <template id="v2-desert-template"><svg id="v2-desert" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs><clipPath id="v2-desert-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath>
+              <radialGradient id="desert-crystal-halo">
+                <stop stop-color="#c7f9ff" stop-opacity=".80"/>
+                <stop offset=".37" stop-color="#93e8ff" stop-opacity=".64"/>
+                <stop offset=".70" stop-color="#83c5ff" stop-opacity=".28"/>
+                <stop offset="1" stop-color="#83c5ff" stop-opacity="0"/>
+              </radialGradient>
+              <path id="desert-facet-flash" d="M0 -12 Q1 -2 3 -2 L10 0 Q2 1 2 3 L0 13 Q-1 3 -3 2 L-10 0 Q-2 -1 -2 -3Z"/>
               <radialGradient id="desert-lunar-glow">
                 <stop offset="0" stop-color="#fff3ac" stop-opacity=".84"/>
                 <stop offset=".35" stop-color="#ffe599" stop-opacity=".59"/>
@@ -863,10 +876,18 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             <g clip-path="url(#v2-desert-window)">
               <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp?v=orchidee-cristaux" x="1723" y="0" width="495" height="933"/>
               <image class="desert-day" href="assets/room-redraw/desert-rose.webp" x="1723" y="0" width="495" height="933"/>
-              <g class="desert-night" transform="translate(1723 0)" fill="none" stroke="#effbff" stroke-linecap="round" stroke-width="1.7">
-                <path class="crystal-glint" opacity="0" style="--period:6.3s;--delay:-3s" d="M372 786l5 -8m-2 4 4 4"/>
-                <path class="crystal-glint" opacity="0" style="--period:7.8s;--delay:-6s" d="M55 646l5 -9m-3 5 4 4"/>
-                <path class="crystal-glint" opacity="0" style="--period:8.4s;--delay:-1s" d="M253 622l3 -6"/>
+              <g class="desert-night" transform="translate(1723 0)">
+                <g fill="url(#desert-crystal-halo)">
+                  <ellipse cx="370" cy="819" rx="76" ry="61"/>
+                  <ellipse cx="59" cy="671" rx="58" ry="48"/>
+                  <ellipse cx="255" cy="630" rx="34" ry="28"/>
+                </g>
+                <g fill="#f4ffff" stroke="#abf1ff" stroke-width="1" opacity=".98">
+                  <use href="#desert-facet-flash" class="crystal-glint" opacity=".70" transform="translate(376 785) scale(1.22)" style="--period:3.7s;--delay:-2.6s"/>
+                  <use href="#desert-facet-flash" class="crystal-glint" opacity=".60" transform="translate(402 815) scale(.69)" style="--period:4.7s;--delay:-.4s"/>
+                  <use href="#desert-facet-flash" class="crystal-glint" opacity=".70" transform="translate(60 645)" style="--period:4.3s;--delay:-1.7s"/>
+                  <use href="#desert-facet-flash" class="crystal-glint" opacity=".60" transform="translate(255 619) scale(.69)" style="--period:4.9s;--delay:-3.3s"/>
+                </g>
               </g>
               <g class="desert-crescent">
                 <circle class="desert-night" cx="1810" cy="207" r="93" fill="url(#desert-lunar-glow)"/>
@@ -877,6 +898,20 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <image href="assets/room-redraw/lune-ronde.png" x="2063" y="257" width="59" height="59"/>
               </g>
             </g>
+          </svg>
+          <svg id="desert-window-light" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="desert-room-spill">
+                <stop offset=".34" stop-color="#bd77fd" stop-opacity=".88"/>
+                <stop offset=".64" stop-color="#ad68f5" stop-opacity=".70"/>
+                <stop offset=".83" stop-color="#9862e9" stop-opacity=".33"/>
+                <stop offset="1" stop-color="#8857de" stop-opacity="0"/>
+              </radialGradient>
+              <clipPath id="desert-window-surround">
+                <path clip-rule="evenodd" d="M0 0H3072V1732H0Z M1739 119L2154 22L2156 890L1739 884Z"/>
+              </clipPath>
+            </defs>
+            <ellipse cx="1946" cy="490" rx="560" ry="690" fill="url(#desert-room-spill)" clip-path="url(#desert-window-surround)"/>
           </svg></template>
           <svg id="window-life" data-room-v2-layer viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
             <defs>
