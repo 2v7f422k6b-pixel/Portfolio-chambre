@@ -24,16 +24,8 @@
   underlay.draggable = false;
   const responseArt = document.getElementById('cat-response');
   if (responseArt) svg.querySelector('[data-cat-effects]').append(responseArt);
-  // The night palette applies to the board. Keep the handwriting in its original red.
   const officeWords = svg.querySelector('[data-object="office"] .office-words');
-  const lettering = document.createElementNS(svg.namespaceURI, 'svg');
-  lettering.id = 'office-lettering-layer';
-  lettering.dataset.roomV2Layer = '';
-  lettering.setAttribute('viewBox', svg.getAttribute('viewBox'));
-  lettering.setAttribute('preserveAspectRatio', 'none');
-  lettering.setAttribute('aria-hidden', 'true');
-  lettering.append(officeWords.parentElement);
-  scene.append(underlay, svg, lettering);
+  scene.append(underlay, svg);
   hotspots.dataset.roomV2Layer = '';
 
   // Each crop stores its room position, atlas position and dimensions.
