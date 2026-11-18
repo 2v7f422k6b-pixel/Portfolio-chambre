@@ -78,3 +78,8 @@ html.poster-edit-mode .room-redraw-preview #wall-mirror-hit { pointer-events: no
   .room-redraw-preview .nana-poppy-petal { animation-name: room-v2-petal-fade !important; }
   @keyframes room-v2-petal-fade { 0%,100% { opacity: 0; } 35%,70% { opacity: 1; } }
 }
+
+.v2-capsule-dialog {background:#fff3f7;border:2px solid #bc2849;border-radius:16px;color:#9e193a;}
+.v2-capsule-dialog svg {display:block;width:min(210px,60vw);margin:auto;}
+.v2-capsule-dialog p:empty {display:none;}
+.v2-capsule-dialog button[hidden] {display:none;}

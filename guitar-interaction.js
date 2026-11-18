@@ -45,7 +45,10 @@
   function drawString(index, time, g) {
     const spacing = index - 2.5;
     const start = { x: g.top.x + spacing * 4.85 * g.scale, y: g.top.y };
-    const end = { x: g.bottom.x + spacing * 5.25 * g.scale, y: g.bottom.y };
+    const tips = [[2981,1429],[2989,1431],[2997,1434],[3005,1436],[3014,1438],[3022,1440]];
+    const end = document.getElementById('room-v2-ambient')
+      ? {x:tips[index][0]*1670/3072, y:tips[index][1]*942/1732}
+      : { x: g.bottom.x + spacing * 5.25 * g.scale, y: g.bottom.y };
     const vx = end.x - start.x, vy = end.y - start.y;
     const length = Math.hypot(vx, vy) || 1;
     const nx = -vy / length, ny = vx / length;

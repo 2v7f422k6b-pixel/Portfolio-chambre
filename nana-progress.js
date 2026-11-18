@@ -35,6 +35,7 @@
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
   const outfits = [
+    {id:'gabzilla',name:pair('T-shirt Gabzilla','Gabzilla T-shirt'),visit:'objet/gabzilla',pieces:['top-gabzilla'],values:{tops:'top-gabzilla'},image:crop('assets/dressing-lena/IMG_5450.png',[536,712,865,850],2048,3072),rule:pair('Découvrir le t-shirt sur la chaise.','Discover the T-shirt on the chair.')},
     // Artwork pending: the existing discovery also credits visitors who already found the box.
     {id:'amelie-poulain',image:crop('assets/IMG_7247.png',[692,745,630,1281],2048,3072),name:pair('Amélie Poulain','Amélie Poulain'),feat:'secret-memory-box',pieces:["shoes-amelie", "dress-amelie", "jacket-amelie", "held-amelie-umbrella"],values:{shoes:'shoes-amelie',dresses:'dress-amelie',cardigan:'jacket-amelie',handObject:'held-amelie-umbrella'},rule:pair('Découvrir la boîte à souvenirs cachée derrière le carreau du mur.','Discover the memory box hidden behind the wall tile.')},
     {id:'severance',name:pair('Helly R. — Severance','Helly R. — Severance'),feat:'severance-refined',image:crop('assets/dressing-lena/IMG_7108.png',[927,1239,95,205],2048,3072),pieces:['hosiery-helly','shoes-helly','top-helly','skirt-helly','jewelry-helly-badge'],values:{hosiery:'hosiery-helly',shoes:'shoes-helly',tops:'top-helly',skirts:'skirt-helly',necklace:'jewelry-helly-badge'},rule:pair('Terminer les quatre catégories de Macrodata Refinement en mode Work.','Complete the four Macrodata Refinement categories in Work mode.')},
