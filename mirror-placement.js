@@ -78,18 +78,6 @@
   });
   const imageTriangles = [];
   if (redrawn) {
-    const artworkImage = make('image', {
-      id:'nana-v2-mirror-image', href:'assets/room-redraw/miroir.webp',
-      width:1, height:1, preserveAspectRatio:'none'
-    });
-    const mirrorSurface = make('g',{id:'nana-v2-mirror-surface'});
-    const nightImage = artworkImage.cloneNode(false);
-    nightImage.removeAttribute('id');
-    nightImage.setAttribute('href','assets/room-redraw/miroir-nuit.webp?v=verre7');
-    artworkImage.classList.add('v2-mirror-day');
-    nightImage.classList.add('v2-mirror-night');
-    mirrorSurface.append(artworkImage,nightImage);
-    defs.appendChild(mirrorSurface);
     for (let i = 0; i < 2; i++) {
       const id = 'nana-v2-mirror-triangle-' + i;
       const clip = make('clipPath',{id,clipPathUnits:'userSpaceOnUse'});
@@ -97,7 +85,7 @@
       clip.appendChild(polygon);
       defs.appendChild(clip);
       const wrapper = make('g',{'clip-path':'url(#'+id+')'});
-      const image = make('use',{href:'#nana-v2-mirror-surface'});
+      const image = make('image',{width:1,height:1,preserveAspectRatio:'none'});
       wrapper.appendChild(image);
       visual.appendChild(wrapper);
       imageTriangles.push({polygon,image,wrapper});
@@ -133,17 +121,14 @@
   if (editing) editorLayer.append(guide,...handles);
   const surface = redrawn ? make('g',{class:'v2-wall-surface'}) : null;
   if (surface) {
-    visual.id='v2-mounted-mirror';
-    const cornerGradient=make('radialGradient',{id:'v2-mounted-mirror-warmth',cx:'.16',cy:'.16',r:'.33'});
-    for (const [offset,opacity] of [[0,.92],[.5,.57],[1,0]]) {
-      cornerGradient.appendChild(make('stop',{offset,'stop-color':'white','stop-opacity':opacity}));
+    function syncMirrorArtwork() {
+      const night = document.documentElement.dataset.theme === 'night';
+      const file = night ? 'miroir-verre-nuit.webp' : 'miroir.webp';
+      for (const {image} of imageTriangles) image.setAttribute('href','assets/room-redraw/'+file);
     }
-    const cornerMask=make('mask',{id:'v2-mounted-mirror-corner',maskContentUnits:'objectBoundingBox'});
-    cornerMask.appendChild(make('rect',{width:1,height:1,fill:'url(#v2-mounted-mirror-warmth)'}));
-    defs.append(cornerGradient,cornerMask);
-    const lampSpill=make('g',{mask:'url(#v2-flower-poster-mask)','pointer-events':'none'});
-    lampSpill.appendChild(make('use',{href:'#v2-mounted-mirror',class:'v2-mirror-reflection',mask:'url(#v2-mounted-mirror-corner)'}));
-    surface.append(visual,lampSpill,hit);
+    syncMirrorArtwork();
+    new MutationObserver(syncMirrorArtwork).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+    surface.append(visual,hit);
     group.append(defs,surface,editorLayer);
   } else {
     group.append(defs,visual,nightShade,hit,editorLayer);
