@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261118-calques-etoiles');
+  const response = await fetch(folder + 'objets.svg?v=20261118-lampes');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -158,6 +158,7 @@
     event.preventDefault();
     event.stopPropagation();
     if (event.repeat) return;
+    if (item.dataset.object === 'night-lamp') document.getElementById('theme-toggle')?.click();
     if (item.dataset.object === 'sailor') {
       const kicks=[[0,0],[-9,-18],[4,12],[-27,-22],[0,16],[-21,24],[0,-19],[-25,-22],[2,18],[-14,15],[0,-10],[-5,6],[0,0]];
       motion(item.querySelector('.clock-shake'), kicks.map(([y,a])=>({transform:'translateY('+y+'px) rotate('+a+'deg)'})), 1900, '487px 734px');

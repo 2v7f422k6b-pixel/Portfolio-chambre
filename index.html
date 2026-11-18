@@ -234,6 +234,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     .v2-lit-posters { display: none; }
     html[data-theme="night"] .room-redraw-preview .v2-lit-posters { display: inline; }
+    html[data-theme="night"] .room-redraw-preview .memory-tile { filter: url(#room-v2-night-ink); }
     /* Keep hand-drawn lights in daylight colours, above the recoloured artwork. */
     html[data-theme="night"] .room-redraw-preview :is(#room-redraw-preview, #room-v2-underlay, #room-v2-ambient, #nana-wall-mirror, .v2-night-posters, .poster-tape-layer, #paprika-butterfly) {
       filter: url(#room-v2-night-ink);
@@ -247,7 +248,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      background: url("assets/room-redraw/lumieres-nuit.webp?v=diffus4") center / 100% 100% no-repeat;
+      background: url("assets/room-redraw/lumieres-nuit.webp?v=ciel5") center / 100% 100% no-repeat;
     }
     /* Confine the outdoor drawings to the sky behind the skyline and chime. */
     .room-redraw-preview #window-life {
@@ -738,7 +739,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-biscuit';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261118-calques-etoiles';
+                  script.src = 'room-v2-ambient.js?v=20261118-lampes';
                   document.head.append(script);
                 };
                 document.head.append(style);
