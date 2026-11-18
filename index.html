@@ -237,6 +237,15 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     /* Keep keyboard focus on the drawn van hit area while its image falls. */
     #room-v2-ambient [data-object="van"]:focus { outline:none!important; }
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
+    #play-scene > #office-lettering-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      pointer-events: none;
+    }
+    #office-lettering-layer text { fill: #ff173b; }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
     .v2-mirror-night,.v2-mirror-reflection { display:none; }
@@ -775,7 +784,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=calques1';
+                  script.src = 'room-v2-ambient.js?v=pancarte-rouge';
                   document.head.append(script);
                 };
                 document.head.append(style);
