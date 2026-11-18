@@ -73,6 +73,9 @@
     <image id="v2-van-visual" href="assets/room-redraw/van.webp" x="4" y="372" width="138" height="85" pointer-events="none"/>
     <polygon class="v2-hit" points="74,373 111,373 128,381 140,414 140,445 122,444 120,452 113,454 103,452 99,445 86,443 77,442 72,447 65,447 53,445 49,439 39,437 25,436 23,440 9,438 5,426 5,414 9,395 17,381"/>
   </g>
+  <g data-room-zone-id="marshall" data-open="music" role="button" tabindex="0" aria-label="Enceinte Marshall · Écouter Satie" data-label-en="Marshall speaker · Listen to Satie">
+    <polygon class="v2-hit" points="349,372 475,392 489,398 495,406 494,471 489,505 480,507 321,484 333,473 337,459 331,448 323,442 319,419 301,394 306,386 312,382"/>
+  </g>
   <g data-room-zone-id="chat" data-cat-pet="" role="button" tabindex="0" aria-label="Caresser le chat endormi" data-label-en="Pet the sleeping cat">
     <polygon class="v2-hit" points="940,1069 948,1072 965,1096 998,1113 1025,1105 1037,1106 1035,1114 1011,1148 1010,1164 1032,1172 1010,1167 1005,1173 1023,1181 1025,1186 1003,1176 999,1179 1011,1190 995,1181 973,1198 964,1196 956,1199 953,1193 947,1192 938,1200 925,1201 919,1197 919,1203 906,1213 879,1209 868,1217 820,1228 765,1224 743,1211 740,1192 748,1167 765,1138 790,1114 824,1095 851,1088 925,1095"/>
   </g>

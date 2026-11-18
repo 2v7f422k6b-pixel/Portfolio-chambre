@@ -7,10 +7,11 @@
 }
 #room-v2-underlay { z-index: 2; }
 #room-v2-ambient { z-index: 6; overflow: hidden; }
-.room-redraw-preview #hotspots > :not(defs, style, .v2-wall-object, #poster-fit-edit-handles, .poster-perspective-artworks, .poster-tape-layer, polygon[data-type="poster"]) {
+.room-redraw-preview #hotspots > :not(defs, style, .v2-wall-object, [data-guitar-play], #guitar-vibration-layer, #poster-fit-edit-handles, .poster-perspective-artworks, .poster-tape-layer, polygon[data-type="poster"]) {
   display: none !important;
 }
 .room-redraw-preview #hotspots { pointer-events: none; }
+.room-redraw-preview #hotspots > [data-guitar-play] { pointer-events: all; cursor: pointer; }
 .room-redraw-preview #hotspots > :is(.poster-perspective-artworks, .poster-tape-layer, polygon[data-type="poster"]) {
   clip-path: url(#v2-wall-surface);
 }
