@@ -10,6 +10,7 @@
     function stop(){clearTimeout(timer);toy.classList.remove('is-playing');}
     function activate(event){
       event.preventDefault();event.stopPropagation();stop();
+      if(id==='nana-zola-book')window.NanaProgress?.feat(id);
       void toy.getBoundingClientRect();toy.classList.add('is-playing');
       timer=setTimeout(stop,duration);
     }

@@ -10,6 +10,7 @@
   const hoods=new Set(['head-sonny-rabbit','head-pink-hood','head-preacher-dog']);
   const collars=new Set(['top-peter-pan','top-bow-blouse-tucked']);
   const slotFor=(id,items)=>{
+    if(id==='apron-alice')return 'vest';
     if(id==='cape-mononoke')return 'cape';
     if(id==='top-mononoke-tabard')return 'vest';
     if(id==='head-mononoke-band')return 'clips';

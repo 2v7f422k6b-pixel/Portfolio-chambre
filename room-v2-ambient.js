@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=pancarte-rouge');
+  const response = await fetch(folder + 'objets.svg?v=tenues-redraw-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -248,6 +248,9 @@
         {transform:'none',opacity:1},{transform:'translateY(-6px)',opacity:0,offset:.28},
         {transform:'translateY(-6px)',opacity:0,offset:.78},{transform:'none',opacity:1}
       ],1450);
+    }
+    if (['alice-bottle','nana-zola-book'].includes(item.dataset.object)) {
+      window.NanaProgress?.feat(item.dataset.object);
     }
     if (item.dataset.object === 'landscape') spinDial();
     if (item.dataset.object === 'gashapon') drawCapsule();
