@@ -25,6 +25,35 @@
   const responseArt = document.getElementById('cat-response');
   if (responseArt) svg.querySelector('[data-cat-effects]').append(responseArt);
   const officeWords = svg.querySelector('[data-object="office"] .office-words');
+  // Isolated iPad comparison. Keep lamp coordinates fixed in the room while
+  // limiting the filter output to each object's bounds.
+  const localLighting = new URLSearchParams(location.search).get('renduNuit') === 'local';
+  if (localLighting) {
+    const filter = document.getElementById('room-v2-lit-objects').cloneNode(true);
+    filter.id = 'v2-local-lamp-light';
+    filter.setAttribute('primitiveUnits', 'userSpaceOnUse');
+    const spill = filter.querySelector('feImage');
+    spill.setAttribute('x', '0');
+    spill.setAttribute('y', '0');
+    spill.setAttribute('width', '3072');
+    spill.setAttribute('height', '1732');
+    svg.querySelector('defs').appendChild(filter);
+    for (const object of Array.from(svg.children)) {
+      if (object.localName !== 'g') continue;
+      if (!object.querySelector('image, use, text') && !object.hasAttribute('data-cat-effects')) continue;
+      const region = document.createElementNS(svg.namespaceURI, 'g');
+      region.classList.add('v2-local-light');
+      object.before(region);
+      region.appendChild(object);
+    }
+    svg.classList.add('v2-local-lighting');
+    const rules = document.createElement('style');
+    rules.textContent = `
+      html[data-theme="night"] #play-viewport.room-redraw-preview #room-v2-ambient.v2-local-lighting { filter:none; }
+      html[data-theme="night"] #room-v2-ambient.v2-local-lighting > .v2-local-light { filter:url(#v2-local-lamp-light); }
+    `;
+    document.head.appendChild(rules);
+  }
   scene.append(underlay, svg);
   hotspots.dataset.roomV2Layer = '';
 
@@ -53,6 +82,19 @@
   kodamaLayer.dataset.roomV2Layer = '';
 
   const windowLife = scene.querySelector('#window-life');
+  if (localLighting) {
+    // Alpha bounds of masque-ciel.png on its 1536 × 866 source canvas.
+    const x = 867, y = 9, width = 213, height = 241;
+    const w = 1536, h = 866;
+    windowLife.setAttribute('viewBox', [x*1670/w, y*942/h, width*1670/w, height*942/h].join(' '));
+    const maskSize = percent(w,width) + ' ' + percent(h,height);
+    const maskPosition = percent(x,w-width) + ' ' + percent(y,h-height);
+    Object.assign(windowLife.style, {
+      inset:'auto', left:percent(x,w), top:percent(y,h),
+      width:percent(width,w), height:percent(height,h), overflow:'hidden',
+      webkitMaskSize:maskSize, maskSize, webkitMaskPosition:maskPosition, maskPosition
+    });
+  }
   const stars = windowLife.querySelectorAll('.night-star');
   const skyPoints = [[950,83],[978,142],[1144,89],[1126,55],[946,210],
     [1146,193],[1001,207],[1061,164],[981,121],[1069,111]];
