@@ -1219,11 +1219,20 @@
     group.appendChild(star);
     elements.push(star);
   });
-  // Append last for physical stickers to sit on top of posters, without stealing taps.
   layer.appendChild(group);
-  scene.appendChild(layer);
-  // Keep the decoration out of document flow and independent of the poster SVG.
-  layer.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;pointer-events:none!important;overflow:visible!important;z-index:7!important;transform:none!important;contain:layout style;';
+  const posterTape = redrawn && !edit && document.querySelector('#hotspots > .poster-tape-layer');
+  if (posterTape) {
+    // Stickers sit over the posters and under the mirror, lamp and animated objects.
+    layer.classList.add('v2-wall-object');
+    layer.setAttribute('width','1670');
+    layer.setAttribute('height','942');
+    group.setAttribute('clip-path','url(#v2-star-surfaces)');
+    posterTape.after(layer);
+  } else {
+    // Keep the full overlay available while editing, including obscured stars.
+    scene.appendChild(layer);
+    layer.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;pointer-events:none!important;overflow:visible!important;z-index:7!important;transform:none!important;contain:layout style;';
+  }
   const style=document.createElement('style');
   style.id='nana-glow-stars-style';
   style.textContent=`

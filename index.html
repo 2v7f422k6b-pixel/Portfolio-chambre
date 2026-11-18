@@ -177,7 +177,7 @@ html[data-theme="night"] #hotspots .poster-perspective-artworks,
 html[data-theme="night"] #hotspots .poster-artworks {opacity:.80!important;}
 html:not([data-theme="night"]) #hotspots .poster-perspective-artworks,
 html:not([data-theme="night"]) #hotspots .poster-artworks {opacity:1!important;}
-#nana-glow-stars-layer {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:7!important;pointer-events:none!important;}
+#play-scene > #nana-glow-stars-layer {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:7!important;pointer-events:none!important;}
 #nana-glow-stars-layer .nana-phosphor-star {opacity:.85!important;}
 html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!important;}
 </style>
@@ -738,7 +738,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-biscuit';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261118-biscuit';
+                  script.src = 'room-v2-ambient.js?v=20261118-calques-etoiles';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1043,7 +1043,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
     <audio loop id="audio" preload="none" src="https://upload.wikimedia.org/wikipedia/commons/transcoded/9/90/Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg/Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg.mp3"></audio>
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </div>
-  <script src="nana-site-settings.js?v=20261118-affiches-v2"></script>
+  <script src="nana-site-settings.js?v=20261118-calques-etoiles"></script>
   <script src="nana-progress.js?v=20261118-retours" defer></script>
   <script src="nana-keepsakes.js?v=20261116-desktop-review-1" defer></script>
   <script src="app.js?v=20261118-appareils" defer></script>
@@ -1156,7 +1156,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=20261118-miroir" defer></script><script src="flower-lamp-placement.js?v=20261118-halo-affiches" defer></script>
 <script src="fortune-cookie-placement.js?v=20261118-biscuit" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
-<script src="glow-stars.js?v=20261118-etoiles-v2" defer></script>
+<script src="glow-stars.js?v=20261118-calques-etoiles" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
 <script src="kero-wake.js?v=20261118-interactions" defer></script>
