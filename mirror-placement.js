@@ -124,7 +124,7 @@
     function syncMirrorArtwork() {
       const night = document.documentElement.dataset.theme === 'night';
       const file = night ? 'miroir-verre-nuit.webp' : 'miroir.webp';
-      for (const {image} of imageTriangles) image.setAttribute('href','assets/room-redraw/'+file);
+      for (const {image} of imageTriangles) image.setAttribute('href','assets/room-redraw/'+file+'?v=verre10');
     }
     syncMirrorArtwork();
     new MutationObserver(syncMirrorArtwork).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
