@@ -234,6 +234,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     html[data-theme="night"] #room-v2-ambient > svg[viewBox],
     html[data-theme="night"] #room-v2-ambient image[href$="-fond.webp"] { display:none; }
+    /* Keep keyboard focus on the drawn van hit area while its image falls. */
+    #room-v2-ambient [data-object="van"]:focus { outline:none; }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
     .v2-mirror-night,.v2-mirror-reflection { display:none; }
@@ -257,7 +259,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      background: url("assets/room-redraw/marseille-penombre.webp?v=reflets6") center / 100% 100% no-repeat, url("assets/room-redraw/fonds-mobiles-nuit.webp?v=halo11") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=halo11") center / 100% 100% no-repeat;
+      background: url("assets/room-redraw/marseille-penombre.webp?v=reflets6") center / 100% 100% no-repeat, url("assets/room-redraw/fonds-mobiles-nuit.webp?v=van12") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=van12") center / 100% 100% no-repeat;
     }
     html[data-theme="night"] #play-viewport.room-redraw-preview .poster-perspective-artworks .v2-night-posters {
       filter: brightness(.81) saturate(.88);
@@ -772,7 +774,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=halo11';
+                  script.src = 'room-v2-ambient.js?v=van12';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1023,7 +1025,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           </filter>
           <filter id="room-v2-lit-objects" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
             <feColorMatrix values="-.055 .083 .040 0 .03529  -.10 .41 .105 0 .07451  -.23 .53 .36 0 .25490  0 0 0 1 0" result="night"/>
-            <feImage href="assets/room-redraw/portee-lampes.webp?v=halo11" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="none" result="spill"/>
+            <feImage href="assets/room-redraw/portee-lampes.webp?v=van12" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="none" result="spill"/>
             <feComposite in="SourceGraphic" in2="spill" operator="in"/>
             <feComposite in2="night" operator="atop"/>
           </filter><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
