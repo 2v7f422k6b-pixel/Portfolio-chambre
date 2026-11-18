@@ -247,6 +247,15 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] #v2-desert :is(.desert-crescent,.desert-round-moon) image {
       filter:url(#desert-moonlight);
     }
+    @media (prefers-reduced-motion:no-preference) {
+      #v2-desert .crystal-glint {
+        animation:desert-crystal-glint var(--period) ease-in-out var(--delay) infinite;
+      }
+    }
+    @keyframes desert-crystal-glint {
+      0%, 72%, 96%, 100% { opacity:0; }
+      84% { opacity:.92; }
+    }
     .desert-crescent { animation:desert-crescent-drift 62s ease-in-out infinite alternate; }
     .desert-round-moon { animation:desert-round-drift 41s ease-in-out infinite alternate; }
     @keyframes desert-crescent-drift {
@@ -852,8 +861,13 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </filter>
             </defs>
             <g clip-path="url(#v2-desert-window)">
-              <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp?v=rose-vif" x="1723" y="0" width="495" height="933"/>
+              <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp?v=orchidee-cristaux" x="1723" y="0" width="495" height="933"/>
               <image class="desert-day" href="assets/room-redraw/desert-rose.webp" x="1723" y="0" width="495" height="933"/>
+              <g class="desert-night" transform="translate(1723 0)" fill="none" stroke="#effbff" stroke-linecap="round" stroke-width="1.7">
+                <path class="crystal-glint" opacity="0" style="--period:6.3s;--delay:-3s" d="M372 786l5 -8m-2 4 4 4"/>
+                <path class="crystal-glint" opacity="0" style="--period:7.8s;--delay:-6s" d="M55 646l5 -9m-3 5 4 4"/>
+                <path class="crystal-glint" opacity="0" style="--period:8.4s;--delay:-1s" d="M253 622l3 -6"/>
+              </g>
               <g class="desert-crescent">
                 <circle class="desert-night" cx="1810" cy="207" r="93" fill="url(#desert-lunar-glow)"/>
                 <image href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
