@@ -55,6 +55,7 @@
 
   const field=document.createElement('canvas');
   field.id='nana-pixel-field';
+  field.dataset.roomV2Layer='';
   field.setAttribute('aria-hidden','true');
   field.hidden=true;
   scene.appendChild(field);
@@ -167,8 +168,11 @@
       sctx.fillRect(0,0,COLS,ROWS);
       sampleLayer('marseille-day');
       sampleLayer('marseille-night',sampleOpacity('marseille-night'));
-      sampleLayer('room-img');
-      sampleLayer('room-night',sampleOpacity('room-night'));
+      if(viewport.classList.contains('room-redraw-preview')) sampleLayer('room-redraw-preview');
+      else {
+        sampleLayer('room-img');
+        sampleLayer('room-night',sampleOpacity('room-night'));
+      }
       posterComposite();
       const rgba=sctx.getImageData(0,0,COLS,ROWS).data;
       for(let i=0;i<pixels.length;i++){
@@ -214,7 +218,10 @@
   window.addEventListener('blur',()=>{hover.inside=false;});
   function locateOrigin(e,target){
     const zone=window.NANA_ROOM_ZONES?.find(item=>item.id==='bretzel');
-    if(zone?.center){
+    if(target?.closest('#room-v2-ambient')){
+      const box=target.getBBox(),view=target.ownerSVGElement.viewBox.baseVal;
+      origin={x:(box.x+box.width/2)/view.width,y:(box.y+box.height/2)/view.height};
+    }else if(zone?.center){
       origin={x:zone.center[0]/W,y:zone.center[1]/H};
     }else if(target?.getBBox){
       const rect=target.getBBox();
@@ -384,8 +391,8 @@
     startFrame();
   }
 
-  hotspots.addEventListener('click',e=>{
-    const target=e.target.closest?.('polygon[data-open="twist-reality"]');
+  scene.addEventListener('click',e=>{
+    const target=e.target.closest?.('[data-open="twist-reality"]');
     if(!target||!app.classList.contains('mode-play'))return;
     e.preventDefault();e.stopImmediatePropagation();
     dissolve(e,target);
