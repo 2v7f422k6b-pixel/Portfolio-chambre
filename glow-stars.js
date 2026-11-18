@@ -1248,6 +1248,10 @@
       animation:nana-phosphor-breathe 6.8s ease-in-out infinite;
       animation-delay:var(--twinkle-delay);
     }
+    /* In V2 the wall stickers have a fixed opacity in both themes. */
+    html[data-theme="night"] [data-room-v2-layer]#nana-glow-stars-layer .nana-phosphor-star {
+      animation:none;
+    }
     @keyframes nana-phosphor-breathe {
       0%,100%{opacity:.75}50%{opacity:.98}
     }
