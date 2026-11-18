@@ -232,17 +232,9 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-viewport.room-redraw-preview #hotspot-guide {
       display: none !important;
     }
-    /* Tint the assembled V2 drawing beneath the phosphorescent stars. */
-    html[data-theme="night"] .room-redraw-preview #play-scene::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 6;
-      display: block !important;
-      opacity: 1 !important;
-      pointer-events: none;
-      mix-blend-mode: normal;
-      background: linear-gradient(115deg, rgba(42, 32, 91, .49), rgba(49, 42, 103, .54) 58%, rgba(37, 32, 83, .55));
+    /* Keep hand-drawn lights in daylight colours, above the recoloured artwork. */
+    html[data-theme="night"] .room-redraw-preview :is(#room-redraw-preview, #room-v2-underlay, #room-v2-ambient, #nana-wall-mirror, .poster-perspective-artworks, .poster-tape-layer, #paprika-butterfly) {
+      filter: url(#room-v2-night-ink);
     }
     html[data-theme="night"] .room-redraw-preview #play-scene::before {
       content: "";
@@ -250,9 +242,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      background: #343465a8;
-      -webkit-mask: url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
-      mask: url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+      background: url("assets/room-redraw/lumieres-nuit.webp") center / 100% 100% no-repeat;
     }
     /* Confine the outdoor drawings to the sky behind the skyline and chime. */
     .room-redraw-preview #window-life {
@@ -989,7 +979,9 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   </button>
  </div>
 </div>
-          <svg data-room-v2-layer width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+          <svg data-room-v2-layer width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="room-v2-night-ink" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+            <feColorMatrix values="-.035 .13 .065 0 .02745  -.09 .39 .11 0 .07059  -.17 .47 .27 0 .2  0 0 0 1 0"/>
+          </filter><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
                 <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="outer"/>
                 <feComposite in="outer" in2="SourceAlpha" operator="out" result="edge"/>
                 <feFlood flood-color="#fff" result="ink"/>
