@@ -15,7 +15,7 @@
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
   const [underlay] = await Promise.all([
-    loadImage('fond-mouvements.webp?v=20261118-atelier'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
+    loadImage('fond-mouvements.webp?v=halo11'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
     loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp')
   ]);
   underlay.id = 'room-v2-underlay';
