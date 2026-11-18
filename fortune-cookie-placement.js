@@ -303,7 +303,7 @@
     cookie.getBoundingClientRect();
     cookie.classList.add('is-opening');
     fortune();
-    closeTimer=setTimeout(()=>cookie.classList.remove('is-opening'),1800);
+    closeTimer=setTimeout(()=>cookie.classList.remove('is-opening'),2600);
   });
   render();
   window.NANA_FORTUNE_COOKIE={
