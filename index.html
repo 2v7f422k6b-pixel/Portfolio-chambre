@@ -246,6 +246,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       display:block; position:absolute; inset:0; width:100%; height:100%;
       pointer-events:none; z-index:7; mix-blend-mode:color;
     }
+    html:not([data-theme="night"]) #v2-desert .desert-crystal-light { clip-path:url(#desert-sand-around-crystals); }
     .desert-night { display:none; }
     html[data-theme="night"] #v2-desert .desert-night { display:inline; }
     html[data-theme="night"] #v2-desert .desert-day { display:none; }
@@ -863,6 +864,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
           <template id="v2-desert-template"><svg id="v2-desert" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs><clipPath id="v2-desert-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath>
+              <clipPath id="desert-sand-around-crystals"><path clip-rule="evenodd" d="M0 0H495V933H0Z M22 670.5 L25.5 656 L38.5 659 L49 675 L49 645.5 L60 631.5 L72.5 645 L73 673.5 L80.5 661 L94 656.5 L96.5 670 L81.5 692.5 L55 695.5 L33.5 693Z M232.5 620.5 L242 625 L247.5 631 L248 617 L255 609 L263 616.5 L263.5 631.5 L269.5 624.5 L276.5 621 L278 632 L269 641 L256 646.5 L242 646 L233 633Z M322 818 L326 797.5 L346 806 L354.5 821 L357.5 817 L361 818 L361 788.5 L376 769 L391 785 L389.5 821 L399.5 809 L418.5 803 L419.5 820 L398.5 846 L379 849 L362 844 L339.5 848.5Z"/></clipPath>
               <radialGradient id="desert-crystal-halo">
                 <stop stop-color="#c7f9ff" stop-opacity=".80"/>
                 <stop offset=".37" stop-color="#93e8ff" stop-opacity=".64"/>
@@ -894,7 +896,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <rect x="367" y="402" width="7" height="7" opacity="0" style="--period:3.6s;--delay:-4.0s"/>
               </g>
               <g transform="translate(1723 0)">
-                <g fill="url(#desert-crystal-halo)">
+                <g class="desert-crystal-light" fill="url(#desert-crystal-halo)">
                   <ellipse cx="370" cy="819" rx="76" ry="61"/>
                   <ellipse cx="59" cy="671" rx="58" ry="48"/>
                   <ellipse cx="255" cy="630" rx="34" ry="28"/>
