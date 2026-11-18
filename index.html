@@ -232,11 +232,18 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-viewport.room-redraw-preview #hotspot-guide {
       display: none !important;
     }
+    .v2-clock-reflection { display:none; }
+    html[data-theme="night"] .v2-clock-reflection { display:inline; }
+    .v2-mirror-night,.v2-mirror-reflection { display:none; }
+    html[data-theme="night"] .v2-mirror-day { display:none; }
+    html[data-theme="night"] .v2-mirror-night,
+    html[data-theme="night"] .v2-mirror-reflection { display:inline; }
+    html[data-theme="night"] .v2-mirror-reflection { filter: url(#v2-mirror-rose); }
     .v2-lit-posters { display: none; }
     html[data-theme="night"] .room-redraw-preview .v2-lit-posters { display: inline; }
-    html[data-theme="night"] .room-redraw-preview .memory-tile { filter: url(#room-v2-night-ink); }
+    html[data-theme="night"] .room-redraw-preview :is(.memory-tile,.memory-marble-art:not(.memory-hover)) { filter: url(#room-v2-night-ink); }
     /* Keep hand-drawn lights in daylight colours, above the recoloured artwork. */
-    html[data-theme="night"] .room-redraw-preview :is(#room-redraw-preview, #room-v2-underlay, #room-v2-ambient, #nana-wall-mirror, .v2-night-posters, .poster-tape-layer, #paprika-butterfly) {
+    html[data-theme="night"] .room-redraw-preview :is(#room-redraw-preview, #room-v2-underlay, #room-v2-ambient, .v2-night-posters, .poster-tape-layer, #paprika-butterfly) {
       filter: url(#room-v2-night-ink);
     }
     html[data-theme="night"] #play-viewport.room-redraw-preview #room-v2-ambient {
@@ -248,12 +255,12 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      background: url("assets/room-redraw/marseille-penombre.webp") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=ciel5") center / 100% 100% no-repeat;
+      background: url("assets/room-redraw/marseille-penombre.webp?v=reflets6") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=reflets6") center / 100% 100% no-repeat;
     }
     html[data-theme="night"] #play-viewport.room-redraw-preview .poster-perspective-artworks .v2-night-posters {
       filter: brightness(.81) saturate(.88);
     }
-    html[data-theme="night"] .room-redraw-preview .v2-ferry { filter: brightness(.37); }
+    html[data-theme="night"] .room-redraw-preview .v2-ferry { display:none; animation-play-state:paused; }
     .room-redraw-preview #play-scene > #ufo-window-layer {
       inset: 0; width: 100%; height: 100%; z-index: 5; clip-path: none;
       -webkit-mask: url("assets/room-redraw/masque-ciel.png") center / 100% 100%;
@@ -763,7 +770,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-biscuit';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261118-ciel';
+                  script.src = 'room-v2-ambient.js?v=reflets6';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1009,12 +1016,12 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   </button>
  </div>
 </div>
-          <svg data-room-v2-layer width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="room-v2-night-ink" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+          <svg data-room-v2-layer width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="v2-mirror-rose" color-interpolation-filters="sRGB"><feColorMatrix values=".45 0 0 0 .54  0 .78 0 0 .015  0 0 .67 0 .075  0 0 0 1 0"/></filter><filter id="room-v2-night-ink" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
             <feColorMatrix values="-.055 .083 .040 0 .03529  -.10 .41 .105 0 .07451  -.23 .53 .36 0 .25490  0 0 0 1 0"/>
           </filter>
           <filter id="room-v2-lit-objects" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
             <feColorMatrix values="-.055 .083 .040 0 .03529  -.10 .41 .105 0 .07451  -.23 .53 .36 0 .25490  0 0 0 1 0" result="night"/>
-            <feImage href="assets/room-redraw/portee-lampes.webp?v=diffus4" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="none" result="spill"/>
+            <feImage href="assets/room-redraw/portee-lampes.webp?v=reflets6" x="0%" y="0%" width="100%" height="100%" preserveAspectRatio="none" result="spill"/>
             <feComposite in="SourceGraphic" in2="spill" operator="in"/>
             <feComposite in2="night" operator="atop"/>
           </filter><filter id="paprika-butterfly-ring" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
@@ -1178,7 +1185,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 
 
 
-<script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=20261118-miroir" defer></script><script src="flower-lamp-placement.js?v=20261118-halo-affiches" defer></script>
+<script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=20261118-miroir" defer></script><script src="flower-lamp-placement.js?v=reflets6" defer></script>
 <script src="fortune-cookie-placement.js?v=20261118-biscuit" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261118-retirer-etoile" defer></script>
