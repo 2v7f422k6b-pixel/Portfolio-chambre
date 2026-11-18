@@ -4,7 +4,9 @@
   const scene = document.getElementById('play-scene');
   if (!scene || document.getElementById('nana-glow-stars-layer')) return;
   const NS = 'http://www.w3.org/2000/svg';
-  // Approved wall-star layout (191 positions), shared by all visitors.
+  const query=new URLSearchParams(location.search);
+  const redrawn=query.get('chambreV2')==='1';
+  // Original approved layout; the redrawn room publishes its own positions.
   const stars = [
   [
     319.4,
@@ -1153,14 +1155,17 @@
     0
   ]
 ];
-  const edit = new URLSearchParams(location.search).get('starsEdit') === '1';
-  const storageKey='nana-wall-stars-layout-v1';
-  try {
-    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
-    if(Array.isArray(saved) && saved.length && saved.every(v=>Array.isArray(v)&&v.length===4&&v.every(Number.isFinite))) stars.splice(0,stars.length,...saved);
-  } catch (_) {}
+  const edit = query.get('starsEdit') === '1';
+  const storageKey=redrawn ? 'nana-wall-stars-layout-room-v2' : 'nana-wall-stars-layout-v1';
+  const validLayout=layout=>Array.isArray(layout) && layout.length &&
+    layout.every(row=>Array.isArray(row) && row.length===4 && row.every(Number.isFinite));
+  let saved;
+  try { saved=JSON.parse(localStorage.getItem(storageKey)||'null'); } catch (_) {}
+  const preferred=validLayout(saved) ? saved : window.NANA_PUBLISHED_SETTINGS?.[storageKey];
+  if(validLayout(preferred)) stars.splice(0,stars.length,...preferred.map(row=>row.slice()));
   const layer = document.createElementNS(NS,'svg');
   layer.id = 'nana-glow-stars-layer';
+  if(redrawn) layer.setAttribute('data-room-v2-layer','');
   layer.setAttribute('viewBox','0 0 1670 942');
   layer.setAttribute('preserveAspectRatio','none');
   layer.setAttribute('aria-hidden','true');

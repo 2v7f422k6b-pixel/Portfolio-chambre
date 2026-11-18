@@ -13,6 +13,7 @@
     'nana-wall-mirror-perspective-room-v2',
     'nana-wall-lamp-perspective-room-v2',
     'nana-ipad-clock-placement-room-v2',
+    'nana-wall-stars-layout-room-v2',
     'nana-poster-alignment-v1',
     'nana-poster-collection-v1',
     'nana-wall-mirror-perspective-v1',
@@ -92,7 +93,7 @@
     TOOL_FLAGS.forEach(name=>url.searchParams.delete(name));
     if(flag === 'v2Mirror') url.searchParams.set('posterEdit','mirror');
     else if(flag) url.searchParams.set(flag,'1');
-    if (url.searchParams.get('chambreV2') === '1' && ['v2Mirror','lampEdit','posterEdit','ipadClockEdit'].includes(flag)) url.hash = '/room';
+    if (url.searchParams.get('chambreV2') === '1' && ['v2Mirror','lampEdit','posterEdit','ipadClockEdit','starsEdit'].includes(flag)) url.hash = '/room';
     location.assign(url.pathname+url.search+url.hash);
   }
   function readSettings() {
