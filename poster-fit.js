@@ -163,12 +163,20 @@
   svg.addEventListener('click',openAddedPoster,true);
   svg.addEventListener('keydown',openAddedPoster,true);
 
-  const art = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
+  const artLayer = node('g', { class: 'poster-perspective-artworks', 'pointer-events': 'none' });
+  const art = redrawn ? node('g', {id:'v2-poster-drawings'}) : artLayer;
+  if (redrawn) {
+    const backdrop = node('g', {class:'v2-night-posters'});
+    backdrop.appendChild(art);
+    const lit = node('use', {href:'#v2-poster-drawings', class:'v2-lit-posters',
+      mask:'url(#v2-flower-poster-mask)', 'aria-hidden':'true'});
+    artLayer.append(backdrop, lit);
+  }
   const tapeLayer = node('g', { class: 'poster-tape-layer', 'pointer-events': 'none' });
   const defs = node('defs');
   // Draw each outline directly after its artwork. Subsequent, foreground posters
   // paint over the earlier outlines instead of showing two borders at overlaps.
-  oldArtwork.after(defs, art, tapeLayer);
+  oldArtwork.after(defs, artLayer, tapeLayer);
   const borderStyle = document.createElement('style');
   borderStyle.id = 'poster-handdrawn-outlines-style';
   borderStyle.textContent = [

@@ -131,16 +131,21 @@ function mountWallDecoration(kind, redrawn) {
   for (const [offset,color,opacity] of [['0%','#fff9d5',.9],['22%','#ffefad',.7],['48%','#ffdb82',.36],['75%','#ffd16e',.12],['100%','#ffd16e',0]]) {
     glowGradient.appendChild(make('stop',{offset,'stop-color':color,'stop-opacity':opacity}));
   }
-  if (!redrawn) defs.appendChild(glowGradient);
+  if (!mirror) defs.appendChild(glowGradient);
   const wallLight=make('ellipse',{class:'nana-flower-wall-light',fill:'url(#nana-flower-wall-light)','pointer-events':'none','aria-hidden':'true'});
+  if (redrawn && !mirror) {
+    wallLight.id='v2-flower-spill';
+    const mask=make('mask',{id:'v2-flower-poster-mask',maskUnits:'userSpaceOnUse',x:0,y:0,width:roomW,height:roomH,'mask-type':'alpha'});
+    mask.appendChild(make('use',{href:'#v2-flower-spill'}));
+    defs.appendChild(mask);
+  }
   if (redrawn) {
     group.classList.add('v2-wall-object');
     const surface = make('g', {class:'v2-wall-surface'});
+    if (!mirror) surface.append(wallLight);
     surface.append(visual);
-    if (mirror) {
-      if (!editing) hit.setAttribute('data-open','dressup');
-      surface.append(hit);
-    }
+    if (mirror && !editing) hit.setAttribute('data-open','dressup');
+    surface.append(hit);
     group.append(defs, surface, editorLayer);
   } else {
     group.append(defs,wallLight,visual,hit,editorLayer);
@@ -158,7 +163,7 @@ function mountWallDecoration(kind, redrawn) {
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
     'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 8px rgba(255,244,171,.85)) drop-shadow(0 0 20px rgba(255,211,93,.55))}'
   ].join('\n');
-  if (!redrawn) document.head.appendChild(style);
+  if (!mirror) document.head.appendChild(style);
 
   function render() {
     const p=state.quad;
@@ -166,7 +171,7 @@ function mountWallDecoration(kind, redrawn) {
     const lampWidth=(Math.hypot(p[1][0]-p[0][0],p[1][1]-p[0][1])+Math.hypot(p[2][0]-p[3][0],p[2][1]-p[3][1]))/2;
     const lampHeight=(Math.hypot(p[3][0]-p[0][0],p[3][1]-p[0][1])+Math.hypot(p[2][0]-p[1][0],p[2][1]-p[1][1]))/2;
     wallLight.setAttribute('cx',lampCenter[0]);wallLight.setAttribute('cy',lampCenter[1]);
-    wallLight.setAttribute('rx',lampWidth*1.65);wallLight.setAttribute('ry',lampHeight*1.6);
+    wallLight.setAttribute('rx',lampWidth*(redrawn ? 2.55 : 1.65));wallLight.setAttribute('ry',lampHeight*(redrawn ? 2.5 : 1.6));
     const first=[p[0],p[1],p[3]];
     const second=[p[1],p[2],p[3]];
     // Overlap the shared diagonal slightly to close the antialiasing seam.
@@ -205,7 +210,7 @@ function mountWallDecoration(kind, redrawn) {
 
   // Trigger the original site theme button: both artwork and interface stay in sync.
   hit.addEventListener('click',event=>{
-    if(editing || redrawn) return;
+    if(editing || mirror) return;
     window.NanaProgress?.visit('objet/lampe-fleur');
     event.preventDefault();
     event.stopImmediatePropagation();
