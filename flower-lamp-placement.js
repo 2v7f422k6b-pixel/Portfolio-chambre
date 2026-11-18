@@ -74,6 +74,17 @@ function mountWallDecoration(kind, redrawn) {
       preserveAspectRatio:'none',
       'aria-hidden':'true','pointer-events':'none'
     });
+    if (redrawn && mirror) {
+      const sprites=make('g');
+      const night=image.cloneNode(false);
+      night.setAttribute('href','assets/room-redraw/miroir-nuit.webp');
+      night.classList.add('v2-mirror-night');
+      image.classList.add('v2-mirror-day');
+      sprites.append(image,night);
+      clipped.appendChild(sprites);
+      visual.appendChild(clipped);
+      return {area,image:sprites};
+    }
     clipped.appendChild(image);
     visual.appendChild(clipped);
     return {area,image};
@@ -144,6 +155,11 @@ function mountWallDecoration(kind, redrawn) {
     const surface = make('g', {class:'v2-wall-surface'});
     if (!mirror) surface.append(wallLight);
     surface.append(visual);
+    if (mirror) {
+      visual.id='v2-mirror-glass';
+      const reflection=make('use',{href:'#v2-mirror-glass',mask:'url(#v2-flower-poster-mask)',class:'v2-mirror-reflection','pointer-events':'none'});
+      surface.appendChild(reflection);
+    }
     if (mirror && !editing) hit.setAttribute('data-open','dressup');
     surface.append(hit);
     group.append(defs, surface, editorLayer);
