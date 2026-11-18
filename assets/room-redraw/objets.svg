@@ -76,6 +76,21 @@
   <g data-room-zone-id="marshall" data-open="music" role="button" tabindex="0" aria-label="Enceinte Marshall · Écouter Satie" data-label-en="Marshall speaker · Listen to Satie">
     <polygon class="v2-hit" points="349,372 475,392 489,398 495,406 494,471 489,505 480,507 321,484 333,473 337,459 331,448 323,442 319,419 301,394 306,386 312,382"/>
   </g>
+  <g data-room-zone-id="cds" data-mv-open="" role="button" tabindex="0" aria-label="Pile de CD · Music &amp; Visual Design" data-label-en="CD stack · Music &amp; Visual Design">
+    <path class="v2-hit" fill-rule="evenodd" d="M525,397 L609,415 L608,525 L486,507 L490,503 L493,472 L493,408 L496,405 Z"/>
+  </g>
+  <g data-room-zone-id="blast" role="button" tabindex="0" aria-label="Billet BLAST · Découvrir les tenues de Nana" data-label-en="BLAST ticket · Discover the Nana outfits">
+    <path class="v2-hit" fill-rule="evenodd" d="M2492,539 L2519,556 L2511,571 L2507,571 L2519,613 L2516,622 L2465,637 L2392,663 L2377,668 L2371,667 L2361,614 L2357,619 L2348,610 L2362,584 L2374,588 L2371,598 L2486,556 L2489,554 L2483,548 L2491,554 L2499,551 L2507,568 L2510,569 L2517,556 L2494,540 L2481,547 Z M2363,587 L2350,610 L2357,616 L2360,611 L2359,604 L2367,598 L2372,589 Z"/>
+  </g>
+  <g data-room-zone-id="gabzilla" data-open="gabzilla" role="button" tabindex="0" aria-label="T-shirt Gabzilla · Ouvrir la galerie" data-label-en="Gabzilla T-shirt · Open the gallery">
+    <path class="v2-hit" fill-rule="evenodd" d="M2672,975 L2692,976 L2711,988 L2719,996 L2724,1018 L2724,1067 L2729,1134 L2723,1139 L2724,1145 L2737,1265 L2720,1270 L2675,1267 L2625,1285 L2599,1290 L2583,1291 L2541,1284 L2515,1287 L2508,1292 L2510,1197 L2492,1191 L2462,1186 L2457,1183 L2458,1157 L2468,1112 L2474,1058 L2466,1014 L2450,989 L2462,982 L2490,979 L2524,981 L2539,979 L2557,982 L2565,986 L2610,986 L2629,977 Z"/>
+  </g>
+  <g data-room-zone-id="bretzel" data-open="twist-reality" role="button" tabindex="0" aria-label="Vase bretzel · Décomposer la chambre en pixels" data-label-en="Pretzel vase · Turn the room into pixels">
+    <path class="v2-hit" fill-rule="evenodd" d="M2540,45 L2557,46 L2574,54 L2583,61 L2591,77 L2594,97 L2592,110 L2585,125 L2570,140 L2574,149 L2573,157 L2539,158 L2533,161 L2506,163 L2495,160 L2490,164 L2469,166 L2468,160 L2475,148 L2463,134 L2453,106 L2455,89 L2460,75 L2468,66 L2481,58 L2499,55 L2513,60 L2521,54 Z M2543,70 L2536,72 L2529,79 L2536,96 L2532,118 L2544,126 L2555,120 L2562,110 L2566,93 L2560,76 L2551,70 Z M2483,82 L2474,87 L2473,100 L2479,118 L2491,131 L2501,119 L2498,102 L2499,87 L2490,82 Z"/>
+  </g>
+  <a href="#/shop" class="v2-device" role="link" tabindex="0" aria-label="Sac boutique · Ouvrir la boutique" data-label-en="Shopping bag · Open the shop">
+    <path class="v2-hit" fill-rule="evenodd" d="M2786,1312 L2809,1313 L2816,1334 L2827,1333 L2834,1339 L2842,1361 L2841,1377 L2838,1386 L2864,1389 L2871,1392 L2872,1396 L2875,1446 L2874,1551 L2876,1575 L2865,1585 L2838,1601 L2739,1586 L2701,1578 L2698,1575 L2702,1478 L2708,1402 L2712,1381 L2731,1381 L2733,1375 L2752,1375 L2753,1350 L2760,1330 L2772,1318 Z M2789,1320 L2777,1326 L2767,1339 L2763,1351 L2764,1377 L2768,1377 L2771,1359 L2776,1349 L2784,1342 L2804,1332 L2799,1321 Z M2817,1342 L2818,1366 L2815,1383 L2830,1386 L2833,1366 L2830,1354 L2827,1348 Z M2803,1343 L2783,1355 L2777,1368 L2777,1379 L2805,1381 L2806,1346 Z"/>
+  </a>
   <g data-room-zone-id="chat" data-cat-pet="" role="button" tabindex="0" aria-label="Caresser le chat endormi" data-label-en="Pet the sleeping cat">
     <polygon class="v2-hit" points="940,1069 948,1072 965,1096 998,1113 1025,1105 1037,1106 1035,1114 1011,1148 1010,1164 1032,1172 1010,1167 1005,1173 1023,1181 1025,1186 1003,1176 999,1179 1011,1190 995,1181 973,1198 964,1196 956,1199 953,1193 947,1192 938,1200 925,1201 919,1197 919,1203 906,1213 879,1209 868,1217 820,1228 765,1224 743,1211 740,1192 748,1167 765,1138 790,1114 824,1095 851,1088 925,1095"/>
   </g>

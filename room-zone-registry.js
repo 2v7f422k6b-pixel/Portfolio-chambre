@@ -74,8 +74,8 @@
 
   // A single discovery works in either theme and persists before future pieces arrive.
   const outfitDiscoveries={'happy-berry':'gokinjo-happy-berry',blast:'nana-blast',kero:'kero-awake',volkswagen:'olive-van-started','preacher-dog':'preacher-dog'};
-  svg.addEventListener('click',event=>{
-    const target=event.target.closest?.('polygon[data-room-zone-id]');
+  scene.addEventListener('click',event=>{
+    const target=event.target.closest?.('#hotspots polygon[data-room-zone-id], #room-v2-ambient [data-room-zone-id="blast"]');
     const id=target?.dataset.roomZoneId,feat=outfitDiscoveries[id];
     if(id==='plante-fleur'){event.preventDefault();event.stopImmediatePropagation();window.NanaProgress?.visit('objet/plante-fleur');return;}
     if(!feat)return;
