@@ -1,6 +1,26 @@
 /* Published placement settings. Updated only by an authorized GitHub commit.
    These values are public display data, never passwords or access tokens. */
 window.NANA_PUBLISHED_SETTINGS = {
+  "nana-wall-mirror-perspective-room-v2": {
+    "quad": [
+      [
+        677.7008599426167,
+        222.96424426451904
+      ],
+      [
+        804.6492368957418,
+        222.96424426451904
+      ],
+      [
+        804.6492368957418,
+        352.22529934535044
+      ],
+      [
+        677.7008599426167,
+        352.22529934535044
+      ]
+    ]
+  },
   "nana-poster-alignment-room-v2": [
     {
       "shape": [
