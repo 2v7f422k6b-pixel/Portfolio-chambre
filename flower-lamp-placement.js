@@ -176,7 +176,9 @@ function mountWallDecoration(kind, redrawn) {
     group.append(defs,wallLight,visual,hit,editorLayer);
   }
   // The mirror is the final SVG layer so it remains clickable above room hotspots.
-  svg.appendChild(group);
+  const mountedMirror = redrawn && !mirror && document.getElementById('nana-wall-mirror');
+  if (mountedMirror && mountedMirror.parentNode === svg) svg.insertBefore(group,mountedMirror);
+  else svg.appendChild(group);
   const style=document.createElement('style');
   style.id='wall-lamp-perspective-style';
   style.textContent=[
