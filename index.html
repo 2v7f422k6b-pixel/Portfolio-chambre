@@ -291,7 +291,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     @media (prefers-reduced-motion:reduce) {
       #v2-desert :is(.desert-crescent,.desert-round-moon) { animation:none; }
-      #v2-desert .desert-dust { display:none; }
+      #v2-desert .desert-dust, html[data-theme="night"] #v2-desert .desert-dust { display:none; }
     }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
@@ -932,6 +932,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 </g>
               </g>
               <image class="desert-day desert-dust" href="assets/room-redraw/rafale-doree.webp" x="1723" y="480" width="450" height="212"/>
+              <image class="desert-night desert-dust" href="assets/room-redraw/rafale-lilas.webp" x="1723" y="480" width="450" height="212"/>
               <g class="desert-crescent">
                 <circle class="desert-night" cx="1810" cy="207" r="93" fill="url(#desert-lunar-glow)"/>
                 <image href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
