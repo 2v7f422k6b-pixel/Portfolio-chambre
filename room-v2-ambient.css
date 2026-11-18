@@ -61,14 +61,20 @@ html.poster-edit-mode .room-redraw-preview #wall-mirror-hit { pointer-events: no
 #room-v2-ambient .is-opening :is(.v2-cookie-paper,.v2-cookie-left,.v2-cookie-right) {
   transform-box: fill-box;
   transform-origin: center;
-  animation: room-v2-cookie-open 1.8s ease-in-out;
+  animation: room-v2-cookie-open 2.6s ease-in-out;
 }
-.v2-cookie-left { --cookie-pose: translate(-6px,-3px) rotate(-13deg); }
-.v2-cookie-right { --cookie-pose: translate(5px,-3px) rotate(10deg); }
-.v2-cookie-paper { --cookie-pose: translate(2px,13px) rotate(-5deg); }
+.v2-cookie-left { --cookie-pose: translate(-7px,-10px) rotate(-14deg); }
+.v2-cookie-right { --cookie-pose: translate(7px,12px) rotate(9deg); }
+.v2-cookie-paper { --cookie-pose: translate(-7px,-22px) rotate(-9deg); }
+#room-v2-ambient .is-opening .v2-cookie-paper { animation-name:room-v2-cookie-slip; }
+@keyframes room-v2-cookie-slip {
+  0%,100% {transform:none;}
+  12%,91% {transform:translate(-6px,-24px);}
+  40%,80% {transform:var(--cookie-pose);}
+}
 @keyframes room-v2-cookie-open {
-  0%,100% { transform: none; }
-  28%,80% { transform: var(--cookie-pose); }
+  0%,13%,96%,100% {transform:none;}
+  34%,82% {transform:var(--cookie-pose);}
 }
 @media (prefers-reduced-motion: reduce) {
   #room-v2-ambient .is-opening :is(.v2-cookie-paper,.v2-cookie-left,.v2-cookie-right) {
