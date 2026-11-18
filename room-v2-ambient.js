@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261118-cinq');
+  const response = await fetch(folder + 'objets.svg?v=20261118-retours');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -93,28 +93,52 @@
   function drawCapsule() {
     if (capsuleState === 'ready') {
       capsuleState = 'opening';
-      for (const [name,dy] of [['upper',-6],['lower',4]]) {
-        motion(prize.querySelector('.gasha-'+name), [{transform:'none'},{transform:'translateY('+dy+'px)'}], 360, null,'forwards');
-      }
-      setTimeout(() => {
-        prize.setAttribute('visibility','hidden');
-        prize.querySelectorAll('.gasha-upper,.gasha-lower').forEach(n=>n.getAnimations().forEach(a=>a.cancel()));
+      const dialog=document.createElement('dialog');
+      dialog.className='gacha-open-dialog v2-capsule-dialog';
+      const english=document.documentElement.lang==='en';
+      dialog.setAttribute('aria-label',english?'Capsule close-up':'Capsule en gros plan');
+      const artwork=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      artwork.setAttribute('viewBox','-31 -38 62 76');
+      artwork.append(...Array.from(prize.children,n=>n.cloneNode(true)));
+      const open=document.createElement('button'), close=document.createElement('button');
+      const result=document.createElement('p'); result.setAttribute('role','status');
+      open.textContent=english?'Open the capsule':'Ouvrir la capsule';
+      close.textContent=english?'Close':'Fermer';
+      dialog.append(artwork,open,result,close);
+      document.body.append(dialog);
+      open.onclick=()=>{
+        open.hidden=true;
+        artwork.querySelector('.gasha-upper').setAttribute('transform','translate(-2 -10) rotate(-12)');
+        artwork.querySelector('.gasha-lower').setAttribute('transform','translate(1 8)');
+        result.textContent=english?'The figurines are coming soon.':'Les figurines arrivent bientôt.';
+        close.focus();
+      };
+      close.onclick=()=>dialog.close();
+      const dismiss=()=>dialog.close();
+      window.addEventListener('hashchange',dismiss);
+      dialog.addEventListener('close',()=>{
+        window.removeEventListener('hashchange',dismiss);
+        dialog.remove(); prize.setAttribute('visibility','hidden');
         capsuleState='idle'; machine.classList.remove('capsule-ready'); capsuleLabel(false);
-      }, 1300);
+        machine.focus({preventScroll:true});
+      },{once:true});
+      dialog.showModal(); open.focus();
       return;
     }
     if (capsuleState !== 'idle') return;
     capsuleState='mixing';
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
-      const dx = i%2 ? 5 : -5;
-      motion(ball,[{transform:'none'},{transform:'translate('+dx+'px,-4px)'},{transform:'translate('+(-dx)+'px,3px)'},{transform:'none'}],520+(i%4)*65);
+      if(quiet.matches)return;
+      ball.style.transformBox='fill-box'; ball.style.transformOrigin='center';
+      ball.animate([{transform:'translate(-3px,0) rotate(-8deg)'},{transform:'translate(3px,-5px) rotate(8deg)'}],
+        {duration:260,iterations:4,direction:'alternate',delay:i*13,easing:'ease-in-out'});
     });
     const href='#gasha-capsule-'+(24+Math.floor(Math.random()*12));
     prize.querySelectorAll('use').forEach(n=>n.setAttribute('href',href));
     setTimeout(() => {
       prize.setAttribute('visibility','visible');
-      motion(prize,[{transform:'translateY(-13px)',opacity:0},{transform:'translateY(2px)',opacity:1},{transform:'none',opacity:1}],330);
+      motion(prize,[{transform:'translateY(-28px)',opacity:0},{transform:'translateY(3px)',opacity:1},{transform:'none',opacity:1}],600);
       capsuleState='ready'; machine.classList.add('capsule-ready'); capsuleLabel(true);
     },quiet.matches?0:700);
   }
@@ -124,6 +148,7 @@
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
     // App links use the same delegated click as the desktop and the journal.
     if (item.hasAttribute('data-open') || item.hasAttribute('data-room-zone-id')) {
+      if (event.type === 'click' && item.dataset.roomZoneId === 'gabzilla') window.NanaProgress?.visit('objet/gabzilla');
       if (event.type === 'keydown') {
         event.preventDefault();
         if (!event.repeat) item.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
@@ -134,7 +159,8 @@
     event.stopPropagation();
     if (event.repeat) return;
     if (item.dataset.object === 'sailor') {
-      motion(item.querySelector('.clock-shake'), turns(0,-14,17,-13,10,-6,3,0), 760, '487px 734px');
+      const kicks=[[0,0],[-9,-18],[4,12],[-27,-22],[0,16],[-21,24],[0,-19],[-25,-22],[2,18],[-14,15],[0,-10],[-5,6],[0,0]];
+      motion(item.querySelector('.clock-shake'), kicks.map(([y,a])=>({transform:'translateY('+y+'px) rotate('+a+'deg)'})), 1900, '487px 734px');
     }
     if (item.dataset.object === 'office') {
       motion(item.querySelector('.office-words'), [

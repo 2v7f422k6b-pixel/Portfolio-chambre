@@ -272,6 +272,8 @@
     const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
     const destination=outfit?'jeu/dressing/tenue/'+outfit.slice(7):'carnet/'+(badge?'stickers':title?'titres':'stickers');
     notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Tu as gagné un nouvel écusson d’exploration.','You earned a new exploration patch.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
+    if(added.includes('outfit:nana-osaki') && added.includes('outfit:hachi'))
+      notice.querySelector('[role=status]').textContent=t('Deux tenues débloquées : Hachi et Nana Osaki.','Two looks unlocked: Hachi and Nana Osaki.');
     const btn=notice.querySelector('button');btn.textContent=t('Voir','See');btn.dataset.njNotice=destination;
     notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,8000);
   });

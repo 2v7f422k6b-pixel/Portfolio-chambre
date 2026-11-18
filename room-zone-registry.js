@@ -148,7 +148,7 @@
       petal.style.setProperty('--petal-'+key, (value*scale*(redrawn ? .6 : 1))+'px');
     }
     // An irregular red petal, not a new permanent element in the illustration.
-    petal.innerHTML = '<img src="assets/drawn-ui/petale_fleur.png" alt="" style="width:100%;height:100%;object-fit:contain">';
+    petal.innerHTML = '<img src="'+(redrawn?'assets/room-redraw/petale.webp':'assets/drawn-ui/petale_fleur.png')+'" alt="" style="width:100%;height:100%;object-fit:contain">';
     scene.appendChild(petal);
     petal.addEventListener('animationend', () => petal.remove(), {once:true});
   }
