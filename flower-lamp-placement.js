@@ -131,16 +131,15 @@ function mountWallDecoration(kind, redrawn) {
   for (const [offset,color,opacity] of [['0%','#fff9d5',.9],['22%','#ffefad',.7],['48%','#ffdb82',.36],['75%','#ffd16e',.12],['100%','#ffd16e',0]]) {
     glowGradient.appendChild(make('stop',{offset,'stop-color':color,'stop-opacity':opacity}));
   }
-  if (!redrawn) defs.appendChild(glowGradient);
+  if (!mirror) defs.appendChild(glowGradient);
   const wallLight=make('ellipse',{class:'nana-flower-wall-light',fill:'url(#nana-flower-wall-light)','pointer-events':'none','aria-hidden':'true'});
   if (redrawn) {
     group.classList.add('v2-wall-object');
     const surface = make('g', {class:'v2-wall-surface'});
+    if (!mirror) surface.append(wallLight);
     surface.append(visual);
-    if (mirror) {
-      if (!editing) hit.setAttribute('data-open','dressup');
-      surface.append(hit);
-    }
+    if (mirror && !editing) hit.setAttribute('data-open','dressup');
+    surface.append(hit);
     group.append(defs, surface, editorLayer);
   } else {
     group.append(defs,wallLight,visual,hit,editorLayer);
@@ -158,7 +157,7 @@ function mountWallDecoration(kind, redrawn) {
     'html.lamp-edit-mode #wall-lamp-hit{stroke:#ff173b;stroke-width:2;stroke-dasharray:5 5;cursor:move}',
     'html[data-theme="night"] #nana-wall-lamp .nana-wall-lamp-visual{filter:drop-shadow(0 0 8px rgba(255,244,171,.85)) drop-shadow(0 0 20px rgba(255,211,93,.55))}'
   ].join('\n');
-  if (!redrawn) document.head.appendChild(style);
+  if (!mirror) document.head.appendChild(style);
 
   function render() {
     const p=state.quad;
@@ -205,7 +204,7 @@ function mountWallDecoration(kind, redrawn) {
 
   // Trigger the original site theme button: both artwork and interface stay in sync.
   hit.addEventListener('click',event=>{
-    if(editing || redrawn) return;
+    if(editing || mirror) return;
     window.NanaProgress?.visit('objet/lampe-fleur');
     event.preventDefault();
     event.stopImmediatePropagation();
