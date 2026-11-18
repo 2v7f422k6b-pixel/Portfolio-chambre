@@ -10,13 +10,13 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=reflets6');
+  const response = await fetch(folder + 'objets.svg?v=calques1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
   const [underlay] = await Promise.all([
     loadImage('fond-mouvements.webp?v=van12'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
-    loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp')
+    loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp'), loadImage('calques-personnages.webp')
   ]);
   underlay.id = 'room-v2-underlay';
   underlay.dataset.roomV2Layer = '';
@@ -26,6 +26,30 @@
   if (responseArt) svg.querySelector('[data-cat-effects]').append(responseArt);
   scene.append(underlay, svg);
   hotspots.dataset.roomV2Layer = '';
+
+  // Each crop stores its room position, atlas position and dimensions.
+  const kodamaCrops = [[[2569, 1487, 0, 147, 51, 148], [2567, 1424, 53, 147, 78, 75]], [[199, 1488, 133, 147, 58, 135], [181, 1409, 193, 147, 90, 85]], [[601, 1046, 285, 147, 96, 94], [609, 968, 383, 147, 79, 115]], [[2012, 1265, 464, 147, 68, 134], [2001, 1189, 534, 147, 94, 90]], [[2543, 568, 630, 147, 59, 72], [2546, 529, 691, 147, 49, 60]]];
+  const kodamaLayer = document.getElementById('kodama-layer');
+  const percent = (value, total) => (100 * value / total) + '%';
+  kodamaLayer.querySelectorAll('.kodama').forEach((button, index) => {
+    const parts = kodamaCrops[index];
+    const left = Math.min(...parts.map(p => p[0]));
+    const top = Math.min(...parts.map(p => p[1]));
+    const width = Math.max(...parts.map(p => p[0] + p[4])) - left;
+    const height = Math.max(...parts.map(p => p[1] + p[5])) - top;
+    Object.assign(button.style, {left: percent(left, 3072), top: percent(top, 1732),
+      width: percent(width, 3072), height: percent(height, 1732)});
+    button.querySelectorAll('.sprite-part').forEach((part, i) => {
+      const [x, y, atlasX, atlasY, w, h] = parts[i];
+      part.replaceChildren();
+      Object.assign(part.style, {left: percent(x-left, width), top: percent(y-top, height),
+        width: percent(w,width), height: percent(h,height), opacity: '.85',
+        backgroundImage: 'url(assets/room-redraw/calques-personnages.webp)',
+        backgroundSize: percent(768,w) + ' ' + percent(453,h),
+        backgroundPosition: percent(atlasX,768-w) + ' ' + percent(atlasY,453-h)});
+    });
+  });
+  kodamaLayer.dataset.roomV2Layer = '';
 
   const windowLife = scene.querySelector('#window-life');
   const stars = windowLife.querySelectorAll('.night-star');
@@ -200,6 +224,23 @@
     if (item.dataset.object === 'sailor') {
       const kicks=[[0,0],[-9,-18],[4,12],[-27,-22],[0,16],[-21,24],[0,-19],[-25,-22],[2,18],[-14,15],[0,-10],[-5,6],[0,0]];
       motion(item.querySelector('.clock-shake'), kicks.map(([y,a])=>({transform:'translateY('+y+'px) rotate('+a+'deg)'})), 1900, '487px 734px');
+    }
+    if (item.dataset.object === 'happy-berry') {
+      const found = window.NanaProgress?.hasFeat('gokinjo-happy-berry');
+      window.NanaProgress?.visit('objet/happy-berry');
+      window.NanaProgress?.feat('gokinjo-happy-berry');
+      if (found) window.NanaJournal?.remindOutfit('gokinjo');
+      const cushion = item.querySelector('.berry-flight');
+      if (!quiet.matches && !cushion.getAnimations().length) {
+        motion(cushion, [{transform:'none'}, {transform:'translate(8px,-115px) rotate(-4deg)'},
+          {transform:'none'}], 3100, '414px 1100px');
+        for (const [name, angle, pivot] of [['left', 22, '380px 1100px'], ['right', -22, '460px 1088px']]) {
+          const wing = item.querySelector('.berry-' + name);
+          wing.style.transformBox = 'view-box';
+          wing.style.transformOrigin = pivot;
+          wing.animate(turns(0, angle, -angle/2, 0), {duration: 400, iterations: 7, easing:'ease-in-out'});
+        }
+      }
     }
     if (item.dataset.object === 'office') {
       motion(item.querySelector('.office-words'), [
