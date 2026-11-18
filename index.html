@@ -244,8 +244,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     .desert-night { display:none; }
     html[data-theme="night"] #v2-desert .desert-night { display:inline; }
     html[data-theme="night"] #v2-desert .desert-day { display:none; }
-    html[data-theme="night"] #v2-desert :is(.desert-crescent,.desert-round-moon) {
-      filter:url(#desert-moonlight) drop-shadow(0 0 8px rgba(255,224,191,.44));
+    html[data-theme="night"] #v2-desert :is(.desert-crescent,.desert-round-moon) image {
+      filter:url(#desert-moonlight);
     }
     .desert-crescent { animation:desert-crescent-drift 62s ease-in-out infinite alternate; }
     .desert-round-moon { animation:desert-round-drift 41s ease-in-out infinite alternate; }
@@ -256,7 +256,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       0% { transform:translate(0,0); } 50% { transform:translate(-21px,36px); } 100% { transform:translate(-72px,54px); }
     }
     @media (prefers-reduced-motion:reduce) {
-      #v2-desert image { animation:none; }
+      #v2-desert :is(.desert-crescent,.desert-round-moon) { animation:none; }
     }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
@@ -841,15 +841,27 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <!-- Decorative movement restricted to the CENTRAL glass pane, behind every clickable hotspot. -->
           <template id="v2-desert-template"><svg id="v2-desert" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs><clipPath id="v2-desert-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath>
+              <radialGradient id="desert-lunar-glow">
+                <stop offset="0" stop-color="#fff3ac" stop-opacity=".84"/>
+                <stop offset=".35" stop-color="#ffe599" stop-opacity=".59"/>
+                <stop offset=".63" stop-color="#ffcf9d" stop-opacity=".24"/>
+                <stop offset="1" stop-color="#ffc4aa" stop-opacity="0"/>
+              </radialGradient>
               <filter id="desert-moonlight" color-interpolation-filters="sRGB">
                 <feColorMatrix values="0 .76 0 0 .25  0 .77 0 0 .20  0 .59 0 0 .30  0 0 0 1 0"/>
               </filter>
             </defs>
             <g clip-path="url(#v2-desert-window)">
-              <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp" x="1723" y="0" width="495" height="933"/>
+              <image class="desert-night" href="assets/room-redraw/desert-rose-nuit.webp?v=rose-vif" x="1723" y="0" width="495" height="933"/>
               <image class="desert-day" href="assets/room-redraw/desert-rose.webp" x="1723" y="0" width="495" height="933"/>
-              <image class="desert-crescent" href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
-              <image class="desert-round-moon" href="assets/room-redraw/lune-ronde.png" x="2063" y="257" width="59" height="59"/>
+              <g class="desert-crescent">
+                <circle class="desert-night" cx="1810" cy="207" r="93" fill="url(#desert-lunar-glow)"/>
+                <image href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
+              </g>
+              <g class="desert-round-moon">
+                <circle class="desert-night" cx="2092.5" cy="286.5" r="77" fill="url(#desert-lunar-glow)"/>
+                <image href="assets/room-redraw/lune-ronde.png" x="2063" y="257" width="59" height="59"/>
+              </g>
             </g>
           </svg></template>
           <svg id="window-life" data-room-v2-layer viewBox="0 0 1670 942" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
