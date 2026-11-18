@@ -2,11 +2,11 @@
    These values are public display data, never passwords or access tokens. */
 window.NANA_PUBLISHED_SETTINGS = {
   "nana-ipad-clock-placement-room-v2": {
-    "x": 598.7348281249392,
-    "y": 660.7989938704535,
-    "size": 14,
+    "x": 601.0457483073658,
+    "y": 662.2516731136391,
+    "size": 20,
     "angle": -54,
-    "skew": 25,
+    "skew": 29,
     "offsetMinutes": 0
   },
   "nana-wall-stars-layout-room-v2": [
