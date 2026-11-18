@@ -241,6 +241,15 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-scene > #v2-desert { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    /* The animated night WebP repaints only its own 450 × 212 patch. Clip it to the same window as the desert. */
+    #play-scene > #desert-night-dust {
+      display:none; position:absolute; z-index:4; pointer-events:none;
+      left:56.087239583%; top:27.713625866%; width:14.6484375%; height:12.240184758%;
+      contain:strict; transform:translateZ(0); clip-path:polygon(3.555555556% -170.283018868%, 95.777777778% -216.037735849%, 96.222222222% 193.396226415%, 3.555555556% 190.566037736%);
+    }
+    @media (prefers-reduced-motion:no-preference) {
+      html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-night-dust { display:block; }
+    }
     #desert-window-light { display:none; }
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-window-light {
       display:block; position:absolute; inset:0; width:100%; height:100%;
@@ -831,7 +840,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-v2-fluide';
+                  script.src = 'room-v2-ambient.js?v=20261119-rafale-nuit';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -932,7 +941,6 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 </g>
               </g>
               <image class="desert-day desert-dust" href="assets/room-redraw/rafale-doree.webp" x="1723" y="480" width="450" height="212"/>
-              <image class="desert-night desert-dust" href="assets/room-redraw/rafale-lilas.webp" x="1723" y="480" width="450" height="212"/>
               <g class="desert-crescent">
                 <circle class="desert-night" cx="1810" cy="207" r="93" fill="url(#desert-lunar-glow)"/>
                 <image href="assets/room-redraw/lune-croissant.png" x="1775" y="165" width="85" height="83"/>
@@ -943,6 +951,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </g>
             </g>
           </svg>
+          <img id="desert-night-dust" data-room-v2-layer data-nana-load-ignore alt="" aria-hidden="true" draggable="false" decoding="async"/>
           <svg id="desert-window-light" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs>
               <radialGradient id="desert-room-spill">
