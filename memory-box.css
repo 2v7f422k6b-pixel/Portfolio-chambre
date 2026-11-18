@@ -60,3 +60,7 @@
 html[data-theme=night] .memory-tin-body,html[data-theme=night] .memory-tin-lid{filter:brightness(.65)}
 @media(max-width:600px){#nana-memory-box{padding:38px 0 8px}.memory-lid-copy{top:17%}.memory-lid-copy>img{margin-top:10px}.memory-eyebrow{margin-bottom:5px}.memory-empty{max-width:160px}.memory-box-controls{gap:6px;max-width:100%}.memory-pager button,.memory-back{padding:7px 8px}.memory-pager{gap:7px}#nana-memory-box .memory-replay{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.memory-hover,#nana-memory-box .memory-object{transition:none}}
+
+.room-redraw-preview .memory-marble { width:1.041667%; }
+.room-redraw-preview .memory-marble::before { content:""; position:absolute; width:max(100%,44px); height:max(100%,44px); }
+.room-redraw-preview .memory-marble-art { width:100%; height:100%; }

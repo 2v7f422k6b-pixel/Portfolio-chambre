@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261118-figurines');
+  const response = await fetch(folder + 'objets.svg?v=20261118-van-bille');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -75,6 +75,13 @@
       window.NanaKeroWake?.activate(item);
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
+    if (item.dataset.object === 'van') {
+      const already = window.NanaProgress?.hasFeat('olive-van-started');
+      window.NanaProgress?.visit('objet/volkswagen');
+      window.NanaProgress?.feat('olive-van-started');
+      window.NanaRoomObjectMotion?.play('volkswagen', item);
+      if (already) window.NanaJournal?.remindOutfit('little-miss-sunshine');
+    }
     if (item.dataset.object === 'dog') {
       window.NanaProgress?.visit('objet/preacher-dog');
       window.NanaProgress?.feat('preacher-dog');

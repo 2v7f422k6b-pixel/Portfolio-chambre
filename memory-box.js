@@ -5,7 +5,8 @@
   if(!scene||!app||window.NanaMemoryBox)return;
   // Positions follow Léna’s annotated desk corner and the wall beside the curtain.
   const TILE={x:1162,y:675,size:46};
-  const PATH={start:[1250,535],edge:[1213,545],fall:[1200,590],hit:[1186,667],bounce:[1172,660],rest:[1155,731]};
+  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const PATH=redrawn ? {start:[2301*1670/3072,980*942/1732],edge:[1217,545],fall:[1203,598],hit:[1186,677],bounce:[1172,666],rest:[1155,731]} : {start:[1250,535],edge:[1213,545],fall:[1200,590],hit:[1186,667],bounce:[1172,660],rest:[1155,731]};
   const point=([x,y])=>({left:(x/1670*100)+'%',top:(y/942*100)+'%'});
   const TILE_REST='translate(-35%,55%) rotate(-12deg) scaleY(.28)';
   const ROUTE='secret/boite-a-souvenirs',reduce=matchMedia('(prefers-reduced-motion:reduce)');
@@ -24,6 +25,21 @@
   layer.style.setProperty('--memory-tile-rest',TILE_REST);
   scene.append(layer);
   const marble=layer.querySelector('.memory-marble'),tile=layer.querySelector('.memory-tile'),find=layer.querySelector('.memory-find'),status=layer.querySelector('.memory-status');
+  if(redrawn){
+    layer.dataset.roomV2Layer='';
+    const art=marble.querySelector('svg');
+    art.setAttribute('viewBox','0 0 32 32');
+    const image=document.createElementNS('http://www.w3.org/2000/svg','image');
+    image.setAttribute('href','assets/room-redraw/bille.webp');
+    image.setAttribute('width',32);image.setAttribute('height',32);
+    art.replaceChildren(image);
+    const wallImage=tile.querySelector('image');
+    wallImage.removeAttribute('data-resource-href');
+    wallImage.removeAttribute('data-resource-theme');
+    wallImage.removeAttribute('class');
+    wallImage.setAttribute('href','assets/room-redraw/apercu-jour.webp');
+    tile.querySelector('.memory-wall-night').remove();
+  }
   // The shared filter draws only a white ring: keep it behind the original art.
   for(const [host,art] of [[marble,marble.querySelector('svg')],[find,find.querySelector('.memory-tin-body')]]){
     const ring=art.cloneNode(true);ring.classList.add('memory-hover');ring.setAttribute('aria-hidden','true');host.prepend(ring);
