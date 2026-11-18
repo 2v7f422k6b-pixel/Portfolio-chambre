@@ -232,6 +232,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-viewport.room-redraw-preview #hotspot-guide {
       display: none !important;
     }
+    html[data-theme="night"] #room-v2-ambient > svg[viewBox],
+    html[data-theme="night"] #room-v2-ambient image[href$="-fond.webp"] { display:none; }
     .v2-clock-reflection { display:none; }
     html[data-theme="night"] .v2-clock-reflection { display:inline; }
     .v2-mirror-night,.v2-mirror-reflection { display:none; }
@@ -255,7 +257,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      background: url("assets/room-redraw/marseille-penombre.webp?v=reflets6") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=tablette8") center / 100% 100% no-repeat;
+      background: url("assets/room-redraw/marseille-penombre.webp?v=reflets6") center / 100% 100% no-repeat, url("assets/room-redraw/fonds-mobiles-nuit.webp") center / 100% 100% no-repeat, url("assets/room-redraw/lumieres-nuit.webp?v=tablette8") center / 100% 100% no-repeat;
     }
     html[data-theme="night"] #play-viewport.room-redraw-preview .poster-perspective-artworks .v2-night-posters {
       filter: brightness(.81) saturate(.88);
@@ -274,9 +276,9 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #window-life .v2-meteor.caught {opacity:0;pointer-events:none;}
     #window-life .v2-meteor.caught rect {pointer-events:none;}
     @keyframes v2-meteor-pass {
-      0%,71.99%,93.01%,100% {visibility:hidden;}
+      0%,71.99%,89.01%,100% {visibility:hidden;}
       72% {visibility:visible;transform:translate(0,0);}
-      93% {visibility:visible;transform:translate(-225px,98px);}
+      89% {visibility:visible;transform:translate(-225px,98px);}
     }
     @media(prefers-reduced-motion:reduce) {
       #window-life .v2-meteor {animation:none;visibility:visible;}
@@ -1185,7 +1187,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 
 
 
-<script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=miroir-actif8" defer></script><script src="flower-lamp-placement.js?v=miroir-actif8" defer></script>
+<script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=verre-mobile9" defer></script><script src="flower-lamp-placement.js?v=miroir-actif8" defer></script>
 <script src="fortune-cookie-placement.js?v=20261118-biscuit" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
 <script src="glow-stars.js?v=20261118-retirer-etoile" defer></script>
