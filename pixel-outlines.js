@@ -4,6 +4,8 @@
   const scene = document.getElementById('play-scene'), svg = document.getElementById('hotspots');
   const hover = window.NanaRoomHover;
   if (!scene || !svg || !hover) return;
+  // The redrawn room hides the legacy outline overlay and has its own SVG hit areas.
+  if (new URLSearchParams(location.search).get('chambreV2') === '1') return;
   const files = ['IMAC.PNG','TSHIRT GABZILLA.PNG','MARSHALL.PNG','CDS.PNG','IPHONE.PNG','TAMAGOTCHI.PNG','MUG LATTE.PNG','TALE.PNG','RILAKKUMA.PNG','GUITARE.PNG','RING LIGHT.PNG','CAT.PNG','INSTAX.PNG','VASE.PNG','STARS LAMP.PNG','JELLY LAMP.PNG','CRAYONS 2.PNG','CRAYONS 3.PNG','BOOKS 1.PNG','BOOKS 2.PNG','BOOKS 3.PNG','OFFICE LAMP.PNG','IPAD.PNG','RUG.PNG','MIFFY.PNG','BAMBI LAMP.PNG','SONNY ANGEL.PNG','BRETZEL.PNG'];
   // These source tracings have wider interruptions where objects overlap.
   // Close the mask only; the visible edge still follows the supplied drawing.
