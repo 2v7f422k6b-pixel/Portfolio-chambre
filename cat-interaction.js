@@ -1,8 +1,8 @@
 /* Cat petting: a silent, gentle visual reaction; no changes to room artwork. */
 (() => {
-  const cat = document.querySelector('#hotspots [data-cat-pet]');
+  const scene = document.getElementById('play-scene');
   const response = document.getElementById('cat-response');
-  if (!cat || !response) return;
+  if (!scene || !response) return;
 
   let hideTimer;
   function petCat() {
@@ -13,6 +13,8 @@
     response.classList.add('is-purring');
     hideTimer = setTimeout(() => response.classList.remove('is-purring'), 2200);
   }
-  cat.addEventListener('click', petCat);
+  scene.addEventListener('click', event => {
+    if (event.target.closest('[data-cat-pet]')) petCat();
+  });
   window.addEventListener('pagehide', () => clearTimeout(hideTimer));
 })();

@@ -50,6 +50,8 @@
     if(target.closest('#paprika-butterfly'))return 'paprika-butterfly';
     if(target.closest('#nana-kokeshi'))return 'kokeshi';
     if(target.closest('#nana-kikujiro-chime'))return 'kikujiro-chime';
+    const redrawn = target.closest('#room-v2-ambient [data-room-zone-id]');
+    if(redrawn) return redrawn.dataset.roomZoneId === 'fortune-cookie' ? 'fortune-cookie' : 'object:' + redrawn.dataset.roomZoneId;
     if(!svg.contains(target))return null;
     const zone = target.closest('[data-room-zone-id]');
     if (zone) return 'object:' + zone.dataset.roomZoneId;

@@ -294,6 +294,17 @@
     if(editor)return;
     fortune();
   });
+  let closeTimer;
+  viewport.addEventListener('click',event=>{
+    const cookie=event.target.closest('[data-room-zone-id="fortune-cookie"]');
+    if(!cookie || editor)return;
+    clearTimeout(closeTimer);
+    cookie.classList.remove('is-opening');
+    cookie.getBoundingClientRect();
+    cookie.classList.add('is-opening');
+    fortune();
+    closeTimer=setTimeout(()=>cookie.classList.remove('is-opening'),1800);
+  });
   render();
   window.NANA_FORTUNE_COOKIE={
     position,

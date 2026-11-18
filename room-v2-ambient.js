@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261118-appareils');
+  const response = await fetch(folder + 'objets.svg?v=20261118-petales');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -22,6 +22,8 @@
   underlay.dataset.roomV2Layer = '';
   underlay.alt = '';
   underlay.draggable = false;
+  const responseArt = document.getElementById('cat-response');
+  if (responseArt) svg.querySelector('[data-cat-effects]').append(responseArt);
   scene.append(underlay, svg);
   hotspots.dataset.roomV2Layer = '';
 
@@ -56,10 +58,10 @@
   syncClock();
 
   function activate(event) {
-    const item = event.target.closest('[data-object], [data-open]');
+    const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
     // App links use the same delegated click as the desktop and the journal.
-    if (item.hasAttribute('data-open')) {
+    if (item.hasAttribute('data-open') || item.hasAttribute('data-room-zone-id')) {
       if (event.type === 'keydown') {
         event.preventDefault();
         if (!event.repeat) item.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
@@ -83,4 +85,5 @@
   }
   svg.addEventListener('click', activate);
   svg.addEventListener('keydown', activate);
+  window.dispatchEvent(new Event('nana-room-v2-ready'));
 })().catch(error => console.error('Chambre V2', error));
