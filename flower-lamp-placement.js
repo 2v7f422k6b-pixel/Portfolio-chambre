@@ -78,7 +78,7 @@ function mountWallDecoration(kind, redrawn) {
       const sprites=make('g');
       const night=image.cloneNode(false);
       const nightUrl = 'assets/room-redraw/miroir-nuit.webp?v=verre7';
-      if (query.get('renduNuit') === 'dessins' && window.NanaResources) {
+      if (query.get('renduNuit') !== 'local' && window.NanaResources) {
         night.removeAttribute('href');
         window.NanaResources.setSource(night,nightUrl,{theme:'night'});
       }
