@@ -133,6 +133,12 @@ function mountWallDecoration(kind, redrawn) {
   }
   if (!mirror) defs.appendChild(glowGradient);
   const wallLight=make('ellipse',{class:'nana-flower-wall-light',fill:'url(#nana-flower-wall-light)','pointer-events':'none','aria-hidden':'true'});
+  if (redrawn && !mirror) {
+    wallLight.id='v2-flower-spill';
+    const mask=make('mask',{id:'v2-flower-poster-mask',maskUnits:'userSpaceOnUse',x:0,y:0,width:roomW,height:roomH,'mask-type':'alpha'});
+    mask.appendChild(make('use',{href:'#v2-flower-spill'}));
+    defs.appendChild(mask);
+  }
   if (redrawn) {
     group.classList.add('v2-wall-object');
     const surface = make('g', {class:'v2-wall-surface'});
