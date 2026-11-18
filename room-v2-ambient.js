@@ -28,6 +28,31 @@
   // Isolated iPad comparison. Keep lamp coordinates fixed in the room while
   // limiting the filter output to each object's bounds.
   const localLighting = new URLSearchParams(location.search).get('renduNuit') === 'local';
+  const bakedLighting = new URLSearchParams(location.search).get('renduNuit') === 'dessins';
+  if (bakedLighting) {
+    const folderNight = folder + 'nuit-objets/';
+    const textures = Array.from(svg.querySelectorAll(
+      '#v2-atlas, #five-atlas, #character-art, #v2-cookie-parts, #v2-van-visual, .v2-kero-faces'
+    ), image => {
+      const day = image.getAttribute('href');
+      return { image, day, night: folderNight + day.split('/').pop() };
+    });
+    function syncTextures() {
+      const night = document.documentElement.dataset.theme === 'night';
+      for (const texture of textures) texture.image.setAttribute('href', night ? texture.night : texture.day);
+    }
+    syncTextures();
+    new MutationObserver(syncTextures).observe(document.documentElement, {
+      attributes:true, attributeFilter:['data-theme']
+    });
+    svg.classList.add('v2-baked-lighting');
+    const rules = document.createElement('style');
+    rules.textContent = `
+      html[data-theme="night"] #play-viewport.room-redraw-preview #room-v2-ambient.v2-baked-lighting { filter:none; }
+      html[data-theme="night"] .v2-baked-lighting :is([data-object="office"] > rect:not(.v2-hit), [data-object="office"] > g, [data-cat-effects]) { filter:url(#room-v2-night-ink); }
+    `;
+    document.head.appendChild(rules);
+  }
   if (localLighting) {
     const filter = document.getElementById('room-v2-lit-objects').cloneNode(true);
     filter.id = 'v2-local-lamp-light';
@@ -82,7 +107,7 @@
   kodamaLayer.dataset.roomV2Layer = '';
 
   const windowLife = scene.querySelector('#window-life');
-  if (localLighting) {
+  if (localLighting || bakedLighting) {
     // Alpha bounds of masque-ciel.png on its 1536 × 866 source canvas.
     const x = 867, y = 9, width = 213, height = 241;
     const w = 1536, h = 866;
@@ -99,6 +124,20 @@
   const skyPoints = [[950,83],[978,142],[1144,89],[1126,55],[946,210],
     [1146,193],[1001,207],[1061,164],[981,121],[1069,111]];
   stars.forEach((star, i) => {
+    if (bakedLighting) {
+      // A transparent eight-unit border carries the pre-rendered glow.
+      const ink = document.createElementNS(svg.namespaceURI, 'image');
+      ink.setAttribute('class','night-star');
+      ink.setAttribute('preserveAspectRatio','none');
+      ink.style.filter = 'none';
+      ink.setAttribute('href', folder + 'nuit-objets/ciel-' + String(i+1).padStart(2,'0') + '.webp');
+      ink.setAttribute('x',skyPoints[i][0]-8);
+      ink.setAttribute('y',skyPoints[i][1]-8);
+      ink.setAttribute('width',Number(star.getAttribute('width'))+16);
+      ink.setAttribute('height',Number(star.getAttribute('height'))+16);
+      star.replaceWith(ink);
+      return;
+    }
     star.setAttribute('x',skyPoints[i][0]); star.setAttribute('y',skyPoints[i][1]);
   });
   const ns = 'http://www.w3.org/2000/svg';
