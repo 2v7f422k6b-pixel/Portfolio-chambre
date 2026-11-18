@@ -297,6 +297,20 @@
   });
   const desertTemplate = document.getElementById('v2-desert-template');
   desertTemplate.replaceWith(desertTemplate.content);
+  const nightDust = document.getElementById('desert-night-dust');
+  // display:none removes it from observation in daytime, Marseille and reduced motion.
+  const dustUrl = folder + 'rafale-lilas.webp';
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!nightDust.hasAttribute('src')) nightDust.src = dustUrl;
+      } else {
+        nightDust.removeAttribute('src');
+      }
+    }).observe(nightDust);
+  } else {
+    nightDust.src = dustUrl;
+  }
   const wheel = svg.querySelector('.landscape-wheel');
   const landscape = new URLSearchParams(location.search).get('landscape');
   let dialAngle = landscape === 'desert-rose' ? 180 : 0;
