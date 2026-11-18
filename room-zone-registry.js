@@ -133,18 +133,19 @@
     scene.appendChild(inks);
 
   }
-  function dropPoppyPetal(zone) {
-    if (!scene || !zone.center) return;
+  function dropPoppyPetal(origin, redrawn) {
+    if (!scene || !origin) return;
     const petal = document.createElement('span');
     petal.className = 'nana-poppy-petal';
     petal.setAttribute('aria-hidden', 'true');
-    const [x,y] = zone.petalOrigin || zone.center;
+    if (redrawn) petal.dataset.roomV2Layer = '';
+    const [x,y] = origin;
     const scale = scene.getBoundingClientRect().width / W;
     petal.style.left = (x/W*100) + '%';
     petal.style.top = (y/H*100) + '%';
     const offsets = {x1:15,y1:55,x2:-12,y2:117,x3:26,y3:195};
     for (const [key,value] of Object.entries(offsets)) {
-      petal.style.setProperty('--petal-'+key, (value*scale)+'px');
+      petal.style.setProperty('--petal-'+key, (value*scale*(redrawn ? .6 : 1))+'px');
     }
     // An irregular red petal, not a new permanent element in the illustration.
     petal.innerHTML = '<img src="assets/drawn-ui/petale_fleur.png" alt="" style="width:100%;height:100%;object-fit:contain">';
@@ -163,14 +164,18 @@
   },true);
 
   // Unassigned objects keep their destination-to-define tooltip.
-  svg.addEventListener('click',event=>{
-    const target=event.target.closest?.('polygon[data-vase-petal],polygon[data-zone-pending]');
+  scene?.addEventListener('click',event=>{
+    const target=event.target.closest?.('[data-vase-petal],polygon[data-zone-pending]');
     if(!target) return;
     event.preventDefault();
     event.stopPropagation();
     const zone=zones.find(z=>z.id===target.dataset.roomZoneId);
     if(!zone) return;
-    if(zone.id==='vase') { dropPoppyPetal(zone); return; }
+    if(zone.id==='vase') {
+      const origin=target.dataset.petalOrigin;
+      dropPoppyPetal(origin ? origin.split(' ').map(Number) : zone.petalOrigin || zone.center, Boolean(origin));
+      return;
+    }
     if(!toast) return;
     toast.textContent='Zone '+zone.number+' · '+zone.label+' — destination à définir';
     toast.hidden=false;

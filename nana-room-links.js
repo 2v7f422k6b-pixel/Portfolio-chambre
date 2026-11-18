@@ -50,7 +50,10 @@
   const isPencil = id => id?.startsWith('crayons-');
   let selected = null, pending = null;
 
+  const redrawnObjects = new Set(['chat','vase','fortune-cookie']);
   function hotspot(id) {
+    if (redrawnObjects.has(id) && new URLSearchParams(location.search).get('chambreV2') === '1')
+      return q('#room-v2-ambient [data-room-zone-id="'+id+'"]');
     if (id === 'lampe-fleur') return q('#wall-lamp-hit');
     if (id === 'fortune-cookie') return q('#nana-fortune-cookie [data-open]');
     return window.NANA_ROOM_ZONES?.find(zone => zone.id === id)?.element;
@@ -75,6 +78,7 @@
     notify();
   }
   window.addEventListener('nana-room-zones-ready', revealObject);
+  window.addEventListener('nana-room-v2-ready', revealObject);
   function clearSelection() { selected = null; pending = null; }
   function mode(raw) {
     const route = normalize(raw);
