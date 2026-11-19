@@ -322,7 +322,6 @@
   wheel.style.transformOrigin = '1931px 990px';
   wheel.style.transform = 'rotate(' + dialAngle + 'deg)';
   showLandscape();
-  const previewWindowFade = new URLSearchParams(location.search).get('fondu') === '1';
   const windowArt = {
     marseille: '#v2-marseille-hiver',
     japon: '#v2-japan',
@@ -374,7 +373,7 @@
     );
     dialAngle = start + 720 + 90 * steps[Math.floor(Math.random() * steps.length)];
     const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
-    if (previewWindowFade && !quiet.matches) blendWindows(spin);
+    if (!quiet.matches) blendWindows(spin);
     else spin.onfinish = showLandscape;
   }
   const machine = svg.querySelector('[data-object="gashapon"]');
