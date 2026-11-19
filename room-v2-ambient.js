@@ -325,7 +325,11 @@
   function spinDial() {
     if (wheel.getAnimations().some(a => a.playState === 'running')) return;
     const start = dialAngle;
-    dialAngle = start + 720 + 90 * Math.floor(Math.random()*4);
+    const currentSlot = (start % 360) / 90;
+    const steps = landscapes.map((_, step) => step).filter(step =>
+      landscapes[(currentSlot + step) % landscapes.length] !== scene.dataset.landscape
+    );
+    dialAngle = start + 720 + 90 * steps[Math.floor(Math.random() * steps.length)];
     const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
     spin.onfinish = showLandscape;
   }
