@@ -239,12 +239,20 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     html:not([data-theme="night"]) #room-v2-ambient [data-object="office"] text { fill: #ff173b; }
     /* Match the SVG viewport to the desert artwork while keeping its room coordinates. */
-    #play-scene > :is(#v2-desert, #v2-japan) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
+    #play-scene > :is(#v2-desert, #v2-japan, #v2-marseille-hiver) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
     #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
+    .room-redraw-preview #play-scene[data-landscape="marseille"] > #v2-marseille-hiver {
+      display:block;
+      background:url("assets/room-redraw/marseille-hiver-jour.webp") center / 100% 100% no-repeat;
+      clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
+    }
+    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="marseille"] > #v2-marseille-hiver {
+      background-image:url("assets/room-redraw/marseille-hiver-nuit.webp");
+    }
     #v2-japan {
       overflow:hidden; contain:strict;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
@@ -1015,6 +1023,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </g>
             </g>
           </svg>
+          <div id="v2-marseille-hiver" data-room-v2-layer aria-hidden="true"></div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
             <div class="japan-art">
               <div class="japan-mountain">
