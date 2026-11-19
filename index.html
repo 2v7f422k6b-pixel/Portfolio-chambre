@@ -239,11 +239,11 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     html:not([data-theme="night"]) #room-v2-ambient [data-object="office"] text { fill: #ff173b; }
     /* Match the SVG viewport to the desert artwork while keeping its room coordinates. */
-    #play-scene > :is(#v2-desert, #v2-japan, #v2-marseille-hiver) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
+    #play-scene > :is(#v2-desert, #v2-japan, #v2-marseille-hiver, #v2-paris) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
-    #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    #play-scene:is([data-landscape="japon"], [data-landscape="paris"]) :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
     .room-redraw-preview #play-scene[data-landscape="marseille"] > #v2-marseille-hiver {
       display:block;
@@ -255,6 +255,19 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] #v2-marseille-hiver {
       background-image:url("assets/room-redraw/marseille-hiver-nuit.webp?v=f37de783");
     }
+    .room-redraw-preview #play-scene[data-landscape="paris"] > #v2-paris { display:block; }
+    #v2-paris {
+      overflow:hidden; contain:strict;
+      clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
+      background:url("assets/room-redraw/paris-jour.webp") center / 100% 100% no-repeat;
+    }
+    html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp"); }
+    #v2-paris svg { display:block; width:100%; height:100%; opacity:.82; }
+    html[data-theme="night"] #v2-paris svg { opacity:.48; }
+    @media (prefers-reduced-motion:no-preference) {
+      .paris-rain { animation:paris-rain-fall .64s linear infinite; }
+    }
+    @keyframes paris-rain-fall { to { transform:translateY(160px); } }
     #v2-japan {
       overflow:hidden; contain:strict;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
@@ -929,7 +942,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-fondu-v2';
+                  script.src = 'room-v2-ambient.js?v=20261119-paris';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1041,6 +1054,18 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             </g>
           </svg>
           <div id="v2-marseille-hiver" data-room-v2-layer aria-hidden="true"></div>
+          <div id="v2-paris" data-room-v2-layer aria-hidden="true">
+            <svg viewBox="0 0 495 933" preserveAspectRatio="none" focusable="false">
+              <defs>
+                <pattern id="paris-rain-tile" width="148" height="160" patternUnits="userSpaceOnUse">
+                  <path d="M13 24v10 M83 6v7 M117 61v13 M50 89v9 M99 134v8 M23 147v5" fill="none" stroke="#d5b8e8" stroke-width="1.6" stroke-linecap="round"/>
+                </pattern>
+              </defs>
+              <g transform="skewX(-9)">
+                <rect class="paris-rain" x="0" y="-160" width="670" height="1100" fill="url(#paris-rain-tile)"/>
+              </g>
+            </svg>
+          </div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
             <div class="japan-art">
               <div class="japan-mountain">

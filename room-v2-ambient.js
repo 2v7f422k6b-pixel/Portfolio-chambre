@@ -96,7 +96,7 @@
       .v2-baked-lighting .clock-shake .v2-clock-reflection { display:none; }
       .v2-piece-night { display:none; }
       #play-scene > .v2-sky-sparkles { display:none; position:absolute; pointer-events:none; mask-repeat:no-repeat; -webkit-mask-repeat:no-repeat; }
-      html[data-theme="night"] #play-scene:not([data-landscape="pink"]) > .v2-sky-sparkles { display:block; }
+      html[data-theme="night"] #play-scene[data-landscape="marseille"] > .v2-sky-sparkles { display:block; }
       .v2-sky-sparkles img { position:absolute; pointer-events:none; will-change:transform,opacity; animation:window-star-twinkle 3.6s ease-in-out infinite; }
       .v2-sky-sparkles img:nth-child(2n) { animation-delay:-1.7s; }
       .v2-sky-sparkles img:nth-child(3n) { animation-delay:-3.4s; }
@@ -313,8 +313,8 @@
   }
   const wheel = svg.querySelector('.landscape-wheel');
   const landscape = new URLSearchParams(location.search).get('landscape');
-  const landscapes = ['marseille', 'japon', 'pink', 'marseille'];
-  let dialAngle = landscape === 'desert-rose' ? 180 : landscape === 'japon' ? 90 : 0;
+  const landscapes = ['marseille', 'japon', 'pink', 'paris'];
+  let dialAngle = landscape === 'desert-rose' ? 180 : landscape === 'paris' ? 270 : landscape === 'japon' ? 90 : 0;
   function showLandscape() {
     scene.dataset.landscape = landscapes[(dialAngle % 360) / 90];
   }
@@ -325,6 +325,7 @@
   const windowArt = {
     marseille: '#v2-marseille-hiver',
     japon: '#v2-japan',
+    paris: '#v2-paris',
     pink: '#v2-desert'
   };
   const windowEffects = {
