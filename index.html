@@ -327,37 +327,36 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     @keyframes paris-window-objects { 0%,60%,88%,100% {opacity:1} 70% {opacity:.38} 75% {opacity:.12} 81% {opacity:.48} }
     @keyframes eiffel-glint { 0%,58%,100% { opacity:.035; } 10%,24% { opacity:1; } 35% { opacity:.16; } 43% { opacity:.85; } }
     .paris-runoff { position:absolute; left:0; top:53.59057%; width:100%; height:37.5134%; pointer-events:none; }
-    .paris-runoff path {fill:none;stroke:white;stroke-width:2.3;stroke-linecap:round;opacity:0;}
-    .paris-trickle {stroke-dasharray:10 180;}
-    .paris-splash { fill:#786e91; fill:color-mix(in srgb,#d5b8e8 54%,#081021); }
-    .paris-splash ellipse { opacity:0; }
-    html[data-theme="night"] .paris-splash {fill:#d5b8e8;}
-    .paris-splash .rebound { --reach:4px; --lift:-4px; }
-    .paris-splash .bead { --reach:2.6px; --lift:-2.4px; }
+    .paris-trickle {fill:none;stroke:white;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:var(--dash) 125;opacity:0;}
+    .paris-splash path {fill:white;opacity:0;}
     @media (prefers-reduced-motion:no-preference) {
       .paris-trickle {animation:paris-trickle var(--flow) linear var(--delay) infinite;}
       .paris-splash .surface-fleck {animation:paris-contact var(--flow) ease-out var(--delay) infinite;}
-      .paris-splash .rebound {animation:paris-rebound var(--flow) linear var(--delay) infinite;}
+      .paris-splash .rebound {animation:paris-rebound var(--flow) linear calc(var(--delay) + var(--lag)) infinite;}
     }
     @keyframes paris-trickle {
-      0%,8% {stroke-dashoffset:12;opacity:0;} 12% {opacity:.78;}
-      31% {opacity:.64;} 38%,100% {stroke-dashoffset:-110;opacity:0;}
+      0% {stroke-dashoffset:var(--dash);opacity:0;}
+      7% {opacity:.96;}
+      18% {stroke-dashoffset:-19;opacity:1;}
+      25% {stroke-dashoffset:-24;opacity:.94;}
+      48% {stroke-dashoffset:-100;opacity:.84;}
+      52%,100% {stroke-dashoffset:-101;opacity:0;}
     }
     @keyframes paris-contact {
       0%,30%,100% {opacity:0;transform:scaleX(.45);}
-      5% {opacity:.95;transform:scaleX(.85);}
-      17% {opacity:.66;transform:scaleX(1.1);}
+      5% {opacity:1;transform:scaleX(.85);}
+      17% {opacity:.84;transform:scaleX(1.1);}
       29% {opacity:0;transform:scaleX(1.18);}
     }
     @keyframes paris-rebound {
       0%,3%,36%,100% {opacity:0;}
       3% {transform:translate(0,0);}
-      9% {opacity:.94;}
-      15% {transform:translate(calc(var(--drift) * var(--reach) * .48),var(--lift));}
-      24% {opacity:.76;transform:translate(calc(var(--drift) * var(--reach) * .78),calc(var(--lift) * .8));}
-      36% {transform:translate(calc(var(--drift) * var(--reach)),.5px);}
+      9% {opacity:1;}
+      15% {transform:translate(calc(var(--dx) * .48),var(--lift));}
+      24% {opacity:.85;transform:translate(calc(var(--dx) * .78),calc(var(--lift) * .8));}
+      36% {transform:translate(var(--dx),.5px);}
     }
-    html[data-theme="night"] .paris-runoff {opacity:.46;}
+    html[data-theme="night"] .paris-runoff {opacity:.66;}
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
     }
@@ -1323,218 +1322,218 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </svg></i>
             </div></div>
             <svg class="paris-runoff" viewBox="0 500 495 350" preserveAspectRatio="none" aria-hidden="true">
-              <path class="paris-trickle" style="--flow:4.7s;--delay:-.8s" d="M115 582 Q107 611 102 629 T89 676"/>
-              <path class="paris-trickle" style="--flow:6.3s;--delay:-3.9s" d="M291 561 Q282 591 275 607 T256 663"/>
-              <path class="paris-trickle" style="--flow:5.35s;--delay:-1.9s" d="M404 587 Q398 609 393 620 T381 657"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.15s;--delay:-0.29s;--dash:8" d="M88 648 Q88.4 651.8 87.8 654.6 T84.3 661 Q83.5 663.8 83.9 668"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.82s;--delay:-1.12s;--dash:13" d="M189 624 Q189.4 629.5 188.2 633.6 T182 642.9 Q180.5 646.9 180.9 653"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.49s;--delay:-1.95s;--dash:18" d="M272 611 Q271.9 614.8 271 617.6 T267.3 624 Q266.3 626.8 266.1 631"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.43s;--delay:-0.49s;--dash:23" d="M122 619 Q123.1 625.5 121.5 630.2 T113 641.1 Q111.1 645.9 112.1 653"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.10s;--delay:-1.32s;--dash:11" d="M301 567 Q299.7 573.5 297.6 578.2 T290.3 589.1 Q288 593.9 286.5 601"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.77s;--delay:-2.15s;--dash:16" d="M104 603 Q104.2 606.6 103 609.3 T97.6 615.3 Q96.3 618 96.4 622"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.71s;--delay:-0.69s;--dash:21" d="M415 614 Q414.6 618 413.3 620.9 T408.3 627.7 Q406.9 630.6 406.4 635"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.38s;--delay:-1.52s;--dash:9" d="M284 564 Q284.2 567.6 283.1 570.3 T277.7 576.3 Q276.3 579 276.5 583"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.32s;--delay:-0.06s;--dash:14" d="M290 624 Q291.6 629.9 290.6 634.2 T283.8 644.2 Q282.5 648.5 284.1 655"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.99s;--delay:-0.89s;--dash:19" d="M378 606 Q377.7 615.1 375.9 621.8 T368.5 637.2 Q366.5 643.9 366 654"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.66s;--delay:-1.72s;--dash:24" d="M398 615 Q396.1 622.6 393.7 628.2 T386.4 641 Q383.9 646.6 381.7 655"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.60s;--delay:-0.26s;--dash:12" d="M206 622 Q206.6 630.4 204.5 636.5 T194.4 650.6 Q191.9 656.8 192.3 666"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:3.27s;--delay:-1.09s;--dash:17" d="M205 582 Q206.8 586.4 205.5 589.6 T197.2 597 Q195.6 600.2 197.3 605"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.21s;--delay:-1.92s;--dash:22" d="M27 637 Q26 643.8 24.5 648.9 T19.4 660.4 Q17.8 665.4 16.6 673"/>
+              <path class="paris-trickle" pathLength="100" style="--flow:2.88s;--delay:-0.46s;--dash:10" d="M308 605 Q308.7 609.4 307.5 612.6 T300.9 620 Q299.4 623.2 300 628"/>
               <g class="paris-splash" transform="translate(110 592)" style="--flow:2.73s;--delay:-1s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:2.5px;--lift:-2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(73 643)" style="--flow:3.81s;--delay:-2.4s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-4.2px;--lift:-3.3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:5.5px;--lift:-5.2px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-6.8px;--lift:-2.3px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(245 559)" style="--flow:3.34s;--delay:-0.3s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
               </g>
               <g class="paris-splash" transform="translate(339 545)" style="--flow:4.19s;--delay:-3.5s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-7.6px;--lift:-5.9px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:3.2px;--lift:-3px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(399 623)" style="--flow:3.67s;--delay:-0.7s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:3.6px;--lift:-2.4px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(109 682)" style="--flow:3.13s;--delay:-2.5s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-5.3px;--lift:-3.7px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:6.6px;--lift:-5.6px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(274 667)" style="--flow:2.97s;--delay:-0.7s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:7px;--lift:-5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-2.6px;--lift:-2.1px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:3.9px;--lift:-4px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(335 766)" style="--flow:4.31s;--delay:-2.1s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-3px;--lift:-6.3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(70 763)" style="--flow:3.43s;--delay:-0.1s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:4.7px;--lift:-2.8px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-6px;--lift:-4.7px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:7.3px;--lift:-6.6px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(402 766)" style="--flow:4.73s;--delay:-3.3s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
               </g>
               <g class="paris-splash" transform="translate(217 551)" style="--flow:5.27s;--delay:-1.4s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:8.1px;--lift:-5.4px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-3.7px;--lift:-2.5px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(46 571)" style="--flow:4.07s;--delay:-2.6s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-4.1px;--lift:-6.7px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(405 642)" style="--flow:1.18s;--delay:-0.00s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:5.8px;--lift:-3.2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-7.1px;--lift:-5.1px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(390 598)" style="--flow:1.80s;--delay:-1.16s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-7.5px;--lift:-4.5px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:3.1px;--lift:-6.4px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-4.4px;--lift:-3.5px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(45 651)" style="--flow:1.24s;--delay:-0.13s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:3.5px;--lift:-5.8px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(333 543)" style="--flow:1.86s;--delay:-1.29s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-5.2px;--lift:-2.3px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:6.5px;--lift:-4.2px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-7.8px;--lift:-6.1px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(105 670)" style="--flow:1.30s;--delay:-0.26s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
               </g>
               <g class="paris-splash" transform="translate(279 561)" style="--flow:1.92s;--delay:-1.43s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-2.9px;--lift:-4.9px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:4.2px;--lift:-2px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(198 582)" style="--flow:1.36s;--delay:-0.40s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:4.6px;--lift:-6.2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(346 660)" style="--flow:1.98s;--delay:-1.56s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-6.3px;--lift:-2.7px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:7.6px;--lift:-4.6px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(199 643)" style="--flow:1.42s;--delay:-0.53s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:8px;--lift:-4px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-3.6px;--lift:-5.9px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:4.9px;--lift:-3px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(316 668)" style="--flow:2.04s;--delay:-1.69s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-4px;--lift:-5.3px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(92 683)" style="--flow:1.47s;--delay:-0.66s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:5.7px;--lift:-6.6px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-7px;--lift:-3.7px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:2.6px;--lift:-5.6px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(422 634)" style="--flow:2.10s;--delay:-1.82s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
               </g>
               <g class="paris-splash" transform="translate(419 601)" style="--flow:1.53s;--delay:-0.79s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:3.4px;--lift:-4.4px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-4.7px;--lift:-6.3px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(43 679)" style="--flow:2.16s;--delay:-1.96s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-5.1px;--lift:-5.7px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(284 531)" style="--flow:1.59s;--delay:-0.93s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:6.8px;--lift:-2.2px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-8.1px;--lift:-4.1px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(90 618)" style="--flow:2.22s;--delay:-2.09s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-2.8px;--lift:-3.5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:4.1px;--lift:-5.4px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-5.4px;--lift:-2.5px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(272 628)" style="--flow:1.65s;--delay:-1.06s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:4.5px;--lift:-4.8px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(380 612)" style="--flow:2.27s;--delay:-0.03s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-6.2px;--lift:-6.1px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:7.5px;--lift:-3.2px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-3.1px;--lift:-5.1px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(299 544)" style="--flow:1.71s;--delay:-1.19s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
               </g>
               <g class="paris-splash" transform="translate(117 646)" style="--flow:2.33s;--delay:-0.16s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-3.9px;--lift:-3.9px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:5.2px;--lift:-5.8px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(181 594)" style="--flow:1.77s;--delay:-1.32s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:5.6px;--lift:-5.2px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(59 763)" style="--flow:1.20s;--delay:-0.29s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-7.3px;--lift:-6.5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:2.9px;--lift:-3.6px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
               <g class="paris-splash" transform="translate(97 763)" style="--flow:1.83s;--delay:-1.46s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:3.3px;--lift:-3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-4.6px;--lift:-4.9px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:5.9px;--lift:-2px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(148 762)" style="--flow:1.26s;--delay:-0.43s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-5px;--lift:-4.3px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(224 765)" style="--flow:1.89s;--delay:-1.59s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
-                
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:6.7px;--lift:-5.6px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-8px;--lift:-2.7px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:3.6px;--lift:-4.6px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(267 765)" style="--flow:1.32s;--delay:-0.56s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
               </g>
               <g class="paris-splash" transform="translate(355 765)" style="--flow:1.94s;--delay:-1.72s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
+                <path class="rebound" style="--dx:4.4px;--lift:-3.4px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:-5.7px;--lift:-5.3px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(133 676)" style="--flow:1.38s;--delay:-0.69s">
-                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
-                
+                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
+                <path class="rebound" style="--dx:-6.1px;--lift:-4.7px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
               </g>
               <g class="paris-splash" transform="translate(218 667)" style="--flow:2.00s;--delay:-1.85s">
-                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
+                <path class="rebound" style="--dx:7.8px;--lift:-6px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
+                <path class="rebound" style="--dx:-3.4px;--lift:-3.1px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
               </g>
               <g class="paris-splash" transform="translate(326 664)" style="--flow:1.44s;--delay:-0.82s">
-                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
-                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
-                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
+                <path class="rebound" style="--dx:-3.8px;--lift:-2.5px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
+                <path class="rebound" style="--dx:5.1px;--lift:-4.4px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
+                <path class="rebound" style="--dx:-6.4px;--lift:-6.3px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
               </g>
             </svg>
             <div class="paris-rain"></div>
