@@ -279,7 +279,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
       -webkit-mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
     }
-    .eiffel-sparkles { display:none; position:absolute; left:8.0808%; top:17.14898%; width:28.28283%; height:42.87245%; }
+    .eiffel-sparkles { display:none; position:absolute; left:6.46465%; top:16.29153%; width:31.31313%; height:46.40943%; }
     #v2-paris[data-sparkling] .eiffel-sparkles { display:block; }
     .eiffel-sparkles i { position:absolute; inset:0; }
     .eiffel-sparkles svg { display:block; width:100%; height:100%; }
@@ -325,26 +325,39 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     @keyframes paris-roof-light { 0%,42% { opacity:0; transform:translateX(21%); } 56% { opacity:.94; } 70%,100% {opacity:0;transform:translateX(-20%);} }
     @keyframes paris-window-objects { 0%,60%,88%,100% {opacity:1} 70% {opacity:.38} 75% {opacity:.12} 81% {opacity:.48} }
-    @keyframes eiffel-glint { 0%,65%,100% { opacity:.09; } 13%,26% { opacity:1; } 40% { opacity:.36; } 48% { opacity:.82; } }
+    @keyframes eiffel-glint { 0%,58%,100% { opacity:.035; } 10%,24% { opacity:1; } 35% { opacity:.16; } 43% { opacity:.85; } }
     .paris-runoff { position:absolute; left:0; top:53.59057%; width:100%; height:37.5134%; pointer-events:none; }
     .paris-runoff path {fill:none;stroke:white;stroke-width:2.3;stroke-linecap:round;opacity:0;}
     .paris-trickle {stroke-dasharray:10 180;}
-    .paris-splash {transform-box:fill-box;transform-origin:center bottom;}
+    .paris-splash { fill:#786e91; fill:color-mix(in srgb,#d5b8e8 54%,#081021); }
+    .paris-splash ellipse { opacity:0; }
+    html[data-theme="night"] .paris-splash {fill:#d5b8e8;}
+    .paris-splash .rebound { --reach:4px; --lift:-4px; }
+    .paris-splash .bead { --reach:2.6px; --lift:-2.4px; }
     @media (prefers-reduced-motion:no-preference) {
       .paris-trickle {animation:paris-trickle var(--flow) linear var(--delay) infinite;}
-      .paris-splash {animation:paris-impact var(--flow) linear var(--delay) infinite;}
+      .paris-splash .surface-fleck {animation:paris-contact var(--flow) ease-out var(--delay) infinite;}
+      .paris-splash .rebound {animation:paris-rebound var(--flow) linear var(--delay) infinite;}
     }
     @keyframes paris-trickle {
       0%,8% {stroke-dashoffset:12;opacity:0;} 12% {opacity:.78;}
       31% {opacity:.64;} 38%,100% {stroke-dashoffset:-110;opacity:0;}
     }
-    @keyframes paris-impact {
-      0%,15% {opacity:0;transform:scale(.35,.18);}
-      17% {opacity:1;transform:scale(.75,.85);}
-      31% {opacity:.93;transform:scale(1.12,1);}
-      43%,100% {opacity:0;transform:scale(1.42,.35);}
+    @keyframes paris-contact {
+      0%,30%,100% {opacity:0;transform:scaleX(.45);}
+      5% {opacity:.95;transform:scaleX(.85);}
+      17% {opacity:.66;transform:scaleX(1.1);}
+      29% {opacity:0;transform:scaleX(1.18);}
     }
-    html[data-theme="night"] .paris-runoff {opacity:.92;}
+    @keyframes paris-rebound {
+      0%,3%,36%,100% {opacity:0;}
+      3% {transform:translate(0,0);}
+      9% {opacity:.94;}
+      15% {transform:translate(calc(var(--drift) * var(--reach) * .48),var(--lift));}
+      24% {opacity:.76;transform:translate(calc(var(--drift) * var(--reach) * .78),calc(var(--lift) * .8));}
+      36% {transform:translate(calc(var(--drift) * var(--reach)),.5px);}
+    }
+    html[data-theme="night"] .paris-runoff {opacity:.46;}
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
     }
@@ -1204,62 +1217,321 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               <div class="paris-cloud" style="--top:43%;--width:97%;--height:21%;--to:104%;--time:40s;--phase:-31s"></div>
             </div>
             <div class="eiffel-lights"><div class="eiffel-beacon"></div><div class="eiffel-sparkles">
-              <i style="--twinkle:0.82s;--phase:-0.00s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M126 547h.1 M106 343h.1 M108 212h.1 M167 508h.1 M129 433h.1 M151 511h.1 M118 446h.1 M75 466h.1 M95 336h.1 M132 477h.1 M94 243h.1 M94 367h.1 M94 407h.1 M124 514h.1 M122 457h.1 M92 456h.1 M103 261h.1 M133 527h.1 M87 431h.1 M52 528h.1 M71 501h.1 M88 414h.1 M110 295h.1 M98 548h.1 M72 482h.1 M116 290h.1"/></svg></i>
-              <i style="--twinkle:0.91s;--phase:-0.22s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M110 549h.1 M91 497h.1 M140 479h.1 M114 275h.1 M103 544h.1 M81 511h.1 M98 193h.1 M96 197h.1 M105 428h.1 M105 244h.1 M79 443h.1 M78 452h.1 M100 287h.1 M112 279h.1 M112 436h.1 M94 353h.1 M127 403h.1 M96 437h.1 M103 528h.1 M102 254h.1 M93 471h.1 M131 426h.1 M108 258h.1 M91 466h.1 M154 515h.1 M100 342h.1"/></svg></i>
-              <i style="--twinkle:1.01s;--phase:-0.43s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M126 490h.1 M134 420h.1 M96 212h.1 M109 373h.1 M111 397h.1 M138 483h.1 M97 346h.1 M125 398h.1 M108 281h.1 M111 456h.1 M110 326h.1 M109 240h.1 M115 452h.1 M118 324h.1 M96 442h.1 M95 237h.1 M123 412h.1 M107 525h.1 M115 383h.1 M105 393h.1 M102 539h.1 M103 415h.1 M80 463h.1 M107 249h.1 M104 388h.1 M103 276h.1"/></svg></i>
-              <i style="--twinkle:1.10s;--phase:-0.65s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M140 528h.1 M121 378h.1 M108 198h.1 M91 487h.1 M123 465h.1 M84 423h.1 M132 495h.1 M63 515h.1 M98 265h.1 M123 417h.1 M106 191h.1 M113 360h.1 M113 250h.1 M102 180h.1 M94 427h.1 M168 533h.1 M130 484h.1 M51 538h.1 M113 285h.1 M115 315h.1 M116 395h.1 M115 545h.1 M140 460h.1 M128 410h.1 M116 408h.1"/></svg></i>
-              <i style="--twinkle:1.19s;--phase:-0.87s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M97 326h.1 M111 220h.1 M135 468h.1 M138 510h.1 M94 449h.1 M107 536h.1 M127 533h.1 M113 300h.1 M117 540h.1 M107 413h.1 M96 432h.1 M114 268h.1 M110 175h.1 M98 186h.1 M74 492h.1 M101 241h.1 M86 528h.1 M90 184h.1 M112 378h.1 M144 505h.1 M90 400h.1 M99 514h.1 M101 441h.1 M95 217h.1 M102 205h.1"/></svg></i>
-              <i style="--twinkle:1.28s;--phase:-1.08s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M96 179h.1 M111 543h.1 M127 510h.1 M124 391h.1 M104 196h.1 M94 529h.1 M117 417h.1 M118 363h.1 M96 522h.1 M92 477h.1 M109 449h.1 M112 190h.1 M84 472h.1 M98 389h.1 M87 511h.1 M113 533h.1 M104 509h.1 M110 225h.1 M113 427h.1 M112 513h.1 M120 534h.1 M131 470h.1 M56 521h.1 M122 538h.1 M109 364h.1"/></svg></i>
-              <i style="--twinkle:1.38s;--phase:-1.30s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M87 459h.1 M101 221h.1 M83 501h.1 M96 279h.1 M111 404h.1 M105 401h.1 M157 508h.1 M93 417h.1 M88 482h.1 M105 318h.1 M124 429h.1 M114 182h.1 M104 175h.1 M119 340h.1 M148 501h.1 M131 455h.1 M110 319h.1 M109 431h.1 M85 497h.1 M81 529h.1 M124 448h.1 M85 521h.1 M114 177h.1 M113 195h.1 M90 387h.1"/></svg></i>
-              <i style="--twinkle:1.47s;--phase:-1.52s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M134 439h.1 M90 423h.1 M106 219h.1 M117 438h.1 M132 414h.1 M100 319h.1 M103 434h.1 M67 529h.1 M89 393h.1 M76 514h.1 M83 417h.1 M131 508h.1 M95 230h.1 M117 371h.1 M109 305h.1 M97 300h.1 M104 215h.1 M107 444h.1 M92 513h.1 M76 458h.1 M91 539h.1 M93 309h.1 M94 391h.1 M79 433h.1 M128 499h.1"/></svg></i>
-              <i style="--twinkle:1.56s;--phase:-1.74s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M66 505h.1 M138 493h.1 M97 248h.1 M129 448h.1 M133 489h.1 M134 462h.1 M100 310h.1 M64 510h.1 M128 420h.1 M105 337h.1 M87 449h.1 M104 228h.1 M103 368h.1 M97 172h.1 M168 514h.1 M82 490h.1 M102 423h.1 M104 297h.1 M95 464h.1 M122 437h.1 M104 330h.1 M130 442h.1 M166 524h.1 M98 293h.1 M109 275h.1"/></svg></i>
+              <i style="--twinkle:0.97s;--phase:-0.00s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-0"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3" d="M84 420h.1 M96 402h.1 M99 265h.1 M165 511h.1 M79 452h.1 M107 338h.1 M104 296h.1 M115 280h.1 M102 451h.1 M101 323h.1 M98 201h.1 M91 181h.1 M106 419h.1 M89 441h.1 M112 318h.1 M94 372h.1 M89 469h.1 M111 289h.1 M105 399h.1 M105 340h.1 M93 425h.1 M105 441h.1 M117 313h.1 M78 506h.1 M99 314h.1 M126 532h.1 M110 331h.1 M150 512h.1 M115 529h.1 M113 546h.1 M115 515h.1 M115 415h.1 M122 429h.1 M99 262h.1 M68 529h.1 M136 510h.1 M141 468h.1 M120 517h.1 M100 404h.1 M94 422h.1 M100 318h.1 M128 434h.1 M124 509h.1 M96 511h.1 M99 550h.1 M109 510h.1 M93 325h.1 M121 367h.1 M91 392h.1 M106 273h.1 M127 442h.1 M95 216h.1 M134 420h.1 M100 514h.1 M92 441h.1 M79 472h.1 M116 545h.1 M83 497h.1 M119 340h.1 M116 449h.1 M85 417h.1 M96 229h.1 M111 421h.1 M75 513h.1 M84 500h.1 M95 293h.1 M94 320h.1 M84 516h.1 M114 334h.1 M121 425h.1 M97 189h.1 M68 497h.1 M61 509h.1 M100 199h.1 M123 414h.1 M148 509h.1 M104 342h.1 M76 494h.1 M123 401h.1 M121 399h.1 M132 477h.1 M76 458h.1 M145 500h.1 M130 451h.1 M94 174h.1 M137 506h.1 M84 476h.1 M110 543h.1 M104 319h.1 M88 446h.1 M119 429h.1 M168 527h.1 M78 436h.1 M122 446h.1 M114 330h.1 M114 543h.1 M112 339h.1 M168 536h.1 M100 257h.1 M113 512h.1"/>
+                <circle cx="84" cy="420" r="11" fill="url(#eiffel-aura-0)"/><image x="77" y="413" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="111" cy="289" r="13" fill="url(#eiffel-aura-0)"/><image x="104" y="282" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="68" cy="529" r="15" fill="url(#eiffel-aura-0)"/><image x="61" y="522" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="95" cy="216" r="11" fill="url(#eiffel-aura-0)"/><image x="88" y="209" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="114" cy="334" r="13" fill="url(#eiffel-aura-0)"/><image x="107" y="327" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="137" cy="506" r="15" fill="url(#eiffel-aura-0)"/><image x="130" y="499" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.04s;--phase:-0.29s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-1"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.4" d="M114 551h.1 M140 462h.1 M106 365h.1 M80 512h.1 M148 502h.1 M106 368h.1 M114 424h.1 M82 501h.1 M101 510h.1 M115 365h.1 M101 529h.1 M92 487h.1 M90 406h.1 M86 495h.1 M105 186h.1 M98 420h.1 M105 336h.1 M134 456h.1 M112 293h.1 M93 483h.1 M104 309h.1 M97 325h.1 M73 477h.1 M95 296h.1 M96 254h.1 M118 448h.1 M114 509h.1 M123 376h.1 M105 275h.1 M92 531h.1 M104 234h.1 M77 429h.1 M127 512h.1 M101 366h.1 M113 265h.1 M92 190h.1 M75 485h.1 M94 258h.1 M122 436h.1 M132 520h.1 M93 514h.1 M130 460h.1 M134 502h.1 M97 318h.1 M97 285h.1 M104 546h.1 M105 526h.1 M129 503h.1 M108 239h.1 M110 383h.1 M102 395h.1 M99 169h.1 M104 277h.1 M89 464h.1 M108 454h.1 M100 217h.1 M97 404h.1 M94 391h.1 M155 519h.1 M106 353h.1 M98 387h.1 M100 417h.1 M117 402h.1 M97 457h.1 M135 444h.1 M105 254h.1 M120 404h.1 M86 411h.1 M138 455h.1 M141 504h.1 M91 444h.1 M81 510h.1 M94 427h.1 M104 511h.1 M99 306h.1 M108 172h.1 M153 527h.1 M111 320h.1 M96 357h.1 M94 255h.1 M114 269h.1 M125 485h.1 M120 451h.1 M135 414h.1 M145 503h.1 M130 473h.1 M98 548h.1 M87 512h.1 M83 493h.1 M129 482h.1 M114 458h.1 M112 273h.1 M115 434h.1 M90 414h.1 M114 311h.1 M94 476h.1 M88 394h.1 M113 441h.1 M104 404h.1 M116 527h.1"/>
+                <circle cx="114" cy="551" r="11" fill="url(#eiffel-aura-1)"/><image x="107" y="544" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="134" cy="456" r="13" fill="url(#eiffel-aura-1)"/><image x="127" y="449" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="113" cy="265" r="15" fill="url(#eiffel-aura-1)"/><image x="106" y="258" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="99" cy="169" r="11" fill="url(#eiffel-aura-1)"/><image x="92" y="162" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="138" cy="455" r="13" fill="url(#eiffel-aura-1)"/><image x="131" y="448" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="130" cy="473" r="15" fill="url(#eiffel-aura-1)"/><image x="123" y="466" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.12s;--phase:-0.57s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-2"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.8" d="M167 534h.1 M144 511h.1 M112 530h.1 M91 529h.1 M124 550h.1 M107 440h.1 M94 416h.1 M65 509h.1 M80 474h.1 M104 301h.1 M94 237h.1 M94 472h.1 M97 170h.1 M127 493h.1 M81 458h.1 M95 466h.1 M136 454h.1 M135 497h.1 M117 409h.1 M111 214h.1 M95 233h.1 M120 540h.1 M105 220h.1 M82 490h.1 M111 509h.1 M107 400h.1 M112 396h.1 M136 434h.1 M168 532h.1 M84 446h.1 M107 516h.1 M121 443h.1 M81 416h.1 M110 327h.1 M86 506h.1 M117 426h.1 M111 350h.1 M122 419h.1 M73 521h.1 M87 472h.1 M108 372h.1 M94 323h.1 M109 432h.1 M100 441h.1 M75 470h.1 M101 208h.1 M124 480h.1 M110 352h.1 M109 282h.1 M102 447h.1 M111 457h.1 M107 358h.1 M106 210h.1 M109 399h.1 M109 225h.1 M118 515h.1 M92 346h.1 M97 425h.1 M116 323h.1 M117 310h.1 M126 448h.1 M59 515h.1 M96 236h.1 M91 373h.1 M105 200h.1 M104 316h.1 M70 487h.1 M100 232h.1 M117 390h.1 M72 505h.1 M97 214h.1 M143 509h.1 M109 197h.1 M90 495h.1 M105 386h.1 M161 511h.1 M68 494h.1 M126 546h.1 M115 290h.1 M98 380h.1 M54 511h.1 M91 370h.1 M107 271h.1 M72 513h.1 M111 342h.1 M66 513h.1 M104 380h.1 M101 244h.1 M140 506h.1 M113 549h.1 M96 218h.1 M97 303h.1 M107 178h.1 M116 339h.1 M111 545h.1 M118 321h.1 M76 511h.1 M97 198h.1 M110 210h.1 M129 456h.1"/>
+                <circle cx="167" cy="534" r="11" fill="url(#eiffel-aura-2)"/><image x="160" y="527" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="135" cy="497" r="13" fill="url(#eiffel-aura-2)"/><image x="128" y="490" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="86" cy="506" r="15" fill="url(#eiffel-aura-2)"/><image x="79" y="499" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="107" cy="358" r="11" fill="url(#eiffel-aura-2)"/><image x="100" y="351" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="117" cy="390" r="13" fill="url(#eiffel-aura-2)"/><image x="110" y="383" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="66" cy="513" r="15" fill="url(#eiffel-aura-2)"/><image x="59" y="506" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.19s;--phase:-0.86s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-3"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3" d="M118 431h.1 M93 332h.1 M70 502h.1 M121 511h.1 M106 394h.1 M97 328h.1 M112 410h.1 M153 498h.1 M106 530h.1 M103 256h.1 M114 445h.1 M97 359h.1 M78 509h.1 M124 380h.1 M137 451h.1 M132 516h.1 M96 433h.1 M107 265h.1 M130 414h.1 M113 540h.1 M106 411h.1 M111 179h.1 M99 409h.1 M113 188h.1 M158 511h.1 M98 296h.1 M92 394h.1 M93 396h.1 M101 225h.1 M128 514h.1 M114 298h.1 M97 240h.1 M110 387h.1 M107 335h.1 M132 483h.1 M96 526h.1 M101 305h.1 M87 515h.1 M94 280h.1 M108 317h.1 M112 245h.1 M91 367h.1 M67 504h.1 M119 509h.1 M124 530h.1 M98 333h.1 M87 404h.1 M95 441h.1 M79 440h.1 M126 510h.1 M111 231h.1 M142 489h.1 M107 196h.1 M117 300h.1 M104 214h.1 M117 344h.1 M128 534h.1 M100 292h.1 M110 455h.1 M71 483h.1 M97 247h.1 M93 381h.1 M92 398h.1 M113 404h.1 M107 261h.1 M128 500h.1 M91 462h.1 M97 443h.1 M100 332h.1 M100 187h.1 M73 495h.1 M106 318h.1 M121 380h.1 M102 371h.1 M94 288h.1 M124 447h.1 M95 239h.1 M96 343h.1 M107 284h.1 M152 508h.1 M115 359h.1 M103 420h.1 M137 466h.1 M75 434h.1 M108 533h.1 M95 394h.1 M106 379h.1 M104 217h.1 M111 239h.1 M168 517h.1 M107 311h.1 M93 431h.1 M111 252h.1 M97 313h.1 M147 513h.1 M120 389h.1 M99 412h.1 M100 377h.1 M79 420h.1 M121 536h.1"/>
+                <circle cx="118" cy="431" r="11" fill="url(#eiffel-aura-3)"/><image x="111" y="424" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="107" cy="265" r="13" fill="url(#eiffel-aura-3)"/><image x="100" y="258" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="132" cy="483" r="15" fill="url(#eiffel-aura-3)"/><image x="125" y="476" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="142" cy="489" r="11" fill="url(#eiffel-aura-3)"/><image x="135" y="482" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="100" cy="332" r="13" fill="url(#eiffel-aura-3)"/><image x="93" y="325" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="95" cy="394" r="15" fill="url(#eiffel-aura-3)"/><image x="88" y="387" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.27s;--phase:-1.15s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-4"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.4" d="M105 402h.1 M102 409h.1 M97 553h.1 M131 469h.1 M97 266h.1 M104 174h.1 M142 512h.1 M96 279h.1 M95 265h.1 M111 243h.1 M111 414h.1 M129 478h.1 M78 464h.1 M137 514h.1 M112 175h.1 M108 458h.1 M118 434h.1 M117 304h.1 M101 392h.1 M83 514h.1 M73 499h.1 M71 511h.1 M129 529h.1 M117 396h.1 M127 445h.1 M135 464h.1 M144 498h.1 M56 510h.1 M107 332h.1 M86 502h.1 M124 385h.1 M138 481h.1 M123 440h.1 M113 332h.1 M117 416h.1 M105 542h.1 M116 351h.1 M114 259h.1 M102 538h.1 M98 185h.1 M108 314h.1 M112 434h.1 M128 439h.1 M74 490h.1 M99 234h.1 M125 421h.1 M88 429h.1 M117 307h.1 M105 550h.1 M103 347h.1 M109 412h.1 M111 190h.1 M127 527h.1 M135 484h.1 M145 481h.1 M90 539h.1 M97 288h.1 M100 174h.1 M83 478h.1 M135 437h.1 M112 196h.1 M112 515h.1 M108 369h.1 M132 421h.1 M95 335h.1 M78 481h.1 M54 519h.1 M107 281h.1 M96 243h.1 M95 531h.1 M92 173h.1 M98 390h.1 M79 529h.1 M92 198h.1 M52 536h.1 M119 414h.1 M108 328h.1 M133 495h.1 M102 315h.1 M95 301h.1 M103 368h.1 M83 503h.1 M103 312h.1 M109 380h.1 M93 509h.1 M93 443h.1 M100 210h.1 M96 514h.1 M116 297h.1 M128 458h.1 M63 511h.1 M108 305h.1 M104 539h.1 M94 537h.1 M74 474h.1 M91 451h.1 M93 386h.1 M106 300h.1 M72 497h.1 M100 247h.1"/>
+                <circle cx="105" cy="402" r="11" fill="url(#eiffel-aura-4)"/><image x="98" y="395" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="117" cy="304" r="13" fill="url(#eiffel-aura-4)"/><image x="110" y="297" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="117" cy="416" r="15" fill="url(#eiffel-aura-4)"/><image x="110" y="409" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="111" cy="190" r="11" fill="url(#eiffel-aura-4)"/><image x="104" y="183" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="96" cy="243" r="13" fill="url(#eiffel-aura-4)"/><image x="89" y="236" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="93" cy="443" r="15" fill="url(#eiffel-aura-4)"/><image x="86" y="436" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.34s;--phase:-1.43s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-5"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.8" d="M140 493h.1 M109 262h.1 M67 538h.1 M100 368h.1 M100 401h.1 M100 310h.1 M96 291h.1 M116 362h.1 M168 509h.1 M106 194h.1 M107 362h.1 M101 423h.1 M130 510h.1 M83 462h.1 M109 551h.1 M121 349h.1 M102 352h.1 M137 499h.1 M80 527h.1 M94 549h.1 M115 454h.1 M109 202h.1 M106 523h.1 M71 500h.1 M131 432h.1 M84 511h.1 M100 425h.1 M95 539h.1 M94 186h.1 M100 329h.1 M114 531h.1 M110 397h.1 M93 336h.1 M111 222h.1 M93 469h.1 M125 450h.1 M77 456h.1 M97 417h.1 M95 341h.1 M103 357h.1 M127 490h.1 M98 365h.1 M89 424h.1 M89 479h.1 M98 282h.1 M111 379h.1 M105 456h.1 M99 429h.1 M79 495h.1 M64 516h.1 M97 300h.1 M125 537h.1 M130 487h.1 M94 367h.1 M98 352h.1 M124 476h.1 M100 540h.1 M104 434h.1 M154 510h.1 M90 189h.1 M104 170h.1 M85 413h.1 M120 411h.1 M131 426h.1 M142 485h.1 M103 273h.1 M95 429h.1 M99 344h.1 M93 434h.1 M123 451h.1 M97 530h.1 M80 463h.1 M141 481h.1 M151 495h.1 M166 530h.1 M105 325h.1 M111 355h.1 M116 510h.1 M105 236h.1 M130 447h.1 M110 271h.1 M85 521h.1 M74 504h.1 M143 476h.1 M110 529h.1 M88 484h.1 M114 340h.1 M116 356h.1 M118 529h.1 M118 541h.1 M108 288h.1 M51 538h.1 M151 499h.1 M101 397h.1 M80 429h.1 M110 417h.1 M91 412h.1 M143 471h.1 M117 373h.1 M108 364h.1"/>
+                <circle cx="140" cy="493" r="11" fill="url(#eiffel-aura-5)"/><image x="133" y="486" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="137" cy="499" r="13" fill="url(#eiffel-aura-5)"/><image x="130" y="492" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="93" cy="469" r="15" fill="url(#eiffel-aura-5)"/><image x="86" y="462" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="125" cy="537" r="11" fill="url(#eiffel-aura-5)"/><image x="118" y="530" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="93" cy="434" r="13" fill="url(#eiffel-aura-5)"/><image x="86" y="427" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="88" cy="484" r="15" fill="url(#eiffel-aura-5)"/><image x="81" y="477" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.41s;--phase:-1.72s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-6"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3" d="M72 492h.1 M81 446h.1 M102 201h.1 M149 494h.1 M119 397h.1 M85 441h.1 M94 542h.1 M108 546h.1 M116 286h.1 M109 269h.1 M121 461h.1 M106 251h.1 M83 472h.1 M131 522h.1 M98 271h.1 M96 370h.1 M154 502h.1 M115 386h.1 M103 413h.1 M72 480h.1 M115 377h.1 M78 489h.1 M106 548h.1 M97 450h.1 M105 328h.1 M91 416h.1 M108 406h.1 M101 343h.1 M102 534h.1 M104 331h.1 M95 275h.1 M100 288h.1 M115 406h.1 M122 449h.1 M121 417h.1 M123 465h.1 M116 539h.1 M166 522h.1 M118 549h.1 M114 370h.1 M116 420h.1 M120 364h.1 M101 301h.1 M140 529h.1 M111 268h.1 M123 456h.1 M97 377h.1 M128 408h.1 M120 355h.1 M107 389h.1 M120 546h.1 M87 434h.1 M125 416h.1 M94 533h.1 M102 172h.1 M96 222h.1 M94 459h.1 M111 403h.1 M92 363h.1 M106 315h.1 M118 375h.1 M107 428h.1 M97 541h.1 M92 479h.1 M81 450h.1 M86 470h.1 M102 550h.1 M87 427h.1 M108 423h.1 M55 515h.1 M105 263h.1 M102 229h.1 M94 195h.1 M98 268h.1 M87 493h.1 M122 545h.1 M167 515h.1 M134 431h.1 M74 519h.1 M134 492h.1 M121 548h.1 M128 470h.1 M110 171h.1 M123 405h.1 M134 488h.1 M150 497h.1 M64 520h.1 M94 364h.1 M126 487h.1 M95 547h.1 M97 339h.1 M96 178h.1 M74 429h.1 M117 370h.1 M133 467h.1 M97 509h.1 M117 385h.1 M115 428h.1 M135 500h.1 M84 451h.1"/>
+                <circle cx="72" cy="492" r="11" fill="url(#eiffel-aura-6)"/><image x="65" y="485" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="115" cy="386" r="13" fill="url(#eiffel-aura-6)"/><image x="108" y="379" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="121" cy="417" r="15" fill="url(#eiffel-aura-6)"/><image x="114" y="410" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="87" cy="434" r="11" fill="url(#eiffel-aura-6)"/><image x="80" y="427" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="108" cy="423" r="13" fill="url(#eiffel-aura-6)"/><image x="101" y="416" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="150" cy="497" r="15" fill="url(#eiffel-aura-6)"/><image x="143" y="490" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.49s;--phase:-2.01s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-7"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.4" d="M95 312h.1 M85 527h.1 M94 339h.1 M102 253h.1 M81 471h.1 M128 537h.1 M90 458h.1 M85 463h.1 M96 226h.1 M80 507h.1 M136 474h.1 M121 357h.1 M59 511h.1 M92 403h.1 M113 528h.1 M80 433h.1 M98 228h.1 M104 350h.1 M109 340h.1 M76 482h.1 M103 428h.1 M76 488h.1 M131 416h.1 M80 499h.1 M74 468h.1 M125 403h.1 M124 527h.1 M120 528h.1 M120 456h.1 M113 378h.1 M108 175h.1 M63 522h.1 M109 207h.1 M106 520h.1 M91 196h.1 M140 509h.1 M98 513h.1 M105 289h.1 M103 365h.1 M127 402h.1 M102 177h.1 M114 534h.1 M102 515h.1 M105 230h.1 M92 527h.1 M104 243h.1 M163 513h.1 M95 535h.1 M95 180h.1 M106 279h.1 M90 381h.1 M91 178h.1 M113 255h.1 M141 464h.1 M106 438h.1 M111 184h.1 M82 418h.1 M109 180h.1 M123 513h.1 M138 494h.1 M108 209h.1 M119 513h.1 M123 543h.1 M137 492h.1 M100 237h.1 M105 305h.1 M111 295h.1 M133 508h.1 M105 197h.1 M108 385h.1 M138 459h.1 M115 541h.1 M93 329h.1 M115 443h.1 M123 473h.1 M136 447h.1 M90 438h.1 M78 476h.1 M136 470h.1 M128 413h.1 M132 429h.1 M114 432h.1 M91 465h.1 M129 495h.1 M125 426h.1 M96 361h.1 M106 374h.1 M105 258h.1 M133 459h.1 M110 301h.1 M166 519h.1 M99 196h.1 M79 444h.1 M118 328h.1 M110 449h.1 M93 177h.1 M92 512h.1 M113 288h.1 M73 515h.1 M83 422h.1"/>
+                <circle cx="95" cy="312" r="11" fill="url(#eiffel-aura-7)"/><image x="88" y="305" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="104" cy="350" r="13" fill="url(#eiffel-aura-7)"/><image x="97" y="343" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="91" cy="196" r="15" fill="url(#eiffel-aura-7)"/><image x="84" y="189" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="91" cy="178" r="11" fill="url(#eiffel-aura-7)"/><image x="84" y="171" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="105" cy="197" r="13" fill="url(#eiffel-aura-7)"/><image x="98" y="190" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="96" cy="361" r="15" fill="url(#eiffel-aura-7)"/><image x="89" y="354" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.56s;--phase:-2.30s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-8"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3.8" d="M124 409h.1 M103 279h.1 M128 431h.1 M162 509h.1 M112 306h.1 M103 267h.1 M107 377h.1 M76 507h.1 M83 430h.1 M100 171h.1 M147 485h.1 M53 529h.1 M107 248h.1 M166 513h.1 M123 424h.1 M85 498h.1 M94 273h.1 M130 480h.1 M114 419h.1 M112 347h.1 M102 192h.1 M112 381h.1 M99 447h.1 M166 526h.1 M108 324h.1 M118 336h.1 M160 513h.1 M108 189h.1 M85 504h.1 M108 450h.1 M96 519h.1 M104 390h.1 M134 527h.1 M113 345h.1 M102 222h.1 M155 505h.1 M90 502h.1 M93 474h.1 M122 468h.1 M110 308h.1 M137 527h.1 M70 509h.1 M122 365h.1 M94 285h.1 M102 204h.1 M123 372h.1 M114 317h.1 M114 391h.1 M134 446h.1 M125 397h.1 M124 432h.1 M79 483h.1 M150 492h.1 M106 512h.1 M97 430h.1 M118 444h.1 M117 455h.1 M123 388h.1 M92 390h.1 M119 442h.1 M86 450h.1 M86 529h.1 M132 512h.1 M81 492h.1 M144 492h.1 M95 268h.1 M115 326h.1 M134 449h.1 M65 526h.1 M99 360h.1 M89 514h.1 M105 225h.1 M109 322h.1 M111 539h.1 M106 405h.1 M78 526h.1 M90 389h.1 M95 172h.1 M107 415h.1 M78 449h.1 M98 414h.1 M95 462h.1 M108 292h.1 M91 497h.1 M91 485h.1 M104 322h.1 M89 401h.1 M97 258h.1 M139 488h.1 M100 455h.1 M111 276h.1 M121 533h.1 M110 186h.1 M146 505h.1 M76 478h.1 M140 484h.1 M88 456h.1 M110 408h.1 M135 461h.1 M111 444h.1"/>
+                <circle cx="124" cy="409" r="11" fill="url(#eiffel-aura-8)"/><image x="117" y="402" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="130" cy="480" r="13" fill="url(#eiffel-aura-8)"/><image x="123" y="473" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="102" cy="222" r="15" fill="url(#eiffel-aura-8)"/><image x="95" y="215" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="79" cy="483" r="11" fill="url(#eiffel-aura-8)"/><image x="72" y="476" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="65" cy="526" r="13" fill="url(#eiffel-aura-8)"/><image x="58" y="519" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="104" cy="322" r="15" fill="url(#eiffel-aura-8)"/><image x="97" y="315" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
+              <i style="--twinkle:1.64s;--phase:-2.58s"><svg viewBox="32 152 155 433" preserveAspectRatio="none">
+                <defs><radialGradient id="eiffel-aura-9"><stop stop-color="#fff"/><stop offset=".23" stop-color="#fef7d0" stop-opacity=".92"/><stop offset="1" stop-color="#ffce62" stop-opacity="0"/></radialGradient></defs>
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-width="3" d="M133 442h.1 M82 455h.1 M108 205h.1 M130 506h.1 M70 515h.1 M112 278h.1 M134 482h.1 M85 433h.1 M121 542h.1 M141 472h.1 M100 184h.1 M85 456h.1 M99 176h.1 M91 185h.1 M104 376h.1 M111 431h.1 M107 527h.1 M104 285h.1 M115 372h.1 M156 508h.1 M129 429h.1 M114 180h.1 M95 385h.1 M126 466h.1 M121 387h.1 M93 355h.1 M95 399h.1 M109 193h.1 M82 443h.1 M76 515h.1 M127 419h.1 M119 420h.1 M106 345h.1 M126 456h.1 M85 485h.1 M112 446h.1 M119 381h.1 M120 523h.1 M153 514h.1 M108 391h.1 M105 212h.1 M114 183h.1 M97 209h.1 M140 514h.1 M144 474h.1 M115 451h.1 M92 492h.1 M87 444h.1 M105 206h.1 M113 408h.1 M95 262h.1 M98 194h.1 M118 458h.1 M80 422h.1 M98 206h.1 M94 309h.1 M88 417h.1 M128 497h.1 M156 513h.1 M78 514h.1 M91 515h.1 M113 191h.1 M109 259h.1 M108 299h.1 M122 538h.1 M101 275h.1 M103 324h.1 M94 316h.1 M110 424h.1 M105 514h.1 M90 511h.1 M155 515h.1 M110 363h.1 M102 383h.1 M109 354h.1 M107 434h.1 M80 477h.1 M101 457h.1 M101 445h.1 M128 450h.1 M92 376h.1 M140 502h.1 M94 352h.1 M132 526h.1 M147 499h.1 M94 298h.1 M110 264h.1 M56 517h.1 M105 426h.1 M114 412h.1 M153 532h.1 M108 403h.1 M102 289h.1 M82 487h.1 M168 520h.1 M98 179h.1 M124 547h.1 M95 326h.1 M108 445h.1 M95 210h.1"/>
+                <circle cx="133" cy="442" r="11" fill="url(#eiffel-aura-9)"/><image x="126" y="435" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="104" cy="285" r="13" fill="url(#eiffel-aura-9)"/><image x="97" y="278" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="85" cy="485" r="15" fill="url(#eiffel-aura-9)"/><image x="78" y="478" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="98" cy="194" r="11" fill="url(#eiffel-aura-9)"/><image x="91" y="187" width="14" height="14" href="assets/drawn-ui/etoile_ciel_01.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="110" cy="424" r="13" fill="url(#eiffel-aura-9)"/><image x="103" y="417" width="14" height="14" href="assets/drawn-ui/etoile_ciel_02.png" style="filter:brightness(0) invert(1)"/>
+                <circle cx="94" cy="298" r="15" fill="url(#eiffel-aura-9)"/><image x="87" y="291" width="14" height="14" href="assets/drawn-ui/etoile_ciel_03.png" style="filter:brightness(0) invert(1)"/>
+              </svg></i>
             </div></div>
             <svg class="paris-runoff" viewBox="0 500 495 350" preserveAspectRatio="none" aria-hidden="true">
               <path class="paris-trickle" style="--flow:4.7s;--delay:-.8s" d="M115 582 Q107 611 102 629 T89 676"/>
               <path class="paris-trickle" style="--flow:6.3s;--delay:-3.9s" d="M291 561 Q282 591 275 607 T256 663"/>
               <path class="paris-trickle" style="--flow:5.35s;--delay:-1.9s" d="M404 587 Q398 609 393 620 T381 657"/>
-              <path class="paris-splash" style="--flow:2.73s;--delay:-1s" d="M106 588 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:3.81s;--delay:-2.4s" d="M69 639 q2 0 4 4 m3 -1 q2 -4 5 -4"/>
-              <path class="paris-splash" style="--flow:3.34s;--delay:-0.3s" d="M241 555 q2 0 4 4 m3 -1 q2 -4 3 -5"/>
-              <path class="paris-splash" style="--flow:4.19s;--delay:-3.5s" d="M335 541 q2 0 4 4 m3 -1 q2 -4 5 -3"/>
-              <path class="paris-splash" style="--flow:3.67s;--delay:-0.7s" d="M395 619 q2 0 4 4 m3 -1 q2 -4 3 -4"/>
-              <path class="paris-splash" style="--flow:3.13s;--delay:-2.5s" d="M105 678 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:2.97s;--delay:-0.7s" d="M270 663 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:4.31s;--delay:-2.1s" d="M331 762 q2 0 4 4 m3 -1 q2 -4 5 -4"/>
-              <path class="paris-splash" style="--flow:3.43s;--delay:-0.1s" d="M66 759 q2 0 4 4 m3 -1 q2 -4 3 -5"/>
-              <path class="paris-splash" style="--flow:4.73s;--delay:-3.3s" d="M398 762 q2 0 4 4 m3 -1 q2 -4 5 -3"/>
-              <path class="paris-splash" style="--flow:5.27s;--delay:-1.4s" d="M213 547 q2 0 4 4 m3 -1 q2 -4 3 -4"/>
-              <path class="paris-splash" style="--flow:4.07s;--delay:-2.6s" d="M42 567 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.18s;--delay:-0.00s" d="M401 638 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.80s;--delay:-1.16s" d="M386 594 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.24s;--delay:-0.13s" d="M41 647 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.86s;--delay:-1.29s" d="M329 539 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.30s;--delay:-0.26s" d="M101 666 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.92s;--delay:-1.43s" d="M275 557 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.36s;--delay:-0.40s" d="M194 578 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.98s;--delay:-1.56s" d="M342 656 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.42s;--delay:-0.53s" d="M195 639 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:2.04s;--delay:-1.69s" d="M312 664 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.47s;--delay:-0.66s" d="M88 679 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:2.10s;--delay:-1.82s" d="M418 630 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.53s;--delay:-0.79s" d="M415 597 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:2.16s;--delay:-1.96s" d="M39 675 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.59s;--delay:-0.93s" d="M280 527 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:2.22s;--delay:-2.09s" d="M86 614 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.65s;--delay:-1.06s" d="M268 624 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:2.27s;--delay:-0.03s" d="M376 608 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.71s;--delay:-1.19s" d="M295 540 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:2.33s;--delay:-0.16s" d="M113 642 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.77s;--delay:-1.32s" d="M177 590 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.20s;--delay:-0.29s" d="M55 759 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.83s;--delay:-1.46s" d="M93 759 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.26s;--delay:-0.43s" d="M144 758 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.89s;--delay:-1.59s" d="M220 761 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:1.32s;--delay:-0.56s" d="M263 761 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.94s;--delay:-1.72s" d="M351 761 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
-              <path class="paris-splash" style="--flow:1.38s;--delay:-0.69s" d="M129 672 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
-              <path class="paris-splash" style="--flow:2.00s;--delay:-1.85s" d="M214 663 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
-              <path class="paris-splash" style="--flow:1.44s;--delay:-0.82s" d="M322 660 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <g class="paris-splash" transform="translate(110 592)" style="--flow:2.73s;--delay:-1s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(73 643)" style="--flow:3.81s;--delay:-2.4s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(245 559)" style="--flow:3.34s;--delay:-0.3s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(339 545)" style="--flow:4.19s;--delay:-3.5s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(399 623)" style="--flow:3.67s;--delay:-0.7s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(109 682)" style="--flow:3.13s;--delay:-2.5s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(274 667)" style="--flow:2.97s;--delay:-0.7s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(335 766)" style="--flow:4.31s;--delay:-2.1s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(70 763)" style="--flow:3.43s;--delay:-0.1s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(402 766)" style="--flow:4.73s;--delay:-3.3s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(217 551)" style="--flow:5.27s;--delay:-1.4s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(46 571)" style="--flow:4.07s;--delay:-2.6s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(405 642)" style="--flow:1.18s;--delay:-0.00s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(390 598)" style="--flow:1.80s;--delay:-1.16s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(45 651)" style="--flow:1.24s;--delay:-0.13s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(333 543)" style="--flow:1.86s;--delay:-1.29s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(105 670)" style="--flow:1.30s;--delay:-0.26s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(279 561)" style="--flow:1.92s;--delay:-1.43s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(198 582)" style="--flow:1.36s;--delay:-0.40s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(346 660)" style="--flow:1.98s;--delay:-1.56s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(199 643)" style="--flow:1.42s;--delay:-0.53s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(316 668)" style="--flow:2.04s;--delay:-1.69s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(92 683)" style="--flow:1.47s;--delay:-0.66s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(422 634)" style="--flow:2.10s;--delay:-1.82s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(419 601)" style="--flow:1.53s;--delay:-0.79s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(43 679)" style="--flow:2.16s;--delay:-1.96s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(284 531)" style="--flow:1.59s;--delay:-0.93s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(90 618)" style="--flow:2.22s;--delay:-2.09s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(272 628)" style="--flow:1.65s;--delay:-1.06s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(380 612)" style="--flow:2.27s;--delay:-0.03s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(299 544)" style="--flow:1.71s;--delay:-1.19s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(117 646)" style="--flow:2.33s;--delay:-0.16s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(181 594)" style="--flow:1.77s;--delay:-1.32s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(59 763)" style="--flow:1.20s;--delay:-0.29s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(97 763)" style="--flow:1.83s;--delay:-1.46s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(148 762)" style="--flow:1.26s;--delay:-0.43s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(224 765)" style="--flow:1.89s;--delay:-1.59s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:-1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(267 765)" style="--flow:1.32s;--delay:-0.56s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
+              <g class="paris-splash" transform="translate(355 765)" style="--flow:1.94s;--delay:-1.72s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(133 676)" style="--flow:1.38s;--delay:-0.69s">
+                <ellipse class="surface-fleck" rx="2.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.7" style="--drift:1"/>
+                
+              </g>
+              <g class="paris-splash" transform="translate(218 667)" style="--flow:2.00s;--delay:-1.85s">
+                <ellipse class="surface-fleck" rx="3.1" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="1.9" style="--drift:-1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:1"/>
+              </g>
+              <g class="paris-splash" transform="translate(326 664)" style="--flow:1.44s;--delay:-0.82s">
+                <ellipse class="surface-fleck" rx="3.6" ry=".95"/>
+                <ellipse class="rebound" rx="1.45" ry="2.1" style="--drift:1"/>
+                <ellipse class="rebound bead" rx="1" ry="1.15" style="--drift:-1"/>
+              </g>
             </svg>
             <div class="paris-rain"></div>
           </div>
