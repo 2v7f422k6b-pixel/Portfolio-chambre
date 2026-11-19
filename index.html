@@ -259,29 +259,31 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-japan .japan-mountain, #v2-japan .japan-fields { position:absolute; background-size:100% 100%; background-repeat:no-repeat; }
     #v2-japan .japan-mountain { left:-10.50505%; top:0; width:99.19192%; height:99.89282%; background-image:var(--mountain); }
     #v2-japan .japan-fields { left:.80808%; top:72.77599%; width:87.87879%; height:27.11683%; background-image:var(--fields); }
-    html:not([data-theme="night"]) #v2-japan .japan-mountain::before,
-    html:not([data-theme="night"]) #v2-japan .japan-mountain::after {
-      content:""; position:absolute; background:#fffaff;
+    #v2-japan .japan-cloud {
+      position:absolute; background:#fffaff;
       -webkit-mask:var(--cloud) center / contain no-repeat;
       mask:var(--cloud) center / contain no-repeat;
     }
-    #v2-japan .japan-mountain::before {
-      --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:-8%; top:13%; width:80%; height:22.6%; opacity:.88;
-      --drift-from:-72.5%; --drift-to:135%; --drift-time:128s; --drift-phase:-45s;
+    html[data-theme="night"] #v2-japan .japan-cloud { display:none; }
+    #v2-japan .cloud-high {
+      --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:-8%; top:8%; width:80%; height:22.6%; opacity:.88;
+      --drift-from:-72.5%; --drift-to:135%; --rise:-9%; --drift-time:108s; --drift-phase:-38s;
     }
-    #v2-japan .japan-mountain::after {
-      --cloud:url("assets/drawn-ui/nuage_jour_02.png"); left:55%; top:34%; width:54%; height:17.8%; opacity:.72;
-      --drift-from:-176%; --drift-to:83.4%; --drift-time:143s; --drift-phase:-97s;
+    #v2-japan .cloud-middle {
+      --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:35%; top:30%; width:28%; height:8%; opacity:.62;
+      --drift-from:-180%; --drift-to:240%; --rise:5%; --drift-time:133s; --drift-phase:-57s;
+    }
+    #v2-japan .cloud-low {
+      --cloud:url("assets/drawn-ui/nuage_jour_02.png"); left:55%; top:38%; width:54%; height:17.8%; opacity:.72;
+      --drift-from:-176%; --drift-to:83.4%; --rise:-14%; --drift-time:120s; --drift-phase:-81s;
     }
     @media (prefers-reduced-motion:no-preference) {
-      #v2-japan .japan-mountain::before, #v2-japan .japan-mountain::after {
-        animation:japan-cloud-drift var(--drift-time) linear var(--drift-phase) infinite;
-      }
+      #v2-japan .japan-cloud { animation:japan-cloud-drift var(--drift-time) linear var(--drift-phase) infinite; }
     }
-    /* Both endpoints are outside the clipped window, hiding each loop reset. */
+    /* Each cloud wraps outside the clipped window. */
     @keyframes japan-cloud-drift {
       from { transform:translate3d(var(--drift-from),0,0); }
-      to { transform:translate3d(var(--drift-to),0,0); }
+      to { transform:translate3d(var(--drift-to),var(--rise),0); }
     }
     /* Each strip repeats seven identical rows. Moving one row closes the loop. */
     #v2-japan .snowfall {
@@ -1015,7 +1017,11 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           </svg>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
             <div class="japan-art">
-              <div class="japan-mountain"></div>
+              <div class="japan-mountain">
+                <div class="japan-cloud cloud-high"></div>
+                <div class="japan-cloud cloud-middle"></div>
+                <div class="japan-cloud cloud-low"></div>
+              </div>
               <div class="snowfall"></div>
               <!-- Insert the train here so it passes behind the house and fields. -->
               <div class="japan-fields"></div>
