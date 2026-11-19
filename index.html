@@ -259,6 +259,18 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-japan .japan-mountain, #v2-japan .japan-fields { position:absolute; background-size:100% 100%; background-repeat:no-repeat; }
     #v2-japan .japan-mountain { left:-10.50505%; top:0; width:99.19192%; height:99.89282%; background-image:var(--mountain); }
     #v2-japan .japan-fields { left:.80808%; top:72.77599%; width:87.87879%; height:27.11683%; background-image:var(--fields); }
+    html:not([data-theme="night"]) #v2-japan .japan-mountain::before,
+    html:not([data-theme="night"]) #v2-japan .japan-mountain::after {
+      content:""; position:absolute; background:#fffaff;
+      -webkit-mask:var(--cloud) center / contain no-repeat;
+      mask:var(--cloud) center / contain no-repeat;
+    }
+    #v2-japan .japan-mountain::before {
+      --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:20%; top:21%; width:29%; height:8.2%; opacity:.88;
+    }
+    #v2-japan .japan-mountain::after {
+      --cloud:url("assets/drawn-ui/nuage_jour_02.png"); left:69%; top:36%; width:19%; height:6.3%; opacity:.72;
+    }
     /* Each strip repeats seven identical rows. Moving one row closes the loop. */
     #v2-japan .snowfall {
       position:absolute; left:0; right:0; top:-19.2926%; height:135.0482%;
