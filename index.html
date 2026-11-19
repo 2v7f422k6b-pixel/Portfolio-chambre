@@ -259,19 +259,47 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-paris {
       overflow:hidden; contain:strict;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
-      background:url("assets/room-redraw/paris-jour.webp?v=eiffel-1") center / 100% 100% no-repeat;
+      background:url("assets/room-redraw/paris-jour.webp?v=eiffel-palette-2") center / 100% 100% no-repeat;
     }
-    html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp?v=eiffel-1"); }
-    .eiffel-lights { display:none; position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-    html[data-theme="night"] .eiffel-lights { display:block; }
-    .eiffel-sparkles { display:none; }
-    #v2-paris[data-sparkling] .eiffel-sparkles { display:inline; }
-    .eiffel-sparkles g { opacity:.65; }
+    html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp?v=eiffel-palette-2"); }
+    .paris-cloud {
+      position:absolute; left:0; background:linear-gradient(white 58%, #f6f1f9);
+      mask:var(--cloud) center / contain no-repeat; -webkit-mask:var(--cloud) center / contain no-repeat;
+    }
+    .paris-cloud.high { --cloud:url("assets/drawn-ui/nuage_jour_01.png"); top:17%; width:51%; height:10%; --from:-105%; --to:207%; --time:36s; --phase:-10s; }
+    .paris-cloud.low { --cloud:url("assets/drawn-ui/nuage_jour_02.png"); top:33%; width:65%; height:9%; --from:-104%; --to:165%; --time:49s; --phase:-32s; }
+    .eiffel-lights,.paris-room-spill { display:none; pointer-events:none; }
+    html[data-theme="night"] .paris-cloud { display:none; }
+    html[data-theme="night"] .eiffel-lights { display:block; position:absolute; inset:0; }
+    .eiffel-beacon {
+      position:absolute; left:20.4%; top:10.7%; height:14%; width:97%; transform-origin:0 50%;
+      background:conic-gradient(from 80deg at 0 50%,transparent 0deg,rgba(255,206,98,.08) 5deg,rgba(254,247,208,.47) 10deg,rgba(255,206,98,.08) 15deg,transparent 20deg);
+      mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
+      -webkit-mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
+    }
+    .eiffel-sparkles { display:none; position:absolute; left:5%; top:18%; width:32%; height:42%; }
+    #v2-paris[data-sparkling] .eiffel-sparkles { display:block; }
+    .eiffel-sparkles i { position:absolute; inset:0; }
+    html[data-theme="night"] #play-scene[data-landscape="paris"] > .paris-room-spill {
+      display:block; position:absolute; left:45%; top:67%; width:24%; height:21%; z-index:7; opacity:0;
+      background:radial-gradient(ellipse at 28% 38%,rgba(255,206,98,.24),transparent 26%),radial-gradient(ellipse at 72% 55%,rgba(254,247,208,.16),transparent 32%);
+    }
     @media (prefers-reduced-motion:no-preference) {
-      .eiffel-beacon { animation:eiffel-sweep 14s linear infinite; transform-origin:0 0; transform-box:view-box; }
-      .eiffel-sparkles g { animation:eiffel-glint var(--twinkle) linear var(--phase) infinite; }
+      .paris-cloud { animation:paris-cloud-pass var(--time) linear var(--phase) infinite; }
+      .eiffel-beacon { will-change:transform,opacity; animation:eiffel-sweep 14s linear infinite; }
+      .eiffel-sparkles i { will-change:opacity; animation:eiffel-glint var(--twinkle) linear var(--phase) infinite; }
+      html[data-theme="night"] #play-scene[data-landscape="paris"] > .paris-room-spill { animation:eiffel-reflection 14s linear infinite; }
     }
-    @keyframes eiffel-sweep { to { transform:rotate(360deg); } }
+    @keyframes paris-cloud-pass { from { transform:translateX(var(--from)); } to { transform:translateX(var(--to)); } }
+    /* The far side recedes to the right. On the near side the beam opens toward the viewer. */
+    @keyframes eiffel-sweep {
+      0%,100% { transform:skewY(-4deg) scale3d(.84,.55,1); opacity:.46; }
+      23% { transform:skewY(-3deg) scale3d(.035,.31,1); opacity:.14; }
+      50% { transform:skewY(-7deg) scale3d(-1.15,1.35,1); opacity:.92; }
+      73% { transform:skewY(-8deg) scale3d(-.09,2.4,1); opacity:.76; }
+      80% { transform:skewY(-5deg) scale3d(.21,1.95,1); opacity:.82; }
+    }
+    @keyframes eiffel-reflection { 0%,63%,88%,100% {opacity:0} 75% {opacity:.85} }
     @keyframes eiffel-glint { 0%,22%,33%,100% { opacity:0; } 26% { opacity:1; } }
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
@@ -281,8 +309,51 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       content:""; position:absolute; inset:-25% 0 0;
       background-repeat:repeat; background-size:31% 20%;
     }
-    .paris-rain::before { background-image:url("assets/room-redraw/pluie-paris-loin.png"); --fall:.82s; }
-    .paris-rain::after { background-image:url("assets/room-redraw/pluie-paris-pres.png"); --fall:.54s; }
+    .paris-rain::before { --fall:.82s; background-size:15.5% 20%; background-image:
+      radial-gradient(ellipse .5% 3.9% at 2.8% 23.1%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 3.6% at 23.0% 14.8%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 4.5% at 50.2% 24.6%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 1.8% at 65.4% 14.4%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 3.7% at 88.6% 11.0%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 2.9% at 15.4% 49.2%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 3.4% at 28.5% 40.8%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 2.9% at 47.2% 52.0%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 3.6% at 65.0% 46.9%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 4.4% at 88.0% 45.2%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 3.2% at 13.9% 93.1%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 2.9% at 31.3% 77.1%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 2.9% at 50.1% 92.0%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 4.2% at 64.6% 87.7%,rgba(213,184,232,.63) 65%,transparent),
+      radial-gradient(ellipse .5% 4.4% at 94.3% 79.9%,rgba(213,184,232,.63) 65%,transparent); }
+    .paris-rain::after { --fall:.54s; background-size:15.5% 20%; background-image:
+      radial-gradient(ellipse .5% 5.9% at 2.9% 11.8%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 6.5% at 34.8% 6.5%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.3% at 55.2% 7.6%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.1% at 70.1% 6.7%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 7.6% at 82.9% 8.1%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.3% at 10.8% 23.9%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.8% at 27.0% 29.2%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 7.3% at 52.2% 25.5%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.0% at 75.2% 19.7%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.0% at 93.2% 30.1%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.7% at 7.2% 40.0%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.3% at 26.3% 42.3%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.3% at 47.6% 37.0%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.7% at 74.7% 36.6%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 6.8% at 87.7% 39.4%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.9% at 5.9% 57.3%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.6% at 29.1% 58.9%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 6.4% at 45.9% 59.4%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.3% at 67.0% 60.2%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.1% at 93.8% 55.8%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.9% at 4.8% 76.2%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.3% at 32.0% 78.5%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 6.2% at 49.4% 76.6%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 8.9% at 65.5% 70.9%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 7.1% at 88.9% 74.7%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 7.3% at 4.4% 88.6%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 4.9% at 33.4% 93.2%,rgba(213,184,232,.91) 65%,transparent),
+      radial-gradient(ellipse .5% 5.1% at 45.8% 91.0%,rgba(213,184,232,.91) 65%,transparent); }
     @media (prefers-reduced-motion:no-preference) {
       .paris-rain::before, .paris-rain::after {
         will-change:transform; animation:paris-rain-fall var(--fall) linear infinite;
@@ -964,7 +1035,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-paris-init';
+                  script.src = 'room-v2-ambient.js?v=eiffel-perspective-2';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1076,28 +1147,16 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
             </g>
           </svg>
           <div id="v2-marseille-hiver" data-room-v2-layer aria-hidden="true"></div>
+          <div class="paris-room-spill" data-room-v2-layer aria-hidden="true"></div>
           <div id="v2-paris" data-room-v2-layer aria-hidden="true">
-            <svg class="eiffel-lights" viewBox="0 0 495 933" preserveAspectRatio="none" aria-hidden="true">
-              <defs><linearGradient id="eiffel-light-falloff"><stop stop-color="#fff0ca" stop-opacity=".55"/><stop offset=".44" stop-color="#ffe7ae" stop-opacity=".25"/><stop offset="1" stop-color="#ffdb95" stop-opacity="0"/></linearGradient></defs>
-              <g transform="translate(101 174) scale(1 .42)">
-                <g class="eiffel-beacon" fill="url(#eiffel-light-falloff)">
-                  <path d="M0 0 L1550 -166 V166 Z" opacity=".23"/>
-                  <path d="M0 0 L1550 -119 V119 Z" opacity=".32"/>
-                  <path d="M0 0 L1550 -72 V72 Z" opacity=".48"/>
-                </g>
-              </g>
-              <circle cx="101" cy="174" r="2.6" fill="#fff7d9"/>
-              <g class="eiffel-sparkles" fill="#fffaf1">
-                <g style="--twinkle:1.9s;--phase:-0.00s"><circle cx="87" cy="419" r="2.5"/><circle cx="74" cy="516" r="1.7"/><circle cx="108" cy="543" r="1.7"/><circle cx="105" cy="188" r="2.5"/><circle cx="106" cy="322" r="1.7"/><circle cx="92" cy="479" r="1.7"/><circle cx="125" cy="421" r="2.5"/></g>
-                <g style="--twinkle:2.4s;--phase:-0.37s"><circle cx="103" cy="242" r="2.5"/><circle cx="116" cy="442" r="1.7"/><circle cx="80" cy="495" r="1.7"/><circle cx="94" cy="426" r="2.5"/><circle cx="98" cy="233" r="1.7"/><circle cx="123" cy="456" r="1.7"/><circle cx="67" cy="538" r="2.5"/></g>
-                <g style="--twinkle:2.1s;--phase:-0.74s"><circle cx="111" cy="362" r="2.5"/><circle cx="90" cy="186" r="1.7"/><circle cx="94" cy="454" r="1.7"/><circle cx="164" cy="509" r="2.5"/><circle cx="142" cy="467" r="1.7"/><circle cx="128" cy="473" r="1.7"/><circle cx="85" cy="506" r="2.5"/></g>
-                <g style="--twinkle:2.7s;--phase:-1.11s"><circle cx="62" cy="515" r="2.5"/><circle cx="101" cy="313" r="1.7"/><circle cx="154" cy="501" r="1.7"/><circle cx="93" cy="514" r="2.5"/><circle cx="139" cy="456" r="1.7"/><circle cx="96" cy="197" r="1.7"/><circle cx="111" cy="334" r="2.5"/></g>
-                <g style="--twinkle:2.2s;--phase:-1.48s"><circle cx="79" cy="483" r="2.5"/><circle cx="95" cy="275" r="1.7"/><circle cx="107" cy="271" r="1.7"/><circle cx="88" cy="528" r="2.5"/><circle cx="121" cy="547" r="1.7"/><circle cx="133" cy="427" r="1.7"/></g>
-                <g style="--twinkle:2.6s;--phase:-1.85s"><circle cx="117" cy="318" r="2.5"/><circle cx="118" cy="428" r="1.7"/><circle cx="100" cy="527" r="1.7"/><circle cx="99" cy="348" r="2.5"/><circle cx="109" cy="176" r="1.7"/><circle cx="92" cy="494" r="1.7"/></g>
-                <g style="--twinkle:1.8s;--phase:-2.22s"><circle cx="108" cy="214" r="2.5"/><circle cx="111" cy="528" r="1.7"/><circle cx="122" cy="510" r="1.7"/><circle cx="96" cy="214" r="2.5"/><circle cx="133" cy="441" r="1.7"/><circle cx="121" cy="536" r="1.7"/></g>
-                <g style="--twinkle:2.3s;--phase:-2.59s"><circle cx="119" cy="396" r="2.5"/><circle cx="104" cy="414" r="1.7"/><circle cx="98" cy="390" r="1.7"/><circle cx="78" cy="451" r="2.5"/><circle cx="113" cy="345" r="1.7"/><circle cx="97" cy="443" r="1.7"/></g>
-              </g>
-            </svg>
+            <div class="paris-cloud high"></div><div class="paris-cloud low"></div>
+            <div class="eiffel-lights"><div class="eiffel-beacon"></div><div class="eiffel-sparkles">
+      <i style="--twinkle:1.6s;--phase:-0.00s;background-image:radial-gradient(ellipse .7% .36% at 39.3% 64.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 58.2% 38.3%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 41.2% 4.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 50.0% 62.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 51.9% 26.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.7% 65.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 45.0% 11.8%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 72.1% 73.5%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 42.5% 79.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 42.5% 83.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 38.0% 86.3%,white 65%,transparent)"></i>
+      <i style="--twinkle:1.8s;--phase:-0.41s;background-image:radial-gradient(ellipse .7% .36% at 49.4% 18.9%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 52.6% 11.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 48.1% 37.0%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 52.6% 95.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 47.5% 91.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 87.9% 87.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 33.6% 72.2%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 60.8% 96.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 62.0% 73.5%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 60.8% 93.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 54.5% 42.4%,white 65%,transparent)"></i>
+      <i style="--twinkle:2s;--phase:-0.82s;background-image:radial-gradient(ellipse .7% .36% at 54.5% 49.5%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 59.5% 58.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 44.3% 27.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 34.9% 83.5%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 61.4% 87.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.1% 88.3%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 51.3% 39.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 53.2% 2.1%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 65.2% 77.8%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 45.6% 70.2%,white 65%,transparent)"></i>
+      <i style="--twinkle:2.2s;--phase:-1.23s;background-image:radial-gradient(ellipse .7% .36% at 23.5% 88.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 31.1% 88.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 58.9% 66.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.7% 73.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 46.2% 56.7%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 39.9% 91.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 46.2% 16.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 68.3% 69.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 45.0% 7.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 63.3% 64.6%,white 65%,transparent)"></i>
+      <i style="--twinkle:2.4000000000000004s;--phase:-1.64s;background-image:radial-gradient(ellipse .7% .36% at 34.2% 80.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 57.6% 69.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 54.5% 91.9%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 81.6% 85.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 50.7% 5.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 46.9% 46.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 74.0% 76.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 55.7% 45.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 68.3% 66.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 26.7% 94.4%,white 65%,transparent)"></i>
+            </div></div>
             <div class="paris-rain"></div>
           </div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">

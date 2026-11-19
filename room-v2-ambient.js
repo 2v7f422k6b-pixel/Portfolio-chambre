@@ -261,10 +261,11 @@
   const desertTemplate = document.getElementById('v2-desert-template');
   desertTemplate.replaceWith(desertTemplate.content);
   const parisWindow = scene.querySelector('#v2-paris');
+  const previewSparkles = new URLSearchParams(location.search).get('scintillement') === '1';
   function showTime() {
     const now = new Date();
     // Paris is always a whole number of hours ahead of UTC.
-    parisWindow.toggleAttribute('data-sparkling', now.getUTCMinutes() < 5);
+    parisWindow.toggleAttribute('data-sparkling', previewSparkles || now.getUTCMinutes() < 5);
     const s = now.getSeconds(), m = now.getMinutes() + s / 60;
     hands.hour.setAttribute('transform', `rotate(${(now.getHours() % 12 + m / 60) * 30 + 110} 490 692)`);
     hands.minute.setAttribute('transform', `rotate(${m * 6 - 107} 490 692)`);
