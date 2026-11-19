@@ -325,7 +325,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     @keyframes paris-roof-light { 0%,42% { opacity:0; transform:translateX(21%); } 56% { opacity:.94; } 70%,100% {opacity:0;transform:translateX(-20%);} }
     @keyframes paris-window-objects { 0%,60%,88%,100% {opacity:1} 70% {opacity:.38} 75% {opacity:.12} 81% {opacity:.48} }
     @keyframes eiffel-glint { 0%,58%,100% { opacity:.035; } 10%,24% { opacity:1; } 35% { opacity:.16; } 43% { opacity:.85; } }
-    .paris-runoff { position:absolute; left:0; top:53.59057%; width:100%; height:37.5134%; pointer-events:none; }
+    .paris-runoff { position:absolute; left:0; top:45.01608%; width:100%; height:51.98285%; pointer-events:none; }
     .paris-runoff canvas {display:block;width:100%;height:100%;}
     html[data-theme="night"] .paris-runoff {opacity:.66;}
     #v2-paris .paris-rain {
@@ -1805,7 +1805,7 @@ class ParisRoofWater extends HTMLElement {
     if (this.observer) return;
     const canvas = document.createElement('canvas');
     canvas.width = 495;
-    canvas.height = 350;
+    canvas.height = 485;
     canvas.setAttribute('aria-hidden', 'true');
     this.replaceChildren(canvas);
     const ctx = canvas.getContext('2d');
@@ -1820,7 +1820,12 @@ class ParisRoofWater extends HTMLElement {
       {rim:[[256,536],[275,530],[296,522],[311,517],[339,517],[367,519],[359,524],[337,526],[326,533,7],[319,529],[306,532],[296,546],[295,572,28],[302,595,18],[299,618,21],[289,636,17],[277,652,6],[270,646],[274,619],[281,599,10],[282,568],[271,541],[251,541]],shine:[274,533,306,522],tip:[306,543,111],speed:.64},
       {rim:[[392,601],[397,589],[407,582],[419,581],[426,584],[423,594],[416,601],[411,611,10],[405,606],[399,620,16],[390,616],[386,630,13],[380,627],[384,613]],shine:[397,594,408,584],tip:[401,598,39],speed:1.12}
     ].map(p => ({...p,phase:random(0,6)}));
-    const outlets = [[53,696],[155,696],[190,686],[260,684],[319,682],[406,679]]
+    const outlets = [
+      [53,696],[155,696],[190,686],[260,684],[319,682],[406,679], // Gouttières
+      [25,545],[88,546],[134,545],[213,545],[393,450],[420,451], // Couronnements des cheminées
+      [86,597],[186,596],[274,566],[380,564], // Rebords saillants des quatre lucarnes
+      [36,812],[149,812],[185,845],[302,845],[402,845] // Dessous des balcons
+    ]
       .map(([x,y]) => ({x,y,age:0,wait:random(.08,1.7),fill:random(.45,1.4),tail:random(4,12)}));
     // Zinc, dormer caps, then the top edge of each balcony railing.
     const surfaces = [[103,600],[85,651],[281,604],[295,537],[403,618],[381,637],
@@ -1922,7 +1927,7 @@ class ParisRoofWater extends HTMLElement {
     const paint = now => {
       const dt=previous?Math.min(.05,(now-previous)/1000):0;previous=now;time+=dt;
       const day=document.documentElement.dataset.theme!=='night';
-      ctx.setTransform(1,0,0,1,0,-500);ctx.clearRect(0,500,495,350);
+      ctx.setTransform(1,0,0,1,0,-420);ctx.clearRect(0,420,canvas.width,canvas.height);
       for(const p of pools)drawPool(p,day);
       for(const o of outlets)drawOutlet(o,dt,day);
       drawHits(dt,day);
@@ -1931,7 +1936,7 @@ class ParisRoofWater extends HTMLElement {
     const sync = () => {
       const active=scene?.dataset.landscape==='paris' && !motion.matches && !document.hidden;
       if(active && !frame)frame=requestAnimationFrame(paint);
-      if(!active && frame){cancelAnimationFrame(frame);frame=0;previous=0;ctx.clearRect(0,500,495,350);}
+      if(!active && frame){cancelAnimationFrame(frame);frame=0;previous=0;ctx.clearRect(0,420,canvas.width,canvas.height);}
     };
     this.observer=new MutationObserver(sync);
     if(scene)this.observer.observe(scene,{attributes:true,attributeFilter:['data-landscape']});
