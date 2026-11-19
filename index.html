@@ -267,18 +267,22 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     #v2-japan .japan-mountain::before {
       --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:-8%; top:13%; width:80%; height:22.6%; opacity:.88;
-      --drift-time:20s; --drift-phase:-5s;
+      --drift-from:-72.5%; --drift-to:135%; --drift-time:128s; --drift-phase:-45s;
     }
     #v2-japan .japan-mountain::after {
       --cloud:url("assets/drawn-ui/nuage_jour_02.png"); left:55%; top:34%; width:54%; height:17.8%; opacity:.72;
-      --drift-time:27s; --drift-phase:-15s;
+      --drift-from:-176%; --drift-to:83.4%; --drift-time:143s; --drift-phase:-97s;
     }
     @media (prefers-reduced-motion:no-preference) {
       #v2-japan .japan-mountain::before, #v2-japan .japan-mountain::after {
-        animation:japan-cloud-drift var(--drift-time) ease-in-out var(--drift-phase) infinite alternate;
+        animation:japan-cloud-drift var(--drift-time) linear var(--drift-phase) infinite;
       }
     }
-    @keyframes japan-cloud-drift { from { transform:translate3d(0,0,0); } to { transform:translate3d(24%,0,0); } }
+    /* Both endpoints are outside the clipped window, hiding each loop reset. */
+    @keyframes japan-cloud-drift {
+      from { transform:translate3d(var(--drift-from),0,0); }
+      to { transform:translate3d(var(--drift-to),0,0); }
+    }
     /* Each strip repeats seven identical rows. Moving one row closes the loop. */
     #v2-japan .snowfall {
       position:absolute; left:0; right:0; top:-19.2926%; height:135.0482%;
