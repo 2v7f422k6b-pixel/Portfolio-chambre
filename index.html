@@ -244,16 +244,36 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
     #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
-    #v2-japan .japan-night,
-    html[data-theme="night"] #v2-japan .japan-day,
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
-    html[data-theme="night"] #v2-japan .japan-night { display:inline; }
-    html[data-theme="night"] #japan-snow-far { fill:#acbade; }
-    html[data-theme="night"] #japan-snow-near { fill:#e4e9fa; }
-    #v2-japan .snowfall { animation:japan-snowfall 5s linear infinite; }
-    #v2-japan .snowfall-near { animation-duration:3.6s; }
-    @keyframes japan-snowfall { to { transform:translateY(180px); } }
-    @media (prefers-reduced-motion:reduce) { #v2-japan .snowfall { animation:none; } }
+    #v2-japan {
+      overflow:hidden; contain:strict;
+      clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
+      --mountain:url("assets/room-redraw/japon-montagne.webp");
+      --fields:url("assets/room-redraw/japon-rizieres.webp");
+    }
+    html[data-theme="night"] #v2-japan {
+      --mountain:url("assets/room-redraw/japon-montagne-nuit.webp?v=4");
+      --fields:url("assets/room-redraw/japon-rizieres-nuit.webp?v=4");
+    }
+    #v2-japan .japan-art { position:absolute; inset:0; transform:scale(1.04); transform-origin:45% 50%; }
+    #v2-japan .japan-mountain, #v2-japan .japan-fields { position:absolute; background-size:100% 100%; background-repeat:no-repeat; }
+    #v2-japan .japan-mountain { left:-10.50505%; top:0; width:99.19192%; height:99.89282%; background-image:var(--mountain); }
+    #v2-japan .japan-fields { left:.80808%; top:72.77599%; width:87.87879%; height:27.11683%; background-image:var(--fields); }
+    /* Each strip repeats seven identical rows. Moving one row closes the loop. */
+    #v2-japan .snowfall {
+      position:absolute; left:0; right:0; top:-19.2926%; height:135.0482%;
+      background-repeat:repeat; background-size:33.7374% 14.285714%; opacity:.8;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 167 180' preserveAspectRatio='none' fill='white'%3E%3Ccircle cx='12' cy='22' r='2.4'/%3E%3Ccircle cx='98' cy='41' r='1.9'/%3E%3Ccircle cx='61' cy='109' r='2.1'/%3E%3Ccircle cx='148' cy='155' r='2.7'/%3E%3C/svg%3E");
+      animation:japan-snowfall 5s linear infinite; will-change:transform;
+    }
+    #v2-japan .snowfall-near {
+      background-size:45.8586% 14.285714%; opacity:1; animation-duration:3.6s;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 227 180' preserveAspectRatio='none' fill='white'%3E%3Ccircle cx='36' cy='76' r='3.2'/%3E%3Ccircle cx='184' cy='144' r='3.8'/%3E%3C/svg%3E");
+    }
+    html[data-theme="night"] #v2-japan .snowfall { opacity:.58; }
+    html[data-theme="night"] #v2-japan .snowfall-near { opacity:.88; }
+    @keyframes japan-snowfall { to { transform:translate3d(0,14.285714%,0); } }
+    @media (prefers-reduced-motion:reduce) { #v2-japan .snowfall { animation:none; will-change:auto; } }
     /* The animated night WebP repaints only its own 450 × 212 patch. Clip it to the same window as the desert. */
     #play-scene > #desert-night-dust {
       display:none; position:absolute; z-index:4; pointer-events:none;
@@ -969,27 +989,15 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </g>
             </g>
           </svg>
-          <svg id="v2-japan" data-room-v2-layer viewBox="1723 0 495 933" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="japan-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath>
-              <pattern id="japan-snow-far" patternUnits="userSpaceOnUse" width="167" height="180" fill="white">
-                <circle cx="12" cy="22" r="2.4"/><circle cx="98" cy="41" r="1.9"/>
-                <circle cx="61" cy="109" r="2.1"/><circle cx="148" cy="155" r="2.7"/>
-              </pattern>
-              <pattern id="japan-snow-near" patternUnits="userSpaceOnUse" width="227" height="180" fill="white">
-                <circle cx="36" cy="76" r="3.2"/><circle cx="184" cy="144" r="3.8"/>
-              </pattern>
-            </defs>
-            <g clip-path="url(#japan-window)">
-              <image class="japan-day" href="assets/room-redraw/japon-montagne.webp" x="1671" y="0" width="491" height="932"/>
-              <image class="japan-night" href="assets/room-redraw/japon-montagne-nuit.webp?v=3" x="1671" y="0" width="491" height="932"/>
-              <rect class="snowfall" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-far)" opacity=".8"/>
+          <div id="v2-japan" data-room-v2-layer aria-hidden="true">
+            <div class="japan-art">
+              <div class="japan-mountain"></div>
+              <div class="snowfall"></div>
               <!-- Insert the train here so it passes behind the house and fields. -->
-              <image class="japan-day" href="assets/room-redraw/japon-rizieres.webp" x="1727" y="679" width="435" height="253"/>
-              <image class="japan-night" href="assets/room-redraw/japon-rizieres-nuit.webp?v=3" x="1727" y="679" width="435" height="253"/>
-              <rect class="snowfall snowfall-near" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-near)"/>
-            </g>
-          </svg>
+              <div class="japan-fields"></div>
+              <div class="snowfall snowfall-near"></div>
+            </div>
+          </div>
           <img id="desert-night-dust" data-room-v2-layer data-nana-load-ignore alt="" aria-hidden="true" draggable="false" decoding="async"/>
           <svg id="desert-window-light" data-room-v2-layer viewBox="0 0 3072 1732" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs>
