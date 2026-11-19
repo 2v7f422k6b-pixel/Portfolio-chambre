@@ -313,9 +313,10 @@
   }
   const wheel = svg.querySelector('.landscape-wheel');
   const landscape = new URLSearchParams(location.search).get('landscape');
-  let dialAngle = landscape === 'desert-rose' ? 180 : 0;
+  const landscapes = ['marseille', 'japon', 'pink', 'marseille'];
+  let dialAngle = landscape === 'desert-rose' ? 180 : landscape === 'japon' ? 90 : 0;
   function showLandscape() {
-    scene.dataset.landscape = dialAngle % 360 === 180 ? 'pink' : 'marseille';
+    scene.dataset.landscape = landscapes[(dialAngle % 360) / 90];
   }
   wheel.style.transformBox = 'view-box';
   wheel.style.transformOrigin = '1931px 990px';

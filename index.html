@@ -239,9 +239,15 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     html:not([data-theme="night"]) #room-v2-ambient [data-object="office"] text { fill: #ff173b; }
     /* Match the SVG viewport to the desert artwork while keeping its room coordinates. */
-    #play-scene > #v2-desert { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
+    #play-scene > :is(#v2-desert, #v2-japan) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    html:not([data-theme="night"]) .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
+    html:not([data-theme="night"]) #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    #v2-japan .snowfall { animation:japan-snowfall 5s linear infinite; }
+    #v2-japan .snowfall-near { animation-duration:3.6s; }
+    @keyframes japan-snowfall { to { transform:translateY(180px); } }
+    @media (prefers-reduced-motion:reduce) { #v2-japan .snowfall { animation:none; } }
     /* The animated night WebP repaints only its own 450 × 212 patch. Clip it to the same window as the desert. */
     #play-scene > #desert-night-dust {
       display:none; position:absolute; z-index:4; pointer-events:none;
@@ -846,7 +852,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-rafale-nuit';
+                  script.src = 'room-v2-ambient.js?v=20261119-japon';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -955,6 +961,25 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <circle class="desert-night" cx="2092.5" cy="286.5" r="77" fill="url(#desert-lunar-glow)"/>
                 <image href="assets/room-redraw/lune-ronde.png" x="2063" y="257" width="59" height="59"/>
               </g>
+            </g>
+          </svg>
+          <svg id="v2-japan" data-room-v2-layer viewBox="1723 0 495 933" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="japan-window"><path d="M1739 119 L2154 22 L2156 890 L1739 884 Z"/></clipPath>
+              <pattern id="japan-snow-far" patternUnits="userSpaceOnUse" width="167" height="180" fill="white">
+                <circle cx="12" cy="22" r="2.4"/><circle cx="98" cy="41" r="1.9"/>
+                <circle cx="61" cy="109" r="2.1"/><circle cx="148" cy="155" r="2.7"/>
+              </pattern>
+              <pattern id="japan-snow-near" patternUnits="userSpaceOnUse" width="227" height="180" fill="white">
+                <circle cx="36" cy="76" r="3.2"/><circle cx="184" cy="144" r="3.8"/>
+              </pattern>
+            </defs>
+            <g clip-path="url(#japan-window)">
+              <image href="assets/room-redraw/japon-montagne.webp" x="1671" y="0" width="491" height="932"/>
+              <rect class="snowfall" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-far)" opacity=".8"/>
+              <!-- Insert the train here so it passes behind the house and fields. -->
+              <image href="assets/room-redraw/japon-rizieres.webp" x="1727" y="679" width="435" height="253"/>
+              <rect class="snowfall snowfall-near" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-near)"/>
             </g>
           </svg>
           <img id="desert-night-dust" data-room-v2-layer data-nana-load-ignore alt="" aria-hidden="true" draggable="false" decoding="async"/>
