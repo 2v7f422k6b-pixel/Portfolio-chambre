@@ -267,18 +267,18 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] #v2-japan .japan-cloud { display:none; }
     #v2-japan .cloud-high {
       --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:-8%; top:8%; width:80%; height:22.6%; opacity:.88;
-      --drift-from:-72.5%; --drift-to:135%; --rise:-9%; --drift-time:108s; --drift-phase:-38s;
+      --drift-from:-72.5%; --drift-to:135%; --rise:-9%; --drift-phase:-20s;
     }
     #v2-japan .cloud-middle {
       --cloud:url("assets/drawn-ui/nuage_jour_01.png"); left:35%; top:30%; width:28%; height:8%; opacity:.62;
-      --drift-from:-180%; --drift-to:240%; --rise:5%; --drift-time:133s; --drift-phase:-57s;
+      --drift-from:-180%; --drift-to:240%; --rise:5%; --drift-phase:-32s;
     }
     #v2-japan .cloud-low {
       --cloud:url("assets/drawn-ui/nuage_jour_02.png"); left:55%; top:38%; width:54%; height:17.8%; opacity:.72;
-      --drift-from:-176%; --drift-to:83.4%; --rise:-14%; --drift-time:120s; --drift-phase:-81s;
+      --drift-from:-176%; --drift-to:83.4%; --rise:-14%; --drift-phase:-0s;
     }
     @media (prefers-reduced-motion:no-preference) {
-      #v2-japan .japan-cloud { animation:japan-cloud-drift var(--drift-time) linear var(--drift-phase) infinite; }
+      #v2-japan .japan-cloud { animation:japan-cloud-drift 48s linear var(--drift-phase) infinite; }
     }
     /* Each cloud wraps outside the clipped window. */
     @keyframes japan-cloud-drift {
