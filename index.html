@@ -267,6 +267,21 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-japan .japan-mountain, #v2-japan .japan-fields { position:absolute; background-size:100% 100%; background-repeat:no-repeat; }
     #v2-japan .japan-mountain { left:-10.50505%; top:0; width:99.19192%; height:99.89282%; background-image:var(--mountain); }
     #v2-japan .japan-fields { left:.80808%; top:72.77599%; width:87.87879%; height:27.11683%; background-image:var(--fields); }
+    #v2-japan .japan-train {
+      position:absolute; left:0; top:69.4534%; width:182.6263%; height:7.5027%;
+      background:url("assets/room-redraw/shinkansen-jour.webp") center / 100% 100% no-repeat;
+      transform:translateX(15.38%);
+    }
+    html[data-theme="night"] #v2-japan .japan-train {
+      background-image:url("assets/room-redraw/shinkansen-nuit.webp");
+    }
+    @media (prefers-reduced-motion:no-preference) {
+      #v2-japan .japan-train { animation:shinkansen-crossing 18s linear infinite; }
+    }
+    @keyframes shinkansen-crossing {
+      from { transform:translate3d(50%,0,0); }
+      24%,100% { transform:translate3d(-101%,0,0); }
+    }
     #v2-japan .japan-cloud {
       position:absolute; background:#fffaff;
       -webkit-mask:var(--cloud) center / contain no-repeat;
@@ -1032,7 +1047,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <div class="japan-cloud cloud-low"></div>
               </div>
               <div class="snowfall"></div>
-              <!-- Insert the train here so it passes behind the house and fields. -->
+              <div class="japan-train"></div>
               <div class="japan-fields"></div>
               <div class="snowfall snowfall-near"></div>
             </div>
