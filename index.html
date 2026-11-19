@@ -242,8 +242,14 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #play-scene > :is(#v2-desert, #v2-japan) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
     #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
-    html:not([data-theme="night"]) .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
-    html:not([data-theme="night"]) #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
+    #play-scene[data-landscape="japon"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    #v2-japan .japan-night,
+    html[data-theme="night"] #v2-japan .japan-day,
+    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
+    html[data-theme="night"] #v2-japan .japan-night { display:inline; }
+    html[data-theme="night"] #japan-snow-far { fill:#acbade; }
+    html[data-theme="night"] #japan-snow-near { fill:#e4e9fa; }
     #v2-japan .snowfall { animation:japan-snowfall 5s linear infinite; }
     #v2-japan .snowfall-near { animation-duration:3.6s; }
     @keyframes japan-snowfall { to { transform:translateY(180px); } }
@@ -975,10 +981,12 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               </pattern>
             </defs>
             <g clip-path="url(#japan-window)">
-              <image href="assets/room-redraw/japon-montagne.webp" x="1671" y="0" width="491" height="932"/>
+              <image class="japan-day" href="assets/room-redraw/japon-montagne.webp" x="1671" y="0" width="491" height="932"/>
+              <image class="japan-night" href="assets/room-redraw/japon-montagne-nuit.webp" x="1671" y="0" width="491" height="932"/>
               <rect class="snowfall" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-far)" opacity=".8"/>
               <!-- Insert the train here so it passes behind the house and fields. -->
-              <image href="assets/room-redraw/japon-rizieres.webp" x="1727" y="679" width="435" height="253"/>
+              <image class="japan-day" href="assets/room-redraw/japon-rizieres.webp" x="1727" y="679" width="435" height="253"/>
+              <image class="japan-night" href="assets/room-redraw/japon-rizieres-nuit.webp" x="1727" y="679" width="435" height="253"/>
               <rect class="snowfall snowfall-near" x="1738" y="-180" width="420" height="1113" fill="url(#japan-snow-near)"/>
             </g>
           </svg>
