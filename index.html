@@ -259,11 +259,11 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-paris {
       overflow:hidden; contain:strict;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
-      background:url("assets/room-redraw/paris-jour.webp?v=eiffel-palette-2") center / 100% 100% no-repeat;
+      background:url("assets/room-redraw/paris-jour.webp?v=ciel-rose-3") center / 100% 100% no-repeat;
     }
     html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp?v=eiffel-palette-2"); }
     .paris-cloud {
-      position:absolute; left:0; background:linear-gradient(white 58%, #f6f1f9);
+      position:absolute; left:0; background:#fff; opacity:.56;
       mask:var(--cloud) center / contain no-repeat; -webkit-mask:var(--cloud) center / contain no-repeat;
     }
     .paris-cloud.high { --cloud:url("assets/drawn-ui/nuage_jour_01.png"); top:17%; width:51%; height:10%; --from:-105%; --to:207%; --time:36s; --phase:-10s; }
@@ -272,8 +272,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] .paris-cloud { display:none; }
     html[data-theme="night"] .eiffel-lights { display:block; position:absolute; inset:0; }
     .eiffel-beacon {
-      position:absolute; left:20.4%; top:10.7%; height:14%; width:97%; transform-origin:0 50%;
-      background:conic-gradient(from 80deg at 0 50%,transparent 0deg,rgba(255,206,98,.08) 5deg,rgba(254,247,208,.47) 10deg,rgba(255,206,98,.08) 15deg,transparent 20deg);
+      position:absolute; left:20.4%; top:7.7%; height:20%; width:125%; transform-origin:0 50%;
+      background:conic-gradient(from 80deg at 0 50%,transparent 0deg,rgba(255,206,98,.17) 5deg,rgba(254,247,208,.67) 10deg,rgba(255,206,98,.17) 15deg,transparent 20deg);
       mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
       -webkit-mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
     }
@@ -281,8 +281,13 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-paris[data-sparkling] .eiffel-sparkles { display:block; }
     .eiffel-sparkles i { position:absolute; inset:0; }
     html[data-theme="night"] #play-scene[data-landscape="paris"] > .paris-room-spill {
-      display:block; position:absolute; left:45%; top:67%; width:24%; height:21%; z-index:7; opacity:0;
-      background:radial-gradient(ellipse at 28% 38%,rgba(255,206,98,.24),transparent 26%),radial-gradient(ellipse at 72% 55%,rgba(254,247,208,.16),transparent 32%);
+      display:block; position:absolute; left:30%; top:0; width:55%; height:95%; z-index:8; opacity:0;
+      background:
+        radial-gradient(ellipse 10% 19% at 59% 22%,rgba(254,247,208,.73),transparent),
+        radial-gradient(ellipse 20% 25% at 56% 38%,rgba(255,206,98,.39),transparent),
+        radial-gradient(ellipse 39% 18% at 48% 83%,rgba(255,206,98,.46),transparent),
+        linear-gradient(114deg,transparent 33%,rgba(254,247,208,.13) 54%,transparent 72%);
+      will-change:transform,opacity;
     }
     @media (prefers-reduced-motion:no-preference) {
       .paris-cloud { animation:paris-cloud-pass var(--time) linear var(--phase) infinite; }
@@ -299,8 +304,22 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       73% { transform:skewY(-8deg) scale3d(-.09,2.4,1); opacity:.76; }
       80% { transform:skewY(-5deg) scale3d(.21,1.95,1); opacity:.82; }
     }
-    @keyframes eiffel-reflection { 0%,63%,88%,100% {opacity:0} 75% {opacity:.85} }
-    @keyframes eiffel-glint { 0%,22%,33%,100% { opacity:0; } 26% { opacity:1; } }
+    @keyframes eiffel-reflection {
+      0%,61% { opacity:0; transform:translate3d(-9%,0,0); }
+      71% { opacity:.55; } 76% { opacity:.94; transform:translate3d(0,0,0); }
+      82% { opacity:.52; } 91%,100% { opacity:0; transform:translate3d(12%,0,0); }
+    }
+    @keyframes eiffel-glint { 0%,12%,56%,100% { opacity:.045; } 22%,27% { opacity:1; } 39% { opacity:.32; } }
+    .paris-runoff { position:absolute; left:0; top:53.59057%; width:100%; height:21.43623%; pointer-events:none; }
+    .paris-runoff path { fill:none; stroke:#fff; stroke-width:2.4; stroke-linecap:round; stroke-dasharray:8 320; stroke-dashoffset:10; opacity:0; }
+    @media (prefers-reduced-motion:no-preference) {
+      .paris-runoff path { animation:paris-gutter var(--flow) linear var(--delay) infinite; }
+    }
+    @keyframes paris-gutter {
+      0%,14% { stroke-dashoffset:10; opacity:0; } 20% {opacity:.8;}
+      68% {opacity:.72;} 76%,100% {stroke-dashoffset:-215; opacity:0;}
+    }
+    html[data-theme="night"] .paris-runoff { opacity:.55; }
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
     }
@@ -1151,12 +1170,17 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <div id="v2-paris" data-room-v2-layer aria-hidden="true">
             <div class="paris-cloud high"></div><div class="paris-cloud low"></div>
             <div class="eiffel-lights"><div class="eiffel-beacon"></div><div class="eiffel-sparkles">
-      <i style="--twinkle:1.6s;--phase:-0.00s;background-image:radial-gradient(ellipse .7% .36% at 39.3% 64.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 58.2% 38.3%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 41.2% 4.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 50.0% 62.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 51.9% 26.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.7% 65.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 45.0% 11.8%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 72.1% 73.5%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 42.5% 79.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 42.5% 83.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 38.0% 86.3%,white 65%,transparent)"></i>
-      <i style="--twinkle:1.8s;--phase:-0.41s;background-image:radial-gradient(ellipse .7% .36% at 49.4% 18.9%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 52.6% 11.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 48.1% 37.0%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 52.6% 95.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 47.5% 91.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 87.9% 87.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 33.6% 72.2%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 60.8% 96.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 62.0% 73.5%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 60.8% 93.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 54.5% 42.4%,white 65%,transparent)"></i>
-      <i style="--twinkle:2s;--phase:-0.82s;background-image:radial-gradient(ellipse .7% .36% at 54.5% 49.5%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 59.5% 58.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 44.3% 27.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 34.9% 83.5%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 61.4% 87.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.1% 88.3%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 51.3% 39.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 53.2% 2.1%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 65.2% 77.8%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 45.6% 70.2%,white 65%,transparent)"></i>
-      <i style="--twinkle:2.2s;--phase:-1.23s;background-image:radial-gradient(ellipse .7% .36% at 23.5% 88.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 31.1% 88.8%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 58.9% 66.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 43.7% 73.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 46.2% 56.7%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 39.9% 91.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 46.2% 16.6%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 68.3% 69.7%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 45.0% 7.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 63.3% 64.6%,white 65%,transparent)"></i>
-      <i style="--twinkle:2.4000000000000004s;--phase:-1.64s;background-image:radial-gradient(ellipse .7% .36% at 34.2% 80.4%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 57.6% 69.9%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 54.5% 91.9%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 81.6% 85.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 50.7% 5.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 46.9% 46.0%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 74.0% 76.3%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 55.7% 45.2%,white 65%,transparent),radial-gradient(ellipse .7% .36% at 68.3% 66.1%,white 65%,transparent),radial-gradient(ellipse .9% .36% at 26.7% 94.4%,white 65%,transparent)"></i>
+      <i style="--twinkle:1.6s;--phase:-0.00s;background-image:radial-gradient(ellipse 2.2% 1% at 39.3% 64.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 39.3% 64.1%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 39.3% 64.1%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 58.2% 38.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 41.2% 4.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 50.0% 62.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 51.9% 26.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 51.9% 26.3%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 51.9% 26.3%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 43.7% 65.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 45.0% 11.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 72.1% 73.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 42.5% 79.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 42.5% 79.4%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 42.5% 79.4%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 42.5% 83.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 38.0% 86.3%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
+      <i style="--twinkle:1.8s;--phase:-0.41s;background-image:radial-gradient(ellipse 2.2% 1% at 49.4% 18.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 52.6% 11.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 52.6% 11.8%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 52.6% 11.8%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 48.1% 37.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 52.6% 95.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 47.5% 91.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 87.9% 87.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 87.9% 87.0%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 87.9% 87.0%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 33.6% 72.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 60.8% 96.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 62.0% 73.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 60.8% 93.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 60.8% 93.9%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 60.8% 93.9%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 54.5% 42.4%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
+      <i style="--twinkle:2s;--phase:-0.82s;background-image:radial-gradient(ellipse 2.2% 1% at 54.5% 49.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 59.5% 58.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 44.3% 27.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 44.3% 27.3%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 44.3% 27.3%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 34.9% 83.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 61.4% 87.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 43.1% 88.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 51.3% 39.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 51.3% 39.3%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 51.3% 39.3%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 53.2% 2.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 65.2% 77.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 45.6% 70.2%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
+      <i style="--twinkle:2.2s;--phase:-1.23s;background-image:radial-gradient(ellipse 2.2% 1% at 23.5% 88.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 23.5% 88.6%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 23.5% 88.6%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 31.1% 88.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 58.9% 66.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 43.7% 73.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 46.2% 56.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 46.2% 56.7%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 46.2% 56.7%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 39.9% 91.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 46.2% 16.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 68.3% 69.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 45.0% 7.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 45.0% 7.4%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 45.0% 7.4%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 63.3% 64.6%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
+      <i style="--twinkle:2.4000000000000004s;--phase:-1.64s;background-image:radial-gradient(ellipse 2.2% 1% at 34.2% 80.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 57.6% 69.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 54.5% 91.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 54.5% 91.9%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 54.5% 91.9%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 81.6% 85.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 50.7% 5.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 46.9% 46.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 74.0% 76.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.8% .38% at 74.0% 76.3%,white 35%,transparent),radial-gradient(ellipse .85% 2.2% at 74.0% 76.3%,white 38%,transparent),radial-gradient(ellipse 2.2% 1% at 55.7% 45.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 68.3% 66.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 2.2% 1% at 26.7% 94.4%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
             </div></div>
+            <svg class="paris-runoff" viewBox="0 500 495 200" preserveAspectRatio="none" aria-hidden="true">
+              <path style="--flow:3.1s;--delay:-1.4s" d="M115 582 L89 677 Q87 682 93 682 L146 682"/>
+              <path style="--flow:2.7s;--delay:-.2s" d="M292 560 L256 663 Q254 669 262 669 L319 667"/>
+              <path style="--flow:3.8s;--delay:-2.6s" d="M405 585 L381 659 Q379 666 385 665 L432 663"/>
+            </svg>
             <div class="paris-rain"></div>
           </div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
