@@ -258,6 +258,8 @@
   document.addEventListener('portfolio-language-change', setLabels);
 
   const hands = Object.fromEntries(Array.from(svg.querySelectorAll('[data-hand]'), el => [el.dataset.hand, el]));
+  const desertTemplate = document.getElementById('v2-desert-template');
+  desertTemplate.replaceWith(desertTemplate.content);
   const parisWindow = scene.querySelector('#v2-paris');
   function showTime() {
     const now = new Date();
@@ -298,8 +300,6 @@
   svg.querySelector('[data-object="kokeshi"]').addEventListener('pointerenter', e => {
     if (e.pointerType !== 'touch') shy();
   });
-  const desertTemplate = document.getElementById('v2-desert-template');
-  desertTemplate.replaceWith(desertTemplate.content);
   const nightDust = document.getElementById('desert-night-dust');
   // display:none removes it from observation in daytime, Marseille and reduced motion.
   const dustUrl = folder + 'rafale-lilas.webp';
