@@ -258,8 +258,11 @@
   document.addEventListener('portfolio-language-change', setLabels);
 
   const hands = Object.fromEntries(Array.from(svg.querySelectorAll('[data-hand]'), el => [el.dataset.hand, el]));
+  const parisWindow = scene.querySelector('#v2-paris');
   function showTime() {
     const now = new Date();
+    // Paris is always a whole number of hours ahead of UTC.
+    parisWindow.toggleAttribute('data-sparkling', now.getUTCMinutes() < 5);
     const s = now.getSeconds(), m = now.getMinutes() + s / 60;
     hands.hour.setAttribute('transform', `rotate(${(now.getHours() % 12 + m / 60) * 30 + 110} 490 692)`);
     hands.minute.setAttribute('transform', `rotate(${m * 6 - 107} 490 692)`);

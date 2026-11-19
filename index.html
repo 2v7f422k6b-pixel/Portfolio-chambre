@@ -259,9 +259,20 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     #v2-paris {
       overflow:hidden; contain:strict;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
-      background:url("assets/room-redraw/paris-jour.webp") center / 100% 100% no-repeat;
+      background:url("assets/room-redraw/paris-jour.webp?v=eiffel-1") center / 100% 100% no-repeat;
     }
-    html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp?v=fenetres-1"); }
+    html[data-theme="night"] #v2-paris { background-image:url("assets/room-redraw/paris-nuit.webp?v=eiffel-1"); }
+    .eiffel-lights { display:none; position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    html[data-theme="night"] .eiffel-lights { display:block; }
+    .eiffel-sparkles { display:none; }
+    #v2-paris[data-sparkling] .eiffel-sparkles { display:inline; }
+    .eiffel-sparkles g { opacity:.65; }
+    @media (prefers-reduced-motion:no-preference) {
+      .eiffel-beacon { animation:eiffel-sweep 14s linear infinite; transform-origin:0 0; transform-box:view-box; }
+      .eiffel-sparkles g { animation:eiffel-glint var(--twinkle) linear var(--phase) infinite; }
+    }
+    @keyframes eiffel-sweep { to { transform:rotate(360deg); } }
+    @keyframes eiffel-glint { 0%,22%,33%,100% { opacity:0; } 26% { opacity:1; } }
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
     }
@@ -953,7 +964,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-paris';
+                  script.src = 'room-v2-ambient.js?v=20261119-eiffel';
                   document.head.append(script);
                 };
                 document.head.append(style);
@@ -1066,6 +1077,27 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           </svg>
           <div id="v2-marseille-hiver" data-room-v2-layer aria-hidden="true"></div>
           <div id="v2-paris" data-room-v2-layer aria-hidden="true">
+            <svg class="eiffel-lights" viewBox="0 0 495 933" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="eiffel-light-falloff"><stop stop-color="#fff0ca" stop-opacity=".55"/><stop offset=".44" stop-color="#ffe7ae" stop-opacity=".25"/><stop offset="1" stop-color="#ffdb95" stop-opacity="0"/></linearGradient></defs>
+              <g transform="translate(101 174) scale(1 .42)">
+                <g class="eiffel-beacon" fill="url(#eiffel-light-falloff)">
+                  <path d="M0 0 L1550 -166 V166 Z" opacity=".23"/>
+                  <path d="M0 0 L1550 -119 V119 Z" opacity=".32"/>
+                  <path d="M0 0 L1550 -72 V72 Z" opacity=".48"/>
+                </g>
+              </g>
+              <circle cx="101" cy="174" r="2.6" fill="#fff7d9"/>
+              <g class="eiffel-sparkles" fill="#fffaf1">
+                <g style="--twinkle:1.9s;--phase:-0.00s"><circle cx="87" cy="419" r="2.5"/><circle cx="74" cy="516" r="1.7"/><circle cx="108" cy="543" r="1.7"/><circle cx="105" cy="188" r="2.5"/><circle cx="106" cy="322" r="1.7"/><circle cx="92" cy="479" r="1.7"/><circle cx="125" cy="421" r="2.5"/></g>
+                <g style="--twinkle:2.4s;--phase:-0.37s"><circle cx="103" cy="242" r="2.5"/><circle cx="116" cy="442" r="1.7"/><circle cx="80" cy="495" r="1.7"/><circle cx="94" cy="426" r="2.5"/><circle cx="98" cy="233" r="1.7"/><circle cx="123" cy="456" r="1.7"/><circle cx="67" cy="538" r="2.5"/></g>
+                <g style="--twinkle:2.1s;--phase:-0.74s"><circle cx="111" cy="362" r="2.5"/><circle cx="90" cy="186" r="1.7"/><circle cx="94" cy="454" r="1.7"/><circle cx="164" cy="509" r="2.5"/><circle cx="142" cy="467" r="1.7"/><circle cx="128" cy="473" r="1.7"/><circle cx="85" cy="506" r="2.5"/></g>
+                <g style="--twinkle:2.7s;--phase:-1.11s"><circle cx="62" cy="515" r="2.5"/><circle cx="101" cy="313" r="1.7"/><circle cx="154" cy="501" r="1.7"/><circle cx="93" cy="514" r="2.5"/><circle cx="139" cy="456" r="1.7"/><circle cx="96" cy="197" r="1.7"/><circle cx="111" cy="334" r="2.5"/></g>
+                <g style="--twinkle:2.2s;--phase:-1.48s"><circle cx="79" cy="483" r="2.5"/><circle cx="95" cy="275" r="1.7"/><circle cx="107" cy="271" r="1.7"/><circle cx="88" cy="528" r="2.5"/><circle cx="121" cy="547" r="1.7"/><circle cx="133" cy="427" r="1.7"/></g>
+                <g style="--twinkle:2.6s;--phase:-1.85s"><circle cx="117" cy="318" r="2.5"/><circle cx="118" cy="428" r="1.7"/><circle cx="100" cy="527" r="1.7"/><circle cx="99" cy="348" r="2.5"/><circle cx="109" cy="176" r="1.7"/><circle cx="92" cy="494" r="1.7"/></g>
+                <g style="--twinkle:1.8s;--phase:-2.22s"><circle cx="108" cy="214" r="2.5"/><circle cx="111" cy="528" r="1.7"/><circle cx="122" cy="510" r="1.7"/><circle cx="96" cy="214" r="2.5"/><circle cx="133" cy="441" r="1.7"/><circle cx="121" cy="536" r="1.7"/></g>
+                <g style="--twinkle:2.3s;--phase:-2.59s"><circle cx="119" cy="396" r="2.5"/><circle cx="104" cy="414" r="1.7"/><circle cx="98" cy="390" r="1.7"/><circle cx="78" cy="451" r="2.5"/><circle cx="113" cy="345" r="1.7"/><circle cx="97" cy="443" r="1.7"/></g>
+              </g>
+            </svg>
             <div class="paris-rain"></div>
           </div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
