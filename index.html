@@ -326,31 +326,7 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     @keyframes paris-window-objects { 0%,60%,88%,100% {opacity:1} 70% {opacity:.38} 75% {opacity:.12} 81% {opacity:.48} }
     @keyframes eiffel-glint { 0%,58%,100% { opacity:.035; } 10%,24% { opacity:1; } 35% { opacity:.16; } 43% { opacity:.85; } }
     .paris-runoff { position:absolute; left:0; top:53.59057%; width:100%; height:37.5134%; pointer-events:none; }
-    .paris-trickle {opacity:0;}
-    .paris-water-edge {fill:#d5b8e8;}
-    .paris-water-glint {fill:white;}
-    html[data-theme="night"] .paris-water-edge {opacity:0;}
-    html:not([data-theme="night"]) .paris-splash path {stroke:#d5b8e8;stroke-width:1.1;stroke-linejoin:round;paint-order:stroke fill;}
-    .paris-splash path {fill:white;opacity:0;}
-    @media (prefers-reduced-motion:no-preference) {
-      .paris-trickle {opacity:1;}
-      .paris-splash .surface-fleck {animation:paris-contact var(--flow) ease-out var(--delay) infinite;}
-      .paris-splash .rebound {animation:paris-rebound var(--flow) linear calc(var(--delay) + var(--lag)) infinite;}
-    }
-    @keyframes paris-contact {
-      0%,30%,100% {opacity:0;transform:scaleX(.45);}
-      5% {opacity:1;transform:scaleX(.85);}
-      17% {opacity:.84;transform:scaleX(1.1);}
-      29% {opacity:0;transform:scaleX(1.18);}
-    }
-    @keyframes paris-rebound {
-      0%,3%,36%,100% {opacity:0;}
-      3% {transform:translate(0,0);}
-      9% {opacity:1;}
-      15% {transform:translate(calc(var(--dx) * .48),var(--lift));}
-      24% {opacity:.85;transform:translate(calc(var(--dx) * .78),calc(var(--lift) * .8));}
-      36% {transform:translate(var(--dx),.5px);}
-    }
+    .paris-runoff canvas {display:block;width:100%;height:100%;}
     html[data-theme="night"] .paris-runoff {opacity:.66;}
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
@@ -1316,266 +1292,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 <circle cx="94" cy="298" r="12" fill="url(#eiffel-aura-9)"/><use x="89" y="293" href="#eiffel-white-star-3"/>
               </svg></i>
             </div></div>
-            <svg class="paris-runoff" viewBox="0 500 495 350" preserveAspectRatio="none" aria-hidden="true">
-              <g transform="translate(88 648)"><g class="paris-trickle" style="--flow:2.15s;--delay:-0.29s" clip-path="url(#paris-flow-1)"><clipPath id="paris-flow-1" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.15s" begin="-0.29s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q1.05 6.00 0.17 10.60 T-4.10 20.00 Q-4.53 14.60 -2.18 9.60 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q0.55 6.00 -0.34 10.60 T-4.10 20.00 Q-4.27 14.60 -1.89 9.60 T0 0Z"/>
-              </g></g>
-              <g transform="translate(189 624)"><g class="paris-trickle" style="--flow:2.82s;--delay:-1.12s" clip-path="url(#paris-flow-2)"><clipPath id="paris-flow-2" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.82s" begin="-1.12s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-1.45 8.70 -3.25 15.37 T-8.10 29.00 Q-6.15 21.17 -5.40 13.92 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-1.95 8.70 -3.76 15.37 T-8.10 29.00 Q-5.89 21.17 -5.11 13.92 T0 0Z"/>
-              </g></g>
-              <g transform="translate(272 611)"><g class="paris-trickle" style="--flow:3.49s;--delay:-1.95s" clip-path="url(#paris-flow-3)"><clipPath id="paris-flow-3" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.49s" begin="-1.95s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q0.51 6.00 -0.78 10.60 T-5.90 20.00 Q-5.85 14.60 -3.04 9.60 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q0.01 6.00 -1.30 10.60 T-5.90 20.00 Q-5.58 14.60 -2.76 9.60 T0 0Z"/>
-              </g></g>
-              <g transform="translate(122 619)"><g class="paris-trickle" style="--flow:2.43s;--delay:-0.49s" clip-path="url(#paris-flow-4)"><clipPath id="paris-flow-4" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.43s" begin="-0.49s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-2.00 10.20 -4.20 18.02 T-9.90 34.00 Q-7.47 24.82 -6.26 16.32 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-2.49 10.20 -4.72 18.02 T-9.90 34.00 Q-7.20 24.82 -5.98 16.32 T0 0Z"/>
-              </g></g>
-              <g transform="translate(301 567)"><g class="paris-trickle" style="--flow:3.10s;--delay:-1.32s" clip-path="url(#paris-flow-5)"><clipPath id="paris-flow-5" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.10s" begin="-1.32s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-2.07 10.20 -5.34 18.02 T-14.50 34.00 Q-12.12 24.82 -7.17 16.32 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-2.57 10.20 -5.86 18.02 T-14.50 34.00 Q-11.86 24.82 -6.88 16.32 T0 0Z"/>
-              </g></g>
-              <g transform="translate(104 603)"><g class="paris-trickle" style="--flow:3.77s;--delay:-2.15s" clip-path="url(#paris-flow-6)"><clipPath id="paris-flow-6" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.77s" begin="-2.15s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-1.30 5.70 -2.98 10.07 T-7.60 19.00 Q-5.79 13.87 -5.16 9.12 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-1.80 5.70 -3.50 10.07 T-7.60 19.00 Q-5.52 13.87 -4.87 9.12 T0 0Z"/>
-              </g></g>
-              <g transform="translate(415 614)"><g class="paris-trickle" style="--flow:2.71s;--delay:-0.69s" clip-path="url(#paris-flow-7)"><clipPath id="paris-flow-7" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.71s" begin="-0.69s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-0.31 6.30 -2.21 11.13 T-8.60 21.00 Q-7.82 15.33 -4.34 10.08 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-0.80 6.30 -2.73 11.13 T-8.60 21.00 Q-7.55 15.33 -4.05 10.08 T0 0Z"/>
-              </g></g>
-              <g transform="translate(284 564)"><g class="paris-trickle" style="--flow:3.38s;--delay:-1.52s" clip-path="url(#paris-flow-8)"><clipPath id="paris-flow-8" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.38s" begin="-1.52s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-1.27 5.70 -2.93 10.07 T-7.50 19.00 Q-5.71 13.87 -5.11 9.12 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-1.77 5.70 -3.45 10.07 T-7.50 19.00 Q-5.45 13.87 -4.82 9.12 T0 0Z"/>
-              </g></g>
-              <g transform="translate(290 624)"><g class="paris-trickle" style="--flow:2.32s;--delay:-0.06s" clip-path="url(#paris-flow-9)"><clipPath id="paris-flow-9" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.32s" begin="-0.06s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q0.51 9.30 -0.78 16.43 T-5.90 31.00 Q-5.85 22.63 -3.04 14.88 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q0.01 9.30 -1.30 16.43 T-5.90 31.00 Q-5.58 22.63 -2.76 14.88 T0 0Z"/>
-              </g></g>
-              <g transform="translate(378 606)"><g class="paris-trickle" style="--flow:2.99s;--delay:-0.89s" clip-path="url(#paris-flow-10)"><clipPath id="paris-flow-10" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.99s" begin="-0.89s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-2.62 14.40 -5.31 25.44 T-12.00 48.00 Q-9.00 35.04 -7.27 23.04 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-3.12 14.40 -5.83 25.44 T-12.00 48.00 Q-8.74 35.04 -6.98 23.04 T0 0Z"/>
-              </g></g>
-              <g transform="translate(398 615)"><g class="paris-trickle" style="--flow:3.66s;--delay:-1.72s" clip-path="url(#paris-flow-11)"><clipPath id="paris-flow-11" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.66s" begin="-1.72s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-2.62 12.00 -6.29 21.20 T-16.30 40.00 Q-13.44 29.20 -8.03 19.20 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-3.11 12.00 -6.81 21.20 T-16.30 40.00 Q-13.18 29.20 -7.75 19.20 T0 0Z"/>
-              </g></g>
-              <g transform="translate(206 622)"><g class="paris-trickle" style="--flow:2.60s;--delay:-0.26s" clip-path="url(#paris-flow-12)"><clipPath id="paris-flow-12" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.60s" begin="-0.26s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-3.13 13.20 -6.22 23.32 T-13.70 44.00 Q-10.24 32.12 -8.09 21.12 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-3.63 13.20 -6.73 23.32 T-13.70 44.00 Q-9.98 32.12 -7.80 21.12 T0 0Z"/>
-              </g></g>
-              <g transform="translate(205 582)"><g class="paris-trickle" style="--flow:3.27s;--delay:-1.09s" clip-path="url(#paris-flow-13)"><clipPath id="paris-flow-13" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="3.27s" begin="-1.09s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-0.03 6.90 -1.74 12.19 T-7.70 23.00 Q-7.16 16.79 -3.91 11.04 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-0.53 6.90 -2.25 12.19 T-7.70 23.00 Q-6.90 16.79 -3.62 11.04 T0 0Z"/>
-              </g></g>
-              <g transform="translate(27 637)"><g class="paris-trickle" style="--flow:2.21s;--delay:-1.92s" clip-path="url(#paris-flow-14)"><clipPath id="paris-flow-14" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.21s" begin="-1.92s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-2.14 10.80 -4.47 19.08 T-10.40 36.00 Q-7.83 26.28 -6.50 17.28 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-2.64 10.80 -4.98 19.08 T-10.40 36.00 Q-7.57 26.28 -6.22 17.28 T0 0Z"/>
-              </g></g>
-              <g transform="translate(308 605)"><g class="paris-trickle" style="--flow:2.88s;--delay:-0.46s" clip-path="url(#paris-flow-15)"><clipPath id="paris-flow-15" clipPathUnits="objectBoundingBox"><polygon points="-1,0 2,0 2,0 -1,0"><animate attributeName="points" dur="2.88s" begin="-0.46s" repeatCount="indefinite" keyTimes="0;.12;.32;.52;.65;.78;1" values="-1,0 2,0 2,0 -1,0;-1,0 2,0 2,.13 -1,.13;-1,.08 2,.08 2,.49 -1,.49;-1,.35 2,.35 2,.88 -1,.88;-1,.65 2,.65 2,1 -1,1;-1,1 2,1 2,1 -1,1;-1,1 2,1 2,1 -1,1"/></polygon></clipPath>
-                <path class="paris-water-edge" transform="translate(.8 .5)" d="M0 0 Q-0.13 6.90 -1.90 12.19 T-8.00 23.00 Q-7.38 16.79 -4.05 11.04 T0 0Z"/>
-                <path class="paris-water-glint" d="M0 0 Q-0.62 6.90 -2.41 12.19 T-8.00 23.00 Q-7.12 16.79 -3.76 11.04 T0 0Z"/>
-              </g></g>
-              <g class="paris-splash" transform="translate(110 592)" style="--flow:2.73s;--delay:-1s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:2.5px;--lift:-2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(73 643)" style="--flow:3.81s;--delay:-2.4s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-4.2px;--lift:-3.3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:5.5px;--lift:-5.2px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-6.8px;--lift:-2.3px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(245 559)" style="--flow:3.34s;--delay:-0.3s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(339 545)" style="--flow:4.19s;--delay:-3.5s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-7.6px;--lift:-5.9px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:3.2px;--lift:-3px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(399 623)" style="--flow:3.67s;--delay:-0.7s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:3.6px;--lift:-2.4px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(109 682)" style="--flow:3.13s;--delay:-2.5s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-5.3px;--lift:-3.7px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:6.6px;--lift:-5.6px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(274 667)" style="--flow:2.97s;--delay:-0.7s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:7px;--lift:-5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-2.6px;--lift:-2.1px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:3.9px;--lift:-4px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(335 766)" style="--flow:4.31s;--delay:-2.1s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-3px;--lift:-6.3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(70 763)" style="--flow:3.43s;--delay:-0.1s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:4.7px;--lift:-2.8px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-6px;--lift:-4.7px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:7.3px;--lift:-6.6px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(402 766)" style="--flow:4.73s;--delay:-3.3s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(217 551)" style="--flow:5.27s;--delay:-1.4s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:8.1px;--lift:-5.4px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-3.7px;--lift:-2.5px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(46 571)" style="--flow:4.07s;--delay:-2.6s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-4.1px;--lift:-6.7px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(405 642)" style="--flow:1.18s;--delay:-0.00s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:5.8px;--lift:-3.2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-7.1px;--lift:-5.1px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(390 598)" style="--flow:1.80s;--delay:-1.16s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-7.5px;--lift:-4.5px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:3.1px;--lift:-6.4px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-4.4px;--lift:-3.5px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(45 651)" style="--flow:1.24s;--delay:-0.13s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:3.5px;--lift:-5.8px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(333 543)" style="--flow:1.86s;--delay:-1.29s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-5.2px;--lift:-2.3px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:6.5px;--lift:-4.2px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-7.8px;--lift:-6.1px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(105 670)" style="--flow:1.30s;--delay:-0.26s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(279 561)" style="--flow:1.92s;--delay:-1.43s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-2.9px;--lift:-4.9px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:4.2px;--lift:-2px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(198 582)" style="--flow:1.36s;--delay:-0.40s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:4.6px;--lift:-6.2px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(346 660)" style="--flow:1.98s;--delay:-1.56s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-6.3px;--lift:-2.7px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:7.6px;--lift:-4.6px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(199 643)" style="--flow:1.42s;--delay:-0.53s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:8px;--lift:-4px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-3.6px;--lift:-5.9px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:4.9px;--lift:-3px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(316 668)" style="--flow:2.04s;--delay:-1.69s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-4px;--lift:-5.3px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(92 683)" style="--flow:1.47s;--delay:-0.66s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:5.7px;--lift:-6.6px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-7px;--lift:-3.7px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:2.6px;--lift:-5.6px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(422 634)" style="--flow:2.10s;--delay:-1.82s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(419 601)" style="--flow:1.53s;--delay:-0.79s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:3.4px;--lift:-4.4px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-4.7px;--lift:-6.3px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(43 679)" style="--flow:2.16s;--delay:-1.96s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-5.1px;--lift:-5.7px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(284 531)" style="--flow:1.59s;--delay:-0.93s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:6.8px;--lift:-2.2px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-8.1px;--lift:-4.1px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(90 618)" style="--flow:2.22s;--delay:-2.09s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-2.8px;--lift:-3.5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:4.1px;--lift:-5.4px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-5.4px;--lift:-2.5px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(272 628)" style="--flow:1.65s;--delay:-1.06s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:4.5px;--lift:-4.8px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(380 612)" style="--flow:2.27s;--delay:-0.03s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-6.2px;--lift:-6.1px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:7.5px;--lift:-3.2px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-3.1px;--lift:-5.1px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(299 544)" style="--flow:1.71s;--delay:-1.19s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(117 646)" style="--flow:2.33s;--delay:-0.16s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-3.9px;--lift:-3.9px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:5.2px;--lift:-5.8px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(181 594)" style="--flow:1.77s;--delay:-1.32s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:5.6px;--lift:-5.2px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(59 763)" style="--flow:1.20s;--delay:-0.29s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-7.3px;--lift:-6.5px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:2.9px;--lift:-3.6px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(97 763)" style="--flow:1.83s;--delay:-1.46s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:3.3px;--lift:-3px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-4.6px;--lift:-4.9px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:5.9px;--lift:-2px;--lag:0.062s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(148 762)" style="--flow:1.26s;--delay:-0.43s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-5px;--lift:-4.3px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(224 765)" style="--flow:1.89s;--delay:-1.59s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:6.7px;--lift:-5.6px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-8px;--lift:-2.7px;--lag:0.031s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:3.6px;--lift:-4.6px;--lag:0.062s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(267 765)" style="--flow:1.32s;--delay:-0.56s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(355 765)" style="--flow:1.94s;--delay:-1.72s">
-                <path class="surface-fleck" d="M-3.7 .5Q-2 -.6 -.4 -.4Q1 .1 2.1 -.6Q2.7 .8 -.3 .9Z"/>
-                <path class="rebound" style="--dx:4.4px;--lift:-3.4px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:-5.7px;--lift:-5.3px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(133 676)" style="--flow:1.38s;--delay:-0.69s">
-                <path class="surface-fleck" d="M-2.4 .1Q-1.8 -1.2 -.8 -.6T2.7 -.2Q1 1.3 -2.4 .1Z"/>
-                <path class="rebound" style="--dx:-6.1px;--lift:-4.7px;--lag:0s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(218 667)" style="--flow:2.00s;--delay:-1.85s">
-                <path class="surface-fleck" d="M-3 .3Q-1 -.9 .3 -.5T3 .1Q1.1 1.1 -3 .3Z"/>
-                <path class="rebound" style="--dx:7.8px;--lift:-6px;--lag:0s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-                <path class="rebound" style="--dx:-3.4px;--lift:-3.1px;--lag:0.031s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-              </g>
-              <g class="paris-splash" transform="translate(326 664)" style="--flow:1.44s;--delay:-0.82s">
-                <path class="surface-fleck" d="M-.9 .2Q-1.7 -1.2 -.4 -1.5Q.8 -1.4 1 .1Q.6 1.1 -.9 .2Z"/>
-                <path class="rebound" style="--dx:-3.8px;--lift:-2.5px;--lag:0s" d="M-.9 -.3Q-.7 -1.5 .4 -1.1Q1.3 -.5 .9 .5Q.2 1.6 -.8 .7Z"/>
-                <path class="rebound" style="--dx:5.1px;--lift:-4.4px;--lag:0.031s" d="M0 -2.2Q1.5 -.8 1.1 .3Q.6 1.6 -.5 1.1Q-1.7 .4 0 -2.2Z"/>
-                <path class="rebound" style="--dx:-6.4px;--lift:-6.3px;--lag:0.062s" d="M-.9 -1.6Q.6 -1.5 1.2 -.3Q1.5 1 -.1 1.1Q-1.2 .8 -.9 -1.6Z"/>
-              </g>
-            </svg>
+            <paris-roof-water class="paris-runoff" aria-hidden="true"></paris-roof-water>
             <div class="paris-rain"></div>
           </div>
           <div id="v2-japan" data-room-v2-layer aria-hidden="true">
@@ -2082,6 +1799,137 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="nana-card-export.js?v=20261116-card-ufo-1" defer></script>
 <script src="nana-navigation.js?v=20261116-desktop-review-1" defer></script>
 <script src="nana-diary-letters.js?v=20261115-word-wrap-2" defer></script>
+<script>
+class ParisRoofWater extends HTMLElement {
+  connectedCallback() {
+    if (this.observer) return;
+    const canvas = document.createElement('canvas');
+    canvas.width = 495;
+    canvas.height = 350;
+    canvas.setAttribute('aria-hidden', 'true');
+    this.replaceChildren(canvas);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const random = (min, max) => min + Math.random() * (max - min);
+    const scene = this.closest('#play-scene');
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const pools = [
+      [101,603,8,23], [184,626,8,30], [274,603,9,28],
+      [294,562,10,23], [379,627,10,25], [412,604,9,35],
+      [98,655,8,20], [201,655,10,15]
+    ].map(([x,y,w,h]) => ({x,y,w,h,phase:random(0,6),speed:random(.7,1.25),side:random(.22,.76)}));
+    const outlets = [[53,696],[155,696],[190,686],[260,684],[319,682],[406,679]]
+      .map(([x,y]) => ({x,y,age:0,wait:random(.08,1.7),fill:random(.45,1.4),tail:random(4,12)}));
+    const surfaces = [[102,617],[87,651],[187,629],[273,600],[292,559],[400,625],[378,652],
+      [145,581],[45,584],[231,550],[331,547],[195,667],[281,667],[363,664],
+      [76,761],[133,761],[233,771],[326,766],[397,763]];
+    const hits = [];
+    let nextHit = 0, time = 0, previous = 0, frame = 0;
+    const bead = (x,y,rx,ry,angle=0) => {
+      ctx.beginPath(); ctx.ellipse(x,y,rx,ry,angle,0,Math.PI*2); ctx.fill();
+    };
+    function waterColor(day) {
+      ctx.fillStyle = 'white';
+      ctx.shadowColor = day ? 'rgba(177,135,206,.85)' : 'transparent';
+      ctx.shadowBlur = day ? 2.8 : 0;
+    }
+    function drawPool(p, day) {
+      // A shallow sheet feeds two rivulets at different rates down the slope.
+      const phase = time*p.speed+p.phase;
+      const pulse = (1+Math.sin(phase))*.5;
+      const h = p.h*(.23+.77*pulse);
+      const branch = p.h*(.14+.32*(1+Math.sin(phase*1.43+2))*.5);
+      ctx.save(); ctx.translate(p.x,p.y); ctx.transform(1,0,-.32,1,0,0); ctx.scale(p.w,1);
+      ctx.beginPath(); ctx.moveTo(-1,0);
+      ctx.bezierCurveTo(-1.13,-3,-.55,-3.8,-.21,-3.2);
+      ctx.bezierCurveTo(.19,-4.5,1.04,-2.5,1.02,-.3);
+      ctx.bezierCurveTo(1,2.1,p.side+.14,1.7,p.side+.09,branch*.65);
+      ctx.bezierCurveTo(p.side+.1,branch+2,p.side-.06,branch+2,p.side-.10,branch*.58);
+      ctx.bezierCurveTo(p.side-.12,2.4,.02,2.1,-.06,5);
+      ctx.bezierCurveTo(-.21,h*.47,-.14,h*.85,-.24,h);
+      ctx.bezierCurveTo(-.47,h+2,-.36,h*.72,-.40,h*.54);
+      ctx.bezierCurveTo(-.51,4,-.51,2,-.76,1.8);
+      ctx.bezierCurveTo(-.96,1.5,-1.03,1,-1,0);
+      ctx.closePath();
+      ctx.fillStyle = day ? 'rgba(213,184,232,.48)' : 'rgba(213,184,232,.23)';
+      ctx.shadowColor=day?'rgba(213,184,232,.85)':'transparent';ctx.shadowBlur=3;ctx.fill();
+      ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=1.15;
+      ctx.beginPath();ctx.moveTo(-.82,-.6);ctx.bezierCurveTo(-.53,-2.6,-.36,-1.8,-.17,-2.3);ctx.scale(1/p.w,1);ctx.stroke();
+      ctx.restore();
+      // A glint travels from the pool to the tip, independently of the sheet's outline.
+      const t=(phase*.39)%1, y=t*h;
+      ctx.save();waterColor(day);ctx.globalAlpha=.9*Math.sin(Math.PI*t);
+      bead(p.x-.29*p.w-.32*y,p.y+y,.85,1.3+2*t,.22);ctx.restore();
+    }
+    function drawOutlet(o,dt,day) {
+      o.age+=dt;
+      if(o.age<o.wait)return;
+      const age=o.age-o.wait, growth=Math.min(1,age/o.fill), fall=age-o.fill;
+      const h=1+o.tail*growth*growth;
+      ctx.save();ctx.translate(o.x,o.y);waterColor(day);
+      const neck=fall<0?h:Math.max(0,h*(1-fall/.14));
+      ctx.beginPath();ctx.moveTo(-3,0);
+      ctx.bezierCurveTo(-1,.5,-.85,neck*.42,-.55,neck);
+      ctx.quadraticCurveTo(0,neck+1,.55,neck);
+      ctx.bezierCurveTo(.75,neck*.45,.8,.7,2,0);ctx.fill();
+      if(fall<0) bead(0,h, .7+growth,1+growth);
+      else if(fall<.62) {
+        ctx.globalAlpha=Math.min(1,(.62-fall)*8);
+        bead(.4*fall,h+86*fall*fall,1.55,1.85+fall);
+      } else {
+        o.age=0;o.wait=random(.06,1.85);o.fill=random(.32,1.3);o.tail=random(3,13);
+      }
+      ctx.restore();
+    }
+    function spawnHit() {
+      const [x,y]=surfaces[Math.floor(random(0,surfaces.length))];
+      const type=Math.floor(random(0,4));
+      const count=[0,1,2,4][type], particles=[];
+      for(let i=0;i<count;i++) particles.push({vx:random(-17,17),vy:random(-30,-12),r:random(.65,1.4)});
+      hits.push({x:x+random(-3,3),y,age:0,life:random(.23,.46),type,particles,lean:random(-.32,.32),width:random(2,5)});
+    }
+    function drawHits(dt,day) {
+      nextHit-=dt;
+      if(nextHit<=0){spawnHit();nextHit=random(.045,.15);}
+      for(let i=hits.length-1;i>=0;i--) {
+        const h=hits[i];h.age+=dt;
+        const t=h.age/h.life;
+        if(t>=1){hits.splice(i,1);continue;}
+        ctx.save();ctx.translate(h.x,h.y);ctx.rotate(h.lean);waterColor(day);
+        ctx.globalAlpha=Math.min(1,t*15,2*(1-t));
+        if(h.type===0 || h.type===2) {
+          ctx.strokeStyle='white';ctx.lineWidth=1.1;
+          ctx.beginPath();ctx.ellipse(0,0,1+h.width*t,.35+1.1*t,0,.15,Math.PI*1.63);ctx.stroke();
+        } else bead(-.6,0,h.width*(.5+t),.8);
+        for(const b of h.particles) bead(b.vx*h.age,b.vy*h.age+43*h.age*h.age,b.r,b.r*(1.3-.3*t),h.lean);
+        ctx.restore();
+      }
+    }
+    const paint = now => {
+      const dt=previous?Math.min(.05,(now-previous)/1000):0;previous=now;time+=dt;
+      const day=document.documentElement.dataset.theme!=='night';
+      ctx.setTransform(1,0,0,1,0,-500);ctx.clearRect(0,500,495,350);
+      for(const p of pools)drawPool(p,day);
+      for(const o of outlets)drawOutlet(o,dt,day);
+      drawHits(dt,day);
+      frame=requestAnimationFrame(paint);
+    };
+    const sync = () => {
+      const active=scene?.dataset.landscape==='paris' && !motion.matches && !document.hidden;
+      if(active && !frame)frame=requestAnimationFrame(paint);
+      if(!active && frame){cancelAnimationFrame(frame);frame=0;previous=0;ctx.clearRect(0,500,495,350);}
+    };
+    this.observer=new MutationObserver(sync);
+    if(scene)this.observer.observe(scene,{attributes:true,attributeFilter:['data-landscape']});
+    motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+    this.stop=()=>{cancelAnimationFrame(frame);motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);};
+    sync();
+  }
+  disconnectedCallback(){this.stop?.();this.observer?.disconnect();this.observer=null;}
+}
+customElements.define('paris-roof-water',ParisRoofWater);
+
+</script>
 </body>
 </html>
 
