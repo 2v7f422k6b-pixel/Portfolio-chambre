@@ -266,8 +266,10 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       position:absolute; left:0; background:#fff; opacity:.56;
       mask:var(--cloud) center / contain no-repeat; -webkit-mask:var(--cloud) center / contain no-repeat;
     }
-    .paris-cloud.high { --cloud:url("assets/drawn-ui/nuage_jour_01.png"); top:17%; width:51%; height:10%; --from:-105%; --to:207%; --time:29s; --phase:-10s; }
-    .paris-cloud.low { --cloud:url("assets/drawn-ui/nuage_jour_02.png"); top:33%; width:65%; height:9%; --from:-104%; --to:165%; --time:37s; --phase:-24s; }
+    .paris-cloudbank { position:absolute; inset:0; overflow:hidden; pointer-events:none; clip-path:polygon(0 0,100% 0,100% 46%,82% 44%,74% 48%,65% 49%,61% 55%,44% 57%,30% 55%,22% 59%,8% 55%,0 59%); }
+    .paris-cloud { top:var(--top); width:var(--width); height:var(--height); opacity:.42; --from:-100%; }
+    .paris-cloud:nth-child(odd) { --cloud:url("assets/drawn-ui/nuage_jour_01.png"); }
+    .paris-cloud:nth-child(even) { --cloud:url("assets/drawn-ui/nuage_jour_02.png"); }
     .eiffel-lights,.paris-room-spill { display:none; pointer-events:none; }
     html[data-theme="night"] .paris-cloud { display:none; }
     html[data-theme="night"] .eiffel-lights { display:block; position:absolute; inset:0; }
@@ -277,9 +279,10 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
       mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
       -webkit-mask-image:linear-gradient(to right,black,rgba(0,0,0,.73) 42%,transparent);
     }
-    .eiffel-sparkles { display:none; position:absolute; left:5%; top:18%; width:32%; height:42%; }
+    .eiffel-sparkles { display:none; position:absolute; left:8.0808%; top:17.14898%; width:28.28283%; height:42.87245%; }
     #v2-paris[data-sparkling] .eiffel-sparkles { display:block; }
     .eiffel-sparkles i { position:absolute; inset:0; }
+    .eiffel-sparkles svg { display:block; width:100%; height:100%; }
     html[data-theme="night"] #play-scene[data-landscape="paris"] > .paris-room-spill {
       display:block; position:absolute; left:30%; top:0; width:55%; height:95%; z-index:8; opacity:0;
       background:
@@ -337,11 +340,11 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     @keyframes paris-impact {
       0%,15% {opacity:0;transform:scale(.35,.18);}
-      17% {opacity:.93;transform:scale(.75,.85);}
-      22% {opacity:.56;transform:scale(1.12,1);}
-      26%,100% {opacity:0;transform:scale(1.42,.35);}
+      17% {opacity:1;transform:scale(.75,.85);}
+      31% {opacity:.93;transform:scale(1.12,1);}
+      43%,100% {opacity:0;transform:scale(1.42,.35);}
     }
-    html[data-theme="night"] .paris-runoff {opacity:.66;}
+    html[data-theme="night"] .paris-runoff {opacity:.92;}
     #v2-paris .paris-rain {
       position:absolute; inset:0 -15%; transform:skewX(-9deg); opacity:.88;
     }
@@ -1190,13 +1193,26 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           <div id="v2-marseille-hiver" data-room-v2-layer aria-hidden="true"></div>
           <div class="paris-room-spill" data-room-v2-layer aria-hidden="true"></div>
           <div id="v2-paris" data-room-v2-layer aria-hidden="true">
-            <div class="paris-cloud high"></div><div class="paris-cloud low"></div>
+            <div class="paris-cloudbank">
+              <div class="paris-cloud" style="--top:0%;--width:98%;--height:18%;--to:103%;--time:44s;--phase:-7s"></div>
+              <div class="paris-cloud" style="--top:7%;--width:88%;--height:20%;--to:114%;--time:38s;--phase:-26s"></div>
+              <div class="paris-cloud" style="--top:15%;--width:103%;--height:23%;--to:98%;--time:48s;--phase:-14s"></div>
+              <div class="paris-cloud" style="--top:22%;--width:96%;--height:21%;--to:105%;--time:39s;--phase:-29s"></div>
+              <div class="paris-cloud" style="--top:29%;--width:106%;--height:23%;--to:95%;--time:52s;--phase:-8s"></div>
+              <div class="paris-cloud" style="--top:32%;--width:91%;--height:23%;--to:110%;--time:44s;--phase:-31s"></div>
+              <div class="paris-cloud" style="--top:39%;--width:109%;--height:21%;--to:92%;--time:48s;--phase:-17s"></div>
+              <div class="paris-cloud" style="--top:43%;--width:97%;--height:21%;--to:104%;--time:40s;--phase:-31s"></div>
+            </div>
             <div class="eiffel-lights"><div class="eiffel-beacon"></div><div class="eiffel-sparkles">
-      <i style="--twinkle:1.6s;--phase:-0.00s;background-image:radial-gradient(ellipse 4.1% 1.9% at 39.3% 64.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 39.3% 64.1%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 39.3% 64.1%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 58.2% 38.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 41.2% 4.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 50.0% 62.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 51.9% 26.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 51.9% 26.3%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 51.9% 26.3%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 43.7% 65.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 45.0% 11.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 72.1% 73.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 42.5% 79.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 42.5% 79.4%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 42.5% 79.4%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 42.5% 83.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 38.0% 86.3%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
-      <i style="--twinkle:1.8s;--phase:-0.41s;background-image:radial-gradient(ellipse 4.1% 1.9% at 49.4% 18.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 52.6% 11.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 52.6% 11.8%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 52.6% 11.8%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 48.1% 37.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 52.6% 95.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 47.5% 91.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 87.9% 87.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 87.9% 87.0%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 87.9% 87.0%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 33.6% 72.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 60.8% 96.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 62.0% 73.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 60.8% 93.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 60.8% 93.9%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 60.8% 93.9%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 54.5% 42.4%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
-      <i style="--twinkle:2s;--phase:-0.82s;background-image:radial-gradient(ellipse 4.1% 1.9% at 54.5% 49.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 59.5% 58.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 44.3% 27.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 44.3% 27.3%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 44.3% 27.3%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 34.9% 83.5%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 61.4% 87.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 43.1% 88.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 51.3% 39.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 51.3% 39.3%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 51.3% 39.3%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 53.2% 2.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 65.2% 77.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 45.6% 70.2%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
-      <i style="--twinkle:2.2s;--phase:-1.23s;background-image:radial-gradient(ellipse 4.1% 1.9% at 23.5% 88.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 23.5% 88.6%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 23.5% 88.6%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 31.1% 88.8%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 58.9% 66.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 43.7% 73.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 46.2% 56.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 46.2% 56.7%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 46.2% 56.7%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 39.9% 91.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 46.2% 16.6%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 68.3% 69.7%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 45.0% 7.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 45.0% 7.4%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 45.0% 7.4%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 63.3% 64.6%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
-      <i style="--twinkle:2.4000000000000004s;--phase:-1.64s;background-image:radial-gradient(ellipse 4.1% 1.9% at 34.2% 80.4%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 57.6% 69.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 54.5% 91.9%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 54.5% 91.9%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 54.5% 91.9%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 81.6% 85.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 50.7% 5.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 46.9% 46.0%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 74.0% 76.3%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 8% .67% at 74.0% 76.3%,white 35%,transparent),radial-gradient(ellipse 1.35% 3.8% at 74.0% 76.3%,white 38%,transparent),radial-gradient(ellipse 4.1% 1.9% at 55.7% 45.2%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 68.3% 66.1%,white 48%,rgba(255,250,233,.9) 64%,transparent),radial-gradient(ellipse 4.1% 1.9% at 26.7% 94.4%,white 48%,rgba(255,250,233,.9) 64%,transparent)"></i>
+              <i style="--twinkle:0.82s;--phase:-0.00s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M126 547h.1 M106 343h.1 M108 212h.1 M167 508h.1 M129 433h.1 M151 511h.1 M118 446h.1 M75 466h.1 M95 336h.1 M132 477h.1 M94 243h.1 M94 367h.1 M94 407h.1 M124 514h.1 M122 457h.1 M92 456h.1 M103 261h.1 M133 527h.1 M87 431h.1 M52 528h.1 M71 501h.1 M88 414h.1 M110 295h.1 M98 548h.1 M72 482h.1 M116 290h.1"/></svg></i>
+              <i style="--twinkle:0.91s;--phase:-0.22s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M110 549h.1 M91 497h.1 M140 479h.1 M114 275h.1 M103 544h.1 M81 511h.1 M98 193h.1 M96 197h.1 M105 428h.1 M105 244h.1 M79 443h.1 M78 452h.1 M100 287h.1 M112 279h.1 M112 436h.1 M94 353h.1 M127 403h.1 M96 437h.1 M103 528h.1 M102 254h.1 M93 471h.1 M131 426h.1 M108 258h.1 M91 466h.1 M154 515h.1 M100 342h.1"/></svg></i>
+              <i style="--twinkle:1.01s;--phase:-0.43s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M126 490h.1 M134 420h.1 M96 212h.1 M109 373h.1 M111 397h.1 M138 483h.1 M97 346h.1 M125 398h.1 M108 281h.1 M111 456h.1 M110 326h.1 M109 240h.1 M115 452h.1 M118 324h.1 M96 442h.1 M95 237h.1 M123 412h.1 M107 525h.1 M115 383h.1 M105 393h.1 M102 539h.1 M103 415h.1 M80 463h.1 M107 249h.1 M104 388h.1 M103 276h.1"/></svg></i>
+              <i style="--twinkle:1.10s;--phase:-0.65s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M140 528h.1 M121 378h.1 M108 198h.1 M91 487h.1 M123 465h.1 M84 423h.1 M132 495h.1 M63 515h.1 M98 265h.1 M123 417h.1 M106 191h.1 M113 360h.1 M113 250h.1 M102 180h.1 M94 427h.1 M168 533h.1 M130 484h.1 M51 538h.1 M113 285h.1 M115 315h.1 M116 395h.1 M115 545h.1 M140 460h.1 M128 410h.1 M116 408h.1"/></svg></i>
+              <i style="--twinkle:1.19s;--phase:-0.87s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M97 326h.1 M111 220h.1 M135 468h.1 M138 510h.1 M94 449h.1 M107 536h.1 M127 533h.1 M113 300h.1 M117 540h.1 M107 413h.1 M96 432h.1 M114 268h.1 M110 175h.1 M98 186h.1 M74 492h.1 M101 241h.1 M86 528h.1 M90 184h.1 M112 378h.1 M144 505h.1 M90 400h.1 M99 514h.1 M101 441h.1 M95 217h.1 M102 205h.1"/></svg></i>
+              <i style="--twinkle:1.28s;--phase:-1.08s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M96 179h.1 M111 543h.1 M127 510h.1 M124 391h.1 M104 196h.1 M94 529h.1 M117 417h.1 M118 363h.1 M96 522h.1 M92 477h.1 M109 449h.1 M112 190h.1 M84 472h.1 M98 389h.1 M87 511h.1 M113 533h.1 M104 509h.1 M110 225h.1 M113 427h.1 M112 513h.1 M120 534h.1 M131 470h.1 M56 521h.1 M122 538h.1 M109 364h.1"/></svg></i>
+              <i style="--twinkle:1.38s;--phase:-1.30s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M87 459h.1 M101 221h.1 M83 501h.1 M96 279h.1 M111 404h.1 M105 401h.1 M157 508h.1 M93 417h.1 M88 482h.1 M105 318h.1 M124 429h.1 M114 182h.1 M104 175h.1 M119 340h.1 M148 501h.1 M131 455h.1 M110 319h.1 M109 431h.1 M85 497h.1 M81 529h.1 M124 448h.1 M85 521h.1 M114 177h.1 M113 195h.1 M90 387h.1"/></svg></i>
+              <i style="--twinkle:1.47s;--phase:-1.52s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="3.6" stroke-linecap="round" d="M134 439h.1 M90 423h.1 M106 219h.1 M117 438h.1 M132 414h.1 M100 319h.1 M103 434h.1 M67 529h.1 M89 393h.1 M76 514h.1 M83 417h.1 M131 508h.1 M95 230h.1 M117 371h.1 M109 305h.1 M97 300h.1 M104 215h.1 M107 444h.1 M92 513h.1 M76 458h.1 M91 539h.1 M93 309h.1 M94 391h.1 M79 433h.1 M128 499h.1"/></svg></i>
+              <i style="--twinkle:1.56s;--phase:-1.74s"><svg viewBox="40 160 140 400" preserveAspectRatio="none"><path fill="none" stroke="white" stroke-width="4" stroke-linecap="round" d="M66 505h.1 M138 493h.1 M97 248h.1 M129 448h.1 M133 489h.1 M134 462h.1 M100 310h.1 M64 510h.1 M128 420h.1 M105 337h.1 M87 449h.1 M104 228h.1 M103 368h.1 M97 172h.1 M168 514h.1 M82 490h.1 M102 423h.1 M104 297h.1 M95 464h.1 M122 437h.1 M104 330h.1 M130 442h.1 M166 524h.1 M98 293h.1 M109 275h.1"/></svg></i>
             </div></div>
             <svg class="paris-runoff" viewBox="0 500 495 350" preserveAspectRatio="none" aria-hidden="true">
               <path class="paris-trickle" style="--flow:4.7s;--delay:-.8s" d="M115 582 Q107 611 102 629 T89 676"/>
@@ -1214,6 +1230,36 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               <path class="paris-splash" style="--flow:4.73s;--delay:-3.3s" d="M398 762 q2 0 4 4 m3 -1 q2 -4 5 -3"/>
               <path class="paris-splash" style="--flow:5.27s;--delay:-1.4s" d="M213 547 q2 0 4 4 m3 -1 q2 -4 3 -4"/>
               <path class="paris-splash" style="--flow:4.07s;--delay:-2.6s" d="M42 567 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.18s;--delay:-0.00s" d="M401 638 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.80s;--delay:-1.16s" d="M386 594 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.24s;--delay:-0.13s" d="M41 647 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.86s;--delay:-1.29s" d="M329 539 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.30s;--delay:-0.26s" d="M101 666 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.92s;--delay:-1.43s" d="M275 557 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.36s;--delay:-0.40s" d="M194 578 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.98s;--delay:-1.56s" d="M342 656 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.42s;--delay:-0.53s" d="M195 639 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:2.04s;--delay:-1.69s" d="M312 664 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.47s;--delay:-0.66s" d="M88 679 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:2.10s;--delay:-1.82s" d="M418 630 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.53s;--delay:-0.79s" d="M415 597 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:2.16s;--delay:-1.96s" d="M39 675 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.59s;--delay:-0.93s" d="M280 527 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:2.22s;--delay:-2.09s" d="M86 614 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.65s;--delay:-1.06s" d="M268 624 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:2.27s;--delay:-0.03s" d="M376 608 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.71s;--delay:-1.19s" d="M295 540 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:2.33s;--delay:-0.16s" d="M113 642 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.77s;--delay:-1.32s" d="M177 590 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.20s;--delay:-0.29s" d="M55 759 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.83s;--delay:-1.46s" d="M93 759 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.26s;--delay:-0.43s" d="M144 758 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.89s;--delay:-1.59s" d="M220 761 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:1.32s;--delay:-0.56s" d="M263 761 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.94s;--delay:-1.72s" d="M351 761 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
+              <path class="paris-splash" style="--flow:1.38s;--delay:-0.69s" d="M129 672 q2 0 4 4 m3 -1 q2 -4 3 -3"/>
+              <path class="paris-splash" style="--flow:2.00s;--delay:-1.85s" d="M214 663 q2 0 4 4 m3 -1 q2 -4 4 -4"/>
+              <path class="paris-splash" style="--flow:1.44s;--delay:-0.82s" d="M322 660 q2 0 4 4 m3 -1 q2 -4 5 -5"/>
             </svg>
             <div class="paris-rain"></div>
           </div>
