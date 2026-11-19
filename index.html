@@ -247,10 +247,12 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
     .room-redraw-preview #play-scene[data-landscape="marseille"] > #v2-marseille-hiver {
       display:block;
+    }
+    #v2-marseille-hiver {
       background:url("assets/room-redraw/marseille-hiver-jour.webp") center / 100% 100% no-repeat;
       clip-path:polygon(3.2323% 12.7546%, 87.0707% 2.358%, 87.4747% 95.3912%, 3.2323% 94.7481%);
     }
-    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="marseille"] > #v2-marseille-hiver {
+    html[data-theme="night"] #v2-marseille-hiver {
       background-image:url("assets/room-redraw/marseille-hiver-nuit.webp?v=f37de783");
     }
     #v2-japan {
@@ -332,9 +334,9 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     @media (prefers-reduced-motion:no-preference) {
       html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-night-dust { display:block; }
     }
-    #desert-window-light { display:none; }
-    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-window-light {
-      display:block; position:absolute; inset:0; width:100%; height:100%;
+    html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="pink"] > #desert-window-light { display:block; }
+    #desert-window-light {
+      display:none; position:absolute; inset:0; width:100%; height:100%;
       pointer-events:none; z-index:7; mix-blend-mode:color;
     }
     html:not([data-theme="night"]) #v2-desert .crystal-glint {
@@ -927,7 +929,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=20261118-ipad-heure-blanche';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=20261119-cadran';
+                  script.src = 'room-v2-ambient.js?v=20261119-fondu';
                   document.head.append(script);
                 };
                 document.head.append(style);

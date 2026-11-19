@@ -322,6 +322,49 @@
   wheel.style.transformOrigin = '1931px 990px';
   wheel.style.transform = 'rotate(' + dialAngle + 'deg)';
   showLandscape();
+  const previewWindowFade = new URLSearchParams(location.search).get('fondu') === '1';
+  const windowArt = {
+    marseille: '#v2-marseille-hiver',
+    japon: '#v2-japan',
+    pink: '#v2-desert'
+  };
+  const windowEffects = {
+    marseille: '#window-life, #ufo-window-layer, .v2-ferry, .v2-sky-sparkles',
+    japon: null,
+    pink: '#desert-night-dust, #desert-window-light'
+  };
+  function visibleEffects(place) {
+    return windowEffects[place]
+      ? [...scene.querySelectorAll(windowEffects[place])].filter(el => getComputedStyle(el).display !== 'none')
+      : [];
+  }
+  function blendWindows(spin) {
+    const previous = scene.dataset.landscape;
+    const oldArt = scene.querySelector(windowArt[previous]);
+    const oldLayers = [oldArt, ...visibleEffects(previous)];
+    const oldDisplay = oldLayers.map(el => getComputedStyle(el).display);
+    const animations = [];
+    function fade(el, from, to) {
+      animations.push(el.animate([{opacity:from}, {opacity:to}], {
+        delay:1150, duration:550, easing:'ease-in-out', fill:'both'
+      }));
+    }
+    // Reveal the destination underneath the outgoing painting while the dial slows.
+    oldLayers.forEach((el, i) => { el.style.display = oldDisplay[i]; });
+    oldArt.style.zIndex = '5';
+    const raised = oldLayers.slice(1).filter(el => el.parentNode === scene && Number(getComputedStyle(el).zIndex) < 5);
+    const stacking = raised.map(el => el.style.zIndex);
+    raised.forEach(el => { el.style.zIndex = '5'; });
+    showLandscape();
+    oldLayers.forEach(el => fade(el, 1, 0));
+    visibleEffects(scene.dataset.landscape).forEach(el => fade(el, 0, 1));
+    spin.onfinish = () => {
+      oldLayers.forEach(el => el.style.removeProperty('display'));
+      oldArt.style.removeProperty('z-index');
+      raised.forEach((el, i) => { el.style.zIndex = stacking[i]; });
+      animations.forEach(animation => animation.cancel());
+    };
+  }
   function spinDial() {
     if (wheel.getAnimations().some(a => a.playState === 'running')) return;
     const start = dialAngle;
@@ -331,7 +374,8 @@
     );
     dialAngle = start + 720 + 90 * steps[Math.floor(Math.random() * steps.length)];
     const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
-    spin.onfinish = showLandscape;
+    if (previewWindowFade && !quiet.matches) blendWindows(spin);
+    else spin.onfinish = showLandscape;
   }
   const machine = svg.querySelector('[data-object="gashapon"]');
   const prize = machine.querySelector('.gasha-prize');
