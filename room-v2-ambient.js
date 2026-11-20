@@ -675,11 +675,11 @@
       light.muted = true;
       light.playsInline = true;
       light.loop = true;
-      light.poster = texture + '.jpg';
-      light.src = texture + '.mp4';
+      light.poster = texture + '.jpg?v=profondeur-1';
+      light.src = texture + '.mp4?v=profondeur-1';
     } else {
       light.alt = '';
-      light.src = texture + '.jpg';
+      light.src = texture + '.jpg?v=profondeur-1';
     }
     base.after(light);
     if (light instanceof HTMLVideoElement) light.play().catch(() => {});
