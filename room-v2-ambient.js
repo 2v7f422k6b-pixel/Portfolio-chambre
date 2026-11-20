@@ -428,7 +428,7 @@
     dialog.innerHTML = `<button class="gacha-dismiss" type="button"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
       <p class="gacha-title" hidden></p>
       <button class="gacha-stage" type="button">
-        <span class="gacha-closed"><span class="gacha-star" aria-hidden="true">?</span><img class="gacha-whole" alt=""></span><img class="gacha-half" alt="">
+        <span class="gacha-closed"><img class="gacha-whole" alt=""></span><img class="gacha-half" alt="">
         <img class="gacha-clear" alt=""><img class="gacha-figure" alt="">
       </button><p class="gacha-caption" role="status"></p>`;
     const close = dialog.querySelector('.gacha-dismiss');
@@ -524,9 +524,9 @@
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
       if(quiet.matches)return;
-      const dx = i % 2 ? 1 : -1;
-      ball.animate([{transform:'translate(0,0)'}, {transform:`translate(${dx}px,-1.5px)`},
-        {transform:'translate(0,0)'}], {duration:420,delay:(i%4)*30,easing:'ease-in-out'});
+      const dx = i % 2 ? 2.5 : -2.5;
+      ball.animate([{transform:'translate(0,0)'}, {transform:`translate(${dx}px,-3px)`},
+        {transform:'translate(0,0)'}], {duration:300,iterations:2,delay:(i%4)*22,easing:'ease-in-out'});
     });
     color = pick(collection.colors);
     prize.querySelectorAll('use').forEach(copy => copy.setAttribute('href', '#gasha-capsule-' + color.tray));
