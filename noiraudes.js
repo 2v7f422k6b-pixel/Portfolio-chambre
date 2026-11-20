@@ -29,10 +29,10 @@
   // the two glass sides, whose nearest corners are at x=1324 and x=2122.
   // Each route rounds both corners with clearance for the widest sprite.
   const floorRoutes = [
-    [995,1592,1592,1592], [1230,1610,1634,1622], [1410,1612,1650,1632],
-    [1590,1548,1663,1580], [1820,1565,1677,1589], [2040,1672,1700,1684],
-    [2220,1675,1700,1688], [2440,1610,1674,1645], [2700,1632,1655,1678],
-    [3175,1630,1658,1680]
+    [995,1592,1592,1592], [1245,1689,1695,1692], [1410,1689,1695,1692],
+    [1590,1548,1567,1557], [1830,1558,1577,1567], [2045,1727,1726,1728],
+    [2200,1727,1726,1728], [2440,1610,1634,1622], [2700,1632,1655,1644],
+    [3175,1630,1658,1644]
   ];
   function groundAt(x, lane) {
     const next = floorRoutes.findIndex(point => point[0] >= x);
@@ -84,7 +84,10 @@
         const img = images[1+2*kind+pose];
         const rise = still ? 0 : 3*Math.abs(Math.sin(beat*Math.PI*2));
         const emergence = Math.min(1,p/.038);
-        const scale = .44+.48*emergence;
+        // Leave room for the raised yellow star to round the right corner too.
+        const nearRightFoot = Math.max(0, Math.min(1, (x-1820)/225, (2440-x)/240));
+        const turn = nearRightFoot*nearRightFoot*(3-2*nearRightFoot);
+        const scale = .44+.48*emergence-.25*turn;
         ctx.save();
         ctx.beginPath();
         ctx.rect(1022,1370,2100,362);
