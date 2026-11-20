@@ -163,9 +163,14 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   animation: sea-surface-glow 4.7s ease-in-out infinite alternate;
 }
 @keyframes sea-surface-glow { from { opacity: .73; } to { opacity: 1; } }
-.sea-lit #room-v2-ambient :is([data-object], .v2-device, .v2-ferry),
+.sea-lit #room-v2-ambient :is([data-object], .v2-device):has(> :not(.v2-hit)),
+.sea-lit #room-v2-ambient .v2-ferry,
 .sea-lit :is(.kodama .sprite-part, .poster-perspective-artworks image) {
   filter: url(#v2-sea-object-light);
+}
+/* Hold the filtered room drawings at their current pose while the fish cross. */
+.sea-lit #room-v2-ambient :is(.v2-sway, .v2-ferry) {
+  animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {
   .sea-surface-light { animation: none; opacity: .72; }
@@ -177,6 +182,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   left: 0;
   height: auto;
   max-width: none;
+  will-change: transform;
   animation: sea-cross var(--duration) linear var(--delay) both;
 }
 .sea-dauphin { top: 21%; width: min(41vw, 660px); --duration: 10.4s; --delay: 0s; }
