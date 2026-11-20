@@ -389,39 +389,78 @@
     machine.dataset.labelEn = open ? 'Open the capsule in the tray' : 'Turn the capsule machine handle';
     setLabels();
   }
+  const collection = window.NanaGacha;
+  const pick = list => list[Math.floor(Math.random() * list.length)];
+  let color;
+  function showCapsule() {
+    capsuleState = 'opening';
+    const english = document.documentElement.lang === 'en';
+    const dialog = document.createElement('dialog');
+    dialog.className = 'gacha-reveal';
+    dialog.setAttribute('aria-label', english ? 'Capsule' : 'Capsule du gachapon');
+    dialog.innerHTML = `<button class="gacha-dismiss" type="button">×</button>
+      <button class="gacha-stage" type="button">
+        <img class="gacha-whole" alt=""><img class="gacha-half" alt="">
+        <img class="gacha-clear" alt=""><img class="gacha-figure" alt="">
+      </button><p class="gacha-caption" role="status"></p>`;
+    const close = dialog.querySelector('.gacha-dismiss');
+    const stage = dialog.querySelector('.gacha-stage');
+    const caption = dialog.querySelector('.gacha-caption');
+    const progress = window.NanaProgress;
+    const remaining = collection.figures.filter(f => !progress.hasFeat(f.id));
+    const figure = pick(remaining.length ? remaining : collection.figures);
+    const images = [...stage.querySelectorAll('img')];
+    [color.closed, color.half, collection.clearHalf, figure.image].forEach((src,i) => images[i].src = src);
+    const prompt = english ? 'Tap the capsule to open it' : 'Touche la capsule pour l’ouvrir';
+    stage.setAttribute('aria-label', prompt);
+    caption.textContent = prompt;
+    close.setAttribute('aria-label', english ? 'Close' : 'Fermer');
+    let busy = false;
+    stage.onclick = async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        await Promise.all(images.map(image => image.decode()));
+      } catch {
+        busy = false;
+        caption.textContent = english ? 'Tap to retry' : 'Touche la capsule pour réessayer';
+        images.filter(image => !image.naturalWidth).forEach(image => image.src = image.src);
+        return;
+      }
+      if (!dialog.open) return;
+      const owned = progress.hasFeat(figure.id);
+      progress.feat(figure.id);
+      capsuleState = 'revealed';
+      dialog.classList.add('is-open');
+      stage.disabled = true;
+      const name = english ? figure.en : figure.fr;
+      caption.textContent = name + (owned ? (english ? ' · Already in your wardrobe' : ' · Déjà dans ton dressing')
+        : progress.hasFeat(figure.id) ? (english ? ' · Added to your wardrobe' : ' · Ajout au dressing') : '');
+      close.focus({preventScroll:true});
+    };
+    const dismiss = () => dialog.close();
+    close.onclick = dismiss;
+    dialog.onclick = event => { if (event.target === dialog) dismiss(); };
+    dialog.onkeydown = event => { if (event.key === 'Escape') event.stopPropagation(); };
+    window.addEventListener('hashchange', dismiss);
+    dialog.addEventListener('close', () => {
+      window.removeEventListener('hashchange', dismiss);
+      dialog.remove();
+      if (capsuleState === 'revealed') {
+        prize.setAttribute('visibility','hidden');
+        capsuleState = 'idle';
+        machine.classList.remove('capsule-ready');
+        capsuleLabel(false);
+      } else capsuleState = 'ready';
+      machine.focus({preventScroll:true});
+    }, {once:true});
+    document.body.append(dialog);
+    dialog.showModal();
+    stage.focus({preventScroll:true});
+  }
   function drawCapsule() {
     if (capsuleState === 'ready') {
-      capsuleState = 'opening';
-      const dialog=document.createElement('dialog');
-      dialog.className='gacha-open-dialog v2-capsule-dialog';
-      const english=document.documentElement.lang==='en';
-      dialog.setAttribute('aria-label',english?'Capsule close-up':'Capsule en gros plan');
-      const artwork=document.createElementNS('http://www.w3.org/2000/svg','svg');
-      artwork.setAttribute('viewBox','-31 -38 62 76');
-      artwork.append(...Array.from(prize.children,n=>n.cloneNode(true)));
-      const open=document.createElement('button'), close=document.createElement('button');
-      const result=document.createElement('p'); result.setAttribute('role','status');
-      open.textContent=english?'Open the capsule':'Ouvrir la capsule';
-      close.textContent=english?'Close':'Fermer';
-      dialog.append(artwork,open,result,close);
-      document.body.append(dialog);
-      open.onclick=()=>{
-        open.hidden=true;
-        artwork.querySelector('.gasha-upper').setAttribute('transform','translate(-2 -10) rotate(-12)');
-        artwork.querySelector('.gasha-lower').setAttribute('transform','translate(1 8)');
-        result.textContent=english?'The figurines are coming soon.':'Les figurines arrivent bientôt.';
-        close.focus();
-      };
-      close.onclick=()=>dialog.close();
-      const dismiss=()=>dialog.close();
-      window.addEventListener('hashchange',dismiss);
-      dialog.addEventListener('close',()=>{
-        window.removeEventListener('hashchange',dismiss);
-        dialog.remove(); prize.setAttribute('visibility','hidden');
-        capsuleState='idle'; machine.classList.remove('capsule-ready'); capsuleLabel(false);
-        machine.focus({preventScroll:true});
-      },{once:true});
-      dialog.showModal(); open.focus();
+      showCapsule();
       return;
     }
     if (capsuleState !== 'idle') return;
@@ -433,8 +472,12 @@
       ball.animate([{transform:'translate(-3px,0) rotate(-8deg)'},{transform:'translate(3px,-5px) rotate(8deg)'}],
         {duration:260,iterations:4,direction:'alternate',delay:i*13,easing:'ease-in-out'});
     });
-    const href='#gasha-capsule-'+(24+Math.floor(Math.random()*12));
-    prize.querySelectorAll('use').forEach(n=>n.setAttribute('href',href));
+    color = pick(collection.colors);
+    const trayArt = document.createElementNS(svg.namespaceURI, 'image');
+    for (const [key,value] of Object.entries({href:color.closed, x:-19, y:-19, width:38, height:38})) {
+      trayArt.setAttribute(key, value);
+    }
+    prize.replaceChildren(trayArt);
     setTimeout(() => {
       prize.setAttribute('visibility','visible');
       motion(prize,[{transform:'translateY(-28px)',opacity:0},{transform:'translateY(3px)',opacity:1},{transform:'none',opacity:1}],600);

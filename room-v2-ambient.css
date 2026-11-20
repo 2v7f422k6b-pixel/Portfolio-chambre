@@ -90,3 +90,33 @@ html:not([data-theme="night"]) .room-redraw-preview #nana-ipad-time { fill: #fff
 .v2-capsule-dialog svg {display:block;width:min(210px,60vw);margin:auto;}
 .v2-capsule-dialog p:empty {display:none;}
 .v2-capsule-dialog button[hidden] {display:none;}
+
+dialog.gacha-reveal {
+  position:fixed; inset:0; display:grid; align-content:center; justify-items:center;
+  width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:0;
+  box-sizing:border-box; border:0; border-radius:0; box-shadow:none; background:transparent;
+  color:#fff; font:inherit; overflow:hidden;
+}
+dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
+.gacha-reveal .gacha-stage {
+  position:relative; width:min(88vw,68vh,620px); aspect-ratio:1; padding:0;
+  border:0; background:transparent; box-shadow:none; cursor:pointer;
+}
+.gacha-stage img {position:absolute; object-fit:contain; pointer-events:none}
+.gacha-stage .gacha-whole {width:76%; height:76%; left:12%; top:12%;animation:gacha-grow .38s ease-out both}
+.gacha-half,.gacha-clear,.gacha-figure {opacity:0}
+.gacha-half,.gacha-clear {width:43%;height:64%;top:20%}
+.gacha-half {left:12%}.gacha-clear {right:12%}
+.gacha-figure {height:87%;width:48%;top:4%;left:26%}
+.gacha-reveal.is-open .gacha-whole {visibility:hidden}
+.gacha-reveal.is-open .gacha-half {animation:gacha-left .54s ease-out both}
+.gacha-reveal.is-open .gacha-clear {animation:gacha-right .54s ease-out both}
+.gacha-reveal.is-open .gacha-figure {animation:gacha-unveil .5s .12s both}
+.gacha-reveal .gacha-dismiss {position:absolute;right:max(15px,env(safe-area-inset-right));top:max(15px,env(safe-area-inset-top));width:44px;height:44px;border:0;border-radius:50%;background:#fff1f6;color:#ae2249;font:32px/1 sans-serif;cursor:pointer}
+.gacha-reveal .gacha-caption {margin:.75em 1em;text-align:center;color:white;font:inherit}
+.gacha-reveal button:focus-visible {outline:3px solid white;outline-offset:3px}
+@keyframes gacha-grow {from{transform:scale(.45) rotate(-8deg)}to{transform:none}}
+@keyframes gacha-left {from{opacity:1}to{opacity:1;transform:translate(-40%,24%) rotate(-24deg) scale(.8)}}
+@keyframes gacha-right {from{opacity:1}to{opacity:1;transform:translate(40%,20%) rotate(22deg) scale(.8)}}
+@keyframes gacha-unveil {from{opacity:0;transform:translateY(12%) scale(.6)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.gacha-reveal .gacha-stage img {animation-duration:1ms!important;animation-delay:0s!important}}
