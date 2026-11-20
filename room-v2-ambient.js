@@ -663,7 +663,7 @@
     if (caustics) surfaces.push(caustics);
     const beam = new Image();
     beam.alt = '';
-    beam.src = folder + (quiet.matches ? 'mer/fenetre-refraction-fixe.webp' : 'mer/fenetre-refraction.webp');
+    beam.src = folder + (quiet.matches ? 'mer/fenetre-lumiere-fixe.webp' : 'mer/fenetre-lumiere.webp');
     beam.className = 'sea-surface-light';
     beam.dataset.roomV2Layer = '';
     Object.assign(beam.style, {zIndex: '101', animation: 'none', opacity: '1'});
