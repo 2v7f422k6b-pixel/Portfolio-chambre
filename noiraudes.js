@@ -45,7 +45,7 @@
   let art, running = false, frame;
   function load(name) {
     const img = new Image();
-    img.src = 'assets/room-redraw/noiraudes/' + name + '.png';
+    img.src = 'assets/room-redraw/noiraudes/' + name + (name === 'pli' ? '.png?v=pli-nettoye' : '.png');
     return img.decode().then(() => img);
   }
   function stop() {
@@ -77,21 +77,21 @@
         if (still && i >= 3) return;
         const p = still ? .055+i*.053 : (t-delay-.18)/duration;
         if (p < 0 || p > 1) return;
-        const x = 995+2180*p;
+        const emergence = Math.min(1,p/.038);
+        const reveal = emergence*emergence*(3-2*emergence);
+        // Start inside the drawn opening and join the existing walk smoothly.
+        const x = 995+2180*p+42*(1-emergence)**2;
         const ground = groundAt(x,lane);
         const beat = t*(3.25+i*.12)+i;
         const pose = still ? i%2 : Math.floor(beat*2)%2;
         const img = images[1+2*kind+pose];
         const rise = still ? 0 : 3*Math.abs(Math.sin(beat*Math.PI*2));
-        const emergence = Math.min(1,p/.038);
         // Leave room for the raised yellow star to round the right corner too.
         const nearRightFoot = Math.max(0, Math.min(1, (x-1820)/225, (2440-x)/240));
         const turn = nearRightFoot*nearRightFoot*(3-2*nearRightFoot);
-        const scale = .44+.48*emergence-.25*turn;
+        const scale = .30+.62*reveal-.25*turn;
         ctx.save();
-        ctx.beginPath();
-        ctx.rect(1022,1370,2100,362);
-        ctx.clip();
+        ctx.globalAlpha *= reveal;
         ctx.drawImage(img,x-img.width*scale/2,ground-img.height*scale-rise,img.width*scale,img.height*scale);
         ctx.restore();
       });
