@@ -764,11 +764,12 @@
     const preparation = new AbortController();
     let timer, lights, resumeBackdrop, enteredAt, leaving = false;
     function dismiss() {
+      if (seaLayer !== layer) return;
       preparation.abort();
       clearTimeout(timer);
       lights?.remove();
       resumeBackdrop?.();
-      document.removeEventListener('keydown', onKey);
+      for (const type of guardedEvents) window.removeEventListener(type, guardRoom, true);
       window.removeEventListener('pagehide', dismiss);
       observer.disconnect();
       layer.remove();
@@ -787,7 +788,22 @@
       );
       Promise.allSettled(fades).then(() => { if (seaLayer === layer) dismiss(); });
     }
-    function onKey(event) { if (event.key === 'Escape') leave(); }
+    const guardedEvents = [
+      'pointerdown', 'pointerup', 'pointermove', 'pointerover', 'pointerout',
+      'touchstart', 'touchmove', 'touchend', 'mousedown', 'mouseup', 'mousemove',
+      'click', 'dblclick', 'auxclick', 'contextmenu', 'wheel', 'dragstart',
+      'keydown', 'keyup', 'keypress'
+    ];
+    function guardRoom(event) {
+      // Preserve browser shortcuts and the normal touch-to-click sequence.
+      if (event.type.startsWith('key') && (event.metaKey || event.ctrlKey || event.altKey)) return;
+      const mobile = event.target?.closest?.('[data-object="fish-mobile"]');
+      const exitKey = event.type === 'keydown' && !event.repeat &&
+        (event.key === 'Escape' || (mobile && ['Enter', ' '].includes(event.key)));
+      event.stopImmediatePropagation();
+      if (event.cancelable && !(mobile && /^(pointer|mouse|touch)/.test(event.type))) event.preventDefault();
+      if (exitKey || (mobile && event.type === 'click')) leave();
+    }
     const app = document.getElementById('app');
     const observer = new MutationObserver(() => {
       if (!app.classList.contains('mode-play')) dismiss();
@@ -795,7 +811,9 @@
     observer.observe(app, {attributes:true, attributeFilter:['class']});
     layer.dismiss = leave;
     seaLayer = layer;
-    document.addEventListener('keydown', onKey);
+    for (const type of guardedEvents) {
+      window.addEventListener(type, guardRoom, {capture: true, passive: false});
+    }
     window.addEventListener('pagehide', dismiss);
     try {
       await Promise.all(swimmers.map(fish => fish.decode()));
