@@ -25,6 +25,23 @@
     [0,0,9.2,0],[1,.85,10.1,1],[2,2.1,10.5,2],[0,3.8,11.4,1],
     [2,4.7,11.6,2],[1,6.1,9.8,0],[0,9.3,10.2,2]
   ];
+  // Foot positions on the illustrated floor. The front opening is between
+  // the two glass sides, whose nearest corners are at x=1324 and x=2122.
+  // Each route rounds both corners with clearance for the widest sprite.
+  const floorRoutes = [
+    [995,1592,1592,1592], [1230,1610,1634,1622], [1410,1612,1650,1632],
+    [1590,1548,1663,1580], [1820,1565,1677,1589], [2040,1672,1700,1684],
+    [2220,1675,1700,1688], [2440,1610,1674,1645], [2700,1632,1655,1678],
+    [3175,1630,1658,1680]
+  ];
+  function groundAt(x, lane) {
+    const next = floorRoutes.findIndex(point => point[0] >= x);
+    if (next <= 0) return floorRoutes[next === 0 ? 0 : floorRoutes.length-1][lane+1];
+    const from = floorRoutes[next-1], to = floorRoutes[next];
+    const t = (x-from[0])/(to[0]-from[0]);
+    const blend = t*t*(3-2*t);
+    return from[lane+1] + (to[lane+1]-from[lane+1])*blend;
+  }
   let art, running = false, frame;
   function load(name) {
     const img = new Image();
@@ -61,8 +78,7 @@
         const p = still ? .055+i*.053 : (t-delay-.18)/duration;
         if (p < 0 || p > 1) return;
         const x = 995+2180*p;
-        const bend = Math.exp(-Math.pow((x-1340)/185,2));
-        const ground = 1592 + 35*Math.sin(2*Math.PI*p) + (lane===1 ? 45 : -30)*bend + lane*8;
+        const ground = groundAt(x,lane);
         const beat = t*(3.25+i*.12)+i;
         const pose = still ? i%2 : Math.floor(beat*2)%2;
         const img = images[1+2*kind+pose];
