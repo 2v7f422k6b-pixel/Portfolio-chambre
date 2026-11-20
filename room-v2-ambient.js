@@ -663,11 +663,19 @@
     if (caustics) surfaces.push(caustics);
     const beam = new Image();
     beam.alt = '';
-    beam.src = folder + 'mer/faisceau-fenetre.webp';
+    beam.src = folder + 'mer/faisceau-fenetre.webp?v=rayons-vifs-3';
     beam.className = 'sea-surface-light';
     beam.dataset.roomV2Layer = '';
     beam.style.zIndex = '101';
+    beam.style.animation = 'none';
+    beam.style.opacity = '1';
+    beam.style.transformOrigin = '64% 5%';
     scene.append(beam);
+    beam.animate([{opacity: 0}, {opacity: 1}], {duration: 2200, easing: 'ease-out'});
+    if (!quiet.matches) {
+      beam.animate([{transform: 'skewX(-1.3deg)'}, {transform: 'skewX(1.3deg)'}],
+        {duration: 3800, direction: 'alternate', easing: 'ease-in-out', iterations: Infinity});
+    }
     surfaces.push(beam);
     scene.classList.add('sea-lit');
     return {
