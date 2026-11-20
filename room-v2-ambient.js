@@ -425,13 +425,15 @@
     const dialog = document.createElement('dialog');
     dialog.className = 'gacha-reveal';
     dialog.setAttribute('aria-label', english ? 'Capsule' : 'Capsule du gachapon');
-    dialog.innerHTML = `<button class="gacha-dismiss" type="button">×</button>
+    dialog.innerHTML = `<button class="gacha-dismiss" type="button"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
+      <p class="gacha-title" hidden></p>
       <button class="gacha-stage" type="button">
-        <span class="gacha-closed"><span class="gacha-note" aria-hidden="true">?</span><img class="gacha-whole" alt=""></span><img class="gacha-half" alt="">
+        <span class="gacha-closed"><span class="gacha-star" aria-hidden="true">?</span><img class="gacha-whole" alt=""></span><img class="gacha-half" alt="">
         <img class="gacha-clear" alt=""><img class="gacha-figure" alt="">
       </button><p class="gacha-caption" role="status"></p>`;
     const close = dialog.querySelector('.gacha-dismiss');
     const stage = dialog.querySelector('.gacha-stage');
+    const title = dialog.querySelector('.gacha-title');
     const caption = dialog.querySelector('.gacha-caption');
     const progress = window.NanaProgress;
     const images = [...stage.querySelectorAll('img')];
@@ -472,10 +474,17 @@
       dialog.classList.add('is-open');
       stage.disabled = true;
       const name = english ? figure.en : figure.fr;
-      const message = owned
-        ? (english ? 'Oh no, you already had this one!' : 'Oh non, tu l’avais déjà !')
-        : (english ? 'Added to your wardrobe!' : 'Ajouté au dressing !');
-      caption.replaceChildren(name, document.createElement('br'), message);
+      title.textContent = english ? `Oh, it’s ${name}!` : `Oh, c’est ${name} !`;
+      title.hidden = false;
+      if (owned) {
+        caption.textContent = english ? 'Oh no, you already had this one!' : 'Zut, tu l’avais déjà !';
+      } else if (english) {
+        caption.textContent = 'Yes, added to your wardrobe!';
+      } else {
+        const word = {m: 'ajouté', f: 'ajoutée'}[figure.agreement];
+        caption.textContent = word ? `Yes, ${word} au dressing !` : 'Yes, figurine ajoutée au dressing !';
+      }
+      caption.setAttribute('aria-label', title.textContent + ' ' + caption.textContent);
       close.focus({preventScroll:true});
     };
     stage.onclick = async () => {
@@ -515,9 +524,9 @@
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
       if(quiet.matches)return;
-      ball.style.transformBox='fill-box'; ball.style.transformOrigin='center';
-      ball.animate([{transform:'translate(-3px,0) rotate(-8deg)'},{transform:'translate(3px,-5px) rotate(8deg)'}],
-        {duration:260,iterations:4,direction:'alternate',delay:i*13,easing:'ease-in-out'});
+      const dx = i % 2 ? 1 : -1;
+      ball.animate([{transform:'translate(0,0)'}, {transform:`translate(${dx}px,-1.5px)`},
+        {transform:'translate(0,0)'}], {duration:420,delay:(i%4)*30,easing:'ease-in-out'});
     });
     color = pick(collection.colors);
     prize.querySelectorAll('use').forEach(copy => copy.setAttribute('href', '#gasha-capsule-' + color.tray));
