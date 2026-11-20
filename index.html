@@ -1070,6 +1070,9 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
               preview.addEventListener('error', () => preview.remove(), { once: true });
               preview.hidden = true;
               template.after(preview);
+              const noiraudes = document.createElement('script');
+              noiraudes.src = 'noiraudes.js';
+              document.head.append(noiraudes);
             })();
           </script>
           <!-- Marseille is a full-scene backdrop, behind the transparent bedroom artwork. -->
