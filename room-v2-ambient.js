@@ -762,10 +762,13 @@
       return fish;
     });
     const preparation = new AbortController();
+    const butterfly = document.getElementById('paprika-butterfly');
+    let butterflyFade;
     let timer, lights, resumeBackdrop, enteredAt, leaving = false;
     function dismiss() {
       if (seaLayer !== layer) return;
       preparation.abort();
+      butterflyFade?.cancel();
       clearTimeout(timer);
       lights?.remove();
       resumeBackdrop?.();
@@ -783,6 +786,7 @@
       leaving = true;
       clearTimeout(timer);
       const duration = Math.max(100, Math.min(seaFadeMs, performance.now() - enteredAt));
+      butterflyFade?.reverse();
       lights.fadeObjects(duration);
       const fades = [layer, ...lights.surfaces].map(node =>
         node.animate([{opacity: getComputedStyle(node).opacity}, {opacity: 0}],
@@ -833,6 +837,8 @@
       resumeBackdrop = pauseSeaBackdrop();
       document.body.append(layer);
       enteredAt = performance.now();
+      butterflyFade = butterfly?.animate([{opacity: getComputedStyle(butterfly).opacity}, {opacity: 0}],
+        {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
       layer.animate([{opacity: 0}, {opacity: 1}], {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
       timer = setTimeout(leave, still ? seaFadeMs + 1500 : 14500);
     } catch { dismiss(); }
