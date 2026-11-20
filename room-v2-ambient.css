@@ -210,3 +210,15 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
 .sea-still .sea-dauphin { left: 6%; }
 .sea-still .sea-poisson { left: 16%; }
 .v2-sea.sea-still .sea-manta { left: 42%; top: 27%; }
+
+dialog.sea-interaction-shield[open] {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  max-width: none; max-height: none; margin: 0; padding: 0;
+  box-sizing: border-box; border: 0; background: transparent;
+  box-shadow: none; overflow: hidden; touch-action: none; pointer-events: auto;
+}
+dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filter: none; }
+.sea-interaction-shield button {
+  position: fixed; margin: 0; padding: 0; border: 0;
+  background: transparent; box-shadow: none; cursor: pointer;
+}
