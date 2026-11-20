@@ -151,7 +151,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   overflow: hidden;
   pointer-events: none;
   z-index: 2147483646;
-  background: linear-gradient(165deg, rgba(91,214,228,.48), rgba(36,129,194,.57) 48%, rgba(19,63,137,.68));
+  background: linear-gradient(165deg, rgba(86,222,228,.34), rgba(54,199,215,.31) 48%, rgba(46,156,182,.34));
   animation: sea-visit 17.5s linear both;
 }
 .sea-surface-light {
@@ -162,7 +162,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   pointer-events: none;
   animation: sea-surface-glow 4.7s ease-in-out infinite alternate;
 }
-@keyframes sea-surface-glow { from { opacity: .48; } to { opacity: .95; } }
+@keyframes sea-surface-glow { from { opacity: .73; } to { opacity: 1; } }
 .sea-lit #room-v2-ambient :is([data-object], .v2-device, .v2-ferry),
 .sea-lit :is(.kodama .sprite-part, .poster-perspective-artworks image) {
   filter: url(#v2-sea-object-light);
