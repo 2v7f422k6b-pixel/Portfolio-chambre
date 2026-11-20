@@ -669,45 +669,51 @@
     canvas.style.maskImage = canvas.style.webkitMaskImage = mask;
     canvas.style.maskSize = canvas.style.webkitMaskSize = '100% 100%';
     const ctx = canvas.getContext('2d');
-    const edges = [];
-    // Shared corners keep neighbouring pools joined as their outlines bend.
-    for (let row = -3; row < 20; row++) {
-      for (let col = -2; col < 17; col++) {
-        const x = (col + (row & 1) / 2) * 78, y = row * 34.5;
-        edges.push([x, y-23, x+39, y-11.5], [x+39, y-11.5, x+39, y+11.5],
-          [x+39, y+11.5, x, y+23]);
-      }
-    }
-    function bend(x, y, t) {
-      return [
-        x + 17*Math.sin(y*.037+x*.007+t*.81) + 10*Math.sin(x*.051-y*.022-t*.57),
-        y + 10*Math.sin(x*.033-y*.019-t*.92) + 7*Math.sin(y*.065+x*.021+t*.63)
-      ];
-    }
+    // Follow a smooth wave contour. Its level sets pinch, separate and curve
+    // continuously as the two water waves move across one another.
+    const spacing = 7;
+    const cols = Math.ceil(canvas.width / spacing) + 1;
+    const rows = Math.ceil(canvas.height / spacing) + 1;
+    const field = new Float32Array(cols * rows);
     function draw(t) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const net = new Path2D(), crests = new Path2D();
-      for (const [x,y,endX,endY] of edges) {
-        const start = bend(x,y,t), end = bend(endX,endY,t);
-        const mid = bend((x+endX)/2,(y+endY)/2,t);
-        const cx = 2*mid[0]-(start[0]+end[0])/2, cy = 2*mid[1]-(start[1]+end[1])/2;
-        net.moveTo(...start);
-        net.quadraticCurveTo(cx,cy,...end);
-        if (Math.sin(x*.027+y*.041)+Math.cos(x*.033-y*.021) > .55) {
-          crests.moveTo(...start);
-          crests.quadraticCurveTo(cx,cy,...end);
+      for (let row = 0; row < rows; row++) {
+        const y = row * spacing;
+        for (let col = 0; col < cols; col++) {
+          const x = col * spacing;
+          const u = x*.067 + 1.15*Math.sin(y*.038 + x*.009 + t*.55) + .47*Math.sin(x*.021-y*.029-t*.41);
+          const v = y*.101 + .98*Math.sin(x*.034-y*.014-t*.63) + .44*Math.cos(y*.051+x*.016+t*.39);
+          field[row*cols+col] = Math.cos(u + t*.28) + .91*Math.cos(v - t*.24)
+            + .32*Math.sin(.63*u + .76*v + t*.21) - .13;
         }
       }
-      ctx.lineCap = ctx.lineJoin = 'round';
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = 'rgba(177,252,255,.21)';
-      ctx.stroke(net);
-      ctx.lineWidth = 1.65;
-      ctx.strokeStyle = 'rgba(246,255,255,.85)';
-      ctx.stroke(net);
-      ctx.lineWidth = 2.8;
-      ctx.strokeStyle = 'rgba(255,255,255,.63)';
-      ctx.stroke(crests);
+      const net = new Path2D();
+      for (let row = 0; row < rows-1; row++) {
+        for (let col = 0; col < cols-1; col++) {
+          const i = row*cols+col, x = col*spacing, y = row*spacing;
+          const a = field[i], b = field[i+1], c = field[i+cols+1], d = field[i+cols];
+          if ((a>0) === (b>0) && (a>0) === (c>0) && (a>0) === (d>0)) continue;
+          const hits = [];
+          if ((a>0) !== (b>0)) hits.push([x+spacing*a/(a-b),y]);
+          if ((b>0) !== (c>0)) hits.push([x+spacing,y+spacing*b/(b-c)]);
+          if ((d>0) !== (c>0)) hits.push([x+spacing*d/(d-c),y+spacing]);
+          if ((a>0) !== (d>0)) hits.push([x,y+spacing*a/(a-d)]);
+          if (hits.length === 4 && a*c < b*d) hits.push(hits.shift());
+          for (let n=0; n<hits.length; n+=2) {
+            net.moveTo(...hits[n]);
+            net.lineTo(...hits[n+1]);
+          }
+        }
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineCap = 'round';
+      for (const [width, colour] of [
+        [12, 'rgba(170,250,255,.10)'], [8, 'rgba(202,254,255,.19)'],
+        [5, 'rgba(224,255,255,.39)'], [2.4, 'rgba(255,255,255,.90)']
+      ]) {
+        ctx.lineWidth = width;
+        ctx.strokeStyle = colour;
+        ctx.stroke(net);
+      }
     }
     draw(0);
     base.after(canvas);
