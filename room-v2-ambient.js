@@ -579,7 +579,6 @@
     if (art) ctx.drawImage(art, 0, 0, width, height);
     const pixels = ctx.getImageData(0, 0, width, height);
     const data = pixels.data;
-    const staticStrength = art?.id === 'room-redraw-preview' ? .28 : 1;
     let sliceStart = performance.now();
     for (let y = 0; y < height; y++) {
       if (y % 4 === 0 && performance.now() - sliceStart >= 5) {
@@ -588,62 +587,24 @@
         if (signal.aborted) return null;
         sliceStart = performance.now();
       }
-      const Y = 451 * y / height;
       for (let x = 0; x < width; x++) {
-        const X = 800 * x / width;
         const i = (y * width + x) * 4;
         const r = data[i], g = data[i+1], b = data[i+2];
         if (art && !data[i+3]) continue;
-        let u = X / 42, v = Y / 22, strength = .83;
         const wall = r > 245 && g > 240 && b < g - 8;
+        // Room-sized layers carry the water tint. The movie supplies their moving highlights.
+        let highlight = 0;
         if (!art) {
-          u = x / width * 3.6;
-          v = y / height * 3.1 + .6 * Math.sin(Math.PI * x / width);
-        } else if (wall && Y < 370) {
-          // The two wall planes meet at the drawn vertical corner.
-          v += (X < 279 ? -.32 : .15) * u;
-          if (X >= 279) u = 1.18*u + 3.2;
-        } else if (X > 449 && X < 568 && Y < 235) {
-          // Broad oblique shafts on the window glass.
-          u = X / 74;
-          v = (X + .63 * Y) / 17;
-          strength = .65;
-        } else if (((X > 404 && X < 453) || (X > 570 && X < 614)) && Y < 354 && r > g + 40) {
-          u = X / 32;
-          v = Y / 24 + 1.35 * Math.sin(X / 3.3);
-        } else if (X < 450 && Y > 277 && ((r > 238 && b > g + 7) || (b > r + 15 && r > g + 18))) {
-          // Quilt crest, turned-down side and the draped purple blanket.
-          const turn = Y - (346 - .10*X + 13*Math.sin(X/92));
-          u = X / 39 + .009*Y;
-          v = Y / 14 + .55*Math.sin(X/10 + Y/28) + Math.max(0,turn) * -.034;
-          if (b > r) v += 2.6;
-          strength = 1;
-        } else if (X > 600 && X < 734 && Y > 248 && Y < 353 && g > r && g > b + 12) {
-          u = X / 38;
-          v = Y / 18 + .0013*(X-665)**2;
-        } else if (Y > 344 && X > 333 && X < 608 && Y < 411 && b >= r && g > 145) {
-          u = X / 48;
-          v = (Y - .15*X) / 9;
-        } else if (Y > 334 && (r > g && g > b && r-g < 75 || Y > 400 && X > 300 && X < 640)) {
-          // Foreshorten the pattern towards the back of the parquet.
-          const depth = .58 + (Y-334)/122;
-          u = (X-400) / (52*depth);
-          v = 13 / depth + .14*u;
-        } else {
-          // Local curvature on smaller drawings and shelf edges.
-          u += (r-b)/86;
-          v += (g-b)/68 + .75*Math.sin(X/19);
-          strength = .72;
+          let u = x / width * 3.6;
+          let v = y / height * 3.1 + .6 * Math.sin(Math.PI * x / width);
+          u = 2.1*u + .36*Math.sin(1.3*v) + phase;
+          v = 1.85*v + .41*Math.sin(.82*u) + phase * .57;
+          const a = u + .56*Math.sin(1.7*v + .44*u) + .21*Math.sin(2.4*u - v);
+          const c = v + .72*Math.sin(1.4*u - .3*v) + .25*Math.sin(2*v + u);
+          const ridge = Math.sin(a + c) + .70*Math.sin(a - 1.3*c + .45*Math.sin(c));
+          highlight = .83 * (.62*Math.exp(-32*ridge*ridge) + .38*Math.exp(-3.1*ridge*ridge));
         }
-        u = 2.1*u + .36*Math.sin(1.3*v) + phase;
-        v = 1.85*v + .41*Math.sin(.82*u) + phase * .57;
-        const a = u + .56*Math.sin(1.7*v + .44*u) + .21*Math.sin(2.4*u - v);
-        const c = v + .72*Math.sin(1.4*u - .3*v) + .25*Math.sin(2*v + u);
-        const ridge = Math.sin(a + c) + .70*Math.sin(a - 1.3*c + .45*Math.sin(c));
-        const glow = .62*Math.exp(-32*ridge*ridge) + .38*Math.exp(-3.1*ridge*ridge);
         const ink = art ? (data[i+3]/255) * Math.min(1, g/162) ** 2 : 1;
-        // Tint the receiving surface first so even ivory paint can catch white light.
-        const highlight = Math.min(1, strength * glow * staticStrength);
         const water = art ? (wall ? .59 : .22) : 0;
         const alpha = highlight + water * (1-highlight);
         const white = alpha ? highlight/alpha : 0;
@@ -676,7 +637,7 @@
       light.playsInline = true;
       light.loop = true;
       light.poster = texture + '.jpg?v=mailles-2';
-      light.src = texture + '.mp4?v=mailles-2';
+      light.src = texture + '.mp4?v=mailles-locales-3';
     } else {
       light.alt = '';
       light.src = texture + '.jpg?v=mailles-2';

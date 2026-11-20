@@ -161,14 +161,12 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   height: 100%;
   pointer-events: none;
   opacity: 0;
-  animation: sea-light-arrival 5s ease-in-out both,
-    sea-surface-glow 4.7s ease-in-out 5s infinite alternate;
+  animation: sea-light-arrival 5s ease-in-out both;
 }
-@keyframes sea-light-arrival { from { opacity: 0; } to { opacity: .73; } }
-@keyframes sea-surface-glow { from { opacity: .73; } to { opacity: 1; } }
+@keyframes sea-light-arrival { from { opacity: 0; } to { opacity: .87; } }
 .sea-lit #room-v2-ambient :is([data-object], .v2-device):has(> :not(.v2-hit)),
 .sea-lit #room-v2-ambient .v2-ferry,
-.sea-lit :is(.kodama .sprite-part, .poster-perspective-artworks image) {
+.sea-lit .kodama .sprite-part {
   filter: url(#v2-sea-object-light);
 }
 /* Hold the filtered room drawings at their current pose while the fish cross. */
