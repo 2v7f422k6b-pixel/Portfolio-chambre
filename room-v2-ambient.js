@@ -676,18 +676,28 @@
       map.style.zIndex = getComputedStyle(art).zIndex;
       maps.push({art, map});
     }
-    const defs = svg.querySelector('defs');
-    if (!defs.querySelector('#v2-sea-object-light')) {
+    let lightDefs = document.getElementById('v2-sea-light-defs');
+    if (!lightDefs) {
+      lightDefs = document.createElementNS(ns, 'svg');
+      lightDefs.id = 'v2-sea-light-defs';
+      lightDefs.setAttribute('width', '0');
+      lightDefs.setAttribute('height', '0');
+      lightDefs.setAttribute('aria-hidden', 'true');
+      lightDefs.style.position = 'absolute';
+      const defs = document.createElementNS(ns, 'defs');
+      lightDefs.append(defs);
       const filter = document.createElementNS(ns, 'filter');
       filter.id = 'v2-sea-object-light';
       filter.setAttribute('color-interpolation-filters', 'sRGB');
-      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
+      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComponentTransfer><feFuncA type="linear" slope="0"><animate attributeName="slope" from="0" to="1" dur="3s" begin="indefinite" fill="freeze"/></feFuncA></feComponentTransfer><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
       filter.setAttribute('primitiveUnits', 'objectBoundingBox');
       const texture = await seaLightMap(null, 220, 150, 1, signal);
       if (signal.aborted) return;
       filter.querySelector('feImage').setAttribute('href', texture.toDataURL());
       defs.append(filter);
+      document.body.append(lightDefs);
     }
+    lightDefs.querySelector('animate').beginElement();
     for (const {art, map} of maps) {
       if (art.currentSrc === map.dataset.source) art.after(map);
     }
