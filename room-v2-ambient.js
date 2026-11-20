@@ -579,6 +579,7 @@
     if (art) ctx.drawImage(art, 0, 0, width, height);
     const pixels = ctx.getImageData(0, 0, width, height);
     const data = pixels.data;
+    const staticStrength = art?.id === 'room-redraw-preview' ? .28 : 1;
     let sliceStart = performance.now();
     for (let y = 0; y < height; y++) {
       if (y % 4 === 0 && performance.now() - sliceStart >= 5) {
@@ -642,7 +643,7 @@
         const glow = .62*Math.exp(-32*ridge*ridge) + .38*Math.exp(-3.1*ridge*ridge);
         const ink = art ? (data[i+3]/255) * Math.min(1, g/162) ** 2 : 1;
         // Tint the receiving surface first so even ivory paint can catch white light.
-        const highlight = Math.min(1, strength * glow);
+        const highlight = Math.min(1, strength * glow * staticStrength);
         const water = art ? (wall ? .59 : .22) : 0;
         const alpha = highlight + water * (1-highlight);
         const white = alpha ? highlight/alpha : 0;
@@ -654,6 +655,73 @@
     }
     ctx.putImageData(pixels, 0, 0);
     return canvas;
+  }
+
+  function animateSeaCaustics(art, base) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1000;
+    canvas.height = 564;
+    canvas.className = 'sea-surface-light';
+    canvas.dataset.roomV2Layer = '';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.zIndex = base.style.zIndex;
+    const mask = 'url(' + JSON.stringify(art.currentSrc) + ')';
+    canvas.style.maskImage = canvas.style.webkitMaskImage = mask;
+    canvas.style.maskSize = canvas.style.webkitMaskSize = '100% 100%';
+    const ctx = canvas.getContext('2d');
+    const edges = [];
+    // Shared corners keep neighbouring pools joined as their outlines bend.
+    for (let row = -3; row < 20; row++) {
+      for (let col = -2; col < 17; col++) {
+        const x = (col + (row & 1) / 2) * 78, y = row * 34.5;
+        edges.push([x, y-23, x+39, y-11.5], [x+39, y-11.5, x+39, y+11.5],
+          [x+39, y+11.5, x, y+23]);
+      }
+    }
+    function bend(x, y, t) {
+      return [
+        x + 17*Math.sin(y*.037+x*.007+t*.81) + 10*Math.sin(x*.051-y*.022-t*.57),
+        y + 10*Math.sin(x*.033-y*.019-t*.92) + 7*Math.sin(y*.065+x*.021+t*.63)
+      ];
+    }
+    function draw(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const net = new Path2D(), crests = new Path2D();
+      for (const [x,y,endX,endY] of edges) {
+        const start = bend(x,y,t), end = bend(endX,endY,t);
+        const mid = bend((x+endX)/2,(y+endY)/2,t);
+        const cx = 2*mid[0]-(start[0]+end[0])/2, cy = 2*mid[1]-(start[1]+end[1])/2;
+        net.moveTo(...start);
+        net.quadraticCurveTo(cx,cy,...end);
+        if (Math.sin(x*.027+y*.041)+Math.cos(x*.033-y*.021) > .55) {
+          crests.moveTo(...start);
+          crests.quadraticCurveTo(cx,cy,...end);
+        }
+      }
+      ctx.lineCap = ctx.lineJoin = 'round';
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = 'rgba(177,252,255,.21)';
+      ctx.stroke(net);
+      ctx.lineWidth = 1.65;
+      ctx.strokeStyle = 'rgba(246,255,255,.85)';
+      ctx.stroke(net);
+      ctx.lineWidth = 2.8;
+      ctx.strokeStyle = 'rgba(255,255,255,.63)';
+      ctx.stroke(crests);
+    }
+    draw(0);
+    base.after(canvas);
+    let frame, last = 0;
+    const start = performance.now();
+    function tick(now) {
+      if (now - last >= 1000/30 - 1) {
+        draw((now-start)/1000);
+        last = now;
+      }
+      frame = requestAnimationFrame(tick);
+    }
+    if (!quiet.matches) frame = requestAnimationFrame(tick);
+    return {canvas, stop() { cancelAnimationFrame(frame); canvas.remove(); }};
   }
 
   const seaFadeMs = 5000;
@@ -709,13 +777,18 @@
     for (const {art, map} of maps) {
       if (art.currentSrc === map.dataset.source) art.after(map);
     }
+    const backdrop = maps.find(({art, map}) => art.id === 'room-redraw-preview' && map.isConnected);
+    const caustics = backdrop && animateSeaCaustics(backdrop.art, backdrop.map);
+    const surfaces = maps.map(({map}) => map);
+    if (caustics) surfaces.push(caustics.canvas);
     scene.classList.add('sea-lit');
     return {
-      surfaces: maps.map(({map}) => map),
+      surfaces,
       fadeObjects(duration) {
         fadeObjectLight(lightDefs.querySelector('feFuncA').slope.animVal, 0, duration);
       },
       remove() {
+        caustics?.stop();
         scene.classList.remove('sea-lit');
         maps.forEach(({map}) => map.remove());
       }
