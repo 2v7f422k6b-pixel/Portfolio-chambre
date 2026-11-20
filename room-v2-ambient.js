@@ -571,12 +571,12 @@
 
   // Coordinates use an 800 × 451 view of the room drawing. Colour checks
   // separate overlapping silhouettes inside each piece of furniture.
-  async function seaLightMap(art, width, height, phase, signal) {
+  async function seaLightMap(art, width, height, signal) {
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
-    if (art) ctx.drawImage(art, 0, 0, width, height);
+    ctx.drawImage(art, 0, 0, width, height);
     const pixels = ctx.getImageData(0, 0, width, height);
     const data = pixels.data;
     let sliceStart = performance.now();
@@ -590,28 +590,13 @@
       for (let x = 0; x < width; x++) {
         const i = (y * width + x) * 4;
         const r = data[i], g = data[i+1], b = data[i+2];
-        if (art && !data[i+3]) continue;
+        if (!data[i+3]) continue;
         const wall = r > 245 && g > 240 && b < g - 8;
-        // Room-sized layers carry the water tint. The movie supplies their moving highlights.
-        let highlight = 0;
-        if (!art) {
-          let u = x / width * 3.6;
-          let v = y / height * 3.1 + .6 * Math.sin(Math.PI * x / width);
-          u = 2.1*u + .36*Math.sin(1.3*v) + phase;
-          v = 1.85*v + .41*Math.sin(.82*u) + phase * .57;
-          const a = u + .56*Math.sin(1.7*v + .44*u) + .21*Math.sin(2.4*u - v);
-          const c = v + .72*Math.sin(1.4*u - .3*v) + .25*Math.sin(2*v + u);
-          const ridge = Math.sin(a + c) + .70*Math.sin(a - 1.3*c + .45*Math.sin(c));
-          highlight = .83 * (.62*Math.exp(-32*ridge*ridge) + .38*Math.exp(-3.1*ridge*ridge));
-        }
-        const ink = art ? (data[i+3]/255) * Math.min(1, g/162) ** 2 : 1;
-        const water = art ? (wall ? .59 : .22) : 0;
-        const alpha = highlight + water * (1-highlight);
-        const white = alpha ? highlight/alpha : 0;
-        data[i] = 58 + 197*white;
-        data[i+1] = 211 + 42*white;
-        data[i+2] = 220 + 15*white;
-        data[i+3] = 255 * ink * alpha;
+        const ink = (data[i+3]/255) * Math.min(1, g/162) ** 2;
+        data[i] = 58;
+        data[i+1] = 211;
+        data[i+2] = 220;
+        data[i+3] = 255 * ink * (wall ? .59 : .22);
       }
     }
     ctx.putImageData(pixels, 0, 0);
@@ -626,10 +611,11 @@
     light.className = 'sea-surface-light';
     light.dataset.roomV2Layer = '';
     light.setAttribute('aria-hidden', 'true');
-    light.style.zIndex = base.style.zIndex;
+    // Project once, above the furniture and its individual SVG cutouts.
+    light.style.zIndex = '100';
     light.style.mixBlendMode = 'screen';
     light.style.objectFit = 'fill';
-    const mask = 'url(' + JSON.stringify(art.currentSrc) + ')';
+    const mask = [art, underlay].map(image => 'url(' + JSON.stringify(image.currentSrc) + ')').join(', ');
     light.style.maskImage = light.style.webkitMaskImage = mask;
     light.style.maskSize = light.style.webkitMaskSize = '100% 100%';
     if (light instanceof HTMLVideoElement) {
@@ -656,7 +642,7 @@
       let map = seaSurfaceMaps.get(art);
       if (!map || map.dataset.source !== art.currentSrc) {
         const source = art.currentSrc;
-        map = await seaLightMap(art, 1152, 650, 0, signal);
+        map = await seaLightMap(art, 1152, 650, signal);
         if (signal.aborted) return;
         if (source !== art.currentSrc) continue;
         map.dataset.source = art.currentSrc;
@@ -668,35 +654,6 @@
       map.style.zIndex = getComputedStyle(art).zIndex;
       maps.push({art, map});
     }
-    let lightDefs = document.getElementById('v2-sea-light-defs');
-    if (!lightDefs) {
-      lightDefs = document.createElementNS(ns, 'svg');
-      lightDefs.id = 'v2-sea-light-defs';
-      lightDefs.setAttribute('width', '0');
-      lightDefs.setAttribute('height', '0');
-      lightDefs.setAttribute('aria-hidden', 'true');
-      lightDefs.style.position = 'absolute';
-      const defs = document.createElementNS(ns, 'defs');
-      lightDefs.append(defs);
-      const filter = document.createElementNS(ns, 'filter');
-      filter.id = 'v2-sea-object-light';
-      filter.setAttribute('color-interpolation-filters', 'sRGB');
-      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComponentTransfer><feFuncA type="linear" slope="0"><animate attributeName="slope" from="0" to="1" begin="indefinite" fill="freeze"/></feFuncA></feComponentTransfer><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
-      filter.setAttribute('primitiveUnits', 'objectBoundingBox');
-      const texture = await seaLightMap(null, 220, 150, 1, signal);
-      if (signal.aborted) return;
-      filter.querySelector('feImage').setAttribute('href', texture.toDataURL());
-      defs.append(filter);
-      document.body.append(lightDefs);
-    }
-    const lightFade = lightDefs.querySelector('animate');
-    function fadeObjectLight(from, to, duration) {
-      lightFade.setAttribute('from', String(from));
-      lightFade.setAttribute('to', String(to));
-      lightFade.setAttribute('dur', duration + 'ms');
-      lightFade.beginElement();
-    }
-    fadeObjectLight(0, 1, seaFadeMs);
     for (const {art, map} of maps) {
       if (art.currentSrc === map.dataset.source) art.after(map);
     }
@@ -707,9 +664,7 @@
     scene.classList.add('sea-lit');
     return {
       surfaces,
-      fadeObjects(duration) {
-        fadeObjectLight(lightDefs.querySelector('feFuncA').slope.animVal, 0, duration);
-      },
+      caustics,
       remove() {
         if (caustics instanceof HTMLVideoElement) {
           caustics.pause();
@@ -743,6 +698,62 @@
     };
   }
 
+  // Sample the room projection in each swimmer's local coordinates. The CSS
+  // mask follows the animated drawing, including its transparent fin edges.
+  function reflectOnSwimmers(light, swimmers, signal) {
+    if (!light) return;
+    const patches = swimmers.map(fish => {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.min(480, fish.naturalWidth);
+      canvas.height = Math.round(canvas.width * fish.naturalHeight / fish.naturalWidth);
+      canvas.style.maskImage = canvas.style.webkitMaskImage = 'url(' + JSON.stringify(fish.currentSrc) + ')';
+      fish.after(canvas);
+      const ctx = canvas.getContext('2d');
+      const dorsal = ctx?.createLinearGradient(0, 0, canvas.width * .14, canvas.height * .86);
+      dorsal?.addColorStop(0, 'white');
+      dorsal?.addColorStop(.52, 'white');
+      dorsal?.addColorStop(.85, 'transparent');
+      return {fish, canvas, ctx, dorsal};
+    });
+    let frame;
+    function draw() {
+      if (signal.aborted) return;
+      const room = light.getBoundingClientRect();
+      const ready = light instanceof HTMLVideoElement ? light.readyState >= 2 : light.naturalWidth > 0;
+      for (const {fish, canvas, ctx, dorsal} of patches) {
+        const swimmer = fish.parentElement;
+        if (!swimmer?.isConnected || !ctx) continue;
+        const bounds = swimmer.getBoundingClientRect();
+        // Keep the glint brief as the swimmer crosses the desk and bed.
+        const x = (bounds.left + bounds.width / 2 - room.left) / room.width;
+        const strength = Math.max(0, 1 - Math.abs(x - .56) / .16);
+        ctx.resetTransform();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (!ready || !strength || !swimmer.offsetWidth || !swimmer.offsetHeight) continue;
+        const cssMatrix = getComputedStyle(swimmer).transform;
+        const transform = new DOMMatrix(cssMatrix === 'none' ? undefined : cssMatrix);
+        const w = swimmer.offsetWidth, h = swimmer.offsetHeight;
+        // The bounding box includes rotation. Recover the transformed top-left.
+        transform.e = bounds.left - Math.min(0, transform.a*w, transform.c*h, transform.a*w + transform.c*h);
+        transform.f = bounds.top - Math.min(0, transform.b*w, transform.d*h, transform.b*w + transform.d*h);
+        ctx.scale(canvas.width / w, canvas.height / h);
+        const inv = transform.inverse();
+        ctx.transform(inv.a, inv.b, inv.c, inv.d, inv.e, inv.f);
+        ctx.globalAlpha = .38 * strength * strength;
+        ctx.drawImage(light, room.left, room.top, room.width, room.height);
+        ctx.resetTransform();
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.fillStyle = dorsal;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+      }
+      if (!quiet.matches || !ready) frame = requestAnimationFrame(draw);
+    }
+    draw();
+    signal.addEventListener('abort', () => cancelAnimationFrame(frame), {once: true});
+  }
+
   let seaLayer;
   async function toggleSea() {
     if (seaLayer) { seaLayer.dismiss(); return; }
@@ -753,13 +764,15 @@
     const swimmers = ['dauphin', 'poisson', 'manta'].map(name => {
       const fish = new Image();
       fish.alt = '';
-      fish.className = 'sea-' + name;
+      const swimmer = document.createElement('div');
+      swimmer.className = 'sea-swimmer sea-' + name;
       fish.src = folder + 'mer/' + name + (still ? '-repos' : '') + '.webp';
-      if (!still) fish.addEventListener('animationend', () => {
-        fish.remove();
+      if (!still) swimmer.addEventListener('animationend', () => {
+        swimmer.remove();
         fish.removeAttribute('src');
       }, {once: true});
-      layer.append(fish);
+      swimmer.append(fish);
+      layer.append(swimmer);
       return fish;
     });
     const preparation = new AbortController();
@@ -788,7 +801,7 @@
       clearTimeout(timer);
       const duration = Math.max(100, Math.min(seaFadeMs, performance.now() - enteredAt));
       butterflyFade?.reverse();
-      lights.fadeObjects(duration);
+
       const fades = [layer, ...lights.surfaces].map(node =>
         node.animate([{opacity: getComputedStyle(node).opacity}, {opacity: 0}],
           {duration, easing: 'ease-in-out', fill: 'forwards'}).finished
@@ -837,6 +850,7 @@
       if (seaLayer !== layer) { lights?.remove(); return; }
       resumeBackdrop = pauseSeaBackdrop();
       document.body.append(layer);
+      reflectOnSwimmers(lights.caustics, swimmers, preparation.signal);
       enteredAt = performance.now();
       butterflyFade = butterfly?.animate([{opacity: getComputedStyle(butterfly).opacity}, {opacity: 0}],
         {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
