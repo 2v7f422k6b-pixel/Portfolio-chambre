@@ -151,7 +151,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   overflow: hidden;
   pointer-events: none;
   z-index: 2147483646;
-  background: linear-gradient(165deg, rgba(86,222,228,.34), rgba(54,199,215,.31) 48%, rgba(46,156,182,.34));
+  background: linear-gradient(165deg, rgba(86,222,228,.298), rgba(54,199,215,.266) 48%, rgba(46,156,182,.298));
   opacity: 0;
 }
 .sea-surface-light {
@@ -178,9 +178,16 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
 @media (prefers-reduced-motion: reduce) {
   .sea-surface-light { animation: sea-light-arrival 5s ease-in-out both; }
 }
+.v2-sea::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(165deg, rgb(86,222,228), rgb(54,199,215) 48%, rgb(46,156,182));
+  opacity: .06;
+}
 .v2-sea img {
-  filter: sepia(.65) saturate(1.8) hue-rotate(157deg);
-  opacity: .87;
   position: absolute;
   left: 0;
   height: auto;
