@@ -827,6 +827,11 @@
       layer.append(swimmer);
       return fish;
     });
+    const seaWindow = new Image();
+    seaWindow.className = 'sea-window';
+    seaWindow.dataset.roomV2Layer = '';
+    seaWindow.alt = '';
+    seaWindow.src = folder + 'mer/fond-marin.webp';
     const preparation = new AbortController();
     const butterfly = document.getElementById('paprika-butterfly');
     let butterflyFade;
@@ -836,6 +841,7 @@
       preparation.abort();
       butterflyFade?.cancel();
       clearTimeout(timer);
+      seaWindow.remove();
       lights?.remove();
       resumeBackdrop?.();
       window.removeEventListener('resize', positionExit);
@@ -854,7 +860,7 @@
       const duration = Math.max(100, Math.min(seaFadeMs, performance.now() - enteredAt));
       butterflyFade?.reverse();
 
-      const fades = [layer, ...lights.surfaces].map(node =>
+      const fades = [layer, seaWindow, ...lights.surfaces].map(node =>
         node.animate([{opacity: getComputedStyle(node).opacity}, {opacity: 0}],
           {duration, easing: 'ease-in-out', fill: 'forwards'}).finished
       );
@@ -895,12 +901,14 @@
       positionExit();
       shield.showModal();
       window.addEventListener('resize', positionExit);
-      await Promise.all(swimmers.map(fish => fish.decode()));
+      await Promise.all([...swimmers, seaWindow].map(image => image.decode()));
       if (seaLayer !== layer) return;
       layer.classList.toggle('sea-still', still);
       lights = await lightSeaSurfaces(preparation.signal);
       if (seaLayer !== layer) { lights?.remove(); return; }
       resumeBackdrop = pauseSeaBackdrop();
+      scene.append(seaWindow);
+      seaWindow.animate([{opacity: 0}, {opacity: 1}], {duration: seaFadeMs, easing: 'ease-in-out'});
       document.body.append(layer);
       reflectOnSwimmers(lights.caustics, swimmers, preparation.signal);
       enteredAt = performance.now();
