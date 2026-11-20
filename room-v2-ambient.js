@@ -658,76 +658,32 @@
   }
 
   function animateSeaCaustics(art, base) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1000;
-    canvas.height = 564;
-    canvas.className = 'sea-surface-light';
-    canvas.dataset.roomV2Layer = '';
-    canvas.setAttribute('aria-hidden', 'true');
-    canvas.style.zIndex = base.style.zIndex;
+    // The movie stores focused light on black. Screen blending adds only the
+    // reflected light, so the room drawing stays visible between the folds.
+    const texture = folder + 'mer/caustiques';
+    const light = document.createElement(quiet.matches ? 'img' : 'video');
+    light.className = 'sea-surface-light';
+    light.dataset.roomV2Layer = '';
+    light.setAttribute('aria-hidden', 'true');
+    light.style.zIndex = base.style.zIndex;
+    light.style.mixBlendMode = 'screen';
+    light.style.objectFit = 'fill';
     const mask = 'url(' + JSON.stringify(art.currentSrc) + ')';
-    canvas.style.maskImage = canvas.style.webkitMaskImage = mask;
-    canvas.style.maskSize = canvas.style.webkitMaskSize = '100% 100%';
-    const ctx = canvas.getContext('2d');
-    // Follow a smooth wave contour. Its level sets pinch, separate and curve
-    // continuously as the two water waves move across one another.
-    const spacing = 7;
-    const cols = Math.ceil(canvas.width / spacing) + 1;
-    const rows = Math.ceil(canvas.height / spacing) + 1;
-    const field = new Float32Array(cols * rows);
-    function draw(t) {
-      for (let row = 0; row < rows; row++) {
-        const y = row * spacing;
-        for (let col = 0; col < cols; col++) {
-          const x = col * spacing;
-          const u = x*.067 + 1.15*Math.sin(y*.038 + x*.009 + t*.55) + .47*Math.sin(x*.021-y*.029-t*.41);
-          const v = y*.101 + .98*Math.sin(x*.034-y*.014-t*.63) + .44*Math.cos(y*.051+x*.016+t*.39);
-          field[row*cols+col] = Math.cos(u + t*.28) + .91*Math.cos(v - t*.24)
-            + .32*Math.sin(.63*u + .76*v + t*.21) - .13;
-        }
-      }
-      const net = new Path2D();
-      for (let row = 0; row < rows-1; row++) {
-        for (let col = 0; col < cols-1; col++) {
-          const i = row*cols+col, x = col*spacing, y = row*spacing;
-          const a = field[i], b = field[i+1], c = field[i+cols+1], d = field[i+cols];
-          if ((a>0) === (b>0) && (a>0) === (c>0) && (a>0) === (d>0)) continue;
-          const hits = [];
-          if ((a>0) !== (b>0)) hits.push([x+spacing*a/(a-b),y]);
-          if ((b>0) !== (c>0)) hits.push([x+spacing,y+spacing*b/(b-c)]);
-          if ((d>0) !== (c>0)) hits.push([x+spacing*d/(d-c),y+spacing]);
-          if ((a>0) !== (d>0)) hits.push([x,y+spacing*a/(a-d)]);
-          if (hits.length === 4 && a*c < b*d) hits.push(hits.shift());
-          for (let n=0; n<hits.length; n+=2) {
-            net.moveTo(...hits[n]);
-            net.lineTo(...hits[n+1]);
-          }
-        }
-      }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.lineCap = 'round';
-      for (const [width, colour] of [
-        [12, 'rgba(170,250,255,.10)'], [8, 'rgba(202,254,255,.19)'],
-        [5, 'rgba(224,255,255,.39)'], [2.4, 'rgba(255,255,255,.90)']
-      ]) {
-        ctx.lineWidth = width;
-        ctx.strokeStyle = colour;
-        ctx.stroke(net);
-      }
+    light.style.maskImage = light.style.webkitMaskImage = mask;
+    light.style.maskSize = light.style.webkitMaskSize = '100% 100%';
+    if (light instanceof HTMLVideoElement) {
+      light.muted = true;
+      light.playsInline = true;
+      light.loop = true;
+      light.poster = texture + '.jpg';
+      light.src = texture + '.mp4';
+    } else {
+      light.alt = '';
+      light.src = texture + '.jpg';
     }
-    draw(0);
-    base.after(canvas);
-    let frame, last = 0;
-    const start = performance.now();
-    function tick(now) {
-      if (now - last >= 1000/30 - 1) {
-        draw((now-start)/1000);
-        last = now;
-      }
-      frame = requestAnimationFrame(tick);
-    }
-    if (!quiet.matches) frame = requestAnimationFrame(tick);
-    return {canvas, stop() { cancelAnimationFrame(frame); canvas.remove(); }};
+    base.after(light);
+    if (light instanceof HTMLVideoElement) light.play().catch(() => {});
+    return light;
   }
 
   const seaFadeMs = 5000;
@@ -786,7 +742,7 @@
     const backdrop = maps.find(({art, map}) => art.id === 'room-redraw-preview' && map.isConnected);
     const caustics = backdrop && animateSeaCaustics(backdrop.art, backdrop.map);
     const surfaces = maps.map(({map}) => map);
-    if (caustics) surfaces.push(caustics.canvas);
+    if (caustics) surfaces.push(caustics);
     scene.classList.add('sea-lit');
     return {
       surfaces,
@@ -794,7 +750,12 @@
         fadeObjectLight(lightDefs.querySelector('feFuncA').slope.animVal, 0, duration);
       },
       remove() {
-        caustics?.stop();
+        if (caustics instanceof HTMLVideoElement) {
+          caustics.pause();
+          caustics.removeAttribute('src');
+          caustics.load();
+        }
+        caustics?.remove();
         scene.classList.remove('sea-lit');
         maps.forEach(({map}) => map.remove());
       }
