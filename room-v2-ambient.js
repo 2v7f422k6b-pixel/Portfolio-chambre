@@ -485,6 +485,31 @@
         const word = {m: 'ajouté', f: 'ajoutée'}[figure.agreement];
         caption.textContent = word ? `Yes, ${word} au dressing !` : 'Yes, figurine ajoutée au dressing !';
       }
+      const found = collection.figures.filter(f => draws.counts[f.id] > 0).length;
+      const total = collection.figures.length;
+      const summary = document.createElement('small');
+      summary.textContent = english ? `(You’ve found ${found} of the ${total} different gachapon figurines.)`
+        : `(Tu as trouvé ${found} des ${total} figurines différentes du gachapon.)`;
+      caption.append(summary);
+      if (figure.id === 'charm-gacha-7554') {
+        const rarity = document.createElement('small');
+        rarity.textContent = english ? 'She’s very rare!' : 'Elle est très rare !';
+        title.append(rarity);
+        if (!quiet.matches) {
+          const colors = ['#ff93b9', '#fff0b0', '#cebbff'];
+          for (let i = 0; i < 12; i++) {
+            const piece = document.createElement('span');
+            piece.className = 'gacha-confetti';
+            piece.setAttribute('aria-hidden', 'true');
+            piece.style.left = (i % 2 ? 56 + i * 2 : 43 - i * 2) + '%';
+            piece.style.top = (33 + i % 4 * 5) + '%';
+            piece.style.backgroundColor = colors[i % colors.length];
+            piece.style.animationDelay = (i % 4 * 45) + 'ms';
+            stage.insertBefore(piece, images[3]);
+            piece.addEventListener('animationend', () => piece.remove(), {once:true});
+          }
+        }
+      }
       caption.setAttribute('aria-label', title.textContent + ' ' + caption.textContent);
       close.focus({preventScroll:true});
     };

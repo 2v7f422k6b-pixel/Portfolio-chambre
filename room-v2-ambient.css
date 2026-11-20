@@ -135,3 +135,12 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
 @keyframes gacha-right {from{transform:none}to{transform:translate(40%,20%) rotate(22deg) scale(.8)}}
 @keyframes gacha-unveil {from{transform:translateY(12%) scale(.6)}to{transform:none}}
 @media(prefers-reduced-motion:reduce){.gacha-reveal .gacha-stage :is(img,.gacha-closed) {animation-duration:1ms!important;animation-delay:0s!important}}
+
+.gacha-reveal :is(.gacha-title,.gacha-caption) small {display:block;margin-top:.25em;font:inherit;font-size:.78em}
+.gacha-confetti {position:absolute;width:1%;height:2%;pointer-events:none;animation:gacha-confetti .85s ease-out both}
+@keyframes gacha-confetti {
+  from {opacity:0;transform:translateY(12px) rotate(-22deg)}
+  24% {opacity:1;transform:translateY(-13px) rotate(25deg)}
+  to {opacity:0;transform:translateY(24px) rotate(100deg)}
+}
+@media (prefers-reduced-motion:reduce) {.gacha-confetti {display:none}}
