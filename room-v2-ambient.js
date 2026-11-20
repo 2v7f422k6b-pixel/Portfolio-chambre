@@ -569,6 +569,65 @@
     },quiet.matches?0:700);
   }
 
+  // Warp a soft band of light with the painted colours, so it breaks at
+  // edges rather than tracing one continuous pattern across the room.
+  function seaLightMap(art, width, height, phase) {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (art) ctx.drawImage(art, 0, 0, width, height);
+    const pixels = ctx.getImageData(0, 0, width, height);
+    const data = pixels.data;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const i = (y * width + x) * 4;
+        const r = data[i] / 255, g = data[i+1] / 255, b = data[i+2] / 255;
+        const u = x / width * (art ? 27 : 8) + phase + 4 * (r - b);
+        const v = y / height * (art ? 21 : 6) + 4 * g;
+        const wave = Math.sin(v + 1.8 * Math.sin(.73*u + .32*v))
+          + .75 * Math.cos(.82*u - .57*v + Math.sin(.44*v + u));
+        const glow = Math.exp(-4.2 * wave * wave);
+        const ink = art ? (data[i+3] / 255) * (.18 + .82 * g) : 1;
+        data[i] = 192;
+        data[i+1] = 246;
+        data[i+2] = 255;
+        data[i+3] = 142 * ink * glow * (.72 + .28 * Math.sin(.5*u + .36*v));
+      }
+    }
+    ctx.putImageData(pixels, 0, 0);
+    return canvas;
+  }
+
+  function lightSeaSurfaces() {
+    const maps = [];
+    for (const [phase, art] of [document.getElementById('room-redraw-preview'), underlay].entries()) {
+      if (!art?.naturalWidth) continue;
+      const map = seaLightMap(art, 840, 474, phase * 2.8);
+      map.className = 'sea-surface-light';
+      map.dataset.roomV2Layer = '';
+      map.setAttribute('aria-hidden', 'true');
+      map.style.zIndex = getComputedStyle(art).zIndex;
+      art.after(map);
+      maps.push(map);
+    }
+    const defs = svg.querySelector('defs');
+    if (!defs.querySelector('#v2-sea-object-light')) {
+      const filter = document.createElementNS(ns, 'filter');
+      filter.id = 'v2-sea-object-light';
+      filter.setAttribute('color-interpolation-filters', 'sRGB');
+      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
+      filter.setAttribute('primitiveUnits', 'objectBoundingBox');
+      filter.querySelector('feImage').setAttribute('href', seaLightMap(null, 220, 150, 1).toDataURL());
+      defs.append(filter);
+    }
+    scene.classList.add('sea-lit');
+    return () => {
+      scene.classList.remove('sea-lit');
+      maps.forEach(map => map.remove());
+    };
+  }
+
   let seaLayer;
   async function toggleSea() {
     if (seaLayer) { seaLayer.dismiss(); return; }
@@ -584,9 +643,10 @@
       layer.append(fish);
       return fish;
     });
-    let timer;
+    let timer, clearLights;
     function dismiss() {
       clearTimeout(timer);
+      clearLights?.();
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('pagehide', dismiss);
       observer.disconnect();
@@ -607,8 +667,9 @@
       await Promise.all(swimmers.map(fish => fish.decode()));
       if (seaLayer !== layer) return;
       layer.classList.toggle('sea-still', still);
+      clearLights = lightSeaSurfaces();
       document.body.append(layer);
-      timer = setTimeout(dismiss, still ? 4800 : 15500);
+      timer = setTimeout(dismiss, still ? 4800 : 17500);
     } catch { dismiss(); }
   }
 
