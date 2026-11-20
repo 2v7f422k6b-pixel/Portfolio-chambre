@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=20261119-aiguilles');
+  const response = await fetch(folder + 'objets.svg?v=mer-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -569,6 +569,49 @@
     },quiet.matches?0:700);
   }
 
+  let seaLayer;
+  async function toggleSea() {
+    if (seaLayer) { seaLayer.dismiss(); return; }
+    const layer = document.createElement('div');
+    layer.className = 'v2-sea';
+    layer.setAttribute('aria-hidden', 'true');
+    const still = quiet.matches;
+    const swimmers = ['dauphin', 'poisson', 'manta'].map(name => {
+      const fish = new Image();
+      fish.alt = '';
+      fish.className = 'sea-' + name;
+      fish.src = folder + 'mer/' + name + (still ? '-repos' : '') + '.webp';
+      layer.append(fish);
+      return fish;
+    });
+    let timer;
+    function dismiss() {
+      clearTimeout(timer);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('pagehide', dismiss);
+      observer.disconnect();
+      layer.remove();
+      if (seaLayer === layer) seaLayer = null;
+    }
+    function onKey(event) { if (event.key === 'Escape') dismiss(); }
+    const app = document.getElementById('app');
+    const observer = new MutationObserver(() => {
+      if (!app.classList.contains('mode-play')) dismiss();
+    });
+    observer.observe(app, {attributes:true, attributeFilter:['class']});
+    layer.dismiss = dismiss;
+    seaLayer = layer;
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('pagehide', dismiss);
+    try {
+      await Promise.all(swimmers.map(fish => fish.decode()));
+      if (seaLayer !== layer) return;
+      layer.classList.toggle('sea-still', still);
+      document.body.append(layer);
+      timer = setTimeout(dismiss, still ? 4800 : 15500);
+    } catch { dismiss(); }
+  }
+
   function activate(event) {
     const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
@@ -615,6 +658,7 @@
     if (['alice-bottle','nana-zola-book'].includes(item.dataset.object)) {
       window.NanaProgress?.feat(item.dataset.object);
     }
+    if (item.dataset.object === 'fish-mobile') toggleSea();
     if (item.dataset.object === 'landscape') spinDial();
     if (item.dataset.object === 'gashapon') drawCapsule();
     if (item.dataset.object === 'kokeshi') {

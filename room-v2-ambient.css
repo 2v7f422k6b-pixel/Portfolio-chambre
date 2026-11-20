@@ -144,3 +144,50 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   to {opacity:0;transform:translateY(24px) rotate(100deg)}
 }
 @media (prefers-reduced-motion:reduce) {.gacha-confetti {display:none}}
+
+.v2-sea {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2147483646;
+  background: linear-gradient(165deg, rgba(91,214,228,.48), rgba(36,129,194,.57) 48%, rgba(19,63,137,.68));
+  animation: sea-visit 15.5s linear both;
+}
+.v2-sea::before, .v2-sea::after {
+  content: "";
+  position: absolute;
+  inset: -10% -18%;
+  background: conic-gradient(from 147deg at 52% -16%, transparent, rgba(208,255,248,.36) 6deg, transparent 10deg 19deg, rgba(206,255,250,.27) 23deg, transparent 29deg);
+  animation: sea-light 6s ease-in-out infinite alternate;
+}
+.v2-sea::after {
+  background: conic-gradient(from 148deg at 20% -12%, transparent, rgba(215,255,250,.34) 9deg, transparent 15deg);
+  animation-duration: 8s;
+  animation-delay: -3s;
+}
+.v2-sea img {
+  position: absolute;
+  left: 0;
+  height: auto;
+  max-width: none;
+  animation: sea-cross var(--duration) linear var(--delay) both;
+}
+.sea-dauphin { top: 21%; width: min(41vw, 660px); --duration: 9s; --delay: 0s; }
+.sea-poisson { top: 63%; width: min(19vw, 210px); --duration: 8s; --delay: 1.4s; }
+.sea-manta { top: 37%; width: min(58vw, 840px, 85vh); --duration: 12s; --delay: 2.4s; }
+.v2-sea :is(.sea-manta,.sea-poisson) { animation-direction: reverse; }
+@keyframes sea-cross {
+  0% { transform: translate(-102%, 4%) rotate(-3deg); }
+  27% { transform: translate(calc(27vw - 74%), -12%) rotate(-1deg); }
+  59% { transform: translate(calc(59vw - 41%), 8%) rotate(3deg); }
+  82% { transform: translate(calc(82vw - 18%), 0) rotate(-2deg); }
+  100% { transform: translate(102vw, -8%) rotate(-2deg); }
+}
+@keyframes sea-light { to { transform: translate3d(5%, 0, 0) skewX(-5deg); opacity: .63; } }
+@keyframes sea-visit { 0%,100% { opacity: 0; } 7%,92% { opacity: 1; } }
+.v2-sea.sea-still { animation-duration: 4.8s; }
+.sea-still::before, .sea-still::after, .v2-sea.sea-still img { animation: none; }
+.sea-still .sea-dauphin { left: 6%; }
+.sea-still .sea-poisson { left: 16%; }
+.sea-still .sea-manta { left: 42%; }
