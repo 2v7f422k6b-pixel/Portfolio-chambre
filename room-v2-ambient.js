@@ -776,6 +776,13 @@
     const columns = innerWidth < 650 ? 4 : 7;
     const rows = 4;
     const field = document.createDocumentFragment();
+    // Each transparent texture carries distant grains and small luminous clusters.
+    // Only the four sheets drift. The foreground glints twinkle individually.
+    for (let depth = 1; depth <= 4; depth++) {
+      const dust = document.createElement('i');
+      dust.className = 'sea-dust sea-dust-' + depth;
+      field.append(dust);
+    }
     for (let i = 0; i < columns * rows; i++) {
       const row = Math.floor(i / columns);
       const column = i % columns;

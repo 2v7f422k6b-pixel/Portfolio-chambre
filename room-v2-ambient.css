@@ -179,6 +179,27 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   background: linear-gradient(165deg, rgb(86,222,228), rgb(54,199,215) 48%, rgb(46,156,182));
   opacity: .06;
 }
+
+.sea-dust {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+  background-repeat: repeat;
+  background-size: var(--tile) var(--tile);
+  opacity: .67;
+}
+.sea-dust-1 { background-image: url('assets/room-redraw/mer/poussiere-1.webp'); --tile: 418px; --period: 4.7s; --phase: -2.5s; --drift: -4px; }
+.sea-dust-2 { background-image: url('assets/room-redraw/mer/poussiere-2.webp'); --tile: 483px; --period: 6.1s; --phase: -0.8s; --drift: 5px; }
+.sea-dust-3 { background-image: url('assets/room-redraw/mer/poussiere-3.webp'); --tile: 541px; --period: 7.3s; --phase: -4.3s; --drift: -6px; }
+.sea-dust-4 { background-image: url('assets/room-redraw/mer/poussiere-4.webp'); --tile: 603px; --period: 5.4s; --phase: -3.6s; --drift: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .sea-dust { animation: sea-dust-shimmer var(--period) ease-in-out var(--phase) infinite alternate; }
+}
+@keyframes sea-dust-shimmer {
+  from { opacity: .25; transform: translate(0, 3px); }
+  to { opacity: .92; transform: translate(var(--drift), -4px); }
+}
+
 .sea-sparkle {
   position: absolute;
   width: var(--diameter);
