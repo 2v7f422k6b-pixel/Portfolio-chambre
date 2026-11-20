@@ -162,9 +162,14 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   animation: sea-light 6s ease-in-out infinite alternate;
 }
 .v2-sea::after {
-  background: conic-gradient(from 148deg at 20% -12%, transparent, rgba(215,255,250,.34) 9deg, transparent 15deg);
-  animation-duration: 8s;
-  animation-delay: -3s;
+  inset: -4%;
+  background: url("assets/room-redraw/mer/reflets.webp") center / 100% 100% no-repeat,
+              linear-gradient(170deg, rgba(42,185,215,.22), rgba(22,108,177,.31));
+  animation: sea-ripples 5.6s ease-in-out infinite alternate;
+}
+@keyframes sea-ripples {
+  from { transform: translate(-1%, -.6%) skewX(-1deg); opacity: .73; }
+  to { transform: translate(1%, .7%) skewX(1deg) scale(1.015, 1.035); opacity: .89; }
 }
 .v2-sea img {
   position: absolute;
@@ -176,7 +181,14 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
 .sea-dauphin { top: 21%; width: min(41vw, 660px); --duration: 9s; --delay: 0s; }
 .sea-poisson { top: 63%; width: min(19vw, 210px); --duration: 8s; --delay: 1.4s; }
 .sea-manta { top: 37%; width: min(58vw, 840px, 85vh); --duration: 12s; --delay: 2.4s; }
-.v2-sea :is(.sea-manta,.sea-poisson) { animation-direction: reverse; }
+.v2-sea .sea-poisson { animation-direction: reverse; }
+.v2-sea .sea-manta { top: 0; animation-name: sea-manta-dive; }
+@keyframes sea-manta-dive {
+  0% { transform: translate(102vw, -70%) rotate(-14deg); }
+  32% { transform: translate(calc(68vw - 32%), 11vh) rotate(-12deg); }
+  70% { transform: translate(calc(30vw - 70%), 34vh) rotate(-5deg); }
+  100% { transform: translate(-108%, 40vh) rotate(1deg); }
+}
 @keyframes sea-cross {
   0% { transform: translate(-102%, 4%) rotate(-3deg); }
   27% { transform: translate(calc(27vw - 74%), -12%) rotate(-1deg); }
@@ -190,4 +202,4 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
 .sea-still::before, .sea-still::after, .v2-sea.sea-still img { animation: none; }
 .sea-still .sea-dauphin { left: 6%; }
 .sea-still .sea-poisson { left: 16%; }
-.sea-still .sea-manta { left: 42%; }
+.v2-sea.sea-still .sea-manta { left: 42%; top: 27%; }
