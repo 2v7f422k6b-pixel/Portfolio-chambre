@@ -784,7 +784,7 @@
       const swimmer = document.createElement('div');
       swimmer.className = 'sea-swimmer sea-' + name;
       fish.src = folder + 'mer/' + name + (still ? '-repos' : '') + '.webp' +
-        (name === 'manta' && !still ? '?v=queue-onde-1' : '');
+        (name === 'manta' && !still ? '?v=queue-onde-2' : '');
       if (!still) swimmer.addEventListener('animationend', () => {
         swimmer.remove();
         fish.removeAttribute('src');
