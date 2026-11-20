@@ -635,8 +635,8 @@
           v += (g-b)/68 + .75*Math.sin(X/19);
           strength = .72;
         }
-        u += phase;
-        v += phase * .57;
+        u = 2.1*u + .36*Math.sin(1.3*v) + phase;
+        v = 1.85*v + .41*Math.sin(.82*u) + phase * .57;
         const a = u + .56*Math.sin(1.7*v + .44*u) + .21*Math.sin(2.4*u - v);
         const c = v + .72*Math.sin(1.4*u - .3*v) + .25*Math.sin(2*v + u);
         const ridge = Math.sin(a + c) + .70*Math.sin(a - 1.3*c + .45*Math.sin(c));
@@ -675,11 +675,11 @@
       light.muted = true;
       light.playsInline = true;
       light.loop = true;
-      light.poster = texture + '.jpg?v=profondeur-1';
-      light.src = texture + '.mp4?v=profondeur-1';
+      light.poster = texture + '.jpg?v=mailles-2';
+      light.src = texture + '.mp4?v=mailles-2';
     } else {
       light.alt = '';
-      light.src = texture + '.jpg?v=profondeur-1';
+      light.src = texture + '.jpg?v=mailles-2';
     }
     base.after(light);
     if (light instanceof HTMLVideoElement) light.play().catch(() => {});
