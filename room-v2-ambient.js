@@ -474,7 +474,8 @@
       dialog.classList.add('is-open');
       stage.disabled = true;
       const name = english ? figure.en : figure.fr;
-      title.textContent = english ? `Oh, it’s ${name}!` : `Oh, c’est ${name} !`;
+      const article = ['Smiski', 'Mofusand fraise', 'Monchhichi'].includes(figure.fr) ? 'un ' : '';
+      title.textContent = english ? `Oh, it’s ${name}!` : `Oh, c’est ${article}${name} !`;
       title.hidden = false;
       if (owned) {
         caption.textContent = english ? 'Oh no, you already had this one!' : 'Zut, tu l’avais déjà !';
