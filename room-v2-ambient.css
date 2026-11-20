@@ -179,6 +179,47 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   background: linear-gradient(165deg, rgb(86,222,228), rgb(54,199,215) 48%, rgb(46,156,182));
   opacity: .06;
 }
+.sea-sparkle {
+  position: absolute;
+  width: var(--diameter);
+  height: var(--diameter);
+  border-radius: 50%;
+  background: white;
+  opacity: .6;
+  pointer-events: none;
+}
+.sea-sparkle-halo {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 0 4px 1px rgb(255 255 255 / .55);
+}
+.sea-sparkle-halo::before,
+.sea-sparkle-halo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15px;
+  height: 10px;
+  border: 1.5px dotted rgb(255 255 255 / .92);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(var(--tilt));
+}
+.sea-sparkle-halo::after {
+  width: 22px;
+  height: 15px;
+  border-color: rgb(255 255 255 / .43);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sea-sparkle {
+    animation: sea-sparkle-drift var(--period) ease-in-out var(--phase) infinite;
+  }
+}
+@keyframes sea-sparkle-drift {
+  0%, 100% { opacity: 0; transform: translate(0, 3px); }
+  45% { opacity: .94; }
+  88% { opacity: 0; transform: translate(var(--drift), -4px); }
+}
 .v2-sea .sea-swimmer {
   position: absolute;
   left: 0;

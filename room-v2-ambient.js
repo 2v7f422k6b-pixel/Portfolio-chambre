@@ -771,6 +771,32 @@
     signal.addEventListener('abort', () => cancelAnimationFrame(frame), {once: true});
   }
 
+  function addSeaSparkles(layer) {
+    // One point per cell keeps open water between glints at every screen size.
+    const columns = innerWidth < 650 ? 4 : 7;
+    const rows = 4;
+    const field = document.createDocumentFragment();
+    for (let i = 0; i < columns * rows; i++) {
+      const row = Math.floor(i / columns);
+      const column = i % columns;
+      const point = document.createElement('i');
+      point.className = 'sea-sparkle';
+      if (i === 2 || i === columns * 2 + 1 || (columns === 7 && i === 26)) {
+        point.classList.add('sea-sparkle-halo');
+      }
+      const style = point.style;
+      style.left = (column + .22 + Math.random() * .56) / columns * 100 + '%';
+      style.top = (row + .24 + Math.random() * .52) / rows * 100 + '%';
+      style.setProperty('--diameter', (1.7 + Math.random() * 1.8) + 'px');
+      style.setProperty('--period', (3.4 + Math.random() * 4.6) + 's');
+      style.setProperty('--phase', (-Math.random() * 8) + 's');
+      style.setProperty('--drift', (Math.random() * 8 - 4) + 'px');
+      style.setProperty('--tilt', (-38 + Math.random() * 60) + 'deg');
+      field.append(point);
+    }
+    layer.append(field);
+  }
+
   let seaLayer;
   async function toggleSea() {
     if (seaLayer) { seaLayer.dismiss(); return; }
@@ -778,6 +804,7 @@
     layer.className = 'v2-sea';
     layer.setAttribute('aria-hidden', 'true');
     const still = quiet.matches;
+    addSeaSparkles(layer);
     const swimmers = ['dauphin', 'poisson', 'manta'].map(name => {
       const fish = new Image();
       fish.alt = '';
