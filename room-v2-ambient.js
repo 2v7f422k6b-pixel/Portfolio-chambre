@@ -571,7 +571,7 @@
 
   // Coordinates use an 800 × 451 view of the room drawing. Colour checks
   // separate overlapping silhouettes inside each piece of furniture.
-  function seaLightMap(art, width, height, phase) {
+  async function seaLightMap(art, width, height, phase, signal) {
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
@@ -579,7 +579,14 @@
     if (art) ctx.drawImage(art, 0, 0, width, height);
     const pixels = ctx.getImageData(0, 0, width, height);
     const data = pixels.data;
+    let sliceStart = performance.now();
     for (let y = 0; y < height; y++) {
+      if (y % 4 === 0 && performance.now() - sliceStart >= 5) {
+        if (globalThis.scheduler?.yield) await globalThis.scheduler.yield();
+        else await new Promise(resolve => setTimeout(resolve, 0));
+        if (signal.aborted) return null;
+        sliceStart = performance.now();
+      }
       const Y = 451 * y / height;
       for (let x = 0; x < width; x++) {
         const X = 800 * x / width;
@@ -650,13 +657,16 @@
   }
 
   const seaSurfaceMaps = new WeakMap();
-  function lightSeaSurfaces() {
+  async function lightSeaSurfaces(signal) {
     const maps = [];
     for (const art of [document.getElementById('room-redraw-preview'), underlay]) {
       if (!art?.naturalWidth) continue;
       let map = seaSurfaceMaps.get(art);
       if (!map || map.dataset.source !== art.currentSrc) {
-        map = seaLightMap(art, 1152, 650, 0);
+        const source = art.currentSrc;
+        map = await seaLightMap(art, 1152, 650, 0, signal);
+        if (signal.aborted) return;
+        if (source !== art.currentSrc) continue;
         map.dataset.source = art.currentSrc;
         seaSurfaceMaps.set(art, map);
       }
@@ -664,8 +674,7 @@
       map.dataset.roomV2Layer = '';
       map.setAttribute('aria-hidden', 'true');
       map.style.zIndex = getComputedStyle(art).zIndex;
-      art.after(map);
-      maps.push(map);
+      maps.push({art, map});
     }
     const defs = svg.querySelector('defs');
     if (!defs.querySelector('#v2-sea-object-light')) {
@@ -674,13 +683,18 @@
       filter.setAttribute('color-interpolation-filters', 'sRGB');
       filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
       filter.setAttribute('primitiveUnits', 'objectBoundingBox');
-      filter.querySelector('feImage').setAttribute('href', seaLightMap(null, 220, 150, 1).toDataURL());
+      const texture = await seaLightMap(null, 220, 150, 1, signal);
+      if (signal.aborted) return;
+      filter.querySelector('feImage').setAttribute('href', texture.toDataURL());
       defs.append(filter);
+    }
+    for (const {art, map} of maps) {
+      if (art.currentSrc === map.dataset.source) art.after(map);
     }
     scene.classList.add('sea-lit');
     return () => {
       scene.classList.remove('sea-lit');
-      maps.forEach(map => map.remove());
+      maps.forEach(({map}) => map.remove());
     };
   }
 
@@ -699,8 +713,10 @@
       layer.append(fish);
       return fish;
     });
+    const preparation = new AbortController();
     let timer, clearLights;
     function dismiss() {
+      preparation.abort();
       clearTimeout(timer);
       clearLights?.();
       document.removeEventListener('keydown', onKey);
@@ -723,7 +739,8 @@
       await Promise.all(swimmers.map(fish => fish.decode()));
       if (seaLayer !== layer) return;
       layer.classList.toggle('sea-still', still);
-      clearLights = lightSeaSurfaces();
+      clearLights = await lightSeaSurfaces(preparation.signal);
+      if (seaLayer !== layer) { clearLights?.(); return; }
       document.body.append(layer);
       timer = setTimeout(dismiss, still ? 4800 : 17500);
     } catch { dismiss(); }
