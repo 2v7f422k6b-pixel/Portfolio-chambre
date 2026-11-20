@@ -391,6 +391,33 @@
   }
   const collection = window.NanaGacha;
   const pick = list => list[Math.floor(Math.random() * list.length)];
+  const historyKey = 'nana-gashapon-draws-v1';
+  let history = {counts: {}, last: null};
+  function readDraws() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(historyKey));
+      if (saved?.counts) history = saved;
+    } catch { /* Keep playing in memory when storage is unavailable. */ }
+    const counts = {};
+    for (const {id} of collection.figures) {
+      const n = history.counts[id];
+      counts[id] = Number.isInteger(n) && n > 0 ? Math.min(n, 3) : Number(window.NanaProgress.hasFeat(id));
+    }
+    return {counts, last: history.last};
+  }
+  function candidates({counts, last}) {
+    const total = Object.values(counts).reduce((sum, n) => sum + 3 - n, 0);
+    // Leave enough intervening draws to give out all copies without a repeat.
+    const mustDraw = collection.figures.find(f => 3 - counts[f.id] > total / 2);
+    return collection.figures.filter(f => counts[f.id] < 3 && f.id !== last && (!mustDraw || f === mustDraw));
+  }
+  function chooseFigure(pool) {
+    const weight = f => f.id === 'charm-gacha-7554' ? 1 : 4;
+    let roll = Math.random() * pool.reduce((sum, f) => sum + weight(f), 0);
+    return pool.find(f => (roll -= weight(f)) < 0);
+  }
+  const finishedText = () => document.documentElement.lang === 'en'
+    ? 'All 45 figurines collected!' : 'Tu as trouvé les 45 figurines !';
   let color;
   function showCapsule() {
     capsuleState = 'opening';
@@ -407,18 +434,25 @@
     const stage = dialog.querySelector('.gacha-stage');
     const caption = dialog.querySelector('.gacha-caption');
     const progress = window.NanaProgress;
-    const remaining = collection.figures.filter(f => !progress.hasFeat(f.id));
-    const figure = pick(remaining.length ? remaining : collection.figures);
     const images = [...stage.querySelectorAll('img')];
-    [color.closed, color.half, collection.clearHalf, figure.image].forEach((src,i) => images[i].src = src);
+    [color.closed, color.half, collection.clearHalf].forEach((src,i) => images[i].src = src);
     const prompt = english ? 'Tap the capsule to open it' : 'Touche la capsule pour l’ouvrir';
     stage.setAttribute('aria-label', prompt);
     caption.textContent = prompt;
     close.setAttribute('aria-label', english ? 'Close' : 'Fermer');
     let busy = false;
-    stage.onclick = async () => {
-      if (busy) return;
-      busy = true;
+    const reveal = async () => {
+      if (!dialog.open) return;
+      const draws = readDraws();
+      const pool = candidates(draws);
+      if (!pool.length) {
+        capsuleState = 'revealed';
+        dialog.close();
+        window.showToast?.(finishedText());
+        return;
+      }
+      const figure = chooseFigure(pool);
+      images[3].src = figure.image;
       try {
         await Promise.all(images.map(image => image.decode()));
       } catch {
@@ -429,6 +463,10 @@
       }
       if (!dialog.open) return;
       const owned = progress.hasFeat(figure.id);
+      draws.counts[figure.id]++;
+      draws.last = figure.id;
+      history = draws;
+      try { localStorage.setItem(historyKey, JSON.stringify(draws)); } catch { /* Session only. */ }
       progress.feat(figure.id);
       capsuleState = 'revealed';
       dialog.classList.add('is-open');
@@ -437,6 +475,12 @@
       caption.textContent = name + (owned ? (english ? ' · Already in your wardrobe' : ' · Déjà dans ton dressing')
         : progress.hasFeat(figure.id) ? (english ? ' · Added to your wardrobe' : ' · Ajout au dressing') : '');
       close.focus({preventScroll:true});
+    };
+    stage.onclick = async () => {
+      if (busy) return;
+      busy = true;
+      if (navigator.locks) await navigator.locks.request(historyKey, reveal);
+      else await reveal();
     };
     const dismiss = () => dialog.close();
     close.onclick = dismiss;
@@ -464,6 +508,7 @@
       return;
     }
     if (capsuleState !== 'idle') return;
+    if (!candidates(readDraws()).length) { window.showToast?.(finishedText()); return; }
     capsuleState='mixing';
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
@@ -473,11 +518,7 @@
         {duration:260,iterations:4,direction:'alternate',delay:i*13,easing:'ease-in-out'});
     });
     color = pick(collection.colors);
-    const trayArt = document.createElementNS(svg.namespaceURI, 'image');
-    for (const [key,value] of Object.entries({href:color.closed, x:-19, y:-19, width:38, height:38})) {
-      trayArt.setAttribute(key, value);
-    }
-    prize.replaceChildren(trayArt);
+    prize.querySelectorAll('use').forEach(copy => copy.setAttribute('href', '#gasha-capsule-' + color.tray));
     setTimeout(() => {
       prize.setAttribute('visibility','visible');
       motion(prize,[{transform:'translateY(-28px)',opacity:0},{transform:'translateY(3px)',opacity:1},{transform:'none',opacity:1}],600);

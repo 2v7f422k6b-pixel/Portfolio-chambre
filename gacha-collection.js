@@ -10,7 +10,7 @@
     const number = 7545 + i;
     return {id: 'charm-gacha-' + number, fr, en: english[i], image: art(number), worn: art(number + '-worn')};
   });
-  const colors = [[7566,7561], [7567,7560], [7568,7562], [7569,7563], [7570,7564]]
-    .map(([closed, half]) => ({closed: art(closed), half: art(half)}));
+  const colors = [[7566,7561,25], [7567,7560,28], [7568,7562,27], [7569,7563,29], [7570,7564,26]]
+    .map(([closed, half, tray]) => ({tray, closed: art(closed), half: art(half)}));
   window.NanaGacha = {figures, colors, clearHalf: art(7565)};
 })();
