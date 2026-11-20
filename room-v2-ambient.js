@@ -698,6 +698,26 @@
     };
   }
 
+  function pauseSeaBackdrop() {
+    const paused = scene.getAnimations({subtree: true}).filter(animation =>
+      animation.playState === 'running' &&
+      animation.effect?.getTiming().iterations === Infinity &&
+      !animation.effect.target?.closest('.sea-surface-light')
+    );
+    for (const animation of paused) animation.pause();
+    const timelines = Array.from(scene.querySelectorAll('svg')).filter(root =>
+      !root.ownerSVGElement && root.querySelector('animate, animateTransform, animateMotion') &&
+      !root.animationsPaused()
+    );
+    for (const root of timelines) root.pauseAnimations();
+    return () => {
+      for (const animation of paused) {
+        if (animation.playState === 'paused') animation.play();
+      }
+      for (const root of timelines) root.unpauseAnimations();
+    };
+  }
+
   let seaLayer;
   async function toggleSea() {
     if (seaLayer) { seaLayer.dismiss(); return; }
@@ -710,15 +730,20 @@
       fish.alt = '';
       fish.className = 'sea-' + name;
       fish.src = folder + 'mer/' + name + (still ? '-repos' : '') + '.webp';
+      if (!still) fish.addEventListener('animationend', () => {
+        fish.remove();
+        fish.removeAttribute('src');
+      }, {once: true});
       layer.append(fish);
       return fish;
     });
     const preparation = new AbortController();
-    let timer, clearLights;
+    let timer, clearLights, resumeBackdrop;
     function dismiss() {
       preparation.abort();
       clearTimeout(timer);
       clearLights?.();
+      resumeBackdrop?.();
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('pagehide', dismiss);
       observer.disconnect();
@@ -741,6 +766,7 @@
       layer.classList.toggle('sea-still', still);
       clearLights = await lightSeaSurfaces(preparation.signal);
       if (seaLayer !== layer) { clearLights?.(); return; }
+      resumeBackdrop = pauseSeaBackdrop();
       document.body.append(layer);
       timer = setTimeout(dismiss, still ? 4800 : 17500);
     } catch { dismiss(); }
