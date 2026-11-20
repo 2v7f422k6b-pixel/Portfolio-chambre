@@ -525,9 +525,15 @@
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
       if(quiet.matches)return;
-      const dx = i % 2 ? 2.5 : -2.5;
-      ball.animate([{transform:'translate(0,0)'}, {transform:`translate(${dx}px,-3px)`},
-        {transform:'translate(0,0)'}], {duration:300,iterations:2,delay:(i%4)*22,easing:'ease-in-out'});
+      const dx = i % 2 ? 5 : -5;
+      const lift = 5 + i % 3;
+      ball.animate([
+        {transform:'translate(0,0)'},
+        {transform:`translate(${dx}px,-${lift}px)`,offset:0.23},
+        {transform:'translate(0,0)',offset:0.46},
+        {transform:`translate(${-dx * 0.8}px,-4px)`,offset:0.7},
+        {transform:'translate(0,0)'}
+      ], {duration:595,delay:(i%4)*24,easing:'ease-in-out'});
     });
     color = pick(collection.colors);
     prize.querySelectorAll('use').forEach(copy => copy.setAttribute('href', '#gasha-capsule-' + color.tray));
