@@ -1,10 +1,10 @@
 (() => {
-  const names = ['Chaton de fête', 'Cinnamoroll', 'Gloomy Bear', 'Usahana', 'My Sweet Piano',
-    'Monchhichi lapin', 'Hello Kitty cerises', 'Chaton fraise', 'Snoopy', 'Princesse Clown',
-    'Pucca', 'Kappa', 'Rebelle', 'Bulle', 'Belle'];
-  const english = ['Party kitten', 'Cinnamoroll', 'Gloomy Bear', 'Usahana', 'My Sweet Piano',
-    'Bunny Monchhichi', 'Cherry Hello Kitty', 'Strawberry kitten', 'Snoopy', 'Clown Princess',
-    'Pucca', 'Kappa', 'Buttercup', 'Bubbles', 'Blossom'];
+  const names = ['Écureuil', 'Cinnamoroll', 'Gloomy Bear', 'Usahana', 'My Sweet Piano',
+    'Monchhichi', 'Hello Kitty cerise', 'Mofusand fraise', 'Snoopy', 'Princesse Clown',
+    'Pucca', 'Smiski', 'Rebelle', 'Bulle', 'Belle'];
+  const english = ['Squirrel', 'Cinnamoroll', 'Gloomy Bear', 'Usahana', 'My Sweet Piano',
+    'Monchhichi', 'Cherry Hello Kitty', 'Strawberry Mofusand', 'Snoopy', 'Clown Princess',
+    'Pucca', 'Smiski', 'Buttercup', 'Bubbles', 'Blossom'];
   const art = number => 'assets/room-gachapon/collection/' + number + '.webp';
   const figures = names.map((fr, i) => {
     const number = 7545 + i;

@@ -427,7 +427,7 @@
     dialog.setAttribute('aria-label', english ? 'Capsule' : 'Capsule du gachapon');
     dialog.innerHTML = `<button class="gacha-dismiss" type="button">×</button>
       <button class="gacha-stage" type="button">
-        <img class="gacha-whole" alt=""><img class="gacha-half" alt="">
+        <span class="gacha-closed"><span class="gacha-note" aria-hidden="true">?</span><img class="gacha-whole" alt=""></span><img class="gacha-half" alt="">
         <img class="gacha-clear" alt=""><img class="gacha-figure" alt="">
       </button><p class="gacha-caption" role="status"></p>`;
     const close = dialog.querySelector('.gacha-dismiss');
@@ -472,8 +472,10 @@
       dialog.classList.add('is-open');
       stage.disabled = true;
       const name = english ? figure.en : figure.fr;
-      caption.textContent = name + (owned ? (english ? ' · Already in your wardrobe' : ' · Déjà dans ton dressing')
-        : progress.hasFeat(figure.id) ? (english ? ' · Added to your wardrobe' : ' · Ajout au dressing') : '');
+      const message = owned
+        ? (english ? 'Oh no, you already had this one!' : 'Oh non, tu l’avais déjà !')
+        : (english ? 'Added to your wardrobe!' : 'Ajouté au dressing !');
+      caption.replaceChildren(name, document.createElement('br'), message);
       close.focus({preventScroll:true});
     };
     stage.onclick = async () => {
