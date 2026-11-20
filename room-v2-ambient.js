@@ -656,6 +656,7 @@
     return canvas;
   }
 
+  const seaFadeMs = 5000;
   const seaSurfaceMaps = new WeakMap();
   async function lightSeaSurfaces(signal) {
     const maps = [];
@@ -689,7 +690,7 @@
       const filter = document.createElementNS(ns, 'filter');
       filter.id = 'v2-sea-object-light';
       filter.setAttribute('color-interpolation-filters', 'sRGB');
-      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComponentTransfer><feFuncA type="linear" slope="0"><animate attributeName="slope" from="0" to="1" dur="3s" begin="indefinite" fill="freeze"/></feFuncA></feComponentTransfer><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
+      filter.innerHTML = '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none"/><feComponentTransfer><feFuncA type="linear" slope="0"><animate attributeName="slope" from="0" to="1" begin="indefinite" fill="freeze"/></feFuncA></feComponentTransfer><feComposite in2="SourceAlpha" operator="in"/><feComposite in2="SourceGraphic" operator="atop"/>';
       filter.setAttribute('primitiveUnits', 'objectBoundingBox');
       const texture = await seaLightMap(null, 220, 150, 1, signal);
       if (signal.aborted) return;
@@ -697,14 +698,27 @@
       defs.append(filter);
       document.body.append(lightDefs);
     }
-    lightDefs.querySelector('animate').beginElement();
+    const lightFade = lightDefs.querySelector('animate');
+    function fadeObjectLight(from, to, duration) {
+      lightFade.setAttribute('from', String(from));
+      lightFade.setAttribute('to', String(to));
+      lightFade.setAttribute('dur', duration + 'ms');
+      lightFade.beginElement();
+    }
+    fadeObjectLight(0, 1, seaFadeMs);
     for (const {art, map} of maps) {
       if (art.currentSrc === map.dataset.source) art.after(map);
     }
     scene.classList.add('sea-lit');
-    return () => {
-      scene.classList.remove('sea-lit');
-      maps.forEach(({map}) => map.remove());
+    return {
+      surfaces: maps.map(({map}) => map),
+      fadeObjects(duration) {
+        fadeObjectLight(lightDefs.querySelector('feFuncA').slope.animVal, 0, duration);
+      },
+      remove() {
+        scene.classList.remove('sea-lit');
+        maps.forEach(({map}) => map.remove());
+      }
     };
   }
 
@@ -748,11 +762,11 @@
       return fish;
     });
     const preparation = new AbortController();
-    let timer, clearLights, resumeBackdrop;
+    let timer, lights, resumeBackdrop, enteredAt, leaving = false;
     function dismiss() {
       preparation.abort();
       clearTimeout(timer);
-      clearLights?.();
+      lights?.remove();
       resumeBackdrop?.();
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('pagehide', dismiss);
@@ -760,13 +774,26 @@
       layer.remove();
       if (seaLayer === layer) seaLayer = null;
     }
-    function onKey(event) { if (event.key === 'Escape') dismiss(); }
+    function leave() {
+      if (enteredAt === undefined) { dismiss(); return; }
+      if (leaving) return;
+      leaving = true;
+      clearTimeout(timer);
+      const duration = Math.max(100, Math.min(seaFadeMs, performance.now() - enteredAt));
+      lights.fadeObjects(duration);
+      const fades = [layer, ...lights.surfaces].map(node =>
+        node.animate([{opacity: getComputedStyle(node).opacity}, {opacity: 0}],
+          {duration, easing: 'ease-in-out', fill: 'forwards'}).finished
+      );
+      Promise.allSettled(fades).then(() => { if (seaLayer === layer) dismiss(); });
+    }
+    function onKey(event) { if (event.key === 'Escape') leave(); }
     const app = document.getElementById('app');
     const observer = new MutationObserver(() => {
       if (!app.classList.contains('mode-play')) dismiss();
     });
     observer.observe(app, {attributes:true, attributeFilter:['class']});
-    layer.dismiss = dismiss;
+    layer.dismiss = leave;
     seaLayer = layer;
     document.addEventListener('keydown', onKey);
     window.addEventListener('pagehide', dismiss);
@@ -774,11 +801,13 @@
       await Promise.all(swimmers.map(fish => fish.decode()));
       if (seaLayer !== layer) return;
       layer.classList.toggle('sea-still', still);
-      clearLights = await lightSeaSurfaces(preparation.signal);
-      if (seaLayer !== layer) { clearLights?.(); return; }
+      lights = await lightSeaSurfaces(preparation.signal);
+      if (seaLayer !== layer) { lights?.remove(); return; }
       resumeBackdrop = pauseSeaBackdrop();
       document.body.append(layer);
-      timer = setTimeout(dismiss, still ? 4800 : 17500);
+      enteredAt = performance.now();
+      layer.animate([{opacity: 0}, {opacity: 1}], {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
+      timer = setTimeout(leave, still ? seaFadeMs + 1500 : 14500);
     } catch { dismiss(); }
   }
 
