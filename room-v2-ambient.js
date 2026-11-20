@@ -661,33 +661,12 @@
     const caustics = backdrop && animateSeaCaustics(backdrop.art, backdrop.map);
     const surfaces = maps.map(({map}) => map);
     if (caustics) surfaces.push(caustics);
-    const beam = document.createElement('div');
+    const beam = new Image();
+    beam.alt = '';
+    beam.src = folder + (quiet.matches ? 'mer/fenetre-refraction-fixe.webp' : 'mer/fenetre-refraction.webp');
     beam.className = 'sea-surface-light';
     beam.dataset.roomV2Layer = '';
-    beam.style.zIndex = '101';
-    beam.style.animation = 'none';
-    beam.style.opacity = '1';
-    const currents = [
-      {pivot: '60% 8%', angle: 1.8, duration: 3700, start: -1250},
-      {pivot: '64% 7%', angle: -1.5, duration: 4850, start: -3320},
-      {pivot: '66% 6%', angle: 2.1, duration: 2950, start: -430}
-    ];
-    currents.forEach(({pivot, angle, duration, start}, index) => {
-      const shafts = new Image();
-      shafts.alt = '';
-      shafts.src = folder + 'mer/rayons-' + (index + 1) + '.webp';
-      Object.assign(shafts.style, {
-        position: 'absolute', inset: '0', width: '100%', height: '100%', transformOrigin: pivot
-      });
-      beam.append(shafts);
-      if (!quiet.matches) {
-        shafts.animate([
-          {transform: 'skewX(' + -angle + 'deg)', opacity: .63},
-          {transform: 'skewX(' + angle * .35 + 'deg)', opacity: 1, offset: .41},
-          {transform: 'skewX(' + angle + 'deg)', opacity: .76}
-        ], {duration, delay: start, direction: 'alternate', easing: 'ease-in-out', iterations: Infinity});
-      }
-    });
+    Object.assign(beam.style, {zIndex: '101', animation: 'none', opacity: '1'});
     scene.append(beam);
     beam.animate([{opacity: 0}, {opacity: 1}], {duration: 2200, easing: 'ease-out'});
     surfaces.push(beam);
