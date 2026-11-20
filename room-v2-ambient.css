@@ -152,7 +152,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   pointer-events: none;
   z-index: 2147483646;
   background: linear-gradient(165deg, rgba(86,222,228,.34), rgba(54,199,215,.31) 48%, rgba(46,156,182,.34));
-  animation: sea-visit 17.5s linear both;
+  opacity: 0;
 }
 .sea-surface-light {
   position: absolute;
@@ -161,8 +161,8 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   height: 100%;
   pointer-events: none;
   opacity: 0;
-  animation: sea-light-arrival 3s ease-in-out both,
-    sea-surface-glow 4.7s ease-in-out 3s infinite alternate;
+  animation: sea-light-arrival 5s ease-in-out both,
+    sea-surface-glow 4.7s ease-in-out 5s infinite alternate;
 }
 @keyframes sea-light-arrival { from { opacity: 0; } to { opacity: .73; } }
 @keyframes sea-surface-glow { from { opacity: .73; } to { opacity: 1; } }
@@ -176,7 +176,7 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {
-  .sea-surface-light { animation: sea-light-arrival 3s ease-in-out both; }
+  .sea-surface-light { animation: sea-light-arrival 5s ease-in-out both; }
 }
 .v2-sea img {
   filter: sepia(.65) saturate(1.8) hue-rotate(157deg);
@@ -206,17 +206,6 @@ dialog.gacha-reveal::backdrop {background:rgba(50,22,44,.68)}
   82% { transform: translate(calc(82vw - 18%), 0) rotate(-2deg); }
   100% { transform: translate(102vw, -8%) rotate(-2deg); }
 }
-@keyframes sea-visit {
-  0% { opacity: 0; animation-timing-function: ease-in-out; }
-  17.143%,92% { opacity: 1; }
-  100% { opacity: 0; }
-}
-@keyframes sea-still-visit {
-  0% { opacity: 0; animation-timing-function: ease-in-out; }
-  62.5%,92% { opacity: 1; }
-  100% { opacity: 0; }
-}
-.v2-sea.sea-still { animation-name: sea-still-visit; animation-duration: 4.8s; }
 .v2-sea.sea-still img { animation: none; }
 .sea-still .sea-dauphin { left: 6%; }
 .sea-still .sea-poisson { left: 16%; }
