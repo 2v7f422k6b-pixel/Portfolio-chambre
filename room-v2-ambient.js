@@ -661,6 +661,14 @@
     const caustics = backdrop && animateSeaCaustics(backdrop.art, backdrop.map);
     const surfaces = maps.map(({map}) => map);
     if (caustics) surfaces.push(caustics);
+    const beam = new Image();
+    beam.alt = '';
+    beam.src = folder + 'mer/faisceau-fenetre.webp';
+    beam.className = 'sea-surface-light';
+    beam.dataset.roomV2Layer = '';
+    beam.style.zIndex = '101';
+    scene.append(beam);
+    surfaces.push(beam);
     scene.classList.add('sea-lit');
     return {
       surfaces,
@@ -672,6 +680,7 @@
           caustics.load();
         }
         caustics?.remove();
+        beam.remove();
         scene.classList.remove('sea-lit');
         maps.forEach(({map}) => map.remove());
       }
