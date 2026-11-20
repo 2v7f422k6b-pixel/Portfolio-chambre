@@ -769,7 +769,9 @@
       clearTimeout(timer);
       lights?.remove();
       resumeBackdrop?.();
-      for (const type of guardedEvents) window.removeEventListener(type, guardRoom, true);
+      window.removeEventListener('resize', positionExit);
+      if (shield.open) shield.close();
+      shield.remove();
       window.removeEventListener('pagehide', dismiss);
       observer.disconnect();
       layer.remove();
@@ -788,21 +790,27 @@
       );
       Promise.allSettled(fades).then(() => { if (seaLayer === layer) dismiss(); });
     }
-    const guardedEvents = [
-      'pointerdown', 'pointerup', 'pointermove', 'pointerover', 'pointerout',
-      'touchstart', 'touchmove', 'touchend', 'mousedown', 'mouseup', 'mousemove',
-      'click', 'dblclick', 'auxclick', 'contextmenu', 'wheel', 'dragstart',
-      'keydown', 'keyup', 'keypress'
-    ];
-    function guardRoom(event) {
-      // Preserve browser shortcuts and the normal touch-to-click sequence.
-      if (event.type.startsWith('key') && (event.metaKey || event.ctrlKey || event.altKey)) return;
-      const mobile = event.target?.closest?.('[data-object="fish-mobile"]');
-      const exitKey = event.type === 'keydown' && !event.repeat &&
-        (event.key === 'Escape' || (mobile && ['Enter', ' '].includes(event.key)));
-      event.stopImmediatePropagation();
-      if (event.cancelable && !(mobile && /^(pointer|mouse|touch)/.test(event.type))) event.preventDefault();
-      if (exitKey || (mobile && event.type === 'click')) leave();
+    const mobile = svg.querySelector('[data-object="fish-mobile"]');
+    const shield = document.createElement('dialog');
+    shield.className = 'sea-interaction-shield';
+    const english = document.documentElement.lang.startsWith('en');
+    shield.setAttribute('aria-label', english ? 'Underwater room' : 'Chambre sous-marine');
+    const exit = document.createElement('button');
+    exit.type = 'button';
+    exit.setAttribute('aria-label', english ? 'Leave the underwater room' : 'Quitter la chambre sous-marine');
+    shield.append(exit);
+    function positionExit() {
+      const bounds = (mobile.querySelector('.v2-hit') || mobile).getBoundingClientRect();
+      Object.assign(exit.style, {
+        left: bounds.left + 'px', top: bounds.top + 'px',
+        width: bounds.width + 'px', height: bounds.height + 'px'
+      });
+    }
+    exit.addEventListener('click', leave);
+    shield.addEventListener('cancel', event => { event.preventDefault(); leave(); });
+    shield.addEventListener('close', dismiss);
+    for (const type of ['click', 'pointerdown', 'pointerup', 'touchstart', 'touchend', 'keydown', 'keyup']) {
+      shield.addEventListener(type, event => event.stopPropagation());
     }
     const app = document.getElementById('app');
     const observer = new MutationObserver(() => {
@@ -811,11 +819,12 @@
     observer.observe(app, {attributes:true, attributeFilter:['class']});
     layer.dismiss = leave;
     seaLayer = layer;
-    for (const type of guardedEvents) {
-      window.addEventListener(type, guardRoom, {capture: true, passive: false});
-    }
     window.addEventListener('pagehide', dismiss);
     try {
+      document.body.append(shield);
+      positionExit();
+      shield.showModal();
+      window.addEventListener('resize', positionExit);
       await Promise.all(swimmers.map(fish => fish.decode()));
       if (seaLayer !== layer) return;
       layer.classList.toggle('sea-still', still);
