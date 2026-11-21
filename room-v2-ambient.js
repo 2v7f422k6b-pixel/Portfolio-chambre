@@ -997,14 +997,13 @@
       return element;
     }
     const defs = node('defs', artwork);
-    // Trace the two drawn hems in the coordinates of the original room.
+    // Keep the resting tuft tucked behind the drawn hem.
     function floorClip(id, hem) {
       const clip = node('clipPath', defs, {id});
       node('polygon', clip, {points: hem + ' 3100,1100 3100,2400 0,2400 0,1600'});
       return 'url(#' + id + ')';
     }
     const small = floorClip('alice-small-hem', '790,1551 810,1537 830,1520 840,1511 850,1498 860,1499 880,1504 910,1507 920,1536 940,1559');
-    const large = floorClip('alice-raised-hem', '750,1563 770,1537 790,1511 810,1494 830,1485 850,1482 860,1482 870,1490 883,1490 920,1434 970,1330 1050,1240');
     const art = node('g', artwork, {'pointer-events':'none'});
     const hiding = node('g', art, {'clip-path':small, opacity:'.46'});
     const tuft = node('g', hiding);
@@ -1069,21 +1068,22 @@
             return;
           }
           walker.removeAttribute('display');
-          const reveal = Math.min(1,p/.12);
+          const emergence = Math.min(1,p/.12);
+          const reveal = emergence*emergence*(3-2*emergence);
           const beat = t*(3.25+i*.12)+i;
           const pose = poses[2*order[i]+(still ? i%2 : Math.floor(beat*2)%2)];
           if (walker.getAttribute('href') !== pose.src) walker.setAttribute('href',pose.src);
           // The procession turns towards Alice before reaching the spilled potion at x=1814.
-          const x = 845 + 695*(1-(1-p)**1.85);
-          const feet = 1538 + 120*(1-(1-p)**3) + 505*p**3 + (i%3)*12*Math.sin(Math.PI*p);
-          const scale = 1.88*(.43+.54*reveal+.86*p);
+          const x = 845 + 695*(1-(1-p)**1.85)*reveal;
+          const feet = 1548 + 26*Math.sin(Math.PI*emergence)**2 - 10*reveal + 120*(1-(1-p)**3) + 505*p**3 + (i%3)*12*Math.sin(Math.PI*p);
+          // The whole silhouette fits in the opening, then grows into the foreground.
+          const scale = .32 + (1.88*.97-.32)*reveal + 1.88*.86*p;
           const w = pose.naturalWidth*scale, h = pose.naturalHeight*scale;
           walker.setAttribute('x',x-w/2);
           walker.setAttribute('y',feet-h-(still ? 0 : 4*Math.abs(Math.sin(beat*2*Math.PI))));
           walker.setAttribute('width',w);
           walker.setAttribute('height',h);
           walker.setAttribute('opacity',reveal);
-          walker.setAttribute('clip-path',large);
           if (!discovered && reveal > .6) {
             discovered = true;
             window.NanaProgress?.feat('noiraudes-seen');
