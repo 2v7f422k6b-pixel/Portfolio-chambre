@@ -1116,7 +1116,7 @@
     vial.src = folder + 'alice-fiole-debout.webp';
     vial.style.transformOrigin = '58% 81%';
     const landingArt = new Image();
-    landingArt.src = folder + 'alice-roulis-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp';
+    landingArt.src = folder + 'alice-rotation-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp';
     const landing = document.createElement('canvas');
     const stripWidth = 1088, stripHeight = 388;
     landing.width = stripWidth;
@@ -1178,37 +1178,41 @@
         {offset:.92, transform:'translateY(-.45%) scale(1.025)', easing:'ease-in-out'},
         {transform:'none'}
       ], timing));
-      // Wait for the camera to stop so its movement cannot swallow the smaller roll.
-      outgoing.finished.then(() => {
-        if (finished || !dialog.open || !ctx) { finish(); return; }
-        dialog.append(landing);
-        const start = performance.now();
-        function drawRoll(now) {
-          if (finished) return;
-          const time = Math.max(0,(now-start)/1000);
-          if (time >= 1.95) { finish(); return; }
-          const w = dialog.clientWidth, h = dialog.clientHeight;
-          const scale = Math.max(w/3072,h/1732);
+      // Only the cylinder's surface turns. Its axis, the cork and the puddle stay planted.
+      if (!ctx) { outgoing.finished.then(finish, finish); return; }
+      dialog.append(landing);
+      const poses = [[0,16],[.14,15.2],[.44,9],[.80,3],[1.08,0],[1.31,1.1],[1.60,3.55],[1.90,3]];
+      const start = performance.now();
+      function drawPose(index, opacity) {
+        ctx.globalAlpha = opacity;
+        ctx.drawImage(landingArt,(index%4)*816,Math.floor(index/4)*291,816,291,0,0,stripWidth,stripHeight);
+      }
+      function drawRoll(now) {
+        if (finished) return;
+        const elapsed = now-start;
+        if (elapsed >= timing.duration*.76) {
+          const time = Math.max(0,(elapsed-timing.duration*.94)/1000);
+          if (time >= poses[poses.length-1][0]) { finish(); return; }
+          // Follow the floor drawing through the last part of the incoming camera move.
+          const rect = artwork.getBoundingClientRect();
+          const modal = dialog.getBoundingClientRect();
+          const scale = Math.max(rect.width/3072,rect.height/1732);
           landing.style.width = stripWidth*scale+'px';
           landing.style.height = stripHeight*scale+'px';
-          landing.style.left = (w/2 + (1792-1536)*scale)+'px';
-          landing.style.top = (h/2 + (1344-866)*scale)+'px';
-          // The lettered tag and the neck swing with the glass around its lower side.
-          const wave = Math.sin(time*8.6)*Math.exp(-1.68*time)*Math.min(1,(1.95-time)/.28);
+          landing.style.left = (rect.left-modal.left+rect.width/2+(1792-1536)*scale)+'px';
+          landing.style.top = (rect.top-modal.top+rect.height/2+(1344-866)*scale)+'px';
+          const next = poses.findIndex(([end]) => end>time);
+          const [from,lo] = poses[next-1], [to,hi] = poses[next];
+          const pose = lo+(hi-lo)*(time-from)/(to-from);
+          const index = Math.floor(pose);
           ctx.clearRect(0,0,stripWidth,stripHeight);
-          ctx.drawImage(landingArt,0,0,stripWidth,stripHeight,0,0,stripWidth,stripHeight);
-          ctx.save();
-          ctx.translate(595-26*wave,335+2*wave);
-          ctx.rotate(wave*.048);
-          ctx.scale(1,1-wave*.048);
-          ctx.drawImage(landingArt,stripWidth,0,stripWidth,stripHeight,-595,-335,stripWidth,stripHeight);
-          // The paper tag continues just beyond the bottom of the illustration.
-          ctx.drawImage(landingArt,stripWidth,stripHeight-1,stripWidth,1,-595,stripHeight-335,stripWidth,28);
-          ctx.restore();
-          rollFrame = requestAnimationFrame(drawRoll);
+          drawPose(index,1);
+          if (pose>index) drawPose(index+1,pose-index);
+          ctx.globalAlpha = 1;
         }
-        drawRoll(start);
-      }, finish);
+        rollFrame = requestAnimationFrame(drawRoll);
+      }
+      rollFrame = requestAnimationFrame(drawRoll);
     }).catch(finish);
   }
 
