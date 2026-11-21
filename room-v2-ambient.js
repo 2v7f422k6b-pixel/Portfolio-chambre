@@ -1382,7 +1382,41 @@
       <p lang="fr">« […] un tapage de voix montait, dans lequel le nom de Nana sonnait avec la vivacité chantante de deux syllabes. »</p>`;
     document.body.append(dialog);
     dialog.showModal();
-    const dismiss = () => dialog.close();
+    const animations = [];
+    if (!quiet.matches) {
+      const cover = book.getBoundingClientRect();
+      const page = dialog.getBoundingClientRect();
+      const x = cover.left + cover.width * .68 - page.left - page.width / 2;
+      const y = cover.top + cover.height * .18 - page.top - page.height / 2;
+      const tilt = (dx, dy, size, angle, pitch) =>
+        `translate(${dx}px,${dy}px) perspective(800px) rotateZ(${angle}deg) rotateY(${pitch}deg) scale(${size})`;
+      const start = Math.min(.13, cover.width / page.width * .78);
+      animations.push(dialog.animate([
+        {transform:tilt(x,y,start,-6,82), opacity:0},
+        {offset:.18, transform:tilt(x,y-cover.height*.16,start,-9,48), opacity:1},
+        {offset:.33, transform:tilt(x-3,y-cover.height*.25,start*1.12,-6,40)},
+        {offset:.76, transform:tilt(x*.22,y*.12,.85,2,-9)},
+        {transform:'none'}
+      ], {duration:1650, easing:'ease-in-out', fill:'both'}));
+      const reveal = (node, delay, duration) => animations.push(node.animate([
+        {opacity:0, transform:'translateY(4px)'}, {opacity:1, transform:'none'}
+      ], {delay, duration, easing:'ease-out', fill:'both'}));
+      reveal(dialog.querySelector('p'), 1110, 620);
+      reveal(dialog.querySelector('button'), 1340, 320);
+    }
+    const closeNow = () => { if (dialog.open) dialog.close(); };
+    let closing = false;
+    function dismiss() {
+      if (closing) return;
+      closing = true;
+      if (!animations.length || quiet.matches) { closeNow(); return; }
+      for (const animation of animations) {
+        animation.updatePlaybackRate(-1.85);
+        animation.play();
+      }
+      Promise.allSettled(animations.map(animation => animation.finished)).then(closeNow);
+    }
+    dialog.oncancel = event => { event.preventDefault(); dismiss(); };
     dialog.querySelector('button').onclick = dismiss;
     dialog.onclick = event => {
       if (event.target !== dialog) return;
@@ -1390,9 +1424,10 @@
       if (event.clientX < rect.left || event.clientX > rect.right ||
           event.clientY < rect.top || event.clientY > rect.bottom) dismiss();
     };
-    window.addEventListener('hashchange', dismiss);
+    window.addEventListener('hashchange', closeNow);
     dialog.onclose = () => {
-      window.removeEventListener('hashchange', dismiss);
+      window.removeEventListener('hashchange', closeNow);
+      for (const animation of animations) animation.cancel();
       dialog.remove();
       if (book.isConnected) book.focus({preventScroll:true});
     };
