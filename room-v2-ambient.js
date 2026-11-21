@@ -1469,7 +1469,7 @@
     };
     centerWords();
     window.addEventListener('resize', centerWords);
-    const timing = {duration:9400, fill:'both'};
+    const timing = {duration:7200, fill:'both'};
     pane.animate([
       {opacity:0}, {offset:.09, opacity:.72}, {offset:.19, opacity:1},
       {offset:.68, opacity:1}, {offset:.84, opacity:.45}, {opacity:0}
