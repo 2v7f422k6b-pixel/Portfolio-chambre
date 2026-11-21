@@ -1103,6 +1103,18 @@
     const origin = (bottleBox.left + bottleBox.width/2 - sceneBox.left) + 'px ' +
       (bottleBox.top + bottleBox.height/2 - sceneBox.top) + 'px';
     const animations = [];
+    const table = new Image(), vial = new Image();
+    const base = document.getElementById('room-redraw-preview');
+    for (const layer of [table, vial]) {
+      layer.alt = '';
+      layer.dataset.roomV2Layer = '';
+      layer.style.cssText = 'position:absolute;left:61.84895833%;top:76.50115473%;width:3.41796875%;height:8.37182448%;pointer-events:none;';
+      layer.style.zIndex = getComputedStyle(base).zIndex;
+      layer.style.filter = getComputedStyle(base).filter;
+    }
+    table.src = folder + 'alice-table-sans-fiole.webp';
+    vial.src = folder + 'alice-fiole-debout.webp';
+    vial.style.transformOrigin = '58% 81%';
     let finished = false, timeout;
     function finish() {
       if (finished) return;
@@ -1112,32 +1124,46 @@
       quiet.removeEventListener('change', finish);
       dialog.classList.remove('alice-entering');
       animations.forEach(animation => animation.cancel());
+      table.remove();
+      vial.remove();
     }
     dialog.classList.add('alice-entering');
     dialog.addEventListener('close', finish);
     quiet.addEventListener('change', finish);
-    // Keep the real room visible until the incoming day/night illustration is decoded.
     const picture = new Image();
     picture.src = drawing.getAttribute('href');
-    timeout = setTimeout(finish, 2500);
-    picture.decode().then(() => {
+    timeout = setTimeout(finish, 4500);
+    Promise.all([picture, table, vial].map(image => image.decode())).then(() => {
       if (finished || !dialog.open) return;
       clearTimeout(timeout);
-      const timing = {duration:1050, fill:'both'};
+      base.after(table, vial);
+      const timing = {duration:3700, fill:'both'};
       const outgoing = scene.animate([
-        {transformOrigin:origin, transform:'none', easing:'ease-in', offset:0},
-        {transformOrigin:origin, transform:'scale(1.13)', easing:'ease-in', offset:.35},
-        {transformOrigin:origin, transform:'translateY(-5%) scale(1.46)', offset:.69},
-        {transformOrigin:origin, transform:'translateY(-5%) scale(1.46)'}
+        {transformOrigin:origin, transform:'none', easing:'ease-in-out', offset:0},
+        {transformOrigin:origin, transform:'scale(1.38)', easing:'ease-in-out', offset:.38},
+        {transformOrigin:origin, transform:'translateY(-2%) scale(1.7)', easing:'ease-in', offset:.62},
+        {transformOrigin:origin, transform:'translateY(-13%) scale(2.16)', offset:.79},
+        {transformOrigin:origin, transform:'translateY(-13%) scale(2.16)'}
       ], timing);
       animations.push(outgoing);
+      // Rock around the foot, hesitate, then tip over the edge with increasing speed.
+      const rocks = [[0,0],[.09,0],[.16,-5],[.23,3],[.30,0],[.36,0],
+        [.395,-4],[.425,4],[.45,-6],[.48,3],[.52,-8],[.56,-4]];
+      animations.push(vial.animate([
+        ...rocks.map(([offset, angle]) => ({offset, transform:'rotate('+angle+'deg)', easing:'ease-in-out'})),
+        {offset:.64, transform:'translate(-4%,3%) rotate(-32deg)', easing:'ease-in'},
+        {offset:.72, transform:'translate(-22%,35%) rotate(-78deg)', easing:'ease-in'},
+        {offset:.79, transform:'translate(-40%,118%) rotate(-105deg)'},
+        {transform:'translate(-40%,118%) rotate(-105deg)'}
+      ], timing));
+      // Cut on the fall; the floor view carries the same upward sweep into the landing.
       animations.push(dialog.animate([
-        {opacity:0}, {opacity:0, offset:.46}, {opacity:1, offset:.71}, {opacity:1}
+        {opacity:0, easing:'steps(1,end)'}, {opacity:1, offset:.76}, {opacity:1}
       ], timing));
       animations.push(artwork.animate([
-        {transform:'translateY(4%) scale(1.13)'},
-        {transform:'translateY(4%) scale(1.13)', offset:.46, easing:'ease-out'},
-        {transform:'translateY(.6%) scale(1.02)', offset:.78, easing:'ease-out'},
+        {transform:'translateY(7%) scale(1.19)'},
+        {offset:.76, transform:'translateY(7%) scale(1.19)', easing:'ease-out'},
+        {offset:.92, transform:'translateY(-.45%) scale(1.025)', easing:'ease-in-out'},
         {transform:'none'}
       ], timing));
       outgoing.finished.then(finish, finish);
