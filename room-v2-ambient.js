@@ -1409,10 +1409,15 @@
         {offset:.09,transform:'rotateY(-7deg)',easing:'ease-in-out'},
         {offset:.36,transform:'rotateY(-151deg)'}, {transform:'rotateY(-151deg)'}
       ]);
+      // Slide the small page past the bottom edge before bringing it forward.
+      // The layer change takes place in clear space, in both playback directions.
+      const clearCover = `translate(${x + width*.06}px,${y + height*1.22}px) scale(${width/page.width},${height/page.height})`;
       animate(paper, [
-        {transform:onShelf}, {offset:.53, transform:onShelf,easing:'ease-out'},
-        {offset:.62, transform:`translate(${x-width*.23}px,${y-height*.12}px) rotate(-4deg) scale(${width/page.width*1.1},${height/page.height*1.07})`,easing:'ease-in-out'},
-        {transform:'none'}
+        {transform:onShelf,zIndex:0},
+        {offset:.48,transform:onShelf,zIndex:0,easing:'ease-in-out'},
+        {offset:.69,transform:clearCover,zIndex:0},
+        {offset:.70,transform:clearCover,zIndex:2,easing:'ease-in-out'},
+        {transform:'none',zIndex:2}
       ]);
       animate(button,[{opacity:0},{offset:.91,opacity:0},{opacity:1}]);
     }
