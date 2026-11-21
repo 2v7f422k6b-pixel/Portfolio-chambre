@@ -358,41 +358,37 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
 #play-scene > .preacher-light {
   position:absolute; inset:0; z-index:9999; overflow:hidden; pointer-events:none;
 }
+/* A freestanding light source in front of every landscape. All gradients
+   reach transparency inside the layer, including above the window frame. */
 .preacher-light > :first-child {
-  position:absolute; inset:0;
-  background:radial-gradient(ellipse 10% 18% at 63.38% 14.95%, #fffef8 18%, #fcf4c8 68%, #f4eba9);
-  -webkit-mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
-  mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+  position:absolute; left:63.38%; top:22%; width:25%; aspect-ratio:1;
+  translate:-50% -50%;
+  background:
+    radial-gradient(ellipse 49% 2.8%, #fff 5%, rgba(255,255,255,.92) 22%, transparent 100%),
+    radial-gradient(ellipse 3.2% 41%, #fff 5%, rgba(255,255,255,.9) 22%, transparent 100%),
+    radial-gradient(ellipse closest-side, #fff 4%, #fffef9 9%, rgba(255,253,237,.75) 25%, rgba(255,253,237,.22) 53%, transparent 94%);
+  animation:preacher-star-open 2.8s cubic-bezier(.26,.05,.31,1) both;
 }
-/* The other landscapes share the same pane, independently of their skylines. */
-#play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child {
-  background:none;
-  -webkit-mask:none;
-  mask:none;
-  clip-path:polygon(56.61% 6.87%, 70.12% 1.27%, 70.18% 51.39%, 56.61% 51.04%);
+.preacher-light > :first-child::before {
+  content:""; position:absolute; inset:12%; transform:rotate(38deg);
+  background:
+    radial-gradient(ellipse 43% 2%, #fff 4%, transparent 100%),
+    radial-gradient(ellipse 2% 36%, #fff 4%, transparent 100%);
 }
-#play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child::before {
-  content:"";
-  position:absolute; inset:0;
-  background:radial-gradient(ellipse 13% 32% at 63.38% 14.95%,
-    #fffef8 6%, #fcf4c8 34%, rgba(244,235,169,.78) 58%, rgba(244,235,169,0) 100%);
-  transform-origin:63.38% 14.95%;
-  animation:preacher-pane-spread 3s cubic-bezier(.3,0,.26,1) both;
-}
-@keyframes preacher-pane-spread {
-  from { transform:scale(.24); }
-  to { transform:scale(1.45); }
+@keyframes preacher-star-open {
+  from { transform:scale(.14); }
+  to { transform:scale(1); }
 }
 @media (prefers-reduced-motion:reduce) {
-  #play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child::before { animation:none; }
+  .preacher-light > :first-child { animation:none; }
 }
 .preacher-rays {
-  position:absolute; left:63.38%; top:14.95%; width:180%; height:240%;
+  position:absolute; left:63.38%; top:22%; width:180%; height:240%;
   translate:-50% -50%;
-  --shaft:rgba(244,235,169,.93);
-  --core:#fcf4c8;
+  --shaft:rgba(255,252,235,.93);
+  --core:#fffffc;
   background:
-    radial-gradient(ellipse closest-side, #fffff2 0%, #fcf4c8 3%, transparent 13%),
+    radial-gradient(ellipse closest-side, #fff 0%, #fffffc 3%, transparent 13%),
     conic-gradient(from 0deg, transparent, var(--shaft) 14deg, transparent 19deg 41deg,
       var(--core) 48deg, transparent 52deg 77deg, var(--shaft) 87deg, transparent 95deg 105deg,
       var(--core) 109deg, transparent 113deg 128deg, var(--shaft) 135deg, transparent 145deg,
@@ -405,9 +401,9 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   mask-image:radial-gradient(ellipse closest-side, black 2%, rgba(0,0,0,.9) 22%, rgba(0,0,0,.52) 54%, transparent 96%);
 }
 .preacher-light > :last-child {
-  position:absolute; left:63.38%; top:14.95%; width:260%; height:350%;
+  position:absolute; left:63.38%; top:22%; width:260%; height:350%;
   margin:0; translate:-50% -50%;
-  background:radial-gradient(ellipse closest-side, #fffffd 0% 50%, #fffbea 63%, rgba(244,235,169,.72) 77%, transparent 100%);
+  background:radial-gradient(ellipse closest-side, #fffffd 0% 50%, #fffef7 63%, rgba(255,252,235,.72) 77%, transparent 100%);
 }
 .preacher-words {
   position:fixed; z-index:2147483646; transform:translate(-50%,-50%); pointer-events:none;
