@@ -1452,7 +1452,9 @@
     light.setAttribute('aria-hidden', 'true');
     const pane = document.createElement('div');
     const bloom = document.createElement('div');
-    light.append(pane, bloom);
+    const rays = document.createElement('div');
+    rays.className = 'preacher-rays';
+    light.append(pane, rays, bloom);
     scene.append(light);
 
     const words = document.createElement('div');
@@ -1467,23 +1469,29 @@
     };
     centerWords();
     window.addEventListener('resize', centerWords);
-    const duration = 5300;
-    const timing = {duration, fill:'both'};
+    const timing = {duration:9400, fill:'both'};
     pane.animate([
-      {opacity:0}, {offset:.12, opacity:1}, {offset:.46, opacity:1}, {opacity:0}
+      {opacity:0}, {offset:.09, opacity:.72}, {offset:.19, opacity:1},
+      {offset:.68, opacity:1}, {offset:.84, opacity:.45}, {opacity:0}
     ], timing);
-    const start = quiet.matches ? .85 : .035;
+
+    // Keep the source fixed in the glass as the shafts lengthen into the room.
+    const lightFrame = (offset, scale, opacity) => ({
+      offset, opacity, transform:`scale(${quiet.matches ? 1 : scale})`, easing:'ease-in-out'
+    });
+    rays.animate([
+      lightFrame(0,.04,0), lightFrame(.065,.04,0), lightFrame(.26,.39,.87),
+      lightFrame(.48,.92,1), lightFrame(.63,1.12,.96), lightFrame(.76,1.12,.36),
+      lightFrame(1,1.12,0)
+    ], timing);
     bloom.animate([
-      {transform:`scale(${start})`, opacity:0},
-      {offset:.08, transform:`scale(${start})`, opacity:0, easing:'cubic-bezier(.44,.03,.35,1)'},
-      {offset:.37, transform:'scale(1)', opacity:1},
-      {offset:.73, transform:'scale(1)', opacity:.86, easing:'ease-in-out'},
-      {transform:'scale(1)', opacity:0}
+      lightFrame(0,.04,0), lightFrame(.23,.04,0), lightFrame(.43,.29,.46),
+      lightFrame(.63,1.25,1), lightFrame(.81,1.25,.84), lightFrame(1,1.25,0)
     ], timing);
     words.textContent = 'Tu as vu Dieu.';
     const caption = words.animate([
-      {opacity:0}, {offset:.37, opacity:0}, {offset:.45, opacity:1},
-      {offset:.72, opacity:1}, {offset:.83, opacity:0}, {opacity:0}
+      {opacity:0}, {offset:.63, opacity:0}, {offset:.69, opacity:1},
+      {offset:.83, opacity:1}, {offset:.89, opacity:0}, {opacity:0}
     ], timing);
     const cleanup = () => {
       window.removeEventListener('resize', centerWords);

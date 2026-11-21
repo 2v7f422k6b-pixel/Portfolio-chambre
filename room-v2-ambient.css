@@ -359,14 +359,33 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   position:absolute; inset:0; z-index:9999; overflow:hidden; pointer-events:none;
 }
 .preacher-light > :first-child {
-  position:absolute; inset:0; background:white;
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 10% 18% at 63.38% 14.95%, #fffef4 18%, #ffebac 68%, #ffd783);
   -webkit-mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
   mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+}
+.preacher-rays {
+  position:absolute; left:63.38%; top:14.95%; width:180%; height:240%;
+  translate:-50% -50%;
+  --shaft:rgba(255,218,137,.93);
+  --core:#fff4d0;
+  background:
+    radial-gradient(ellipse closest-side, #fffff2 0%, #fff1bd 3%, transparent 13%),
+    conic-gradient(from 0deg, transparent, var(--shaft) 14deg, transparent 19deg 41deg,
+      var(--core) 48deg, transparent 52deg 77deg, var(--shaft) 87deg, transparent 95deg 105deg,
+      var(--core) 109deg, transparent 113deg 128deg, var(--shaft) 135deg, transparent 145deg,
+      var(--core) 159deg, transparent 164deg 173deg, var(--shaft) 182deg, transparent 192deg,
+      var(--core) 204deg, transparent 210deg, var(--shaft) 219deg, transparent 230deg,
+      var(--core) 237deg, transparent 241deg 248deg, var(--shaft) 258deg, transparent 268deg,
+      var(--core) 274deg, transparent 278deg 298deg, var(--shaft) 307deg, transparent 316deg,
+      var(--core) 333deg, transparent 341deg 360deg);
+  -webkit-mask-image:radial-gradient(ellipse closest-side, black 2%, rgba(0,0,0,.9) 22%, rgba(0,0,0,.52) 54%, transparent 96%);
+  mask-image:radial-gradient(ellipse closest-side, black 2%, rgba(0,0,0,.9) 22%, rgba(0,0,0,.52) 54%, transparent 96%);
 }
 .preacher-light > :last-child {
   position:absolute; left:63.38%; top:14.95%; width:260%; height:350%;
   margin:0; translate:-50% -50%;
-  background:radial-gradient(ellipse closest-side, white 0%, white 57%, rgba(255,255,255,.82) 71%, transparent 100%);
+  background:radial-gradient(ellipse closest-side, #fffffd 0% 50%, #fff8df 63%, rgba(255,224,158,.72) 77%, transparent 100%);
 }
 .preacher-words {
   position:fixed; z-index:2147483646; transform:translate(-50%,-50%); pointer-events:none;
