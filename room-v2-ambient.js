@@ -1372,37 +1372,49 @@
     }
   }
   function openZolaQuote(book) {
-    if (document.getElementById('zola-reading')) return;
+    if (document.getElementById('zola-reading-stage')) return;
     const dialog = document.createElement('dialog');
-    dialog.id = 'zola-reading';
-    dialog.className = 'nn-paper nn-frame';
+    dialog.id = 'zola-reading-stage';
     dialog.setAttribute('aria-label', 'Nana — Émile Zola');
     const closeLabel = document.documentElement.lang.startsWith('en') ? 'Close' : 'Refermer';
-    dialog.innerHTML = `<button type="button" class="nn-close nn-frame" aria-label="${closeLabel}"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
-      <p lang="fr">« […] un tapage de voix montait, dans lequel le nom de Nana sonnait avec la vivacité chantante de deux syllabes. »</p>`;
+    dialog.innerHTML = `<div class="zola-on-shelf" aria-hidden="true"><div class="zola-leaf"></div></div>
+      <div id="zola-reading" class="nn-paper nn-frame"><button type="button" class="nn-close nn-frame" aria-label="${closeLabel}"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button>
+      <p lang="fr">« […] un tapage de voix montait, dans lequel le nom de Nana sonnait avec la vivacité chantante de deux syllabes. »</p></div>
+      <div class="zola-hinge" aria-hidden="true"><div class="zola-cover"><div class="zola-front"></div><div class="zola-back"></div></div></div>`;
     document.body.append(dialog);
     dialog.showModal();
+    const paper = dialog.querySelector('#zola-reading');
+    const button = paper.querySelector('button');
     const animations = [];
     if (!quiet.matches) {
-      const cover = book.getBoundingClientRect();
-      const page = dialog.getBoundingClientRect();
-      const x = cover.left + cover.width * .68 - page.left - page.width / 2;
-      const y = cover.top + cover.height * .18 - page.top - page.height / 2;
-      const tilt = (dx, dy, size, angle, pitch) =>
-        `translate(${dx}px,${dy}px) perspective(800px) rotateZ(${angle}deg) rotateY(${pitch}deg) scale(${size})`;
-      const start = Math.min(.13, cover.width / page.width * .78);
-      animations.push(dialog.animate([
-        {transform:tilt(x,y,start,-6,82), opacity:0},
-        {offset:.18, transform:tilt(x,y-cover.height*.16,start,-9,48), opacity:1},
-        {offset:.33, transform:tilt(x-3,y-cover.height*.25,start*1.12,-6,40)},
-        {offset:.76, transform:tilt(x*.22,y*.12,.85,2,-9)},
+      // Front cover bounds in the artist's 3072 × 1732 drawing.
+      const surface = svg.getBoundingClientRect();
+      const left = surface.left + surface.width * 2830 / 3072;
+      const top = surface.top + surface.height * 303 / 1732;
+      const width = surface.width * 95 / 3072;
+      const height = surface.height * 144 / 1732;
+      for (const [name,value] of Object.entries({left,top,width,height})) {
+        dialog.style.setProperty('--shelf-' + name, value + 'px');
+      }
+      const page = paper.getBoundingClientRect();
+      const x = left + width/2 - page.left - page.width/2;
+      const y = top + height/2 - page.top - page.height/2;
+      const onShelf = `translate(${x}px,${y}px) scale(${width/page.width},${height/page.height})`;
+      const duration = 3400;
+      function animate(node, frames) {
+        animations.push(node.animate(frames, {duration,fill:'both'}));
+      }
+      animate(dialog.querySelector('.zola-cover'), [
+        {transform:'rotateY(0deg)',easing:'ease-in'},
+        {offset:.09,transform:'rotateY(-7deg)',easing:'ease-in-out'},
+        {offset:.36,transform:'rotateY(-151deg)'}, {transform:'rotateY(-151deg)'}
+      ]);
+      animate(paper, [
+        {transform:onShelf}, {offset:.53, transform:onShelf,easing:'ease-out'},
+        {offset:.62, transform:`translate(${x-width*.23}px,${y-height*.12}px) rotate(-4deg) scale(${width/page.width*1.1},${height/page.height*1.07})`,easing:'ease-in-out'},
         {transform:'none'}
-      ], {duration:1650, easing:'ease-in-out', fill:'both'}));
-      const reveal = (node, delay, duration) => animations.push(node.animate([
-        {opacity:0, transform:'translateY(4px)'}, {opacity:1, transform:'none'}
-      ], {delay, duration, easing:'ease-out', fill:'both'}));
-      reveal(dialog.querySelector('p'), 1110, 620);
-      reveal(dialog.querySelector('button'), 1340, 320);
+      ]);
+      animate(button,[{opacity:0},{offset:.91,opacity:0},{opacity:1}]);
     }
     const closeNow = () => { if (dialog.open) dialog.close(); };
     let closing = false;
@@ -1411,19 +1423,14 @@
       closing = true;
       if (!animations.length || quiet.matches) { closeNow(); return; }
       for (const animation of animations) {
-        animation.updatePlaybackRate(-1.85);
+        animation.updatePlaybackRate(-2.2);
         animation.play();
       }
       Promise.allSettled(animations.map(animation => animation.finished)).then(closeNow);
     }
     dialog.oncancel = event => { event.preventDefault(); dismiss(); };
-    dialog.querySelector('button').onclick = dismiss;
-    dialog.onclick = event => {
-      if (event.target !== dialog) return;
-      const rect = dialog.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right ||
-          event.clientY < rect.top || event.clientY > rect.bottom) dismiss();
-    };
+    button.onclick = dismiss;
+    dialog.onclick = event => { if (event.target === dialog) dismiss(); };
     window.addEventListener('hashchange', closeNow);
     dialog.onclose = () => {
       window.removeEventListener('hashchange', closeNow);

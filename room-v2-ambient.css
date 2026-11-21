@@ -320,8 +320,8 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   border-radius: 0;
   overflow: auto;
 }
-#zola-reading[open] { display: grid; place-items: center; }
-#zola-reading::backdrop { background: transparent; }
+#zola-reading.nn-frame { display: grid; place-items: center; }
+#zola-reading-stage::backdrop { background: transparent; }
 #zola-reading p {
   margin: 0;
   font: normal 400 clamp(18px, 2.4vw, 24px)/1.45 "Nana Trace UI", sans-serif;
@@ -330,3 +330,27 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
 }
 #zola-reading .nn-close { background: var(--nn-paper); }
 #zola-reading .nn-close:focus:not(:focus-visible) { outline: none; }
+
+#zola-reading-stage {
+  position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none;
+  margin:0; padding:0; border:0; background:transparent; overflow:hidden;
+}
+#zola-reading-stage[open] { display:grid; place-items:center; }
+#zola-reading-stage #zola-reading { grid-area:1 / 1; position:relative; }
+.zola-on-shelf, .zola-hinge {
+  position:absolute; pointer-events:none; left:var(--shelf-left); top:var(--shelf-top);
+  width:var(--shelf-width,0px); height:var(--shelf-height,0px);
+}
+.zola-hinge { perspective:400px; perspective-origin:left center; }
+.zola-cover { position:absolute; inset:0; transform-origin:left center; transform-style:preserve-3d; }
+.zola-leaf,.zola-front,.zola-back {
+  position:absolute; inset:0; clip-path:polygon(0 5.3%,100% 0,100% 95%,0 100%);
+}
+.zola-leaf,.zola-back { background:#fff5e9; box-shadow:inset 0 0 0 1px var(--nana-red); }
+.zola-front,.zola-back { backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+.zola-back { transform:rotateY(180deg); clip-path:polygon(0 0,100% 5.3%,100% 100%,0 95%); }
+.zola-front {
+  background-image:url('assets/room-redraw/apercu-jour.webp?v=3072');
+  background-size:3233.68421% 1202.77778%; background-position:95.06181% 19.08060%;
+}
+@media (prefers-reduced-motion:reduce) { .zola-hinge,.zola-on-shelf { display:none; } }
