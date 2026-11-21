@@ -936,9 +936,9 @@
     if (!ctx) return;
     const atlas = new Image();
     const stems = [
-      {height:385, seconds:5.7, reach:5, phase:0.1},
-      {height:621, seconds:7.6, reach:8, phase:2.2},
-      {height:329, seconds:4.9, reach:4, phase:4.4}
+      {height:385, seconds:5.2, reach:22, phase:0.1},
+      {height:621, seconds:6.7, reach:34, phase:2.2},
+      {height:329, seconds:4.4, reach:18, phase:4.4}
     ];
     let frame = 0;
     let lastDraw = -Infinity;
@@ -951,7 +951,7 @@
           const time = now * .001 * 2 * Math.PI / stem.seconds;
           const offset = y => {
             const progress = y / stem.height;
-            return reducedMotion.matches ? 0 : stem.reach * progress ** 1.65 *
+            return reducedMotion.matches ? 0 : stem.reach * progress ** 1.35 *
               Math.sin(time + stem.phase - .6 * progress);
           };
           for (let y = 0; y < stem.height; y += 12) {
