@@ -364,6 +364,28 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   -webkit-mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
   mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
 }
+/* The other landscapes share the same pane, independently of their skylines. */
+#play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child {
+  background:none;
+  -webkit-mask:none;
+  mask:none;
+  clip-path:polygon(56.61% 6.87%, 70.12% 1.27%, 70.18% 51.39%, 56.61% 51.04%);
+}
+#play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child::before {
+  content:"";
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 13% 32% at 63.38% 14.95%,
+    #fffef8 6%, #fcf4c8 34%, rgba(244,235,169,.78) 58%, rgba(244,235,169,0) 100%);
+  transform-origin:63.38% 14.95%;
+  animation:preacher-pane-spread 3s cubic-bezier(.3,0,.26,1) both;
+}
+@keyframes preacher-pane-spread {
+  from { transform:scale(.24); }
+  to { transform:scale(1.45); }
+}
+@media (prefers-reduced-motion:reduce) {
+  #play-scene[data-landscape]:not([data-landscape="marseille"]) .preacher-light > :first-child::before { animation:none; }
+}
 .preacher-rays {
   position:absolute; left:63.38%; top:14.95%; width:180%; height:240%;
   translate:-50% -50%;
