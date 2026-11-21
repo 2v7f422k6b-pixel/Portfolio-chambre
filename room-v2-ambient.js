@@ -912,6 +912,74 @@
     } catch { dismiss(); }
   }
 
+  function addAlicePlants(artwork, dialog, reducedMotion) {
+    // Each atlas column has the same crop in the original illustration.
+    const width = 488;
+    const height = 632;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.cssText = 'position:absolute;display:block;pointer-events:none;';
+    canvas.setAttribute('aria-hidden', 'true');
+    artwork.after(canvas);
+    function align() {
+      const w = dialog.clientWidth;
+      const h = dialog.clientHeight;
+      const scale = Math.max(w / 3072, h / 1732);
+      canvas.style.width = width * scale + 'px';
+      canvas.style.height = height * scale + 'px';
+      canvas.style.left = ((w - 3072 * scale) / 2 + 2216 * scale) + 'px';
+      canvas.style.top = (h - 1732 * scale) / 2 + 'px';
+    }
+    new ResizeObserver(align).observe(dialog);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const atlas = new Image();
+    const stems = [
+      {height:385, seconds:5.7, reach:5, phase:0.1},
+      {height:621, seconds:7.6, reach:8, phase:2.2},
+      {height:329, seconds:4.9, reach:4, phase:4.4}
+    ];
+    let frame = 0;
+    let lastDraw = -Infinity;
+    function draw(now) {
+      frame = 0;
+      if (!dialog.open || !atlas.naturalWidth) return;
+      if (now - lastDraw >= 32 || reducedMotion.matches) {
+        ctx.drawImage(atlas, 0, 0, width, height, 0, 0, width, height);
+        stems.forEach((stem, index) => {
+          const time = now * .001 * 2 * Math.PI / stem.seconds;
+          const offset = y => {
+            const progress = y / stem.height;
+            return reducedMotion.matches ? 0 : stem.reach * progress ** 1.65 *
+              Math.sin(time + stem.phase - .6 * progress);
+          };
+          for (let y = 0; y < stem.height; y += 12) {
+            const band = Math.min(12, stem.height - y);
+            const x = offset(y);
+            const shear = (offset(y + band) - x) / band;
+            ctx.setTransform(1, 0, shear, 1, x - shear * y, 0);
+            ctx.drawImage(atlas, width * (index + 1), y, width, band, 0, y, width, band);
+          }
+        });
+        ctx.resetTransform();
+        // Window frame and transparent tabletop pass in front of the leaves.
+        ctx.drawImage(atlas, width * 4, 0, width, height, 0, 0, width, height);
+        lastDraw = now;
+      }
+      if (!reducedMotion.matches) frame = requestAnimationFrame(draw);
+    }
+    function refresh() {
+      cancelAnimationFrame(frame);
+      lastDraw = -Infinity;
+      draw(performance.now());
+    }
+    new MutationObserver(refresh).observe(dialog, {attributes:true, attributeFilter:['open']});
+    reducedMotion.addEventListener('change', refresh);
+    atlas.onload = refresh;
+    atlas.src = folder + 'alice-plantes.webp';
+  }
+
   function openAliceView() {
     let dialog = document.getElementById('alice-floor-view');
     const english = document.documentElement.lang.startsWith('en');
@@ -950,6 +1018,7 @@
       close.style.cssText = 'position:absolute;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid #ee4564;border-radius:50%;background:#fff9ed;color:#c22348;font:28px/1 sans-serif;cursor:pointer;';
       close.addEventListener('click', () => dialog.close());
       dialog.append(artwork, close);
+      addAlicePlants(artwork, dialog, reducedMotion);
       document.body.append(dialog);
     }
     dialog.setAttribute('aria-label', english ? 'The room from Alice’s point of view' : 'La chambre vue par Alice au ras du sol');
