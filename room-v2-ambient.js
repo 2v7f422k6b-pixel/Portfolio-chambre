@@ -1016,6 +1016,13 @@
       addLayer('alice-vue-sol.webp?v=murs-1', 'alice-vue-nuit.webp', 0, 0, 3072, 1732);
       const tail = addLayer('alice-queue.webp?v=murs-1', 'alice-queue-nuit.webp', 416, 68, 248, 282);
       const whiskers = addLayer('alice-moustaches.webp?v=murs-1', 'alice-moustaches-nuit.webp', 560, 175, 480, 335);
+      const bedWindow = document.createElementNS(ns, 'svg');
+      for (const [name, value] of Object.entries({x:668, y:1264, width:412, height:468, overflow:'hidden'})) {
+        bedWindow.setAttribute(name, value);
+      }
+      artwork.append(bedWindow);
+      const bed = addLayer('alice-ombre-jour.webp', 'alice-ombre-nuit.webp', 0, 0, 824, 468);
+      bedWindow.append(bed);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       function updateCatMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
@@ -1036,21 +1043,38 @@
       lamp.style.cssText = 'position:absolute;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;padding:0;cursor:pointer;min-width:44px;min-height:44px;';
       lamp.addEventListener('click', () => document.getElementById('theme-toggle')?.click());
       dialog.append(lamp);
-      function alignLamp() {
+      const bedCorner = document.createElement('button');
+      bedCorner.type = 'button';
+      bedCorner.style.cssText = lamp.style.cssText;
+      const expandShadow = expanded => {
+        bed.setAttribute('x', expanded ? '-412' : '0');
+        bedCorner.setAttribute('aria-pressed', String(expanded));
+      };
+      bedCorner.addEventListener('click', () => expandShadow(true));
+      dialog.addEventListener('close', () => expandShadow(false));
+      expandShadow(false);
+      dialog.append(bedCorner);
+      function alignControls() {
         const w = dialog.clientWidth, h = dialog.clientHeight;
         const scale = Math.max(w / 3072, h / 1732);
-        lamp.style.left = (w / 2 + (1479.5 - 1536) * scale) + 'px';
-        lamp.style.top = (h / 2 + (223 - 866) * scale) + 'px';
-        lamp.style.width = 145 * scale + 'px';
-        lamp.style.height = 160 * scale + 'px';
+        function position(button, x, y, width, height) {
+          button.style.left = (w / 2 + (x - 1536) * scale) + 'px';
+          button.style.top = (h / 2 + (y - 866) * scale) + 'px';
+          button.style.width = width * scale + 'px';
+          button.style.height = height * scale + 'px';
+        }
+        position(lamp, 1479.5, 223, 145, 160);
+        position(bedCorner, 850, 1550, 240, 150);
       }
-      new ResizeObserver(alignLamp).observe(dialog);
+      new ResizeObserver(alignControls).observe(dialog);
       function syncAliceTheme() {
         const night = document.documentElement.dataset.theme === 'night';
         for (const layer of layers) {
           layer.image.setAttribute('href', folder + (night ? layer.night : layer.day));
         }
         setPlantTheme?.(night);
+        bedCorner.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
+          ? 'Explore the shadow under the bed' : 'Explorer l’ombre sous le lit');
         lamp.setAttribute('aria-pressed', String(night));
         lamp.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
           ? 'Flower lamp · night mode' : 'Lampe fleur · mode nuit');
