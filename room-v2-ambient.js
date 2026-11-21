@@ -989,6 +989,105 @@
     };
   }
 
+  function addAliceNoiraudes(artwork, dialog, button, reducedMotion, expandShadow) {
+    function node(tag, parent, attrs = {}) {
+      const element = document.createElementNS(artwork.namespaceURI, tag);
+      for (const [key, value] of Object.entries(attrs)) element.setAttribute(key, value);
+      parent.append(element);
+      return element;
+    }
+    const defs = node('defs', artwork);
+    // Trace the two drawn hems in the coordinates of the original room.
+    function floorClip(id, hem) {
+      const clip = node('clipPath', defs, {id});
+      node('polygon', clip, {points: hem + ' 3100,1400 3100,2100 0,2100 0,1600'});
+      return 'url(#' + id + ')';
+    }
+    const small = floorClip('alice-small-hem', '790,1551 810,1537 830,1520 840,1511 850,1498 860,1499 880,1504 910,1507 920,1536 940,1559');
+    const large = floorClip('alice-raised-hem', '750,1563 770,1537 790,1511 810,1494 830,1485 850,1482 860,1482 870,1490 883,1490 920,1434 970,1370');
+    const art = node('g', artwork, {'pointer-events':'none'});
+    const hiding = node('g', art, {'clip-path':small, opacity:'.46'});
+    const peek = node('image', hiding, {href:folder + 'alice-noiraude-cachee.webp', x:825,y:1477,width:80,height:80});
+    const twitch = node('animateTransform', peek, {attributeName:'transform',type:'translate',
+      values:'0 0;0 0;3 -1;-2 1;2 0;0 0;0 0;-2 0;0 0',keyTimes:'0;.34;.38;.43;.48;.53;.79;.85;1',dur:'2.8s',repeatCount:'indefinite',begin:'indefinite'});
+    function idleMotion() {
+      if (dialog.open && !reducedMotion.matches && hiding.style.display !== 'none') twitch.beginElement();
+      else twitch.endElement();
+    }
+    new MutationObserver(idleMotion).observe(dialog,{attributes:true,attributeFilter:['open']});
+    reducedMotion.addEventListener('change', idleMotion);
+    const group = node('g', art);
+    const names = ['bleue','jaune','rose'];
+    const order = [0,1,2,0,2,1,0];
+    const delays = [0,.85,2.1,3.8,4.7,6.1,9.3];
+    let images, active = false, frame, generation = 0;
+    function stop() {
+      ++generation;
+      cancelAnimationFrame(frame);
+      group.replaceChildren();
+      active = false;
+    }
+    dialog.addEventListener('close', () => {
+      stop();
+      hiding.style.display = '';
+      expandShadow(false);
+    });
+    button.addEventListener('click', async () => {
+      if (active) return;
+      active = true;
+      const run = ++generation;
+      images ??= Promise.all(names.flatMap(name => [0,1].map(pose => {
+        const image = new Image();
+        image.src = folder + 'noiraudes/' + name + '-' + pose + '.png';
+        return image.decode().then(() => image);
+      })));
+      let poses;
+      try { poses = await images; } catch { images = null; if (generation === run) stop(); return; }
+      if (!dialog.open || generation !== run) return;
+      expandShadow(true);
+      hiding.style.display = 'none';
+      idleMotion();
+      const walkers = order.map(() => node('image', group, {display:'none'}));
+      const start = performance.now();
+      let discovered = false;
+      function draw(now) {
+        if (!dialog.open || generation !== run) return;
+        const t = (now-start)/1000;
+        const still = reducedMotion.matches;
+        if (t >= (still ? 3 : 16.9)) { stop(); return; }
+        walkers.forEach((walker, i) => {
+          const p = still ? .16+i*.18 : (t-delays[i])/(6.5+.15*i);
+          if (p < 0 || p > 1 || (still && i >= 3)) {
+            walker.setAttribute('display','none');
+            return;
+          }
+          walker.removeAttribute('display');
+          const reveal = Math.min(1,p/.12);
+          const beat = t*(3.25+i*.12)+i;
+          const pose = poses[2*order[i]+(still ? i%2 : Math.floor(beat*2)%2)];
+          if (walker.getAttribute('href') !== pose.src) walker.setAttribute('href',pose.src);
+          // The procession turns towards Alice before reaching the spilled potion at x=1814.
+          const x = 845 + 775*(1-(1-p)**1.85);
+          const feet = 1538 + 120*(1-(1-p)**3) + 375*p**3 + (i%3)*12*Math.sin(Math.PI*p);
+          const scale = .43+.54*reveal+.86*p;
+          const w = pose.naturalWidth*scale, h = pose.naturalHeight*scale;
+          walker.setAttribute('x',x-w/2);
+          walker.setAttribute('y',feet-h-(still ? 0 : 4*Math.abs(Math.sin(beat*2*Math.PI))));
+          walker.setAttribute('width',w);
+          walker.setAttribute('height',h);
+          walker.setAttribute('opacity',reveal);
+          walker.setAttribute('clip-path',large);
+          if (!discovered && reveal > .6) {
+            discovered = true;
+            window.NanaProgress?.feat('noiraudes-seen');
+          }
+        });
+        frame = requestAnimationFrame(draw);
+      }
+      frame = requestAnimationFrame(draw);
+    });
+    return night => { art.style.filter = night ? 'url(#room-v2-night-ink)' : ''; };
+  }
   function openAliceView() {
     let dialog = document.getElementById('alice-floor-view');
     const english = document.documentElement.lang.startsWith('en');
@@ -1050,8 +1149,7 @@
         bed.setAttribute('x', expanded ? '-412' : '0');
         bedCorner.setAttribute('aria-pressed', String(expanded));
       };
-      bedCorner.addEventListener('click', () => expandShadow(true));
-      dialog.addEventListener('close', () => expandShadow(false));
+      const setNoiraudeTheme = addAliceNoiraudes(artwork, dialog, bedCorner, reducedMotion, expandShadow);
       expandShadow(false);
       dialog.append(bedCorner);
       function alignControls() {
@@ -1073,6 +1171,7 @@
           layer.image.setAttribute('href', folder + (night ? layer.night : layer.day));
         }
         setPlantTheme?.(night);
+        setNoiraudeTheme(night);
         bedCorner.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
           ? 'Explore the shadow under the bed' : 'Explorer l’ombre sous le lit');
         lamp.setAttribute('aria-pressed', String(night));
