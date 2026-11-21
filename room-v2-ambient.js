@@ -935,7 +935,7 @@
         return image;
       }
       addLayer('alice-vue-sol.webp', 0, 0, 3072, 1732);
-      const tail = addLayer('alice-queue.webp', 416, 68, 248, 282);
+      const tail = addLayer('alice-queue.webp?v=courbe-2', 416, 68, 248, 282);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       function updateTailMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
