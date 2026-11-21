@@ -912,6 +912,29 @@
     } catch { dismiss(); }
   }
 
+  function openAliceView() {
+    let dialog = document.getElementById('alice-floor-view');
+    const english = document.documentElement.lang.startsWith('en');
+    if (!dialog) {
+      dialog = document.createElement('dialog');
+      dialog.id = 'alice-floor-view';
+      dialog.style.cssText = 'position:fixed;inset:0;margin:0;padding:0;border:0;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:#fff9ed;';
+      const artwork = new Image();
+      artwork.src = folder + 'alice-vue-sol.webp';
+      artwork.alt = '';
+      artwork.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain;';
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.textContent = '×';
+      close.style.cssText = 'position:absolute;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid #ee4564;border-radius:50%;background:#fff9ed;color:#c22348;font:28px/1 sans-serif;cursor:pointer;';
+      close.addEventListener('click', () => dialog.close());
+      dialog.append(artwork, close);
+      document.body.append(dialog);
+    }
+    dialog.setAttribute('aria-label', english ? 'The room from Alice’s point of view' : 'La chambre vue par Alice au ras du sol');
+    dialog.querySelector('button').setAttribute('aria-label', english ? 'Back to the room' : 'Revenir à la chambre');
+    if (!dialog.open) dialog.showModal();
+  }
   function activate(event) {
     const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
@@ -958,6 +981,7 @@
     if (['alice-bottle','nana-zola-book'].includes(item.dataset.object)) {
       window.NanaProgress?.feat(item.dataset.object);
     }
+    if (item.dataset.object === 'alice-bottle') openAliceView();
     if (item.dataset.object === 'fish-mobile') toggleSea();
     if (item.dataset.object === 'landscape') spinDial();
     if (item.dataset.object === 'gashapon') drawCapsule();
