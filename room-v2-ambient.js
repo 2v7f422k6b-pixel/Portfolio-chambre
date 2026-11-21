@@ -986,6 +986,7 @@
     if (!dialog) {
       dialog = document.createElement('dialog');
       dialog.id = 'alice-floor-view';
+      dialog.addEventListener('close', () => window.NanaDeepLinks?.sync());
       dialog.style.cssText = 'position:fixed;inset:0;margin:0;padding:0;border:0;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:#fff9ed;';
       const ns = 'http://www.w3.org/2000/svg';
       const artwork = document.createElementNS(ns, 'svg');
@@ -1102,5 +1103,6 @@
   }
   svg.addEventListener('click', activate);
   svg.addEventListener('keydown', activate);
+  window.NanaAliceView = {open:openAliceView};
   window.dispatchEvent(new Event('nana-room-v2-ready'));
 })().catch(error => console.error('Chambre V2', error));

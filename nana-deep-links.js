@@ -7,6 +7,7 @@
   const homeRoute = () => mode() === 'work' ? 'work' : mode() === 'play' ? 'room' : '';
   const isShop = route => route === 'shop' || route.startsWith('shop/');
 
+  let waitingForAlice = false;
   let lastView, lastHash, scheduled, ready = false;
   const parse = () => {
     try { return decodeURIComponent(location.hash.slice(2)).replace(/^\/+|\/+$/g, ''); }
@@ -15,6 +16,7 @@
   const hashFor = route => route ? '#/' + route.split('/').map(encodeURIComponent).join('/') : '';
 
   function visibleRoute() {
+    if (waitingForAlice || document.getElementById('alice-floor-view')?.open) return 'alice';
     const newsletter = window.NanaNewsletter?.current();
     if (newsletter) return newsletter;
     const journal = window.NanaJournal?.current();
@@ -52,6 +54,11 @@
   function display(route, entryMode) {
     clearTimeout(scheduled);
     scheduled = undefined;
+    waitingForAlice = false;
+    if (route !== 'alice') {
+      const dialog = document.getElementById('alice-floor-view');
+      if (dialog?.open) dialog.close();
+    }
     const rooms = window.NanaRoomLinks;
     if (route !== 'newsletter') window.NanaNewsletter?.close();
     if (!/^carnet(?:\/|$)/.test(route || '')) window.NanaJournal?.close();
@@ -62,9 +69,25 @@
       return true;
     }
     if (!isShop(route)) window.NanaShop?.close();
-    const targetMode = route === 'work' ? 'work' : /^(room|chambre|play)$/.test(route) ? 'play'
+    const targetMode = route === 'work' ? 'work' : /^(room|chambre|play|alice)$/.test(route) ? 'play'
       : rooms?.mode(route) || entryMode || mode() || 'play';
     if (targetMode !== mode()) chooseMode(targetMode, false);
+
+    if (route === 'alice') {
+      if (new URLSearchParams(location.search).get('chambreV2') !== '1') {
+        const url = new URL(location.href);
+        url.searchParams.set('chambreV2', '1');
+        url.hash = '/alice';
+        location.replace(url.href);
+        return true;
+      }
+      closeWindow();
+      closeSpecial();
+      rooms?.closeExtras();
+      if (window.NanaAliceView) window.NanaAliceView.open();
+      else waitingForAlice = true;
+      return true;
+    }
 
     if (route === 'newsletter') {
       closeWindow(); closeSpecial(); rooms?.closeExtras();
@@ -128,6 +151,7 @@
     // Never share placement-editor or preview flags from the owner's session.
     const route = visibleRoute();
     const url = new URL(location.pathname, location.origin);
+    if (route === 'alice') url.searchParams.set('chambreV2', '1');
     url.hash = hashFor(route);
     const value = url.href;
     try {
@@ -150,6 +174,13 @@
   }
   window.NanaDeepLinks = {open, copy, sync, current:visibleRoute, entries:() => window.NanaLinkDirectory.entries(),
     record:sync, recordApp:sync, recordWindow:sync, recordGallery:sync};
+
+  window.addEventListener('nana-room-v2-ready', () => {
+    if (waitingForAlice) {
+      waitingForAlice = false;
+      window.NanaAliceView.open();
+    }
+  });
 
   function start() {
     ready = true;
