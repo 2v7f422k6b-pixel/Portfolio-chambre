@@ -983,6 +983,11 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <link rel="stylesheet" href="fish-mobile.css?v=20261116-balanced-2">
 <link rel="stylesheet" href="gachapon.css?v=20261116-open-3">
 <script src="gachapon.js?v=20261116-open-3" defer></script>
+<style>
+#alice-floor-view.alice-entering {opacity:0;}
+#alice-floor-view.alice-entering::backdrop {background:transparent;}
+#alice-floor-view.alice-entering button {visibility:hidden;}
+</style>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -1062,7 +1067,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
                 style.href = 'room-v2-ambient.css?v=cent-1';
                 style.onload = () => {
                   const script = document.createElement('script');
-                  script.src = 'room-v2-ambient.js?v=alice-noiraudes-3';
+                  script.src = 'room-v2-ambient.js?v=alice-passage-1';
                   document.head.append(script);
                 };
                 document.head.append(style);

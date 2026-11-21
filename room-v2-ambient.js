@@ -1095,7 +1095,56 @@
     });
     return night => { art.style.filter = night ? 'url(#room-v2-night-ink)' : ''; };
   }
-  function openAliceView() {
+  function playAliceEntrance(dialog, bottle) {
+    const artwork = dialog.querySelector('svg');
+    const drawing = artwork.querySelector('image');
+    const sceneBox = scene.getBoundingClientRect();
+    const bottleBox = bottle.getBoundingClientRect();
+    const origin = (bottleBox.left + bottleBox.width/2 - sceneBox.left) + 'px ' +
+      (bottleBox.top + bottleBox.height/2 - sceneBox.top) + 'px';
+    const animations = [];
+    let finished = false, timeout;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      dialog.removeEventListener('close', finish);
+      quiet.removeEventListener('change', finish);
+      dialog.classList.remove('alice-entering');
+      animations.forEach(animation => animation.cancel());
+    }
+    dialog.classList.add('alice-entering');
+    dialog.addEventListener('close', finish);
+    quiet.addEventListener('change', finish);
+    // Keep the real room visible until the incoming day/night illustration is decoded.
+    const picture = new Image();
+    picture.src = drawing.getAttribute('href');
+    timeout = setTimeout(finish, 2500);
+    picture.decode().then(() => {
+      if (finished || !dialog.open) return;
+      clearTimeout(timeout);
+      const timing = {duration:1050, fill:'both'};
+      const outgoing = scene.animate([
+        {transformOrigin:origin, transform:'none', easing:'ease-in', offset:0},
+        {transformOrigin:origin, transform:'scale(1.13)', easing:'ease-in', offset:.35},
+        {transformOrigin:origin, transform:'translateY(-5%) scale(1.46)', offset:.69},
+        {transformOrigin:origin, transform:'translateY(-5%) scale(1.46)'}
+      ], timing);
+      animations.push(outgoing);
+      animations.push(dialog.animate([
+        {opacity:0}, {opacity:0, offset:.46}, {opacity:1, offset:.71}, {opacity:1}
+      ], timing));
+      animations.push(artwork.animate([
+        {transform:'translateY(4%) scale(1.13)'},
+        {transform:'translateY(4%) scale(1.13)', offset:.46, easing:'ease-out'},
+        {transform:'translateY(.6%) scale(1.02)', offset:.78, easing:'ease-out'},
+        {transform:'none'}
+      ], timing));
+      outgoing.finished.then(finish, finish);
+    }).catch(finish);
+  }
+
+  function openAliceView(bottle) {
     let dialog = document.getElementById('alice-floor-view');
     const english = document.documentElement.lang.startsWith('en');
     if (!dialog) {
@@ -1193,7 +1242,11 @@
     }
     dialog.setAttribute('aria-label', english ? 'The room from Alice’s point of view' : 'La chambre vue par Alice au ras du sol');
     dialog.querySelector('button').setAttribute('aria-label', english ? 'Back to the room' : 'Revenir à la chambre');
-    if (!dialog.open) dialog.showModal();
+    if (dialog.open) return;
+    dialog.showModal();
+    if (bottle?.matches?.('[data-object="alice-bottle"]') && !quiet.matches && scene.animate) {
+      playAliceEntrance(dialog, bottle);
+    }
   }
   function activate(event) {
     const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
@@ -1241,7 +1294,7 @@
     if (['alice-bottle','nana-zola-book'].includes(item.dataset.object)) {
       window.NanaProgress?.feat(item.dataset.object);
     }
-    if (item.dataset.object === 'alice-bottle') openAliceView();
+    if (item.dataset.object === 'alice-bottle') openAliceView(item);
     if (item.dataset.object === 'fish-mobile') toggleSea();
     if (item.dataset.object === 'landscape') spinDial();
     if (item.dataset.object === 'gashapon') drawCapsule();
