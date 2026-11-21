@@ -1000,19 +1000,26 @@
     // Trace the two drawn hems in the coordinates of the original room.
     function floorClip(id, hem) {
       const clip = node('clipPath', defs, {id});
-      node('polygon', clip, {points: hem + ' 3100,1400 3100,2100 0,2100 0,1600'});
+      node('polygon', clip, {points: hem + ' 3100,1100 3100,2400 0,2400 0,1600'});
       return 'url(#' + id + ')';
     }
     const small = floorClip('alice-small-hem', '790,1551 810,1537 830,1520 840,1511 850,1498 860,1499 880,1504 910,1507 920,1536 940,1559');
-    const large = floorClip('alice-raised-hem', '750,1563 770,1537 790,1511 810,1494 830,1485 850,1482 860,1482 870,1490 883,1490 920,1434 970,1370');
+    const large = floorClip('alice-raised-hem', '750,1563 770,1537 790,1511 810,1494 830,1485 850,1482 860,1482 870,1490 883,1490 920,1434 970,1330 1050,1240');
     const art = node('g', artwork, {'pointer-events':'none'});
     const hiding = node('g', art, {'clip-path':small, opacity:'.46'});
-    const peek = node('image', hiding, {href:folder + 'alice-noiraude-cachee.webp', x:825,y:1477,width:80,height:80});
-    const twitch = node('animateTransform', peek, {attributeName:'transform',type:'translate',
+    const tuft = node('g', hiding);
+    const peek = node('image', tuft, {href:folder + 'alice-noiraude-cachee.webp?v=pelage', x:784,y:1404,width:154,height:154});
+    const turn = node('animateTransform', peek, {attributeName:'transform',type:'rotate',
+      values:'0 861 1481;0 861 1481;-5 861 1481;4 861 1481;-2 861 1481;0 861 1481;0 861 1481',
+      keyTimes:'0;.32;.40;.49;.60;.68;1',dur:'2.8s',repeatCount:'indefinite',begin:'indefinite'});
+    const twitch = node('animateTransform', tuft, {attributeName:'transform',type:'translate',
       values:'0 0;0 0;3 -1;-2 1;2 0;0 0;0 0;-2 0;0 0',keyTimes:'0;.34;.38;.43;.48;.53;.79;.85;1',dur:'2.8s',repeatCount:'indefinite',begin:'indefinite'});
     function idleMotion() {
-      if (dialog.open && !reducedMotion.matches && hiding.style.display !== 'none') twitch.beginElement();
-      else twitch.endElement();
+      const moving = dialog.open && !reducedMotion.matches && hiding.style.display !== 'none';
+      for (const motion of [turn, twitch]) {
+        if (moving) motion.beginElement();
+        else motion.endElement();
+      }
     }
     new MutationObserver(idleMotion).observe(dialog,{attributes:true,attributeFilter:['open']});
     reducedMotion.addEventListener('change', idleMotion);
@@ -1067,9 +1074,9 @@
           const pose = poses[2*order[i]+(still ? i%2 : Math.floor(beat*2)%2)];
           if (walker.getAttribute('href') !== pose.src) walker.setAttribute('href',pose.src);
           // The procession turns towards Alice before reaching the spilled potion at x=1814.
-          const x = 845 + 775*(1-(1-p)**1.85);
-          const feet = 1538 + 120*(1-(1-p)**3) + 375*p**3 + (i%3)*12*Math.sin(Math.PI*p);
-          const scale = .43+.54*reveal+.86*p;
+          const x = 845 + 695*(1-(1-p)**1.85);
+          const feet = 1538 + 120*(1-(1-p)**3) + 505*p**3 + (i%3)*12*Math.sin(Math.PI*p);
+          const scale = 1.88*(.43+.54*reveal+.86*p);
           const w = pose.naturalWidth*scale, h = pose.naturalHeight*scale;
           walker.setAttribute('x',x-w/2);
           walker.setAttribute('y',feet-h-(still ? 0 : 4*Math.abs(Math.sin(beat*2*Math.PI))));
