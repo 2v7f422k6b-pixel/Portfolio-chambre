@@ -1201,17 +1201,17 @@
         ctx.globalAlpha = opacity;
         ctx.drawImage(landingArt,(index%4)*816,Math.floor(index/4)*291,816,291,0,0,stripWidth,stripHeight);
       }
-      let catReacted = false;
+      dialog.dispatchEvent(new Event('alice-cat-watches-vial'));
       function drawRoll(now) {
         if (finished) return;
         const elapsed = now-start;
         if (elapsed >= timing.duration*.76) {
           const time = Math.max(0,(elapsed-timing.duration*.94)/1000);
-          if (!catReacted && time >= 4.05 && time < 5.48) {
-            catReacted = true;
-            dialog.dispatchEvent(new CustomEvent('alice-cat-notices', {detail:time-4.05}));
+          if (time >= poses[poses.length-1][0]) {
+            dialog.dispatchEvent(new Event('alice-cat-notices'));
+            finish();
+            return;
           }
-          if (time >= poses[poses.length-1][0]) { finish(); return; }
           // Follow the floor drawing through the last part of the incoming camera move.
           const rect = artwork.getBoundingClientRect();
           const modal = dialog.getBoundingClientRect();
@@ -1271,35 +1271,36 @@
       const bed = addLayer('alice-ombre-jour.webp', 'alice-ombre-nuit.webp', 0, 0, 824, 468);
       bedWindow.append(bed);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      // A filmstrip contains only the pixels inside the irises; frame zero is transparent.
+      // A filmstrip contains only the pixels inside the irises; the center frame is the original drawing.
       const eyesWindow = document.createElementNS(ns,'svg');
       for (const [name,value] of Object.entries({x:730,y:286,width:182,height:112,overflow:'hidden'})) {
         eyesWindow.setAttribute(name,value);
       }
       artwork.insertBefore(eyesWindow,whiskers);
-      const eyes = addLayer('alice-regard-jour.webp','alice-regard-nuit.webp',0,0,1820,112);
+      const eyes = addLayer('alice-regard-jour.webp?v=gauche','alice-regard-nuit.webp?v=gauche',-1638,0,3458,112);
       eyesWindow.append(eyes);
+      const setGaze = frame => eyes.setAttribute('x',-182*frame);
       let gazeFrame;
       function restEyes() {
         cancelAnimationFrame(gazeFrame);
-        eyes.setAttribute('x',0);
+        setGaze(9);
       }
       dialog.addEventListener('close',restEyes);
       reducedMotion.addEventListener('change',restEyes);
-      dialog.addEventListener('alice-cat-notices',event => {
-        restEyes();
+      dialog.addEventListener('alice-cat-watches-vial',() => {
+        if (dialog.open && !reducedMotion.matches) setGaze(18);
+      });
+      dialog.addEventListener('alice-cat-notices',() => {
         if (reducedMotion.matches || !dialog.open) return;
-        const start = performance.now()-event.detail*1000;
+        const start = performance.now();
         function follow(now) {
           if (!dialog.open || reducedMotion.matches) { restEyes(); return; }
-          const t = (now-start)/1000;
-          // Look at the last roll, hold for a beat, then flick back to Alice.
-          const p = Math.min(1,Math.max(0,t/.24),Math.max(0,(1.89-t)/.14));
-          const frame = Math.round(9*p*p*(3-2*p));
-          eyes.setAttribute('x',-182*frame);
-          if (t < 1.89) gazeFrame = requestAnimationFrame(follow);
+          // Hold the rightward gaze for a beat, then settle on Alice to the left.
+          const p = Math.min(1,Math.max(0,(now-start-260)/230));
+          setGaze(Math.round(18*(1-p*p*(3-2*p))));
+          if (p < 1) gazeFrame = requestAnimationFrame(follow);
         }
-        follow(performance.now());
+        follow(start);
       });
       function updateCatMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
