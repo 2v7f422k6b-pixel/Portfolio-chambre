@@ -1117,19 +1117,14 @@
     vial.style.transformOrigin = '58% 81%';
     const landingArt = new Image();
     landingArt.src = folder + 'alice-roulis-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp';
-    const landing = document.createElementNS(artwork.namespaceURI, 'g');
-    function landingSlice(sourceX) {
-      const slice = document.createElementNS(artwork.namespaceURI, 'svg');
-      for (const [name,value] of Object.entries({x:1792,y:1344,width:1088,height:388,
-        viewBox:sourceX+' 0 1088 388',overflow:'hidden'})) slice.setAttribute(name,value);
-      const atlas = document.createElementNS(artwork.namespaceURI, 'image');
-      atlas.setAttribute('href', landingArt.src);
-      atlas.setAttribute('width',2176);
-      atlas.setAttribute('height',388);
-      slice.append(atlas);
-      landing.append(slice);
-      return slice;
-    }
+    const landing = document.createElement('canvas');
+    const stripWidth = 1088, stripHeight = 388;
+    landing.width = stripWidth;
+    landing.height = stripHeight;
+    landing.setAttribute('aria-hidden','true');
+    landing.style.cssText = 'position:absolute;pointer-events:none;z-index:1;';
+    const ctx = landing.getContext('2d');
+    let rollFrame;
     let finished = false, timeout;
     function finish() {
       if (finished) return;
@@ -1141,6 +1136,7 @@
       animations.forEach(animation => animation.cancel());
       table.remove();
       vial.remove();
+      cancelAnimationFrame(rollFrame);
       landing.remove();
     }
     dialog.classList.add('alice-entering');
@@ -1182,24 +1178,37 @@
         {offset:.92, transform:'translateY(-.45%) scale(1.025)', easing:'ease-in-out'},
         {transform:'none'}
       ], timing));
-      // Keep the spill and loose cork planted while the glass rolls on its long side.
-      landingSlice(0);
-      const rolling = landingSlice(1088);
-      rolling.style.transformBox = 'fill-box';
-      rolling.style.transformOrigin = '50% 100%';
-      artwork.append(landing);
-      const settle = rolling.animate([
-        {offset:0, transform:'translateX(1px) skewX(-.3deg) scaleY(.99)'},
-        {offset:.21, transform:'translateX(-9px) skewX(1.1deg) scaleY(.974)'},
-        {offset:.44, transform:'translateX(1px) skewX(-.55deg) scaleY(1.004)'},
-        {offset:.65, transform:'translateX(-3px) skewX(.26deg) scaleY(.995)'},
-        {offset:.82, transform:'translateX(.5px) skewX(-.1deg)'},
-        {offset:1, transform:'none'}
-      ].map(key => ({...key, easing:'ease-in-out'})), {
-        delay:timing.duration*.76, duration:1430, fill:'both'
-      });
-      animations.push(settle);
-      settle.finished.then(finish, finish);
+      // Wait for the camera to stop so its movement cannot swallow the smaller roll.
+      outgoing.finished.then(() => {
+        if (finished || !dialog.open || !ctx) { finish(); return; }
+        dialog.append(landing);
+        const start = performance.now();
+        function drawRoll(now) {
+          if (finished) return;
+          const time = Math.max(0,(now-start)/1000);
+          if (time >= 1.95) { finish(); return; }
+          const w = dialog.clientWidth, h = dialog.clientHeight;
+          const scale = Math.max(w/3072,h/1732);
+          landing.style.width = stripWidth*scale+'px';
+          landing.style.height = stripHeight*scale+'px';
+          landing.style.left = (w/2 + (1792-1536)*scale)+'px';
+          landing.style.top = (h/2 + (1344-866)*scale)+'px';
+          // The lettered tag and the neck swing with the glass around its lower side.
+          const wave = Math.sin(time*8.6)*Math.exp(-1.68*time)*Math.min(1,(1.95-time)/.28);
+          ctx.clearRect(0,0,stripWidth,stripHeight);
+          ctx.drawImage(landingArt,0,0,stripWidth,stripHeight,0,0,stripWidth,stripHeight);
+          ctx.save();
+          ctx.translate(595-26*wave,335+2*wave);
+          ctx.rotate(wave*.048);
+          ctx.scale(1,1-wave*.048);
+          ctx.drawImage(landingArt,stripWidth,0,stripWidth,stripHeight,-595,-335,stripWidth,stripHeight);
+          // The paper tag continues just beyond the bottom of the illustration.
+          ctx.drawImage(landingArt,stripWidth,stripHeight-1,stripWidth,1,-595,stripHeight-335,stripWidth,28);
+          ctx.restore();
+          rollFrame = requestAnimationFrame(drawRoll);
+        }
+        drawRoll(start);
+      }, finish);
     }).catch(finish);
   }
 
