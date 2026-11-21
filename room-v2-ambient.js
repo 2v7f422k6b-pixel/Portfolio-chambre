@@ -1444,6 +1444,54 @@
       if (book.isConnected) book.focus({preventScroll:true});
     };
   }
+  function revealPreacher() {
+    if (scene.querySelector('.preacher-light')) return;
+    const light = document.createElement('div');
+    light.className = 'preacher-light';
+    light.dataset.roomV2Layer = '';
+    light.setAttribute('aria-hidden', 'true');
+    const pane = document.createElement('div');
+    const bloom = document.createElement('div');
+    light.append(pane, bloom);
+    scene.append(light);
+
+    const words = document.createElement('div');
+    words.className = 'preacher-words';
+    words.setAttribute('role', 'status');
+    document.body.append(words);
+    const viewport = scene.parentElement;
+    const centerWords = () => {
+      const room = viewport.getBoundingClientRect();
+      words.style.top = (Math.max(0, room.top) + Math.min(innerHeight, room.bottom)) / 2 + 'px';
+      words.style.left = (Math.max(0, room.left) + Math.min(innerWidth, room.right)) / 2 + 'px';
+    };
+    centerWords();
+    window.addEventListener('resize', centerWords);
+    const duration = 5300;
+    const timing = {duration, fill:'both'};
+    pane.animate([
+      {opacity:0}, {offset:.12, opacity:1}, {offset:.46, opacity:1}, {opacity:0}
+    ], timing);
+    const start = quiet.matches ? .85 : .035;
+    bloom.animate([
+      {transform:`scale(${start})`, opacity:0},
+      {offset:.08, transform:`scale(${start})`, opacity:0, easing:'cubic-bezier(.44,.03,.35,1)'},
+      {offset:.37, transform:'scale(1)', opacity:1},
+      {offset:.73, transform:'scale(1)', opacity:.86, easing:'ease-in-out'},
+      {transform:'scale(1)', opacity:0}
+    ], timing);
+    words.textContent = 'Tu as vu Dieu.';
+    const caption = words.animate([
+      {opacity:0}, {offset:.37, opacity:0}, {offset:.45, opacity:1},
+      {offset:.72, opacity:1}, {offset:.83, opacity:0}, {opacity:0}
+    ], timing);
+    const cleanup = () => {
+      window.removeEventListener('resize', centerWords);
+      light.remove();
+      words.remove();
+    };
+    caption.finished.then(cleanup, cleanup);
+  }
   function activate(event) {
     const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
@@ -1515,6 +1563,7 @@
     if (item.dataset.object === 'dog') {
       window.NanaProgress?.visit('objet/preacher-dog');
       window.NanaProgress?.feat('preacher-dog');
+      revealPreacher();
     }
     if (item.dataset.object === 'bell') {
       document.getElementById('nana-kikujiro-chime')?.dispatchEvent(new MouseEvent('click', {bubbles:true}));

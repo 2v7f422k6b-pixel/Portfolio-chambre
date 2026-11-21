@@ -354,3 +354,22 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   background-size:3233.68421% 1202.77778%; background-position:95.06181% 19.08060%;
 }
 @media (prefers-reduced-motion:reduce) { .zola-hinge,.zola-on-shelf { display:none; } }
+
+#play-scene > .preacher-light {
+  position:absolute; inset:0; z-index:9999; overflow:hidden; pointer-events:none;
+}
+.preacher-light > :first-child {
+  position:absolute; inset:0; background:white;
+  -webkit-mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+  mask:url("assets/room-redraw/masque-ciel.png") center / 100% 100% no-repeat;
+}
+.preacher-light > :last-child {
+  position:absolute; left:63.38%; top:14.95%; width:260%; height:350%;
+  margin:0; translate:-50% -50%;
+  background:radial-gradient(ellipse closest-side, white 0%, white 57%, rgba(255,255,255,.82) 71%, transparent 100%);
+}
+.preacher-words {
+  position:fixed; z-index:2147483646; transform:translate(-50%,-50%); pointer-events:none;
+  color:var(--nana-red); font:400 clamp(27px,5vmin,54px)/1.2 "Nana Trace UI",cursive;
+  white-space:nowrap; text-align:center;
+}
