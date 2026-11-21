@@ -5,6 +5,16 @@ import {readFileSync,existsSync} from 'node:fs';
 
 const source=readFileSync(new URL('../nana-progress.js',import.meta.url),'utf8');
 const key='nana-visitor-progress-v1',roomKey='nana-room-exploration-20261104-v1';
+test('Seeing the soot sprites unlocks the three Chihiro pieces once and persists',()=>{
+ const storage=new Map(),{p}=browser({storage}),awards=[];
+ const outfit=p.outfits.find(o=>o.id==='chihiro');
+ assert.deepEqual(Array.from(outfit.pieces),['top-chihiro','pants-chihiro','shoes-chihiro']);
+ assert.equal(p.unlockedOutfit('chihiro'),false);
+ p.subscribe(({added})=>awards.push(...added));
+ p.feat('noiraudes-seen');p.feat('noiraudes-seen');
+ assert.equal(awards.filter(id=>id==='outfit:chihiro').length,1);
+ assert.equal(browser({storage}).p.unlockedOutfit('chihiro'),true);
+});
 test('Kokeshi unlocks the yukata only after activation and remembers it',()=>{
  const storage=new Map(),{p}=browser({storage});
  assert.equal(p.unlockedOutfit('yukata'),false);

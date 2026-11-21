@@ -64,6 +64,7 @@
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const night = document.documentElement.dataset.theme === 'night';
     canvas.style.filter = night ? 'url(#room-v2-night-ink)' : '';
+    let discovered = false;
     function paint(now) {
       const t = (now-start)/1000;
       const end = still ? 3 : 20.25;
@@ -94,6 +95,10 @@
         ctx.globalAlpha *= reveal;
         ctx.drawImage(img,x-img.width*scale/2,ground-img.height*scale-rise,img.width*scale,img.height*scale);
         ctx.restore();
+        if (!discovered && reveal > 0 && ctx.globalAlpha > 0) {
+          discovered = true;
+          window.NanaProgress?.feat('noiraudes-seen');
+        }
       });
       ctx.restore();
       frame = requestAnimationFrame(paint);
