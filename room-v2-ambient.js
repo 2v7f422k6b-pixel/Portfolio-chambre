@@ -1116,7 +1116,7 @@
     vial.src = folder + 'alice-fiole-debout.webp';
     vial.style.transformOrigin = '58% 81%';
     const landingArt = new Image();
-    landingArt.src = folder + 'alice-rotation-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp?v=papier-fixe';
+    landingArt.src = folder + 'alice-rotation-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp?v=cordon-3';
     const landing = document.createElement('canvas');
     const stripWidth = 1088, stripHeight = 388;
     landing.width = stripWidth;
@@ -1192,7 +1192,10 @@
       // Only the cylinder's surface turns. Its axis, the cork and the puddle stay planted.
       if (!ctx) { outgoing.finished.then(finish, finish); return; }
       dialog.append(landing);
-      const poses = [[0,16],[.14,15.2],[.44,9],[.80,3],[1.08,0],[1.31,1.1],[1.60,3.55],[1.90,3]];
+      const poses = [[0,16],[.14,15.2],[.44,9],[.80,3],[1.08,0],[1.22,.5],
+        [1.73,9.3],[1.90,10],[2.08,9.3],[2.58,1.7],[2.74,1],
+        [2.91,1.65],[3.32,6.6],[3.48,7],[3.64,6.65],[4.05,2.4],[4.22,2],
+        [4.38,2.35],[4.69,4.4],[4.84,4.6],[5.00,4.35],[5.33,3.1],[5.48,3]];
       const start = performance.now();
       function drawPose(index, opacity) {
         ctx.globalAlpha = opacity;
@@ -1252,6 +1255,7 @@
         return image;
       }
       addLayer('alice-vue-sol.webp?v=murs-1', 'alice-vue-nuit.webp', 0, 0, 3072, 1732);
+      addLayer('alice-retouches-flacon-jour.webp', 'alice-retouches-flacon-nuit.webp', 2042, 1414, 270, 318);
       const tail = addLayer('alice-queue.webp?v=murs-1', 'alice-queue-nuit.webp', 416, 68, 248, 282);
       const whiskers = addLayer('alice-moustaches.webp?v=murs-1', 'alice-moustaches-nuit.webp', 560, 175, 480, 335);
       const bedWindow = document.createElementNS(ns, 'svg');
