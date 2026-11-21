@@ -1371,6 +1371,75 @@
       playAliceEntrance(dialog, bottle);
     }
   }
+  function openZolaBookmark(book) {
+    if (document.getElementById('zola-reading')) return;
+    const dialog = document.createElement('dialog');
+    dialog.id = 'zola-reading';
+    dialog.setAttribute('aria-label', 'Nana — Émile Zola');
+    const closeLabel = document.documentElement.lang.startsWith('en') ? 'Close' : 'Refermer';
+    dialog.innerHTML = `<style>
+      #zola-reading {position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;box-sizing:border-box;margin:0;padding:0;border:0;background:transparent;overflow:hidden;color:#512f36}
+      #zola-reading[open] {display:grid;place-items:center}
+      #zola-reading::backdrop {background:transparent}
+      #zola-reading .slip {width:min(27rem,87vw);transform-origin:top center;position:relative;font:italic clamp(18px,3vw,26px)/1.4 Georgia,serif;text-align:center}
+      #zola-reading .fold {box-sizing:border-box;padding:.55em .6em;background:#fff7e6;border:1px solid #c68079;transform-origin:top center}
+      #zola-reading .fold + .fold {border-top:0}
+      #zola-reading .fold:nth-child(2) {background:#f8ecd8}
+      #zola-reading .words {position:relative;white-space:nowrap;display:inline-block}
+      #zola-reading .stroke {position:absolute;inset:auto 0 -.03em;height:.14em;border-bottom:2px solid #dd3454;border-radius:48%;transform:rotate(-1deg);transform-origin:left}
+      #zola-reading button {position:absolute;right:0;bottom:calc(100% + 5px);border:1px solid #cc5868;background:#fff7e6;color:#982d47;border-radius:50%;font:24px/1 Georgia;min-width:40px;min-height:40px;cursor:pointer}
+    </style>
+    <div class="slip" lang="fr"><div class="fold">« […] un tapage de voix montait,</div>
+    <div class="fold">dans lequel <span class="words">le nom de Nana sonnait<i class="stroke" aria-hidden="true"></i></span></div>
+    <div class="fold">avec la vivacité chantante de deux syllabes. »</div>
+    <button type="button" aria-label="${closeLabel}">×</button></div>`;
+    document.body.append(dialog);
+    dialog.showModal();
+    const slip = dialog.querySelector('.slip');
+    const button = dialog.querySelector('button');
+    const rect = slip.getBoundingClientRect();
+    const source = book.getBoundingClientRect();
+    const x = source.left + source.width * .55 - rect.left - rect.width / 2;
+    const y = source.top + source.height * .18 - rect.top;
+    const tracks = [];
+    function track(node, frames, delay, duration) {
+      tracks.push(node.animate(frames, {delay, duration, fill:'both', easing:'ease-in-out'}));
+    }
+    if (!quiet.matches) {
+      track(slip, [
+        {transform:`translate(${x}px,${y}px) scale(.014,.012)`, opacity:0},
+        {transform:`translate(${x}px,${y - source.height * .16}px) scale(.045,.15) rotate(3deg)`, opacity:1, offset:.23},
+        {transform:'none',opacity:1}
+      ], 0, 1550);
+      dialog.querySelectorAll('.fold').forEach((fold, i) => track(fold, [
+        {transform:'perspective(500px) rotateX(' + (i % 2 ? -86 : 86) + 'deg)',opacity:0},
+        {transform:'none',opacity:1}
+      ], i * 350, 800));
+      track(dialog.querySelector('.stroke'), [{transform:'scaleX(0)'},{transform:'scaleX(1) rotate(-1deg)'}],1550,550);
+      track(button,[{opacity:0},{opacity:1}],1480,200);
+    }
+    let closing = false;
+    function dismiss() {
+      if (closing) return;
+      closing = true;
+      if (!tracks.length || quiet.matches) { dialog.close(); return; }
+      for (const animation of tracks) {
+        animation.playbackRate = -2;
+        animation.play();
+      }
+      Promise.allSettled(tracks.map(a => a.finished)).then(() => { if (dialog.open) dialog.close(); });
+    }
+    button.onclick = dismiss;
+    dialog.onclick = event => { if (event.target === dialog) dismiss(); };
+    dialog.oncancel = event => { event.preventDefault(); dismiss(); };
+    const closeNow = () => { if (dialog.open) dialog.close(); };
+    window.addEventListener('hashchange', closeNow);
+    dialog.onclose = () => {
+      window.removeEventListener('hashchange', closeNow);
+      dialog.remove();
+      if (book.isConnected) book.focus({preventScroll:true});
+    };
+  }
   function activate(event) {
     const item = event.target.closest('[data-object], [data-open], [data-room-zone-id]');
     if (!item || (event.type === 'keydown' && !['Enter', ' '].includes(event.key))) return;
@@ -1417,6 +1486,7 @@
     if (['alice-bottle','nana-zola-book'].includes(item.dataset.object)) {
       window.NanaProgress?.feat(item.dataset.object);
     }
+    if (item.dataset.object === 'nana-zola-book') openZolaBookmark(item);
     if (item.dataset.object === 'alice-bottle') openAliceView(item);
     if (item.dataset.object === 'fish-mobile') toggleSea();
     if (item.dataset.object === 'landscape') spinDial();
