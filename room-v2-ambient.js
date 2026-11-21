@@ -976,8 +976,17 @@
     }
     new MutationObserver(refresh).observe(dialog, {attributes:true, attributeFilter:['open']});
     reducedMotion.addEventListener('change', refresh);
-    atlas.onload = refresh;
-    atlas.src = folder + 'alice-plantes.webp?v=murs-1';
+    return night => {
+      const file = night ? 'alice-plantes-nuit.webp' : 'alice-plantes.webp?v=murs-1';
+      canvas.hidden = true;
+      canvas.style.visibility = 'hidden';
+      atlas.onload = () => {
+        canvas.hidden = false;
+        canvas.style.visibility = '';
+        refresh();
+      };
+      atlas.src = folder + file;
+    };
   }
 
   function openAliceView() {
@@ -994,18 +1003,19 @@
       artwork.setAttribute('preserveAspectRatio', 'xMidYMid slice');
       artwork.setAttribute('aria-hidden', 'true');
       artwork.style.cssText = 'display:block;width:100%;height:100%;';
-      function addLayer(file, x, y, width, height) {
+      const layers = [];
+      function addLayer(day, night, x, y, width, height) {
         const image = document.createElementNS(ns, 'image');
         for (const [name, value] of Object.entries({x, y, width, height})) {
           image.setAttribute(name, value);
         }
-        image.setAttribute('href', folder + file);
+        layers.push({image, day, night});
         artwork.append(image);
         return image;
       }
-      addLayer('alice-vue-sol.webp?v=murs-1', 0, 0, 3072, 1732);
-      const tail = addLayer('alice-queue.webp?v=murs-1', 416, 68, 248, 282);
-      const whiskers = addLayer('alice-moustaches.webp?v=murs-1', 560, 175, 480, 335);
+      addLayer('alice-vue-sol.webp?v=murs-1', 'alice-vue-nuit.webp', 0, 0, 3072, 1732);
+      const tail = addLayer('alice-queue.webp?v=murs-1', 'alice-queue-nuit.webp', 416, 68, 248, 282);
+      const whiskers = addLayer('alice-moustaches.webp?v=murs-1', 'alice-moustaches-nuit.webp', 560, 175, 480, 335);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       function updateCatMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
@@ -1019,7 +1029,36 @@
       close.style.cssText = 'position:absolute;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid #ee4564;border-radius:50%;background:#fff9ed;color:#c22348;font:28px/1 sans-serif;cursor:pointer;';
       close.addEventListener('click', () => dialog.close());
       dialog.append(artwork, close);
-      addAlicePlants(artwork, dialog, reducedMotion);
+      const setPlantTheme = addAlicePlants(artwork, dialog, reducedMotion);
+      const lamp = document.createElement('button');
+      lamp.type = 'button';
+      lamp.className = 'alice-lamp';
+      lamp.style.cssText = 'position:absolute;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;padding:0;cursor:pointer;min-width:44px;min-height:44px;';
+      lamp.addEventListener('click', () => document.getElementById('theme-toggle')?.click());
+      dialog.append(lamp);
+      function alignLamp() {
+        const w = dialog.clientWidth, h = dialog.clientHeight;
+        const scale = Math.max(w / 3072, h / 1732);
+        lamp.style.left = (w / 2 + (1479.5 - 1536) * scale) + 'px';
+        lamp.style.top = (h / 2 + (223 - 866) * scale) + 'px';
+        lamp.style.width = 145 * scale + 'px';
+        lamp.style.height = 160 * scale + 'px';
+      }
+      new ResizeObserver(alignLamp).observe(dialog);
+      function syncAliceTheme() {
+        const night = document.documentElement.dataset.theme === 'night';
+        for (const layer of layers) {
+          layer.image.setAttribute('href', folder + (night ? layer.night : layer.day));
+        }
+        setPlantTheme?.(night);
+        lamp.setAttribute('aria-pressed', String(night));
+        lamp.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
+          ? 'Flower lamp · night mode' : 'Lampe fleur · mode nuit');
+      }
+      syncAliceTheme();
+      new MutationObserver(syncAliceTheme).observe(document.documentElement, {
+        attributes:true, attributeFilter:['data-theme','lang']
+      });
       document.body.append(dialog);
     }
     dialog.setAttribute('aria-label', english ? 'The room from Alice’s point of view' : 'La chambre vue par Alice au ras du sol');
