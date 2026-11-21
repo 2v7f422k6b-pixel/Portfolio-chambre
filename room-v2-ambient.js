@@ -1115,6 +1115,21 @@
     table.src = folder + 'alice-table-sans-fiole.webp';
     vial.src = folder + 'alice-fiole-debout.webp';
     vial.style.transformOrigin = '58% 81%';
+    const landingArt = new Image();
+    landingArt.src = folder + 'alice-roulis-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp';
+    const landing = document.createElementNS(artwork.namespaceURI, 'g');
+    function landingSlice(sourceX) {
+      const slice = document.createElementNS(artwork.namespaceURI, 'svg');
+      for (const [name,value] of Object.entries({x:1792,y:1344,width:1088,height:388,
+        viewBox:sourceX+' 0 1088 388',overflow:'hidden'})) slice.setAttribute(name,value);
+      const atlas = document.createElementNS(artwork.namespaceURI, 'image');
+      atlas.setAttribute('href', landingArt.src);
+      atlas.setAttribute('width',2176);
+      atlas.setAttribute('height',388);
+      slice.append(atlas);
+      landing.append(slice);
+      return slice;
+    }
     let finished = false, timeout;
     function finish() {
       if (finished) return;
@@ -1126,6 +1141,7 @@
       animations.forEach(animation => animation.cancel());
       table.remove();
       vial.remove();
+      landing.remove();
     }
     dialog.classList.add('alice-entering');
     dialog.addEventListener('close', finish);
@@ -1133,7 +1149,7 @@
     const picture = new Image();
     picture.src = drawing.getAttribute('href');
     timeout = setTimeout(finish, 4500);
-    Promise.all([picture, table, vial].map(image => image.decode())).then(() => {
+    Promise.all([picture, table, vial, landingArt].map(image => image.decode())).then(() => {
       if (finished || !dialog.open) return;
       clearTimeout(timeout);
       base.after(table, vial);
@@ -1166,7 +1182,24 @@
         {offset:.92, transform:'translateY(-.45%) scale(1.025)', easing:'ease-in-out'},
         {transform:'none'}
       ], timing));
-      outgoing.finished.then(finish, finish);
+      // Keep the spill and loose cork planted while the glass rolls on its long side.
+      landingSlice(0);
+      const rolling = landingSlice(1088);
+      rolling.style.transformBox = 'fill-box';
+      rolling.style.transformOrigin = '50% 100%';
+      artwork.append(landing);
+      const settle = rolling.animate([
+        {offset:0, transform:'translateX(1px) skewX(-.3deg) scaleY(.99)'},
+        {offset:.21, transform:'translateX(-9px) skewX(1.1deg) scaleY(.974)'},
+        {offset:.44, transform:'translateX(1px) skewX(-.55deg) scaleY(1.004)'},
+        {offset:.65, transform:'translateX(-3px) skewX(.26deg) scaleY(.995)'},
+        {offset:.82, transform:'translateX(.5px) skewX(-.1deg)'},
+        {offset:1, transform:'none'}
+      ].map(key => ({...key, easing:'ease-in-out'})), {
+        delay:timing.duration*.76, duration:1430, fill:'both'
+      });
+      animations.push(settle);
+      settle.finished.then(finish, finish);
     }).catch(finish);
   }
 
