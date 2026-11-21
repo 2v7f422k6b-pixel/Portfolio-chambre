@@ -1116,7 +1116,7 @@
     vial.src = folder + 'alice-fiole-debout.webp';
     vial.style.transformOrigin = '58% 81%';
     const landingArt = new Image();
-    landingArt.src = folder + 'alice-rotation-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp';
+    landingArt.src = folder + 'alice-rotation-' + (document.documentElement.dataset.theme === 'night' ? 'nuit' : 'jour') + '.webp?v=papier-fixe';
     const landing = document.createElement('canvas');
     const stripWidth = 1088, stripHeight = 388;
     landing.width = stripWidth;
@@ -1124,6 +1124,17 @@
     landing.setAttribute('aria-hidden','true');
     landing.style.cssText = 'position:absolute;pointer-events:none;z-index:1;';
     const ctx = landing.getContext('2d');
+    if (ctx) {
+      // Show the original paper layer through the motion overlay, including its lettering.
+      const glass = new Path2D();
+      glass.rect(0,0,stripWidth,stripHeight);
+      const paper = [[395,209],[459,163],[561,189],[680,221],[803,237],[915,237],
+        [920,280],[967,363],[971,385],[941,400],[392,400],[389,221]];
+      glass.moveTo(...paper[0]);
+      for (const point of paper.slice(1)) glass.lineTo(...point);
+      glass.closePath();
+      ctx.clip(glass,'evenodd');
+    }
     let rollFrame;
     let finished = false, timeout;
     function finish() {
