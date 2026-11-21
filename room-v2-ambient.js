@@ -1295,9 +1295,9 @@
         const start = performance.now();
         function follow(now) {
           if (!dialog.open || reducedMotion.matches) { restEyes(); return; }
-          // Hold the rightward gaze for a beat, then settle on Alice to the left.
+          // Hold the rightward gaze for a beat, then return to the original center frame.
           const p = Math.min(1,Math.max(0,(now-start-260)/230));
-          setGaze(Math.round(18*(1-p*p*(3-2*p))));
+          setGaze(Math.round(18-9*p*p*(3-2*p)));
           if (p < 1) gazeFrame = requestAnimationFrame(follow);
         }
         follow(start);
