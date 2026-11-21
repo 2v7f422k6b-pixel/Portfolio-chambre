@@ -307,3 +307,26 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   pointer-events: none;
 }
 .sea-lit .v2-ferry { visibility: hidden; }
+
+#zola-reading.nn-paper {
+  --nn-paper: #fff5e9;
+  width: min(20rem, 86vw, 82dvh);
+  aspect-ratio: 1;
+  max-height: 90dvh;
+  margin: auto;
+  padding: 3.2rem 1.75rem;
+  background: var(--nn-paper);
+  color: var(--nana-red);
+  border-radius: 0;
+  overflow: auto;
+}
+#zola-reading[open] { display: grid; place-items: center; }
+#zola-reading::backdrop { background: transparent; }
+#zola-reading p {
+  margin: 0;
+  font: normal 400 clamp(18px, 2.4vw, 24px)/1.45 "Nana Trace UI", sans-serif;
+  text-align: center;
+  text-wrap: pretty;
+}
+#zola-reading .nn-close { background: var(--nn-paper); }
+#zola-reading .nn-close:focus:not(:focus-visible) { outline: none; }
