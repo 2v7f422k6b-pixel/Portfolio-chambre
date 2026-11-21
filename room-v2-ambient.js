@@ -936,12 +936,14 @@
       }
       addLayer('alice-vue-sol.webp', 0, 0, 3072, 1732);
       const tail = addLayer('alice-queue.webp?v=courbe-2', 416, 68, 248, 282);
+      const whiskers = addLayer('alice-moustaches.webp', 560, 175, 480, 335);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      function updateTailMotion() {
+      function updateCatMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
+        whiskers.style.display = tail.style.display;
       }
-      reducedMotion.addEventListener('change', updateTailMotion);
-      updateTailMotion();
+      reducedMotion.addEventListener('change', updateCatMotion);
+      updateCatMotion();
       const close = document.createElement('button');
       close.type = 'button';
       close.textContent = '×';
