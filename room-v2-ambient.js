@@ -977,7 +977,7 @@
     new MutationObserver(refresh).observe(dialog, {attributes:true, attributeFilter:['open']});
     reducedMotion.addEventListener('change', refresh);
     atlas.onload = refresh;
-    atlas.src = folder + 'alice-plantes.webp';
+    atlas.src = folder + 'alice-plantes.webp?v=murs-1';
   }
 
   function openAliceView() {
@@ -1002,9 +1002,9 @@
         artwork.append(image);
         return image;
       }
-      addLayer('alice-vue-sol.webp', 0, 0, 3072, 1732);
-      const tail = addLayer('alice-queue.webp?v=courbe-2', 416, 68, 248, 282);
-      const whiskers = addLayer('alice-moustaches.webp?v=3', 560, 175, 480, 335);
+      addLayer('alice-vue-sol.webp?v=murs-1', 0, 0, 3072, 1732);
+      const tail = addLayer('alice-queue.webp?v=murs-1', 416, 68, 248, 282);
+      const whiskers = addLayer('alice-moustaches.webp?v=murs-1', 560, 175, 480, 335);
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       function updateCatMotion() {
         tail.style.display = reducedMotion.matches ? 'none' : '';
