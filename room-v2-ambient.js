@@ -919,10 +919,29 @@
       dialog = document.createElement('dialog');
       dialog.id = 'alice-floor-view';
       dialog.style.cssText = 'position:fixed;inset:0;margin:0;padding:0;border:0;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:#fff9ed;';
-      const artwork = new Image();
-      artwork.src = folder + 'alice-vue-sol.webp';
-      artwork.alt = '';
-      artwork.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain;';
+      const ns = 'http://www.w3.org/2000/svg';
+      const artwork = document.createElementNS(ns, 'svg');
+      artwork.setAttribute('viewBox', '0 0 3072 1732');
+      artwork.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+      artwork.setAttribute('aria-hidden', 'true');
+      artwork.style.cssText = 'display:block;width:100%;height:100%;';
+      function addLayer(file, x, y, width, height) {
+        const image = document.createElementNS(ns, 'image');
+        for (const [name, value] of Object.entries({x, y, width, height})) {
+          image.setAttribute(name, value);
+        }
+        image.setAttribute('href', folder + file);
+        artwork.append(image);
+        return image;
+      }
+      addLayer('alice-vue-sol.webp', 0, 0, 3072, 1732);
+      const tail = addLayer('alice-queue.webp', 416, 68, 248, 282);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function updateTailMotion() {
+        tail.style.display = reducedMotion.matches ? 'none' : '';
+      }
+      reducedMotion.addEventListener('change', updateTailMotion);
+      updateTailMotion();
       const close = document.createElement('button');
       close.type = 'button';
       close.textContent = '×';
