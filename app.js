@@ -167,6 +167,7 @@ else applyTheme(savedTheme);
 let imacZoomAnimation=null,modeTransitionAnimations=[],modeTransitionId=0;
 function resetModeTransition(){
  modeTransitionId++;
+ work.inert=false;
  for(const animation of modeTransitionAnimations)animation.cancel();
  modeTransitionAnimations=[];
  play.style.zIndex='';play.style.pointerEvents='';
@@ -198,7 +199,9 @@ function chooseMode(mode,zoom=false){
  welcome.hidden=true;desktop.hidden=false;
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const reverseZoom=zoom && previousMode==='work' && mode==='play' && !reduceMotion;
- play.hidden=mode!=='play';work.hidden=mode!=='work' && !reverseZoom;
+ play.hidden=mode!=='play';
+ const hideWork=mode!=='work' && !reverseZoom;
+ if(work.hidden!==hideWork)work.hidden=hideWork;
  // A previously scrolled desktop must reopen at its fixed initial position.
  if(mode==='work')work.scrollTop=0;
  const modeSwitch=$('#switch-mode');if(modeSwitch){modeSwitch.setAttribute('aria-checked',String(mode==='work'));document.dispatchEvent(new Event('portfolio-mode-change'));}
@@ -230,11 +233,55 @@ function chooseMode(mode,zoom=false){
  updateClocks();
  // Enter the Work desktop without opening the redundant Projects window.
 }
+async function enterRedrawnIMac(scene, screenElement){
+ const screen=screenElement.getBoundingClientRect();
+ const room=scene.getBoundingClientRect(), view=play.getBoundingClientRect();
+ const cx=room.left+room.width/2, cy=room.top+room.height/2;
+ const vx=view.left+play.clientWidth/2, vy=view.top+play.clientHeight/2;
+ const sx=screen.left+screen.width/2, sy=screen.top+screen.height/2;
+ // Keep the illustrated display in frame, even when the room starts panned.
+ const endScale=1.045*Math.max(view.width/screen.width,view.height/screen.height);
+ const frames=[];
+ for(let step=0;step<=32;step++){
+  const t=step/32, scale=Math.pow(endScale,t);
+  const pan=1-Math.pow(1-t,3);
+  const x=vx-cx-scale*((vx-cx)+(sx-vx)*pan);
+  const y=vy-cy-scale*((vy-cy)+(sy-vy)*pan);
+  frames.push({transform:`translate(${x}px,${y}px) scale(${scale})`});
+ }
+ const zoom=scene.animate(frames,{delay:1100,duration:3200,easing:'cubic-bezier(.40,0,.25,1)',fill:'both'});
+ imacZoomAnimation=zoom;
+ play.style.zIndex='2'; play.style.pointerEvents='none';
+ work.style.zIndex='1'; work.style.pointerEvents='none'; work.inert=true;
+ window.NanaResources?.activate('work',document.documentElement.dataset.theme||'day');
+ work.hidden=false;
+ try{
+  await zoom.finished;
+  // Hold the final screen close-up until the desktop underneath is painted.
+  if(work.getAttribute('aria-busy')==='true'){
+   await new Promise(resolve=>{
+    const finish=()=>{observer.disconnect();clearTimeout(timer);resolve()};
+    const observer=new MutationObserver(()=>{
+     if(work.getAttribute('aria-busy')!=='true'||imacZoomAnimation!==zoom)finish();
+    });
+    const timer=setTimeout(finish,16000);
+    observer.observe(work,{attributes:true,attributeFilter:['aria-busy','hidden']});
+   });
+  }
+  if(imacZoomAnimation!==zoom)return;
+  const dissolve=play.animate([{opacity:1},{opacity:0}],{duration:850,easing:'ease-in-out',fill:'both'});
+  modeTransitionAnimations.push(dissolve);
+  await dissolve.finished;
+  if(imacZoomAnimation===zoom)chooseMode('work',false);
+ }catch(error){if(error.name!=='AbortError')throw error}
+}
 function zoomIntoIMac(){
  if(currentMode!=='play'){chooseMode('work',true);return}
  if(imacZoomAnimation)return;
  const scene=$('#play-scene');
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){chooseMode('work',false);return}
+ const illustratedScreen=scene.querySelector('#room-v2-ambient [data-open="work-zoom"] .v2-hit');
+ if(illustratedScreen?.getBoundingClientRect().width){enterRedrawnIMac(scene,illustratedScreen);return}
  const [approach,closeup]=imacZoomTransforms(scene);
  const anim=scene.animate([
   {transform:'scale(1)',opacity:1,filter:'blur(0)'},
