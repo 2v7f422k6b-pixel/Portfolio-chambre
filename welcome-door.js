@@ -37,6 +37,50 @@
   layout(); language();
   new ResizeObserver(layout).observe(screen);
   new MutationObserver(language).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  // Keep the illustrated SVG for the resting scene. During the swing, give
+  // its moving parts real depth in a single HTML perspective coordinate space.
+  function buildSwing() {
+    const box = scene.viewBox.baseVal;
+    const rect = scene.getBoundingClientRect();
+    const scale = Math.min(rect.width / box.width, rect.height / box.height);
+    const stage = document.createElement('div');
+    stage.className = 'swing-stage';
+    Object.assign(stage.style, {
+      left: ((rect.width - box.width * scale) / 2 - box.x * scale) + 'px',
+      top: ((rect.height - box.height * scale) / 2 - box.y * scale) + 'px',
+      transform: 'scale(' + scale + ')'
+    });
+    const slab = document.createElement('div');
+    slab.className = 'swing-slab';
+    stage.append(slab);
+    function plane(contents, depth, extraClass = '') {
+      const layer = document.createElement('div');
+      layer.className = 'swing-plane ' + extraClass;
+      layer.style.transform = 'translateZ(' + depth + 'px)';
+      layer.innerHTML = '<svg viewBox="0 0 3072 1732" aria-hidden="true">' + contents + '</svg>';
+      slab.append(layer);
+    }
+    const art = selector => scene.querySelector(selector).outerHTML;
+    const edge = document.createElement('div');
+    edge.className = 'swing-edge';
+    slab.append(edge);
+    const face = art('.art-door');
+    plane(face + art('.art-mood-' + screen.lang) + art('.signature'), 0);
+    // The thin relief follows the original drawn borders of both panels.
+    const trim = '<clipPath id="raised-door-trim"><path fill-rule="evenodd" clip-rule="evenodd" d="M424 49H1964V1732H1934V80H454V1732H424Z M502 1574H1886V1732H1854V1610H535V1732H502Z"/></clipPath>';
+    plane('<defs>' + trim + '</defs><g clip-path="url(#raised-door-trim)">' + face + '</g>', 8);
+    // Cross sections of the blue spindle connect the fixed rose to the lever.
+    for (let z = 2; z <= 42; z += 4) {
+      const ring = document.createElement('i');
+      ring.className = 'swing-spindle';
+      ring.style.transform = 'translateZ(' + z + 'px)';
+      slab.append(ring);
+    }
+    plane(art('.art-charm'), 42);
+    plane(art('.art-handle'), 46);
+    screen.append(stage);
+    return stage;
+  }
   let busy = false;
   screen.addEventListener('click', async event => {
     const link = event.target.closest('[data-entry]');
@@ -55,11 +99,13 @@
       screen.classList.remove('shop');
     } else if (animate) {
       // Reveal the live room through the doorway as the visitor enters.
+      const stage = buildSwing();
       document.body.append(screen);
       screen.inert = true;
       screen.classList.add('open');
       panel.querySelector('[data-mode="play"]').click();
-      await new Promise(resolve => setTimeout(resolve, 1380));
+      await new Promise(resolve => setTimeout(resolve, 1680));
+      stage.remove();
       welcome.append(screen);
       screen.classList.remove('open');
       screen.inert = false;
