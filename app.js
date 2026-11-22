@@ -285,11 +285,15 @@ async function enterRedrawnIMac(scene, screenElement){
  imacZoomAnimation=zoom;
  const removeCloseup=addIMacCloseup(scene,document.documentElement.dataset.theme==='night'?'night':'day',endScale);
  play.style.zIndex='2'; play.style.pointerEvents='none';
- work.style.zIndex='1'; work.style.pointerEvents='none'; work.inert=true;
- window.NanaResources?.activate('work',document.documentElement.dataset.theme||'day');
- work.hidden=false;
  try{
   await zoom.finished;
+  if(imacZoomAnimation!==zoom)return;
+  // Reveal the desktop only once the illustrated display fills the viewport.
+  work.style.zIndex='1'; work.style.pointerEvents='none'; work.inert=true;
+  window.NanaResources?.activate('work',document.documentElement.dataset.theme||'day');
+  work.hidden=false;
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  if(imacZoomAnimation!==zoom)return;
   // Hold the final screen close-up until the desktop underneath is painted.
   if(work.getAttribute('aria-busy')==='true'){
    await new Promise(resolve=>{
