@@ -131,6 +131,7 @@
   let hint = null;
   let timer = null;
   let shownThisEntry = false;
+  let enteringWork = false;
   let wasInPlay = app.classList.contains('mode-play');
   let frame = 0;
   const tourKey = 'nana-room-tour-seen-v1';
@@ -146,7 +147,7 @@
   }
 
   function roomIsVisible() {
-    if (!app.classList.contains('mode-play') || viewport.hidden || document.hidden) return false;
+    if (enteringWork || !app.classList.contains('mode-play') || viewport.hidden || document.hidden) return false;
     const route = window.NanaDeepLinks?.current();
     if (route && !/^(room|chambre|play)$/.test(route)) return false;
     return !document.querySelector('#window-shade:not([hidden]), #special-shade:not([hidden]), dialog[open]');
@@ -279,6 +280,7 @@
   function onModeChange() {
     const inPlay = app.classList.contains('mode-play');
     if (!inPlay) {
+      enteringWork = false;
       stopTour();
       wasInPlay = false;
       shownThisEntry = false;
@@ -290,6 +292,13 @@
       scheduleCheck();
     }
   }
+
+  document.addEventListener('portfolio-entering-work', () => {
+    enteringWork = true;
+    stopTour();
+    cancelAnimationFrame(frame);
+    removeHint();
+  });
 
   new MutationObserver(onModeChange).observe(app, {
     attributes: true,

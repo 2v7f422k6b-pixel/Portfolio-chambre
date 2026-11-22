@@ -122,6 +122,7 @@
       screen.classList.remove('shop');
     } else if (animate) {
       // Reveal the live room through the doorway as the visitor enters.
+      if (target === 'work') document.dispatchEvent(new Event('portfolio-entering-work'));
       screen.classList.add('preparing');
       document.body.append(screen);
       screen.inert = true;

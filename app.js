@@ -310,6 +310,7 @@ async function enterRedrawnIMac(scene, screenElement){
  finally{removeCloseup()}
 }
 function zoomIntoIMac(){
+ document.dispatchEvent(new Event('portfolio-entering-work'));
  if(currentMode!=='play'){chooseMode('work',true);return}
  if(imacZoomAnimation)return;
  const scene=$('#play-scene');
