@@ -1,21 +1,27 @@
 @font-face{font-family:DoorHand;src:url(assets/fonts/NanaTraceUI-Regular.woff2)}
-#welcome .door-screen{position:fixed;inset:0;background:#fff8df;z-index:20;display:grid;place-items:center;overflow:hidden}
-#welcome .door-screen svg{width:100%;height:100%;display:block}
-#welcome .door-screen .welcome-language{z-index:2}
+.door-screen{position:fixed;inset:0;background:#fff8df;z-index:20;display:grid;place-items:center;overflow:hidden}
+.door-screen svg{width:100%;height:100%;display:block}
+.door-screen .welcome-language{z-index:2}
 .door-screen .signature{font:48px DoorHand,cursive;fill:#ff173b}
 .door-screen a{cursor:pointer}
 .door-screen rect{fill:transparent}
 .door-screen a:focus-visible{outline:6px solid #c31843}
-.door-screen .behind{opacity:0}
-.door-screen.open .behind{opacity:1}
-.door-screen .leaf{transform-origin:342px 50%}
-.door-screen.open .leaf{animation:swing-door .65s ease-in both}
-.door-screen.open .art-handle{transform-origin:1840px 1352px;animation:turn-handle .3s ease both}
-.door-screen.open .art-charm{transform-origin:1745px 1350px;animation:turn-handle .45s ease both}
+.door-screen.open{z-index:2147483646;background:transparent;pointer-events:none;animation:cross-threshold 1.38s both}
+.door-screen.open .art-wall{mask:url(#door-opening)}
+.door-screen.open .welcome-language{visibility:hidden}
+.door-screen .leaf{transform-origin:349px 866px}
+.door-screen.open .leaf{animation:swing-door 1.12s cubic-bezier(.4,0,.24,1) both}
+.door-screen.open .art-handle{transform-origin:1840px 1352px;animation:turn-handle .56s ease both}
+.door-screen.open .art-charm{transform-origin:1745px 1343px;animation:swing-charm .88s ease both}
 .door-screen.shop .card{transform-origin:2540px 775px;animation:take-card .45s ease-in both}
-@keyframes swing-door{0%,20%{transform:scaleX(1)}100%{transform:scaleX(.025) skewY(-6deg)}}
-@keyframes turn-handle{50%,100%{transform:rotate(-11deg)}}
+@keyframes swing-door{
+  0%,15%{transform:perspective(2200px) rotateY(0deg)}
+  100%{transform:perspective(2200px) rotateY(83deg)}
+}
+@keyframes turn-handle{0%,100%{transform:rotate(0)}35%,55%{transform:rotate(-15deg)}}
+@keyframes swing-charm{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(22px) rotate(-5deg)}55%{transform:translateY(8px) rotate(7deg)}80%{transform:rotate(-3deg)}}
+@keyframes cross-threshold{0%,40%{transform:scale(1);opacity:1}78%{opacity:1}100%{transform:scale(1.35);opacity:0}}
 @keyframes take-card{to{transform:translate(-400px,30px) scale(2.4) rotate(6deg)}}
 .door-screen[lang=fr] :is(.art-mood-en,.art-shop-en),.door-screen[lang=en] :is(.art-mood-fr,.art-shop-fr){display:none}
 #welcome:has(.door-screen)>.welcome-panel{display:none!important}
-@media (orientation:portrait){.door-screen .shop-position{transform:translate(-1630px,1370px)}}
+@media (max-aspect-ratio: 6/5){.door-screen .shop-position{transform:translate(-1630px,1370px)}}
