@@ -241,6 +241,8 @@ function addIMacCloseup(scene, theme, endScale){
  overlay.setAttribute('aria-hidden','true');
  overlay.setAttribute('preserveAspectRatio','none');
  // Paint at close-up resolution and anchor the crop in the original room coordinates.
+ // The close-up decodes its own wallpaper. Adding it must not reload the visible room.
+ overlay.setAttribute('data-nana-load-ignore','');
  overlay.setAttribute('data-room-v2-layer','');
  overlay.setAttribute('viewBox','0 0 500 380');
  Object.assign(overlay.style,{
