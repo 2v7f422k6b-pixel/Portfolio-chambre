@@ -32,7 +32,7 @@
 @keyframes take-card{to{transform:translate(-400px,30px) scale(2.4) rotate(6deg)}}
 .door-screen[lang=fr] :is(.art-mood-en,.art-shop-en),.door-screen[lang=en] :is(.art-mood-fr,.art-shop-fr){display:none}
 #welcome:has(.door-screen)>.welcome-panel{display:none!important}
-@media (max-aspect-ratio: 6/5){.door-screen .shop-position{transform:translate(-1630px,1370px)}}
+
 
 .swing-spindle{position:absolute;left:1808px;top:1330px;width:44px;height:42px;border-radius:50%;box-sizing:border-box;background:#9ad7fa;border:2px solid #ff4968}
 
@@ -44,3 +44,13 @@
 .swing-plane,.swing-spindle{-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .swing-back{position:absolute;left:349px;top:0;width:1675px;height:100%;box-sizing:border-box;background:#ffc3d7;border-inline:2px solid #ff173b;transform:translateZ(-54px) rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden}
 @media (prefers-reduced-motion:reduce){.door-screen .art-charm{animation:none}}
+
+.vertical-door .swing-stage{width:1732px;height:3072px;perspective-origin:866px 1536px}
+.vertical-door .swing-slab{transform-origin:61px 1536px}
+.vertical-door .swing-back{left:61px;top:106px;width:1616px;height:2966px}
+.vertical-door .swing-edge{left:1677px;top:106px;height:2966px}
+.vertical-door .swing-edge::after{top:45%}
+.vertical-door .swing-spindle{left:1464px;top:1434px}
+.vertical-door.open :is(.art-handle,.lever-motion){transform-origin:1486px 1455px}
+.vertical-door .art-charm{transform-origin:1408px 1450px}
+.vertical-door.shop .card{transform-origin:698px 1850px}
