@@ -5,7 +5,7 @@
   const screen = document.createElement('div');
   screen.className = 'door-screen';
   screen.setAttribute('data-no-translate','');
-  screen.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 3072 1732\" aria-label=\"Nana’s Room\">\n<image href=\"assets/accueil-v2/wall.webp\" x=\"0\" y=\"0\" width=\"3072\" height=\"1732\" class=\"art-wall\"/>\n<defs><mask id=\"door-opening\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"3072\" height=\"1732\"><rect width=\"3072\" height=\"1732\" style=\"fill:white\"/><rect x=\"350\" width=\"1670\" height=\"1732\" style=\"fill:black\"/></mask></defs>\n<g class=\"leaf\"><image href=\"assets/accueil-v2/door.webp\" x=\"337\" y=\"0\" width=\"1693\" height=\"1732\" class=\"art-door\"/><image href=\"assets/accueil-v2/mood-fr.webp\" x=\"603\" y=\"606\" width=\"1203\" height=\"189\" class=\"art-mood-fr\"/><image href=\"assets/accueil-v2/mood-en.webp\" x=\"632\" y=\"602\" width=\"1162\" height=\"190\" class=\"art-mood-en\"/>\n<text x=\"1200\" y=\"511\" text-anchor=\"middle\" class=\"signature\"></text>\n<image href=\"assets/accueil-v2/charm.webp\" x=\"1712\" y=\"1343\" width=\"89\" height=\"234\" class=\"art-charm\"/><image href=\"assets/accueil-v2/handle.webp\" x=\"1515\" y=\"1319\" width=\"345\" height=\"79\" class=\"art-handle\"/>\n<a href=\"#/play\" data-entry=\"play\" aria-label=\"Play\"><rect x=\"540\" y=\"787\" width=\"605\" height=\"501\"/></a>\n<a href=\"#/work\" data-entry=\"work\" aria-label=\"Work\"><rect x=\"1200\" y=\"789\" width=\"778\" height=\"471\"/></a></g>\n<g class=\"shop-position\"><a href=\"#/shop\" data-entry=\"shop\" aria-label=\"Boutique\"><g class=\"card\"><image href=\"assets/accueil-v2/postcard.webp\" x=\"2180\" y=\"450\" width=\"727\" height=\"627\" class=\"art-postcard\"/><image href=\"assets/accueil-v2/shop-fr.webp\" x=\"2455\" y=\"948\" width=\"260\" height=\"62\" class=\"art-shop-fr\"/><image href=\"assets/accueil-v2/shop-en.webp\" x=\"2519\" y=\"956\" width=\"131\" height=\"46\" class=\"art-shop-en\"/></g><image href=\"assets/accueil-v2/pin.webp\" x=\"2506\" y=\"436\" width=\"48\" height=\"80\" class=\"art-pin\"/></a></g></svg>";
+  screen.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 3072 1732\" aria-label=\"Nana’s Room\">\n<image href=\"assets/accueil-v2/wall.webp\" x=\"0\" y=\"0\" width=\"3072\" height=\"1732\" class=\"art-wall\"/>\n<defs><mask id=\"door-opening\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"3072\" height=\"1732\"><rect width=\"3072\" height=\"1732\" style=\"fill:white\"/><rect x=\"350\" width=\"1670\" height=\"1732\" style=\"fill:black\"/></mask></defs>\n<path class=\"jamb-outline\" d=\"M2020 0 C2019 111 2022 185 2020 293 S2019 509 2021 618 S2018 820 2020 964 S2022 1140 2020 1260 S2019 1510 2021 1606 L2020 1732\" fill=\"none\" stroke=\"#ff173b\" stroke-width=\"2.5\"/>\n<g class=\"leaf\"><image href=\"assets/accueil-v2/door.webp\" x=\"337\" y=\"0\" width=\"1693\" height=\"1732\" class=\"art-door\"/><image href=\"assets/accueil-v2/mood-fr.webp\" x=\"603\" y=\"606\" width=\"1203\" height=\"189\" class=\"art-mood-fr\"/><image href=\"assets/accueil-v2/mood-en.webp\" x=\"632\" y=\"602\" width=\"1162\" height=\"190\" class=\"art-mood-en\"/>\n<text x=\"1200\" y=\"511\" text-anchor=\"middle\" class=\"signature\"></text>\n<image href=\"assets/accueil-v2/handle.webp\" x=\"1515\" y=\"1319\" width=\"345\" height=\"79\" class=\"art-handle\"/><image href=\"assets/accueil-v2/charm.webp\" x=\"1712\" y=\"1343\" width=\"89\" height=\"234\" class=\"art-charm\"/>\n<a href=\"#/play\" data-entry=\"play\" aria-label=\"Play\"><rect x=\"540\" y=\"787\" width=\"605\" height=\"501\"/></a>\n<a href=\"#/work\" data-entry=\"work\" aria-label=\"Work\"><rect x=\"1200\" y=\"789\" width=\"778\" height=\"471\"/></a></g>\n<g class=\"shop-position\"><a href=\"#/shop\" data-entry=\"shop\" aria-label=\"Boutique\"><g class=\"card\"><image href=\"assets/accueil-v2/postcard.webp\" x=\"2180\" y=\"450\" width=\"727\" height=\"627\" class=\"art-postcard\"/><image href=\"assets/accueil-v2/shop-fr.webp\" x=\"2455\" y=\"948\" width=\"260\" height=\"62\" class=\"art-shop-fr\"/><image href=\"assets/accueil-v2/shop-en.webp\" x=\"2519\" y=\"956\" width=\"131\" height=\"46\" class=\"art-shop-en\"/></g><image href=\"assets/accueil-v2/pin.webp\" x=\"2506\" y=\"436\" width=\"48\" height=\"80\" class=\"art-pin\"/></a></g></svg>";
   welcome.append(screen);
   screen.append(panel.querySelector('.welcome-language'));
   const scene = screen.querySelector('svg');
@@ -64,6 +64,9 @@
     const edge = document.createElement('div');
     edge.className = 'swing-edge';
     slab.append(edge);
+    const back = document.createElement('div');
+    back.className = 'swing-back';
+    slab.append(back);
     const face = art('.art-door');
     plane(face + art('.art-mood-' + screen.lang) + art('.signature'), 0);
     // The thin relief follows the original drawn borders of both panels.
@@ -76,8 +79,8 @@
       ring.style.transform = 'translateZ(' + z + 'px)';
       slab.append(ring);
     }
-    plane(art('.art-charm'), 42);
     plane(art('.art-handle'), 46);
+    plane('<g class="lever-motion">' + art('.art-charm') + '</g>', 48);
     screen.append(stage);
     return stage;
   }

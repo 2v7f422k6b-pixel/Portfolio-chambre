@@ -17,15 +17,17 @@
 .swing-edge{position:absolute;left:2024px;top:0;width:54px;height:100%;background:#eda7bb;border-inline:2px solid #ff4262;box-sizing:border-box;transform-origin:left center;transform:rotateY(90deg)}
 .swing-edge::after{content:"";position:absolute;top:77%;left:10px;width:28px;height:52px;border:2px solid #ff4262;border-radius:8px;background:#ffe5bd}
 
-.door-screen.open .art-handle{transform-origin:1840px 1352px;animation:turn-handle .56s ease both}
-.door-screen.open .art-charm{transform-origin:1745px 1343px;animation:swing-charm .88s ease both}
+.door-screen.open :is(.art-handle,.lever-motion){transform-origin:1840px 1352px;animation:turn-handle .56s ease both}
+.door-screen .art-charm{transform-origin:1753px 1345px;animation:resting-charm 3.2s ease-in-out infinite alternate}
+.door-screen.open .art-charm{animation:swing-charm 1.4s ease-in-out both}
+@keyframes resting-charm{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
 .door-screen.shop .card{transform-origin:2540px 775px;animation:take-card .45s ease-in both}
 @keyframes swing-door{
   0%,15%{transform:rotateY(0deg)}
-  100%{transform:rotateY(-87deg)}
+  100%{transform:rotateY(-97deg)}
 }
 @keyframes turn-handle{0%,100%{transform:rotate(0)}35%,55%{transform:rotate(-15deg)}}
-@keyframes swing-charm{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(22px) rotate(-5deg)}55%{transform:translateY(8px) rotate(7deg)}80%{transform:rotate(-3deg)}}
+@keyframes swing-charm{0%,100%{transform:rotate(0)}30%{transform:rotate(8deg)}58%{transform:rotate(-6deg)}82%{transform:rotate(3deg)}}
 @keyframes cross-threshold{0%,70%{opacity:1}100%{opacity:0}}
 @keyframes take-card{to{transform:translate(-400px,30px) scale(2.4) rotate(6deg)}}
 .door-screen[lang=fr] :is(.art-mood-en,.art-shop-en),.door-screen[lang=en] :is(.art-mood-fr,.art-shop-fr){display:none}
@@ -36,3 +38,9 @@
 
 .door-screen.preparing{z-index:2147483646;pointer-events:none}
 .door-screen.preparing .welcome-language{display:none}
+
+.door-screen .jamb-outline{visibility:hidden}
+.door-screen.open .jamb-outline{visibility:visible}
+.swing-plane,.swing-spindle{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.swing-back{position:absolute;left:349px;top:0;width:1675px;height:100%;box-sizing:border-box;background:#ffc3d7;border-inline:2px solid #ff173b;transform:translateZ(-54px) rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+@media (prefers-reduced-motion:reduce){.door-screen .art-charm{animation:none}}
