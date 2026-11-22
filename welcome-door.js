@@ -81,6 +81,26 @@
     screen.append(stage);
     return stage;
   }
+  async function waitForRoom() {
+    // Let the surface loader observe the change of mode and paint the room.
+    const frame = () => new Promise(resolve => requestAnimationFrame(resolve));
+    await frame();
+    const room = document.getElementById('play-viewport');
+    if (room.getAttribute('aria-busy') === 'true') {
+      await new Promise(resolve => {
+        const finish = () => { observer.disconnect(); clearTimeout(timeout); resolve(); };
+        const observer = new MutationObserver(() => {
+          if (room.getAttribute('aria-busy') !== 'true') finish();
+        });
+        const timeout = setTimeout(finish, 16500);
+        observer.observe(room, {attributes:true, attributeFilter:['aria-busy']});
+      });
+    }
+    await frame();
+  }
+  const preview = new Image();
+  preview.decoding = 'async';
+  preview.src = 'assets/room-redraw/apercu-jour.webp?v=3072';
   let busy = false;
   screen.addEventListener('click', async event => {
     const link = event.target.closest('[data-entry]');
@@ -99,11 +119,14 @@
       screen.classList.remove('shop');
     } else if (animate) {
       // Reveal the live room through the doorway as the visitor enters.
-      const stage = buildSwing();
+      screen.classList.add('preparing');
       document.body.append(screen);
       screen.inert = true;
-      screen.classList.add('open');
       panel.querySelector('[data-mode="play"]').click();
+      await waitForRoom();
+      const stage = buildSwing();
+      screen.classList.remove('preparing');
+      screen.classList.add('open');
       await new Promise(resolve => setTimeout(resolve, 1680));
       stage.remove();
       welcome.append(screen);

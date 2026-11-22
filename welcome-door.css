@@ -32,3 +32,6 @@
 @media (max-aspect-ratio: 6/5){.door-screen .shop-position{transform:translate(-1630px,1370px)}}
 
 .swing-spindle{position:absolute;left:1808px;top:1330px;width:44px;height:42px;border-radius:50%;box-sizing:border-box;background:#9ad7fa;border:2px solid #ff4968}
+
+.door-screen.preparing{z-index:2147483646;pointer-events:none}
+.door-screen.preparing .welcome-language{visibility:hidden}
