@@ -10,7 +10,7 @@
     const image = (name,x,y,width,height) =>
       `<image href="assets/accueil-v2/portrait/${name}.webp" x="${x}" y="${y}" width="${width}" height="${height}" class="art-${name}"/>`;
     return `<defs><mask id="door-opening" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="10000" height="12000"><rect x="-4000" y="-4000" width="10000" height="12000" style="fill:white"/><rect x="61" y="106" width="1616" height="2966" style="fill:black"/></mask></defs>
-      <g class="art-wall"><rect x="-4000" y="-4000" width="10000" height="12000" style="fill:#fef9dc"/><image href="assets/accueil-v2/portrait/wall.webp" width="1732" height="3072"/></g>
+      <g class="art-wall"><rect x="-4000" y="-4000" width="10000" height="12000" style="fill:#fef9dc"/><image href="assets/accueil-v2/portrait/mur-portrait.png" x="-1182" y="-512" width="4096" height="4096"/></g>
       <path class="jamb-outline" d="M61 3072V106 Q455 104 862 106 T1677 106 Q1676 660 1678 1210 T1677 2260 L1677 3072" fill="none" stroke="#ff173b" stroke-width="2.5"/>
       <g class="leaf">${image('door',45,103,1640,2969)}
       ${image('mood-fr',304,734,1164,170)}${image('mood-en',332,730,1124,186)}
@@ -26,6 +26,7 @@
   const scene = screen.querySelector('svg');
   const portrait = matchMedia('(orientation: portrait)');
   let vertical;
+  let languageClearance = 56;
   function layout() {
     if (vertical !== portrait.matches) {
       vertical = portrait.matches;
@@ -34,7 +35,16 @@
       language();
     }
     if (vertical) {
-      scene.setAttribute('viewBox','0 0 1732 3072');
+      const width = screen.clientWidth, height = screen.clientHeight;
+      if (!width || !height) return;
+      const controls = screen.querySelector('.welcome-language').getBoundingClientRect();
+      // Retain the framing when the language controls hide during the swing.
+      if (controls.height) languageClearance = controls.bottom + 8;
+      const scale = Math.min(width / 1732, height / 3072);
+      const viewWidth = width / scale, viewHeight = height / scale;
+      const left = (1732 - viewWidth) / 2;
+      const top = Math.min((3072 - viewHeight) / 2, 103 - languageClearance / scale);
+      scene.setAttribute('viewBox', [left, top, viewWidth, viewHeight].join(' '));
       return;
     }
     const width = 1732 * screen.clientWidth / Math.max(1, screen.clientHeight);
