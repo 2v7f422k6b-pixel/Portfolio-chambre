@@ -1,6 +1,14 @@
 (() => {
   if (new URLSearchParams(location.search).get('chambreV2') !== '1') return;
   const welcome = document.querySelector('#welcome');
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const originalTint = themeColor?.content;
+  function syncWelcomeTint() {
+    document.documentElement.classList.toggle('welcome-wall-tint', !welcome.hidden);
+    if (themeColor) themeColor.content = welcome.hidden ? originalTint : '#fef9dc';
+  }
+  syncWelcomeTint();
+  new MutationObserver(syncWelcomeTint).observe(welcome,{attributes:true,attributeFilter:['hidden']});
   const panel = welcome.querySelector('.welcome-panel');
   const screen = document.createElement('div');
   screen.className = 'door-screen';

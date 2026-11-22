@@ -64,3 +64,5 @@
   .door-screen.vertical-door > svg{top:var(--language-row);bottom:0;height:calc(100% - var(--language-row))}
   .door-screen.vertical-door::before{content:"";position:absolute;inset:0 0 auto;height:var(--language-row);background:#fef9dc}
 }
+
+html.welcome-wall-tint,html.welcome-wall-tint body{background:#fef9dc}
