@@ -233,14 +233,22 @@ function chooseMode(mode,zoom=false){
  updateClocks();
  // Enter the Work desktop without opening the redundant Projects window.
 }
-function addIMacCloseup(screenElement, theme, zoom){
+function addIMacCloseup(scene, theme, endScale){
  const ns='http://www.w3.org/2000/svg';
  const overlay=document.createElementNS(ns,'svg');
  const source=document.querySelector('.work-bg-layer--'+theme)?.dataset.resourceBackground;
  if(!source)return ()=>{};
  overlay.setAttribute('aria-hidden','true');
  overlay.setAttribute('preserveAspectRatio','none');
- overlay.style.cssText='position:absolute;inset:auto;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;opacity:0;z-index:90';
+ // Paint at close-up resolution and anchor the crop in the original room coordinates.
+ overlay.setAttribute('data-room-v2-layer','');
+ overlay.setAttribute('viewBox','0 0 500 380');
+ Object.assign(overlay.style,{
+  position:'absolute',inset:'auto',left:(2430/3072*100)+'%',top:(565/1732*100)+'%',
+  width:(500/3072*100*endScale)+'%',height:(380/1732*100*endScale)+'%',
+  maxWidth:'none',maxHeight:'none',transformOrigin:'0 0',transform:'scale('+1/endScale+')',
+  willChange:'transform',pointerEvents:'none',opacity:'0',transition:'opacity 450ms ease',zIndex:'90'
+ });
  // Coordinates traced on the original 500 x 380 crop around the monitor.
  overlay.innerHTML=`<defs><clipPath id="imac-closeup-glass"><path d="M101 87 Q252 73 419 64 L407 281 Q242 279 80 280 Z"/></clipPath></defs>
  <g fill="#fcd6e3" stroke="#ff001e" stroke-width="1.25" stroke-linejoin="round">
@@ -248,28 +256,14 @@ function addIMacCloseup(screenElement, theme, zoom){
  <path fill="white" d="M94 69 Q259 53 398 40 Q432 36 436 43 Q440 47 438 70 Q436 178 426 300 L62 302 Q69 209 77 103 Q78 75 94 69 Z"/>
  <path d="M62 300 Q136 298 202 301 T315 302 L426 300 Q420 352 412 357 Q407 362 379 360 L81 355 Q60 353 61 337 Z"/>
  <path fill="#ff001e" stroke="none" d="M226 319 Q216 309 214 320 Q211 331 225 345 Q229 337 236 324 Q242 310 233 313 Q229 314 226 319Z"/>
- <g clip-path="url(#imac-closeup-glass)"><image href="${source}" x="76" y="63" width="347" height="220" preserveAspectRatio="none"/></g>
+ <g clip-path="url(#imac-closeup-glass)"><image href="${source}" width="360" height="210" transform="matrix(1.14584 -.00592 .00707 1.10383 41.187 62.425)" preserveAspectRatio="none"/></g>
  <path fill="none" d="M101 87 Q252 73 419 64 L407 281 Q242 279 80 280 Z"/>
  </g>`;
- play.append(overlay);
- const initialWidth=screenElement.getBoundingClientRect().width;
- let frame=0,active=true;
- function paint(){
-  if(!active||imacZoomAnimation!==zoom)return;
-  overlay.style.left=play.scrollLeft+'px';
-  overlay.style.top=play.scrollTop+'px';
-  const display=screenElement.getBoundingClientRect(), box=overlay.getBoundingClientRect();
-  const dx=display.width/338, dy=display.height/216;
-  if(dx&&dy){
-   overlay.setAttribute('viewBox',[(box.left-display.left)/dx+80,(box.top-display.top)/dy+64,box.width/dx,box.height/dy].join(' '));
-   overlay.style.opacity=String(Math.min(1,Math.max(0,(display.width/initialWidth-1.25)/1.1)));
-  }
-  frame=requestAnimationFrame(paint);
- }
+ scene.append(overlay);
  const wallpaper=new Image();
  wallpaper.src=source;
- wallpaper.decode().then(()=>{if(active)frame=requestAnimationFrame(paint)}).catch(()=>{});
- return ()=>{active=false;cancelAnimationFrame(frame);overlay.remove()};
+ wallpaper.decode().then(()=>{overlay.style.opacity='1'}).catch(()=>{});
+ return ()=>overlay.remove();
 }
 async function enterRedrawnIMac(scene, screenElement){
  const screen=screenElement.getBoundingClientRect();
@@ -289,7 +283,7 @@ async function enterRedrawnIMac(scene, screenElement){
  }
  const zoom=scene.animate(frames,{delay:1100,duration:3200,easing:'cubic-bezier(.40,0,.25,1)',fill:'both'});
  imacZoomAnimation=zoom;
- const removeCloseup=addIMacCloseup(screenElement,document.documentElement.dataset.theme==='night'?'night':'day',zoom);
+ const removeCloseup=addIMacCloseup(scene,document.documentElement.dataset.theme==='night'?'night':'day',endScale);
  play.style.zIndex='2'; play.style.pointerEvents='none';
  work.style.zIndex='1'; work.style.pointerEvents='none'; work.inert=true;
  window.NanaResources?.activate('work',document.documentElement.dataset.theme||'day');
