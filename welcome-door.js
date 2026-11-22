@@ -35,7 +35,7 @@
       language();
     }
     if (vertical) {
-      const width = screen.clientWidth, height = screen.clientHeight;
+      const width = scene.clientWidth, height = scene.clientHeight;
       if (!width || !height) return;
       const controls = screen.querySelector('.welcome-language').getBoundingClientRect();
       // Retain the framing when the language controls hide during the swing.
@@ -43,7 +43,9 @@
       const scale = Math.min(width / 1732, height / 3072);
       const viewWidth = width / scale, viewHeight = height / scale;
       const left = (1732 - viewWidth) / 2;
-      const top = Math.min((3072 - viewHeight) / 2, 103 - languageClearance / scale);
+      // On tablets the SVG starts below a dedicated language row.
+      const clearance = Math.max(0, languageClearance - scene.getBoundingClientRect().top);
+      const top = Math.min((3072 - viewHeight) / 2, 103 - clearance / scale);
       scene.setAttribute('viewBox', [left, top, viewWidth, viewHeight].join(' '));
       return;
     }
@@ -79,7 +81,7 @@
     stage.className = 'swing-stage';
     Object.assign(stage.style, {
       left: ((rect.width - box.width * scale) / 2 - box.x * scale) + 'px',
-      top: ((rect.height - box.height * scale) / 2 - box.y * scale) + 'px',
+      top: (rect.top - screen.getBoundingClientRect().top + (rect.height - box.height * scale) / 2 - box.y * scale) + 'px',
       transform: 'scale(' + scale + ')'
     });
     const slab = document.createElement('div');

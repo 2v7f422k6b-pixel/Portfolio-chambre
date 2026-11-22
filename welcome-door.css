@@ -54,3 +54,13 @@
 .vertical-door.open :is(.art-handle,.lever-motion){transform-origin:1486px 1455px}
 .vertical-door .art-charm{transform-origin:1408px 1450px}
 .vertical-door.shop .card{transform-origin:698px 1850px}
+
+@media (orientation:portrait) and (min-width:600px){
+  .door-screen.vertical-door{--language-row:calc(50px + env(safe-area-inset-top,0px))}
+  #welcome .door-screen.vertical-door .welcome-language{
+    position:absolute;inset:env(safe-area-inset-top,0px) 0 auto;
+    height:50px;justify-content:center;align-items:center;margin:0
+  }
+  .door-screen.vertical-door > svg{top:var(--language-row);bottom:0;height:calc(100% - var(--language-row))}
+  .door-screen.vertical-door::before{content:"";position:absolute;inset:0 0 auto;height:var(--language-row);background:#fef9dc}
+}
