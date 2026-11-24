@@ -72,43 +72,84 @@
       const dx=along-turn.at[0],dy=across-turn.at[1];
       along-=dy*twist;across+=dx*twist;
     }
-    const distance=Math.abs(along)/b.extent;
-    const age=b.age-.59*distance;
-    const spread=b.upstream?ease(clamp((age-.12)/.29)):1;
-    const reach=Math.min(Math.abs(along),b.extent*b.front);
-    const advance=Math.sign(along)*reach*(1+.035*b.mature);
-    const u=advance/b.length;
-    const pin=clamp(Math.abs(u)*2);
-    const drift=pin*b.wave*Math.sin(u*4.5+b.phase);
-    const lateral=offset(b.curve,u)+across*spread*(1+.09*b.mature)*(1-.83*b.dissolve)+drift;
+    const u=along/b.length;
+    const pin=ease(clamp(Math.abs(along)/65));
+    const wave=pin*b.wave;
+    const advance=along*(1+.035*b.mature)+wave*.62*Math.sin(5.1*u-b.phase*.81);
+    const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
+    const lateral=offset(b.curve,u)+across*(1+.09*b.mature)*(1-.83*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2)];
   }
-  // A fine moving tip leads the drawn silhouette. It fades locally as each
-  // section of the original drawing fills out behind it.
-  function paintThread(b) {
-    if(!b.upstream||b.age>=1||b.front<=0)return;
-    const count=Math.ceil(b.front*64);
-    ctx.strokeStyle='#ff001e';ctx.lineCap='round';ctx.lineWidth=2;
-    for(let i=0;i<count;i++){
-      const left=i/64,right=Math.min((i+1)/64,b.front);
-      const age=b.age-.59*(left+right)/2;
-      const opacity=(1-ease(clamp((age-.14)/.25)))*clamp(b.age/.045);
-      if(opacity<=0)continue;
-      const start=pose(b,{along:left*b.extent,across:0});
-      const end=pose(b,{along:right*b.extent,across:0});
-      ctx.globalAlpha=opacity*(1-b.dissolve);
-      ctx.beginPath();ctx.moveTo(...start);ctx.lineTo(...end);ctx.stroke();
-    }
+  // Each texel records when smoke reaches this part of the drawing by travelling
+  // inside its curls. The moving boundary is interpolated between texels.
+  const flowTiles={"7962": [1848, 1156, 233, 81, 0], "7960": [896, 1184, 270, 70, 81], "7966": [1820, 1004, 181, 68, 151], "7967": [1664, 712, 86, 136, 219], "7965": [2136, 1052, 103, 87, 355], "7964": [2228, 1068, 189, 35, 442], "7968": [1188, 328, 455, 122, 477], "7961": [1844, 504, 116, 62, 599], "7963": [2412, 1324, 164, 89, 661], "7959": [84, 1112, 233, 78, 750], "7956": [1424, 768, 111, 48, 828], "7955": [280, 780, 360, 110, 876], "7970": [1936, 220, 110, 55, 986], "7974": [1384, 20, 190, 97, 1041], "7976": [776, 252, 224, 61, 1138], "7981": [468, 1352, 198, 90, 1199], "7973": [2424, 656, 138, 56, 1289], "7982": [24, 1352, 149, 68, 1345], "7969": [2256, 136, 168, 69, 1413], "7972": [2076, 784, 249, 68, 1482], "7980": [396, 388, 219, 61, 1550], "7975": [1056, 92, 101, 39, 1611], "7957": [176, 632, 215, 57, 1650], "7971": [2056, 8, 94, 44, 1707], "7979": [816, 64, 75, 65, 1751], "7958": [40, 768, 104, 82, 1816], "7978": [104, 84, 211, 72, 1898], "7977": [44, 328, 137, 106, 1970]};
+  function readFlow(image,b){
+    const [x,y,w,h,top]=flowTiles[b.id];
+    const tile=document.createElement('canvas');
+    tile.width=w;tile.height=h;
+    const c=tile.getContext('2d');
+    c.drawImage(image,0,top,w,h,0,0,w,h);
+    const rgba=c.getImageData(0,0,w,h).data;
+    const values=Uint8Array.from({length:w*h},(_,i)=>rgba[4*i]);
+    return {x,y,w,h,values};
   }
-  function paintRings(b,rings,color) {
+  function growthBoundary(b){
+    const {x,y,w,h,values}=b.flow;
+    const level=252*b.age;
+    const links=new Map(), locations=new Map();
+    function cross(from,to){
+      const key=2*from+(to-from===w?1:0);
+      if(!locations.has(key)){
+        const t=(level-values[from])/(values[to]-values[from]);
+        const px=x+4*(from%w+(to===from+1?t:0));
+        const py=y+4*(Math.floor(from/w)+(to===from+w?t:0));
+        locations.set(key,pose(b,point(b,...coordinates(b,px,py))));
+      }
+      return key;
+    }
+    function connect(a,z){
+      for(const [u,v] of [[a,z],[z,a]]){
+        if(!links.has(u))links.set(u,[]);
+        links.get(u).push(v);
+      }
+    }
+    for(let j=0;j<h-1;j++)for(let i=0;i<w-1;i++){
+      const k=j*w+i, a=values[k]<level,c=values[k+1]<level,
+        d=values[k+w+1]<level,e=values[k+w]<level;
+      if(a===c&&a===d&&a===e)continue;
+      const edges=[];
+      if(a!==c)edges.push(cross(k,k+1));
+      if(c!==d)edges.push(cross(k+1,k+1+w));
+      if(d!==e)edges.push(cross(k+w,k+w+1));
+      if(e!==a)edges.push(cross(k,k+w));
+      connect(edges[0],edges[1]);
+      if(edges.length===4)connect(edges[2],edges[3]);
+    }
+    const path=new Path2D();
+    for(const start of links.keys()){
+      let key=start,previous=-1;
+      path.moveTo(...locations.get(key));
+      do{
+        const neighbors=links.get(key);
+        const next=neighbors[0]===previous?neighbors[1]:neighbors[0];
+        links.delete(key);previous=key;key=next;
+        path.lineTo(...locations.get(key));
+      }while(key!==start);
+      path.closePath();
+    }
+    return path;
+  }
+  function traceRings(b,rings) {
     ctx.beginPath();
     for(const ring of rings){
       const start=pose(b,ring[0]);ctx.moveTo(start[0],start[1]);
       for(let i=1;i<ring.length;i++){const pt=pose(b,ring[i]);ctx.lineTo(pt[0],pt[1]);}
       ctx.closePath();
     }
-    ctx.fillStyle=color;ctx.fill('evenodd');
+  }
+  function paintRings(b,rings,color){
+    traceRings(b,rings);ctx.fillStyle=color;ctx.fill('evenodd');
   }
   let branches=[],sequence=null,frame=0,lastPaint=-Infinity,cycleEnd=0;
   let visible=true;
@@ -124,14 +165,13 @@
     for(const b of branches){
       const root=!b.upstream;
       b.age=root?1:Math.max(0,(elapsed-b.delay)/b.duration);
-      b.front=root?1:clamp(b.age/.59);
       b.growth=root?1:ease(clamp(b.age));
       b.mature=root||reduced.matches?0:1-Math.exp(-Math.max(0,b.age-1)*b.duration/5);
       b.dissolve=root?0:ease(clamp((clearing-b.release)/b.linger));
       b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
       for(const turn of b.turns)turn.twist=reduced.matches?0:(.47*Math.sin(time*turn.speed+turn.phase)+.29*Math.sin(time*turn.speed*.53+turn.phase*2.7));
-      b.wave=reduced.matches?0:Math.min(root?2:5.5,b.length*.035);
+      b.wave=reduced.matches?0:Math.min(root?2:13,b.length*.045);
       if(root){[b.x,b.y]=b.anchor;}
       else {
         const parent=b.upstream;
@@ -143,11 +183,18 @@
         b.x+=(b.anchor[0]-b.join[0])*b.growth;
         b.y+=(b.anchor[1]-b.join[1])*b.growth;
       }
-      if(b.front<=0||b.dissolve===1)continue;
-      paintThread(b);
+      if(b.age<=0||b.dissolve===1)continue;
+      const boundary=b.flow&&b.age<1?growthBoundary(b):null;
+      if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
       ctx.globalAlpha=1-b.dissolve;
       paintRings(b,b.fill,'rgba(255,246,225,.89)');
       paintRings(b,b.ink,'#ff001e');
+      if(boundary){
+        ctx.restore();ctx.save();
+        traceRings(b,b.fill);ctx.clip('evenodd');
+        ctx.strokeStyle='#ff001e';ctx.lineWidth=2;ctx.lineJoin='round';
+        ctx.stroke(boundary);ctx.restore();
+      }
     }
     ctx.globalAlpha=1;
     if(sequence!==null && clearing>=8)sequence=null;
@@ -166,14 +213,24 @@
   new ResizeObserver(wake).observe(scene);
   let loading;
   function load() {
-    return loading ||= fetch(assets+'branches-v2.json').then(r=>{
+    if(loading)return loading;
+    const flowImage=new Image();
+    flowImage.src=assets+'flow-times.png';
+    return loading ||= Promise.all([flowImage.decode(),fetch(assets+'branches-v2.json').then(r=>{
       if(!r.ok)throw Error('Missing incense drawings');
       return r.json();
-    }).then(data=>{
+    })]).then(([,data])=>{
       const byId=new Map();
       branches=data.map(raw=>{
         const b=prepare(raw);b.upstream=byId.get(b.parent);
+        if(b.upstream)b.flow=readFlow(flowImage,b);
         if(b.upstream)b.joinLocal=coordinates(b.upstream,...b.join);
+        if(b.upstream?.flow){
+          const {x,y,w,h,values}=b.upstream.flow;
+          const i=Math.round(clamp((b.join[0]-x)/(4*(w-1)))*(w-1));
+          const j=Math.round(clamp((b.join[1]-y)/(4*(h-1)))*(h-1));
+          b.joinTime=values[j*w+i]/252;
+        }
         b.delay=b.upstream?Math.max(.22+b.start/315,b.upstream.upstream?b.upstream.delay+.38:0):0;
         if(b.upstream)cycleEnd=Math.max(cycleEnd,b.delay+b.duration);
         byId.set(b.id,b);return b;
@@ -185,7 +242,7 @@
       function variation(id){const n=Math.sin(id*91.37)*43758.53;return n-Math.floor(n);}
       while(pending.length){
         const eligible=pending.filter(b=>scheduled.has(b.upstream));
-        const earliest=b=>Math.max(b.delay,b.upstream.upstream?b.upstream.delay+(.28+.59*clamp(Math.abs(b.joinLocal[0])/b.upstream.extent))*b.upstream.duration:0);
+        const earliest=b=>Math.max(b.delay,b.upstream.upstream?b.upstream.delay+(.14+b.joinTime)*b.upstream.duration:0);
         eligible.sort((a,b)=>earliest(a)-earliest(b));
         const b=eligible[0];
         const variationAtBranch=variation(b.id);
@@ -206,3 +263,4 @@
     if(sequence===null){sequence=performance.now();wake();}
   });
 })();
+
