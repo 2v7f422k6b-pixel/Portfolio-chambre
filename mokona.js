@@ -12,6 +12,7 @@
   dialog.innerHTML = '<div class="mokona-content"><div class="mokona-float"></div><div class="mokona-card"><h2 id="mokona-title"></h2><p class="mokona-copy"><span aria-hidden="true"></span><span aria-hidden="true"></span></p><button type="button"></button></div></div>';
   const bed = document.createElement('div');
   bed.className = 'mokona-bed';
+  bed.setAttribute('data-nana-load-ignore','');
   bed.hidden = true;
   scene.append(bed);
   document.body.append(dialog);
@@ -34,13 +35,24 @@
   part(8185,886,185,741,338,'mokona-ear mokona-ear-left');
   part('8185-right',1869,304,701,244,'mokona-ear mokona-ear-right');
   // The jewel and upper outline stay registered with the facial layers.
-  for (const [y, height, className] of [[340,472,''],[810,400,'mokona-belly']]) {
-    const group = svg('g', {class:className});
-    const slice = svg('svg', {x:1408,y,width:695,height,viewBox:'1408 '+y+' 695 '+height,overflow:'hidden'});
-    art.append(group);
-    group.append(slice);
-    part(8186,1408,340,695,870,'',slice);
+  const upper = svg('svg',{x:1408,y:340,width:695,height:471,viewBox:'1408 340 695 471',overflow:'hidden'});
+  art.append(upper);
+  part(8186,1408,340,695,870,'',upper);
+  // Each pose widens progressively towards the base and meets the same upper outline.
+  const belly = svg('svg',{x:1372.5,y:810,width:765,height:400,viewBox:'0 0 765 400',overflow:'hidden'});
+  art.append(belly);
+  part('ventre',0,0,765,6400,'mokona-belly',belly);
+  const defs = svg('defs',{});
+  const light = svg('radialGradient',{id:'mokona-reveal-light'});
+  for (const [offset,color,opacity] of [['0%','#fffcef',.95],['22%','#d2f3ff',.74],['54%','#bcb7ff',.34],['100%','#c4bbff',0]]) {
+    light.append(svg('stop',{offset,'stop-color':color,'stop-opacity':opacity}));
   }
+  defs.append(light);
+  art.append(defs);
+  const glimmer = svg('g',{class:'mokona-glimmer'});
+  glimmer.append(svg('circle',{cx:1762,cy:479,r:173,fill:'url(#mokona-reveal-light)'}));
+  glimmer.append(svg('path',{d:'M1762 432 Q1765 474 1787 479 Q1766 481 1762 521 Q1759 484 1736 479 Q1758 474 1762 432Z',fill:'#fffbe5'}));
+  art.append(glimmer);
   part(8187,1526,630,462,54);
   const paw = part(8188,1343,614,149,153);
   part(8189,1926,671,142,134);
@@ -85,7 +97,8 @@
     const start = art.getBoundingClientRect();
     dialog.querySelector('.mokona-card').style.visibility = 'hidden';
     bed.hidden = false;
-    bed.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+    const landingBox = bed.getBoundingClientRect();
+    if (landingBox.right < 0 || landingBox.left > innerWidth) bed.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
     const target = bed.getBoundingClientRect();
     const scale = target.width/start.width;
     const dx = target.left-start.left, dy = target.top-start.top;
@@ -128,6 +141,8 @@
     dialog.querySelector('.mokona-card').style.visibility = '';
     dialog.querySelector('h2').textContent = lines[0];
     dialog.classList.add('revealing');
+    dialog.style.setProperty('--veil','0');
+    glimmer.style.opacity = '0';
     floater.style.setProperty('--extent','-24%');
     next.disabled = true;
     dialog.showModal();
@@ -138,7 +153,11 @@
     // Keep the original running smoke canvas in its room coordinates above the character.
     Object.assign(foreground.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});
     const progress = Math.min(1,clearing/6.6);
-    floater.style.setProperty('--extent',(-24+160*progress)+'%');
+    const unveiling = Math.max(0,(progress-.16)/.84);
+    floater.style.setProperty('--extent',(-10+145*unveiling)+'%');
+    const pulse = Math.sin(Math.PI * Math.min(1,clearing/5.4));
+    glimmer.style.opacity = String(reduced.matches ? 0 : pulse * pulse);
+    dialog.style.setProperty('--veil',String(.24 * progress * progress));
     if (clearing < 7.8) return;
     scene.append(foreground.firstElementChild);
     dialog.classList.remove('revealing');
