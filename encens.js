@@ -251,7 +251,10 @@
         if(pass==1){if(fill*opacity<.5)discard;gl_FragColor=vec4(0.);return;}
         vec3 beige=vec3(1.,.9647,.8824),red=vec3(1.,0.,.118);
         float f=fill*.89*opacity,i=ink*opacity;
-        if(pass==2){gl_FragColor=vec4(red*i,i);return;}
+        // With one occupied silhouette, only the ink belonging to that
+        // silhouette is visible. Outside all silhouettes, keep free tips.
+        if(pass==5 && fill*opacity<.5)discard;
+        if(pass==2||pass==5){gl_FragColor=vec4(red*i,i);return;}
         if(pass==0){gl_FragColor=vec4(beige*f,f);return;}
         gl_FragColor=vec4(beige*f*(1.-i)+vec3(.914,.541,.533)*i,f*(1.-i)+i);
       }`);
@@ -284,7 +287,8 @@
       const c=document.createElement('canvas');c.width=w;c.height=h;
       const p=c.getContext('2d',{willReadFrequently:true});p.translate(-x,-y);
       p.fill(fill,'evenodd');const pixels=p.getImageData(0,0,w,h).data;
-      p.clearRect(x,y,w,h);p.lineWidth=1.35;p.lineJoin='round';p.stroke(fill);p.fill(ink,'evenodd');
+      p.clearRect(x,y,w,h);p.lineWidth=.85;p.lineJoin='round';p.globalAlpha=.55;p.stroke(fill);
+      p.globalAlpha=1;p.fill(ink,'evenodd');
       const lines=p.getImageData(0,0,w,h).data;
       for(let j=0;j<pixels.length;j+=4){pixels[j]=pixels[j+3];pixels[j+1]=lines[j+3];pixels[j+3]=255;}
       const art=texture(gl.RGBA,w,h,pixels);
@@ -310,18 +314,18 @@
         gl.bindBuffer(gl.ARRAY_BUFFER,s.pos);gl.bufferSubData(gl.ARRAY_BUFFER,0,s.coords);
       }
       gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
-      for(const pass of [4,3,0,1,2]){
+      for(const pass of [4,3,0,1,2,5]){
         gl.uniform1i(u.pass,pass);
         if(pass===1){
           gl.enable(gl.STENCIL_TEST);gl.colorMask(false,false,false,false);
           gl.stencilFunc(gl.ALWAYS,0,255);gl.stencilOp(gl.KEEP,gl.KEEP,gl.INCR);
         }
-        if(pass===2){
-          gl.colorMask(true,true,true,true);gl.stencilFunc(gl.GEQUAL,1,255);
+        if(pass===2||pass===5){
+          gl.colorMask(true,true,true,true);gl.stencilFunc(gl.EQUAL,pass===2?0:1,255);
           gl.stencilOp(gl.KEEP,gl.KEEP,gl.KEEP);
         }
         for(const b of active){
-          const depth=pass>=3?pass-2:0;
+          const depth=pass===4?2:pass===3?1:0;
           const swell=depth?ease(clamp((b.age-1.05-depth*.26)*b.duration/4.5)):1;
           if(depth&&(!b.upstream||!swell))continue;
           const sx=depth?swell*(depth===1?.25:.46):0,sy=depth?swell*(depth===1?.34:.53):0;
