@@ -75,9 +75,9 @@
     const u=along/b.length;
     const pin=ease(clamp(Math.abs(along)/65));
     const wave=pin*b.wave;
-    const advance=along*(1+.035*b.mature)+wave*.62*Math.sin(5.1*u-b.phase*.81);
+    const advance=along*(1+.16*b.mature)+wave*.62*Math.sin(5.1*u-b.phase*.81);
     const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
-    const lateral=offset(b.curve,u)+across*(1+.09*b.mature)*(1-.83*b.dissolve)+drift;
+    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature)*(1-.83*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2)];
   }
@@ -91,7 +91,26 @@
     const c=tile.getContext('2d');
     c.drawImage(image,0,top,w,h,0,0,w,h);
     const rgba=c.getImageData(0,0,w,h).data;
-    const values=Uint8Array.from({length:w*h},(_,i)=>rgba[4*i]);
+    // Smooth arrival times before extracting the outline. Keep the sentinel
+    // border out of the filter so it cannot pull the front into little teeth.
+    let values=Float32Array.from({length:w*h},(_,i)=>rgba[4*i]);
+    for(let pass=0;pass<3;pass++){
+      for(const horizontal of [true,false]){
+        const next=new Float32Array(values.length);
+        for(let j=1;j<h-1;j++)for(let i=1;i<w-1;i++){
+          let sum=0;
+          for(let k=-4;k<=4;k++){
+            const col=horizontal?Math.max(1,Math.min(w-2,i+k)):i;
+            const row=horizontal?j:Math.max(1,Math.min(h-2,j+k));
+            sum+=values[row*w+col];
+          }
+          next[j*w+i]=sum/9;
+        }
+        values=next;
+      }
+    }
+    for(let i=0;i<w;i++){values[i]=255;values[(h-1)*w+i]=255;}
+    for(let j=0;j<h;j++){values[j*w]=255;values[j*w+w-1]=255;}
     return {x,y,w,h,values};
   }
   function growthBoundary(b){
@@ -129,13 +148,20 @@
     const path=new Path2D();
     for(const start of links.keys()){
       let key=start,previous=-1;
-      path.moveTo(...locations.get(key));
+      const ring=[];
       do{
         const neighbors=links.get(key);
         const next=neighbors[0]===previous?neighbors[1]:neighbors[0];
         links.delete(key);previous=key;key=next;
-        path.lineTo(...locations.get(key));
+        ring.push(locations.get(key));
       }while(key!==start);
+      // A periodic quadratic spline keeps the advancing end rounded.
+      const last=ring[ring.length-1],first=ring[0];
+      path.moveTo((last[0]+first[0])/2,(last[1]+first[1])/2);
+      for(let i=0;i<ring.length;i++){
+        const a=ring[i],z=ring[(i+1)%ring.length];
+        path.quadraticCurveTo(a[0],a[1],(a[0]+z[0])/2,(a[1]+z[1])/2);
+      }
       path.closePath();
     }
     return path;
@@ -151,11 +177,24 @@
   function paintRings(b,rings,color){
     traceRings(b,rings);ctx.fillStyle=color;ctx.fill('evenodd');
   }
+  function paintBranch(b,opacity,depth){
+      const boundary=b.boundary;
+      if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
+      ctx.globalAlpha=opacity*(1-b.dissolve);
+      paintRings(b,b.fill,'rgba(255,246,225,.89)');
+      paintRings(b,b.ink,depth?'#e98a88':'#ff001e');
+      if(boundary){
+        ctx.restore();ctx.save();
+        traceRings(b,b.fill);ctx.clip('evenodd');
+        ctx.strokeStyle='#ff001e';ctx.lineWidth=2;ctx.lineJoin='round';
+        ctx.stroke(boundary);ctx.restore();
+      }
+  }
   let branches=[],sequence=null,frame=0,lastPaint=-Infinity,cycleEnd=0;
   let visible=true;
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
-    const clearing=elapsed-cycleEnd-2.4;
+    const clearing=elapsed-cycleEnd-5.2;
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
     const w=Math.min(2400,Math.round(rect.width*(devicePixelRatio||1)));
@@ -184,17 +223,28 @@
         b.y+=(b.anchor[1]-b.join[1])*b.growth;
       }
       if(b.age<=0||b.dissolve===1)continue;
-      const boundary=b.flow&&b.age<1?growthBoundary(b):null;
-      if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
-      ctx.globalAlpha=1-b.dissolve;
-      paintRings(b,b.fill,'rgba(255,246,225,.89)');
-      paintRings(b,b.ink,'#ff001e');
-      if(boundary){
-        ctx.restore();ctx.save();
-        traceRings(b,b.fill);ctx.clip('evenodd');
-        ctx.strokeStyle='#ff001e';ctx.lineWidth=2;ctx.lineJoin='round';
-        ctx.stroke(boundary);ctx.restore();
+      b.boundary=b.flow&&b.age<1?growthBoundary(b):null;
+    }
+    // A broad bank moves in behind the foreground curls as they mature.
+    // Draw the farthest smoke first so the hand-drawn foreground stays legible.
+    for(const depth of [2,1,0]){
+      for(const b of branches){
+        if(b.age<=0||b.dissolve===1)continue;
+        const swell=depth?ease(clamp((b.age-1.05-depth*.26)*b.duration/4.5)):1;
+        if(!swell)continue;
+        ctx.save();
+        if(depth){
+          if(!b.upstream){ctx.restore();continue;}
+          const direction=depth===1?-1:1;
+          ctx.translate(b.x,b.y);
+          ctx.translate(swell*direction*65,swell*(depth===1?-150:195));
+          ctx.scale(1+swell*(depth===1?.37:.64),1+swell*(depth===1?.55:.83));
+          ctx.translate(-b.x,-b.y);
+        }
+        paintBranch(b,swell*(depth?.92:1),depth);
+        ctx.restore();
       }
+
     }
     ctx.globalAlpha=1;
     if(sequence!==null && clearing>=8)sequence=null;
