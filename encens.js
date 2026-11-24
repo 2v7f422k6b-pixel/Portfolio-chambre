@@ -239,23 +239,26 @@
       uniform vec4 transform;
       void main(){tex=uv;vec2 p=position*transform.xy+transform.zw;
       gl_Position=vec4(p*vec2(2./3072.,-2./1732.)+vec2(-1.,1.),0.,1.);}`);
-    shader(gl.FRAGMENT_SHADER,`precision highp float;varying vec2 tex;
+    const derivatives=!!gl.getExtension('OES_standard_derivatives');
+    shader(gl.FRAGMENT_SHADER,`${derivatives?'#extension GL_OES_standard_derivatives : enable':''}
+      precision highp float;varying vec2 tex;
       uniform sampler2D art,flow;uniform float age,opacity;uniform int pass;
       void main(){
         vec3 a=texture2D(art,tex).rgb;
         float arrive=texture2D(flow,tex).r;
         float front=age*252./255.-arrive;
-        float reveal=age>=1.?1.:smoothstep(-.003,.003,front);
+        float edge=${derivatives?'max(.0003,fwidth(front))':'.003'};
+        float reveal=age>=1.?1.:smoothstep(-.5*edge,.5*edge,front);
         float fill=a.r*reveal;
-        float ink=max(a.g*reveal,age<1.?a.r*(1.-smoothstep(.0,.004,abs(front))):0.);
+        float ink=max(a.g*reveal,age<1.?a.r*(1.-smoothstep(.0,edge,abs(front))):0.);
         if(pass==1){if(fill*opacity<.5)discard;gl_FragColor=vec4(0.);return;}
         vec3 beige=vec3(1.,.9647,.8824),red=vec3(1.,0.,.118);
         float f=fill*.89*opacity,i=ink*opacity;
         // With one occupied silhouette, only the ink belonging to that
         // silhouette is visible. Outside all silhouettes, keep free tips.
         if(pass==5 && fill*opacity<.5)discard;
-        if(pass==2||pass==5){gl_FragColor=vec4(red*i,i);return;}
-        if(pass==0){gl_FragColor=vec4(beige*f,f);return;}
+        if(pass==2||pass==5){i*=a.b;gl_FragColor=vec4(red*i,i);return;}
+        if(pass==0){i*=1.-a.b;gl_FragColor=vec4(beige*f*(1.-i)+red*i,f*(1.-i)+i);return;}
         gl_FragColor=vec4(beige*f*(1.-i)+vec3(.914,.541,.533)*i,f*(1.-i)+i);
       }`);
     gl.linkProgram(program);
@@ -287,10 +290,22 @@
       const c=document.createElement('canvas');c.width=w;c.height=h;
       const p=c.getContext('2d',{willReadFrequently:true});p.translate(-x,-y);
       p.fill(fill,'evenodd');const pixels=p.getImageData(0,0,w,h).data;
-      p.clearRect(x,y,w,h);p.lineWidth=.85;p.lineJoin='round';p.globalAlpha=.55;p.stroke(fill);
-      p.globalAlpha=1;p.fill(ink,'evenodd');
+      p.clearRect(x,y,w,h);p.fill(ink,'evenodd');
       const lines=p.getImageData(0,0,w,h).data;
-      for(let j=0;j<pixels.length;j+=4){pixels[j]=pixels[j+3];pixels[j+1]=lines[j+3];pixels[j+3]=255;}
+      // Composite each drawing in its own stacking order. Only the small
+      // mouths connecting two wisps need the shared-outline stencil.
+      p.clearRect(x,y,w,h);
+      const mouths=branches.filter(child=>child.upstream===b).map(child=>insetJoins[child.id]||child.join);
+      if(b.upstream)mouths.push(b.anchor);
+      for(const [cx,cy] of mouths){
+        const ramp=p.createRadialGradient(cx,cy,18,cx,cy,48);
+        ramp.addColorStop(0,'black');ramp.addColorStop(1,'transparent');
+        p.fillStyle=ramp;p.fillRect(cx-48,cy-48,96,96);
+      }
+      const joints=p.getImageData(0,0,w,h).data;
+      for(let j=0;j<pixels.length;j+=4){
+        pixels[j]=pixels[j+3];pixels[j+1]=lines[j+3];pixels[j+2]=joints[j+3];pixels[j+3]=255;
+      }
       const art=texture(gl.RGBA,w,h,pixels);
       const flow=texture(gl.LUMINANCE,f.values?f.w:1,f.values?f.h:1,f.values?Uint8Array.from(f.values,Math.round):new Uint8Array(1));
       const nx=Math.ceil(w/16),ny=Math.ceil(h/16),points=[],uvs=[],indices=[];
