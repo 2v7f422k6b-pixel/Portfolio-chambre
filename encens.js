@@ -49,14 +49,25 @@
   }
   const turns={"7955":[[1181,1169],[1667,1002],[693,1042],[1206,866]],"7956":[[1479,924],[1766,816],[1599,892]],"7957":[[829,823],[385,813],[781,674],[218,754]],"7958":[[272,1068],[149,825],[312,919]],"7959":[[327,1358],[544,1271],[880,1144],[717,1178]],"7960":[[1305,1249],[1592,1320],[1836,1293],[1123,1257]],"7961":[[2258,543],[1979,617],[2084,630],[1879,620]],"7962":[[2742,1186],[2325,1416],[2035,1394],[2533,1284]],"7963":[[2958,1631],[2607,1516],[2447,1484],[2745,1510]],"7964":[[2562,1108],[2950,1142]],"7965":[[2189,1365],[2508,1079],[2330,1262]],"7966":[[2441,1039],[1963,1108],[2138,1073]],"7967":[[1974,746],[1746,1148]],"7968":[[2733,555],[1593,467],[2554,699],[1606,653]],"7969":[[2729,193],[2381,310],[2620,378],[2291,259]],"7970":[[2311,394],[2047,258],[2059,376]],"7971":[[2128,160],[2332,38]],"7972":[[2252,901],[2978,1024],[2825,985],[2701,814]],"7973":[[2811,708],[2554,805],[2681,786],[2450,768]],"7974":[[1509,233],[1900,84],[1683,172],[1646,298]],"7975":[[1180,195],[1271,152],[1090,178]],"7976":[[1378,405],[1110,301],[819,359]],"7977":[[533,353],[368,412],[229,431],[347,633]],"7978":[[726,276],[283,188],[565,207]],"7979":[[959,289],[1012,103],[1078,112],[914,178]],"7980":[[766,558],[1110,545],[620,442],[428,450]],"7981":[[627,1521],[1073,1677],[857,1542],[1007,1469]],"7982":[[230,1372],[161,1595],[467,1450]],"7983":[[1741,1383],[1823,1398]],"7984":[[1899,1383],[1960,1376]]};
   // Coordinates on each drawing, measured along and across its centre line.
-  const bends={
-    7980:[[511,-82]],7977:[[65,-16]],7957:[[24,113],[431,99]],
-    7966:[[332,-77],[108,-147]],7964:[[368,-19],[624,-17]],7965:[[235,-66]],
-    7960:[[775,178]],7981:[[349,125]],7962:[[703,-106]],7973:[[139,-26]],
-    7968:[[170,-373],[27,-216]],7967:[[333,-26]],7956:[[11,-3]],
-    7955:[[-45,-146],[816,-249],[1269,-133]],7959:[[181,153]],
-    7958:[[101,-161],[118,29]],7961:[[170,-158],[22,-104]]
-  };
+  const bends={"7980": [[511, -82]],
+    "7977": [[65, -16], [0, 18]],
+    "7957": [[24, 113], [431, 99], [39, 115]],
+    "7966": [[332, -77], [108, -147], [519, -61], [595, -44]],
+    "7964": [[368, -19], [624, -17], [125, 11], [322, 9]],
+    "7965": [[235, -66]],
+    "7960": [[775, 178], [41, -7], [389, 175]],
+    "7981": [[349, 125], [325, 148]],
+    "7962": [[703, -106], [81, -26]],
+    "7973": [[139, -26]],
+    "7968": [[170, -373], [27, -216], [703, 11]],
+    "7967": [[333, -26]],
+    "7956": [[11, -3], [175, 23], [72, 16]],
+    "7955": [[-45, -146], [816, -249], [1269, -133], [159, -280]],
+    "7959": [[181, 153]],
+    "7958": [[101, -161], [118, 29], [105, 8], [146, -95]],
+    "7961": [[170, -158], [22, -104]],
+    "7972": [[241, -198], [295, -170]],
+    "7963": [[4, 61], [68, 91], [9, 189], [203, 118]]};
   function softenBends(b,ring){
     const centers=bends[b.id];
     if(!centers||ring.length<8)return ring;
@@ -82,6 +93,7 @@
     });
   }
   function prepare(branch) {
+    branch.spread=({7963:.58,7964:.72,7965:.72,7966:.68,7958:.78,7972:.80})[branch.id]??1.05;
     branch.turns=turns[branch.id].map(([x,y],i)=>({at:coordinates(branch,x,y),radius:Math.min(100,Math.max(28,branch.length*.16)),speed:.78+((branch.id*13+i*19)%37)/42,phase:branch.id*1.7+i*2.4}));
     for(const key of ['fill','ink']){
       branch[key]=branch[key].map(ring=>{
@@ -98,30 +110,28 @@
     return branch;
   }
   function point(b,along,across) {
-    let best=null,weight=0;
+    const free=ease(clamp(Math.hypot(along,across)/115));
+    const influences=[];
+    let total=0;
     for(const turn of b.turns){
       const dx=along-turn.at[0],dy=across-turn.at[1];
       const w=ease(clamp(1-Math.hypot(dx,dy)/turn.radius));
-      if(w>weight){weight=w;best=turn;}
+      if(w>0){influences.push({turn,x:-dy*w,y:dx*w});total+=w;}
     }
-    const pin=ease(clamp(Math.hypot(along,across)/32));
+    const gain=free*ease(clamp(Math.hypot(along,across)/32))/Math.max(1,total);
+    for(const f of influences){f.x*=gain;f.y*=gain;}
     const contactWeight=b.contact?ease(clamp(1-Math.hypot(along-b.contact.at[0],across-b.contact.at[1])/b.contact.radius)):0;
-    const free=ease(clamp(Math.hypot(along,across)/115));
-    return {along,across,turn:best,weight:weight*pin*free,contactWeight,free};
+    return {along,across,influences,contactWeight,free};
   }
   function pose(b,pt) {
-    let {along,across,turn,weight}=pt;
-    if(turn){
-      const twist=turn.twist*weight;
-      const dx=along-turn.at[0],dy=across-turn.at[1];
-      along-=dy*twist;across+=dx*twist;
-    }
+    let {along,across}=pt;
+    for(const f of pt.influences){along+=f.x*f.turn.twist;across+=f.y*f.turn.twist;}
     const u=along/b.length;
     const pin=ease(clamp(Math.abs(along)/65));
     const wave=pin*b.wave*pt.free;
     const advance=along*(1+.16*b.mature*pt.free)+wave*.62*Math.sin(5.1*u-b.phase*.81);
     const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
-    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature*pt.free)*(1-.30*b.dissolve)+drift;
+    const lateral=offset(b.curve,u)+across*(1+b.spread*b.mature*pt.free)*(1-.30*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
     if(b.contact && pt.contactWeight){
@@ -463,7 +473,11 @@
       const weight=ease(clamp((Math.min(b.age,c.other.age)-.72)/.28))*(1-c.other.dissolve);
       if(!weight)continue;
       const source=pose(b,c.source),dest=pose(c.other,c.dest);
-      c.dx=(dest[0]-source[0])*weight;c.dy=(dest[1]-source[1])*weight;
+      const dx=dest[0]-source[0],dy=dest[1]-source[1];
+      // Spread a large displacement over the curl without folding the mesh.
+      const reach=c.radius*.48;
+      const gain=weight/Math.sqrt(1+(dx*dx+dy*dy)/(reach*reach));
+      c.dx=dx*gain;c.dy=dy*gain;
     }
     for(const b of branches){
       if(b.age<=0||b.dissolve===1)continue;
