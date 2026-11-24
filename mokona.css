@@ -1,0 +1,28 @@
+.mokona-dialog {
+  position:fixed; inset:0; margin:auto; padding:0; border:0;
+  width:100%; max-width:none; height:100%; max-height:none; background:transparent;
+  overflow:auto; color:#c82148; font:clamp(17px,2.4vmin,24px)/1.25 "Nana Trace UI",sans-serif;
+}
+.mokona-dialog::backdrop {background:rgb(255 235 242 / .24)}
+.mokona-content {min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:12px; box-sizing:border-box}
+.mokona-art {display:block; overflow:visible; width:min(80vw,38dvh,350px); height:auto; pointer-events:none}
+.mokona-card {background:#fff8df; border-radius:48% 47% 3% 3% / 3% 3% 5% 4%; text-align:center; width:min(90%,430px); padding:12px 18px; box-sizing:border-box}
+.mokona-card h2 {font:inherit;font-weight:bold;margin:0 0 .4em}
+.mokona-copy {display:grid; margin:0}
+.mokona-copy span {grid-area:1 / 1}
+.mokona-copy span:first-child {visibility:hidden}
+.mokona-card button {font:inherit;color:inherit;min-height:44px;background:transparent;border:0;text-decoration:underline;cursor:pointer}
+.mokona-bed {position:absolute;left:47.7%;bottom:36%;width:5.7%;transform:translateX(-50%);pointer-events:none;z-index:89}
+.mokona-bed .mokona-art {width:100%}
+.mokona-dialog[open] .mokona-float {animation:mokona-hover 3s ease-in-out infinite}
+.mokona-ear-left {transform-origin:1600px 484px;--turn:4deg;--delay:-.5s}
+.mokona-ear-right {transform-origin:1900px 495px;--turn:-3deg;--delay:-.18s}
+.mokona-dialog[open] .mokona-ear {animation:mokona-turn 3s ease-in-out var(--delay) infinite alternate}
+.mokona-dialog[open] .mokona-belly {transform-origin:1755px 830px; animation:mokona-breathe 3s ease-in-out infinite}
+.mokona-wave {transform-origin:1470px 739px;animation:mokona-wave .42s ease-in-out 2 alternate}
+@keyframes mokona-hover {50%{transform:translateY(-7px)}}
+@keyframes mokona-turn {from{transform:rotate(calc(-1 * var(--turn)))}to{transform:rotate(var(--turn))}}
+@keyframes mokona-breathe {0%,100%{transform:scaleY(.984)}50%{transform:scaleY(1.005)}}
+@keyframes mokona-wave {to{transform:rotate(15deg)}}
+@media(prefers-reduced-motion:reduce){.mokona-dialog[open] * {animation:none!important}}
+.mokona-bed {aspect-ratio:1810/1390}
