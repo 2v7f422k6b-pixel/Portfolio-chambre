@@ -106,7 +106,8 @@
     }
     const pin=ease(clamp(Math.hypot(along,across)/32));
     const contactWeight=b.contact?ease(clamp(1-Math.hypot(along-b.contact.at[0],across-b.contact.at[1])/b.contact.radius)):0;
-    return {along,across,turn:best,weight:weight*pin,contactWeight};
+    const free=ease(clamp(Math.hypot(along,across)/115));
+    return {along,across,turn:best,weight:weight*pin*free,contactWeight,free};
   }
   function pose(b,pt) {
     let {along,across,turn,weight}=pt;
@@ -117,10 +118,10 @@
     }
     const u=along/b.length;
     const pin=ease(clamp(Math.abs(along)/65));
-    const wave=pin*b.wave;
-    const advance=along*(1+.16*b.mature)+wave*.62*Math.sin(5.1*u-b.phase*.81);
+    const wave=pin*b.wave*pt.free;
+    const advance=along*(1+.16*b.mature*pt.free)+wave*.62*Math.sin(5.1*u-b.phase*.81);
     const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
-    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature)*(1-.30*b.dissolve)+drift;
+    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature*pt.free)*(1-.30*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
     if(b.contact && pt.contactWeight){
@@ -262,12 +263,13 @@
         float reveal=age>=1.?1.:smoothstep(-.5*edge,.5*edge,front);
         float fill=a.r*reveal;
         float ink=max(a.g*reveal,age<1.?a.r*(1.-smoothstep(.0,edge,abs(front))):0.);
-        if(pass==1){if(fill*opacity<.5)discard;gl_FragColor=vec4(0.);return;}
+        float occupied=max(fill,ink);
+        if(pass==1){if(occupied<.36 || opacity<.035)discard;gl_FragColor=vec4(0.);return;}
         vec3 beige=vec3(1.,.9647,.8824),red=vec3(1.,0.,.118);
         float f=fill*.89*opacity,i=ink*opacity;
         // With one occupied silhouette, only the ink belonging to that
         // silhouette is visible. Outside all silhouettes, keep free tips.
-        if(pass==5 && fill*opacity<.5)discard;
+        if(pass==5 && occupied<.36)discard;
         if(pass==2||pass==5){i*=a.b;gl_FragColor=vec4(red*i,i);return;}
         if(pass==0){i*=1.-a.b;gl_FragColor=vec4(beige*f*(1.-i)+red*i,f*(1.-i)+i);return;}
         gl_FragColor=vec4(beige*f*(1.-i)+vec3(.914,.541,.533)*i,f*(1.-i)+i);
@@ -311,13 +313,17 @@
       if(b.contact)mouths.push(b.contact.from);
       for(const child of branches)if(child.contact?.other===b)mouths.push(child.contact.to);
       for(const [cx,cy] of mouths){
-        const ramp=p.createRadialGradient(cx,cy,18,cx,cy,48);
+        const radius=100;
+        const ramp=p.createRadialGradient(cx,cy,48,cx,cy,radius);
         ramp.addColorStop(0,'black');ramp.addColorStop(1,'transparent');
-        p.fillStyle=ramp;p.fillRect(cx-48,cy-48,96,96);
+        p.fillStyle=ramp;p.fillRect(cx-radius,cy-radius,2*radius,2*radius);
       }
       const joints=p.getImageData(0,0,w,h).data;
+      p.clearRect(x,y,w,h);
+      p.lineWidth=1.35;p.lineJoin='round';p.stroke(fill);
+      const perimeter=p.getImageData(0,0,w,h).data;
       for(let j=0;j<pixels.length;j+=4){
-        pixels[j]=pixels[j+3];pixels[j+1]=lines[j+3];pixels[j+2]=joints[j+3];pixels[j+3]=255;
+        pixels[j]=pixels[j+3];pixels[j+1]=Math.max(lines[j+3],perimeter[j+3]*joints[j+3]/255);pixels[j+2]=joints[j+3];pixels[j+3]=255;
       }
       const art=texture(gl.RGBA,w,h,pixels);
       const flow=texture(gl.LUMINANCE,f.values?f.w:1,f.values?f.h:1,f.values?Uint8Array.from(f.values,Math.round):new Uint8Array(1));
@@ -356,9 +362,9 @@
           const depth=pass===4?2:pass===3?1:0;
           const swell=depth?ease(clamp((b.age-1.05-depth*.26)*b.duration/4.5)):1;
           if(depth&&(!b.upstream||!swell))continue;
-          const sx=depth?swell*(depth===1?.25:.46):0,sy=depth?swell*(depth===1?.34:.53):0;
-          gl.uniform4f(u.transform,1+sx,1+sy,depth?swell*(depth===1?-65:65)-sx*b.x:0,
-            depth?swell*(depth===1?-150:195)-sy*b.y:0);
+          const sx=depth?(depth===1?.10:.17):0,sy=depth?(depth===1?.12:.20):0;
+          gl.uniform4f(u.transform,1+sx,1+sy,depth?(depth===1?-65:65)-sx*1536:0,
+            depth?(depth===1?-150:195)-sy*866:0);
           gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth?.73:1));
           const s=b.sprite;
           gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,s.art);
@@ -412,6 +418,17 @@
   }
   let branches=[],sequence=null,frame=0,lastPaint=-Infinity,cycleEnd=0;
   let visible=true;
+  function attach(b){
+        const parent=b.upstream;
+        // The first large branches grow from the moving ends of the idle tendrils.
+        const f=parent.upstream?0:1-b.growth;
+        const along=b.joinLocal[0]*(1-f)+parent.length*f;
+        const across=b.joinLocal[1]*(1-f);
+        [b.x,b.y]=pose(parent,point(parent,along,across));
+        // Keep the open mouth on the moving parent, including during local twisting.
+        const origin=pose(b,b.origin);
+        b.x+=b.x-origin[0];b.y+=b.y-origin[1];
+  }
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
     const clearing=elapsed-cycleEnd-5.2;
@@ -435,15 +452,7 @@
       b.wave=reduced.matches?0:Math.min(root?2:13,b.length*.045);
       if(root){[b.x,b.y]=b.anchor;}
       else {
-        const parent=b.upstream;
-        // The first large branches grow from the moving ends of the idle tendrils.
-        const f=parent.upstream?0:1-b.growth;
-        const along=b.joinLocal[0]*(1-f)+parent.length*f;
-        const across=b.joinLocal[1]*(1-f);
-        [b.x,b.y]=pose(parent,point(parent,along,across));
-        // Keep the open mouth on the moving parent, including during local twisting.
-        const origin=pose(b,point(b,0,0));
-        b.x+=b.x-origin[0];b.y+=b.y-origin[1];
+        attach(b);
       }
     }
     // Both endpoints are sampled in the same frame. Blend the correction over
@@ -458,6 +467,7 @@
     }
     for(const b of branches){
       if(b.age<=0||b.dissolve===1)continue;
+      if(b.upstream)attach(b);
       if(renderer)continue;
       b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
       b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
@@ -479,10 +489,9 @@
         if(depth){
           if(!b.upstream){ctx.restore();continue;}
           const direction=depth===1?-1:1;
-          ctx.translate(b.x,b.y);
-          ctx.translate(swell*direction*65,swell*(depth===1?-150:195));
-          ctx.scale(1+swell*(depth===1?.25:.46),1+swell*(depth===1?.34:.53));
-          ctx.translate(-b.x,-b.y);
+          ctx.translate(1536+direction*65,866+(depth===1?-150:195));
+          ctx.scale(depth===1?1.10:1.17,depth===1?1.12:1.20);
+          ctx.translate(-1536,-866);
         }
         paintBranch(b,swell*(depth?.73:1),depth);
         ctx.restore();
@@ -508,7 +517,7 @@
   observer.observe(renderer?accelerated:canvas);
   document.addEventListener('visibilitychange',wake);
   new ResizeObserver(wake).observe(scene);
-  const insetJoins={"7966": [1878, 1240], "7967": [1726, 1224], "7965": [2166, 1372], "7964": [2257, 1116], "7968": [1971, 739], "7961": [1979, 729], "7963": [2661, 1367], "7959": [942, 1352], "7956": [1826, 892], "7955": [1589, 912], "7970": [2022, 411], "7974": [1700, 381], "7976": [1644, 382], "7981": [603, 1374], "7973": [2557, 709], "7982": [575, 1484], "7969": [2615, 351], "7972": [2484, 1031], "7980": [1218, 566], "7975": [1414, 180], "7957": [729, 832], "7971": [2111, 162], "7979": [998, 276], "7958": [437, 931], "7978": [912, 293], "7977": [256, 719]};
+  const insetJoins={"7966":[1876,1248],"7967":[1724,1232],"7965":[2166,1372],"7964":[2264,1105],"7968":[1971,739],"7961":[1979,730],"7963":[2659,1359],"7959":[946,1345],"7956":[1828,896],"7955":[1589,914],"7970":[2014,412],"7974":[1700,389],"7976":[1644,390],"7981":[603,1372],"7973":[2557,708],"7982":[575,1492],"7969":[2615,359],"7972":[2484,1031],"7980":[1225,570],"7975":[1422,182],"7957":[729,840],"7971":[2103,162],"7979":[998,281],"7958":[442,925],"7978":[914,301],"7977":[258,727]};
   accelerated.addEventListener('webglcontextlost',()=>{
     renderer=null;accelerated.style.display='none';canvas.style.display='';
     observer.disconnect();observer.observe(canvas);wake();
@@ -524,7 +533,7 @@
     })]).then(([,data])=>{
       const byId=new Map();
       branches=data.map(raw=>{
-        const b=prepare(raw);b.upstream=byId.get(b.parent);
+        const b=prepare(raw);b.origin=point(b,0,0);b.upstream=byId.get(b.parent);
         if(b.upstream)b.flow=readFlow(flowImage,b);
         if(b.upstream)b.joinLocal=coordinates(b.upstream,...(insetJoins[b.id]||b.join));
         if(b.upstream?.flow){
