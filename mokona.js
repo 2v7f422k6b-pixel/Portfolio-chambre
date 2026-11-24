@@ -33,16 +33,20 @@
   part(8184,1811,965,204,504);
   part(8185,886,185,741,338,'mokona-ear mokona-ear-left');
   part('8185-right',1869,304,701,244,'mokona-ear mokona-ear-right');
-  part(8186,1408,340,695,870);
+  // The jewel and upper outline stay registered with the facial layers.
+  for (const [y, height, className] of [[340,472,''],[810,400,'mokona-belly']]) {
+    const group = svg('g', {class:className});
+    const slice = svg('svg', {x:1408,y,width:695,height,viewBox:'1408 '+y+' 695 '+height,overflow:'hidden'});
+    art.append(group);
+    group.append(slice);
+    part(8186,1408,340,695,870,'',slice);
+  }
   part(8187,1526,630,462,54);
   const paw = part(8188,1343,614,149,153);
   part(8189,1926,671,142,134);
   part(8190,1263,822,400,372);
   part(8191,1530,537,454,59);
   const mouths = [32,158,219].map((h,i) => part(8192+i,1675,656,168,h));
-  const figure = svg('g', {class:'mokona-figure'});
-  figure.append(...art.children);
-  art.append(figure);
   function mouth(index) {
     mouths.forEach((node,i) => node.style.display = i === index ? '' : 'none');
   }
@@ -88,7 +92,7 @@
     floater.style.animation = 'none';
     const flight = floater.animate([
       {transform:'translate(0,0) scale(1)'},
-      {transform:'translate(0,5px) scale(1.015,.98)',offset:.13},
+      {transform:'translate(0,5px) scale(1)',offset:.13},
       {transform:'translate('+dx*.46+'px,'+(dy*.40-55)+'px) scale('+(scale*.45+.55)+')',offset:.52},
       {transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')'}
     ],{duration:reduced.matches?0:780,easing:'ease-in-out',fill:'forwards'});
@@ -104,13 +108,17 @@
     if (page === 1) { page++; speak(); }
     else settle();
   };
-  dialog.addEventListener('cancel', event => {event.preventDefault();settle();});
+  dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) settle();});
   scene.addEventListener('incense:start', () => {
     bed.hidden = true;
     floater.append(art);
     mouth(0);
   });
-  scene.addEventListener('incense:reveal', () => {
+  const foreground = document.createElement('div');
+  foreground.className = 'mokona-smoke';
+  foreground.inert = true;
+  dialog.append(foreground);
+  scene.addEventListener('incense:reveal', event => {
     if (dialog.open || landing) return;
     lines = words[document.documentElement.lang === 'en' ? 'en' : 'fr'];
     page = 1;
@@ -119,12 +127,25 @@
     floater.style.transformOrigin = 'top left';
     dialog.querySelector('.mokona-card').style.visibility = '';
     dialog.querySelector('h2').textContent = lines[0];
-    paw.setAttribute('class','mokona-wave');
+    dialog.classList.add('revealing');
+    floater.style.setProperty('--extent','-24%');
+    next.disabled = true;
     dialog.showModal();
-    if (!reduced.matches) dialog.querySelector('.mokona-content').animate(
-      [{opacity:0,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],
-      {duration:680,easing:'ease-out'}
-    );
+    foreground.append(event.detail);
+  });
+  scene.addEventListener('incense:clearing', ({detail:{rect, clearing}}) => {
+    if (!dialog.classList.contains('revealing')) return;
+    // Keep the original running smoke canvas in its room coordinates above the character.
+    Object.assign(foreground.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});
+    const progress = Math.min(1,clearing/6.6);
+    floater.style.setProperty('--extent',(-24+160*progress)+'%');
+    if (clearing < 7.8) return;
+    scene.append(foreground.firstElementChild);
+    dialog.classList.remove('revealing');
+    paw.setAttribute('class','mokona-wave');
+    next.disabled = false;
+    next.focus({preventScroll:true});
+    if (!reduced.matches) dialog.querySelector('.mokona-card').animate([{opacity:0},{opacity:1}],{duration:420});
     speak();
   });
 })();

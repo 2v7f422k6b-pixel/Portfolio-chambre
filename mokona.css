@@ -38,11 +38,20 @@
 .mokona-ear-left {transform-origin:1600px 484px;--turn:4deg;--delay:-.5s}
 .mokona-ear-right {transform-origin:1900px 495px;--turn:-3deg;--delay:-.18s}
 .mokona-dialog[open] .mokona-ear {animation:mokona-turn 3s ease-in-out var(--delay) infinite alternate}
-.mokona-dialog[open] .mokona-figure {transform-origin:1755px 1330px; animation:mokona-rebond 3s ease-in-out infinite}
+.mokona-dialog[open] .mokona-belly {transform-origin:1755px 810px; animation:mokona-rebond 3s ease-in-out infinite}
 .mokona-wave {transform-origin:1470px 739px;animation:mokona-wave .42s ease-in-out 2 alternate}
 @keyframes mokona-hover {0%,100%{transform:translateY(4px)} 48%{transform:translateY(-11px)} 89%{transform:translateY(5px)}}
 @keyframes mokona-turn {from{transform:rotate(calc(-1 * var(--turn)))}to{transform:rotate(var(--turn))}}
-@keyframes mokona-rebond {0%,100%{transform:scale(1.015,.978)} 22%,70%{transform:scale(1,1)} 90%{transform:scale(1.045,.93)}}
+@keyframes mokona-rebond {0%,100%{transform:scaleY(.986)} 22%,70%{transform:scale(1,1)} 90%{transform:scaleY(.945)}}
 @keyframes mokona-wave {to{transform:rotate(15deg)}}
 @media(prefers-reduced-motion:reduce){.mokona-dialog[open] * {animation:none!important}}
 .mokona-bed {aspect-ratio:1810/1390}
+
+.mokona-smoke {position:fixed; z-index:1; pointer-events:none}
+.mokona-dialog.revealing::backdrop {background:transparent}
+.mokona-dialog.revealing .mokona-card {visibility:hidden}
+.mokona-dialog.revealing .mokona-float {
+  --reveal-mask:radial-gradient(ellipse farthest-corner at 20% 27%,black var(--extent),transparent calc(var(--extent) + 22%));
+  -webkit-mask-image:var(--reveal-mask); mask-image:var(--reveal-mask);
+}
+.mokona-dialog .mokona-card button:focus-visible {outline:none!important;text-decoration-thickness:2px;text-underline-offset:.18em}
