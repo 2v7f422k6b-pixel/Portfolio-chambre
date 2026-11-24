@@ -41,10 +41,41 @@
     return [along,dy*vx-dx*vy-offset(branch.curve,along/branch.length)];
   }
   const turns={"7955":[[1181,1169],[1667,1002],[693,1042],[1206,866]],"7956":[[1479,924],[1766,816],[1599,892]],"7957":[[829,823],[385,813],[781,674],[218,754]],"7958":[[272,1068],[149,825],[312,919]],"7959":[[327,1358],[544,1271],[880,1144],[717,1178]],"7960":[[1305,1249],[1592,1320],[1836,1293],[1123,1257]],"7961":[[2258,543],[1979,617],[2084,630],[1879,620]],"7962":[[2742,1186],[2325,1416],[2035,1394],[2533,1284]],"7963":[[2958,1631],[2607,1516],[2447,1484],[2745,1510]],"7964":[[2562,1108],[2950,1142]],"7965":[[2189,1365],[2508,1079],[2330,1262]],"7966":[[2441,1039],[1963,1108],[2138,1073]],"7967":[[1974,746],[1746,1148]],"7968":[[2733,555],[1593,467],[2554,699],[1606,653]],"7969":[[2729,193],[2381,310],[2620,378],[2291,259]],"7970":[[2311,394],[2047,258],[2059,376]],"7971":[[2128,160],[2332,38]],"7972":[[2252,901],[2978,1024],[2825,985],[2701,814]],"7973":[[2811,708],[2554,805],[2681,786],[2450,768]],"7974":[[1509,233],[1900,84],[1683,172],[1646,298]],"7975":[[1180,195],[1271,152],[1090,178]],"7976":[[1378,405],[1110,301],[819,359]],"7977":[[533,353],[368,412],[229,431],[347,633]],"7978":[[726,276],[283,188],[565,207]],"7979":[[959,289],[1012,103],[1078,112],[914,178]],"7980":[[766,558],[1110,545],[620,442],[428,450]],"7981":[[627,1521],[1073,1677],[857,1542],[1007,1469]],"7982":[[230,1372],[161,1595],[467,1450]],"7983":[[1741,1383],[1823,1398]],"7984":[[1899,1383],[1960,1376]]};
+  // Coordinates on each drawing, measured along and across its centre line.
+  const bends={
+    7968:[[170,-373]],7967:[[333,-26]],7956:[[11,-3]],
+    7955:[[-45,-146],[816,-249],[1269,-133]],7959:[[181,153]],
+    7958:[[101,-161]],7961:[[170,-158]]
+  };
+  function softenBends(b,ring){
+    const centers=bends[b.id];
+    if(!centers||ring.length<8)return ring;
+    const n=ring.length/2;
+    return ring.map((v,k)=>{
+      const i=k>>1,axis=k%2,x=ring[2*i],y=ring[2*i+1];
+      const [u,h]=coordinates(b,x/2,y/2);
+      const distance=Math.min(...centers.map(([a,c])=>Math.hypot(u-a,h-c)));
+      const strength=ease(clamp(1-distance/150));
+      if(!strength)return v;
+      // Average equal arc lengths on either side. Both edges of the ink bend together.
+      function sample(sign,reach){
+        let j=i;
+        for(let step=1;step<n;step++){
+          const next=(j+sign+n)%n;
+          const len=Math.hypot(ring[2*j]-ring[2*next],ring[2*j+1]-ring[2*next+1]);
+          if(len>=reach)return ring[2*j+axis]+(ring[2*next+axis]-ring[2*j+axis])*reach/len;
+          reach-=len;j=next;
+        }
+        return v;
+      }
+      return v+strength*((sample(1,36)+sample(-1,36)+sample(1,18)+sample(-1,18))/4-v)*.82;
+    });
+  }
   function prepare(branch) {
     branch.turns=turns[branch.id].map(([x,y],i)=>({at:coordinates(branch,x,y),radius:Math.min(100,Math.max(28,branch.length*.16)),speed:.78+((branch.id*13+i*19)%37)/42,phase:branch.id*1.7+i*2.4}));
     for(const key of ['fill','ink']){
       branch[key]=branch[key].map(ring=>{
+        ring=softenBends(branch,ring);
         const local=[];
         for(let i=0;i<ring.length;i+=2)local.push(...coordinates(branch,ring[i]/2,ring[i+1]/2));
         const points=[];
@@ -184,12 +215,40 @@
     }
     return path;
   }
+  const junctions=[
+    [7968,7980,-675,-282],[7961,7968,357,-112],[7957,7958,353,2],
+    [7967,7968,538,-27],[7966,7967,88,-132],[7966,7964,384,-75],
+    [7960,7955,686,214],[7960,7967,147,205],[7960,7966,26,151],
+    [7962,7963,906,-28],[7959,7981,325,-108],[7962,7965,314,-38]
+  ];
+  function joinedInk(b){
+    let ink=b.inkPath;
+    // In the small painted overlap, keep the exterior edge and hide the interior seam.
+    for(const seam of b.seams){
+      const other=seam.other;
+      if(other.age<1||other.dissolve>.02||b.age<1)continue;
+      const [x,y]=pose(seam.owner,seam.point);
+      const outside=new Path2D();
+      outside.rect(-width,-height,3*width,3*height);
+      outside.addPath(other.fillPath);
+      ctx.save();
+      const around=new Path2D();
+      around.arc(x,y,74,0,2*Math.PI);
+      ctx.clip(around);ctx.clip(outside,'evenodd');
+      ctx.fill(ink,'evenodd');ctx.restore();
+      const rest=new Path2D();
+      rest.rect(-width,-height,3*width,3*height);rest.addPath(around);
+      ctx.clip(rest,'evenodd');
+    }
+    ctx.fill(ink,'evenodd');
+  }
   function paintBranch(b,opacity,depth){
       const boundary=b.boundary;
       if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
       ctx.globalAlpha=opacity*(1-b.dissolve);
       ctx.fillStyle='rgba(255,246,225,.89)';ctx.fill(b.fillPath,'evenodd');
-      ctx.fillStyle=depth?'#e98a88':'#ff001e';ctx.fill(b.inkPath,'evenodd');
+      ctx.fillStyle=depth?'#e98a88':'#ff001e';if(depth||!b.seams.length)ctx.fill(b.inkPath,'evenodd');
+      else{ctx.save();joinedInk(b);ctx.restore();}
       if(boundary){
         ctx.restore();ctx.save();
         ctx.clip(b.fillPath,'evenodd');
@@ -226,8 +285,9 @@
         const along=b.joinLocal[0]*(1-f)+parent.length*f;
         const across=b.joinLocal[1]*(1-f);
         [b.x,b.y]=pose(parent,point(parent,along,across));
-        b.x+=(b.anchor[0]-b.join[0])*b.growth;
-        b.y+=(b.anchor[1]-b.join[1])*b.growth;
+        // Keep the open mouth on the moving parent, including during local twisting.
+        const origin=pose(b,point(b,0,0));
+        b.x+=b.x-origin[0];b.y+=b.y-origin[1];
       }
       if(b.age<=0||b.dissolve===1)continue;
       b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
@@ -293,6 +353,12 @@
         if(b.upstream)cycleEnd=Math.max(cycleEnd,b.delay+b.duration);
         byId.set(b.id,b);return b;
       });
+      for(const b of branches)b.seams=[];
+      for(const [a,z,u,h] of junctions){
+        const owner=byId.get(a),other=byId.get(z),site=point(owner,u,h);
+        owner.seams.push({owner,other,point:site});
+        other.seams.push({owner,other:owner,point:site});
+      }
       // Give each new offshoot its own beat, after its parent has begun to unfold.
       const pending=branches.filter(b=>b.upstream);
       const scheduled=new Set(branches.filter(b=>!b.upstream));
