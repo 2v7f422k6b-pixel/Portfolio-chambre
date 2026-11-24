@@ -36,7 +36,10 @@
   const ease=x=>x*x*(3-2*x);
   function offset(curve,u) {
     const t=clamp(u)*(curve.length-1),i=Math.floor(t);
-    return curve[i]+((curve[i+1]??curve[i])-curve[i])*(t-i);
+    const a=curve[i],b=curve[i+1]??a,q=t-i;
+    const m=i>0?(b-curve[i-1])*.5:0;
+    const n=i+2<curve.length?(curve[i+2]-a)*.5:0;
+    return a+(b-a)*ease(q)+q*(1-q)*(m*(1-q)-n*q);
   }
   // Coordinates along and across each hand-drawn branch's curved centre line.
   function coordinates(branch,x,y) {
@@ -47,9 +50,12 @@
   const turns={"7955":[[1181,1169],[1667,1002],[693,1042],[1206,866]],"7956":[[1479,924],[1766,816],[1599,892]],"7957":[[829,823],[385,813],[781,674],[218,754]],"7958":[[272,1068],[149,825],[312,919]],"7959":[[327,1358],[544,1271],[880,1144],[717,1178]],"7960":[[1305,1249],[1592,1320],[1836,1293],[1123,1257]],"7961":[[2258,543],[1979,617],[2084,630],[1879,620]],"7962":[[2742,1186],[2325,1416],[2035,1394],[2533,1284]],"7963":[[2958,1631],[2607,1516],[2447,1484],[2745,1510]],"7964":[[2562,1108],[2950,1142]],"7965":[[2189,1365],[2508,1079],[2330,1262]],"7966":[[2441,1039],[1963,1108],[2138,1073]],"7967":[[1974,746],[1746,1148]],"7968":[[2733,555],[1593,467],[2554,699],[1606,653]],"7969":[[2729,193],[2381,310],[2620,378],[2291,259]],"7970":[[2311,394],[2047,258],[2059,376]],"7971":[[2128,160],[2332,38]],"7972":[[2252,901],[2978,1024],[2825,985],[2701,814]],"7973":[[2811,708],[2554,805],[2681,786],[2450,768]],"7974":[[1509,233],[1900,84],[1683,172],[1646,298]],"7975":[[1180,195],[1271,152],[1090,178]],"7976":[[1378,405],[1110,301],[819,359]],"7977":[[533,353],[368,412],[229,431],[347,633]],"7978":[[726,276],[283,188],[565,207]],"7979":[[959,289],[1012,103],[1078,112],[914,178]],"7980":[[766,558],[1110,545],[620,442],[428,450]],"7981":[[627,1521],[1073,1677],[857,1542],[1007,1469]],"7982":[[230,1372],[161,1595],[467,1450]],"7983":[[1741,1383],[1823,1398]],"7984":[[1899,1383],[1960,1376]]};
   // Coordinates on each drawing, measured along and across its centre line.
   const bends={
-    7968:[[170,-373]],7967:[[333,-26]],7956:[[11,-3]],
+    7980:[[511,-82]],7977:[[65,-16]],7957:[[24,113],[431,99]],
+    7966:[[332,-77],[108,-147]],7964:[[368,-19],[624,-17]],7965:[[235,-66]],
+    7960:[[775,178]],7981:[[349,125]],7962:[[703,-106]],7973:[[139,-26]],
+    7968:[[170,-373],[27,-216]],7967:[[333,-26]],7956:[[11,-3]],
     7955:[[-45,-146],[816,-249],[1269,-133]],7959:[[181,153]],
-    7958:[[101,-161]],7961:[[170,-158]]
+    7958:[[101,-161],[118,29]],7961:[[170,-158],[22,-104]]
   };
   function softenBends(b,ring){
     const centers=bends[b.id];
@@ -99,7 +105,8 @@
       if(w>weight){weight=w;best=turn;}
     }
     const pin=ease(clamp(Math.hypot(along,across)/32));
-    return {along,across,turn:best,weight:weight*pin};
+    const contactWeight=b.contact?ease(clamp(1-Math.hypot(along-b.contact.at[0],across-b.contact.at[1])/b.contact.radius)):0;
+    return {along,across,turn:best,weight:weight*pin,contactWeight};
   }
   function pose(b,pt) {
     let {along,across,turn,weight}=pt;
@@ -113,9 +120,13 @@
     const wave=pin*b.wave;
     const advance=along*(1+.16*b.mature)+wave*.62*Math.sin(5.1*u-b.phase*.81);
     const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
-    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature)*(1-.83*b.dissolve)+drift;
+    const lateral=offset(b.curve,u)+across*(1+1.05*b.mature)*(1-.30*b.dissolve)+drift;
     const [vx,vy]=b.axis;
-    return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2)];
+    let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
+    if(b.contact && pt.contactWeight){
+      x+=pt.contactWeight*b.contact.dx;y+=pt.contactWeight*b.contact.dy;
+    }
+    return [x,y];
   }
   // Each texel records when smoke reaches this part of the drawing by travelling
   // inside its curls. The moving boundary is interpolated between texels.
@@ -297,6 +308,8 @@
       p.clearRect(x,y,w,h);
       const mouths=branches.filter(child=>child.upstream===b).map(child=>insetJoins[child.id]||child.join);
       if(b.upstream)mouths.push(b.anchor);
+      if(b.contact)mouths.push(b.contact.from);
+      for(const child of branches)if(child.contact?.other===b)mouths.push(child.contact.to);
       for(const [cx,cy] of mouths){
         const ramp=p.createRadialGradient(cx,cy,18,cx,cy,48);
         ramp.addColorStop(0,'black');ramp.addColorStop(1,'transparent');
@@ -418,7 +431,7 @@
       b.dissolve=root?0:ease(clamp((clearing-b.release)/b.linger));
       b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
-      for(const turn of b.turns)turn.twist=reduced.matches?0:(.47*Math.sin(time*turn.speed+turn.phase)+.29*Math.sin(time*turn.speed*.53+turn.phase*2.7));
+      for(const turn of b.turns)turn.twist=reduced.matches?0:(.36*Math.sin(time*turn.speed*.85+turn.phase)+.19*Math.sin(time*turn.speed*.48+turn.phase*2.7));
       b.wave=reduced.matches?0:Math.min(root?2:13,b.length*.045);
       if(root){[b.x,b.y]=b.anchor;}
       else {
@@ -432,6 +445,18 @@
         const origin=pose(b,point(b,0,0));
         b.x+=b.x-origin[0];b.y+=b.y-origin[1];
       }
+    }
+    // Both endpoints are sampled in the same frame. Blend the correction over
+    // the length of the incoming tendril so the curl stays attached as it moves.
+    for(const b of branches){
+      const c=b.contact;if(!c)continue;
+      c.dx=0;c.dy=0;
+      const weight=ease(clamp((Math.min(b.age,c.other.age)-.72)/.28))*(1-c.other.dissolve);
+      if(!weight)continue;
+      const source=pose(b,c.source),dest=pose(c.other,c.dest);
+      c.dx=(dest[0]-source[0])*weight;c.dy=(dest[1]-source[1])*weight;
+    }
+    for(const b of branches){
       if(b.age<=0||b.dissolve===1)continue;
       if(renderer)continue;
       b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
@@ -512,6 +537,19 @@
         if(b.upstream)cycleEnd=Math.max(cycleEnd,b.delay+b.duration);
         byId.set(b.id,b);return b;
       });
+      const contacts=[
+        [7961,[2286,526],7968,[2290,534],230],
+        [7962,[2758,1174],7964,[2758,1180],275],
+        [7965,[2525,1085],7966,[2506,1061],195],
+        [7966,[2519,1042],7964,[2536,1108],200],
+        [7973,[2722,848],7972,[2727,832],150]
+      ];
+      for(const [id,from,parent,to,radius] of contacts){
+        const b=byId.get(id),other=byId.get(parent),at=coordinates(b,...from);
+        b.contact={from,to,at,other,radius,dx:0,dy:0,source:point(b,...at),dest:point(other,...coordinates(other,...to))};
+        for(const rings of [b.fill,b.ink])for(const ring of rings)for(const p of ring)
+          p.contactWeight=ease(clamp(1-Math.hypot(p.along-at[0],p.across-at[1])/radius));
+      }
       // Give each new offshoot its own beat, after its parent has begun to unfold.
       const pending=branches.filter(b=>b.upstream);
       const scheduled=new Set(branches.filter(b=>!b.upstream));
