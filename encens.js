@@ -76,7 +76,7 @@
       const i=k>>1,axis=k%2,x=ring[2*i],y=ring[2*i+1];
       const [u,h]=coordinates(b,x/2,y/2);
       const distance=Math.min(...centers.map(([a,c])=>Math.hypot(u-a,h-c)));
-      const strength=ease(clamp(1-distance/150));
+      const strength=ease(clamp(1-distance/175));
       if(!strength)return v;
       // Average equal arc lengths on either side. Both edges of the ink bend together.
       function sample(sign,reach){
@@ -89,7 +89,7 @@
         }
         return v;
       }
-      return v+strength*((sample(1,36)+sample(-1,36)+sample(1,18)+sample(-1,18))/4-v)*.82;
+      return v+strength*((sample(1,54)+sample(-1,54)+sample(1,24)+sample(-1,24))/4-v)*.82;
     });
   }
   function prepare(branch) {
@@ -152,6 +152,21 @@
     // Smooth arrival times before extracting the outline. Keep the sentinel
     // border out of the filter so it cannot pull the front into little teeth.
     let values=Float32Array.from({length:w*h},(_,i)=>rgba[4*i]);
+    // Fill unused atlas texels from the nearest timed region before filtering.
+    const queue=new Int32Array(values.length);
+    let count=0;
+    for(let i=0;i<values.length;i++)if(values[i]<254)queue[count++]=i;
+    function extend(i,value){
+      if(values[i]<254)return;
+      values[i]=value;queue[count++]=i;
+    }
+    for(let head=0;head<count;head++){
+      const i=queue[head],v=values[i],col=i%w;
+      if(col>0)extend(i-1,v);
+      if(col<w-1)extend(i+1,v);
+      if(i>=w)extend(i-w,v);
+      if(i+w<values.length)extend(i+w,v);
+    }
     for(let pass=0;pass<3;pass++){
       for(const horizontal of [true,false]){
         const next=new Float32Array(values.length);
@@ -266,13 +281,26 @@
       precision highp float;varying vec2 tex;
       uniform sampler2D art,flow;uniform float age,opacity;uniform int pass;
       void main(){
-        vec3 a=texture2D(art,tex).rgb;
-        float arrive=texture2D(flow,tex).r;
+        vec4 a=texture2D(art,tex);
+        vec2 clock=texture2D(flow,tex).rg;
+        float arrive=clock.r+clock.g/255.;
         float front=age*252./255.-arrive;
         float edge=${derivatives?'max(.0003,fwidth(front))':'.003'};
         float reveal=age>=1.?1.:smoothstep(-.5*edge,.5*edge,front);
         float fill=a.r*reveal;
         float ink=max(a.g*reveal,age<1.?a.r*(1.-smoothstep(.0,edge,abs(front))):0.);
+        if(age<1. && fill>0.){
+          float side=a.a*31.875;
+          float unit=${derivatives?'clamp(fwidth(side),.45,3.)':'1.'};
+          float nose=front/edge*unit;
+          float radius=8.;
+          float blend=clamp(.5+.5*(side-nose)/radius,0.,1.);
+          float rim=mix(side,nose,blend)-radius*blend*(1.-blend);
+          float rounded=smoothstep(-unit*.5,unit*.5,rim);
+          float moving=1.-smoothstep(side,side+radius,nose);
+          fill=mix(fill,rounded,moving)*a.r;
+          ink=mix(ink,(1.-smoothstep(.35*unit,1.35*unit,abs(rim)))*a.r,moving);
+        }
         float occupied=max(fill,ink);
         if(pass==1){if(occupied<.36 || opacity<.035)discard;gl_FragColor=vec4(0.);return;}
         vec3 beige=vec3(1.,.9647,.8824),red=vec3(1.,0.,.118);
@@ -332,11 +360,26 @@
       p.clearRect(x,y,w,h);
       p.lineWidth=1.35;p.lineJoin='round';p.stroke(fill);
       const perimeter=p.getImageData(0,0,w,h).data;
+      // Interior distance in eighths of a drawing pixel, computed once per sprite.
+      const distance=new Uint8Array(w*h);
+      for(let i=0;i<distance.length;i++)distance[i]=pixels[4*i+3]>127?255:0;
+      for(const step of [1,-1]){
+        for(let n=0;n<distance.length;n++){
+          const i=step===1?n:distance.length-1-n,x=i%w,j=i-step*w;
+          if(x===0||x===w-1||j<0||j>=distance.length){distance[i]=0;continue;}
+          distance[i]=Math.min(distance[i],distance[i-step]+8,distance[j]+8,distance[j-step]+11,distance[j+step]+11);
+        }
+      }
       for(let j=0;j<pixels.length;j+=4){
-        pixels[j]=pixels[j+3];pixels[j+1]=Math.max(lines[j+3],perimeter[j+3]*joints[j+3]/255);pixels[j+2]=joints[j+3];pixels[j+3]=255;
+        pixels[j]=pixels[j+3];pixels[j+1]=Math.max(lines[j+3],perimeter[j+3]*joints[j+3]/255);pixels[j+2]=joints[j+3];pixels[j+3]=distance[j/4];
       }
       const art=texture(gl.RGBA,w,h,pixels);
-      const flow=texture(gl.LUMINANCE,f.values?f.w:1,f.values?f.h:1,f.values?Uint8Array.from(f.values,Math.round):new Uint8Array(1));
+      const clock=new Uint8Array(4*(f.values?.length||1));
+      if(f.values)for(let i=0;i<f.values.length;i++){
+        const value=f.values[i],high=Math.floor(value);
+        clock[4*i]=high;clock[4*i+1]=Math.round((value-high)*255);
+      }
+      const flow=texture(gl.RGBA,f.values?f.w:1,f.values?f.h:1,clock);
       const nx=Math.ceil(w/16),ny=Math.ceil(h/16),points=[],uvs=[],indices=[];
       for(let j=0;j<=ny;j++)for(let i=0;i<=nx;i++){
         const a=i/nx,d=j/ny;uvs.push(a,d);
@@ -375,7 +418,7 @@
           const sx=depth?(depth===1?.10:.17):0,sy=depth?(depth===1?.12:.20):0;
           gl.uniform4f(u.transform,1+sx,1+sy,depth?(depth===1?-65:65)-sx*1536:0,
             depth?(depth===1?-150:195)-sy*866:0);
-          gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth?.73:1));
+          gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth?.58:1));
           const s=b.sprite;
           gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,s.art);
           gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,s.flow);
@@ -507,7 +550,7 @@
           ctx.scale(depth===1?1.10:1.17,depth===1?1.12:1.20);
           ctx.translate(-1536,-866);
         }
-        paintBranch(b,swell*(depth?.73:1),depth);
+        paintBranch(b,swell*(depth?.58:1),depth);
         ctx.restore();
       }
 
