@@ -33,20 +33,16 @@
   part(8184,1811,965,204,504);
   part(8185,886,185,741,338,'mokona-ear mokona-ear-left');
   part('8185-right',1869,304,701,244,'mokona-ear mokona-ear-right');
-  // Stretch only the lower half of the same drawing, keeping the face still.
-  function bodySlice(y, height, className) {
-    const slice = svg('svg', {x:1408,y,width:695,height,viewBox:'1408 '+y+' 695 '+height,overflow:'hidden',class:className});
-    art.append(slice);
-    part(8186,1408,340,695,870,'',slice);
-  }
-  bodySlice(340,491,'');
-  bodySlice(830,380,'mokona-belly');
+  part(8186,1408,340,695,870);
   part(8187,1526,630,462,54);
   const paw = part(8188,1343,614,149,153);
   part(8189,1926,671,142,134);
   part(8190,1263,822,400,372);
   part(8191,1530,537,454,59);
   const mouths = [32,158,219].map((h,i) => part(8192+i,1675,656,168,h));
+  const figure = svg('g', {class:'mokona-figure'});
+  figure.append(...art.children);
+  art.append(figure);
   function mouth(index) {
     mouths.forEach((node,i) => node.style.display = i === index ? '' : 'none');
   }
