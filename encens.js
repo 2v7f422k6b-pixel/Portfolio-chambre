@@ -6,6 +6,7 @@
   const width = 3072, height = 1732;
   const layer = document.createElement('div');
   layer.dataset.roomV2Layer = 'encens';
+  layer.setAttribute('data-nana-load-ignore','');
   layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:90';
   function place(element,x,y,w,h) {
     Object.assign(element.style,{position:'absolute',left:x/width*100+'%',top:y/height*100+'%',width:w/width*100+'%',height:h/height*100+'%'});
