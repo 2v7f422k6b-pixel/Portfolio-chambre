@@ -13,6 +13,7 @@
   const bed = document.createElement('button');
   bed.type = 'button';
   bed.className = 'mokona-bed';
+  bed.setAttribute('data-room-v2-layer','mokona');
   bed.setAttribute('data-nana-load-ignore','');
   bed.hidden = true;
   scene.append(bed);
@@ -111,6 +112,7 @@
   const bedBubble = document.createElement('button');
   bedBubble.type = 'button';
   bedBubble.className = 'mokona-bed-bubble';
+  bedBubble.setAttribute('data-room-v2-layer','mokona-bubble');
   bedBubble.hidden = true;
   bedBubble.setAttribute('data-nana-load-ignore','');
   bedBubble.innerHTML = '<span aria-hidden="true"></span>';
@@ -174,20 +176,42 @@
     if (landingBox.right < 0 || landingBox.left > innerWidth) bed.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
     const target = bed.getBoundingClientRect();
     const scale = target.width/start.width;
-    const dx = target.left-start.left, dy = target.top-start.top;
+
+    // Hold the exact hovering pose, then blend the drawings on one moving surface.
+    const hover = getComputedStyle(floater).transform;
     floater.style.animation = 'none';
-    const flight = floater.animate([
-      {transform:'translate(0,0) scale(1)'},
-      {transform:'translate(0,5px) scale(1)',offset:.13},
-      {transform:'translate('+dx*.46+'px,'+(dy*.40-55)+'px) scale('+(scale*.45+.55)+')',offset:.52},
-      {transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')'}
-    ],{duration:reduced.matches?0:780,easing:'ease-in-out',fill:'forwards'});
-    await flight.finished;
-    sleep();
-    bed.style.visibility = '';
-    flight.cancel();
-    dialog.close();
-    landing = false;
+    floater.style.transform = hover;
+    const seated = sleepingArt.cloneNode(true);
+    seated.classList.add('mokona-landing-pose');
+    seated.style.height = (target.height / scale) + 'px';
+    floater.append(seated);
+    const duration = reduced.matches ? 0 : 1250;
+    const options = {duration,fill:'forwards'};
+    const base = floater.getBoundingClientRect();
+    const move = (x,y,k) => 'translate('+x+'px,'+y+'px) scale('+k+')';
+    floater.style.transform = 'none';
+    const unshifted = floater.getBoundingClientRect();
+    const hoverY = base.top-unshifted.top;
+    const dx = target.left-unshifted.left, dy = target.bottom-unshifted.top-start.height*scale;
+    const frames = Array.from({length:31},(_,i)=>{
+      const t=i/30, f=t*t*(3-2*t);
+      return {offset:t,transform:move(dx*f,hoverY*(1-f)+dy*f-68*Math.sin(Math.PI*f),1+(scale-1)*f)};
+    });
+    const transition = [
+      floater.animate(frames,options),
+      art.animate([{opacity:1},{opacity:1,offset:.60},{opacity:0,offset:.93},{opacity:0}],options),
+      seated.animate([{opacity:0},{opacity:0,offset:.60},{opacity:1,offset:.93},{opacity:1}],options)
+    ];
+    try { await transition[0].finished; }
+    finally {
+      sleep();
+      bed.style.visibility = '';
+      dialog.close();
+      seated.remove();
+      transition.forEach(animation=>animation.cancel());
+      floater.style.transform='';
+      landing = false;
+    }
   }
   next.onclick = () => {
     if (landing) return;
@@ -202,10 +226,26 @@
     floater.append(art);
     mouth(0);
   });
-  const foreground = document.createElement('div');
-  foreground.className = 'mokona-smoke';
-  foreground.inert = true;
-  dialog.append(foreground);
+  // Stage only the character under the existing smoke. Moving the live canvas
+  // between the room and a modal interrupts its observer and compositor on iPad.
+  const stage = document.createElement('div');
+  stage.className = 'mokona-stage';
+  stage.setAttribute('data-room-v2-layer','mokona-reveal');
+  stage.setAttribute('data-nana-load-ignore','');
+  stage.hidden = true;
+  scene.append(stage);
+  const content = dialog.querySelector('.mokona-content');
+  const heldImages = [];
+  scene.addEventListener('incense:start', () => {
+    if (heldImages.length) return;
+    const urls = new Set([...art.querySelectorAll('image'),...sleepingArt.querySelectorAll('image')].map(image=>image.getAttribute('href')));
+    for (const url of urls) {
+      const image = new Image();
+      image.src = url;
+      heldImages.push(image);
+      image.decode().catch(()=>{});
+    }
+  });
   scene.addEventListener('incense:reveal', event => {
     if (dialog.open || landing) return;
     lines = words[document.documentElement.lang === 'en' ? 'en' : 'fr'];
@@ -220,24 +260,28 @@
     glimmer.style.opacity = '0';
     floater.style.setProperty('--extent','-24%');
     next.disabled = true;
-    dialog.showModal();
-    foreground.append(event.detail);
+    stage.classList.add('revealing');
+    stage.append(content);
+    stage.hidden = false;
   });
   scene.addEventListener('incense:clearing', ({detail:{rect, clearing}}) => {
     if (!dialog.classList.contains('revealing')) return;
-    // Keep the original running smoke canvas in its room coordinates above the character.
-    Object.assign(foreground.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});
+    Object.assign(stage.style,{left:-rect.left+'px',top:-rect.top+'px',width:innerWidth+'px',height:innerHeight+'px'});
     const progress = Math.min(1,clearing/6.6);
     const unveiling = Math.max(0,(progress-.16)/.84);
     floater.style.setProperty('--extent',(-10+145*unveiling)+'%');
     const pulse = Math.sin(Math.PI * Math.min(1,clearing/5.4));
     glimmer.style.opacity = String(reduced.matches ? 0 : pulse * pulse);
-    dialog.style.setProperty('--veil',String(.24 * progress * progress));
+    const veil = String(.24 * progress * progress);
+    stage.style.setProperty('--veil',veil);
+    dialog.style.setProperty('--veil',veil);
     if (clearing < 7.8) return;
-    scene.append(foreground.firstElementChild);
+    stage.hidden = true;
+    dialog.append(content);
     dialog.classList.remove('revealing');
     paw.setAttribute('class','mokona-wave');
     next.disabled = false;
+    dialog.showModal();
     next.focus({preventScroll:true});
     if (!reduced.matches) dialog.querySelector('.mokona-card').animate([{opacity:0},{opacity:1}],{duration:420});
     speak();

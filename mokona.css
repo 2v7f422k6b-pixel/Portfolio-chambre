@@ -44,10 +44,16 @@
 @keyframes mokona-wave {to{transform:rotate(15deg)}}
 @media(prefers-reduced-motion:reduce){.mokona-dialog[open] * {animation:none!important}}
 
-.mokona-smoke {position:fixed; z-index:1; pointer-events:none}
+.mokona-stage {position:absolute;z-index:89;pointer-events:auto;background:rgb(255 235 242 / var(--veil,0))}
+.mokona-stage[hidden] {display:none!important}
+.mokona-float {position:relative}
+.mokona-landing-pose {position:absolute;bottom:0;left:0;width:100%;overflow:visible;pointer-events:none}
+.mokona-landing-pose .awake-part {opacity:0}
+.mokona-landing-pose .bed-ear-left {transform-origin:1417px 960px;transform:rotate(-39deg)}
+.mokona-landing-pose .bed-ear-right {transform-origin:1477px 944px;transform:rotate(44deg)}
 .mokona-glimmer {opacity:0;pointer-events:none}
-.mokona-dialog.revealing .mokona-card {visibility:hidden}
-.mokona-dialog.revealing .mokona-float {
+.revealing .mokona-card {visibility:hidden}
+.revealing .mokona-float {
   --reveal-mask:radial-gradient(ellipse farthest-corner at 51.8% 26.2%,black var(--extent),transparent calc(var(--extent) + 22%));
   -webkit-mask-image:var(--reveal-mask); mask-image:var(--reveal-mask);
 }
