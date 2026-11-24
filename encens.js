@@ -72,13 +72,17 @@
       along-=dy*twist;across+=dx*twist;
     }
     const p=b.growth;
-    const advance=along*p;
+    // The growth front stretches the tip first; width catches up downstream.
+    const distance=Math.min(1.4,Math.abs(along)/b.length);
+    const reach=p/(p+(1-p)*(.32+.9*distance));
+    const advance=along*reach;
+    const spread=ease(clamp((p-.27*distance)/(1-.27*distance)));
     const u=advance/b.length;
     const curl=Math.sin(Math.PI*p)*Math.sin(u*3.1)*Math.min(40,b.length*.11);
     const drift=Math.min(1,Math.abs(u)*2)*b.wave*Math.sin(u*4.5+b.phase);
-    const lateral=offset(b.curve,u)+across*p*(.22+.78*p)+curl+drift;
+    const lateral=offset(b.curve,u)+across*spread*(.1+.9*spread)*(1-.83*b.dissolve)+curl+drift;
     const [vx,vy]=b.axis;
-    return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral];
+    return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2)];
   }
   function paintRings(b,rings,color) {
     ctx.beginPath();
@@ -93,7 +97,7 @@
   let visible=true;
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
-    const expansion=Math.max(0,Math.min(elapsed,cycleEnd,(cycleEnd+2.4+cycleEnd*.7-elapsed)/.7));
+    const clearing=elapsed-cycleEnd-2.4;
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
     const w=Math.min(2400,Math.round(rect.width*(devicePixelRatio||1)));
@@ -102,9 +106,13 @@
     ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);
     for(const b of branches){
       const root=!b.upstream;
-      b.growth=root?1:ease(clamp((expansion-b.delay)/b.duration));
+      const age=clamp((elapsed-b.delay)/b.duration);
+      const pulse=age+.095*Math.sin(2*Math.PI*age+b.id)*Math.sin(Math.PI*age);
+      b.growth=root?1:ease(clamp(pulse));
+      b.dissolve=root?0:ease(clamp((clearing-b.release)/b.linger));
+      b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
-      for(const turn of b.turns)turn.twist=reduced.matches?0:.66*Math.sin(time*turn.speed+turn.phase);
+      for(const turn of b.turns)turn.twist=reduced.matches?0:(.47*Math.sin(time*turn.speed+turn.phase)+.29*Math.sin(time*turn.speed*.53+turn.phase*2.7));
       b.wave=reduced.matches?0:Math.min(root?2:2.6,b.length*.035);
       if(root){[b.x,b.y]=b.anchor;}
       else {
@@ -117,11 +125,13 @@
         b.x+=(b.anchor[0]-b.join[0])*b.growth;
         b.y+=(b.anchor[1]-b.join[1])*b.growth;
       }
-      if(b.growth<=.002)continue;
-      paintRings(b,b.fill,'rgba(255,246,225,.60)');
+      if(b.growth<=.002||b.dissolve===1)continue;
+      ctx.globalAlpha=1-b.dissolve;
+      paintRings(b,b.fill,'rgba(255,246,225,.80)');
       paintRings(b,b.ink,'#ff001e');
     }
-    if(sequence!==null && elapsed>=cycleEnd*1.7+2.4)sequence=null;
+    ctx.globalAlpha=1;
+    if(sequence!==null && clearing>=8)sequence=null;
   }
   function tick(now) {
     frame=0;
@@ -153,12 +163,17 @@
       const pending=branches.filter(b=>b.upstream);
       const scheduled=new Set(branches.filter(b=>!b.upstream));
       let last=-.25;
+      function variation(id){const n=Math.sin(id*91.37)*43758.53;return n-Math.floor(n);}
       while(pending.length){
         const eligible=pending.filter(b=>scheduled.has(b.upstream));
         const earliest=b=>Math.max(b.delay,b.upstream.upstream?b.upstream.delay+.38*b.upstream.duration:0);
         eligible.sort((a,b)=>earliest(a)-earliest(b));
         const b=eligible[0];
-        b.delay=Math.max(earliest(b),last+.34+(b.id%7)*.043);
+        const variationAtBranch=variation(b.id);
+        b.delay=Math.max(earliest(b),last+.17+.85*variationAtBranch**2);
+        b.duration*=.85+.48*variation(b.id+31);
+        b.release=2.1*(1-clamp(b.start/2200))+1.2*variation(b.id+73);
+        b.linger=2.8+1.6*variation(b.id+47);
         last=b.delay;scheduled.add(b);pending.splice(pending.indexOf(b),1);
       }
       cycleEnd=Math.max(...branches.map(b=>b.delay+b.duration));
