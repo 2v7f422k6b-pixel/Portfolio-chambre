@@ -482,9 +482,14 @@
         const origin=pose(b,b.origin);
         b.x+=b.x-origin[0];b.y+=b.y-origin[1];
   }
+  let mokonaRevealed = false;
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
     const clearing=elapsed-cycleEnd-5.2;
+    if (sequence !== null && clearing >= 3 && !mokonaRevealed) {
+      mokonaRevealed = true;
+      scene.dispatchEvent(new Event('incense:reveal'));
+    }
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
     const w=Math.min(4096,Math.round(rect.width*Math.max(1.5,devicePixelRatio||1)));
@@ -583,6 +588,7 @@
   function load() {
     if(loading)return loading;
     const flowImage=new Image();
+    flowImage.crossOrigin='anonymous';
     flowImage.src=assets+'flow-times.png';
     return loading ||= Promise.all([flowImage.decode(),fetch(assets+'branches-v2.json').then(r=>{
       if(!r.ok)throw Error('Missing incense drawings');
@@ -647,7 +653,7 @@
   button.addEventListener('click',async event=>{
     event.stopPropagation();
     await load();
-    if(sequence===null){sequence=performance.now();wake();}
+    if(sequence===null){mokonaRevealed=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
   });
 })();
 
