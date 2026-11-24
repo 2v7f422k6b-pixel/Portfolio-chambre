@@ -202,6 +202,10 @@
     const path=new Path2D();
     for(const ring of rings){
       const xy=ring.map(p=>pose(b,p));
+      for(const [x,y] of xy){
+        b.left=Math.min(b.left,x);b.right=Math.max(b.right,x);
+        b.top=Math.min(b.top,y);b.bottom=Math.max(b.bottom,y);
+      }
       for(let i=0;i<xy.length;i++){
         const prev=xy[(i+xy.length-1)%xy.length], p=xy[i], next=xy[(i+1)%xy.length];
         // Limit the rounding distance on long segments to retain fine drawn tips.
@@ -215,46 +219,45 @@
     }
     return path;
   }
-  const junctions=[
-    [7968,7980,-675,-282],[7961,7968,357,-112],[7957,7958,353,2],
-    [7967,7968,538,-27],[7966,7967,88,-132],[7966,7964,384,-75],
-    [7960,7955,686,214],[7960,7967,147,205],[7960,7966,26,151],
-    [7962,7963,906,-28],[7959,7981,325,-108],[7962,7965,314,-38]
-  ];
-  function joinedInk(b){
-    let ink=b.inkPath;
-    // In the small painted overlap, keep the exterior edge and hide the interior seam.
-    for(const seam of b.seams){
-      const other=seam.other;
-      if(other.age<1||other.dissolve>.02||b.age<1)continue;
-      const [x,y]=pose(seam.owner,seam.point);
-      const outside=new Path2D();
-      outside.rect(-width,-height,3*width,3*height);
-      outside.addPath(other.fillPath);
-      ctx.save();
-      const around=new Path2D();
-      around.arc(x,y,74,0,2*Math.PI);
-      ctx.clip(around);ctx.clip(outside,'evenodd');
-      ctx.fill(ink,'evenodd');ctx.restore();
-      const rest=new Path2D();
-      rest.rect(-width,-height,3*width,3*height);rest.addPath(around);
-      ctx.clip(rest,'evenodd');
+  // Composite just the ink in a reusable tile. Remove ink wherever another
+  // visible wisp already occupies that space, including during its reveal.
+  const tile=document.createElement('canvas'),pen=tile.getContext('2d');
+  function paintJoinedOutline(b){
+    const scale=canvas.width/width;
+    const x=Math.floor(b.left-4),y=Math.floor(b.top-4);
+    const w=Math.ceil((b.right+4-x)*scale),h=Math.ceil((b.bottom+4-y)*scale);
+    if(tile.width<w)tile.width=w;
+    if(tile.height<h)tile.height=h;
+    pen.setTransform(1,0,0,1,0,0);pen.clearRect(0,0,w,h);
+    pen.setTransform(scale,0,0,scale,-x*scale,-y*scale);
+    pen.save();
+    if(b.boundary)pen.clip(b.boundary,'evenodd');
+    pen.fillStyle=pen.strokeStyle='#ff001e';pen.lineJoin='round';pen.lineWidth=1.35;
+    pen.stroke(b.fillPath);pen.fill(b.inkPath,'evenodd');pen.restore();
+    if(b.boundary){
+      pen.save();pen.clip(b.fillPath,'evenodd');pen.strokeStyle='#ff001e';pen.lineWidth=1.35;pen.lineJoin='round';pen.stroke(b.boundary);pen.restore();
     }
-    ctx.fill(ink,'evenodd');
+    pen.globalCompositeOperation='destination-out';
+    for(const other of branches){
+      if(other===b||other.age<=0||other.dissolve>=1||
+         other.right<x||other.left>b.right+4||other.bottom<y||other.top>b.bottom+4)continue;
+      pen.save();
+      if(other.boundary)pen.clip(other.boundary,'evenodd');
+      pen.globalAlpha=1-other.dissolve;pen.fill(other.fillPath,'evenodd');pen.restore();
+    }
+    pen.globalCompositeOperation='source-over';
+    ctx.drawImage(tile,0,0,w,h,x,y,w/scale,h/scale);
   }
   function paintBranch(b,opacity,depth){
       const boundary=b.boundary;
       if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
       ctx.globalAlpha=opacity*(1-b.dissolve);
       ctx.fillStyle='rgba(255,246,225,.89)';ctx.fill(b.fillPath,'evenodd');
-      ctx.fillStyle=depth?'#e98a88':'#ff001e';if(depth||!b.seams.length)ctx.fill(b.inkPath,'evenodd');
-      else{ctx.save();joinedInk(b);ctx.restore();}
-      if(boundary){
-        ctx.restore();ctx.save();
-        ctx.clip(b.fillPath,'evenodd');
-        ctx.strokeStyle='#ff001e';ctx.lineWidth=2;ctx.lineJoin='round';
-        ctx.stroke(boundary);ctx.restore();
+      if(depth){
+        ctx.fillStyle=ctx.strokeStyle='#e98a88';ctx.lineWidth=1.35;
+        ctx.stroke(b.fillPath);ctx.fill(b.inkPath,'evenodd');
       }
+      if(boundary)ctx.restore();
   }
   let branches=[],sequence=null,frame=0,lastPaint=-Infinity,cycleEnd=0;
   let visible=true;
@@ -290,6 +293,7 @@
         b.x+=b.x-origin[0];b.y+=b.y-origin[1];
       }
       if(b.age<=0||b.dissolve===1)continue;
+      b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
       b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
       b.boundary=b.flow&&b.age<1?growthBoundary(b):null;
     }
@@ -314,6 +318,10 @@
       }
 
     }
+    for(const b of branches){
+      if(b.age<=0||b.dissolve>=1)continue;
+      ctx.globalAlpha=1-b.dissolve;paintJoinedOutline(b);
+    }
     ctx.globalAlpha=1;
     if(sequence!==null && clearing>=8)sequence=null;
   }
@@ -329,6 +337,7 @@
   observer.observe(canvas);
   document.addEventListener('visibilitychange',wake);
   new ResizeObserver(wake).observe(scene);
+  const insetJoins={"7966": [1878, 1240], "7967": [1726, 1224], "7965": [2166, 1372], "7964": [2257, 1116], "7968": [1971, 739], "7961": [1979, 729], "7963": [2661, 1367], "7959": [942, 1352], "7956": [1826, 892], "7955": [1589, 912], "7970": [2022, 411], "7974": [1700, 381], "7976": [1644, 382], "7981": [603, 1374], "7973": [2557, 709], "7982": [575, 1484], "7969": [2615, 351], "7972": [2484, 1031], "7980": [1218, 566], "7975": [1414, 180], "7957": [729, 832], "7971": [2111, 162], "7979": [998, 276], "7958": [437, 931], "7978": [912, 293], "7977": [256, 719]};
   let loading;
   function load() {
     if(loading)return loading;
@@ -342,7 +351,7 @@
       branches=data.map(raw=>{
         const b=prepare(raw);b.upstream=byId.get(b.parent);
         if(b.upstream)b.flow=readFlow(flowImage,b);
-        if(b.upstream)b.joinLocal=coordinates(b.upstream,...b.join);
+        if(b.upstream)b.joinLocal=coordinates(b.upstream,...(insetJoins[b.id]||b.join));
         if(b.upstream?.flow){
           const {x,y,w,h,values}=b.upstream.flow;
           const i=Math.round(clamp((b.join[0]-x)/(4*(w-1)))*(w-1));
@@ -353,12 +362,6 @@
         if(b.upstream)cycleEnd=Math.max(cycleEnd,b.delay+b.duration);
         byId.set(b.id,b);return b;
       });
-      for(const b of branches)b.seams=[];
-      for(const [a,z,u,h] of junctions){
-        const owner=byId.get(a),other=byId.get(z),site=point(owner,u,h);
-        owner.seams.push({owner,other,point:site});
-        other.seams.push({owner,other:owner,point:site});
-      }
       // Give each new offshoot its own beat, after its parent has begun to unfold.
       const pending=branches.filter(b=>b.upstream);
       const scheduled=new Set(branches.filter(b=>!b.upstream));
