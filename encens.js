@@ -51,6 +51,7 @@
         return points;
       });
     }
+    branch.extent=Math.max(branch.length,...branch.fill.map(ring=>Math.max(...ring.map(p=>Math.abs(p.along))))); 
     branch.duration=1.65+Math.min(2.2,branch.length/460);
     return branch;
   }
@@ -71,18 +72,34 @@
       const dx=along-turn.at[0],dy=across-turn.at[1];
       along-=dy*twist;across+=dx*twist;
     }
-    const p=b.growth;
-    // The growth front stretches the tip first; width catches up downstream.
-    const distance=Math.min(1.4,Math.abs(along)/b.length);
-    const reach=p/(p+(1-p)*(.32+.9*distance));
-    const advance=along*reach;
-    const spread=ease(clamp((p-.27*distance)/(1-.27*distance)));
+    const distance=Math.abs(along)/b.extent;
+    const age=b.age-.59*distance;
+    const spread=b.upstream?ease(clamp((age-.12)/.29)):1;
+    const reach=Math.min(Math.abs(along),b.extent*b.front);
+    const advance=Math.sign(along)*reach*(1+.035*b.mature);
     const u=advance/b.length;
-    const curl=Math.sin(Math.PI*p)*Math.sin(u*3.1)*Math.min(40,b.length*.11);
-    const drift=Math.min(1,Math.abs(u)*2)*b.wave*Math.sin(u*4.5+b.phase);
-    const lateral=offset(b.curve,u)+across*spread*(.1+.9*spread)*(1-.83*b.dissolve)+curl+drift;
+    const pin=clamp(Math.abs(u)*2);
+    const drift=pin*b.wave*Math.sin(u*4.5+b.phase);
+    const lateral=offset(b.curve,u)+across*spread*(1+.09*b.mature)*(1-.83*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     return [b.x+vx*advance-vy*lateral,b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2)];
+  }
+  // A fine moving tip leads the drawn silhouette. It fades locally as each
+  // section of the original drawing fills out behind it.
+  function paintThread(b) {
+    if(!b.upstream||b.age>=1||b.front<=0)return;
+    const count=Math.ceil(b.front*64);
+    ctx.strokeStyle='#ff001e';ctx.lineCap='round';ctx.lineWidth=2;
+    for(let i=0;i<count;i++){
+      const left=i/64,right=Math.min((i+1)/64,b.front);
+      const age=b.age-.59*(left+right)/2;
+      const opacity=(1-ease(clamp((age-.14)/.25)))*clamp(b.age/.045);
+      if(opacity<=0)continue;
+      const start=pose(b,{along:left*b.extent,across:0});
+      const end=pose(b,{along:right*b.extent,across:0});
+      ctx.globalAlpha=opacity*(1-b.dissolve);
+      ctx.beginPath();ctx.moveTo(...start);ctx.lineTo(...end);ctx.stroke();
+    }
   }
   function paintRings(b,rings,color) {
     ctx.beginPath();
@@ -106,14 +123,15 @@
     ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);
     for(const b of branches){
       const root=!b.upstream;
-      const age=clamp((elapsed-b.delay)/b.duration);
-      const pulse=age+.095*Math.sin(2*Math.PI*age+b.id)*Math.sin(Math.PI*age);
-      b.growth=root?1:ease(clamp(pulse));
+      b.age=root?1:Math.max(0,(elapsed-b.delay)/b.duration);
+      b.front=root?1:clamp(b.age/.59);
+      b.growth=root?1:ease(clamp(b.age));
+      b.mature=root||reduced.matches?0:1-Math.exp(-Math.max(0,b.age-1)*b.duration/5);
       b.dissolve=root?0:ease(clamp((clearing-b.release)/b.linger));
       b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
       for(const turn of b.turns)turn.twist=reduced.matches?0:(.47*Math.sin(time*turn.speed+turn.phase)+.29*Math.sin(time*turn.speed*.53+turn.phase*2.7));
-      b.wave=reduced.matches?0:Math.min(root?2:2.6,b.length*.035);
+      b.wave=reduced.matches?0:Math.min(root?2:5.5,b.length*.035);
       if(root){[b.x,b.y]=b.anchor;}
       else {
         const parent=b.upstream;
@@ -125,9 +143,10 @@
         b.x+=(b.anchor[0]-b.join[0])*b.growth;
         b.y+=(b.anchor[1]-b.join[1])*b.growth;
       }
-      if(b.growth<=.002||b.dissolve===1)continue;
+      if(b.front<=0||b.dissolve===1)continue;
+      paintThread(b);
       ctx.globalAlpha=1-b.dissolve;
-      paintRings(b,b.fill,'rgba(255,246,225,.80)');
+      paintRings(b,b.fill,'rgba(255,246,225,.89)');
       paintRings(b,b.ink,'#ff001e');
     }
     ctx.globalAlpha=1;
@@ -166,7 +185,7 @@
       function variation(id){const n=Math.sin(id*91.37)*43758.53;return n-Math.floor(n);}
       while(pending.length){
         const eligible=pending.filter(b=>scheduled.has(b.upstream));
-        const earliest=b=>Math.max(b.delay,b.upstream.upstream?b.upstream.delay+.38*b.upstream.duration:0);
+        const earliest=b=>Math.max(b.delay,b.upstream.upstream?b.upstream.delay+(.28+.59*clamp(Math.abs(b.joinLocal[0])/b.upstream.extent))*b.upstream.duration:0);
         eligible.sort((a,b)=>earliest(a)-earliest(b));
         const b=eligible[0];
         const variationAtBranch=variation(b.id);
