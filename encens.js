@@ -238,10 +238,10 @@
           const direction=depth===1?-1:1;
           ctx.translate(b.x,b.y);
           ctx.translate(swell*direction*65,swell*(depth===1?-150:195));
-          ctx.scale(1+swell*(depth===1?.37:.64),1+swell*(depth===1?.55:.83));
+          ctx.scale(1+swell*(depth===1?.25:.46),1+swell*(depth===1?.34:.53));
           ctx.translate(-b.x,-b.y);
         }
-        paintBranch(b,swell*(depth?.92:1),depth);
+        paintBranch(b,swell*(depth?.73:1),depth);
         ctx.restore();
       }
 
