@@ -10,7 +10,8 @@
   dialog.className = 'mokona-dialog';
   dialog.setAttribute('aria-labelledby', 'mokona-title');
   dialog.innerHTML = '<div class="mokona-content"><div class="mokona-float"></div><div class="mokona-card"><h2 id="mokona-title"></h2><p class="mokona-copy"><span aria-hidden="true"></span><span aria-hidden="true"></span></p><button type="button"></button></div></div>';
-  const bed = document.createElement('div');
+  const bed = document.createElement('button');
+  bed.type = 'button';
   bed.className = 'mokona-bed';
   bed.setAttribute('data-nana-load-ignore','');
   bed.hidden = true;
@@ -90,12 +91,84 @@
     }
     write();
   }
+  const sleepingArt = svg('svg',{viewBox:'1290 888 330 228','aria-hidden':'true'});
+  bed.append(sleepingArt);
+  // Both ears share a source layer; hinge each half at its attachment to the head.
+  for (const [x,width,side] of [[1296,150,'left'],[1446,170,'right']]) {
+    const ear = svg('g',{class:'bed-ear-'+side});
+    const clip = svg('svg',{x,y:891,width,height:81,viewBox:x+' 891 '+width+' 81',overflow:'hidden'});
+    sleepingArt.append(ear);
+    ear.append(clip);
+    part(8206,1296,891,320,81,'',clip);
+  }
+  part(8205,1292,932,304,177,'bed-body',sleepingArt);
+  part(8212,1369,1051,175,62,'',sleepingArt);
+  part(8207,1424,1028,84,35,'asleep-part',sleepingArt);
+  part(8208,1390,1006,145,38,'awake-part',sleepingArt);
+  part(8213,1401,977,100,29,'asleep-part',sleepingArt);
+  part(8214,1399,973,103,30,'awake-part',sleepingArt);
+  const bedMouths = [16,31,44].map((h,i)=>part(8209+i,1438,998,35,h,'',sleepingArt));
+  const bedBubble = document.createElement('button');
+  bedBubble.type = 'button';
+  bedBubble.className = 'mokona-bed-bubble';
+  bedBubble.hidden = true;
+  bedBubble.setAttribute('data-nana-load-ignore','');
+  bedBubble.innerHTML = '<span aria-hidden="true"></span>';
+  scene.append(bedBubble);
+  const bubbleText = bedBubble.firstChild;
+  let bedTimer, hint, letters;
+  const french = () => document.documentElement.lang !== 'en';
+  function bedMouth(index) {
+    bedMouths.forEach((node,i)=>node.style.display=i===index?'':'none');
+  }
+  function sleep() {
+    clearTimeout(bedTimer);
+    bedBubble.hidden = true;
+    bed.classList.remove('awake');
+    bed.setAttribute('aria-expanded','false');
+    bed.setAttribute('aria-label',french()?'Réveiller Mokona':'Wake Mokona');
+    bedMouth(0);
+  }
+  function showHint() {
+    if (letters >= hint.length || reduced.matches) {
+      letters = hint.length;
+      bubbleText.textContent = hint;
+      bedMouth(0);
+      return;
+    }
+    const ch = hint[letters++];
+    bubbleText.textContent = hint.slice(0,letters);
+    if (/[.,!?]/.test(ch)) bedMouth(0);
+    else if (letters % 3 === 1) bedMouth([1,2,1,0,1][Math.floor(letters/3)%5]);
+    bedTimer = setTimeout(showHint,/[.,!?]/.test(ch)?190:40);
+  }
+  function wakeOrDismiss(event) {
+    event.stopPropagation();
+    if (!bedBubble.hidden) {
+      if (letters < hint.length) {
+        clearTimeout(bedTimer);
+        letters = hint.length;
+        showHint();
+      } else sleep();
+      return;
+    }
+    hint = french()?'Psst… Essaie de toucher le coin du lit. De petites boules de suie s’y cachent !':'Psst… Try tapping the corner of the bed. Little soot sprites are hiding there!';
+    letters = 0;
+    bed.setAttribute('aria-expanded','true');
+    bed.classList.add('awake');
+    bedBubble.setAttribute('aria-label',hint);
+    bedBubble.hidden = false;
+    showHint();
+  }
+  bed.onclick = bedBubble.onclick = wakeOrDismiss;
+  sleep();
   async function settle() {
     if (landing) return;
     landing = true;
     finishLine();
     const start = art.getBoundingClientRect();
     dialog.querySelector('.mokona-card').style.visibility = 'hidden';
+    bed.style.visibility = 'hidden';
     bed.hidden = false;
     const landingBox = bed.getBoundingClientRect();
     if (landingBox.right < 0 || landingBox.left > innerWidth) bed.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
@@ -110,7 +183,8 @@
       {transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')'}
     ],{duration:reduced.matches?0:780,easing:'ease-in-out',fill:'forwards'});
     await flight.finished;
-    bed.append(art);
+    sleep();
+    bed.style.visibility = '';
     flight.cancel();
     dialog.close();
     landing = false;
@@ -123,6 +197,7 @@
   };
   dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) settle();});
   scene.addEventListener('incense:start', () => {
+    sleep();
     bed.hidden = true;
     floater.append(art);
     mouth(0);

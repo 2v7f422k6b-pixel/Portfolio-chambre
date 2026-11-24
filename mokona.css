@@ -32,8 +32,6 @@
 .mokona-copy span {grid-area:1 / 1}
 .mokona-copy span:first-child {visibility:hidden}
 .mokona-card button {font:inherit;color:inherit;min-height:44px;background:transparent;border:0;text-decoration:underline;cursor:pointer}
-.mokona-bed {position:absolute;left:47.7%;bottom:36%;width:5.7%;transform:translateX(-50%);pointer-events:none;z-index:89}
-.mokona-bed .mokona-art {width:100%}
 .mokona-dialog[open] .mokona-float {animation:mokona-hover 3s ease-in-out infinite}
 .mokona-ear-left {transform-origin:1600px 484px;--turn:4deg;--delay:-.5s}
 .mokona-ear-right {transform-origin:1900px 495px;--turn:-3deg;--delay:-.18s}
@@ -45,7 +43,6 @@
 @keyframes mokona-rebond {0%,100%{transform:translateY(-6000px)} 28%,65%{transform:translateY(0)} 95%{transform:translateY(-6000px)}}
 @keyframes mokona-wave {to{transform:rotate(15deg)}}
 @media(prefers-reduced-motion:reduce){.mokona-dialog[open] * {animation:none!important}}
-.mokona-bed {aspect-ratio:1810/1390}
 
 .mokona-smoke {position:fixed; z-index:1; pointer-events:none}
 .mokona-glimmer {opacity:0;pointer-events:none}
@@ -55,3 +52,23 @@
   -webkit-mask-image:var(--reveal-mask); mask-image:var(--reveal-mask);
 }
 .mokona-dialog .mokona-card button:focus-visible {outline:none!important;text-decoration-thickness:2px;text-underline-offset:.18em}
+
+.mokona-bed,.mokona-bed-bubble {position:absolute;z-index:91;padding:0;border:0;background:transparent;cursor:pointer;appearance:none}
+.mokona-bed {left:41.9922%;top:51.2702%;width:10.7422%;aspect-ratio:330/228}
+.mokona-bed svg {display:block;overflow:visible}
+.mokona-bed > svg {width:100%;height:100%}
+.mokona-bed svg svg {overflow:hidden}
+.mokona-bed .bed-body {transform-origin:1453px 1107px;animation:mokona-sleep 3.6s ease-in-out infinite}
+@keyframes mokona-sleep {50%{transform:scale(1.026,1.035)}}
+.mokona-bed .bed-ear-left {transform-origin:1417px 960px;transform:rotate(-39deg)}
+.mokona-bed .bed-ear-right {transform-origin:1477px 944px;transform:rotate(44deg)}
+.mokona-bed .bed-ear-left,.mokona-bed .bed-ear-right {transition:transform .48s ease-in-out}
+.mokona-bed .awake-part,.mokona-bed.awake .asleep-part {opacity:0}
+.mokona-bed .awake-part,.mokona-bed .asleep-part {transition:opacity .22s}
+.mokona-bed.awake .awake-part {opacity:1}
+.mokona-bed.awake .bed-body {animation:none}
+.mokona-bed.awake .bed-ear-left,.mokona-bed.awake .bed-ear-right {transform:rotate(0deg)}
+.mokona-bed-bubble {left:52.995%;top:45.15%;width:19.596%;aspect-ratio:602/302;background: url("assets/mokona/8215.webp") center / contain no-repeat;color:#c82148;font:clamp(13px,1.25vw,23px)/1.14 "Nana Trace UI",sans-serif;text-align:center}
+.mokona-bed-bubble span {display:block;width:74%;margin:auto}
+.mokona-bed[hidden],.mokona-bed-bubble[hidden] {display:none!important}
+@media(prefers-reduced-motion:reduce){.mokona-bed * {animation:none!important;transition:none!important}}
