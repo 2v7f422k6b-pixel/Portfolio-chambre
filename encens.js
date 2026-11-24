@@ -18,6 +18,10 @@
   const canvas = document.createElement('canvas');
   place(canvas,0,0,width,height);
   canvas.style.imageRendering='auto';
+  const accelerated=document.createElement('canvas');
+  let renderer;
+  try{renderer=smokeRenderer(accelerated);}catch(error){console.warn(error);}
+  if(renderer){place(accelerated,0,0,width,height);canvas.style.display='none';}
   const ctx=canvas.getContext('2d');
   if (!ctx) return;
   const button=document.createElement('button');
@@ -222,6 +226,121 @@
   // Composite just the ink in a reusable tile. Remove ink wherever another
   // visible wisp already occupies that space, including during its reveal.
   const tile=document.createElement('canvas'),pen=tile.getContext('2d');
+  function smokeRenderer(target){
+    const gl=target.getContext('webgl',{alpha:true,antialias:false,stencil:true,depth:false,premultipliedAlpha:true});
+    if(!gl||!gl.getContextAttributes().stencil)return null;
+    const program=gl.createProgram();
+    function shader(type,source){
+      const sh=gl.createShader(type);gl.shaderSource(sh,source);gl.compileShader(sh);
+      if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));
+      gl.attachShader(program,sh);gl.deleteShader(sh);
+    }
+    shader(gl.VERTEX_SHADER,`attribute vec2 position,uv;varying vec2 tex;
+      uniform vec4 transform;
+      void main(){tex=uv;vec2 p=position*transform.xy+transform.zw;
+      gl_Position=vec4(p*vec2(2./3072.,-2./1732.)+vec2(-1.,1.),0.,1.);}`);
+    shader(gl.FRAGMENT_SHADER,`precision highp float;varying vec2 tex;
+      uniform sampler2D art,flow;uniform float age,opacity;uniform int pass;
+      void main(){
+        vec3 a=texture2D(art,tex).rgb;
+        float arrive=texture2D(flow,tex).r;
+        float front=age*252./255.-arrive;
+        float reveal=age>=1.?1.:smoothstep(-.003,.003,front);
+        float fill=a.r*reveal;
+        float ink=max(a.g*reveal,age<1.?a.r*(1.-smoothstep(.0,.004,abs(front))):0.);
+        if(pass==1){if(fill*opacity<.5)discard;gl_FragColor=vec4(0.);return;}
+        vec3 beige=vec3(1.,.9647,.8824),red=vec3(1.,0.,.118);
+        float f=fill*.89*opacity,i=ink*opacity;
+        if(pass==2){gl_FragColor=vec4(red*i,i);return;}
+        if(pass==0){gl_FragColor=vec4(beige*f,f);return;}
+        gl_FragColor=vec4(beige*f*(1.-i)+vec3(.914,.541,.533)*i,f*(1.-i)+i);
+      }`);
+    gl.linkProgram(program);
+    if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+    gl.useProgram(program);
+    const position=gl.getAttribLocation(program,'position'),uv=gl.getAttribLocation(program,'uv');
+    gl.enableVertexAttribArray(position);gl.enableVertexAttribArray(uv);
+    const u={};for(const key of ['transform','age','opacity','pass','art','flow'])u[key]=gl.getUniformLocation(program,key);
+    gl.uniform1i(u.art,0);gl.uniform1i(u.flow,1);
+    function texture(format,w,h,data){
+      const id=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,id);
+      for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.LINEAR);
+      for(const p of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);
+      gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+      gl.texImage2D(gl.TEXTURE_2D,0,format,w,h,0,format,gl.UNSIGNED_BYTE,data);return id;
+    }
+    function buffer(type,data,usage){
+      const buf=gl.createBuffer();gl.bindBuffer(type,buf);gl.bufferData(type,data,usage);return buf;
+    }
+    function prepareSprite(b){
+      // Rasterize the smoothed original outlines at their native resolution once.
+      [b.x,b.y]=b.anchor;b.mature=b.wave=b.phase=b.rise=b.dissolve=0;
+      for(const t of b.turns)t.twist=0;
+      b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
+      const fill=outline(b,b.fill),ink=outline(b,b.ink);
+      const f=b.flow||{x:Math.floor(b.left)-4,y:Math.floor(b.top)-4,
+        w:Math.ceil((b.right-b.left+12)/4),h:Math.ceil((b.bottom-b.top+12)/4)};
+      const w=f.w*4,h=f.h*4,x=f.x-2,y=f.y-2;
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const p=c.getContext('2d',{willReadFrequently:true});p.translate(-x,-y);
+      p.fill(fill,'evenodd');const pixels=p.getImageData(0,0,w,h).data;
+      p.clearRect(x,y,w,h);p.lineWidth=1.35;p.lineJoin='round';p.stroke(fill);p.fill(ink,'evenodd');
+      const lines=p.getImageData(0,0,w,h).data;
+      for(let j=0;j<pixels.length;j+=4){pixels[j]=pixels[j+3];pixels[j+1]=lines[j+3];pixels[j+3]=255;}
+      const art=texture(gl.RGBA,w,h,pixels);
+      const flow=texture(gl.LUMINANCE,f.values?f.w:1,f.values?f.h:1,f.values?Uint8Array.from(f.values,Math.round):new Uint8Array(1));
+      const nx=Math.ceil(w/16),ny=Math.ceil(h/16),points=[],uvs=[],indices=[];
+      for(let j=0;j<=ny;j++)for(let i=0;i<=nx;i++){
+        const a=i/nx,d=j/ny;uvs.push(a,d);
+        points.push(point(b,...coordinates(b,x+w*a,y+h*d)));
+        if(i<nx&&j<ny){const k=j*(nx+1)+i;indices.push(k,k+1,k+nx+1,k+1,k+nx+2,k+nx+1);}
+      }
+      const coords=new Float32Array(uvs.length);
+      b.sprite={art,flow,points,coords,pos:buffer(gl.ARRAY_BUFFER,coords,gl.DYNAMIC_DRAW),
+        uv:buffer(gl.ARRAY_BUFFER,new Float32Array(uvs),gl.STATIC_DRAW),
+        indices:buffer(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW),count:indices.length};
+    }
+    function render(list){
+      const active=list.filter(b=>b.age>0&&b.dissolve<1);
+      gl.viewport(0,0,target.width,target.height);gl.stencilMask(255);
+      gl.clear(gl.COLOR_BUFFER_BIT|gl.STENCIL_BUFFER_BIT);
+      for(const b of active){
+        const s=b.sprite;
+        for(let i=0;i<s.points.length;i++){const xy=pose(b,s.points[i]);s.coords[2*i]=xy[0];s.coords[2*i+1]=xy[1];}
+        gl.bindBuffer(gl.ARRAY_BUFFER,s.pos);gl.bufferSubData(gl.ARRAY_BUFFER,0,s.coords);
+      }
+      gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+      for(const pass of [4,3,0,1,2]){
+        gl.uniform1i(u.pass,pass);
+        if(pass===1){
+          gl.enable(gl.STENCIL_TEST);gl.colorMask(false,false,false,false);
+          gl.stencilFunc(gl.ALWAYS,0,255);gl.stencilOp(gl.KEEP,gl.KEEP,gl.INCR);
+        }
+        if(pass===2){
+          gl.colorMask(true,true,true,true);gl.stencilFunc(gl.GEQUAL,1,255);
+          gl.stencilOp(gl.KEEP,gl.KEEP,gl.KEEP);
+        }
+        for(const b of active){
+          const depth=pass>=3?pass-2:0;
+          const swell=depth?ease(clamp((b.age-1.05-depth*.26)*b.duration/4.5)):1;
+          if(depth&&(!b.upstream||!swell))continue;
+          const sx=depth?swell*(depth===1?.25:.46):0,sy=depth?swell*(depth===1?.34:.53):0;
+          gl.uniform4f(u.transform,1+sx,1+sy,depth?swell*(depth===1?-65:65)-sx*b.x:0,
+            depth?swell*(depth===1?-150:195)-sy*b.y:0);
+          gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth?.73:1));
+          const s=b.sprite;
+          gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,s.art);
+          gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,s.flow);
+          gl.bindBuffer(gl.ARRAY_BUFFER,s.pos);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
+          gl.bindBuffer(gl.ARRAY_BUFFER,s.uv);gl.vertexAttribPointer(uv,2,gl.FLOAT,false,0,0);
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,s.indices);gl.drawElements(gl.TRIANGLES,s.count,gl.UNSIGNED_SHORT,0);
+        }
+      }
+      gl.disable(gl.STENCIL_TEST);
+    }
+    return {prepareSprite,render};
+  }
+
   function paintJoinedOutline(b){
     const scale=canvas.width/width;
     const x=Math.floor(b.left-4),y=Math.floor(b.top-4);
@@ -268,8 +387,10 @@
     const rect=scene.getBoundingClientRect();
     const w=Math.min(4096,Math.round(rect.width*Math.max(1.5,devicePixelRatio||1)));
     if (!w) return;
-    if(canvas.width!==w){canvas.width=w;canvas.height=Math.round(w*height/width);}
-    ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);
+    if(renderer){
+      if(accelerated.width!==w){accelerated.width=w;accelerated.height=Math.round(w*height/width);}
+    }else if(canvas.width!==w){canvas.width=w;canvas.height=Math.round(w*height/width);}
+    if(!renderer){ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);}
     for(const b of branches){
       const root=!b.upstream;
       b.age=root?1:Math.max(0,(elapsed-b.delay)/b.duration);
@@ -293,9 +414,15 @@
         b.x+=b.x-origin[0];b.y+=b.y-origin[1];
       }
       if(b.age<=0||b.dissolve===1)continue;
+      if(renderer)continue;
       b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
       b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
       b.boundary=b.flow&&b.age<1?growthBoundary(b):null;
+    }
+    if(renderer){
+      renderer.render(branches);
+      if(sequence!==null&&clearing>=8)sequence=null;
+      return;
     }
     // A broad bank moves in behind the foreground curls as they mature.
     // Draw the farthest smoke first so the hand-drawn foreground stays legible.
@@ -334,10 +461,14 @@
   }
   function wake(){if(!frame)frame=requestAnimationFrame(tick);}
   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)wake();});
-  observer.observe(canvas);
+  observer.observe(renderer?accelerated:canvas);
   document.addEventListener('visibilitychange',wake);
   new ResizeObserver(wake).observe(scene);
   const insetJoins={"7966": [1878, 1240], "7967": [1726, 1224], "7965": [2166, 1372], "7964": [2257, 1116], "7968": [1971, 739], "7961": [1979, 729], "7963": [2661, 1367], "7959": [942, 1352], "7956": [1826, 892], "7955": [1589, 912], "7970": [2022, 411], "7974": [1700, 381], "7976": [1644, 382], "7981": [603, 1374], "7973": [2557, 709], "7982": [575, 1484], "7969": [2615, 351], "7972": [2484, 1031], "7980": [1218, 566], "7975": [1414, 180], "7957": [729, 832], "7971": [2111, 162], "7979": [998, 276], "7958": [437, 931], "7978": [912, 293], "7977": [256, 719]};
+  accelerated.addEventListener('webglcontextlost',()=>{
+    renderer=null;accelerated.style.display='none';canvas.style.display='';
+    observer.disconnect();observer.observe(canvas);wake();
+  });
   let loading;
   function load() {
     if(loading)return loading;
@@ -380,6 +511,12 @@
         last=b.delay;scheduled.add(b);pending.splice(pending.indexOf(b),1);
       }
       cycleEnd=Math.max(...branches.map(b=>b.delay+b.duration));
+      if(renderer){
+        try{branches.forEach(renderer.prepareSprite);}catch(error){
+          console.warn(error);renderer=null;accelerated.style.display='none';canvas.style.display='';
+          observer.disconnect();observer.observe(canvas);
+        }
+      }
       wake();
     }).catch(error=>{loading=null;throw error;});
   }
