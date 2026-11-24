@@ -115,7 +115,7 @@
   bedBubble.setAttribute('data-room-v2-layer','mokona-bubble');
   bedBubble.hidden = true;
   bedBubble.setAttribute('data-nana-load-ignore','');
-  bedBubble.innerHTML = '<span aria-hidden="true"></span>';
+  bedBubble.innerHTML = '<span aria-hidden="true"></span><span aria-hidden="true" class="hint-space"></span>';
   scene.append(bedBubble);
   const bubbleText = bedBubble.firstChild;
   let bedTimer, hint, letters;
@@ -156,6 +156,7 @@
     }
     hint = french()?'Psst… Essaie de toucher le coin du lit. De petites boules de suie s’y cachent !':'Psst… Try tapping the corner of the bed. Little soot sprites are hiding there!';
     letters = 0;
+    bedBubble.lastElementChild.textContent = hint;
     bed.setAttribute('aria-expanded','true');
     bed.classList.add('awake');
     bedBubble.setAttribute('aria-label',hint);
@@ -169,7 +170,8 @@
     landing = true;
     finishLine();
     const start = art.getBoundingClientRect();
-    dialog.querySelector('.mokona-card').style.visibility = 'hidden';
+    const card = dialog.querySelector('.mokona-card');
+    dialog.style.setProperty('--veil','0');
     bed.style.visibility = 'hidden';
     bed.hidden = false;
     const landingBox = bed.getBoundingClientRect();
@@ -185,22 +187,26 @@
     seated.classList.add('mokona-landing-pose');
     seated.style.height = (target.height / scale) + 'px';
     floater.append(seated);
-    const duration = reduced.matches ? 0 : 1250;
+    const duration = reduced.matches ? 0 : 1650;
     const options = {duration,fill:'forwards'};
     const base = floater.getBoundingClientRect();
     const move = (x,y,k) => 'translate('+x+'px,'+y+'px) scale('+k+')';
     floater.style.transform = 'none';
     const unshifted = floater.getBoundingClientRect();
     const hoverY = base.top-unshifted.top;
-    const dx = target.left-unshifted.left, dy = target.bottom-unshifted.top-start.height*scale;
+    const dx = target.left + target.width/2 - unshifted.left - start.width/2;
+    const dy = target.bottom - unshifted.top - start.height;
     const frames = Array.from({length:31},(_,i)=>{
       const t=i/30, f=t*t*(3-2*t);
-      return {offset:t,transform:move(dx*f,hoverY*(1-f)+dy*f-68*Math.sin(Math.PI*f),1+(scale-1)*f)};
+      const k = Math.pow(scale,f);
+      // Follow the centre of the feet while the drawing recedes in perspective.
+      return {offset:t,transform:move(dx*f + start.width*(1-k)/2, hoverY*(1-f) + dy*f + start.height*(1-k) - 48*Math.sin(Math.PI*f), k)};
     });
     const transition = [
       floater.animate(frames,options),
-      art.animate([{opacity:1},{opacity:1,offset:.60},{opacity:0,offset:.93},{opacity:0}],options),
-      seated.animate([{opacity:0},{opacity:0,offset:.60},{opacity:1,offset:.93},{opacity:1}],options)
+      card.animate([{opacity:1},{opacity:0,offset:.24},{opacity:0}],options),
+      art.animate([{opacity:1},{opacity:1,offset:.69},{opacity:0,offset:.96},{opacity:0}],options),
+      seated.animate([{opacity:0},{opacity:0,offset:.69},{opacity:1,offset:.96},{opacity:1}],options)
     ];
     try { await transition[0].finished; }
     finally {
