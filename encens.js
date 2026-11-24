@@ -588,6 +588,7 @@
   function load() {
     if(loading)return loading;
     const flowImage=new Image();
+    flowImage.crossOrigin='anonymous';
     flowImage.src=assets+'flow-times.png';
     return loading ||= Promise.all([flowImage.decode(),fetch(assets+'branches-v2.json').then(r=>{
       if(!r.ok)throw Error('Missing incense drawings');
