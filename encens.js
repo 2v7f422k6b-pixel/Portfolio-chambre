@@ -17,6 +17,7 @@
   place(bowl,1833,1406,60,40);
   const canvas = document.createElement('canvas');
   place(canvas,0,0,width,height);
+  canvas.style.imageRendering='auto';
   const ctx=canvas.getContext('2d');
   if (!ctx) return;
   const button=document.createElement('button');
@@ -166,26 +167,32 @@
     }
     return path;
   }
-  function traceRings(b,rings) {
-    ctx.beginPath();
+  function outline(b,rings){
+    const path=new Path2D();
     for(const ring of rings){
-      const start=pose(b,ring[0]);ctx.moveTo(start[0],start[1]);
-      for(let i=1;i<ring.length;i++){const pt=pose(b,ring[i]);ctx.lineTo(pt[0],pt[1]);}
-      ctx.closePath();
+      const xy=ring.map(p=>pose(b,p));
+      for(let i=0;i<xy.length;i++){
+        const prev=xy[(i+xy.length-1)%xy.length], p=xy[i], next=xy[(i+1)%xy.length];
+        // Limit the rounding distance on long segments to retain fine drawn tips.
+        const before=Math.min(.5,6/(Math.hypot(prev[0]-p[0],prev[1]-p[1])||1));
+        const after=Math.min(.5,6/(Math.hypot(next[0]-p[0],next[1]-p[1])||1));
+        const x=p[0]+before*(prev[0]-p[0]),y=p[1]+before*(prev[1]-p[1]);
+        if(i===0)path.moveTo(x,y);else path.lineTo(x,y);
+        path.quadraticCurveTo(p[0],p[1],p[0]+after*(next[0]-p[0]),p[1]+after*(next[1]-p[1]));
+      }
+      path.closePath();
     }
-  }
-  function paintRings(b,rings,color){
-    traceRings(b,rings);ctx.fillStyle=color;ctx.fill('evenodd');
+    return path;
   }
   function paintBranch(b,opacity,depth){
       const boundary=b.boundary;
       if(boundary){ctx.save();ctx.clip(boundary,'evenodd');}
       ctx.globalAlpha=opacity*(1-b.dissolve);
-      paintRings(b,b.fill,'rgba(255,246,225,.89)');
-      paintRings(b,b.ink,depth?'#e98a88':'#ff001e');
+      ctx.fillStyle='rgba(255,246,225,.89)';ctx.fill(b.fillPath,'evenodd');
+      ctx.fillStyle=depth?'#e98a88':'#ff001e';ctx.fill(b.inkPath,'evenodd');
       if(boundary){
         ctx.restore();ctx.save();
-        traceRings(b,b.fill);ctx.clip('evenodd');
+        ctx.clip(b.fillPath,'evenodd');
         ctx.strokeStyle='#ff001e';ctx.lineWidth=2;ctx.lineJoin='round';
         ctx.stroke(boundary);ctx.restore();
       }
@@ -197,7 +204,7 @@
     const clearing=elapsed-cycleEnd-5.2;
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
-    const w=Math.min(2400,Math.round(rect.width*(devicePixelRatio||1)));
+    const w=Math.min(4096,Math.round(rect.width*Math.max(1.5,devicePixelRatio||1)));
     if (!w) return;
     if(canvas.width!==w){canvas.width=w;canvas.height=Math.round(w*height/width);}
     ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);
@@ -223,6 +230,7 @@
         b.y+=(b.anchor[1]-b.join[1])*b.growth;
       }
       if(b.age<=0||b.dissolve===1)continue;
+      b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
       b.boundary=b.flow&&b.age<1?growthBoundary(b):null;
     }
     // A broad bank moves in behind the foreground curls as they mature.
