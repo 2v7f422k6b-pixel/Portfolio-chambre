@@ -49,7 +49,7 @@
 .mokona-float {position:relative}
 .mokona-landing-pose {position:absolute;bottom:0;left:0;width:100%;overflow:visible;pointer-events:none}
 .mokona-landing-pose .awake-part {opacity:0}
-.mokona-landing-pose .bed-ear-left {transform-origin:1417px 960px;transform:rotate(-39deg)}
+.mokona-landing-pose .bed-ear-left {transform-origin:1417px 960px;transform:translate(5px,2px) rotate(-39deg)}
 .mokona-landing-pose .bed-ear-right {transform-origin:1477px 944px;transform:rotate(44deg)}
 .mokona-glimmer {opacity:0;pointer-events:none}
 .revealing .mokona-card {visibility:hidden}
@@ -66,7 +66,7 @@
 .mokona-bed svg svg {overflow:hidden}
 .mokona-bed .bed-body {transform-origin:1453px 1107px;animation:mokona-sleep 3.6s ease-in-out infinite}
 @keyframes mokona-sleep {50%{transform:scale(1.026,1.035)}}
-.mokona-bed .bed-ear-left {transform-origin:1417px 960px;transform:rotate(-39deg)}
+.mokona-bed .bed-ear-left {transform-origin:1417px 960px;transform:translate(5px,2px) rotate(-39deg)}
 .mokona-bed .bed-ear-right {transform-origin:1477px 944px;transform:rotate(44deg)}
 .mokona-bed .bed-ear-left,.mokona-bed .bed-ear-right {transition:transform .48s ease-in-out}
 .mokona-bed .awake-part,.mokona-bed.awake .asleep-part {opacity:0}
@@ -75,6 +75,9 @@
 .mokona-bed.awake .bed-body {animation:none}
 .mokona-bed.awake .bed-ear-left,.mokona-bed.awake .bed-ear-right {transform:rotate(0deg)}
 .mokona-bed-bubble {left:52.995%;top:45.15%;width:19.596%;aspect-ratio:602/302;background: url("assets/mokona/8215.webp") center / contain no-repeat;color:#c82148;font:clamp(13px,1.25vw,23px)/1.14 "Nana Trace UI",sans-serif;text-align:center}
-.mokona-bed-bubble span {display:block;width:74%;margin:auto}
+.mokona-bed-bubble {display:grid;grid-template-columns:100%;align-content:center;justify-items:start;container-type:inline-size}
+.mokona-bed-bubble span {grid-area:1/1;width:70%;margin-left:8.5%;font-size:clamp(10px,5.7cqw,24px);text-align:center;align-self:start;line-height:1.16}
+.mokona-bed-bubble .hint-space {visibility:hidden}
+.mokona-dialog::backdrop {transition:background-color .45s ease-out}
 .mokona-bed[hidden],.mokona-bed-bubble[hidden] {display:none!important}
 @media(prefers-reduced-motion:reduce){.mokona-bed * {animation:none!important;transition:none!important}}
