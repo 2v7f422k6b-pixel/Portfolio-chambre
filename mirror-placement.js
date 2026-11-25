@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   const query = new URLSearchParams(location.search);
-  const redrawn = query.get('chambreV2') === '1';
+  const redrawn = window.NanaRoomV2;
   const svg = document.getElementById('hotspots');
   if (!svg || document.getElementById('nana-wall-mirror')) return;
 

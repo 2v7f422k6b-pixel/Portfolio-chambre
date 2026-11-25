@@ -22,7 +22,7 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const WIDTH = 1670, HEIGHT = 942;
-  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const redrawn = window.NanaRoomV2;
   const KEY = redrawn ? 'nana-poster-alignment-room-v2' : 'nana-poster-alignment-v1';
   const COLLECTION_KEY = redrawn ? 'nana-poster-collection-room-v2' : 'nana-poster-collection-v1';
   const BASE_COUNT = clickable.length;

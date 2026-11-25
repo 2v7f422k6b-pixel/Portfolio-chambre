@@ -1,5 +1,5 @@
 (() => {
-  if (new URLSearchParams(location.search).get('chambreV2') !== '1') return;
+  if (!window.NanaRoomV2) return;
   const scene = document.querySelector('#play-scene');
   if (!scene) return;
   const assets = 'assets/test-encens/';

@@ -1,14 +1,7 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="welcome-door-pending">
 <head>
-  <script>
-    (() => {
-      const url = new URL(location.href);
-      if (url.searchParams.get('chambreV2') === '1') return;
-      url.searchParams.set('chambreV2', '1');
-      history.replaceState(history.state, '', url.href);
-    })();
-  </script>
+  <script>window.NanaRoomV2 = true;</script>
 <!-- PRELAUNCH-NOINDEX: remove only on the final public site at launch. -->
 <meta name="robots" content="noindex, noimageindex, follow">
 <!-- /PRELAUNCH-NOINDEX -->
@@ -997,12 +990,9 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 #alice-floor-view.alice-entering button {visibility:hidden;}
 </style>
 <script>
-  if (new URLSearchParams(location.search).get('chambreV2') === '1') {
-    document.documentElement.classList.add('welcome-door-pending');
-    document.addEventListener('DOMContentLoaded', () => {
-      document.documentElement.classList.remove('welcome-door-pending');
-    }, { once: true });
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.documentElement.classList.remove('welcome-door-pending');
+  }, { once: true });
 </script>
 <style>
   .welcome-door-pending #welcome:not(:has(.door-screen)) > .welcome-panel { visibility: hidden !important; }
@@ -1015,7 +1005,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   }
 </style>
 <link rel="stylesheet" href="welcome-door.css?v=10">
-<script defer src="welcome-door.js?v=10"></script>
+<script defer src="welcome-door.js?v=20261125-default-v2"></script>
 </head>
 <body>
   <div id="app" class="mode-select">
@@ -1081,8 +1071,6 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
           </template>
           <script>
             (() => {
-              if (new URLSearchParams(location.search).get('chambreV2') !== '1') return;
-
               const template = document.getElementById('room-redraw-preview-image');
               const preview = template.content.firstElementChild.cloneNode(true);
               const viewport = document.getElementById('play-viewport');
@@ -1625,14 +1613,14 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   <script src="gacha-collection.js?v=5"></script>
 <script src="nana-progress.js?v=fish-hint-1" defer></script>
   <script src="nana-keepsakes.js?v=20261116-desktop-review-1" defer></script>
-  <script src="app.js?v=20261122-closeup-loader" defer></script>
+  <script src="app.js?v=20261125-default-v2" defer></script>
   <script src="do-nothing-club.js?v=20261116-feedback" defer></script>
   <script src="literary-zones.js?v=20261116-feedback" defer></script>
 
   <script src="pixel-hotspots.js?v=figurines-first-click-20261103-2" defer></script>
   <script src="talking-figurines.js?v=20261118-figurines" defer></script>
   <script src="room-hover.js?v=20261112-resources-1" defer></script>
-  <script src="pixel-outlines.js?v=20261116-gachapon-1" defer></script>
+  <script src="pixel-outlines.js?v=20261125-default-v2" defer></script>
   <script src="cat-interaction.js?v=20261118-petales" defer></script>
    <script src="coloring-addon.js?v=20261111-reward-1" defer></script>
   <script src="nana-handwriting.js?v=1" defer></script>
@@ -1732,16 +1720,16 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 
 
 
-<script src="poster-fit.js?v=20261118-halo-affiches" defer></script><script src="mirror-placement.js?v=halo11" defer></script><script src="flower-lamp-placement.js?v=20261119-v2-fluide" defer></script>
+<script src="poster-fit.js?v=20261125-default-v2" defer></script><script src="mirror-placement.js?v=20261125-default-v2" defer></script><script src="flower-lamp-placement.js?v=20261125-default-v2" defer></script>
 <script src="fortune-cookie-placement.js?v=20261118-biscuit" defer></script>
 <script src="interactive-decor-outlines.js?v=20261106-unified-1" defer></script>
-<script src="glow-stars.js?v=20261118-retirer-etoile" defer></script>
+<script src="glow-stars.js?v=20261125-default-v2" defer></script>
 <script src="night-decor-dimming.js?v=20261106-stable-night-decor-1" defer></script>
 
 <script src="kero-wake.js?v=20261118-interactions" defer></script>
 <script src="room-object-motion.js?v=20261118-van-bille" defer></script>
 <script src="room-zone-registry.js?v=20261118-retours" defer></script>
-<script src="ipad-clock.js?v=20261118-atelier" defer></script>
+<script src="ipad-clock.js?v=20261125-default-v2" defer></script>
   <script src="rug-secret.js?v=20261116-floor-clue" defer></script>
   <script src="twist-reality.js?v=20261118-cd-blast" defer></script>
 <script src="guitar-interaction.js?v=20261118-retours" defer></script>
@@ -1752,7 +1740,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   <script src="nana-shop-bag.js?v=20261108-routes" defer></script>
   <script src="nana-shop-bag-art.js?v=20261104-2" defer></script>
 <script src="ribbon-placement-editor.js?v=20261112-autosave-2"></script>
-  <script src="nana-admin.js?v=20261118-etoiles-v2" defer></script>
+  <script src="nana-admin.js?v=20261125-default-v2" defer></script>
 <script src="severance.js?v=20261116-floor-clue" defer></script>
 <script src="kodama.js?v=20261116-live-review-2" defer></script>
 <script src="window-ufo.js?v=20261116-room-feedback-1" defer></script>
@@ -1824,15 +1812,15 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 <script src="bead-box.js?v=20261112-resources-1" defer></script>
 <script src="postcard-rack-original.js?v=20261106-front-bars-2" defer></script>
 <script src="memory-box-content.js?v=20261109-drawn-memories-1" defer></script>
-<script src="memory-box.js?v=20261118-retours" defer></script>
-<script src="nana-room-links.js?v=20261118-cd-blast" defer></script>
+<script src="memory-box.js?v=20261125-default-v2" defer></script>
+<script src="nana-room-links.js?v=20261125-default-v2" defer></script>
 <script src="nana-link-directory.js?v=20261111-contact-labels-4" defer></script>
 <script src="nana-art-links.js?v=20261108-routes" defer></script>
 <script src="nana-looks.js?v=20261112-resources-1" defer></script>
 <script src="nana-journal-looks.js?v=20261110-looks-1" defer></script>
 <script src="nana-journal.js?v=20261118-retours" defer></script>
 <script src="nana-newsletter.js?v=20261116-desktop-review-1" defer></script>
-<script src="nana-deep-links.js?v=alice-lien-1" defer></script>
+<script src="nana-deep-links.js?v=20261125-default-v2" defer></script>
 <script src="nana-card-export.js?v=20261116-card-ufo-1" defer></script>
 <script src="nana-navigation.js?v=20261116-desktop-review-1" defer></script>
 <script src="nana-diary-letters.js?v=20261115-word-wrap-2" defer></script>
@@ -1987,8 +1975,8 @@ customElements.define('paris-roof-water',ParisRoofWater);
 
 </script>
 <link rel="stylesheet" href="mokona.css?v=8">
-<script src="mokona.js?v=12"></script>
-<script src="encens.js?v=volutes-mokona-5"></script>
+<script src="mokona.js?v=20261125-default-v2"></script>
+<script src="encens.js?v=20261125-default-v2"></script>
 </body>
 </html>
 

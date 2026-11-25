@@ -93,7 +93,7 @@
     TOOL_FLAGS.forEach(name=>url.searchParams.delete(name));
     if(flag === 'v2Mirror') url.searchParams.set('posterEdit','mirror');
     else if(flag) url.searchParams.set(flag,'1');
-    if (url.searchParams.get('chambreV2') === '1' && ['v2Mirror','lampEdit','posterEdit','ipadClockEdit','starsEdit'].includes(flag)) url.hash = '/room';
+    if (window.NanaRoomV2 && ['v2Mirror','lampEdit','posterEdit','ipadClockEdit','starsEdit'].includes(flag)) url.hash = '/room';
     location.assign(url.pathname+url.search+url.hash);
   }
   function readSettings() {
@@ -326,7 +326,7 @@
       '<a class="nana-admin-action" href="nana-blog-en.html?atelier=1">Modifier le blog · English</a>' +
       '<a class="nana-admin-action" href="about-me.html?layerEdit=1">Dressing : retouches, superpositions et position du badge</a>' +
       '<button class="nana-admin-action" data-tool="workIcons">Déplacer les icônes Work</button>' +
-      (new URLSearchParams(location.search).get('chambreV2') === '1'
+      (window.NanaRoomV2
         ? '<button class="nana-admin-action" data-tool="posterEdit">Affiches</button><button class="nana-admin-action" data-tool="v2Mirror">Miroir rond</button>'
         : '<button class="nana-admin-action" data-tool="posterEdit">Affiches et miroir</button>') +
       '<button class="nana-admin-action" data-tool="lampEdit">Lampe fleur</button>' +

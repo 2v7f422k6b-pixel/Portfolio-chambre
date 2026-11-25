@@ -52,7 +52,7 @@
 
   const redrawnObjects = new Set(['chat','vase','fortune-cookie','miffy','sonny-angel','bretzel']);
   function hotspot(id) {
-    if (redrawnObjects.has(id) && new URLSearchParams(location.search).get('chambreV2') === '1')
+    if (redrawnObjects.has(id) && window.NanaRoomV2)
       return q('#room-v2-ambient [data-room-zone-id="'+id+'"]');
     if (id === 'lampe-fleur') return q('#wall-lamp-hit');
     if (id === 'fortune-cookie') return q('#nana-fortune-cookie [data-open]');

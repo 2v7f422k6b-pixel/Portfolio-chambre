@@ -1,6 +1,6 @@
 (() => {
   const scene = document.querySelector('#play-scene');
-  if (!scene || new URLSearchParams(location.search).get('chambreV2') !== '1') return;
+  if (!scene || !window.NanaRoomV2) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
     fr: ['Mokona débloqué !', 'Coucou, moi c’est Mokona ! Certains objets de cette chambre cachent un secret. Touche-les pour les découvrir. Tu peux retrouver tes découvertes dans ton carnet.', 'Si tu ne sais plus où chercher, viens me voir sur le lit. Je te donnerai un petit indice. Tu vois le coussin étoile ? C’est là que je t’attends !', 'Continuer', 'À tout à l’heure, Mokona !'],

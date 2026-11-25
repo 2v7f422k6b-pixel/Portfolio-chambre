@@ -408,7 +408,7 @@ function mountWallDecoration(kind, redrawn) {
     enterPlay.click();
   }
 }
-  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const redrawn = window.NanaRoomV2;
   if (redrawn) mountWallDecoration('mirror', true);
   mountWallDecoration('lamp', redrawn);
 })();

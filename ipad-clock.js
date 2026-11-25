@@ -8,7 +8,7 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const ROOM_W = 1670, ROOM_H = 942;
-  const redrawn = new URLSearchParams(location.search).get('chambreV2') === '1';
+  const redrawn = window.NanaRoomV2;
   const STORAGE_KEY = redrawn ? 'nana-ipad-clock-placement-room-v2' : 'nana-ipad-clock-placement-v1';
   const editing = new URLSearchParams(location.search).get('ipadClockEdit') === '1';
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));

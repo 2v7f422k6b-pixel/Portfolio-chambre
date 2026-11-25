@@ -74,7 +74,7 @@
     if (targetMode !== mode()) chooseMode(targetMode, false);
 
     if (route === 'alice') {
-      if (new URLSearchParams(location.search).get('chambreV2') !== '1') {
+      if (!window.NanaRoomV2) {
         const url = new URL(location.href);
         url.searchParams.set('chambreV2', '1');
         url.hash = '/alice';
@@ -151,7 +151,7 @@
     // Never share placement-editor or preview flags from the owner's session.
     const route = visibleRoute();
     const url = new URL(location.pathname, location.origin);
-    if (route === 'alice') url.searchParams.set('chambreV2', '1');
+    if (route === 'alice' && !window.NanaRoomV2) url.searchParams.set('chambreV2', '1');
     url.hash = hashFor(route);
     const value = url.href;
     try {

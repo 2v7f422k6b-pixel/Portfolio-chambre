@@ -159,7 +159,7 @@ function applyThemeInstant(theme, persist=true){
 let savedTheme='day';
 try{savedTheme=localStorage.getItem(THEME_KEY)||'day'}catch(e){}
 const roomLink = new URLSearchParams(location.search);
-const linkTheme = roomLink.get('chambreV2') === '1' && roomLink.get('theme');
+const linkTheme = window.NanaRoomV2 && roomLink.get('theme');
 if (linkTheme === 'night' || linkTheme === 'day') applyThemeInstant(linkTheme, false);
 else applyTheme(savedTheme);
 
@@ -1040,73 +1040,6 @@ updatePlayer();
  addEventListener('storage',event=>{if(event.key===key&&event.newValue==='seen')dismiss();});
  localize();update();
 })();
-
-/* Restore the current room after a browser refresh (tab-scoped). */
-(()=>{
- const KEY='nana-room-refresh-v1';
- let lastOpen=null, restoring=false;
- const read=()=>{try{return JSON.parse(sessionStorage.getItem(KEY)||'null')}catch(_){return null}};
- const save=()=>{
-  if(restoring)return;
-  try{
-   const studioOpen=!!document.getElementById("nana-dreamlab-overlay");
-   const visibleWindow=!shade.hidden || !specialShade.hidden || studioOpen;
-   const state={
-    mode:currentMode,theme:document.documentElement.dataset.theme,
-    lang:document.documentElement.lang,
-    x:play.scrollLeft,y:play.scrollTop,
-    open:studioOpen?"mimilab":visibleWindow?lastOpen:null,
-    gallery:!shade.hidden && currentWindow==='gallery' && currentGallery?{type:currentGallery.which,index:currentGallery.index}:null
-   };
-   sessionStorage.setItem(KEY,JSON.stringify(state));
-  }catch(_){}
- };
- document.addEventListener('click',e=>{
-  if(e.target.closest('#home-menu,#menu-mode'))lastOpen=null;
-  const opener=e.target.closest('[data-open]');
-  if(opener)lastOpen=opener.dataset.open;
-  if(e.target.closest('#window-close,#special-close')||e.target===shade||e.target===specialShade)lastOpen=null;
-  setTimeout(save,100);
- },true);
- document.addEventListener('nana-dreamlab-open',()=>{lastOpen='mimilab';save()});
- document.addEventListener('nana-dreamlab-close',()=>{lastOpen=null;save()});
- window.addEventListener('pagehide',save);
- document.addEventListener('scroll',e=>{if(e.target===play)save()},true);
- const observer=new MutationObserver(()=>save());
- observer.observe(app,{attributes:true,attributeFilter:['class']});
- observer.observe(shade,{attributes:true,attributeFilter:['hidden']});
- observer.observe(specialShade,{attributes:true,attributeFilter:['hidden']});
- const previous=read();
- if(location.hash.startsWith('#/') || new URLSearchParams(location.search).get('typewriterTest') === '1' || !previous || !['play','work'].includes(previous.mode))return;
- restoring=true;
- const restore=()=>{
-  try{
-   chooseMode(previous.mode,false);
-   if(previous.theme && document.documentElement.dataset.theme!==previous.theme)applyTheme(previous.theme);
-   if(previous.lang && document.documentElement.lang!==previous.lang){
-    const languageButton=document.getElementById('language-toggle');
-    if(languageButton)languageButton.click();
-   }
-   if(previous.gallery && ['art','gabzilla'].includes(previous.gallery.type)){
-    openGallery(previous.gallery.type,Number(previous.gallery.index)||0);
-   }else if(previous.open && /^(finder|illustration|social|interactive|mini-games|bead-box|mimilab|dressup|photos|gearnews-series|gabzilla|motion|pages|about|music|polaroids|phone|tamagotchi|latte)$/.test(previous.open)){
-    lastOpen=previous.open;openApp(previous.open);
-   }
-   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    play.scrollLeft=Number(previous.x)||0;
-    play.scrollTop=Number(previous.y)||0;
-    restoring=false;save();
-   }));
-  }catch(_){restoring=false}
- };
- if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',restore,{once:true});
- else restore();
-})();
-
-
-
-
-
 
 // Open a requested portfolio destination in its own tab, without replacing Skyblog.
 (function(){

@@ -1,5 +1,5 @@
 (() => {
-  if (new URLSearchParams(location.search).get('chambreV2') !== '1') return;
+  if (!window.NanaRoomV2) return;
   const welcome = document.querySelector('#welcome');
   const themeColor = document.querySelector('meta[name="theme-color"]');
   const originalTint = themeColor?.content;

@@ -5,7 +5,7 @@
   if (!scene || document.getElementById('nana-glow-stars-layer')) return;
   const NS = 'http://www.w3.org/2000/svg';
   const query=new URLSearchParams(location.search);
-  const redrawn=query.get('chambreV2')==='1';
+  const redrawn=window.NanaRoomV2;
   // Original approved layout; the redrawn room publishes its own positions.
   const stars = [
   [
