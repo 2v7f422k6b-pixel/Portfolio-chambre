@@ -988,6 +988,24 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
 #alice-floor-view.alice-entering::backdrop {background:transparent;}
 #alice-floor-view.alice-entering button {visibility:hidden;}
 </style>
+<script>
+  if (new URLSearchParams(location.search).get('chambreV2') === '1') {
+    document.documentElement.classList.add('welcome-door-pending');
+    document.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.classList.remove('welcome-door-pending');
+    }, { once: true });
+  }
+</script>
+<style>
+  .welcome-door-pending #welcome:not(:has(.door-screen)) > .welcome-panel { visibility: hidden !important; }
+  .welcome-door-pending #welcome:not([hidden]):not(:has(.door-screen))::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    background: #fef9dc;
+  }
+</style>
 <link rel="stylesheet" href="welcome-door.css?v=10">
 <script defer src="welcome-door.js?v=10"></script>
 </head>
