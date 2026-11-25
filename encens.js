@@ -4,6 +4,9 @@
   if (!scene) return;
   const assets = 'assets/test-encens/';
   const width = 3072, height = 1732;
+  // Centre of the ember in the final, room-sized illustration.
+  const ember = {x: 2017, y: 1388};
+  const smokeOffset = {x: ember.x - 1861, y: ember.y - 1422};
   const layer = document.createElement('div');
   layer.dataset.roomV2Layer = 'encens';
   layer.setAttribute('data-nana-load-ignore','');
@@ -14,8 +17,8 @@
   }
   const bowl = new Image();
   bowl.alt = '';
-  bowl.src = assets + '7954.png';
-  place(bowl,1833,1406,60,40);
+  bowl.src = 'assets/room-redraw/IMG_8227.png';
+  place(bowl,0,0,width,height);
   const canvas = document.createElement('canvas');
   place(canvas,0,0,width,height);
   canvas.style.imageRendering='auto';
@@ -29,7 +32,7 @@
   button.type='button';
   button.setAttribute('aria-label','Encens · Incense');
   button.style.cssText='pointer-events:auto;background:transparent;border:0;cursor:pointer;min-height:44px;padding:0';
-  place(button,1695,1345,315,120);
+  place(button,1695 + smokeOffset.x,1345 + smokeOffset.y,315,120);
   scene.append(layer);
 
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -509,7 +512,10 @@
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
       for(const turn of b.turns)turn.twist=reduced.matches?0:(.36*Math.sin(time*turn.speed*.85+turn.phase)+.19*Math.sin(time*turn.speed*.48+turn.phase*2.7));
       b.wave=reduced.matches?0:Math.min(root?2:13,b.length*.045);
-      if(root){[b.x,b.y]=b.anchor;}
+      if(root){
+        b.x=b.anchor[0]+smokeOffset.x;
+        b.y=b.anchor[1]+smokeOffset.y;
+      }
       else {
         attach(b);
       }
