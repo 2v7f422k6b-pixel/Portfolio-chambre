@@ -3,7 +3,7 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['looks','Mes looks','My looks'],['stickers','Mes écussons','My patches'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['looks','Mes looks','My looks'],['stickers','Mes badges','My badges'],['cadeaux','Mes cadeaux','My gifts']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
@@ -49,7 +49,7 @@
   function renderMilestone(){
     if(!currentMilestone)return;
     const badge=currentMilestone,rank=ranks[badge.id];
-    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2><p class="nj-milestone-name">'+h(name(badge.name))+'</p><p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes écussons','My patches'),'data-milestone-collection')+'</div>';
+    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2><p class="nj-milestone-name">'+h(name(badge.name))+'</p><p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
   }
   function showNextMilestone(){
     if(currentMilestone||!milestoneQueue.length||progress.suppressed()||document.hidden)return;
@@ -82,7 +82,7 @@
   function roomPage(){
     const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;
     const found=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;
-    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('écussons gagnés','patches earned')]];
+    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('badges gagnés','badges earned')]];
     return heading(t('Bienvenue dans ton petit carnet','Welcome to your little notebook'),t('Chaque détour laisse un souvenir.','Every little detour leaves a memory.'))+
       '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('découvertes','discoveries')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
       '<details class="nj-discoveries"><summary>'+t('Mes découvertes','My discoveries')+'</summary><ul>'+progress.discoveries.map(d=>{
@@ -122,7 +122,7 @@
         return '<article class="nj-card nj-outfit nj-frame '+(earned?'':'nj-locked')+'">'+img(outfit.image)+'<div><h3>'+h(name(outfit.name))+'</h3><p>'+h(earned?t('Tenue débloquée','Look unlocked'):name(outfit.rule))+'</p>'+(earned||progress.isCreator()?button(h(earned?t('Essayer','Try on'):t('Aperçu créatrice','Creator preview')),'data-nj-outfit="'+outfit.id+'"'):'')+'</div></article>';
       },{size:small.matches?2:4})+(progress.isCreator()?'<p class="nj-bottom-note">'+t('Aperçu créatrice : les essais ne modifient pas ta progression.','Creator preview: trying things does not change your progress.')+'</p>':'');
   }
-  function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes écussons d’exploration','My exploration patches'),count+' / '+progress.stickers.length+' '+t('écussons débloqués','patches unlocked'))+paginate(progress.stickers,(sticker)=>{
+  function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes badges d’exploration','My exploration badges'),count+' / '+progress.stickers.length+' '+t('badges débloqués','badges unlocked'))+paginate(progress.stickers,(sticker)=>{
     const earned=sticker.earned(),number=progress.stickers.indexOf(sticker)+1;
     return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+img(sticker.image)+'</div><p>'+h(name(sticker.name))+'</p><small>'+h(name(sticker.rule))+'</small></article>';
   },{cls:'nj-sticker-grid'});}
@@ -184,7 +184,7 @@
     dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Marque-pages du carnet','Notebook bookmarks'));
     pager.setAttribute('aria-label',t('Feuilleter le carnet','Turn the pages'));
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
-    const labels={looks:['Mes looks','My looks'],chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Écussons','Patches'],cadeaux:['Cadeaux','Gifts']};
+    const labels={looks:['Mes looks','My looks'],chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Badges','Badges'],cadeaux:['Cadeaux','Gifts']};
     dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('');
     dialog.classList.toggle('nj-looks-open',active==='looks');
     pageTotal=1;paperLayout(pages[active]());if(active==='looks')looks.hydrate();
@@ -278,7 +278,7 @@
     if(added.includes('gift:merci10')){notice.hidden=true;clearTimeout(toastTimer);return;}
     const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
     const destination=outfit?'jeu/dressing/tenue/'+outfit.slice(7):'carnet/'+(badge?'stickers':title?'titres':'stickers');
-    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Tu as gagné un nouvel écusson d’exploration.','You earned a new exploration patch.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
+    notice.querySelector('[role=status]').textContent=outfit?t('Une nouvelle tenue t’attend dans le dressing.','A new look is waiting in your wardrobe.'):badge?t('Tu as gagné un nouveau badge d’exploration.','You earned a new exploration badge.'):t('Ton carnet s’est enrichi d’une découverte.','A new discovery in your notebook.');
     if(added.includes('outfit:nana-osaki') && added.includes('outfit:hachi'))
       notice.querySelector('[role=status]').textContent=t('Deux tenues débloquées : Hachi et Nana Osaki.','Two looks unlocked: Hachi and Nana Osaki.');
     const btn=notice.querySelector('button');btn.textContent=t('Voir','See');btn.dataset.njNotice=destination;

@@ -210,14 +210,14 @@
   // Keep the historical collection API so old notebook links continue to work.
   const earnedBadges=new Set();
   const stickers = [
-    ['glance','Juste un coup d’œil','Just a look',0,[5,226,333,256]],
-    ['five-minutes','Je reste cinq minutes','Just five minutes',25,[341,186,303,311]],
-    ['at-home','Comme chez moi','Make myself at home',50,[643,195,354,312]],
-    ['resident','J’habite ici','I live here',75,[96,499,348,321]],
-    ['spare-key','Le double des clés','The spare key',100,[460,519,470,297]]
-  ].map(([id,fr,en,percent,box])=>({id,name:pair(fr,en),percent,
+    ['glance','Juste un coup d’œil','Just a look',0,8242],
+    ['five-minutes','Je reste cinq minutes','Just five minutes',25,8241],
+    ['at-home','Comme chez moi','Make myself at home',50,8240],
+    ['resident','J’habite ici','I live here',75,8238],
+    ['spare-key','Le double des clés','The spare key',100,8239]
+  ].map(([id,fr,en,percent,imageNumber])=>({id,name:pair(fr,en),percent,
     rule:percent?pair('Explorer '+percent+' % de la chambre.','Explore '+percent+'% of the room.'):pair('Découvrir un premier objet.','Discover your first object.'),
-    image:crop('assets/IMG_5764.png',box,1000,1000),earned:()=>earnedBadges.has(id)}));
+    image:crop(`assets/room-redraw/IMG_${imageNumber}.png`,[1283,344,545,559]),earned:()=>earnedBadges.has(id)}));
   for(const [id,fr,en,ruleFr,ruleEn,image] of [
     ['landscapes','Le timbre','The stamp','Voir les quatre paysages.','See all four landscapes.','assets/drawn-ui/landscape-stamp.svg'],
     ['gashapon','Gashapon','Gashapon','Réunir les 15 figurines.','Collect all 15 figurines.','assets/room-gachapon/collection/7545.webp']
