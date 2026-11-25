@@ -145,31 +145,85 @@
     else if (letters % 3 === 1) bedMouth([1,2,1,0,1][Math.floor(letters/3)%5]);
     bedTimer = setTimeout(showHint,/[.,!?]/.test(ch)?190:40);
   }
+  const bedClues = [
+    ["kodamaPartial","Chut… Tu entends ce petit clac ? Il y en a encore un qui te regarde.","Shh… Hear that little click? One of them is still watching you."],
+    ["miffyPartial","Miffy m’a fait promettre de garder la suite pour moi. Demande-lui, à elle !","Miffy made me promise to keep the rest a secret. Ask her yourself!"],
+    ["sonnyPartial","Les grandes oreilles, ça aide à écouter. Lui, il s’en sert surtout pour se faire écouter…","Big ears are handy for listening. That little fellow prefers an audience…"],
+    ["polaroidPartial","Tu as retourné toutes les photos ? Même celle qui avait l’air bien sage ?","Have you turned over every photo? Even the innocent-looking one?"],
+    ["feat:fish-mobile-seen","Les poissons au mur jurent qu’ils savent nager. Moi, j’aimerais bien voir ça.","Those fish on the wall swear they can swim. I’d like to see that."],
+    ["feat:noiraudes-seen","Ça chatouille sous la couette. Moi ? Mais tu vois bien mes deux pattes !","Something tickles under the duvet. Me? You can see both my paws!"],
+    ["visit:jeu/word-lab","Un mot est tombé de l’étagère du haut. Tu crois qu’on peut le remettre dans une autre phrase ?","A word fell off the top shelf. Think we could slip it into a different sentence?"],
+    ["feat:secret-rug","J’ai compté les pattes sous le tapis. Beaucoup trop pour être les miennes.","I counted the legs under the rug. Far too many to be mine."],
+    ["feat:secret-cookie","Un biscuit qui connaît ton avenir… Est-ce qu’il sait aussi ce qui va lui arriver ?","A biscuit that knows your future… I wonder if it knows its own."],
+    ["feat:alice-bottle","Sur la table, il y a une toute petite fiole. Enfin… petite, de mon point de vue.","There’s a tiny bottle on the table. Well… tiny from where I’m sitting."],
+    ["visit:jeu/bead-box","J’ai essayé d’enfiler une perle. Tu as déjà essayé avec des pattes comme ça ?","I tried threading a bead. Ever tried it with paws like these?"],
+    ["feat:secret-memory-box","Ce carreau sonne creux. Comment je le sais ? Oh, comme ça…","That tile sounds hollow. How would I know? Oh, just a hunch…"],
+    ["visit:jeu/mimilab","Je connais une chanson à une seule touche. Tu me prêtes le petit clavier ?","I know a one-key tune. May I borrow that little keyboard?"],
+    ["visit:jeu/do-nothing","L’ours du lit a fondé un club. Il paraît que j’y suis très doué.","The bear on the bed started a club. Apparently I’m very good at it."],
+    ["feat:secret-twist","Ce bretzel me donne le tournis. Et je n’y ai même pas goûté.","That pretzel makes my head spin. I haven’t even had a bite."],
+    ["visit:photos","L’appareil rose m’a tiré le portrait. Tu crois qu’il a gardé mon bon profil ?","The pink camera took my picture. Think it got my good side?"],
+    ["visit:jeu/tamagotchi","Quelqu’un réclame de l’attention dans une petite coquille rose. Pour une fois, ce n’est pas moi.","Someone in a little pink shell wants attention. For once, it isn’t me."],
+    ["feat:kero-awake","Il paraît que je suis le seul à faire la sieste ici. Va donc vérifier au-dessus de l’écran.","I’m told I’m the only one napping here. Have a peek above the screen."],
+    ["visit:jeu/coloring","Si tu prends un crayon, je te promets de rester dans les lignes. Enfin… je vais essayer.","Pick a pencil and I promise to stay inside the lines. Well… I’ll try."],
+    ["feat:mononoke-kodama","On joue à cache-cache. J’ai fermé les yeux et cinq petites têtes ont disparu.","We’re playing hide-and-seek. I shut my eyes and five little heads vanished."],
+    ["visit:jeu/latte","Tu vois quelque chose dans la mousse du café ? Moi, deux longues oreilles. Étrange, hein ?","See anything in the milk foam? I see two long ears. Funny, that."],
+    ["gachaEmpty","Si tu tournes la poignée, je devine la surprise. Mais seulement après toi.","Turn the handle and I’ll guess the surprise. You go first, though."],
+    ["feat:olive-van-started","J’ai réservé la place près de la fenêtre. Il manque juste quelqu’un pour démarrer le van.","I’ve claimed the window seat. All we need is someone to start the van."],
+    ["feat:nana-zola-book","Nana est sur l’étagère. Si, si. Cette Nana-là tient entre deux couvertures.","Nana’s on the shelf. Really. This Nana fits between two covers."],
+    ["feat:paprika-butterfly","Ce papillon vient de passer devant mon nez. Il te connaît, toi ?","That butterfly just flew past my nose. Is it a friend of yours?"],
+    ["dialogue:miffy","Miffy a mis son costume de clown. Tu lui demandes qui ouvre le spectacle ?","Miffy’s got her clown costume on. Ask her who opens the show."],
+    ["dialogue:sonny-angel","Le petit aux oreilles de lapin veut te dire un truc. J’ai essayé d’écouter, mais il t’attend.","The little fellow with bunny ears has something to say. I listened in, but he’s waiting for you."],
+    ["feat:secret-typewriter","Une touche de la machine à écrire me démange. Je te laisse appuyer ?","One of those typewriter keys is begging to be pressed. After you?"],
+    ["visit:objet/plante-fleur","J’ai dit bonjour à la plante suspendue. À toi de voir si elle est polie.","I said hello to the hanging plant. You can find out if it has manners."],
+    ["feat:kikujiro-chime","Tu crois qu’on peut chatouiller une clochette ? Moi, je tends l’oreille.","Think you can tickle a little bell? I’m all ears."],
+    ["feat:preacher-dog","Le petit chien a l’air d’en savoir long. Demande-lui ce qu’il a vu.","That little dog looks like he knows things. Ask him what he saw."],
+    ["feat:gokinjo-happy-berry","Cette baie sur le lit est bien dodue. Trop grosse pour mon goûter, tu crois ?","That berry on the bed looks rather plump. Too big for my afternoon snack?"],
+    ["feat:nana-blast","Quelqu’un a gardé son billet de concert. Moi, j’aurais gardé le groupe aussi.","Someone kept their concert ticket. I’d have kept the band too."],
+    ["visit:jeu/dressing","Si tu vois deux Mokona, c’est que tu as trouvé le miroir. Et après ?","If you see two of me, you’ve found the mirror. What happens next?"],
+    ["feat:kokeshi-yukata","La poupée de bois est bien silencieuse. Essaie toujours, tu es peut-être sa personne préférée.","That wooden doll is awfully quiet. Try your luck. Maybe you’re her favourite."],
+    ["visit:night","Tu éteins ? J’aimerais vérifier une petite théorie sur ce qui brille dans le noir.","Lights out? I have a little theory about things that glow in the dark."],
+    ["feat:shooting-star-encounter","La nuit, prépare ton vœu avant de regarder le ciel. Là-haut, personne ne t’attend.","At night, have your wish ready before you look up. The sky won’t wait."],
+    ["feat:ufo-encounter","Si tu vois quelque chose d’étrange par la fenêtre cette nuit… fais-lui coucou de ma part.","If you spot anything odd outside the window tonight… give it a wave from me."],
+    ["feat:beads-made","Une perle, c’est joli. Deux, ça se discute. Et si tu en essayais trois ?","One bead is pretty. Two, I’m not sure. What about three?"],
+    ["feat:minilab-composed","Le petit clavier a de la mémoire. Quelle mélodie vas-tu lui confier ?","That little keyboard can remember things. What tune will you trust it with?"],
+    ["feat:latte-made","Je prendrai un café avec mon portrait dans la mousse. Les oreilles tiendront dans la tasse ?","I’ll have a coffee with my portrait in the foam. Will the ears fit in the cup?"],
+    ["feat:outfit-styled","Le miroir m’a demandé de changer de tenue. Tu lui montres comment tu fais ?","The mirror asked me to change outfits. Will you show it how it’s done?"],
+    ["visit:jeu/severance","Du côté Work, des chiffres attendent sagement. Beaucoup trop sagement, si tu veux mon avis.","Over in Work, some numbers are behaving themselves. Suspiciously well, if you ask me."],
+    ["visit:livre/la-princesse-clown","Une princesse avec un nez de clown ? Ça, j’aimerais bien qu’on me le lise.","A princess with a clown nose? Now that’s a bedtime story I’d listen to."],
+    ["visit:objet/marshall","Tu entends ce silence sur l’étagère ? Je parie que la petite enceinte peut faire mieux.","Hear that silence on the shelf? I bet the little speaker can do better."],
+    ["visit:objet/music-visuals","De la musique pour les yeux ? Regarde du côté des CD, tu me diras si j’invente.","Music for your eyes? Have a look at the CDs and tell me if I made that up."],
+    ["visit:objet/souvenues","Les livres du milieu se serrent comme s’ils gardaient un secret à plusieurs.","Those books in the middle are huddled together. A shared secret, perhaps?"],
+    ["visit:objet/reading-room","Pour savoir quoi lire au lit, je demande à l’étagère du bas. Elle a bon goût.","For a good bedtime read, I ask the bottom shelf. It has excellent taste."],
+    ["visit:objet/gabzilla","Tu as vu qui s’est installé sur le t-shirt de la chaise ? Moi, je lui laisse la place.","Seen who’s on the T-shirt draped over the chair? They can keep that seat."],
+    ["feat:rested","L’ours et moi faisons un concours de rien du tout. Tu restes un peu avec nous ?","The bear and I are having a do-nothing contest. Care to stay a while?"],
+    ["feat:severance-refined","Les chiffres de Lumon sont très pointilleux sur le rangement. Quatre catégories, vraiment ?","Those Lumon numbers are terribly fussy about sorting. Four categories, really?"],
+    ["gachaPartial","Il manque quelqu’un à l’appel des figurines. La machine fait semblant de ne rien savoir.","Someone’s missing at figurine roll call. The machine is pretending it knows nothing."]
+  ];
   function chooseHint(progress, language) {
-    const say = (fr,en) => language === 'fr' ? fr : en;
-    if (!progress) return say('Mon carnet fait la sieste… Reviens dans un instant !','My notebook is dozing… Come back in a moment!');
-    const kodamaCount = [1,2,3,4,5].filter(n => progress.hasFeat('kodama-'+n)).length;
-    if (kodamaCount > 0 && kodamaCount < 5 && !progress.hasFeat('mononoke-kodama')) {
-      const left = 5-kodamaCount;
-      return left === 1
-        ? say('Psst… Encore un petit esprit blanc à trouver !','Psst… One little white spirit is still hiding!')
-        : say('Psst… Il reste '+left+' petits esprits blancs à trouver !','Psst… There are '+left+' little white spirits still hiding!');
-    }
-    const clues = [
-      ['noiraudes-seen','Tu as vu ce qui dépasse du coin de la couette ?','Have you peeked under the corner of the duvet?'],
-      ['secret-rug','Tu as regardé sous le tapis ? Moi, j’y ai vu des pattes…','Have you peeked under the rug? I saw some little legs…'],
-      ['alice-bottle','Cette petite fiole sur la table… Tu crois que c’est pour boire ?','That little bottle on the table… Do you think it’s for drinking?'],
-      ['secret-memory-box','Ce carreau sur le mur… Tu crois qu’il cache quelque chose ?','That tile on the wall… Could something be hiding behind it?'],
-      ['kero-awake','Hé… Je crois que quelqu’un dort sur l’étagère au-dessus de l’écran.','Hey… I think someone is asleep on the shelf above the screen.'],
-      ['olive-van-started','Tu crois que le petit van démarre encore ?','Do you think that little van still runs?'],
-      ['nana-zola-book','Tiens, un livre qui s’appelle Nana… Tu l’as ouvert ?','Look, a book called Nana… Have you opened it?'],
-      ['mononoke-kodama','Psst… J’ai compté cinq petits esprits blancs dans la chambre. Et toi ?','Psst… I counted five little white spirits in the room. Can you find them?']
-    ];
-    const clue = clues.find(([id]) => !progress.hasFeat(id));
-    if (clue) return say(clue[1],clue[2]);
-    const outfit = progress.outfits.find(item => item.available !== false && item.rule && !progress.unlockedOutfit(item.id));
-    if (outfit) return outfit.rule[language];
-    return say('Tu as suivi toutes mes pistes ! Je retourne à ma sieste…','You followed all my clues! Time for my nap…');
+    const english = language === 'en';
+    if (!progress) return ["Mon carnet dort sur la page qui m’intéresse. Tu reviens dans un instant ?","My notebook fell asleep on the very page I wanted. Come back in a moment?"][Number(english)];
+    const count = (prefix, first, total) => Array.from({length:total},(_,i)=>progress.hasFeat(prefix+(first+i))).filter(Boolean).length;
+    const kodama = count('kodama-',1,5);
+    const figures = count('charm-gacha-',7545,15);
+    const reading = id => {
+      const {read,total} = progress.dialogueProgress(id);
+      return read.length > 0 && read.length < total;
+    };
+    const started = {
+      kodamaPartial:kodama > 0 && kodama < 5 && !progress.hasFeat('mononoke-kodama'),
+      miffyPartial:reading('miffy'), sonnyPartial:reading('sonny-angel'),
+      polaroidPartial:progress.hasVisit('photos') && !progress.hasFeat('polaroids-all'),
+      gachaEmpty:figures === 0, gachaPartial:figures > 0 && figures < 15
+    };
+    const clue = bedClues.find(([key]) => {
+      const [type,id] = key.split(':');
+      if (type === 'feat') return !progress.hasFeat(id);
+      if (type === 'visit') return !progress.hasVisit(id);
+      if (type === 'dialogue') return !progress.hasReadDialogue(id);
+      return started[key];
+    });
+    if (clue) return clue[english ? 2 : 1];
+    return ["Plus un secret dans ma manche. D’ailleurs… où est ma manche ?","Not a secret left up my sleeve. Come to think of it… where’s my sleeve?"][Number(english)];
   }
   function wakeOrDismiss(event) {
     event.stopPropagation();

@@ -905,6 +905,7 @@
       document.body.append(layer);
       reflectOnSwimmers(lights.caustics, swimmers, preparation.signal);
       enteredAt = performance.now();
+      window.NanaProgress?.feat('fish-mobile-seen');
       butterflyFade = butterfly?.animate([{opacity: getComputedStyle(butterfly).opacity}, {opacity: 0}],
         {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
       layer.animate([{opacity: 0}, {opacity: 1}], {duration: seaFadeMs, easing: 'ease-in-out', fill: 'both'});
