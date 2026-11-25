@@ -274,12 +274,6 @@
     else settle();
   };
   dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) settle();});
-  scene.addEventListener('incense:start', () => {
-    sleep();
-    bed.hidden = true;
-    floater.append(art);
-    mouth(0);
-  });
   // Stage only the character under the existing smoke. Moving the live canvas
   // between the room and a modal interrupts its observer and compositor on iPad.
   const stage = document.createElement('div');
@@ -306,9 +300,25 @@
   }
   scene.parentElement.addEventListener('scroll',pinStage,{passive:true});
   window.addEventListener('resize',pinStage);
+  const discoveryKey = 'nana-mokona-discovered-v1';
+  let discovered = false;
+  function restoreDiscovery() {
+    try { discovered ||= localStorage.getItem(discoveryKey) === '1'; }
+    catch (_) { /* Keep the current visit working without storage. */ }
+    if (!discovered || dialog.open || landing) return;
+    dialog.classList.remove('revealing');
+    stage.classList.remove('revealing');
+    stage.hidden = true;
+    bed.hidden = false;
+  }
+  restoreDiscovery();
+  window.addEventListener('pageshow',restoreDiscovery);
+  window.addEventListener('storage',event => {
+    if (event.key === discoveryKey && event.newValue === '1') restoreDiscovery();
+  });
   const heldImages = [];
   scene.addEventListener('incense:start', () => {
-    if (heldImages.length) return;
+    if (discovered || heldImages.length) return;
     const urls = new Set([...art.querySelectorAll('image'),...sleepingArt.querySelectorAll('image')].map(image=>image.getAttribute('href')));
     for (const url of urls) {
       const image = new Image();
@@ -318,7 +328,9 @@
     }
   });
   scene.addEventListener('incense:start', () => {
-    if (dialog.open || landing) return;
+    restoreDiscovery();
+    if (discovered || dialog.open || landing) return;
+    mouth(0);
     lines = words[document.documentElement.lang === 'en' ? 'en' : 'fr'];
     page = 1;
     floater.append(art);
@@ -353,6 +365,8 @@
     paw.setAttribute('class','mokona-wave');
     next.disabled = false;
     dialog.showModal();
+    discovered = true;
+    try { localStorage.setItem(discoveryKey,'1'); } catch (_) { /* Session-only fallback. */ }
     next.focus({preventScroll:true});
     if (!reduced.matches) dialog.querySelector('.mokona-card').animate([{opacity:0},{opacity:1}],{duration:420});
     speak();
