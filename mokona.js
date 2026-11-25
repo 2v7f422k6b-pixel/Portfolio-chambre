@@ -145,6 +145,32 @@
     else if (letters % 3 === 1) bedMouth([1,2,1,0,1][Math.floor(letters/3)%5]);
     bedTimer = setTimeout(showHint,/[.,!?]/.test(ch)?190:40);
   }
+  function chooseHint(progress, language) {
+    const say = (fr,en) => language === 'fr' ? fr : en;
+    if (!progress) return say('Mon carnet fait la sieste… Reviens dans un instant !','My notebook is dozing… Come back in a moment!');
+    const kodamaCount = [1,2,3,4,5].filter(n => progress.hasFeat('kodama-'+n)).length;
+    if (kodamaCount > 0 && kodamaCount < 5 && !progress.hasFeat('mononoke-kodama')) {
+      const left = 5-kodamaCount;
+      return left === 1
+        ? say('Psst… Encore un petit esprit blanc à trouver !','Psst… One little white spirit is still hiding!')
+        : say('Psst… Il reste '+left+' petits esprits blancs à trouver !','Psst… There are '+left+' little white spirits still hiding!');
+    }
+    const clues = [
+      ['noiraudes-seen','Tu as vu ce qui dépasse du coin de la couette ?','Have you peeked under the corner of the duvet?'],
+      ['secret-rug','Tu as regardé sous le tapis ? Moi, j’y ai vu des pattes…','Have you peeked under the rug? I saw some little legs…'],
+      ['alice-bottle','Cette petite fiole sur la table… Tu crois que c’est pour boire ?','That little bottle on the table… Do you think it’s for drinking?'],
+      ['secret-memory-box','Ce carreau sur le mur… Tu crois qu’il cache quelque chose ?','That tile on the wall… Could something be hiding behind it?'],
+      ['kero-awake','Hé… Je crois que quelqu’un dort sur l’étagère au-dessus de l’écran.','Hey… I think someone is asleep on the shelf above the screen.'],
+      ['olive-van-started','Tu crois que le petit van démarre encore ?','Do you think that little van still runs?'],
+      ['nana-zola-book','Tiens, un livre qui s’appelle Nana… Tu l’as ouvert ?','Look, a book called Nana… Have you opened it?'],
+      ['mononoke-kodama','Psst… J’ai compté cinq petits esprits blancs dans la chambre. Et toi ?','Psst… I counted five little white spirits in the room. Can you find them?']
+    ];
+    const clue = clues.find(([id]) => !progress.hasFeat(id));
+    if (clue) return say(clue[1],clue[2]);
+    const outfit = progress.outfits.find(item => item.available !== false && item.rule && !progress.unlockedOutfit(item.id));
+    if (outfit) return outfit.rule[language];
+    return say('Tu as suivi toutes mes pistes ! Je retourne à ma sieste…','You followed all my clues! Time for my nap…');
+  }
   function wakeOrDismiss(event) {
     event.stopPropagation();
     if (!bedBubble.hidden) {
@@ -155,7 +181,7 @@
       } else sleep();
       return;
     }
-    hint = french()?'Psst… Essaie de toucher le coin du lit. De petites boules de suie s’y cachent !':'Psst… Try tapping the corner of the bed. Little soot sprites are hiding there!';
+    hint = chooseHint(window.NanaProgress, french() ? 'fr' : 'en');
     letters = 0;
     bedBubble.lastElementChild.textContent = hint;
     bed.setAttribute('aria-expanded','true');
