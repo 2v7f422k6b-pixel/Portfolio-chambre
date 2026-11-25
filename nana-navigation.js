@@ -8,16 +8,36 @@
   const byId=id=>document.getElementById(id);
   const preferences=['language-toggle','theme-toggle','switch-mode'].map(byId);
   const admin=byId('nana-admin-trigger');
-  const creations=document.createElement('button');
-  creations.id='menu-creations';creations.type='button';creations.dataset.open='finder';
+  const projectGroup=document.createElement('div');
+  projectGroup.className='nav-projects';
+  const projects=document.createElement('button');
+  projects.type='button';
+  projects.setAttribute('aria-controls','nav-project-list');
+  const projectList=document.createElement('div');
+  projectList.id='nav-project-list';
+  const sections=[['photos','Illustrations','Illustrations'],['motion','Animations','Animations'],['pages','Articles','Articles']];
+  const sectionButtons=sections.map(([key])=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.addEventListener('click',()=>{
+      setProjects(false,true);
+      if(compact)setOpen(false,true);
+      document.querySelector('#dock [data-open="'+key+'"]').click();
+    });
+    projectList.append(button);
+    return button;
+  });
+  projectGroup.append(projects,projectList);
+  projectGroup.setAttribute('data-no-translate','');
   const shop=document.createElement('button');
   shop.id='menu-shop';shop.type='button';
   shop.addEventListener('click',()=>window.NanaDeepLinks.open('shop'));
   const newsletter=document.createElement('button');newsletter.id='menu-newsletter';newsletter.type='button';
   newsletter.addEventListener('click',()=>window.NanaDeepLinks.open('newsletter'));
-  panel.append(byId('menu-about'),creations,byId('menu-contact'),shop,newsletter,byId('menu-help'));
+  panel.append(byId('menu-about'),newsletter,byId('menu-help'));
   const settings=document.createElement('div');settings.className='nav-preferences';panel.append(settings,admin);
-  left.append(toggle);
+  const primary=[projectGroup,byId('menu-contact'),shop];
+  left.append(toggle,...primary);
   bar.insertBefore(byId('nana-journal-trigger'),right);
   right.prepend(byId('menu-search'));
   panel.insertAdjacentHTML('afterbegin','<svg class="nav-ribbon-art" viewBox="0 0 280 400" preserveAspectRatio="none" aria-hidden="true"><path d="M12 7C75 3 204 10 267 6C279 75 265 130 271 203C278 268 265 322 269 378C223 399 180 381 137 387C91 394 43 380 12 389C3 323 16 270 9 201C3 127 16 70 12 7Z"/></svg>');
@@ -30,7 +50,8 @@
     panel.setAttribute('aria-label',t('Menu secondaire','Secondary navigation'));
     label(byId('home-menu'),t('Retour à l’accueil','Return home'));
     byId('menu-about').textContent=t('À propos','About');label(byId('menu-about'),t('À propos','About'));
-    creations.textContent=t('Mes créations','My creations');label(creations,t('Mes créations','My creations'));
+    projects.textContent=t('Projets ▾','Projects ▾');
+    sections.forEach(([,fr,en],i)=>{sectionButtons[i].textContent=t(fr,en);});
     shop.textContent=t('Boutique','Shop');label(shop,t('Boutique','Shop'));
     newsletter.textContent=t('La newsletter','Newsletter');label(newsletter,t('La newsletter','Newsletter'));
     byId('menu-contact').textContent='Contact';label(byId('menu-contact'),'Contact');
@@ -44,24 +65,51 @@
     label(admin,t('Ouvrir le petit atelier de Nana','Open Nana’s little workshop'));
   }
   byId('menu-help').setAttribute('data-no-translate','');
+  function setProjects(value,restore=false){
+    projectList.hidden=!value;
+    projects.setAttribute('aria-expanded',String(value));
+    if(restore)projects.focus({preventScroll:true});
+  }
+  setProjects(false);
+  projects.addEventListener('click',()=>{
+    if(!compact)setOpen(false);
+    setProjects(projectList.hidden);
+  });
+  projects.addEventListener('keydown',event=>{
+    if(event.key==='ArrowDown'){
+      event.preventDefault();
+      if(!compact)setOpen(false);
+      setProjects(true);
+      sectionButtons[0].focus();
+    }
+  });
+  function dismissProjects(event){
+    if(!projectList.hidden&&!projectGroup.contains(event.target))setProjects(false);
+  }
+  document.addEventListener('pointerdown',dismissProjects);
+  document.addEventListener('focusin',dismissProjects);
   function setOpen(value,restore=false){
+    setProjects(false);
     open=value;panel.hidden=!value;bar.classList.toggle('mobile-menu-open',value);toggle.setAttribute('aria-expanded',String(value));localize();
     if(restore)toggle.focus({preventScroll:true});
   }
   toggle.addEventListener('click',()=>setOpen(!open));
   toggle.addEventListener('keydown',event=>{if(event.key==='ArrowDown'){event.preventDefault();setOpen(true);byId('menu-about').focus();}});
-  panel.addEventListener('click',event=>{if(event.target.closest('button'))setOpen(false,true);});
+  panel.addEventListener('click',event=>{if(!projectGroup.contains(event.target)&&event.target.closest('button'))setOpen(false,true);});
   document.addEventListener('pointerdown',event=>{if(open&&!bar.contains(event.target))setOpen(false);});
   document.addEventListener('focusin',event=>{if(open&&!bar.contains(event.target))setOpen(false);});
-  document.addEventListener('keydown',event=>{if(open&&event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();setOpen(false,true);}},true);
+  document.addEventListener('keydown',event=>{if(!projectList.hidden&&event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();setProjects(false,true);return;}if(open&&event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();setOpen(false,true);}},true);
   // Measure the actual bar, including translated labels, instead of device names.
   function fit(){
     const available=bar.clientWidth-24;
     const toolsWidth=44+preferences.reduce((sum,el)=>sum+Math.max(el.offsetWidth,el.id==='switch-mode'?112:el.id==='language-toggle'?72:44),0)+24;
-    const required=2*Math.max(148,toolsWidth)+byId('nana-journal-trigger').offsetWidth+24;
+    const required=2*Math.max(445,toolsWidth)+byId('nana-journal-trigger').offsetWidth+24;
     const next=available<required;
     if(next===compact)return;
     const focus=document.activeElement;compact=next;bar.classList.toggle('nav-compact',compact);
+    setProjects(false);
+    if(compact)newsletter.before(...primary);
+    else left.append(...primary);
     preferences.forEach(el=>(compact?settings:right).append(el));
     if(compact&&preferences.includes(focus))setOpen(true);
     if(focus?.isConnected&&bar.contains(focus))focus.focus({preventScroll:true});

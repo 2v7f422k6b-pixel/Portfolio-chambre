@@ -89,3 +89,18 @@ html body #app #menubar.nana-navigation #switch-mode span{
 html body #app #menubar.nana-navigation #switch-mode span:nth-of-type(2){left:47.833333%}
 html body #app #menubar.nana-navigation #switch-mode[aria-checked="false"] span:first-child,
 html body #app #menubar.nana-navigation #switch-mode[aria-checked="true"] span:nth-of-type(2){color:#fff2f5!important}
+
+/* Keep the room clear while retaining the application dock on the desktop. */
+html body #app.mode-play #desktop > #dock,
+html body #app #desktop #dock button[data-open="music"]{display:none!important}
+#menubar .nav-projects{position:relative}
+html body #app #menubar.nana-navigation :is(.nav-projects button,#menu-contact,#menu-shop){display:inline-flex!important;align-items:center;font-size:16px!important;white-space:nowrap}
+html body #app #menubar.nana-navigation #nav-project-list{
+  position:absolute;top:100%;left:0;z-index:3;display:grid;min-width:145px;
+  padding:5px 8px;background:#fff2f5;border:1.5px solid #ff173b;border-radius:10px;
+}
+html body #app #menubar.nana-navigation #nav-project-list[hidden]{display:none}
+html body #app #menubar.nana-navigation #nav-project-list button{justify-content:flex-start!important}
+html body #app #menubar.nana-navigation.nav-compact #nav-project-list{
+  position:static;min-width:0;margin-left:12px;padding:0 6px;border:0;border-left:1.5px solid #ff173b;border-radius:0;background:transparent;
+}
