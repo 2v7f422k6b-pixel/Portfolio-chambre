@@ -33,6 +33,17 @@
   button.setAttribute('aria-label','Encens · Incense');
   button.style.cssText='pointer-events:auto;background:transparent;border:0;cursor:pointer;min-height:44px;padding:0';
   place(button,1695 + smokeOffset.x,1345 + smokeOffset.y,315,120);
+  button.className='incense-entry';
+  const prompt=document.createElement('span');
+  prompt.className='incense-prompt';
+  button.append(prompt);
+  function label(){
+    const fr=document.documentElement.lang!=='en';
+    prompt.textContent=fr?'Touche la fumée…':'Touch the smoke…';
+    button.setAttribute('aria-label',fr?'Toucher la fumée du bol à encens':'Touch the smoke from the incense bowl');
+  }
+  label();
+  document.addEventListener('portfolio-language-change',label);
   scene.append(layer);
 
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -511,7 +522,7 @@
       b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
       b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
       for(const turn of b.turns)turn.twist=reduced.matches?0:(.36*Math.sin(time*turn.speed*.85+turn.phase)+.19*Math.sin(time*turn.speed*.48+turn.phase*2.7));
-      b.wave=reduced.matches?0:Math.min(root?2:13,b.length*.045);
+      b.wave=reduced.matches?0:(root ? Math.min(28,b.length*.21) : Math.min(13,b.length*.045));
       if(root){
         b.x=b.anchor[0]+smokeOffset.x;
         b.y=b.anchor[1]+smokeOffset.y;
@@ -577,7 +588,7 @@
   function tick(now) {
     frame=0;
     if(!visible||document.hidden||!branches.length)return;
-    const interval=sequence===null?90:32;
+    const interval=sequence===null?45:32;
     if(now-lastPaint>=interval){draw(now);lastPaint=now;}
     if(sequence!==null||!reduced.matches)frame=requestAnimationFrame(tick);
   }
@@ -663,5 +674,6 @@
     if(sequence===null){clearingFinished=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
   });
 })();
+
 
 

@@ -96,3 +96,18 @@
 .mokona-bed[hidden],.mokona-bed-bubble[hidden] {display:none!important}
 @media(prefers-reduced-motion:reduce){.mokona-bed * {animation:none!important;transition:none!important}}
 
+
+.nana-gloss-badge {display:block}
+.nj-sticker-art > .nana-gloss-badge {width:90%;height:110px}
+.nj-milestone-art > .nana-gloss-badge {width:100%;height:100%}
+#nana-journal-trigger .nj-latest-badge {display:inline-flex;flex:0 0 auto;align-items:center}
+#nana-journal-trigger .nj-latest-badge[hidden] {display:none}
+#nana-journal-trigger .nj-latest-badge svg {width:24px;height:24px}
+.badge-sweep {animation:nana-plastic-reflection 5.2s ease-in-out infinite}
+@keyframes nana-plastic-reflection {
+  0% {transform:translateX(0)}
+  32%,100% {transform:translateX(216px)}
+}
+.incense-prompt {display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;color:#dc1539;background:#fff2df;padding:.18em .55em;border-radius:45%;font:clamp(16px,1.9vw,25px)/1.2 "Nana Trace UI",sans-serif}
+.mokona-first.incense-prompt-visible .incense-prompt {display:block}
+@media(prefers-reduced-motion:reduce){.badge-sweep{animation:none;transform:translateX(120px);opacity:.4}}

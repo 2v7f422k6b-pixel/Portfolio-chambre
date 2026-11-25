@@ -261,7 +261,7 @@
   }
 
   function check() {
-    if (shownThisEntry || hint || tour || !roomIsVisible()) return;
+    if (shownThisEntry || hint || tour || !roomIsVisible() || scene.classList?.contains('mokona-first')) return;
     // Use layout sizes, not temporary iMac zoom transforms.
     const overflowsX = scene.offsetWidth - viewport.clientWidth > 12;
     const overflowsY = scene.offsetHeight - viewport.clientHeight > 12;
@@ -308,3 +308,4 @@
   document.addEventListener('portfolio-language-change', updateHintLabel);
   onModeChange();
 })();
+

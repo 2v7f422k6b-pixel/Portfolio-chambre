@@ -297,6 +297,7 @@
   }
   function selectTitle(id) { if(id!==null&&!titles.some(x=>x.id===id&&x.earned()))return;state.title=id;save(); }
   window.NanaProgress = {
+    earnedBadgeIds:()=>[...earnedBadges],
     discoveries,games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,BADGES_KEY,
     readPolaroid,visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
     dialogueProgress,readDialogueLine,hasReadDialogue,DIALOGUE_KEY,
@@ -310,6 +311,7 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 

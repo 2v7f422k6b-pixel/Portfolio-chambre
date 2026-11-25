@@ -35,7 +35,31 @@
   milestone.setAttribute('aria-labelledby','nj-milestone-title');
   milestone.setAttribute('aria-describedby','nj-milestone-rule');
   document.body.append(milestone);
-  const milestoneQueue=[], queuedBadges=new Set();
+  const deliveredKey='nana-mokona-badges-v1';
+  const delivered=new Set();
+  function restoreDelivered(){
+    try{
+      const saved=JSON.parse(localStorage.getItem(deliveredKey));
+      if(Array.isArray(saved)){for(const id of saved)delivered.add(id);}
+      else if(localStorage.getItem('nana-mokona-discovered-v1')==='1'){
+        for(const id of progress.earnedBadgeIds())delivered.add(id);
+        saveDelivered();
+      }
+    }catch{}
+  }
+  function saveDelivered(){
+    try{localStorage.setItem(deliveredKey,JSON.stringify([...delivered]));}catch{}
+  }
+  function giveBadge(id){
+    restoreDelivered();
+    delivered.add(id);
+    saveDelivered();
+    updateTrigger();
+  }
+  restoreDelivered();
+  document.addEventListener('mokona-first-badge',()=>giveBadge('glance'));
+  window.addEventListener('storage',e=>{if(e.key===deliveredKey){restoreDelivered();updateTrigger();}});
+  const badgeDrawing=badge=>window.NanaBadgeArt(badge).outerHTML;
   const ranks={
     landscapes:['Voyageuse','Traveller'],
     gashapon:['Collectionneuse','Collector'],
@@ -49,14 +73,18 @@
   function renderMilestone(){
     if(!currentMilestone)return;
     const badge=currentMilestone,rank=ranks[badge.id];
-    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2>'+(name(badge.name)===t(...rank)?'':'<p class="nj-milestone-name">'+h(name(badge.name))+'</p>')+'<p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
+    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Mokona t’offre un badge !','Mokona has a badge for you!')+'</p><div class="nj-milestone-art">'+badgeDrawing(badge)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2>'+(name(badge.name)===t(...rank)?'':'<p class="nj-milestone-name">'+h(name(badge.name))+'</p>')+'<p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
   }
-  function showNextMilestone(){
-    if(currentMilestone||!milestoneQueue.length||progress.suppressed()||document.hidden)return;
-    if(document.querySelector('dialog[open],#window-shade:not([hidden]),#special-shade:not([hidden]),#nana-discovery-overlay:not([hidden])'))return;
-    currentMilestone=milestoneQueue.shift();milestoneFocus=document.activeElement;
+  function offerBadge(){
+    restoreDelivered();
+    const id=progress.earnedBadgeIds().find(id=>!delivered.has(id));
+    if(!id || currentMilestone || progress.suppressed())return false;
+    currentMilestone=progress.stickers.find(b=>b.id===id);
+    milestoneFocus=document.activeElement;
     notice.hidden=true;clearTimeout(toastTimer);renderMilestone();milestone.showModal();
+    giveBadge(id);
     milestone.querySelector('[data-milestone-close]').focus({preventScroll:true});
+    return true;
   }
   milestone.addEventListener('click',event=>{
     if(event.target.closest('[data-milestone-collection]')){milestone.close();navigate('carnet/stickers');}
@@ -69,7 +97,7 @@
     if(milestoneFocus?.isConnected)milestoneFocus.focus({preventScroll:true});
   });
   // A queued award survives a temporary game overlay and never interrupts it.
-  setInterval(showNextMilestone,600);
+
   function ratio(){const r=progress.snapshot().room;return{...r,count:r.discovered.filter(x=>r.required.includes(x)).length,total:r.required.length};}
   function meter(count,total,label){const percent=total?Math.min(100,Math.round(count/total*100)):0;return '<div class="nj-progress" role="progressbar" aria-label="'+h(label)+'" aria-valuemin="0" aria-valuemax="'+Math.max(total,1)+'" aria-valuenow="'+count+'"><span style="width:'+percent+'%"></span></div>';}
   function heading(title,subtitle){return '<div class="nj-section-title"><h2>'+h(title)+'</h2><p>'+h(subtitle)+'</p></div>';}
@@ -124,7 +152,7 @@
   }
   function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes badges d’exploration','My exploration badges'),count+' / '+progress.stickers.length+' '+t('badges débloqués','badges unlocked'))+paginate(progress.stickers,(sticker)=>{
     const earned=sticker.earned(),number=progress.stickers.indexOf(sticker)+1;
-    return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+img(sticker.image)+'</div><p>'+h(name(sticker.name))+'</p><small>'+h(name(sticker.rule))+'</small></article>';
+    return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+(earned?badgeDrawing(sticker):img(sticker.image))+'</div><p>'+h(name(sticker.name))+'</p><small>'+h(name(sticker.rule))+'</small></article>';
   },{cls:'nj-sticker-grid'});}
   function titlesPage(){const selected=progress.snapshot().title;return heading(t('Un titre qui te ressemble','A title that feels like you'),t('Collectionne-les et choisis celui que tu portes.','Collect them and choose the one you wear.'))+paginate(progress.titles,title=>{
     const earned=title.earned(),chosen=selected===title.id;
@@ -153,7 +181,20 @@
   }
   const looks=window.NanaJournalLooks.create({dialog,content,t,h,button,heading,paginate,render,navigate});
   const pages={looks:looks.page,souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
-  function updateTrigger(){const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent='('+pct+' %)';trigger.querySelector('.nj-trigger-label').textContent=t('Carnet','Notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.');trigger.title=t('Mon carnet de découvertes','My discovery notebook');}
+  const latestIcon=document.createElement('span');
+  latestIcon.className='nj-latest-badge';
+  trigger.querySelector('.nj-trigger-count').after(latestIcon);
+  function updateTrigger(){
+    const latest=progress.earnedBadgeIds().filter(id=>id!=='glance'||delivered.has(id)).at(-1);
+    const badge=progress.stickers.find(b=>b.id===latest);
+    if(latestIcon.dataset.id!==(latest||'')){
+      latestIcon.replaceChildren();
+      if(badge)latestIcon.append(window.NanaBadgeArt(badge));
+      latestIcon.dataset.id=latest||'';
+    }
+    latestIcon.hidden=!badge;
+    const badgeLabel=badge?' · '+name(badge.name):'';
+const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelector('.nj-trigger-count').textContent='('+pct+' %)';trigger.querySelector('.nj-trigger-label').textContent=t('Carnet','Notebook');trigger.setAttribute('aria-label',t('Mon carnet de découvertes. Chambre explorée à ','My discovery notebook. Room explored: ')+pct+' %.'+badgeLabel);trigger.title=t('Mon carnet de découvertes','My discovery notebook')+badgeLabel;}
   function paperLayout(html){
     const source=document.createElement('div');source.innerHTML=html;
     const left=document.createElement('section'),right=document.createElement('section');
@@ -269,11 +310,8 @@
   progress.subscribe(({added})=>{
     added=added.filter(id=>!id.startsWith('title:'));
     render();
-    for(const id of added.filter(x=>x.startsWith('sticker:'))){
-      const badge=progress.stickers.find(x=>'sticker:'+x.id===id);
-      if(badge&&!queuedBadges.has(id)){queuedBadges.add(id);milestoneQueue.push(badge);}
-    }
-    if(milestoneQueue.length||currentMilestone){notice.hidden=true;clearTimeout(toastTimer);return;}
+    if(currentMilestone){notice.hidden=true;return;}
+    added=added.filter(id=>!id.startsWith('sticker:'));
     if(!added.length||dialog.open||document.querySelector('dialog[open]'))return;
     if(added.includes('gift:merci10')){notice.hidden=true;clearTimeout(toastTimer);return;}
     const outfit=added.find(x=>x.startsWith('outfit:')),title=added.find(x=>x.startsWith('title:')),badge=added.find(x=>x.startsWith('sticker:'));
@@ -300,9 +338,10 @@
     const btn=notice.querySelector('button');btn.textContent=t('Essayer la tenue','Try it on');btn.dataset.njNotice='jeu/dressing/tenue/'+id;
     notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,6500);
   }
-  window.NanaJournal={open,close,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
+  window.NanaJournal={open,close,offerBadge,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 
 

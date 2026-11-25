@@ -3,8 +3,8 @@
   if (!scene || !window.NanaRoomV2) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    fr: ['Mokona débloqué !', 'Coucou, moi c’est Mokona ! Certains objets de cette chambre cachent un secret. Touche-les pour les découvrir. Tu peux retrouver tes découvertes dans ton carnet.', 'Si tu ne sais plus où chercher, viens me voir sur le lit. Je te donnerai un petit indice. Tu vois le coussin étoile ? C’est là que je t’attends !', 'Continuer', 'À tout à l’heure, Mokona !'],
-    en: ['Mokona unlocked!', 'Hi, I’m Mokona! Some objects in this room are hiding secrets. Tap them to explore, then look in your notebook to see what you’ve found.', 'Need a hint? Come find me on the bed. See the star pillow? That’s where I’ll be!', 'Continue', 'See you soon, Mokona!']
+    fr: ['Mokona débloqué !', 'Coucou, moi c’est Mokona ! Certains objets de cette chambre cachent un secret. Touche-les pour les découvrir. Tu peux retrouver tes découvertes dans ton carnet.', 'Tiens, ton premier badge ! Chaque découverte fait grimper le pourcentage en haut de l’écran. À certains paliers, ou quand tu termines une collection, j’ai un nouveau badge pour toi.', 'Si tu ne sais plus où chercher, viens me voir sur le lit. Je te donnerai un petit indice. Tu vois le coussin étoile ? C’est là que je t’attends !', 'Continuer', 'À tout à l’heure, Mokona !'],
+    en: ['Mokona unlocked!', 'Hi, I’m Mokona! Some objects in this room are hiding secrets. Tap them to explore, then look in your notebook to see what you’ve found.', 'Here’s your first badge! Each discovery raises the percentage at the top. Reach a milestone or complete a collection and I’ll have another badge for you.', 'Need a hint? Come find me on the bed. See the star pillow? That’s where I’ll be!', 'Continue', 'See you soon, Mokona!']
   };
   const dialog = document.createElement('dialog');
   dialog.className = 'mokona-dialog';
@@ -65,12 +65,23 @@
   function mouth(index) {
     mouths.forEach((node,i) => node.style.display = i === index ? '' : 'none');
   }
+  let handBadge;
   let lines, page, timer, typing, landing;
+  function offerFirstBadge(){
+    if(!handBadge){
+      const badge=window.NanaProgress.stickers.find(b=>b.id==='glance');
+      handBadge=window.NanaBadgeArt(badge);
+      for(const [key,value] of Object.entries({x:1185,y:454,width:248,height:248}))handBadge.setAttribute(key,value);
+      paw.before(handBadge);
+      document.dispatchEvent(new Event('mokona-first-badge'));
+    }
+  }
   function finishLine() {
     clearTimeout(timer);
     typing = false;
     copy.lastChild.textContent = lines[page];
     mouth(0);
+    if(page===1)offerFirstBadge();
   }
   function speak() {
     const line = lines[page];
@@ -79,7 +90,8 @@
     copy.firstChild.style.visibility = 'visible';
     copy.firstChild.style.opacity = '0';
     copy.lastChild.textContent = '';
-    next.textContent = lines[page+2];
+    if(handBadge)handBadge.style.display=page===2?'':'none';
+    next.textContent = lines[page===3?5:4];
     let i = 0;
     typing = true;
     function write() {
@@ -236,6 +248,7 @@
       } else sleep();
       return;
     }
+    if(window.NanaJournal?.offerBadge?.()) return;
     hint = chooseHint(window.NanaProgress, french() ? 'fr' : 'en');
     letters = 0;
     bedBubble.lastElementChild.textContent = hint;
@@ -313,6 +326,9 @@
       seated.style.height='';
       bed.append(seated);
       sleep();
+      discovered=true;
+      try{localStorage.setItem(discoveryKey,'1');}catch{}
+      syncEntry();
       bed.style.visibility = '';
       dialog.close();
       stage.hidden = true;
@@ -325,10 +341,10 @@
   next.onclick = () => {
     if (landing) return;
     if (typing) return finishLine();
-    if (page === 1) { page++; speak(); }
+    if (page < 3) { page++; speak(); }
     else settle();
   };
-  dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) settle();});
+  dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) next.click();});
   // Stage only the character under the existing smoke. Moving the live canvas
   // between the room and a modal interrupts its observer and compositor on iPad.
   const stage = document.createElement('div');
@@ -360,11 +376,48 @@
   function restoreDiscovery() {
     try { discovered ||= localStorage.getItem(discoveryKey) === '1'; }
     catch (_) { /* Keep the current visit working without storage. */ }
+    syncEntry();
     if (!discovered || dialog.open || landing) return;
     dialog.classList.remove('revealing');
     stage.classList.remove('revealing');
     stage.hidden = true;
     bed.hidden = false;
+  }
+  const app=document.getElementById('app');
+  let gate=false, promptTimer;
+  function centerBowl(){
+    const button=scene.querySelector('.incense-entry');
+    if(!gate || !button)return;
+    const viewport=scene.parentElement;
+    const b=button.getBoundingClientRect(),v=viewport.getBoundingClientRect();
+    if(b.width && (b.left<v.left+16 || b.right>v.right-16))
+      viewport.scrollLeft+=b.left+b.width/2-v.left-v.width/2;
+  }
+  function showPrompt(){
+    if(gate && stage.hidden)scene.classList.add('incense-prompt-visible');
+  }
+  function syncEntry(){
+    const lock=!discovered && app.classList.contains('mode-play') && !window.NanaProgress?.suppressed?.();
+    if(lock===gate)return;
+    gate=lock;
+    scene.classList.toggle('mokona-first',gate);
+    clearTimeout(promptTimer);
+    scene.classList.remove('incense-prompt-visible');
+    if(gate){
+      requestAnimationFrame(centerBowl);
+      promptTimer=setTimeout(showPrompt,3000);
+    }
+  }
+  new ResizeObserver(centerBowl).observe(scene.parentElement);
+  new MutationObserver(syncEntry).observe(app,{attributes:true,attributeFilter:['class']});
+  for(const type of ['pointerdown','pointerup','mousedown','touchstart','click','keydown']){
+    window.addEventListener(type,event=>{
+      if(!gate || !scene.contains(event.target) || event.target.closest('.incense-entry'))return;
+      if(type==='keydown' && !['Enter',' '].includes(event.key))return;
+      event.stopImmediatePropagation();
+      if(type==='click'||type==='keydown')event.preventDefault();
+      showPrompt();
+    },{capture:true,passive:false});
   }
   restoreDiscovery();
   window.addEventListener('pageshow',restoreDiscovery);
@@ -388,6 +441,8 @@
     mouth(0);
     lines = words[document.documentElement.lang === 'en' ? 'en' : 'fr'];
     page = 1;
+    clearTimeout(promptTimer);
+    scene.classList.remove('incense-prompt-visible');
     floater.append(art);
     floater.style.animation = '';
     floater.style.transformOrigin = 'top left';
@@ -420,13 +475,12 @@
     paw.setAttribute('class','mokona-wave');
     next.disabled = false;
     dialog.showModal();
-    discovered = true;
     window.NanaProgress?.feat('mokona');
-    try { localStorage.setItem(discoveryKey,'1'); } catch (_) { /* Session-only fallback. */ }
     next.focus({preventScroll:true});
     if (!reduced.matches) dialog.querySelector('.mokona-card').animate([{opacity:0},{opacity:1}],{duration:420});
     speak();
   });
 })();
+
 
 
