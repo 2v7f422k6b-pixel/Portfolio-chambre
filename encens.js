@@ -419,7 +419,7 @@
           const sx=depth?(depth===1?.10:.17):0,sy=depth?(depth===1?.12:.20):0;
           gl.uniform4f(u.transform,1+sx,1+sy,depth?(depth===1?-65:65)-sx*1536:0,
             depth?(depth===1?-150:195)-sy*866:0);
-          gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth?.58:1));
+          gl.uniform1f(u.age,b.age);gl.uniform1f(u.opacity,(1-b.dissolve)*swell*(depth===1?.96:depth===2?.73:1));
           const s=b.sprite;
           gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,s.art);
           gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,s.flow);
@@ -483,17 +483,13 @@
         const origin=pose(b,b.origin);
         b.x+=b.x-origin[0];b.y+=b.y-origin[1];
   }
-  let mokonaRevealed = false, clearingFinished = false;
+  let clearingFinished = false;
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
     const clearing=elapsed-cycleEnd-5.2;
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
     if (sequence !== null && clearing >= 0 && !clearingFinished) {
-      if (!mokonaRevealed) {
-        mokonaRevealed = true;
-        scene.dispatchEvent(new CustomEvent('incense:reveal', {detail:layer}));
-      }
       scene.dispatchEvent(new CustomEvent('incense:clearing', {detail:{rect, clearing}}));
       clearingFinished = clearing >= 7.8;
     }
@@ -560,7 +556,7 @@
           ctx.scale(depth===1?1.10:1.17,depth===1?1.12:1.20);
           ctx.translate(-1536,-866);
         }
-        paintBranch(b,swell*(depth?.58:1),depth);
+        paintBranch(b,swell*(depth===1?.96:depth===2?.73:1),depth);
         ctx.restore();
       }
 
@@ -658,7 +654,8 @@
   button.addEventListener('click',async event=>{
     event.stopPropagation();
     await load();
-    if(sequence===null){clearingFinished=false;mokonaRevealed=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
+    if(sequence===null){clearingFinished=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
   });
 })();
+
 

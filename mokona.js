@@ -171,49 +171,63 @@
     finishLine();
     const start = art.getBoundingClientRect();
     const card = dialog.querySelector('.mokona-card');
-    dialog.style.setProperty('--veil','0');
+    stage.style.setProperty('--veil','0');
     bed.style.visibility = 'hidden';
     bed.hidden = false;
-    const landingBox = bed.getBoundingClientRect();
-    if (landingBox.right < 0 || landingBox.left > innerWidth) bed.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+    const viewport = scene.parentElement;
     const target = bed.getBoundingClientRect();
+    const bounds = viewport.getBoundingClientRect();
+    const margin = 12;
+    const dxScroll = target.left < bounds.left + margin ? target.left - bounds.left - margin
+      : Math.max(0, target.right - bounds.right + margin);
+    const finalScroll = Math.max(0,Math.min(viewport.scrollWidth-viewport.clientWidth,viewport.scrollLeft + dxScroll));
+    const pan = finalScroll - viewport.scrollLeft;
+    if (pan) viewport.scrollTo({left:finalScroll,behavior:reduced.matches?'instant':'smooth'});
     const scale = target.width/start.width;
 
     // Hold the exact hovering pose, then blend the drawings on one moving surface.
     const hover = getComputedStyle(floater).transform;
     floater.style.animation = 'none';
     floater.style.transform = hover;
-    const seated = sleepingArt.cloneNode(true);
+    const seated = sleepingArt;
     seated.classList.add('mokona-landing-pose');
     seated.style.height = (target.height / scale) + 'px';
     floater.append(seated);
-    const duration = reduced.matches ? 0 : 1650;
+    const duration = reduced.matches ? 0 : 2250;
     const options = {duration,fill:'forwards'};
     const base = floater.getBoundingClientRect();
     const move = (x,y,k) => 'translate('+x+'px,'+y+'px) scale('+k+')';
     floater.style.transform = 'none';
     const unshifted = floater.getBoundingClientRect();
     const hoverY = base.top-unshifted.top;
-    const dx = target.left + target.width/2 - unshifted.left - start.width/2;
+    const dx = target.left - pan + target.width/2 - unshifted.left - start.width/2;
     const dy = target.bottom - unshifted.top - start.height;
     const frames = Array.from({length:31},(_,i)=>{
       const t=i/30, f=t*t*(3-2*t);
       const k = Math.pow(scale,f);
       // Follow the centre of the feet while the drawing recedes in perspective.
-      return {offset:t,transform:move(dx*f + start.width*(1-k)/2, hoverY*(1-f) + dy*f + start.height*(1-k) - 48*Math.sin(Math.PI*f), k)};
+      return {offset:t,transform:move(dx*f + start.width*(1-k)/2, hoverY*(1-f) + dy*f + start.height*(1-k) - Math.min(95,innerHeight*.11)*Math.sin(Math.PI*f), k)};
     });
     const transition = [
       floater.animate(frames,options),
       card.animate([{opacity:1},{opacity:0,offset:.24},{opacity:0}],options),
-      art.animate([{opacity:1},{opacity:1,offset:.69},{opacity:0,offset:.96},{opacity:0}],options),
-      seated.animate([{opacity:0},{opacity:0,offset:.69},{opacity:1,offset:.96},{opacity:1}],options)
+      // Align the two forehead jewels before the seated drawing takes over.
+      art.animate([{transform:'none'},{offset:.47,transform:'none'},
+        {offset:.78,transform:'translate(-1.5%,4%) scale(1.13)'},{transform:'translate(-1.5%,4%) scale(1.13)'}],options),
+      art.animate([{opacity:1},{opacity:1,offset:.49},{opacity:0,offset:.75},{opacity:0}],options),
+      seated.animate([{opacity:0},{opacity:0,offset:.49},{opacity:1,offset:.75},{opacity:1}],options)
+
     ];
     try { await transition[0].finished; }
     finally {
+      seated.classList.remove('mokona-landing-pose');
+      seated.style.height='';
+      bed.append(seated);
       sleep();
       bed.style.visibility = '';
       dialog.close();
-      seated.remove();
+      stage.hidden = true;
+      stage.classList.remove('hovering');
       transition.forEach(animation=>animation.cancel());
       floater.style.transform='';
       landing = false;
@@ -240,7 +254,24 @@
   stage.setAttribute('data-nana-load-ignore','');
   stage.hidden = true;
   scene.append(stage);
-  const content = dialog.querySelector('.mokona-content');
+  // Keep the illustration in room coordinates for the whole encounter. The native
+  // dialog contains the controls and a same-size spacer for the drawing.
+  const space = document.createElement('div');
+  space.className = 'mokona-float mokona-art mokona-spacer';
+  floater.replaceWith(space);
+  const sceneLayout = document.createElement('div');
+  sceneLayout.className = 'mokona-content';
+  const cardSpace = document.createElement('div');
+  cardSpace.className = 'mokona-card mokona-spacer';
+  sceneLayout.append(floater,cardSpace);
+  stage.append(sceneLayout);
+  function pinStage() {
+    if (stage.hidden) return;
+    const rect = scene.getBoundingClientRect();
+    Object.assign(stage.style,{left:-rect.left+'px',top:-rect.top+'px',width:innerWidth+'px',height:innerHeight+'px'});
+  }
+  scene.parentElement.addEventListener('scroll',pinStage,{passive:true});
+  window.addEventListener('resize',pinStage);
   const heldImages = [];
   scene.addEventListener('incense:start', () => {
     if (heldImages.length) return;
@@ -252,7 +283,7 @@
       image.decode().catch(()=>{});
     }
   });
-  scene.addEventListener('incense:reveal', event => {
+  scene.addEventListener('incense:start', () => {
     if (dialog.open || landing) return;
     lines = words[document.documentElement.lang === 'en' ? 'en' : 'fr'];
     page = 1;
@@ -262,28 +293,28 @@
     dialog.querySelector('.mokona-card').style.visibility = '';
     dialog.querySelector('h2').textContent = lines[0];
     dialog.classList.add('revealing');
-    dialog.style.setProperty('--veil','0');
+    stage.style.setProperty('--veil','0');
     glimmer.style.opacity = '0';
     floater.style.setProperty('--extent','-24%');
     next.disabled = true;
     stage.classList.add('revealing');
-    stage.append(content);
+    floater.style.opacity = '0';
     stage.hidden = false;
+    pinStage();
   });
-  scene.addEventListener('incense:clearing', ({detail:{rect, clearing}}) => {
+  scene.addEventListener('incense:clearing', ({detail:{clearing}}) => {
     if (!dialog.classList.contains('revealing')) return;
-    Object.assign(stage.style,{left:-rect.left+'px',top:-rect.top+'px',width:innerWidth+'px',height:innerHeight+'px'});
-    const progress = Math.min(1,clearing/6.6);
-    const unveiling = Math.max(0,(progress-.16)/.84);
-    floater.style.setProperty('--extent',(-10+145*unveiling)+'%');
-    const pulse = Math.sin(Math.PI * Math.min(1,clearing/5.4));
-    glimmer.style.opacity = String(reduced.matches ? 0 : pulse * pulse);
-    const veil = String(.24 * progress * progress);
+    const t = Math.min(1,Math.max(0,(clearing-2.65)/4.55));
+    const unveiling = t*t*(3-2*t);
+    floater.style.opacity = String(unveiling);
+    floater.style.setProperty('--extent',(-30+170*unveiling)+'%');
+    const pulse = Math.sin(Math.PI*t);
+    glimmer.style.opacity = String(reduced.matches ? 0 : .38*pulse*pulse);
+    const veil = String(.24 * unveiling * unveiling);
     stage.style.setProperty('--veil',veil);
-    dialog.style.setProperty('--veil',veil);
     if (clearing < 7.8) return;
-    stage.hidden = true;
-    dialog.append(content);
+    stage.classList.remove('revealing');
+    stage.classList.add('hovering');
     dialog.classList.remove('revealing');
     paw.setAttribute('class','mokona-wave');
     next.disabled = false;
@@ -293,3 +324,4 @@
     speak();
   });
 })();
+
