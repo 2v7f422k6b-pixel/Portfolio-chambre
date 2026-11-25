@@ -135,7 +135,7 @@
   ].map(([fr,en,evidence])=>({id:evidence[0],name:pair(fr,en),evidence}));
   const landscapes = ['marseille','japon','pink','paris'];
   const figureIds = Array.from({length:15}, (_,i) => 'charm-gacha-' + (7545+i));
-  const allowedFeats = new Set([...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set([...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','secret-rug','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -228,9 +228,13 @@
     if(suppressed())return;
     const room=roomSnapshot(),required=new Set(room.required),discovered=new Set(room.discovered);
     const count=required.size?[...discovered].filter(id=>required.has(id)).length:discovered.size;
+    const previous=read(ROOM_KEY);
+    const previousRequired=new Set(previous?.version!==2 && Array.isArray(previous?.required) ? previous.required.filter(id=>id!=='flowers') : []);
+    const previousCount=[...new Set(Array.isArray(previous?.discovered)?previous.discovered:[])].filter(id=>previousRequired.has(id)).length;
     let changed=false;
     for(const badge of stickers){
-      const eligible=badge.percent===undefined ? discovered.has(badge.id) : room.celebrated || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
+      const previousMilestone=previousCount>0 && previousCount*100>=previousRequired.size*badge.percent;
+      const eligible=badge.percent===undefined ? discovered.has(badge.id) : room.celebrated || previousMilestone || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
       if(eligible&&!earnedBadges.has(badge.id)){earnedBadges.add(badge.id);changed=true;}
     }
     if(changed)try{localStorage.setItem(BADGES_KEY,JSON.stringify([...earnedBadges]));}catch(_){persistent=false;}
@@ -238,7 +242,7 @@
   const titles = [
     {id:'curious',name:pair('Petite âme curieuse','Curious soul'),rule:pair('Découvrir un premier objet.','Discover your first object.'),earned:()=>roomSnapshot().discovered.length>0},
     {id:'sofa',name:pair('Créature de canapé','Sofa creature'),rule:pair('Terminer une pause au club du rien.','Finish a break at the Do Nothing Club.'),earned:()=>hasFeat('rested')},
-    {id:'detective',name:pair('Détective de salon','Living-room detective'),rule:pair('Trouver deux secrets.','Find two secrets.'),earned:()=>secrets.filter(x=>hasFeat(x.id)).length>=2},
+    {id:'detective',name:pair('Détective de salon','Living-room detective'),rule:pair('Trouver deux secrets.','Find two secrets.'),earned:()=>secrets.filter(x=>hasFeat(x.id)).length>=2 || (hasFeat('secret-rug') && hasFeat('secret-memory-box'))},
     {id:'artist',name:pair('Artiste en bazar','Artist in a creative mess'),rule:pair('Découvrir le coloriage et composer un bijou.','Discover colouring and make a charm.'),earned:()=>hasVisit('jeu/coloring')&&hasFeat('beads-made')},
     {id:'care',name:pair('Douceur envers soi','Kind to myself'),rule:pair('Essayer trois gestes différents dans le Tamagotchi.','Try three different self-care actions in the Tamagotchi.'),earned:()=>state.feats.filter(x=>x.startsWith('care-')).length>=3},
     {id:'quests',name:pair('Spécialiste des quêtes secondaires','Side-quest specialist'),rule:pair('Découvrir cinq jeux.','Discover five games.'),earned:()=>games.filter(x=>hasVisit(x.route)).length>=5},

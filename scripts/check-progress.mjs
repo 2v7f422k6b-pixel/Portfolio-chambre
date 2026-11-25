@@ -156,9 +156,10 @@ test('corrupted or unavailable storage leaves a working in-memory visit',()=>{
 });
 test('a deep link and its exact room object share one discovery',()=>{
   const {p,env}=browser();const discovered=new Set();
-  env.NanaDiscoveries={remember:id=>discovered.add(id),snapshot:()=>({required:['mirror','object:book'],discovered:[...discovered]})};
+  env.NanaDiscoveries={remember:id=>discovered.add(id),raw:()=>[...discovered]};
   p.visit('jeu/dressing/tenue/clown');p.visit('jeu/dressing');p.visit('livre/la-princesse-clown/page/4');
-  assert.deepEqual([...discovered],['mirror','object:book']);assert.equal(p.fullRoom(),true);
+  assert.deepEqual([...discovered],['mirror','object:book']);assert.equal(p.fullRoom(),false);
+  assert.deepEqual(Array.from(p.snapshot().room.discovered),['livre/la-princesse-clown']);
   assert.equal(p.snapshot().visits.length,2);
 });
 test('unknown events and unknown routes cannot unlock a gift or an outfit',()=>{
@@ -200,7 +201,7 @@ test('every collectible uses an existing drawing and every bonus outfit uses act
 test('the three personal secrets replace the old interactions without losing saved history',()=>{
   const storage=new Map([[key,JSON.stringify({visits:[],feats:['secret-rug','secret-cookie','secret-typewriter','secret-twist'],title:null})]]);
   const {p}=browser({storage});
-  assert.deepEqual(Array.from(p.secrets,x=>x.id),['secret-rug','secret-memory-box','secret-childhood-drawing']);
+  assert.deepEqual(Array.from(p.secrets,x=>x.id),['secret-memory-box','secret-typewriter','secret-childhood-drawing']);
   assert.equal(p.secrets.filter(x=>p.hasFeat(x.id)).length,1);
   assert.equal(p.hasFeat('secret-cookie'),true);
   assert.equal(p.titles.find(x=>x.id==='detective').earned(),false);
@@ -381,21 +382,47 @@ test('camera needs distinct photos across visits; phone and waistcoat have separ
  const creator=browser({creator:true}).p;for(const id of ids)creator.readPolaroid(id,ids);assert.equal(creator.unlockedOutfit('photographer'),false);
 });
 
-test('the five patches unlock at real exploration thresholds and stay earned after reload',()=>{
- const {p,env,storage}=browser(),required=Array.from({length:49},(_,i)=>'object:test-'+i);
- let discovered=[];
- env.NanaDiscoveries={snapshot:()=>({required,discovered})};
- const notices=[];p.subscribe(e=>notices.push(...e.added));
- const earned=()=>p.stickers.filter(b=>b.earned()).length;
- assert.equal(p.stickers.length,5);assert.equal(earned(),0);
- p.feat('latte-made');p.feat('beads-made');p.feat('rested');assert.equal(earned(),0,'activity rewards do not add patches');
- for(const [count,total] of [[1,1],[12,1],[13,2],[24,2],[25,3],[36,3],[37,4],[48,4],[49,5]]){
-  discovered=[...required.slice(0,count),required[0],'unknown-object'];p.refresh();
-  assert.equal(earned(),total,'unique required discoveries: '+count);
+function explore(p,d){
+  if(d.id==='landscapes')for(const place of ['paris','pink','marseille','japon'])p.feat('landscape-'+place);
+  else if(d.id==='gashapon')for(let i=7545;i<=7559;i++)p.feat('charm-gacha-'+i);
+  else if(d.id==='mononoke-kodama')for(let i=1;i<=5;i++)p.feat('kodama-'+i);
+  else for(const action of d.evidence){
+    if(action.startsWith('object:'))p.visit('objet/'+action.slice(7));
+    else if(action.includes('/') || action==='night' || action==='photos')p.visit(action);
+    else p.feat(action);
+  }
+}
+function roomBrowser(options){
+  const tab=browser(options),raw=new Set();
+  tab.env.NANA_ROOM_ZONES=[{id:'chat'},{id:'vase'},{id:'miffy'}];
+  tab.env.NanaDiscoveries={remember:id=>raw.add(id),raw:()=>[...raw]};
+  return tab;
+}
+test('46 distinct experiences award five milestones and two collection badges exactly once',()=>{
+ const {p,storage}=roomBrowser(),notices=[];
+ p.subscribe(e=>notices.push(...e.added));
+ assert.equal(p.discoveries.length,46);
+ for(const [i,d] of p.discoveries.entries()){
+   explore(p,d);explore(p,d);
+   assert.equal(p.snapshot().room.discovered.length,i+1,d.name.fr);
+   for(const badge of p.stickers.filter(b=>b.percent!==undefined))
+     assert.equal(badge.earned(),(i+1)*100>=46*badge.percent);
  }
- p.refresh();assert.equal(notices.filter(id=>id.startsWith('sticker:')).length,5,'one notification per patch');
- assert.equal(browser({storage}).p.stickers.filter(b=>b.earned()).length,5,'standalone dressing retains patches');
- required.push('object:new-zone');p.refresh();assert.equal(earned(),5,'new room objects do not revoke earned patches');
+ assert(p.fullRoom());
+ assert.equal(p.stickers.filter(b=>b.earned()).length,7);
+ assert.equal(notices.filter(x=>x.startsWith('sticker:')).length,7);
+ assert.equal(browser({storage}).p.stickers.filter(b=>b.earned()).length,7);
+});
+test('partial collections keep their progress across visits and award one badge when complete',()=>{
+ const {p,storage}=browser();
+ for(let i=7545;i<7559;i++)p.feat('charm-gacha-'+i);
+ for(const place of ['japon','japon','pink','paris'])p.feat('landscape-'+place);
+ const restored=browser({storage}).p;
+ assert.deepEqual(Array.from(restored.snapshot().room.counters.gashapon),[14,15]);
+ assert.deepEqual(Array.from(restored.snapshot().room.counters.landscapes),[3,4]);
+ for(const id of ['gashapon','landscapes'])assert(!restored.stickers.find(x=>x.id===id).earned());
+ restored.feat('charm-gacha-7559');restored.feat('landscape-marseille');
+ for(const id of ['gashapon','landscapes'])assert(restored.stickers.find(x=>x.id===id).earned());
 });
 
 test('saved room totals restore thresholds and patch progress merges between tabs',()=>{
@@ -414,19 +441,16 @@ test('saved room totals restore thresholds and patch progress merges between tab
  }
 });
 
-test('removing the flower shortcut keeps full exploration reachable and old achievements intact',()=>{
-  const oldRoom={discovered:['object:instax'],required:['object:instax','flowers'],celebrated:false};
-  const storage=new Map([[roomKey,JSON.stringify(oldRoom)]]);
-  const {p,env}=browser({storage});
-  assert.equal(p.fullRoom(),true);
-  assert.equal(p.snapshot().room.required.includes('flowers'),false);
-  assert.equal(p.snapshot().room.discovered.includes('object:instax'),true);
-  assert.deepEqual(JSON.parse(storage.get(roomKey)),oldRoom);
-  const remembered=[];
-  env.NanaDiscoveries={remember:id=>remembered.push(id),snapshot:()=>({required:['object:instax'],discovered:['object:instax']})};
-  p.visit('illustrations');
-  assert.deepEqual(remembered,[]);
-  assert.equal(p.fullRoom(),true);
+test('a legacy photo counts once; retired flower and rug targets never block completion',()=>{
+ const oldRoom={discovered:['object:instax','flowers','object:tapis'],required:['object:instax','flowers'],celebrated:false};
+ const storage=new Map([[roomKey,JSON.stringify(oldRoom)]]);
+ const {p}=browser({storage});
+ assert.equal(p.fullRoom(),false);
+ assert.equal(p.snapshot().room.required.length,46);
+ assert.deepEqual(Array.from(p.snapshot().room.discovered),['photos']);
+ p.visit('photos');p.visit('illustrations');
+ assert.deepEqual(Array.from(p.snapshot().room.discovered),['photos']);
+ assert.deepEqual(JSON.parse(storage.get(roomKey)),oldRoom);
 });
 
 test('denim dress, overalls and GANNI accept a blouse in both selection orders',()=>{
@@ -444,13 +468,14 @@ test('denim dress, overalls and GANNI accept a blouse in both selection orders',
 
 
 test('George Sand follows the middle books and Inspector requires 75 percent of required discoveries',()=>{
- const {p,env}=browser();
+ const {p}=roomBrowser();
  assert.equal(p.unlockedOutfit('george-sand'),false);
  p.visit('objet/souvenues');assert.equal(p.unlockedOutfit('george-sand'),true);
- let discovered=['a','b','extra'];
- env.NanaDiscoveries={snapshot:()=>({required:['a','b','c','d'],discovered})};
+ for(const d of p.discoveries.slice(0,33))explore(p,d);
+ assert.equal(p.snapshot().room.discovered.length,34);
  assert.equal(p.unlockedOutfit('inspector'),false);
- discovered.push('c');assert.equal(p.unlockedOutfit('inspector'),true);
+ explore(p,p.discoveries[33]);
+ assert.equal(p.unlockedOutfit('inspector'),true);
 });
 test('hanging plant unlocks Plantasia and treasures use the beaded bunny charm',()=>{
  const {p}=browser();p.visit('objet/lampe-fleur');
@@ -477,5 +502,6 @@ test('hanging plant unlocks Plantasia and treasures use the beaded bunny charm',
  b.p.feat('kodama-4');b.p.feat('kodama-5');a.emit('storage',{key:a.p.KEY});
  assert(a.p.unlockedOutfit('mononoke'));assert(browser({storage}).p.unlockedOutfit('mononoke'));
  });
+
 
 
