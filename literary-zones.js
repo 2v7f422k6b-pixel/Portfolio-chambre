@@ -852,6 +852,7 @@
   }
   function insertFromBank(index, at=poem.length) {
     if(!Number.isInteger(index)||index<0||index>=bank.length)return;
+    window.NanaProgress?.feat('word-placed');
     const item=bank.splice(index,1)[0];
     poem.splice(Math.max(0,Math.min(at,poem.length)),0,item);
     renderPoem();
@@ -1026,3 +1027,4 @@
   }
   window.NanaLiterary={view,activate,route,links,openRoute,openLink:openRoute};
 })();
+

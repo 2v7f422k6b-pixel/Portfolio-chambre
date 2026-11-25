@@ -37,6 +37,8 @@
   document.body.append(milestone);
   const milestoneQueue=[], queuedBadges=new Set();
   const ranks={
+    landscapes:['Voyageuse','Traveller'],
+    gashapon:['Collectionneuse','Collector'],
     glance:['Petite âme curieuse','Curious soul'],
     'five-minutes':['En visite prolongée','Staying a little longer'],
     'at-home':['Comme chez toi','Right at home'],
@@ -82,13 +84,18 @@
     const found=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;
     const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('écussons gagnés','patches earned')]];
     return heading(t('Bienvenue dans ton petit carnet','Welcome to your little notebook'),t('Chaque détour laisse un souvenir.','Every little detour leaves a memory.'))+
-      '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('objets découverts','objects discovered')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
+      '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('découvertes','discoveries')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
+      '<details class="nj-discoveries"><summary>'+t('Mes découvertes','My discoveries')+'</summary><ul>'+progress.discoveries.map(d=>{
+        const complete=r.discovered.includes(d.id),parts=r.counters[d.id];
+        const label=complete||parts?.[0]?name(d.name):t('À découvrir','Undiscovered');
+        return '<li>'+ (complete?'✓ ':'')+h(label)+(parts?' · '+parts.join(' / '):'')+'</li>';
+      }).join('')+'</ul></details>'+
       '<div class="nj-stats">'+summary.map(([tab,n,total,label])=>'<button type="button" class="nj-stat nj-frame" data-nj-tab="'+tab+'"><strong>'+n+' <small>/ '+total+'</small></strong><span>'+label+'</span></button>').join('')+'</div>'+
       '<p class="nj-bottom-note">'+(progress.snapshot().persistent?t('Tes découvertes restent ici quand tu reviens sur ce navigateur.','Your discoveries stay here when you return in this browser.'):t('Ton navigateur ne permet pas la sauvegarde : tes découvertes restent disponibles pendant cette visite.','Your browser cannot save progress: your discoveries are available for this visit.'))+'</p>';
   }
   function secretsPage(){const count=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;return heading(t('Les secrets de la chambre','The room’s secrets'),count+' / '+progress.secrets.length+' '+t('petites surprises trouvées','little surprises found'))+paginate(progress.secrets,(secret)=>{
     const found=progress.hasFeat(secret.id),number=progress.secrets.indexOf(secret)+1,coming=secret.available===false;
-    return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':coming?'À venir':'Encore bien caché',found?'Discovered':coming?'Coming soon':'Still well hidden')+'</p>'+(found?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
+    return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':coming?'À venir':'Encore bien caché',found?'Discovered':coming?'Coming soon':'Still well hidden')+'</p>'+(found&&secret.route?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
   },{size:small.matches?2:4});}
   function gamesPage(){const found=progress.games.filter(x=>progress.hasVisit(x.route)).length;return heading(t('À quoi on joue ?','What shall we play?'),found+' / '+progress.games.length+' '+t('jeux découverts','games discovered'))+paginate(progress.games,game=>{
     const unlocked=progress.hasVisit(game.route);
@@ -126,7 +133,7 @@
   function giftsPage(){const r=ratio(),won=progress.fullRoom()||r.celebrated;return heading(t('Tes petits cadeaux','Your little gifts'),t('Des souvenirs à garder et une attention pour la boutique.','Little memories and a treat for the shop.'))+
     '<article class="nj-gift nj-frame">'+img(star)+'<p>'+t('La chambre n’a plus de secrets pour toi','The room has no more secrets for you')+'</p><strong>−10 %</strong><p>'+t('sur ton prochain achat chez Nana’s Little Shop','on your next purchase at Nana’s Little Shop')+'</p>'+
     (won?'<div class="nj-coupon"><code>MERCI10</code>'+button(t('Copier le code','Copy code'),'data-nj-copy')+'</div>'+routeButton('shop',t('Découvrir la boutique','Visit the shop')):
-      '<p>'+t('Explore tous les objets de la chambre pour ouvrir ce cadeau.','Explore every object in the room to open this gift.')+'</p>'+meter(r.count,r.total,t('Progression vers le cadeau','Progress towards the gift'))+'<small>'+r.count+' / '+r.total+' '+t('objets découverts','objects discovered')+'</small>')+
+      '<p>'+t('Complète les 46 découvertes pour ouvrir ce cadeau.','Complete all 46 discoveries to open this gift.')+'</p>'+meter(r.count,r.total,t('Progression vers le cadeau','Progress towards the gift'))+'<small>'+r.count+' / '+r.total+' '+t('découvertes','discoveries')+'</small>')+
     '</article><p class="nj-bottom-note">'+t('Les tenues bonus et les stickers gagnés restent dans leurs collections.','Your bonus looks and stickers stay in their collections.')+'</p>';
   }
   let keepsakeFilter='all',selectedKeepsake=null;
@@ -296,6 +303,7 @@
   window.NanaJournal={open,close,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
+
 
 
 

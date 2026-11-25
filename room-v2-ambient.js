@@ -319,8 +319,25 @@
   const landscape = new URLSearchParams(location.search).get('landscape');
   const landscapes = ['marseille', 'japon', 'pink', 'paris'];
   let dialAngle = landscape === 'desert-rose' ? 180 : landscape === 'paris' ? 270 : landscape === 'japon' ? 90 : 0;
+  const cycleKey = 'nana-landscape-cycle-v1';
+  let cycle = [];
+  try {
+    const saved=JSON.parse(localStorage.getItem(cycleKey));
+    if(Array.isArray(saved)) cycle=[...new Set(saved.filter(id=>landscapes.includes(id)))];
+  } catch {}
+  if(!landscape && cycle.length) dialAngle=90*landscapes.indexOf(cycle[cycle.length-1]);
+  function recordLandscape() {
+    if(!document.querySelector('#app.mode-play') || window.NanaProgress?.suppressed())return;
+    const id=scene.dataset.landscape;
+    if(!landscapes.includes(id))return;
+    if(!cycle.includes(id))cycle.push(id);
+    try { localStorage.setItem(cycleKey,JSON.stringify(cycle)); } catch {}
+    window.NanaProgress?.feat('landscape-'+id);
+  }
+  document.addEventListener('portfolio-mode-change',recordLandscape);
   function showLandscape() {
     scene.dataset.landscape = landscapes[(dialAngle % 360) / 90];
+    recordLandscape();
   }
   wheel.style.transformBox = 'view-box';
   wheel.style.transformOrigin = '1931px 990px';
@@ -373,8 +390,9 @@
     if (wheel.getAnimations().some(a => a.playState === 'running')) return;
     const start = dialAngle;
     const currentSlot = (start % 360) / 90;
+    if(cycle.length===landscapes.length)cycle=[];
     const steps = landscapes.map((_, step) => step).filter(step =>
-      landscapes[(currentSlot + step) % landscapes.length] !== scene.dataset.landscape
+      step !== 0 && !cycle.includes(landscapes[(currentSlot + step) % landscapes.length])
     );
     dialAngle = start + 720 + 90 * steps[Math.floor(Math.random() * steps.length)];
     const spin = motion(wheel, turns(start,dialAngle), 1700, '1931px 990px','forwards');
@@ -403,21 +421,19 @@
       const n = history.counts[id];
       counts[id] = Number.isInteger(n) && n > 0 ? Math.min(n, 3) : Number(window.NanaProgress.hasFeat(id));
     }
-    return {counts, last: history.last};
+    return {counts, last:history.last, duplicate:history.duplicate === true};
   }
-  function candidates({counts, last}) {
-    const total = Object.values(counts).reduce((sum, n) => sum + 3 - n, 0);
-    // Leave enough intervening draws to give out all copies without a repeat.
-    const mustDraw = collection.figures.find(f => 3 - counts[f.id] > total / 2);
-    return collection.figures.filter(f => counts[f.id] < 3 && f.id !== last && (!mustDraw || f === mustDraw));
+  function candidates({counts,last,duplicate}) {
+    const missing=collection.figures.filter(f=>!counts[f.id]);
+    const owned=collection.figures.length-missing.length;
+    if(missing.length && (owned<4 || owned>=12 || duplicate)) return missing;
+    return collection.figures.filter(f=>f.id!==last);
   }
   function chooseFigure(pool) {
     const weight = f => f.id === 'charm-gacha-7554' ? 1 : 4;
     let roll = Math.random() * pool.reduce((sum, f) => sum + weight(f), 0);
     return pool.find(f => (roll -= weight(f)) < 0);
   }
-  const finishedText = () => document.documentElement.lang === 'en'
-    ? 'All 45 figurines collected!' : 'Tu as trouvé les 45 figurines !';
   let color;
   function showCapsule() {
     capsuleState = 'opening';
@@ -447,12 +463,6 @@
       if (!dialog.open) return;
       const draws = readDraws();
       const pool = candidates(draws);
-      if (!pool.length) {
-        capsuleState = 'revealed';
-        dialog.close();
-        window.showToast?.(finishedText());
-        return;
-      }
       const figure = chooseFigure(pool);
       images[3].src = figure.image;
       try {
@@ -464,11 +474,14 @@
         return;
       }
       if (!dialog.open) return;
-      const owned = progress.hasFeat(figure.id);
+      const owned = draws.counts[figure.id] > 0;
+      draws.duplicate = owned;
       draws.counts[figure.id]++;
       draws.last = figure.id;
-      history = draws;
-      try { localStorage.setItem(historyKey, JSON.stringify(draws)); } catch { /* Session only. */ }
+      if(!progress.suppressed()){
+        history = draws;
+        try { localStorage.setItem(historyKey, JSON.stringify(draws)); } catch { /* Session only. */ }
+      }
       progress.feat(figure.id);
       capsuleState = 'revealed';
       dialog.classList.add('is-open');
@@ -488,9 +501,28 @@
       const found = collection.figures.filter(f => draws.counts[f.id] > 0).length;
       const total = collection.figures.length;
       const summary = document.createElement('small');
-      summary.textContent = english ? `(You’ve found ${found} of the ${total} different gachapon figurines.)`
-        : `(Tu as trouvé ${found} des ${total} figurines différentes du gachapon.)`;
+      summary.textContent = found+' / '+total;
       caption.append(summary);
+      if(!owned){
+        if(found===total){
+          const badge=document.createElement('small');
+          const icon=document.createElement('img');
+          icon.src=progress.stickers.find(b=>b.id==='gashapon').image;
+          icon.alt='';icon.width=32;icon.height=32;
+          badge.textContent=english?'Gashapon patch earned!':'Écusson Gashapon débloqué !';
+          badge.prepend(icon);
+          summary.append(badge);
+        }
+        const tryOn=document.createElement('button');
+        tryOn.type='button';
+        tryOn.className='gacha-try-on';
+        tryOn.textContent=english?'Try on in the wardrobe':'Essayer dans le dressing';
+        tryOn.onclick=()=>{
+          dialog.close();
+          window.openAbout(undefined,figure.id);
+        };
+        dialog.append(tryOn);
+      }
       if (figure.id === 'charm-gacha-7554') {
         const rarity = document.createElement('small');
         rarity.textContent = english ? 'She’s very rare!' : 'Elle est très rare !';
@@ -545,7 +577,6 @@
       return;
     }
     if (capsuleState !== 'idle') return;
-    if (!candidates(readDraws()).length) { window.showToast?.(finishedText()); return; }
     capsuleState='mixing';
     motion(machine.querySelector('.gasha-handle'),turns(0,180,360),650,'2412px 875px');
     machine.querySelectorAll('.gasha-ball').forEach((ball,i) => {
@@ -1516,6 +1547,8 @@
     event.preventDefault();
     event.stopPropagation();
     if (event.repeat) return;
+    if (['sailor','office'].includes(item.dataset.object))window.NanaProgress?.feat(item.dataset.object);
+    if (item.dataset.object === 'night-lamp') window.NanaProgress?.feat('lights');
     if (item.dataset.object === 'night-lamp') document.getElementById('theme-toggle')?.click();
     if (item.dataset.object === 'sailor') {
       const kicks=[[0,0],[-9,-18],[4,12],[-27,-22],[0,16],[-21,24],[0,-19],[-25,-22],[2,18],[-14,15],[0,-10],[-5,6],[0,0]];
@@ -1583,3 +1616,4 @@
   window.NanaAliceView = {open:openAliceView};
   window.dispatchEvent(new Event('nana-room-v2-ready'));
 })().catch(error => console.error('Chambre V2', error));
+

@@ -153,7 +153,6 @@
     ["feat:fish-mobile-seen","Les poissons au mur jurent qu’ils savent nager. Moi, j’aimerais bien voir ça.","Those fish on the wall swear they can swim. I’d like to see that."],
     ["feat:noiraudes-seen","Ça chatouille sous la couette. Moi ? Mais tu vois bien mes deux pattes !","Something tickles under the duvet. Me? You can see both my paws!"],
     ["visit:jeu/word-lab","Un mot est tombé de l’étagère du haut. Tu crois qu’on peut le remettre dans une autre phrase ?","A word fell off the top shelf. Think we could slip it into a different sentence?"],
-    ["feat:secret-rug","J’ai compté les pattes sous le tapis. Beaucoup trop pour être les miennes.","I counted the legs under the rug. Far too many to be mine."],
     ["feat:secret-cookie","Un biscuit qui connaît ton avenir… Est-ce qu’il sait aussi ce qui va lui arriver ?","A biscuit that knows your future… I wonder if it knows its own."],
     ["feat:alice-bottle","Sur la table, il y a une toute petite fiole. Enfin… petite, de mon point de vue.","There’s a tiny bottle on the table. Well… tiny from where I’m sitting."],
     ["visit:jeu/bead-box","J’ai essayé d’enfiler une perle. Tu as déjà essayé avec des pattes comme ça ?","I tried threading a bead. Ever tried it with paws like these?"],
@@ -197,6 +196,7 @@
     ["visit:objet/gabzilla","Tu as vu qui s’est installé sur le t-shirt de la chaise ? Moi, je lui laisse la place.","Seen who’s on the T-shirt draped over the chair? They can keep that seat."],
     ["feat:rested","L’ours et moi faisons un concours de rien du tout. Tu restes un peu avec nous ?","The bear and I are having a do-nothing contest. Care to stay a while?"],
     ["feat:severance-refined","Les chiffres de Lumon sont très pointilleux sur le rangement. Quatre catégories, vraiment ?","Those Lumon numbers are terribly fussy about sorting. Four categories, really?"],
+    ["landscapePartial","Le cadran a quatre paysages en tête. Tu les as tous vus, toi ?","That dial has four places in mind. Have you seen them all?"],
     ["gachaPartial","Il manque quelqu’un à l’appel des figurines. La machine fait semblant de ne rien savoir.","Someone’s missing at figurine roll call. The machine is pretending it knows nothing."]
   ];
   function chooseHint(progress, language) {
@@ -213,6 +213,7 @@
       kodamaPartial:kodama > 0 && kodama < 5 && !progress.hasFeat('mononoke-kodama'),
       miffyPartial:reading('miffy'), sonnyPartial:reading('sonny-angel'),
       polaroidPartial:progress.hasVisit('photos') && !progress.hasFeat('polaroids-all'),
+      landscapePartial:progress.snapshot().room.counters.landscapes[0]<4,
       gachaEmpty:figures === 0, gachaPartial:figures > 0 && figures < 15
     };
     const clue = bedClues.find(([key]) => {
@@ -420,10 +421,12 @@
     next.disabled = false;
     dialog.showModal();
     discovered = true;
+    window.NanaProgress?.feat('mokona');
     try { localStorage.setItem(discoveryKey,'1'); } catch (_) { /* Session-only fallback. */ }
     next.focus({preventScroll:true});
     if (!reduced.matches) dialog.querySelector('.mokona-card').animate([{opacity:0},{opacity:1}],{duration:420});
     speak();
   });
 })();
+
 

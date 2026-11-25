@@ -410,3 +410,14 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
   color:var(--nana-red); font:400 clamp(27px,5vmin,54px)/1.2 "Nana Trace UI",cursive;
   white-space:nowrap; text-align:center;
 }
+
+
+.gacha-reveal .gacha-try-on {
+  color: #be173b;
+  background: #fff2f5;
+  border: 2px solid currentColor;
+  padding: .3em .8em;
+  font: inherit;
+  cursor: pointer;
+}
+.nj-discoveries ul { max-height: 34vh; overflow-y: auto; padding-inline-start: 1.4em; }

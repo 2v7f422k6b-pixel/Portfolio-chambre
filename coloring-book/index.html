@@ -4,6 +4,7 @@
 <!-- PRELAUNCH-NOINDEX: remove only on the final public site at launch. -->
 <meta name="robots" content="noindex, noimageindex, follow">
 <!-- /PRELAUNCH-NOINDEX -->
+<script src="../nana-progress.js?v=discoveries46"></script>
 <script src="../nana-analytics-config.js?v=20261110-stats-1"></script>
 <script src="../nana-analytics-catalog.js?v=20261110-selected-1"></script>
 <script src="../nana-analytics.js?v=20261110-selected-1"></script>
@@ -170,11 +171,11 @@ if(yy<h-1){const k=j+w;if(!visited[k]&&!barrier[k]){visited[k]=1;queue[tail++]=k
 if(tail>limit){toast("Cette zone n'est pas fermée. Essaie le pinceau ♡");return}}
 const rgb=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16)),d=fc.getImageData(0,0,w,h);
 for(let j=0;j<tail;j++){const p=queue[j]*4;d.data[p]=rgb[0];d.data[p+1]=rgb[1];d.data[p+2]=rgb[2];d.data[p+3]=255}
-fc.putImageData(d,0,0);commit()}
+fc.putImageData(d,0,0);window.NanaProgress?.feat('colored');commit()}
 function strokeLine(p,q){const contexts=tool==="eraser"?[fc,bc]:[bc];contexts.forEach(ctx=>{ctx.save();ctx.globalCompositeOperation=tool==="eraser"?"destination-out":"source-over";ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=size;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x+.01,q.y+.01);ctx.stroke();ctx.restore()})}
 brush.addEventListener("pointerdown",e=>{if(busy)return;e.preventDefault();const p=point(e);if(tool==="fill"){bucket(p.x,p.y);return}brush.setPointerCapture(e.pointerId);pressed=true;last=p;strokeLine(p,p)});
 brush.addEventListener("pointermove",e=>{if(!pressed||busy)return;e.preventDefault();const p=point(e);strokeLine(last,p);last=p});
-function finish(){if(!pressed)return;pressed=false;last=null;commit()}
+function finish(){if(!pressed)return;pressed=false;last=null;if(tool!=="eraser")window.NanaProgress?.feat('colored');commit()}
 brush.addEventListener("pointerup",finish);brush.addEventListener("pointercancel",finish);brush.addEventListener("lostpointercapture",finish);
 $("download").addEventListener("click",()=>{if(!art.complete||!art.naturalWidth)return;const cv=document.createElement("canvas");cv.width=fill.width;cv.height=fill.height;const c=cv.getContext("2d");c.fillStyle=paper;c.fillRect(0,0,cv.width,cv.height);c.drawImage(fill,0,0);c.drawImage(brush,0,0);c.globalCompositeOperation="multiply";c.drawImage(art,0,0,cv.width,cv.height);cv.toBlob(blob=>{if(!blob){window.NanaAnalytics?.record('error/export');return;}window.NanaImageSave.show(blob,'coloriage-'+PAGES[index].id+'.png');window.NanaAnalytics?.record('creation/coloring');toast("Ton image est prête ♡")},"image/png")});
 async function choosePage(i){if(busy||i===index)return;if(index>=0)saved[PAGES[index].id]={state:snapshot(),undo:undo.slice(),redo:redo.slice()};busy=true;index=i;updateButtons();document.querySelectorAll(".page").forEach((b,j)=>b.classList.toggle("active",i===j));$("label").textContent="♡ "+PAGES[i].name+" ♡";const im=new Image;im.onload=async()=>{const s=Math.min(1,1100/Math.max(im.naturalWidth,im.naturalHeight));const w=Math.round(im.naturalWidth*s),h=Math.round(im.naturalHeight*s);fill.width=brush.width=w;fill.height=brush.height=h;stage.style.aspectRatio=w+"/"+h;stage.style.width="min(100%, "+Math.round(65*w/h)+"vh)";fc.clearRect(0,0,w,h);bc.clearRect(0,0,w,h);barrier=makeBarrier(im);art.src=im.src;paper="#ffffff";stage.style.background=paper;const v=saved[PAGES[i].id];if(v){await restore(v.state);undo=v.undo;redo=v.redo}else{undo=[snapshot()];redo=[]}busy=false;updateButtons()};im.onerror=()=>{busy=false;toast("Impossible de charger ce dessin")};im.src=PAGES[i].src}
@@ -293,3 +294,4 @@ window.addEventListener("resize",()=>watched.forEach(item=>{item.lastKind=null;d
 </script>
 </body>
 </html>
+

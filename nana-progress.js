@@ -29,8 +29,8 @@
     ['mimilab', 'Mimilab', 'Mimilab', 'notes_musique']
   ].map(([id, fr, en, image]) => ({id, name:pair(fr,en), route:'jeu/'+id, image:art(image)}));
   const secrets = [
-    {id:'secret-rug', name:pair('Une colocataire sous le tapis','A roommate under the rug'), image:art('araignee_jour'), route:'objet/tapis'},
     {id:'secret-memory-box', name:pair('La boîte à souvenirs','The memory box'), image:art('fleur'), route:'secret/boite-a-souvenirs'},
+    {id:'secret-typewriter',name:pair('La machine de Shining','The Shining typewriter'),image:art('lettre_A'),route:null},
     {id:'secret-childhood-drawing', name:pair('Un dessin d’enfance','A childhood drawing'), image:art('crayon_pinceau'), route:null, available:false}
   ];
   // Bonus looks use Léna's drawings; exclusive pieces unlock with their matching activity.
@@ -85,7 +85,57 @@
     'objet/clochette-kikujiro':'kikujiro-chime', 'objet/papillon-paprika':'paprika-butterfly', 'photos':'object:instax', 'objet/lampe-fleur':'wall-lamp'
   };
   // Future Kikujiro outfit pieces use feat:'kikujiro-chime'; discovery is saved before their release.
-  const allowedFeats = new Set([...Array.from({length:15}, (_,i) => 'charm-gacha-' + (7545+i)),'fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const discoveries = [
+    ["Affiches", "Posters", ["posters"]],
+    ["Lumières de la chambre", "Room lights", ["night", "lights", "wall-lamp", "object:guirlande", "object:jelly", "object:bambi-lampe", "object:lampe-bureau"]],
+    ["Paysages", "Landscapes", ["landscapes"]],
+    ["Le chat", "The cat", ["object:chat"]],
+    ["Le coquelicot", "The poppy", ["object:vase"]],
+    ["Figurines qui parlent", "Talking figurines", ["object:miffy", "object:sonny-angel"]],
+    ["Polaroïds", "Polaroids", ["photos", "object:instax"]],
+    ["Satie", "Satie", ["objet/marshall", "object:marshall"]],
+    ["Mokona", "Mokona", ["mokona"]],
+    ["Les Enfants de la mer", "Children of the Sea", ["fish-mobile-seen"]],
+    ["Alice", "Alice", ["alice-bottle"]],
+    ["Les noiraudes", "Soot sprites", ["noiraudes-seen"]],
+    ["Les cinq Kodama", "Five Kodama", ["mononoke-kodama"]],
+    ["Étoile filante", "Shooting star", ["shooting-star-encounter"]],
+    ["OVNI", "UFO", ["ufo-encounter"]],
+    ["La boîte d’Amélie", "Amélie’s box", ["secret-memory-box"]],
+    ["Twist Reality", "Twist Reality", ["secret-twist"]],
+    ["Shining", "The Shining", ["secret-typewriter"]],
+    ["Paprika", "Paprika", ["paprika-butterfly"]],
+    ["Cardcaptor Sakura", "Cardcaptor Sakura", ["kero-awake", "object:kero"]],
+    ["Little Miss Sunshine", "Little Miss Sunshine", ["olive-van-started", "object:volkswagen"]],
+    ["Gokinjo", "Gokinjo", ["gokinjo-happy-berry", "object:happy-berry"]],
+    ["BLAST", "BLAST", ["nana-blast", "object:blast"]],
+    ["Preacher", "Preacher", ["preacher-dog", "object:preacher-dog"]],
+    ["Sailor Moon", "Sailor Moon", ["sailor"]],
+    ["The Office", "The Office", ["office"]],
+    ["L’Été de Kikujiro", "Kikujiro", ["kikujiro-chime"]],
+    ["Dressing", "Wardrobe", ["outfit-styled"]],
+    ["Atelier latte", "Latte café", ["latte-made"]],
+    ["Tamagotchi", "Tamagotchi", ["care-feed", "care-sleep", "care-draw", "care-music", "care-cuddle"]],
+    ["Coloriage", "Colouring", ["colored"]],
+    ["Boîte à perles", "Bead box", ["beads-made"]],
+    ["Club du rien", "Do Nothing Club", ["rested"]],
+    ["Laboratoire des mots", "Word lab", ["word-placed"]],
+    ["Mimilab", "Mimilab", ["minilab-composed"]],
+    ["Gashapon", "Capsule collection", ["gashapon"]],
+    ["Lumon", "Lumon", ["severance-refined"]],
+    ["Nana de Zola", "Zola’s Nana", ["nana-zola-book"]],
+    ["La Princesse Clown", "The Clown Princess", ["livre/la-princesse-clown", "object:book"]],
+    ["Fortune cookie", "Fortune cookie", ["secret-cookie", "fortune-cookie"]],
+    ["Kokeshi", "Kokeshi", ["kokeshi-yukata", "kokeshi"]],
+    ["Plantasia", "Plantasia", ["objet/plante-fleur", "object:plante-fleur"]],
+    ["Gabzilla", "Gabzilla", ["objet/gabzilla", "object:gabzilla"]],
+    ["Visuels des CD", "CD visuals", ["objet/music-visuals", "object:cds"]],
+    ["Les Souvenues", "Les Souvenues", ["objet/souvenues", "object:livres-2"]],
+    ["La libraire vous conseille", "Bookseller’s recommendations", ["objet/reading-room", "object:livres-1"]]
+  ].map(([fr,en,evidence])=>({id:evidence[0],name:pair(fr,en),evidence}));
+  const landscapes = ['marseille','japon','pink','paris'];
+  const figureIds = Array.from({length:15}, (_,i) => 'charm-gacha-' + (7545+i));
+  const allowedFeats = new Set([...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -127,17 +177,32 @@
     return Array.isArray(room?.discovered)?room.discovered.filter(x=>typeof x==='string'&&x!=='flowers'):[];
   }
   function roomSnapshot() {
-    const live=window.NanaDiscoveries?.snapshot();
-    const saved=read(ROOM_KEY);
-    return live || {discovered:legacy(), required:Array.isArray(saved?.required)?saved.required.filter(x=>typeof x==='string'&&x!=='flowers'):[], celebrated:saved?.celebrated===true};
+    const raw=window.NanaDiscoveries?.raw?.() || legacy();
+    const evidence=new Set([...state.visits,...state.feats,...raw]);
+    if(raw.some(id=>id.startsWith('poster:')))evidence.add('posters');
+    if(dialogue.miffy.length || dialogue['sonny-angel'].length)evidence.add('object:miffy');
+    if(read('nana-mokona-discovered-v1')===1)evidence.add('mokona');
+    const parts={
+      landscapes:landscapes.map(id=>'landscape-'+id),
+      gashapon:figureIds,
+      'mononoke-kodama':[1,2,3,4,5].map(i=>'kodama-'+i)
+    };
+    const counters={};
+    for(const [id,items] of Object.entries(parts)){
+      const count=items.filter(key=>evidence.has(key)).length;
+      counters[id]=[count,items.length];
+      if(count===items.length)evidence.add(id);
+    }
+    const discovered=discoveries.filter(d=>d.evidence.some(id=>evidence.has(id))).map(d=>d.id);
+    return {required:discoveries.map(d=>d.id),discovered,counters,celebrated:window.NanaDiscoveries?.rewardSeen?.() || read(ROOM_KEY)?.celebrated===true};
   }
   function hasVisit(route) {
-    return state.visits.includes(route) || !!(roomRoutes[route] && roomSnapshot().discovered.includes(roomRoutes[route]));
+    return state.visits.includes(route) || !!(roomRoutes[route] && (window.NanaDiscoveries?.raw?.() || legacy()).includes(roomRoutes[route]));
   }
   function hasFeat(id) { return state.feats.includes(id); }
   function unlockedOutfit(id, preview=false) {
     const outfit=outfits.find(x=>x.id===id);
-    return !!outfit && outfit.available!==false && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.exploration?explorationRatio()>=outfit.exploration:outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.featsAny?outfit.featsAny.some(hasFeat):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
+    return !!outfit && outfit.available!==false && ((preview && isCreator()) || (id==='clown'&&read(CLOWN_KEY)===1) || (outfit.exploration?(earnedBadges.has('resident')||explorationRatio()>=outfit.exploration):outfit.dialogue?hasReadDialogue(outfit.dialogue):outfit.featsAny?outfit.featsAny.some(hasFeat):outfit.feat?hasFeat(outfit.feat):hasVisit(outfit.visit)));
   }
   function explorationRatio(){const r=roomSnapshot();return r.required.length?r.required.filter(x=>r.discovered.includes(x)).length/r.required.length:0;}
   function fullRoom() { const r=roomSnapshot();return r.required.length>0 && r.required.every(x=>r.discovered.includes(x)); }
@@ -153,6 +218,10 @@
   ].map(([id,fr,en,percent,box])=>({id,name:pair(fr,en),percent,
     rule:percent?pair('Explorer '+percent+' % de la chambre.','Explore '+percent+'% of the room.'):pair('Découvrir un premier objet.','Discover your first object.'),
     image:crop('assets/IMG_5764.png',box,1000,1000),earned:()=>earnedBadges.has(id)}));
+  for(const [id,fr,en,ruleFr,ruleEn,image] of [
+    ['landscapes','Le timbre','The stamp','Voir les quatre paysages.','See all four landscapes.','assets/drawn-ui/landscape-stamp.svg'],
+    ['gashapon','Gashapon','Gashapon','Réunir les 15 figurines.','Collect all 15 figurines.','assets/room-gachapon/collection/7545.webp']
+  ]) stickers.push({id,name:pair(fr,en),rule:pair(ruleFr,ruleEn),image,earned:()=>earnedBadges.has(id)});
   function collectBadges() {
     const saved=read(BADGES_KEY);
     if(Array.isArray(saved))for(const id of saved)if(stickers.some(b=>b.id===id))earnedBadges.add(id);
@@ -161,7 +230,7 @@
     const count=required.size?[...discovered].filter(id=>required.has(id)).length:discovered.size;
     let changed=false;
     for(const badge of stickers){
-      const eligible=room.celebrated || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
+      const eligible=badge.percent===undefined ? discovered.has(badge.id) : room.celebrated || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
       if(eligible&&!earnedBadges.has(badge.id)){earnedBadges.add(badge.id);changed=true;}
     }
     if(changed)try{localStorage.setItem(BADGES_KEY,JSON.stringify([...earnedBadges]));}catch(_){persistent=false;}
@@ -224,7 +293,7 @@
   }
   function selectTitle(id) { if(id!==null&&!titles.some(x=>x.id===id&&x.earned()))return;state.title=id;save(); }
   window.NanaProgress = {
-    games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,BADGES_KEY,
+    discoveries,games,secrets,outfits,stickers,titles,roomRoutes,KEY,ROOM_KEY,CLOWN_KEY,BADGES_KEY,
     readPolaroid,visit,feat,hasVisit,hasFeat,unlockedOutfit,fullRoom,isCreator,suppressed,selectTitle,
     dialogueProgress,readDialogueLine,hasReadDialogue,DIALOGUE_KEY,
     snapshot:()=>({visits:[...state.visits],feats:[...state.feats],title:state.title,persistent,room:roomSnapshot()}),
@@ -237,6 +306,7 @@
     else if(event.key===ROOM_KEY||event.key===CLOWN_KEY||event.key===BADGES_KEY)emit(false,false);
   });
 })();
+
 
 
 

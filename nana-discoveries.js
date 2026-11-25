@@ -16,7 +16,7 @@
   let stored = {};
   try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_) {}
   const discovered = new Set(
-    (Array.isArray(stored.discovered) ? stored.discovered : []).filter(id => required.has(id))
+    (Array.isArray(stored.discovered) ? stored.discovered : []).filter(id => required.has(id) || /^poster:\d+$/.test(id))
   );
   // Existing explorers who saw the previous congratulations can claim the new gift too.
   let celebrated = stored.celebrated === true && stored.rewardSeen === true;
@@ -56,7 +56,7 @@
     const zone = target.closest('[data-room-zone-id]');
     if (zone) return 'object:' + zone.dataset.roomZoneId;
     const poster = target.closest('polygon[data-type="poster"]');
-    if (poster) return 'poster:' + poster.dataset.index;
+    if (poster) { window.NanaProgress?.feat('posters'); return 'poster:' + poster.dataset.index; }
     if (target.closest('#wall-mirror-hit')) return 'mirror';
     if (target.closest('#wall-lamp-hit')) return 'wall-lamp';
     if (target.closest('#nana-fortune-cookie [data-open="fortune-cookie"]')) return 'fortune-cookie';
@@ -160,7 +160,7 @@
 
   function celebrate() {
     pending = false;
-    if (celebrated || discovered.size !== required.size || editing()) return;
+    if (celebrated || !window.NanaProgress.fullRoom() || editing() || document.querySelector('dialog[open]')) return;
     localize();
     previousFocus = document.activeElement;
     try {
@@ -177,17 +177,20 @@
       discovered.add(id);
       persist();
     }
-    if (discovered.size === required.size && !celebrated && !pending) {
-      pending = true;
-      // Let the final interactive object open before showing the congratulations.
-      window.setTimeout(celebrate, 450);
-    }
   }
 
+  function checkGift() {
+    if (!window.NanaProgress.fullRoom() || celebrated || pending || editing()) return;
+    if(document.querySelector('dialog[open]')) return;
+    pending=true;
+    window.setTimeout(celebrate,450);
+  }
   window.NanaDiscoveries = {
-    remember,
-    snapshot: () => ({discovered:[...discovered], required:[...required], celebrated})
+    remember, raw:()=>[...discovered], rewardSeen:()=>celebrated,
+    snapshot:()=>window.NanaProgress.snapshot().room
   };
+  window.NanaProgress.subscribe(checkGift);
+  document.addEventListener('close',checkGift,true);
   window.addEventListener('storage', event => {
     if (event.key !== STORAGE_KEY) return;
     try {
@@ -198,6 +201,7 @@
     } catch (_) {}
   });
   window.NanaProgress?.refresh(true);
+  checkGift();
 
   // Read-only preview: use the actual Play room behind the canonical dialog.
   // No progress, reward claim, or visit count is changed by preview mode.
@@ -223,3 +227,4 @@
       remember('object:tapis');
   }, true);
 })();
+
