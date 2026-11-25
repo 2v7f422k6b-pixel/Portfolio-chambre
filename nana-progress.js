@@ -213,7 +213,7 @@
     ['glance','Juste un coup d’œil','Just a look',0,8242],
     ['five-minutes','Je reste cinq minutes','Just five minutes',25,8241],
     ['at-home','Comme chez moi','Make myself at home',50,8240],
-    ['resident','J’habite ici','I live here',75,8238],
+    ['resident','Squatteur','Squatter',75,8238],
     ['spare-key','Le double des clés','The spare key',100,8239]
   ].map(([id,fr,en,percent,imageNumber])=>({id,name:pair(fr,en),percent,
     rule:percent?pair('Explorer '+percent+' % de la chambre.','Explore '+percent+'% of the room.'):pair('Découvrir un premier objet.','Discover your first object.'),

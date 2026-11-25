@@ -42,14 +42,14 @@
     glance:['Petite âme curieuse','Curious soul'],
     'five-minutes':['En visite prolongée','Staying a little longer'],
     'at-home':['Comme chez toi','Right at home'],
-    resident:['Locataire honoraire','Honorary resident'],
+    resident:['Squatteur','Squatter'],
     'spare-key':['Gardienne des clés','Keeper of the keys']
   };
   let currentMilestone=null,milestoneFocus=null;
   function renderMilestone(){
     if(!currentMilestone)return;
     const badge=currentMilestone,rank=ranks[badge.id];
-    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2><p class="nj-milestone-name">'+h(name(badge.name))+'</p><p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
+    milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Nouveau palier !','New milestone!')+'</p><div class="nj-milestone-art">'+img(badge.image)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2>'+(name(badge.name)===t(...rank)?'':'<p class="nj-milestone-name">'+h(name(badge.name))+'</p>')+'<p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
   }
   function showNextMilestone(){
     if(currentMilestone||!milestoneQueue.length||progress.suppressed()||document.hidden)return;
