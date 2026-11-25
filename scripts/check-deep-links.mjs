@@ -63,10 +63,6 @@ function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
   env.window = env;
   if (savedSession) {
     env.sessionStorage = {getItem:() => JSON.stringify(savedSession)};
-    const appJs = source('app.js');
-    const start = appJs.indexOf('/* Restore the current room after a browser refresh');
-    assert.ok(start >= 0);
-    vm.runInNewContext(appJs.slice(start), env);
   }
   vm.runInNewContext(router, env);
   emit('DOMContentLoaded');
@@ -78,6 +74,15 @@ function browser(initial = '', {savedSession, loadingGallery = false} = {}) {
   return {ui, location, document, entries, router:env.NanaDeepLinks, emit, flush, traverse,
     close:() => {env.closeWindow(); room.closeExtras(); env.NanaNewsletter.close(); emit('click'); flush();}};
 }
+
+test('the base URL stays on the welcome screen after an earlier Play session', () => {
+  const b = browser('', {savedSession:{mode:'play'}});
+  b.flush();
+  assert.equal(b.location.href, base);
+  assert.equal(b.ui.mode, null);
+  assert.equal(b.router.current(), '');
+  assert.doesNotMatch(source('app.js'), /nana-room-refresh-v1/);
+});
 
 test('newsletter opens directly, closes cleanly, and follows Back and Forward without reopening other views', () => {
   const b = browser('#/newsletter');
