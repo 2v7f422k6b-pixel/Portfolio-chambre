@@ -33,7 +33,8 @@
     parent.append(image);
     return image;
   }
-  part(8184,1811,965,204,504);
+  const trailingFoot = part(8184,1811,965,204,504);
+  trailingFoot.style.transformOrigin = '1860px 1015px';
   part(8185,886,185,741,338,'mokona-ear mokona-ear-left');
   part('8185-right',1869,304,701,244,'mokona-ear mokona-ear-right');
   // The jewel and upper outline stay registered with the facial layers.
@@ -211,11 +212,18 @@
     const transition = [
       floater.animate(frames,options),
       card.animate([{opacity:1},{opacity:0,offset:.24},{opacity:0}],options),
+      // Tuck the hanging foot around its hip while the silhouette is still clear.
+      trailingFoot.animate([
+        {offset:0,transform:'none'},
+        {offset:.22,transform:'none',easing:'ease-in-out'},
+        {offset:.84,transform:'translate(-80px,-26px) rotate(-46deg) scale(.8)'},
+        {transform:'translate(-80px,-26px) rotate(-46deg) scale(.8)'}
+      ],options),
       // Align the two forehead jewels before the seated drawing takes over.
       art.animate([{transform:'none'},{offset:.47,transform:'none'},
         {offset:.78,transform:'translate(-1.5%,4%) scale(1.13)'},{transform:'translate(-1.5%,4%) scale(1.13)'}],options),
-      art.animate([{opacity:1},{opacity:1,offset:.49},{opacity:0,offset:.75},{opacity:0}],options),
-      seated.animate([{opacity:0},{opacity:0,offset:.49},{opacity:1,offset:.75},{opacity:1}],options)
+      art.animate([{opacity:1},{opacity:1,offset:.80},{opacity:0,offset:.91},{opacity:0}],options),
+      seated.animate([{opacity:0},{opacity:0,offset:.80},{opacity:1,offset:.91},{opacity:1}],options)
 
     ];
     try { await transition[0].finished; }
