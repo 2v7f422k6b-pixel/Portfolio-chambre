@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <script>
+    (() => {
+      const url = new URL(location.href);
+      if (url.searchParams.get('chambreV2') === '1') return;
+      url.searchParams.set('chambreV2', '1');
+      history.replaceState(history.state, '', url.href);
+    })();
+  </script>
 <!-- PRELAUNCH-NOINDEX: remove only on the final public site at launch. -->
 <meta name="robots" content="noindex, noimageindex, follow">
 <!-- /PRELAUNCH-NOINDEX -->
