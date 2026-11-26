@@ -272,8 +272,9 @@
       for(let i=0;i<xy.length;i++){
         const prev=xy[(i+xy.length-1)%xy.length], p=xy[i], next=xy[(i+1)%xy.length];
         // Limit the rounding distance on long segments to retain fine drawn tips.
-        const before=Math.min(.5,6/(Math.hypot(prev[0]-p[0],prev[1]-p[1])||1));
-        const after=Math.min(.5,6/(Math.hypot(next[0]-p[0],next[1]-p[1])||1));
+        const radius=b.invitationGrowth ? 6+55*b.invitationGrowth : 6;
+        const before=Math.min(.5,radius/(Math.hypot(prev[0]-p[0],prev[1]-p[1])||1));
+        const after=Math.min(.5,radius/(Math.hypot(next[0]-p[0],next[1]-p[1])||1));
         const x=p[0]+before*(prev[0]-p[0]),y=p[1]+before*(prev[1]-p[1]);
         if(i===0)path.moveTo(x,y);else path.lineTo(x,y);
         path.quadraticCurveTo(p[0],p[1],p[0]+after*(next[0]-p[0]),p[1]+after*(next[1]-p[1]));
@@ -465,7 +466,14 @@
     pen.save();
     if(b.boundary)pen.clip(b.boundary,'evenodd');
     pen.fillStyle=pen.strokeStyle='#ff001e';pen.lineJoin='round';pen.lineWidth=1.35;
-    pen.stroke(b.fillPath);pen.fill(b.inkPath,'evenodd');pen.restore();
+    if(b.invitationGrowth){
+      // Lay fresh ink around the moving silhouette in room coordinates.
+      pen.lineWidth=1.35+1.65*ease(clamp(b.invitationGrowth*8));
+      pen.stroke(b.fillPath);
+      pen.globalAlpha=1-ease(clamp(b.invitationGrowth*8));
+    }else pen.stroke(b.fillPath);
+    if(pen.globalAlpha>0)pen.fill(b.inkPath,'evenodd');
+    pen.restore();
     if(b.boundary){
       pen.save();pen.clip(b.fillPath,'evenodd');pen.strokeStyle='#ff001e';pen.lineWidth=1.35;pen.lineJoin='round';pen.stroke(b.boundary);pen.restore();
     }
@@ -540,10 +548,15 @@
     }
     const w=Math.min(4096,Math.round(rect.width*Math.max(1.5,devicePixelRatio||1)));
     if (!w) return;
+    const useSprites=renderer && growth===0;
     if(renderer){
+      canvas.style.display=useSprites?'none':'';
+      accelerated.style.visibility=useSprites?'visible':'hidden';
+    }
+    if(useSprites){
       if(accelerated.width!==w){accelerated.width=w;accelerated.height=Math.round(w*height/width);}
     }else if(canvas.width!==w){canvas.width=w;canvas.height=Math.round(w*height/width);}
-    if(!renderer){ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);}
+    if(!useSprites){ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);}
     for(const b of branches){
       const root=!b.upstream;
       b.invitationGrowth=root?growth:0;
@@ -580,12 +593,13 @@
     for(const b of branches){
       if(b.age<=0||b.dissolve===1)continue;
       if(b.upstream)attach(b);
-      if(renderer)continue;
+      if(useSprites)continue;
       b.left=b.top=Infinity;b.right=b.bottom=-Infinity;
-      b.fillPath=outline(b,b.fill);b.inkPath=outline(b,b.ink);
+      b.fillPath=outline(b,b.fill);
+      if(!(b.invitationGrowth>=.125))b.inkPath=outline(b,b.ink);
       b.boundary=b.flow&&b.age<1?growthBoundary(b):null;
     }
-    if(renderer){
+    if(useSprites){
       renderer.render(branches);
       if(sequence!==null&&clearing>=8)sequence=null;
       return;
