@@ -398,6 +398,9 @@
   objectBubble.className='mokona-object-hint';objectBubble.hidden=true;objectBubble.setAttribute('role','status');
   scene.append(objectBubble);
   const objectVoices=[
+    ['#nana-phone-charm','J’ai beau pendouiller, le téléphone ne décroche pas. Essaie de faire signe au bol.','I keep dangling, but the phone never picks up. Try waving to the bowl.'],
+    ['button[aria-label="Soulever le coin de la couette"],button[aria-label*="duvet" i]','On chatouille mes coins depuis ce matin. Essaie plutôt la spirale qui sort du bol !','People have been tickling my corners all morning. Try the spiral coming out of the bowl instead!'],
+    ['.memory-marble','Je ferais bien la course avec la volute. Moi, je prends la pente !','I’d race that wisp. I call the downhill route!'],
     ['[data-open="latte"]','Hé, moi je refroidis ! Ce qui fume encore, c’est le bol.','Hey, I’m getting cold! It’s the bowl that’s still smoking.'],
     ['[data-open="phone"]','Allô ? Ça capte mal… Essaie du côté du bol qui fume.','Hello? Bad reception… Try the little smoking bowl.'],
     ['[data-open="do-nothing"]','Encore cinq minutes… Tu peux t’occuper de la fumée ?','Five more minutes… Could you see to the smoke?'],
@@ -454,21 +457,21 @@
     ["[data-room-zone-id=\"ipad\"]","Tu peux dessiner dessus avec le doigt, tu sais. Sur la fumée aussi, peut-être ?","You can draw on me with your finger. Maybe on the smoke too?"],
     ["[data-room-zone-id=\"tapis\"]","De là-dessous, je vois le bol par transparence. Penche-toi un peu.","From down here I see the bowl through the glass. Lean in a little."],
     ["[data-cv-paper],[data-room-zone-id=\"cv\"]","Compétence particulière du jour : lire les signes de fumée.","Today’s special skill: reading smoke signals."],
-    ["[data-type=\"poster\"][data-index=\"0\"]","De mon coin de mur, on voit très bien le bol. Un peu plus bas…","You can see the bowl quite clearly from my bit of wall. A little lower…"],
-    ["[data-type=\"poster\"][data-index=\"1\"]","Si cette volute monte encore, elle va décoller mon scotch.","If that wisp climbs any higher, it’ll peel off my tape."],
-    ["[data-type=\"poster\"][data-index=\"2\"]","J’aimerais bien qu’on me dessine une boucle comme celle du bol.","I wish someone would draw me a curl like the one above the bowl."],
-    ["[data-type=\"poster\"][data-index=\"4\"]","La fumée voyage plus léger que moi. Même pas un cadre à emporter.","Smoke travels lighter than I do. Not even a frame to carry."],
-    ["[data-type=\"poster\"][data-index=\"5\"]","Hier, elle ressemblait à une virgule. Quelle forme a la fumée aujourd’hui ?","Yesterday it looked like a comma. What shape is the smoke today?"],
-    ["[data-type=\"poster\"][data-index=\"6\"]","Je pose depuis ce matin. La fumée, elle, refuse de tenir en place.","I’ve been posing all morning. The smoke refuses to sit still."],
-    ["[data-type=\"poster\"][data-index=\"7\"]","Tu as vu ? La volute vient de sortir du cadre.","Did you see? The wisp just slipped out of the picture."],
-    ["[data-type=\"poster\"][data-index=\"8\"]","On m’a accrochée pour la vue. Aujourd’hui, je regarde le bol.","I was hung here for the view. Today I’m looking at the bowl."],
-    ["[data-type=\"poster\"][data-index=\"10\"]","Quelqu’un dessine sur l’air au-dessus de la table. Avec quoi, à ton avis ?","Someone’s drawing on the air above the table. What with, do you think?"],
-    ["[data-type=\"poster\"][data-index=\"11\"]","Un petit courant d’air soulève mon coin… et la fumée du bol aussi.","A little draught lifts my corner… and the smoke above the bowl."],
-    ["[data-type=\"poster\"][data-index=\"12\"]","Quand elle passe devant moi, la fumée me fait une drôle de moustache.","When the smoke drifts past me it gives me a funny moustache."],
-    ["[data-type=\"poster\"][data-index=\"13\"]","Je suis sage comme une image. Cette volute, en revanche…","I stay still for my portrait. That wisp, though…"],
-    ["[data-type=\"poster\"][data-index=\"14\"]","Moi qui rêve de quitter le mur, je partirais bien sur ce ruban de fumée.","I dream of leaving this wall. I’d hitch a ride on that ribbon of smoke."],
-    ["[data-type=\"poster\"][data-index=\"15\"]","D’ici, le bol tient dans ma marge. Sa fumée prend toute la page.","From here the bowl fits in my margin. Its smoke fills the page."],
-    ["[data-type=\"poster\"][data-index=\"17\"]","Si mes couleurs se mettent à flotter, c’est que la fumée est passée par là.","If my colours start drifting, the smoke’s been here."]
+    ["[data-type=\"poster\"][data-index=\"0\"]","Si je fais une bulle assez grosse, je peux y garder un peu d’encens ?","If I blow a big enough bubble, could I keep some incense in it?"],
+    ["[data-type=\"poster\"][data-index=\"1\"]","Mes bulles éclatent quand on les touche. Essaie sur cette volute pour voir.","My bubbles pop when you touch them. Try that on the wisp."],
+    ["[data-type=\"poster\"][data-index=\"2\"]","Les papillons se sont tous posés. Ce qui flotte au-dessus du bol doit être autre chose.","The butterflies have all landed. That thing floating above the bowl must be something else."],
+    ["[data-type=\"poster\"][data-index=\"4\"]","Ça mijote ? J’ai vérifié toutes mes casseroles. Essaie la table basse.","Something simmering? I checked all my pots. Try the coffee table."],
+    ["[data-type=\"poster\"][data-index=\"5\"]","J’ai perdu un pétale. S’il passe près du bol, regarde comment il remonte !","I lost a petal. Watch it lift if it drifts near the bowl!"],
+    ["[data-type=\"poster\"][data-index=\"6\"]","Vu de dos, on me prend pour une paire d’ailes. De face, tu verrais ce que je regarde…","From behind I look like a pair of wings. From the front you’d see what I’m watching…"],
+    ["[data-type=\"poster\"][data-index=\"7\"]","Promis, je n’ai rien allumé. La petite braise était déjà là.","I swear I didn’t light anything. That ember was already there."],
+    ["[data-type=\"poster\"][data-index=\"8\"]","Encore un gros plan ? Cette fois, cadre juste le bord du bol.","Another close-up? Frame the rim of the bowl this time."],
+    ["[data-type=\"poster\"][data-index=\"10\"]","Je cherche un partenaire pour mon numéro. La fumée sait déjà faire des anneaux !","I need a partner for my act. The smoke already knows how to make rings!"],
+    ["[data-type=\"poster\"][data-index=\"11\"]","Du haut de ma tour rose, j’aperçois un panache. Juste entre le lit et la fenêtre.","From my pink tower I can see a plume down below. Beside the bed!"],
+    ["[data-type=\"poster\"][data-index=\"12\"]","Dans mes rues, on verrait ton souffle. Ici, seul le bol fait de la buée.","On my streets you could see your breath. Here, only the bowl breathes out a cloud."],
+    ["[data-type=\"poster\"][data-index=\"13\"]","Une nature morte avec un bol qui gigote ? Comment veux-tu que je prenne la pose ?","A still life with a wriggling bowl? How am I supposed to hold this pose?"],
+    ["[data-type=\"poster\"][data-index=\"14\"]","Contact coupé. Si tu vois de la fumée, elle ne sort pas de mon pot.","Ignition’s off. That smoke isn’t coming from my exhaust."],
+    ["[data-type=\"poster\"][data-index=\"15\"]","J’enregistrerais bien le silence juste avant que tu touches le bol. Chut…","I’d love to record the silence just before you touch the bowl. Shh…"],
+    ["[data-type=\"poster\"][data-index=\"17\"]","Même le mistral n’arrive pas à déloger cette volute. Essaie avec ton doigt.","Even the mistral can’t shift that wisp. Try your finger."]
   ];
 
   // Some objects live in the room painting and have no normal Play action.
@@ -502,9 +505,6 @@
     ["Tapis","625,760 1156,764 1177,814 1098,851 695,827 578,783","De là-dessous, je vois le bol par transparence. Penche-toi un peu.","From down here I see the bowl through the glass. Lean in a little."],
     ["Cheval de Fifi","48,37 82,29 134,41 146,21 163,25 150,61 136,103 54,92","Au galop jusqu’au bol ! Je te laisse passer devant.","Gallop to the bowl! I’ll let you lead."],
     ["Soucoupe du mug","763,675 795,665 875,677 891,689 871,704 774,695","Attention à ne pas nous confondre. Moi, j’attends les miettes. Le bol attend ta visite.","Don’t mix us up. I’m waiting for crumbs. The bowl is waiting for you."],
-    ["Petit flacon","963,681 979,678 991,690 990,726 963,731","On m’accuse toujours dès que ça fume. Regarde donc dans le bol !","Whenever there’s smoke I get the blame. Look in the bowl!"],
-    ["Petite boîte à cœur","1329,80 1407,73 1418,122 1327,135","J’ai refermé mon couvercle. Pour les secrets qui s’échappent, adresse-toi au bol.","My lid is shut. For secrets on the loose, ask the bowl."],
-    ["Flan","130,308 161,295 190,306 198,354 127,356","Je tremblote sans bouger de mon assiette. La fumée, elle, se tortille sans assiette !","I wobble without leaving my plate. The smoke wriggles without a plate at all!"]
   ];
   const paintedHints=svg('svg',{viewBox:'0 0 1536 866',preserveAspectRatio:'none','data-room-v2-layer':'object-hints'});
   paintedHints.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:none';
@@ -513,6 +513,15 @@
     paintedHints.append(area);
   }
   scene.append(paintedHints);
+  // Paint large background surfaces first so their small details receive the tap.
+  const footprint=area=>{
+    const points=Array.from(area.points);
+    return Math.abs(points.reduce((sum,p,i)=>{
+      const q=points[(i+1)%points.length];
+      return sum+p.x*q.y-q.x*p.y;
+    },0));
+  };
+  paintedHints.append(...Array.from(paintedHints.children).sort((a,b)=>footprint(b)-footprint(a)));
   function hideHint(){clearTimeout(promptTimer);objectBubble.hidden=true;}
   function objectHint(event){
     if(!stage.hidden)return;
@@ -522,13 +531,15 @@
     const x=keyboard?box.left+box.width/2:event.clientX;
     const y=keyboard?box.top+box.height/2:event.clientY;
     const targets=keyboard?[event.target]:document.elementsFromPoint(x,y).filter(el=>scene.contains(el));
-    let voice=targets.map(el=>objectVoices.find(([selector])=>el.closest(selector))).find(Boolean);
-    if(!voice){
-      const painted=targets.find(el=>el.hasAttribute('data-painted-hint'));
-      if(painted){
-        const [name,,fr,en]=paintedVoices[Number(painted.dataset.paintedHint)];
+    let voice;
+    for(const el of targets){
+      if(el.hasAttribute('data-painted-hint')){
+        const [name,,fr,en]=paintedVoices[Number(el.dataset.paintedHint)];
         voice=[name,fr,en];
+      }else{
+        voice=objectVoices.find(([selector])=>el.closest(selector));
       }
+      if(voice)break;
     }
     if(!voice)return hideHint();
     objectBubble.textContent=voice[document.documentElement.lang.startsWith('en')?2:1];
