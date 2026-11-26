@@ -40,7 +40,7 @@
 .mokona-wave {transform-origin:1470px 739px;animation:mokona-wave .42s ease-in-out 2 alternate}
 @keyframes mokona-hover {0%,100%{transform:translateY(4px)} 48%{transform:translateY(-11px)} 89%{transform:translateY(5px)}}
 @keyframes mokona-turn {from{transform:rotate(calc(-1 * var(--turn)))}to{transform:rotate(var(--turn))}}
-@keyframes mokona-rebond {0%,100%{transform:translateY(-6000px)} 28%,65%{transform:translateY(0)} 95%{transform:translateY(-6000px)}}
+@keyframes mokona-rebond {0%,100%{transform:translateY(-6375px)} 28%,65%{transform:translateY(0)} 95%{transform:translateY(-6375px)}}
 @keyframes mokona-wave {to{transform:rotate(15deg)}}
 @media(prefers-reduced-motion:reduce){.mokona-dialog[open] *, .mokona-stage * {animation:none!important}}
 

@@ -3,8 +3,8 @@
   if (!scene || !window.NanaRoomV2) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    fr: ['Mokona débloqué !', 'Coucou, moi c’est Mokona ! Certains objets de cette chambre cachent un secret. Touche-les pour les découvrir. Tu peux retrouver tes découvertes dans ton carnet.', 'Tiens, ton premier badge ! Chaque découverte fait grimper le pourcentage en haut de l’écran. À certains paliers, ou quand tu termines une collection, j’ai un nouveau badge pour toi.', 'Si tu ne sais plus où chercher, viens me voir sur le lit. Je te donnerai un petit indice. Tu vois le coussin étoile ? C’est là que je t’attends !', 'Continuer', 'À tout à l’heure, Mokona !'],
-    en: ['Mokona unlocked!', 'Hi, I’m Mokona! Some objects in this room are hiding secrets. Tap them to explore, then look in your notebook to see what you’ve found.', 'Here’s your first badge! Each discovery raises the percentage at the top. Reach a milestone or complete a collection and I’ll have another badge for you.', 'Need a hint? Come find me on the bed. See the star pillow? That’s where I’ll be!', 'Continue', 'See you soon, Mokona!']
+    fr: ['Mokona débloqué !', 'Coucou, moi c’est Mokona ! Bienvenue dans la chambre de Léna, alias Nana ! C’est elle qui a tout dessiné. Elle a glissé quelques secrets parmi ses affaires… Tu en as déjà trouvé un : moi ! Tes découvertes t’attendent dans ton carnet.', 'Tiens, ton premier badge ! Chaque découverte fait grimper le pourcentage en haut de l’écran. À certains paliers, ou quand tu termines une collection, j’ai un nouveau badge pour toi.', 'Si tu ne sais plus où chercher, viens me voir sur le lit. Je te donnerai un petit indice. Tu vois le coussin étoile ? C’est là que je t’attends !', 'Continuer', 'À tout à l’heure, Mokona !'],
+    en: ['Mokona unlocked!', 'Hi, I’m Mokona! Welcome to Léna’s room! She also goes by Nana. She drew everything here and tucked a few secrets among her things… You’ve already found one: me! Your discoveries go in your notebook.', 'Here’s your first badge! Each discovery raises the percentage at the top. Reach a milestone or complete a collection and I’ll have another badge for you.', 'Need a hint? Come find me on the bed. See the star pillow? That’s where I’ll be!', 'Continue', 'See you soon, Mokona!']
   };
   const dialog = document.createElement('dialog');
   dialog.className = 'mokona-dialog';
@@ -44,7 +44,7 @@
   // Each pose widens progressively towards the base and meets the same upper outline.
   const belly = svg('svg',{x:1372.5,y:810,width:765,height:400,viewBox:'0 0 765 400',overflow:'hidden'});
   art.append(belly);
-  part('ventre',0,0,765,6400,'mokona-belly',belly);
+  part('ventre-padded',0,-12.5,765,6800,'mokona-belly',belly);
   const defs = svg('defs',{});
   const light = svg('radialGradient',{id:'mokona-reveal-light'});
   for (const [offset,color,opacity] of [['0%','#fffcef',.95],['22%','#d2f3ff',.74],['54%','#bcb7ff',.34],['100%','#c4bbff',0]]) {
@@ -71,8 +71,8 @@
     if(!handBadge){
       const badge=window.NanaProgress.stickers.find(b=>b.id==='glance');
       handBadge=window.NanaBadgeArt(badge);
-      for(const [key,value] of Object.entries({x:1185,y:454,width:248,height:248}))handBadge.setAttribute(key,value);
-      paw.before(handBadge);
+      for(const [key,value] of Object.entries({x:1285,y:553,width:210,height:210}))handBadge.setAttribute(key,value);
+      paw.after(handBadge);
       document.dispatchEvent(new Event('mokona-first-badge'));
     }
   }
@@ -81,7 +81,6 @@
     typing = false;
     copy.lastChild.textContent = lines[page];
     mouth(0);
-    if(page===1)offerFirstBadge();
   }
   function speak() {
     const line = lines[page];
@@ -90,6 +89,7 @@
     copy.firstChild.style.visibility = 'visible';
     copy.firstChild.style.opacity = '0';
     copy.lastChild.textContent = '';
+    if(page===2)offerFirstBadge();
     if(handBadge)handBadge.style.display=page===2?'':'none';
     next.textContent = lines[page===3?5:4];
     let i = 0;
