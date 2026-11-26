@@ -242,7 +242,8 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     /* Match the SVG viewport to the desert artwork while keeping its room coordinates. */
     #play-scene > :is(#v2-desert, #v2-japan, #v2-marseille-hiver, #v2-paris) { display:none; position:absolute; left:56.087239583%; top:0; width:16.113281250%; height:53.868360277%; z-index:4; pointer-events:none; }
     .room-redraw-preview #play-scene[data-landscape="pink"] > #v2-desert { display:block; }
-    #play-scene[data-landscape="pink"] :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
+    #play-scene:not([data-landscape="pink"]) > #ufo-window-layer { display:none; }
+    #play-scene[data-landscape="pink"] :is(#window-life,.v2-ferry) { display:none; }
     .room-redraw-preview #play-scene[data-landscape="japon"] > #v2-japan { display:block; }
     #play-scene:is([data-landscape="japon"], [data-landscape="paris"]) :is(#window-life,#ufo-window-layer,.v2-ferry) { display:none; }
     html[data-theme="night"] .room-redraw-preview #play-scene[data-landscape="japon"] > .v2-sky-sparkles { display:none; }
@@ -1743,7 +1744,7 @@ html body #work-desktop .desktop-folder .folder-tile.work-browser-tile{
   <script src="nana-admin.js?v=20261125-default-v2" defer></script>
 <script src="severance.js?v=20261116-floor-clue" defer></script>
 <script src="kodama.js?v=quiet-room-1" defer></script>
-<script src="window-ufo.js?v=20261116-room-feedback-1" defer></script>
+<script src="window-ufo.js?v=desert-night-1" defer></script>
 <script src="paprika-butterfly.js?v=20261115-smooth-2" defer></script>
 <script src="room-toys.js?v=tenues-redraw-1" defer></script>
 <script src="kokeshi.js?v=20261116-1" defer></script>
