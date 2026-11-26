@@ -222,7 +222,11 @@
   const allFound=(...ids)=>discovered=>ids.every(id=>discovered.has(id));
   const collections = [
     ['landscapes','Le timbre','The stamp','Voir les quatre paysages.','See all four landscapes.',
-      'assets/drawn-ui/landscape-stamp.svg',allFound('landscapes')],
+      badgeCrop(8267,470,343),allFound('landscapes')],
+    ['cinephile','Cinéphile','Film buff','Découvrir les neuf films de la chambre.','Discover the nine films in the room.',
+      badgeCrop(8266,467,341),allFound('alice-bottle','olive-van-started','kikujiro-chime','secret-memory-box','secret-typewriter','paprika-butterfly','mononoke-kodama','noiraudes-seen','fish-mobile-seen')],
+    ['ghibli','Ghibli','Ghibli','Trouver les cinq Kodama et découvrir les noiraudes.','Find all five Kodama and discover the soot sprites.',
+      badgeCrop(8268,479,334),allFound('mononoke-kodama','noiraudes-seen')],
     ['gashapon','Gashapon','Gashapon','Réunir les 15 figurines.','Collect all 15 figurines.',
       badgeCrop(8253,685,351),allFound('gashapon')],
     ['ink','Papier, encre et compagnie','Paper, ink and company','Explorer les cinq découvertes autour des livres et des mots.','Explore all five book and word discoveries.',
