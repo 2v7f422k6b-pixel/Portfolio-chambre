@@ -135,7 +135,7 @@
   ].map(([fr,en,evidence])=>({id:evidence[0],name:pair(fr,en),evidence}));
   const landscapes = ['marseille','japon','pink','paris'];
   const figureIds = Array.from({length:15}, (_,i) => 'charm-gacha-' + (7545+i));
-  const allowedFeats = new Set([...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','secret-rug','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['night-shinkansen','niki-nana',...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','secret-rug','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -218,10 +218,27 @@
   ].map(([id,fr,en,percent,imageNumber])=>({id,name:pair(fr,en),percent,
     rule:percent?pair('Explorer '+percent+' % de la chambre.','Explore '+percent+'% of the room.'):pair('Découvrir un premier objet.','Discover your first object.'),
     image:crop(`assets/room-redraw/IMG_${imageNumber}.png`,[1283,344,545,559]),earned:()=>earnedBadges.has(id)}));
-  for(const [id,fr,en,ruleFr,ruleEn,image] of [
-    ['landscapes','Le timbre','The stamp','Voir les quatre paysages.','See all four landscapes.','assets/drawn-ui/landscape-stamp.svg'],
-    ['gashapon','Gashapon','Gashapon','Réunir les 15 figurines.','Collect all 15 figurines.','assets/room-gachapon/collection/7545.webp']
-  ]) stickers.push({id,name:pair(fr,en),rule:pair(ruleFr,ruleEn),image,earned:()=>earnedBadges.has(id)});
+  const badgeCrop=(n,x,y,w=545)=>crop('assets/room-redraw/IMG_'+n+'.png',[x,y,w,559]);
+  const allFound=(...ids)=>discovered=>ids.every(id=>discovered.has(id));
+  const collections = [
+    ['landscapes','Le timbre','The stamp','Voir les quatre paysages.','See all four landscapes.',
+      'assets/drawn-ui/landscape-stamp.svg',allFound('landscapes')],
+    ['gashapon','Gashapon','Gashapon','Réunir les 15 figurines.','Collect all 15 figurines.',
+      badgeCrop(8253,685,351),allFound('gashapon')],
+    ['ink','Papier, encre et compagnie','Paper, ink and company','Explorer les cinq découvertes autour des livres et des mots.','Explore all five book and word discoveries.',
+      badgeCrop(8254,683,352,551),allFound('word-placed','objet/reading-room','objet/souvenues','nana-zola-book','livre/la-princesse-clown')],
+    ['manga','Manga','Manga','Découvrir les six références manga.','Discover the six manga references.',
+      badgeCrop(8255,693,352),allFound('nana-blast','gokinjo-happy-berry','kero-awake','sailor','fish-mobile-seen','mokona')],
+    ['fitting-room','Cabine d’essayage','Fitting room','Composer, nommer et sauvegarder trois looks.','Create, name and save three looks.',
+      badgeCrop(8256,157,343),()=> (window.NanaLooks?.list()||[]).filter(look=>look.name.trim()).length>=3],
+    ['the-nanas','Les Nana','The Nanas','Retrouver les quatre références à Nana.','Find the four Nana references.',
+      badgeCrop(8257,283,331),found=>allFound('nana-zola-book','nana-blast')(found)&&[7557,7558,7559].every(n=>hasFeat('charm-gacha-'+n))&&hasFeat('niki-nana')],
+    ['night-owls','Club des oiseaux de nuit','Night Owls Club','Apercevoir l’OVNI, l’étoile filante et le Shinkansen de nuit.','Spot the UFO, the shooting star and the Shinkansen at night.',
+      badgeCrop(8258,1283,344),found=>allFound('shooting-star-encounter','ufo-encounter')(found)&&hasFeat('night-shinkansen')]
+  ];
+  for(const [id,fr,en,ruleFr,ruleEn,image,complete] of collections){
+    stickers.push({id,name:pair(fr,en),rule:pair(ruleFr,ruleEn),image,complete,earned:()=>earnedBadges.has(id)});
+  }
   function collectBadges() {
     const saved=read(BADGES_KEY);
     if(Array.isArray(saved))for(const id of saved)if(stickers.some(b=>b.id===id))earnedBadges.add(id);
@@ -234,7 +251,7 @@
     let changed=false;
     for(const badge of stickers){
       const previousMilestone=previousCount>0 && previousCount*100>=previousRequired.size*badge.percent;
-      const eligible=badge.percent===undefined ? discovered.has(badge.id) : room.celebrated || previousMilestone || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
+      const eligible=badge.complete ? badge.complete(discovered) : room.celebrated || previousMilestone || (badge.percent===0?count>0:required.size>0&&count*100>=required.size*badge.percent);
       if(eligible&&!earnedBadges.has(badge.id)){earnedBadges.add(badge.id);changed=true;}
     }
     if(changed)try{localStorage.setItem(BADGES_KEY,JSON.stringify([...earnedBadges]));}catch(_){persistent=false;}
@@ -305,6 +322,29 @@
     refresh:(silent=false)=>emit(silent),
     subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}
   };
+  document.addEventListener('nana-looks-change',()=>emit());
+  const train=document.querySelector('#v2-japan .japan-train');
+  if(train && window.IntersectionObserver && !hasFeat('night-shinkansen')){
+    let visible=false;
+    const checkTrain=()=>{
+      if(!visible || document.hidden || document.documentElement.dataset.theme!=='night' ||
+         !document.querySelector('#app.mode-play') || document.querySelector('dialog[open]') || suppressed())return;
+      feat('night-shinkansen');
+      observer.disconnect();
+      changes.disconnect();
+      document.removeEventListener('visibilitychange',checkTrain);
+    };
+    const observer=new IntersectionObserver(entries=>{
+      visible=entries[entries.length-1].intersectionRatio>=0.1;
+      checkTrain();
+    },{threshold:[0.1]});
+    const changes=new MutationObserver(checkTrain);
+    changes.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+    const app=document.getElementById('app');
+    if(app)changes.observe(app,{attributes:true,attributeFilter:['class']});
+    document.addEventListener('visibilitychange',checkTrain);
+    observer.observe(train);
+  }
   window.addEventListener('storage',event=>{
     if(event.key===KEY){const incoming=clean(read(KEY));state={...incoming,visits:[...new Set([...state.visits,...incoming.visits])],feats:[...new Set([...state.feats,...incoming.feats])]};if(!suppressed()&&[1,2,3,4,5].every(n=>hasFeat('kodama-'+n))&&!hasFeat('mononoke-kodama')){state.feats.push('mononoke-kodama');save();}else emit(false,false);}
     else if(event.key===DIALOGUE_KEY){mergeDialogue();emit(false,false);}
