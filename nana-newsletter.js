@@ -56,7 +56,9 @@
     dialog.querySelector('.nn-later').textContent = t('Retour à la chambre', 'Back to the room');
     dialog.querySelector('.nn-close').setAttribute('aria-label', t('Fermer la newsletter', 'Close newsletter'));
   }
+  const waitingForMokona=()=>document.getElementById('play-scene')?.classList.contains('mokona-first');
   function open(origin = 'notebook') {
+    if(waitingForMokona())return false;
     source = origin;
     window.NanaAnalytics?.record('newsletter/open');
     note.hidden = true; save({seen:true}); localize();
@@ -116,7 +118,7 @@
     return activities.some(id => snapshot.feats.includes(id)) || (required.size > 0 && count * 4 >= required.size);
   }
   function roomIsClear() {
-    return document.getElementById('app')?.classList.contains('mode-play') && !document.hidden && !progress.suppressed()
+    return !waitingForMokona() && document.getElementById('app')?.classList.contains('mode-play') && !document.hidden && !progress.suppressed()
       && !document.querySelector('dialog[open], #window-shade:not([hidden]), #special-shade:not([hidden]), #nana-dreamlab-overlay, #coloring-overlay:not([hidden]), #work-break-nudge:not([hidden]), #nana-journal-notice:not([hidden]), #global-search-popover:not([hidden]), #mobile-menu-toggle[aria-expanded="true"]');
   }
   // Wait for a real activity, at least a minute of visible Play, and a quiet return to the room.
@@ -124,7 +126,7 @@
   let activeMs = 0, lastTick = performance.now(), clearSince = null, shownSince = null;
   const timer = window.setInterval(() => {
     const now = performance.now();
-    if (!document.hidden && document.getElementById('app')?.classList.contains('mode-play')) activeMs += Math.min(1500, now - lastTick);
+    if (!waitingForMokona() && !document.hidden && document.getElementById('app')?.classList.contains('mode-play')) activeMs += Math.min(1500, now - lastTick);
     lastTick = now;
     const clear = roomIsClear();
     if (!clear) { clearSince = null; shownSince = null; note.hidden = true; }
