@@ -639,6 +639,30 @@
   window.addEventListener('storage',event => {
     if (event.key === discoveryKey && event.newValue === '1') restoreDiscovery();
   });
+  // Let the activity close and the room paint before Mokona leaves the bed.
+  let giftTimer;
+  function checkCollectionGift(){
+    if(!discovered || gift || landing || document.hidden || !app.classList.contains('mode-play') ||
+       bed.hidden || !stage.hidden || document.querySelector('dialog[open], #window-shade:not([hidden]), #special-shade:not([hidden])'))return;
+    if(!document.getElementById('play-viewport')?.getClientRects().length)return;
+    const badge=window.NanaJournal?.pendingBadge?.(true);
+    if(badge && badge.percent===undefined)presentGift(badge);
+  }
+  function scheduleCollectionGift(){
+    clearTimeout(giftTimer);
+    giftTimer=setTimeout(checkCollectionGift,350);
+  }
+  const roomChanges=new MutationObserver(scheduleCollectionGift);
+  roomChanges.observe(app,{attributes:true,attributeFilter:['class']});
+  for(const id of ['play-viewport','window-shade','special-shade']){
+    const node=document.getElementById(id);
+    if(node)roomChanges.observe(node,{attributes:true,attributeFilter:['hidden']});
+  }
+  document.addEventListener('close',scheduleCollectionGift,true);
+  document.addEventListener('visibilitychange',scheduleCollectionGift);
+  window.addEventListener('pageshow',scheduleCollectionGift);
+  window.NanaProgress?.subscribe(scheduleCollectionGift);
+  scheduleCollectionGift();
   const heldImages = [];
   scene.addEventListener('incense:start', () => {
     if (discovered || heldImages.length) return;
