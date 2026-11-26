@@ -394,6 +394,7 @@
       viewport.scrollLeft+=b.left+b.width/2-v.left-v.width/2;
   }
   const objectBubble=document.createElement('div');
+  objectBubble.dataset.roomV2Layer='mokona-hint';
   objectBubble.className='mokona-object-hint';objectBubble.hidden=true;objectBubble.setAttribute('role','status');
   scene.append(objectBubble);
   const objectVoices=[
@@ -401,25 +402,25 @@
     ['[data-open="phone"]','Allô ? Ça capte mal… Essaie du côté du bol qui fume.','Hello? Bad reception… Try the little smoking bowl.'],
     ['[data-open="do-nothing"]','Encore cinq minutes… Tu peux t’occuper de la fumée ?','Five more minutes… Could you see to the smoke?'],
     ['[data-open="tamagotchi"]','Bip. Bip. BOL DÉTECTÉ. Bip.','Beep. Beep. SMOKING BOWL DETECTED. Beep.'],
-    ['[data-open="book"],#nana-zola-book','Au premier chapitre, une main effleure la fumée…','In the first chapter, a hand brushes against the smoke…'],
+    ['[data-open="book"],#nana-zola-book,[data-object="nana-zola-book"],[data-room-zone-id^="livres-"]','Au premier chapitre, une main effleure la fumée…','In the first chapter, a hand brushes against the smoke…'],
     ['[data-open="work-zoom"]','Un instant… Le bol essaie de se connecter.','One moment… The incense bowl is trying to connect.'],
     ['[data-open="polaroids"]','Bouge un peu le doigt vers la fumée… Oui, joli cadrage !','Move your finger towards the smoke… Yes, lovely framing!'],
-    ['#room-hanging-plant,[data-open="plantasia"]','Ça me chatouille les feuilles, cette fumée…','That smoke tickles my leaves…'],
+    ['#room-hanging-plant,[data-open="plantasia"],[data-object="plant"]','Ça me chatouille les feuilles, cette fumée…','That smoke tickles my leaves…'],
     ['[data-type="poster"]','Psst. D’ici, je vois quelque chose bouger au-dessus du bol.','Psst. From up here I can see something moving above the bowl.'],
-    ['[data-open="music"],[data-mv-open]','Tu vois la fumée ? Elle danse même quand je me tais.','See the smoke? It dances even when I’m quiet.'],
-    ['#cat-cv-hit','Mrrr… Une patte dans la fumée ? Après ma sieste.','Mrrr… A paw in the smoke? After my nap.']
+    ['[data-open="music"],[data-mv-open],[data-room-zone-id="cds"]','Tu vois la fumée ? Elle danse même quand je me tais.','See the smoke? It dances even when I’m quiet.'],
+    ['#cat-cv-hit,[data-room-zone-id="chat"]','Mrrr… Une patte dans la fumée ? Après ma sieste.','Mrrr… A paw in the smoke? After my nap.']
   ];
   function hideHint(){clearTimeout(promptTimer);objectBubble.hidden=true;}
   function objectHint(event){
     if(!stage.hidden)return;
     const rect=scene.getBoundingClientRect();
-    const keyboard=event.type==='keydown'||event.detail===0;
+    const keyboard=event.type==='keydown'||(event.type==='click' && event.detail===0);
     const box=event.target.getBoundingClientRect();
     const x=keyboard?box.left+box.width/2:event.clientX;
     const y=keyboard?box.top+box.height/2:event.clientY;
     const targets=keyboard?[event.target]:document.elementsFromPoint(x,y).filter(el=>scene.contains(el));
     const voice=targets.map(el=>objectVoices.find(([selector])=>el.closest(selector))).find(Boolean);
-    if(!voice && !targets.some(el=>el.closest('button,[role="button"],[tabindex="0"],[data-open],.new-room-object')))return hideHint();
+    if(!voice && !targets.some(el=>el.closest('button,[role="button"],[tabindex="0"],[data-open],[data-object],[data-room-zone-id],.new-room-object')))return hideHint();
     const en=document.documentElement.lang.startsWith('en');
     objectBubble.textContent=voice?voice[en?2:1]:(en?'Psst… Have you tried touching the smoke?':'Psst… Tu as essayé de toucher la fumée ?');
     objectBubble.hidden=false;
@@ -440,15 +441,23 @@
   }
   new ResizeObserver(centerBowl).observe(scene.parentElement);
   new MutationObserver(syncEntry).observe(app,{attributes:true,attributeFilter:['class']});
-  for(const type of ['pointerdown','pointerup','mousedown','touchstart','touchend','click','keydown']){
+  let touchStart=null,lastTap=null;
+  for(const type of ['pointerdown','pointerup','pointercancel','mousedown','touchstart','touchend','click','keydown']){
     window.addEventListener(type,event=>{
       if(!gate || !scene.contains(event.target) || event.target.closest('.incense-entry'))return;
       if(type==='keydown' && !['Enter',' '].includes(event.key))return;
       event.stopImmediatePropagation();
-      if(type==='click'||type==='keydown')event.preventDefault();
-      if(type==='click'||type==='keydown'){
+      if(event.pointerType==='touch' && type.startsWith('pointer')){
+        if(type==='pointerdown'){touchStart={id:event.pointerId,x:event.clientX,y:event.clientY};return;}
+        const start=touchStart;touchStart=null;
+        if(type!=='pointerup'||start?.id!==event.pointerId||Math.hypot(event.clientX-start.x,event.clientY-start.y)>12)return;
+        lastTap={x:event.clientX,y:event.clientY,time:performance.now()};
+      }
+      if(type==='click'||type==='keydown'||(type==='pointerup'&&event.pointerType==='touch')){
+        event.preventDefault();
+        if(type==='click'&&lastTap&&performance.now()-lastTap.time<700&&Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y)<12)return;
         const incense=scene.querySelector('.incense-entry');
-        if(type==='click' && stage.hidden && incense?.hitsSmoke?.(event.clientX,event.clientY))incense.click();
+        if(type!=='keydown' && stage.hidden && incense?.hitsSmoke?.(event.clientX,event.clientY))incense.click();
         else objectHint(event);
       }
     },{capture:true,passive:false});
