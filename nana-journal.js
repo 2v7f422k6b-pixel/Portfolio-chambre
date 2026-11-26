@@ -75,6 +75,12 @@
     const badge=currentMilestone,rank=ranks[badge.id];
     milestone.innerHTML='<button type="button" class="nj-milestone-close" data-milestone-close aria-label="'+t('Fermer','Close')+'"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button><p class="nj-milestone-eyebrow">'+t('Mokona t’offre un badge !','Mokona has a badge for you!')+'</p><div class="nj-milestone-art">'+badgeDrawing(badge)+'</div><p class="nj-milestone-intro">'+t('Tu es maintenant…','You are now…')+'</p><h2 id="nj-milestone-title">'+h(t(...rank))+'</h2>'+(name(badge.name)===t(...rank)?'':'<p class="nj-milestone-name">'+h(name(badge.name))+'</p>')+'<p id="nj-milestone-rule">'+h(name(badge.rule))+'</p>'+(badge.id==='glance'?'<p class="nj-milestone-guide">'+t('Chaque découverte fait avancer ton exploration. Retrouve tes récompenses dans Mon carnet.','Every discovery moves your exploration forward. Find your rewards in My notebook.')+'</p>':'')+'<div class="nj-milestone-actions">'+button(t('Continuer à explorer','Keep exploring'),'data-milestone-close')+button(t('Mes badges','My badges'),'data-milestone-collection')+'</div>';
   }
+  function pendingBadge(){
+    restoreDelivered();
+    if(progress.suppressed())return null;
+    const id=progress.earnedBadgeIds().find(id=>!delivered.has(id));
+    return progress.stickers.find(b=>b.id===id);
+  }
   function offerBadge(){
     restoreDelivered();
     const id=progress.earnedBadgeIds().find(id=>!delivered.has(id));
@@ -339,7 +345,7 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
     const btn=notice.querySelector('button');btn.textContent=t('Essayer la tenue','Try it on');btn.dataset.njNotice='jeu/dressing/tenue/'+id;
     notice.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>notice.hidden=true,6500);
   }
-  window.NanaJournal={open,close,offerBadge,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
+  window.NanaJournal={open,close,offerBadge,pendingBadge,giveBadge,remindOutfit,current:()=>dialog.open?'carnet/'+active:null};
   updateTrigger();
 })();
 
