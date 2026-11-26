@@ -7,7 +7,8 @@
   const spirits=[...root.querySelectorAll('.kodama')],progress=window.NanaProgress;
   const dog=document.getElementById('preacher-dog-sprite');
   let elapsed=0,last=performance.now(),departure=null,returnAt=null,returnEnds=null;
-  const active=()=>!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')
+  const waitingForMokona=()=>document.getElementById("play-scene")?.classList.contains("mokona-first");
+  const active=()=>!waitingForMokona()&&!document.hidden&&document.getElementById('app')?.classList.contains('mode-play')
     &&!document.getElementById('play-viewport')?.hidden&&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
 
   const localize=()=>spirits.forEach((spirit,i)=>{
@@ -34,6 +35,7 @@
     spirit.addEventListener('focus',()=>wiggle(spirit));
   }
   const targetFor=event=>{
+    if(waitingForMokona())return null;
     const direct=event.target.closest?.('.room-sprite-hit');if(direct)return direct;
     // iPad may report the underlying SVG when a tap falls just beside a small head.
     if(!active()||event.target.closest?.('dialog,#menubar,#dock,#window-shade,#special-shade'))return null;
