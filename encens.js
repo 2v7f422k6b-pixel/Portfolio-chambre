@@ -36,7 +36,10 @@
   button.className='incense-entry';
   const prompt=document.createElement('span');
   prompt.className='incense-prompt';
-  button.append(prompt);
+  const smokeHit=document.createElement('span');
+  smokeHit.setAttribute('aria-hidden','true');
+  smokeHit.style.position='absolute';
+  button.append(prompt,smokeHit);
   function label(){
     const fr=document.documentElement.lang!=='en';
     prompt.textContent=fr?'Touche la fumée…':'Touch the smoke…';
@@ -149,6 +152,10 @@
     const lateral=offset(b.curve,u)+across*(1+b.spread*b.mature*pt.free)*(1-.30*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
+    if(!b.upstream && b.invitationGrowth){
+      x=b.x+(x-b.x)*(1+3.2*b.invitationGrowth);
+      y=b.y+(y-b.y)*(1+5*b.invitationGrowth);
+    }
     if(b.contact && pt.contactWeight){
       x+=pt.contactWeight*b.contact.dx;y+=pt.contactWeight*b.contact.dy;
     }
@@ -486,6 +493,29 @@
   }
   let branches=[],sequence=null,frame=0,lastPaint=-Infinity,cycleEnd=0;
   let visible=true;
+  let waitingMs=0, previousTime=null, growth=0, launchGrowth=0;
+  function updateInvitation(now,elapsed){
+    const waiting=sequence===null && scene.classList.contains('mokona-first');
+    if(waiting){
+      if(previousTime!==null)waitingMs+=Math.min(now-previousTime,250);
+      previousTime=now;
+      const t=clamp((waitingMs-1200)/17000);
+      growth=reduced.matches ? Math.floor(t*3)/3 : ease(t);
+    }else{
+      waitingMs=0;
+      previousTime=null;
+      growth=sequence===null ? 0 : launchGrowth*(1-ease(clamp(elapsed/5)));
+    }
+    // The smoke above the bowl belongs to the same accessible button.
+    smokeHit.hidden=!waiting;
+    if(waiting){
+      const w=2*(175+560*growth), h=110+490*growth;
+      smokeHit.style.left=((166-w/2)/315*100)+'%';
+      smokeHit.style.width=(w/315*100)+'%';
+      smokeHit.style.bottom='36%';
+      smokeHit.style.height=(h/120*100)+'%';
+    }
+  }
   function attach(b){
         const parent=b.upstream;
         // The first large branches grow from the moving ends of the idle tendrils.
@@ -500,6 +530,7 @@
   let clearingFinished = false;
   function draw(now) {
     const elapsed=sequence===null?0:(now-sequence)/1000;
+    updateInvitation(now,elapsed);
     const clearing=elapsed-cycleEnd-5.2;
     const time=reduced.matches?0:now/1000;
     const rect=scene.getBoundingClientRect();
@@ -515,6 +546,7 @@
     if(!renderer){ctx.setTransform(canvas.width/width,0,0,canvas.height/height,0,0);ctx.clearRect(0,0,width,height);}
     for(const b of branches){
       const root=!b.upstream;
+      b.invitationGrowth=root?growth:0;
       b.age=root?1:Math.max(0,(elapsed-b.delay)/b.duration);
       b.growth=root?1:ease(clamp(b.age));
       b.mature=root||reduced.matches?0:1-Math.exp(-Math.max(0,b.age-1)*b.duration/5);
@@ -590,12 +622,13 @@
     if(!visible||document.hidden||!branches.length)return;
     const interval=sequence===null?45:32;
     if(now-lastPaint>=interval){draw(now);lastPaint=now;}
-    if(sequence!==null||!reduced.matches)frame=requestAnimationFrame(tick);
+    if(sequence!==null||!reduced.matches||(scene.classList.contains('mokona-first')&&growth<1))frame=requestAnimationFrame(tick);
   }
   function wake(){if(!frame)frame=requestAnimationFrame(tick);}
-  const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)wake();});
+  const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;previousTime=null;if(visible)wake();});
   observer.observe(renderer?accelerated:canvas);
-  document.addEventListener('visibilitychange',wake);
+  document.addEventListener('visibilitychange',()=>{previousTime=null;wake();});
+  new MutationObserver(()=>{previousTime=null;wake();}).observe(scene,{attributes:true,attributeFilter:['class']});
   new ResizeObserver(wake).observe(scene);
   const insetJoins={"7966":[1876,1248],"7967":[1724,1232],"7965":[2166,1372],"7964":[2264,1105],"7968":[1971,739],"7961":[1979,730],"7963":[2659,1359],"7959":[946,1345],"7956":[1828,896],"7955":[1589,914],"7970":[2014,412],"7974":[1700,389],"7976":[1644,390],"7981":[603,1372],"7973":[2557,708],"7982":[575,1492],"7969":[2615,359],"7972":[2484,1031],"7980":[1225,570],"7975":[1422,182],"7957":[729,840],"7971":[2103,162],"7979":[998,281],"7958":[442,925],"7978":[914,301],"7977":[258,727]};
   accelerated.addEventListener('webglcontextlost',()=>{
@@ -671,7 +704,7 @@
   button.addEventListener('click',async event=>{
     event.stopPropagation();
     await load();
-    if(sequence===null){clearingFinished=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
+    if(sequence===null){launchGrowth=growth;clearingFinished=false;scene.dispatchEvent(new Event('incense:start'));sequence=performance.now();wake();}
   });
 })();
 
