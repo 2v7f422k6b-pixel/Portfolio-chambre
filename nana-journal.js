@@ -185,7 +185,8 @@
   latestIcon.className='nj-latest-badge';
   trigger.querySelector('.nj-trigger-count').after(latestIcon);
   function updateTrigger(){
-    const latest=progress.earnedBadgeIds().filter(id=>id!=='glance'||delivered.has(id)).at(-1);
+    const latest=progress.earnedBadgeIds().filter(id=>id!=='glance'||delivered.has(id)).reverse()
+      .find(id=>progress.stickers.some(b=>b.id===id && Number.isFinite(b.percent)));
     const badge=progress.stickers.find(b=>b.id===latest);
     if(latestIcon.dataset.id!==(latest||'')){
       latestIcon.replaceChildren();
