@@ -83,7 +83,9 @@
 .mokona-spacer {visibility:hidden;pointer-events:none}
 .mokona-art.mokona-spacer {aspect-ratio:1810/1390}
 .mokona-card.mokona-spacer {background:none}
-#play-scene:has(.mokona-stage:not([hidden]),.mokona-bed:not([hidden])) > #paprika-butterfly {z-index:92}
+#play-scene:has(.mokona-bed:not([hidden])) > #paprika-butterfly {z-index:92}
+#play-scene:has(.mokona-stage:not([hidden])) #paprika-butterfly {z-index:88!important}
+.mokona-first #kodama-layer {visibility:hidden!important}
 .mokona-bed-bubble {z-index:93}
 .mokona-float {isolation:isolate}
 .mokona-landing-pose {mix-blend-mode:plus-lighter}
@@ -108,6 +110,6 @@
   0% {transform:translateX(0)}
   32%,100% {transform:translateX(216px)}
 }
-.incense-prompt {display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;color:#dc1539;background:#fff2df;padding:.18em .55em;border-radius:45%;font:clamp(16px,1.9vw,25px)/1.2 "Nana Trace UI",sans-serif}
-.mokona-first.incense-prompt-visible .incense-prompt {display:block}
+ .mokona-object-hint {position:absolute;z-index:94;pointer-events:none;box-sizing:border-box;width:max-content;max-width:min(16em,80vw);padding:.35em .7em;border:1.5px solid var(--nana-red,#ff173b);border-radius:1em 1.2em .9em 1.1em;background:#fff5e3;color:#b11a36;font:clamp(16px,1.45vw,22px)/1.2 "Nana Trace UI",sans-serif;text-align:center}
+.mokona-object-hint::after {content:"";position:absolute;left:var(--tail,50%);bottom:-5px;width:7px;height:7px;background:inherit;border:solid var(--nana-red,#ff173b);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
 @media(prefers-reduced-motion:reduce){.badge-sweep{animation:none;transform:translateX(120px);opacity:.4}}
