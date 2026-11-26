@@ -32,7 +32,8 @@
   button.type='button';
   button.setAttribute('aria-label','Encens · Incense');
   button.style.cssText='pointer-events:auto;background:transparent;border:0;cursor:pointer;min-height:44px;padding:0';
-  place(button,1695 + smokeOffset.x,1345 + smokeOffset.y,315,120);
+  place(button,ember.x,ember.y,82,82);
+  Object.assign(button.style,{minWidth:'44px',transform:'translate(-50%,-50%)'});
   button.className='incense-entry';
   function label(){
     const fr=document.documentElement.lang!=='en';
@@ -164,8 +165,9 @@
     const [vx,vy]=b.axis;
     let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
     if(!b.upstream && b.invitationGrowth){
-      x=b.x+(x-b.x)*(1+3.2*b.invitationGrowth);
-      y=b.y+(y-b.y)*(1+5*b.invitationGrowth);
+      const expansion=b.invitationGrowth*ease(clamp((along-12)/46));
+      x=b.x+(x-b.x)*(1+3.2*expansion);
+      y=b.y+(y-b.y)*(1+5*expansion);
     }
     if(b.contact && pt.contactWeight){
       x+=pt.contactWeight*b.contact.dx;y+=pt.contactWeight*b.contact.dy;
