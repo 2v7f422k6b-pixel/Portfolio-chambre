@@ -34,15 +34,8 @@
   button.style.cssText='pointer-events:auto;background:transparent;border:0;cursor:pointer;min-height:44px;padding:0';
   place(button,1695 + smokeOffset.x,1345 + smokeOffset.y,315,120);
   button.className='incense-entry';
-  const prompt=document.createElement('span');
-  prompt.className='incense-prompt';
-  const smokeHit=document.createElement('span');
-  smokeHit.setAttribute('aria-hidden','true');
-  smokeHit.style.position='absolute';
-  button.append(prompt,smokeHit);
   function label(){
     const fr=document.documentElement.lang!=='en';
-    prompt.textContent=fr?'Touche la fumée…':'Touch the smoke…';
     button.setAttribute('aria-label',fr?'Toucher la fumée du bol à encens':'Touch the smoke from the incense bowl');
   }
   label();
@@ -110,12 +103,30 @@
       return v+strength*((sample(1,54)+sample(-1,54)+sample(1,24)+sample(-1,24))/4-v)*.82;
     });
   }
+  function smoothIdleRing(ring){
+    const edges=[0];
+    for(let i=0;i<ring.length;i+=2){
+      const j=(i+2)%ring.length;
+      edges.push(edges.at(-1)+Math.hypot(ring[j]-ring[i],ring[j+1]-ring[i+1]));
+    }
+    const length=edges.at(-1),count=Math.max(8,Math.ceil(length/5));
+    const points=[];
+    for(let k=0,edge=0;k<count;k++){
+      const d=k*length/count;
+      while(edge+1<edges.length-1 && edges[edge+1]<=d)edge++;
+      const i=2*edge,j=(i+2)%ring.length,t=(d-edges[edge])/(edges[edge+1]-edges[edge]||1);
+      points.push([ring[i]+t*(ring[j]-ring[i]),ring[i+1]+t*(ring[j+1]-ring[i+1])]);
+    }
+    return points.flatMap((p,i)=>p.map((_,axis)=>
+      [1,4,6,4,1].reduce((sum,w,k)=>sum+w*points[(i+k-2+count)%count][axis],0)/16));
+  }
   function prepare(branch) {
     branch.spread=({7963:.58,7964:.72,7965:.72,7966:.68,7958:.78,7972:.80})[branch.id]??1.05;
     branch.turns=turns[branch.id].map(([x,y],i)=>({at:coordinates(branch,x,y),radius:Math.min(100,Math.max(28,branch.length*.16)),speed:.78+((branch.id*13+i*19)%37)/42,phase:branch.id*1.7+i*2.4}));
     for(const key of ['fill','ink']){
       branch[key]=branch[key].map(ring=>{
         ring=softenBends(branch,ring);
+        if(!branch.parent)ring=smoothIdleRing(ring);
         const local=[];
         for(let i=0;i<ring.length;i+=2)local.push(...coordinates(branch,ring[i]/2,ring[i+1]/2));
         const points=[];
@@ -147,8 +158,8 @@
     const u=along/b.length;
     const pin=ease(clamp(Math.abs(along)/65));
     const wave=pin*b.wave*pt.free;
-    const advance=along*(1+.16*b.mature*pt.free)+wave*.62*Math.sin(5.1*u-b.phase*.81);
-    const drift=wave*(Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57));
+    const advance=along*(1+.16*b.mature*pt.free)+wave*(b.upstream?.62:.14)*Math.sin(5.1*u-b.phase*.81);
+    const drift=wave*(b.upstream ? Math.sin(u*5.2-b.phase)+.36*Math.sin(9*u-b.phase*.57) : Math.sin(u*3.8-b.phase)+.18*Math.sin(5.5*u-b.phase*.57));
     const lateral=offset(b.curve,u)+across*(1+b.spread*b.mature*pt.free)*(1-.30*b.dissolve)+drift;
     const [vx,vy]=b.axis;
     let x=b.x+vx*advance-vy*lateral,y=b.y+vy*advance+vx*lateral-b.rise*clamp(Math.abs(u)*2);
@@ -507,23 +518,23 @@
     if(waiting){
       if(previousTime!==null)waitingMs+=Math.min(now-previousTime,250);
       previousTime=now;
-      const t=clamp((waitingMs-1200)/17000);
+      const t=clamp((waitingMs-2200)/34000);
       growth=reduced.matches ? Math.floor(t*3)/3 : ease(t);
     }else{
       waitingMs=0;
       previousTime=null;
       growth=sequence===null ? 0 : launchGrowth*(1-ease(clamp(elapsed/5)));
     }
-    // The smoke above the bowl belongs to the same accessible button.
-    smokeHit.hidden=!waiting;
-    if(waiting){
-      const w=2*(175+560*growth), h=110+490*growth;
-      smokeHit.style.left=((166-w/2)/315*100)+'%';
-      smokeHit.style.width=(w/315*100)+'%';
-      smokeHit.style.bottom='36%';
-      smokeHit.style.height=(h/120*100)+'%';
-    }
   }
+  // Test the painted silhouettes so objects between the curls can still answer.
+  button.hitsSmoke=(clientX,clientY)=>{
+    if(!Number.isFinite(clientX)||!Number.isFinite(clientY))return false;
+    const rect=scene.getBoundingClientRect();
+    const x=(clientX-rect.left)*width/rect.width,y=(clientY-rect.top)*height/rect.height;
+    ctx.save();ctx.resetTransform();
+    try{return branches.some(b=>!b.upstream && ctx.isPointInPath(outline(b,b.fill),x,y,'evenodd'));}
+    finally{ctx.restore();}
+  };
   function attach(b){
         const parent=b.upstream;
         // The first large branches grow from the moving ends of the idle tendrils.
@@ -565,9 +576,10 @@
       b.mature=root||reduced.matches?0:1-Math.exp(-Math.max(0,b.age-1)*b.duration/5);
       b.dissolve=root?0:ease(clamp((clearing-b.release)/b.linger));
       b.rise=reduced.matches?0:b.dissolve*(18+b.length*.052);
-      b.phase=time*(.73+(b.id%9)*.069)+b.id*.61;
-      for(const turn of b.turns)turn.twist=reduced.matches?0:(.36*Math.sin(time*turn.speed*.85+turn.phase)+.19*Math.sin(time*turn.speed*.48+turn.phase*2.7));
-      b.wave=reduced.matches?0:(root ? Math.min(28,b.length*.21) : Math.min(13,b.length*.045));
+      const motionTime=root?time*.42:time;
+      b.phase=motionTime*(.73+(b.id%9)*.069)+b.id*.61;
+      for(const turn of b.turns)turn.twist=reduced.matches?0:(.36*Math.sin(motionTime*turn.speed*.85+turn.phase)+.19*Math.sin(motionTime*turn.speed*.48+turn.phase*2.7));
+      b.wave=reduced.matches?0:(root ? Math.min(17,b.length*.12) : Math.min(13,b.length*.045));
       if(root){
         b.x=b.anchor[0]+smokeOffset.x;
         b.y=b.anchor[1]+smokeOffset.y;
