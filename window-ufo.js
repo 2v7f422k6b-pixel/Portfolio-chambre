@@ -3,12 +3,13 @@
   'use strict';
   window.NanaResources?.enqueue?.('play',()=>window.NanaResources.revealDeferred(document.getElementById('ufo-window-layer')));
   const ufo=document.getElementById('window-ufo'),app=document.getElementById('app');
-  if(!ufo||!app)return;
+  const scene=document.getElementById('play-scene');
+  if(!ufo||!app||!scene)return;
   const button=ufo.querySelector('.ufo-hit');
   const preview=new URLSearchParams(location.search).get('ufoPreview')==='1';
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let phase='waiting',elapsed=0,last=performance.now(),first=true;
-  const active=()=>!document.hidden&&document.documentElement.dataset.theme==='night'
+  const active=()=>scene.dataset.landscape==='pink'&&!document.hidden&&document.documentElement.dataset.theme==='night'
     &&app.classList.contains('mode-play')&&!document.getElementById('play-viewport')?.hidden
     &&(!location.hash||/^#\/(?:room)?$/.test(location.hash));
   const change=next=>{
@@ -37,6 +38,10 @@
   const localize=()=>button.setAttribute('aria-label',document.documentElement.lang.startsWith('en')?'Curious flying saucer — send it fleeing':'Soucoupe curieuse — la faire fuir');
   document.addEventListener('portfolio-language-change',localize);
   document.addEventListener('visibilitychange',sync);window.addEventListener('hashchange',sync);
+  new MutationObserver(()=>{
+    if(scene.dataset.landscape!=='pink')change('waiting');
+    sync();
+  }).observe(scene,{attributes:true,attributeFilter:['data-landscape']});
   new MutationObserver(sync).observe(app,{attributes:true,attributeFilter:['class']});
   new MutationObserver(()=>{if(document.documentElement.dataset.theme!=='night')change('waiting');sync();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   localize();sync();
