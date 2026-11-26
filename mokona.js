@@ -65,7 +65,7 @@
   function mouth(index) {
     mouths.forEach((node,i) => node.style.display = i === index ? '' : 'none');
   }
-  let handBadge;
+  let handBadge, gift;
   let lines, page, timer, typing, landing;
   function offerFirstBadge(){
     if(!handBadge){
@@ -89,7 +89,7 @@
     copy.firstChild.style.visibility = 'visible';
     copy.firstChild.style.opacity = '0';
     copy.lastChild.textContent = '';
-    if(page===2)offerFirstBadge();
+    if(page===2 && !gift)offerFirstBadge();
     if(handBadge)handBadge.style.display=page===2?'':'none';
     next.textContent = lines[page===3?5:4];
     let i = 0;
@@ -248,7 +248,8 @@
       } else sleep();
       return;
     }
-    if(window.NanaJournal?.offerBadge?.()) return;
+    const badge=window.NanaJournal?.pendingBadge?.();
+    if(badge){presentGift(badge);return;}
     hint = chooseHint(window.NanaProgress, french() ? 'fr' : 'en');
     letters = 0;
     bedBubble.lastElementChild.textContent = hint;
@@ -260,6 +261,55 @@
   }
   bed.onclick = bedBubble.onclick = wakeOrDismiss;
   sleep();
+  async function presentGift(badge) {
+    if(gift || landing || dialog.open)return;
+    glimmer.style.opacity='0';
+    gift=badge;
+    landing=true;
+    sleep();
+    const lang=french()?'fr':'en';
+    const name=badge.name[lang];
+    lines=[lang==='fr'?'Un cadeau de Mokona !':'A gift from Mokona!', '',
+      lang==='fr'?'Tiens, le badge « '+name+' » est à toi !':'Here, the “'+name+'” badge is yours!', '',
+      lang==='fr'?'Merci, Mokona !':'Thanks, Mokona!'];
+    page=2;
+    const origin=bed.getBoundingClientRect();
+    bed.style.visibility='hidden';
+    handBadge?.remove();
+    handBadge=window.NanaBadgeArt(badge);
+    for(const [key,value] of Object.entries({x:1285,y:553,width:210,height:210}))handBadge.setAttribute(key,value);
+    handBadge.style.display='none';
+    paw.after(handBadge);
+    floater.append(art);
+    floater.style.animation='none';
+    floater.style.transformOrigin='top left';
+    stage.hidden=false;
+    pinStage();
+    stage.style.setProperty('--veil','.24');
+    const card=dialog.querySelector('.mokona-card');
+    card.style.visibility='hidden';
+    dialog.querySelector('h2').textContent=lines[0];
+    next.disabled=true;
+    dialog.showModal();
+    const dest=floater.getBoundingClientRect();
+    const scale=origin.width/dest.width;
+    const dx=origin.left+origin.width/2-dest.left-dest.width*scale/2;
+    const dy=origin.bottom-dest.top-dest.height*scale;
+    const jump=floater.animate([
+      {transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')'},
+      {transform:'translate('+dx*.35+'px,'+(dy*.35-innerHeight*.12)+'px) scale('+(.65+.35*scale)+')',offset:.65},
+      {transform:'none'}
+    ],{duration:reduced.matches?0:850,easing:'ease-in-out'});
+    await jump.finished;
+    floater.style.animation='';
+    stage.classList.add('hovering');
+    card.style.visibility='';
+    landing=false;
+    next.disabled=false;
+    speak();
+    window.NanaJournal.giveBadge(badge.id);
+    next.focus({preventScroll:true});
+  }
   async function settle() {
     if (landing) return;
     landing = true;
@@ -335,13 +385,14 @@
       stage.classList.remove('hovering');
       transition.forEach(animation=>animation.cancel());
       floater.style.transform='';
+      gift=null;
       landing = false;
     }
   }
   next.onclick = () => {
     if (landing) return;
     if (typing) return finishLine();
-    if (page < 3) { page++; speak(); }
+    if (!gift && page < 3) { page++; speak(); }
     else settle();
   };
   dialog.addEventListener('cancel', event => {event.preventDefault();if (!dialog.classList.contains('revealing')) next.click();});
