@@ -641,28 +641,28 @@
   });
   // Let the activity close and the room paint before Mokona leaves the bed.
   let giftTimer;
-  function checkCollectionGift(){
+  function checkPendingGift(){
     if(!discovered || gift || landing || document.hidden || !app.classList.contains('mode-play') ||
        bed.hidden || !stage.hidden || document.querySelector('dialog[open], #window-shade:not([hidden]), #special-shade:not([hidden])'))return;
     if(!document.getElementById('play-viewport')?.getClientRects().length)return;
-    const badge=window.NanaJournal?.pendingBadge?.(true);
-    if(badge && badge.percent===undefined)presentGift(badge);
+    const badge=window.NanaJournal?.pendingBadge?.();
+    if(badge)presentGift(badge);
   }
-  function scheduleCollectionGift(){
+  function schedulePendingGift(){
     clearTimeout(giftTimer);
-    giftTimer=setTimeout(checkCollectionGift,350);
+    giftTimer=setTimeout(checkPendingGift,350);
   }
-  const roomChanges=new MutationObserver(scheduleCollectionGift);
+  const roomChanges=new MutationObserver(schedulePendingGift);
   roomChanges.observe(app,{attributes:true,attributeFilter:['class']});
   for(const id of ['play-viewport','window-shade','special-shade']){
     const node=document.getElementById(id);
     if(node)roomChanges.observe(node,{attributes:true,attributeFilter:['hidden']});
   }
-  document.addEventListener('close',scheduleCollectionGift,true);
-  document.addEventListener('visibilitychange',scheduleCollectionGift);
-  window.addEventListener('pageshow',scheduleCollectionGift);
-  window.NanaProgress?.subscribe(scheduleCollectionGift);
-  scheduleCollectionGift();
+  document.addEventListener('close',schedulePendingGift,true);
+  document.addEventListener('visibilitychange',schedulePendingGift);
+  window.addEventListener('pageshow',schedulePendingGift);
+  window.NanaProgress?.subscribe(schedulePendingGift);
+  schedulePendingGift();
   const heldImages = [];
   scene.addEventListener('incense:start', () => {
     if (discovered || heldImages.length) return;
