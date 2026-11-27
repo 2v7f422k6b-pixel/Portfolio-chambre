@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=niki-lit-2');
+  const response = await fetch(folder + 'objets.svg?v=raccords-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -394,8 +394,10 @@
     if(!cycle.includes(id))cycle.push(id);
     try { localStorage.setItem(cycleKey,JSON.stringify(cycle)); } catch {}
     window.NanaProgress?.feat('landscape-'+id);
+    if (document.documentElement.dataset.theme === 'night') window.NanaProgress?.feat('night-landscape-'+id);
   }
   document.addEventListener('portfolio-mode-change',recordLandscape);
+  new MutationObserver(recordLandscape).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
   function showLandscape() {
     scene.dataset.landscape = landscapes[(dialAngle % 360) / 90];
     recordLandscape();
@@ -1656,8 +1658,14 @@
       window.NanaKeroWake?.activate(item);
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
-    if (item.dataset.object === 'niki') spinNikiFlower(item);
-    if (item.dataset.object === 'fifi') rearHorse(item);
+    if (item.dataset.object === 'niki') {
+      window.NanaProgress?.feat('niki-nana');
+      spinNikiFlower(item);
+    }
+    if (item.dataset.object === 'fifi') {
+      window.NanaProgress?.feat('fifi-horse');
+      rearHorse(item);
+    }
     if (item.dataset.object === 'van') {
       const already = window.NanaProgress?.hasFeat('olive-van-started');
       window.NanaProgress?.visit('objet/volkswagen');

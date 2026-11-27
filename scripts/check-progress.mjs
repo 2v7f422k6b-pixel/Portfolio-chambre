@@ -128,7 +128,7 @@ test('new smiley and Tamagotchi rewards require their real interactions and pers
 });
 function browser({storage=new Map(),blocked=false,creator=false,search=''}={}){
   const handlers=new Map();
-  const env={URLSearchParams,location:{search},
+  const env={URLSearchParams,location:{search},document:{addEventListener(){},querySelector(){return null;}},
     localStorage:{getItem:k=>{if(blocked)throw Error('blocked');return storage.get(k)||null;},setItem:(k,v)=>{if(blocked)throw Error('blocked');storage.set(k,v);}},
     sessionStorage:{getItem:()=>creator?'1':null},addEventListener:(name,fn)=>handlers.set(name,fn)};
   env.window=env;env.parent=env;
@@ -398,7 +398,7 @@ function roomBrowser(options){
   tab.env.NanaDiscoveries={remember:id=>raw.add(id),raw:()=>[...raw]};
   return tab;
 }
-test('46 distinct experiences award five milestones and two collection badges exactly once',()=>{
+test('46 distinct experiences award five milestones and six collection badges exactly once',()=>{
  const {p,storage}=roomBrowser(),notices=[];
  p.subscribe(e=>notices.push(...e.added));
  assert.equal(p.discoveries.length,46);
@@ -409,9 +409,9 @@ test('46 distinct experiences award five milestones and two collection badges ex
      assert.equal(badge.earned(),(i+1)*100>=46*badge.percent);
  }
  assert(p.fullRoom());
- assert.equal(p.stickers.filter(b=>b.earned()).length,7);
- assert.equal(notices.filter(x=>x.startsWith('sticker:')).length,7);
- assert.equal(browser({storage}).p.stickers.filter(b=>b.earned()).length,7);
+ assert.equal(p.stickers.filter(b=>b.earned()).length,11);
+ assert.equal(notices.filter(x=>x.startsWith('sticker:')).length,11);
+ assert.equal(browser({storage}).p.stickers.filter(b=>b.earned()).length,11);
 });
 test('partial collections keep their progress across visits and award one badge when complete',()=>{
  const {p,storage}=browser();
@@ -505,3 +505,18 @@ test('hanging plant unlocks Plantasia and treasures use the beaded bunny charm',
 
 
 
+
+test('Nana and night badges use the matching room actions, with persistent horse discovery',()=>{
+  const {p,storage}=browser();
+  for(const id of ['nana-zola-book','nana-blast','charm-gacha-7557','charm-gacha-7558','charm-gacha-7559'])p.feat(id);
+  const badge=id=>p.stickers.find(item=>item.id===id).earned();
+  assert.equal(badge('the-nanas'),false);
+  p.feat('niki-nana');
+  assert.equal(badge('the-nanas'),true);
+  p.feat('fifi-horse');
+  assert.equal(browser({storage}).p.hasFeat('fifi-horse'),true);
+  for(const id of ['ufo-encounter','shooting-star-encounter','night-shinkansen','night-landscape-japon','night-landscape-paris','night-landscape-pink'])p.feat(id);
+  assert.equal(badge('night-owls'),false);
+  p.feat('night-landscape-marseille');
+  assert.equal(badge('night-owls'),true);
+});

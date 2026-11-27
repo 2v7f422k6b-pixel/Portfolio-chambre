@@ -135,7 +135,7 @@
   ].map(([fr,en,evidence])=>({id:evidence[0],name:pair(fr,en),evidence}));
   const landscapes = ['marseille','japon','pink','paris'];
   const figureIds = Array.from({length:15}, (_,i) => 'charm-gacha-' + (7545+i));
-  const allowedFeats = new Set(['night-shinkansen','niki-nana',...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','secret-rug','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
+  const allowedFeats = new Set(['night-shinkansen','niki-nana','fifi-horse',...landscapes.map(id=>'night-landscape-'+id),...figureIds,...landscapes.map(id=>'landscape-'+id),'posters','lights','sailor','office','colored','word-placed','mokona','secret-rug','fish-mobile-seen','noiraudes-seen','alice-bottle','nana-zola-book','kokeshi-yukata','shooting-star-encounter','ufo-encounter','kodama-1','kodama-2','kodama-3','kodama-4','kodama-5','preacher-dog','kikujiro-chime','nana-blast','severance-refined','mononoke-kodama','olive-van-started','gokinjo-happy-berry','kero-awake','paprika-butterfly','nana-toast','polaroids-all','minilab-composed','latte-made','beads-made','rested','outfit-styled',...secrets.filter(x=>x.available!==false).map(x=>x.id),'secret-typewriter','secret-twist','secret-cookie',...['feed','sleep','draw','music','cuddle'].map(x=>'care-'+x)]);
   let persistent=true;
   function read(key) { let value;try {value=localStorage.getItem(key);}catch(_){persistent=false;return null;}try{return JSON.parse(value||'null');}catch(_){return null;} }
   function clean(value) {
@@ -237,8 +237,8 @@
       badgeCrop(8256,157,343),()=> (window.NanaLooks?.list()||[]).filter(look=>look.name.trim()).length>=3],
     ['the-nanas','Les Nana','The Nanas','Retrouver les quatre références à Nana.','Find the four Nana references.',
       badgeCrop(8257,283,331),found=>allFound('nana-zola-book','nana-blast')(found)&&[7557,7558,7559].every(n=>hasFeat('charm-gacha-'+n))&&hasFeat('niki-nana')],
-    ['night-owls','Club des oiseaux de nuit','Night Owls Club','Apercevoir l’OVNI, l’étoile filante et le Shinkansen de nuit.','Spot the UFO, the shooting star and the Shinkansen at night.',
-      badgeCrop(8258,1283,344),found=>allFound('shooting-star-encounter','ufo-encounter')(found)&&hasFeat('night-shinkansen')]
+    ['night-owls','Club des oiseaux de nuit','Night Owls Club','Voir les quatre paysages de nuit et apercevoir l’OVNI, l’étoile filante et le Shinkansen.','See all four night views and spot the UFO, the shooting star and the Shinkansen.',
+      badgeCrop(8258,1283,344),found=>allFound('shooting-star-encounter','ufo-encounter')(found)&&hasFeat('night-shinkansen')&&landscapes.every(id=>hasFeat('night-landscape-'+id))]
   ];
   for(const [id,fr,en,ruleFr,ruleEn,image,complete] of collections){
     stickers.push({id,name:pair(fr,en),rule:pair(ruleFr,ruleEn),image,complete,earned:()=>earnedBadges.has(id)});
