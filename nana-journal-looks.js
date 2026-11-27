@@ -5,7 +5,6 @@ window.NanaJournalLooks={create({dialog,content,t,h,button,heading,paginate,rend
   const date=look=>new Date(look.createdAt).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'fr-FR',{day:'numeric',month:'short',year:'numeric'});
   const photo=look=>'<span class="nl-photo" data-look-preview="'+h(look.id)+'"><span class="nl-photo-wait">'+t('Le Polaroid se révèle…','The Polaroid is developing…')+'</span></span>';
   const frame=look=>photo(look)+'<span class="nl-photo-name">'+h(look.name)+'</span><time datetime="'+h(look.createdAt)+'">'+h(date(look))+'</time>';
-  const localNote=()=>'<p class="nj-bottom-note nl-local-note">'+t('Tes looks restent sur ce navigateur. Ils ne sont pas synchronisés entre appareils.','Your looks stay in this browser. They do not sync across devices.')+'</p>';
   function page(){
     const looks=store.list(),look=looks.find(x=>x.id===selected);
     if(look){
@@ -15,9 +14,9 @@ window.NanaJournalLooks={create({dialog,content,t,h,button,heading,paginate,rend
       return '<article class="nl-polaroid nl-large">'+frame(look)+'</article><div class="nl-look-details">'+heading(t('Une tenue, un souvenir','An outfit, a memory'),look.name)+'<p class="nl-look-warning" role="status"></p><div class="nl-look-actions">'+actions+'</div><p class="nl-error" role="alert">'+h(message)+'</p>'+button(t('Retour à mes looks','Back to my looks'),'data-look-back','nl-frame')+'</div>';
     }
     selected=null;mode='';
-    const intro=heading(t('Mes looks','My looks'),store.status()?t('Ce navigateur ne permet pas de lire les looks enregistrés.','This browser cannot read saved looks.'):t('Des petits bouts de toi, à porter et à garder.','Little pieces of you, to wear and to keep.'));
-    if(!looks.length)return intro+'<div class="nl-empty"><span aria-hidden="true">♡</span><p>'+t('La première page t’attend. Compose une tenue et glisse-la ici.','The first page is waiting. Make an outfit and tuck it in here.')+'</p>'+button(t('À mon dressing','To my wardrobe'),'data-look-dressing','nl-frame')+'</div>'+localNote();
-    return intro+paginate(looks,(look,i)=>'<button type="button" class="nl-polaroid" data-look-open="'+h(look.id)+'" style="--look-tilt:'+([-2,1.5,1,-1.5][i%4])+'deg" aria-label="'+h(look.name+' · '+date(look))+'">'+frame(look)+'</button>',{size:matchMedia('(max-width:760px)').matches?2:4,cls:'nj-grid nl-album'})+localNote();
+    const intro=heading(t('Mes looks','My looks'),store.status()?t('Ce navigateur ne permet pas de lire les looks enregistrés.','This browser cannot read saved looks.'):'');
+    if(!looks.length)return intro+'<div class="nl-empty"><p>'+t('Compose et sauvegarde ta première tenue dans le dressing.','The first page is waiting. Make an outfit and tuck it in here.')+'</p>'+button(t('À mon dressing','To my wardrobe'),'data-look-dressing','nl-frame')+'</div>';
+    return intro+paginate(looks,(look,i)=>'<button type="button" class="nl-polaroid" data-look-open="'+h(look.id)+'" style="--look-tilt:'+([-2,1.5,1,-1.5][i%4])+'deg" aria-label="'+h(look.name+' · '+date(look))+'">'+frame(look)+'</button>',{size:2,cls:'nj-grid nl-album'});
   }
   function hydrate(){
     for(const host of content.querySelectorAll('[data-look-preview]')){
