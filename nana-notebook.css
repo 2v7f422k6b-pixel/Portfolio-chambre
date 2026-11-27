@@ -245,3 +245,33 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
  #nana-journal .nj-tabs button{font-size:clamp(7px,1.3vw,11px)!important;padding:1.5em 0 0!important}
  #nana-journal .nj-cut-space{flex-basis:6px}
 }
+
+/* Keep three pieces of the drawn bookmark layer between the cover and paper. */
+#nana-journal .nj-main {background-image:url("assets/diary/IMG_6940.png")}
+#nana-journal .nj-main::before,#nana-journal .nj-main::after {
+  content:"";display:block;position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;background-position:center;background-size:100% 100%;background-repeat:no-repeat;
+}
+#nana-journal .nj-main::before {
+  background-image:url("assets/diary/IMG_6941.png");
+  --bookmarks:linear-gradient(to right,#000 18.5%,transparent 18.5% 37%,#000 37% 47%,transparent 47% 80%,#000 80%);
+  -webkit-mask-image:var(--bookmarks);mask-image:var(--bookmarks);
+}
+#nana-journal .nj-main::after {
+  background-image:url("assets/diary/IMG_6944.png"),url("assets/diary/IMG_6943.png"),url("assets/diary/IMG_6942.png");
+}
+#nana-journal .nj-content {z-index:1}
+#nana-journal .nj-tabs button:nth-child(1){left:13.8%}
+#nana-journal .nj-tabs button:nth-child(2){left:42%}
+#nana-journal .nj-tabs button:nth-child(3){left:84.5%}
+#nana-journal .nj-pins {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,1vw,14px);align-items:start}
+#nana-journal .nj-pin-empty,#nana-journal .nj-pin summary {box-sizing:border-box;display:block;width:100%;aspect-ratio:1}
+#nana-journal .nj-pin-empty {width:75%;margin:12.5%;border:1px dashed #bb768a;border-radius:50%;opacity:.6}
+#nana-journal .nj-pin summary {cursor:pointer;list-style:none}
+#nana-journal .nj-pin summary::-webkit-details-marker {display:none}
+#nana-journal .nj-pin summary:focus-visible {outline:2px solid currentColor;border-radius:50%}
+#nana-journal .nj-pin svg {width:100%;height:100%}
+#nana-journal .nj-pin[open] {grid-column:1/-1}
+#nana-journal .nj-pin[open] summary {width:32%}
+#nana-journal .nj-pin p {margin:.3em 0;line-height:1.35}
+#nana-journal .nj-pin-page>p {font-size:.85em}

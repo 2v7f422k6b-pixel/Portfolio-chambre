@@ -3,7 +3,7 @@
   'use strict';
   const progress=window.NanaProgress, trigger=document.getElementById('nana-journal-trigger');
   if(!progress||!trigger)return;
-  const tabs=[['chambre','Ma chambre','My room'],['secrets','Mes secrets','My secrets'],['jeux','Mes jeux','My games'],['souvenirs','Mes souvenirs','My keepsakes'],['dressing','Mon dressing','My wardrobe'],['looks','Mes looks','My looks'],['stickers','Mes badges','My badges'],['cadeaux','Mes cadeaux','My gifts']];
+  const tabs=[['stickers','Badges','Badges'],['souvenirs','Souvenirs','Keepsakes'],['looks','Looks','Looks']];
   const english=()=>document.documentElement.lang.startsWith('en');
   const t=(fr,en)=>english()?en:fr;
   const name=value=>value[english()?'en':'fr'];
@@ -16,7 +16,7 @@
   };
   const button=(text,attrs='',cls='')=>'<button type="button" class="nj-button '+cls+'" '+attrs+'>'+text+'</button>';
   const star='assets/drawn-ui/etoile_pleine.png';
-  let active='chambre', page=0, previousFocus, wardrobe=null, wardrobeError=false, wardrobeLoading=false, toastTimer;
+  let active='stickers', page=0, previousFocus, toastTimer;
   const small=matchMedia('(max-width:760px)');
   let bookOpened=false,pageTotal=1,turning=false;
   const dialog=document.createElement('dialog');
@@ -54,11 +54,11 @@
     restoreDelivered();
     delivered.add(id);
     saveDelivered();
-    updateTrigger();
+    render();
   }
   restoreDelivered();
   document.addEventListener('mokona-first-badge',()=>giveBadge('glance'));
-  window.addEventListener('storage',e=>{if(e.key===deliveredKey){restoreDelivered();updateTrigger();}});
+  window.addEventListener('storage',e=>{if(e.key===deliveredKey){restoreDelivered();render();}});
   const badgeDrawing=badge=>window.NanaBadgeArt(badge).outerHTML;
   const ranks={
     landscapes:['Voyageuse','Traveller'],
@@ -106,7 +106,6 @@
   // A queued award survives a temporary game overlay and never interrupts it.
 
   function ratio(){const r=progress.snapshot().room;return{...r,count:r.discovered.filter(x=>r.required.includes(x)).length,total:r.required.length};}
-  function meter(count,total,label){const percent=total?Math.min(100,Math.round(count/total*100)):0;return '<div class="nj-progress" role="progressbar" aria-label="'+h(label)+'" aria-valuemin="0" aria-valuemax="'+Math.max(total,1)+'" aria-valuenow="'+count+'"><span style="width:'+percent+'%"></span></div>';}
   function heading(title,subtitle){return '<div class="nj-section-title"><h2>'+h(title)+'</h2><p>'+h(subtitle)+'</p></div>';}
   function routeButton(route,label){return button(h(label),'data-nj-route="'+h(route)+'"');}
   function paginate(items,render,{size=small.matches?2:4,cls='nj-grid'}={}){
@@ -114,62 +113,24 @@
     pageTotal=pages;
     return '<div class="'+cls+'">'+items.slice(page*size,(page+1)*size).map(render).join('')+'</div>';
   }
-  function roomPage(){
-    const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;
-    const found=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;
-    const summary=[['secrets',found,progress.secrets.length,t('secrets trouvés','secrets found')],['jeux',progress.games.filter(x=>progress.hasVisit(x.route)).length,progress.games.length,t('jeux découverts','games discovered')],['stickers',progress.stickers.filter(x=>x.earned()).length,progress.stickers.length,t('badges gagnés','badges earned')]];
-    return heading(t('Bienvenue dans ton petit carnet','Welcome to your little notebook'),t('Chaque détour laisse un souvenir.','Every little detour leaves a memory.'))+
-      '<div class="nj-hero nj-frame"><div><p>'+t('La chambre explorée','Room explored')+'</p><strong>'+pct+'<small> %</small></strong><p>'+r.count+' / '+r.total+' '+t('découvertes','discoveries')+'</p></div>'+img(star,'nj-hero-star')+meter(r.count,r.total,t('Exploration de la chambre','Room exploration'))+'</div>'+
-      '<details class="nj-discoveries"><summary>'+t('Mes découvertes','My discoveries')+'</summary><ul>'+progress.discoveries.map(d=>{
-        const complete=r.discovered.includes(d.id),parts=r.counters[d.id];
-        const label=complete||parts?.[0]?name(d.name):t('À découvrir','Undiscovered');
-        return '<li>'+ (complete?'✓ ':'')+h(label)+(parts?' · '+parts.join(' / '):'')+'</li>';
-      }).join('')+'</ul></details>'+
-      '<div class="nj-stats">'+summary.map(([tab,n,total,label])=>'<button type="button" class="nj-stat nj-frame" data-nj-tab="'+tab+'"><strong>'+n+' <small>/ '+total+'</small></strong><span>'+label+'</span></button>').join('')+'</div>'+
-      '<p class="nj-bottom-note">'+(progress.snapshot().persistent?t('Tes découvertes restent ici quand tu reviens sur ce navigateur.','Your discoveries stay here when you return in this browser.'):t('Ton navigateur ne permet pas la sauvegarde : tes découvertes restent disponibles pendant cette visite.','Your browser cannot save progress: your discoveries are available for this visit.'))+'</p>';
+  function badgeSlot(badge){
+    if(!delivered.has(badge.id))return '<span class="nj-pin-empty" aria-hidden="true"></span>';
+    return '<details class="nj-pin"><summary aria-label="'+h(name(badge.name))+'">'+badgeDrawing(badge)+'</summary><p><strong>'+h(name(badge.name))+'</strong><br>'+h(name(badge.rule))+'</p></details>';
   }
-  function secretsPage(){const count=progress.secrets.filter(x=>progress.hasFeat(x.id)).length;return heading(t('Les secrets de la chambre','The room’s secrets'),count+' / '+progress.secrets.length+' '+t('petites surprises trouvées','little surprises found'))+paginate(progress.secrets,(secret)=>{
-    const found=progress.hasFeat(secret.id),number=progress.secrets.indexOf(secret)+1,coming=secret.available===false;
-    return '<article class="nj-card nj-frame '+(found?'':'nj-locked')+'">'+(found?img(secret.image):'<span class="nj-mystery">?</span>')+'<h3>'+h(found?name(secret.name):t('Secret n° ','Secret no. ')+number)+'</h3><p>'+t(found?'Découvert':coming?'À venir':'Encore bien caché',found?'Discovered':coming?'Coming soon':'Still well hidden')+'</p>'+(found&&secret.route?routeButton(secret.route,t('Revoir','Revisit')):'')+'</article>';
-  },{size:small.matches?2:4});}
-  function gamesPage(){const found=progress.games.filter(x=>progress.hasVisit(x.route)).length;return heading(t('À quoi on joue ?','What shall we play?'),found+' / '+progress.games.length+' '+t('jeux découverts','games discovered'))+paginate(progress.games,game=>{
-    const unlocked=progress.hasVisit(game.route);
-    return '<article class="nj-card nj-frame '+(unlocked?'':'nj-locked')+'">'+img(game.image)+'<h3>'+h(name(game.name))+'</h3><p>'+t(unlocked?'Dans ta collection':'À découvrir dans la chambre',unlocked?'In your collection':'Find it in the room')+'</p>'+(unlocked?routeButton(game.route,t('Jouer','Play')):'')+'</article>';
-  });}
-  async function loadWardrobe(){
-    if(wardrobe||wardrobeLoading)return;wardrobeLoading=true;wardrobeError=false;
-    try{
-      const response=await fetch('about-me.html?v=20261109-exploration-patches');
-      if(!response.ok)throw new Error('wardrobe');
-      const source=new DOMParser().parseFromString(await response.text(),'text/html');
-      const data=JSON.parse(source.getElementById('assets').textContent);
-      if(!data.items||!data.sprites)throw new Error('wardrobe');wardrobe=data;
-    }catch(_){wardrobeError=true;}finally{wardrobeLoading=false;if(dialog.open&&active==='dressing')render();}
+  function stickersPage(){
+    const room=ratio(),pct=room.total?Math.round(100*room.count/room.total):0;
+    const levels=progress.stickers.filter(b=>Number.isFinite(b.percent));
+    const collections=progress.stickers.filter(b=>!Number.isFinite(b.percent));
+    return '<section class="nj-pin-page">'+heading(t('Mes badges','My badges'),'')+
+      '<div class="nj-pins">'+levels.map(badgeSlot).join('')+'</div><p>'+pct+' % '+t('de la chambre explorée','of the room explored')+'</p></section>'+
+      '<section class="nj-pin-page nj-right-page">'+heading(t('Collections','Collections'),'')+
+      '<div class="nj-pins">'+collections.map(badgeSlot).join('')+'</div></section>';
   }
-  function dressingPage(){
-    const unlocked=progress.outfits.filter(x=>progress.unlockedOutfit(x.id)).length;
-    const total=wardrobe?Object.keys(wardrobe.items).length:null,locked=new Set(progress.outfits.filter(x=>!progress.unlockedOutfit(x.id)).flatMap(x=>x.pieces||[])).size;
-    const inventory=total===null?(wardrobeError?t('Le dressing n’a pas pu être chargé.','The wardrobe could not be loaded.'):t('Ouverture du dressing…','Opening the wardrobe…')):(total-locked)+' / '+total+' '+t('pièces accessibles','pieces available');
-    return heading(t('Des tenues à découvrir','Looks to discover'),inventory)+
-      '<div class="nj-wardrobe-summary"><p>'+unlocked+' / '+progress.outfits.filter(x=>x.available!==false).length+' '+t('tenues bonus débloquées','bonus looks unlocked')+'</p>'+routeButton('jeu/dressing',t('Ouvrir le dressing','Open the wardrobe'))+' '+routeButton('carnet/looks',t('Mes looks sauvegardés','My saved looks')+' · '+(window.NanaLooks?.list().length||0))+(wardrobeError?button(t('Réessayer','Try again'),'data-nj-retry'):'')+'</div>'+
-      paginate(progress.outfits.filter(x=>x.available!==false),outfit=>{
-        const earned=progress.unlockedOutfit(outfit.id);
-        return '<article class="nj-card nj-outfit nj-frame '+(earned?'':'nj-locked')+'">'+img(outfit.image)+'<div><h3>'+h(name(outfit.name))+'</h3><p>'+h(earned?t('Tenue débloquée','Look unlocked'):name(outfit.rule))+'</p>'+(earned||progress.isCreator()?button(h(earned?t('Essayer','Try on'):t('Aperçu créatrice','Creator preview')),'data-nj-outfit="'+outfit.id+'"'):'')+'</div></article>';
-      },{size:small.matches?2:4})+(progress.isCreator()?'<p class="nj-bottom-note">'+t('Aperçu créatrice : les essais ne modifient pas ta progression.','Creator preview: trying things does not change your progress.')+'</p>':'');
-  }
-  function stickersPage(){const count=progress.stickers.filter(x=>x.earned()).length;return heading(t('Mes badges d’exploration','My exploration badges'),count+' / '+progress.stickers.length+' '+t('badges débloqués','badges unlocked'))+paginate(progress.stickers,(sticker)=>{
-    const earned=sticker.earned(),number=progress.stickers.indexOf(sticker)+1;
-    return '<article class="nj-sticker '+(earned?'is-earned':'nj-locked')+'" style="--tilt:'+([-5,3,-2,4,-3,2][number%6])+'deg"><div class="nj-sticker-art">'+(earned?badgeDrawing(sticker):img(sticker.image))+'</div><p>'+h(name(sticker.name))+'</p><small>'+h(name(sticker.rule))+'</small></article>';
-  },{cls:'nj-sticker-grid'});}
-  function titlesPage(){const selected=progress.snapshot().title;return heading(t('Un titre qui te ressemble','A title that feels like you'),t('Collectionne-les et choisis celui que tu portes.','Collect them and choose the one you wear.'))+paginate(progress.titles,title=>{
-    const earned=title.earned(),chosen=selected===title.id;
-    return '<article class="nj-title-card nj-frame '+(earned?'':'nj-locked')+'">'+img(star)+'<div><h3>'+h(name(title.name))+'</h3><p>'+h(name(title.rule))+'</p></div>'+(earned?button(t(chosen?'Porté':'Porter ce titre',chosen?'Wearing':'Wear this title'),'data-nj-title="'+title.id+'" aria-pressed="'+chosen+'"'):'<span class="nj-status">'+t('À gagner','To earn')+'</span>')+'</article>';
-  },{cls:'nj-titles',size:small.matches?3:4});}
-  function giftsPage(){const r=ratio(),won=progress.fullRoom()||r.celebrated;return heading(t('Tes petits cadeaux','Your little gifts'),t('Des souvenirs à garder et une attention pour la boutique.','Little memories and a treat for the shop.'))+
-    '<article class="nj-gift nj-frame">'+img(star)+'<p>'+t('La chambre n’a plus de secrets pour toi','The room has no more secrets for you')+'</p><strong>−10 %</strong><p>'+t('sur ton prochain achat chez Nana’s Little Shop','on your next purchase at Nana’s Little Shop')+'</p>'+
-    (won?'<div class="nj-coupon"><code>MERCI10</code>'+button(t('Copier le code','Copy code'),'data-nj-copy')+'</div>'+routeButton('shop',t('Découvrir la boutique','Visit the shop')):
-      '<p>'+t('Complète les 46 découvertes pour ouvrir ce cadeau.','Complete all 46 discoveries to open this gift.')+'</p>'+meter(r.count,r.total,t('Progression vers le cadeau','Progress towards the gift'))+'<small>'+r.count+' / '+r.total+' '+t('découvertes','discoveries')+'</small>')+
-    '</article><p class="nj-bottom-note">'+t('Les tenues bonus et les stickers gagnés restent dans leurs collections.','Your bonus looks and stickers stay in their collections.')+'</p>';
+  function gift(){
+    if(!progress.fullRoom()&&!progress.snapshot().room.celebrated)return '';
+    return '<article class="nj-gift"><h3>'+t('Ton cadeau de visite','Your visit gift')+'</h3><p>'+
+      t('−10 % chez Nana’s Little Shop','10% off at Nana’s Little Shop')+'</p><div class="nj-coupon"><code>MERCI10</code>'+
+      button(t('Copier le code','Copy code'),'data-nj-copy')+'</div>'+routeButton('shop',t('La boutique','The shop'))+'</article>';
   }
   let keepsakeFilter='all',selectedKeepsake=null;
   const kindLabel=kind=>kind==='card'?t('Carte à collectionner','Collectible card'):kind==='poem'?t('Poème','Poem'):kind==='book'?t('Livre favori','Favourite book'):t('Texte favori','Favourite text');
@@ -184,10 +145,10 @@
     const filters='<nav class="nj-keepsake-filters" aria-label="'+t('Filtrer les souvenirs','Filter keepsakes')+'">'+[['all',t('Tout','All')],['poems',t('Mes poèmes','My poems')],['favourites',t('Mes favoris','My favourites')]].map(([id,label])=>button(label,'data-nj-keepsake-filter="'+id+'" aria-pressed="'+(keepsakeFilter===id)+'"')).join('')+'</nav>';
     const works=filtered.length?paginate(filtered,item=>'<article class="nj-keepsake nj-frame"><small>'+h(kindLabel(item.kind))+'</small>'+(item.kind==='card'?img('assets/dressing-lena/lena-card-illustration-v2.jpeg','nj-keepsake-card-art'):'')+'<h3>'+h(item.kind==='card'?t('La carte de Léna','Léna’s card'):item.title)+'</h3>'+(item.author?'<p>'+h(item.author)+'</p>':'')+(item.kind==='poem'?'<p class="nj-keepsake-excerpt">'+h(item.body.slice(0,140))+(item.body.length>140?'…':'')+'</p>'+button(t('Relire','Read again'),'data-nj-keepsake="'+h(item.id)+'"'):routeButton(item.route,item.kind==='card'?t('Revoir la carte','View the card'):t('Ouvrir la fiche','Open the page')))+'</article>',{size:small.matches?2:4,cls:'nj-grid nj-keepsakes-grid'}):'<div class="nj-keepsake-empty"><p>'+t('Tes petits souvenirs trouveront leur place ici.','Your little keepsakes will find a home here.')+'</p><p>'+t('Garde un poème dans le laboratoire des mots, ou ajoute un livre et un texte des Souvenues à tes favoris.','Keep a poem from the word lab, or save a book or a Souvenues text to your favourites.')+'</p>'+routeButton('jeu/word-lab',t('Composer un poème','Make a poem'))+' '+routeButton('objet/reading-room',t('Choisir un livre','Choose a book'))+'</div>';
     const inProgress=keepsakeFilter==='all'?'<div class="nj-keepsake-current">'+(draftCount?'<article><p>'+t('Ton poème en cours','Your poem in progress')+'</p>'+routeButton('jeu/word-lab',t('Reprendre mon brouillon','Continue my draft'))+'</article>':'')+(beadCount?'<article class="nj-current-charm">'+window.NanaBeadSouvenir.preview()+'<div><p>'+t('Ton bijou en cours','Your charm in progress')+'</p>'+routeButton('jeu/bead-box',t('Retrouver mon bijou','Revisit my charm'))+'</div></article>':'')+'</div>':'';
-    return heading(t('Mes petits souvenirs','My little keepsakes'),t('Tes créations et tes lectures à retrouver.','Your creations and saved reading.'))+filters+works+inProgress+'<p class="nj-bottom-note">'+t('Conservés sur ce navigateur. Les poèmes déjà téléchargés avant cette nouveauté ne peuvent pas être récupérés automatiquement.','Saved in this browser. Poems downloaded before this feature cannot be recovered automatically.')+'</p>';
+    return heading(t('Mes petits souvenirs','My little keepsakes'),t('Tes créations et tes lectures à retrouver.','Your creations and saved reading.'))+filters+works+inProgress+(keepsakeFilter==='all' && page===0?gift():'')+'<p class="nj-bottom-note">'+t('Conservés sur ce navigateur. Les poèmes déjà téléchargés avant cette nouveauté ne peuvent pas être récupérés automatiquement.','Saved in this browser. Poems downloaded before this feature cannot be recovered automatically.')+'</p>';
   }
   const looks=window.NanaJournalLooks.create({dialog,content,t,h,button,heading,paginate,render,navigate});
-  const pages={looks:looks.page,souvenirs:keepsakesPage,chambre:roomPage,secrets:secretsPage,jeux:gamesPage,dressing:dressingPage,stickers:stickersPage,titres:titlesPage,cadeaux:giftsPage};
+  const pages={stickers:stickersPage,souvenirs:keepsakesPage,looks:looks.page};
   const latestIcon=document.createElement('span');
   latestIcon.className='nj-latest-badge';
   trigger.querySelector('.nj-trigger-count').after(latestIcon);
@@ -215,7 +176,7 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
         const first=node.cloneNode(false),second=node.cloneNode(false),items=[...node.children],split=Math.ceil(items.length/2);
         items.forEach((item,i)=>(i<split?first:second).append(item));a.append(first);b.append(second);
       }else if(node.matches('.nj-section-title,.nj-wardrobe-summary,.nj-keepsake-filters,.nj-hero'))a.append(node);
-      else if(node.matches('.nj-stats,.nj-gift,.nj-keepsake-current,.nj-bottom-note,.nj-keepsake-actions,.nj-poem-sheet,.nl-look-details'))b.append(node);
+      else if(node.matches('.nj-right-page,.nj-gift,.nj-keepsake-current,.nj-bottom-note,.nj-keepsake-actions,.nj-poem-sheet,.nl-look-details'))b.append(node);
       else a.append(node);
     }
     if(!b.children.length)b.innerHTML='<div class="nj-paper-memento">'+img(star)+'<p>'+t('La suite reste à écrire…','More little stories to come…')+'</p></div>';
@@ -233,12 +194,12 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
     dialog.querySelector('.nj-tabs').setAttribute('aria-label',t('Marque-pages du carnet','Notebook bookmarks'));
     pager.setAttribute('aria-label',t('Feuilleter le carnet','Turn the pages'));
     dialog.querySelector('.nj-close').setAttribute('aria-label',t('Fermer le carnet','Close notebook'));
-    const labels={looks:['Mes looks','My looks'],chambre:['Découvertes','Discoveries'],secrets:['Secrets','Secrets'],jeux:['Jeux','Games'],souvenirs:['Souvenirs','Keepsakes'],dressing:['Dressing','Wardrobe'],stickers:['Badges','Badges'],cadeaux:['Cadeaux','Gifts']};
-    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en],i)=>'<button type="button" style="--tab:'+i+'" data-nj-tab="'+id+'" aria-label="'+h(t(fr,en))+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(...labels[id]))+'</button>').join('');
+    const tabLabel=tabs.find(([id])=>id===active).slice(1);
+    dialog.querySelector('.nj-tabs').innerHTML=tabs.map(([id,fr,en])=>'<button type="button" data-nj-tab="'+id+'" aria-current="'+(active===id?'page':'false')+'">'+h(t(fr,en))+'</button>').join('');
     dialog.classList.toggle('nj-looks-open',active==='looks');
     pageTotal=1;paperLayout(pages[active]());if(active==='looks')looks.hydrate();
     const index=tabs.findIndex(x=>x[0]===active);
-    pager.innerHTML=button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-turn="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(index===0&&page===0?'disabled':''))+'<span>'+h(t(...labels[active]))+(pageTotal>1?' · '+(page+1)+' / '+pageTotal:'')+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-turn="1" aria-label="'+t('Page suivante','Next page')+'" '+(index===tabs.length-1&&page===pageTotal-1?'disabled':''));
+    pager.innerHTML=button(img('assets/drawn-ui/fleche_gauche.png'),'data-nj-turn="-1" aria-label="'+t('Page précédente','Previous page')+'" '+(index===0&&page===0?'disabled':''))+'<span>'+h(t(...tabLabel))+(pageTotal>1?' · '+(page+1)+' / '+pageTotal:'')+'</span>'+button(img('assets/drawn-ui/fleche_droite.png'),'data-nj-turn="1" aria-label="'+t('Page suivante','Next page')+'" '+(index===tabs.length-1&&page===pageTotal-1?'disabled':''));
   }
   function unfold(){
     window.NanaAnalytics?.record('journal/tab/'+active,1,true);
@@ -262,13 +223,15 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
     const animation=sheet.animate([{transform:'rotateY(0deg)',filter:'brightness(1)'},{transform:'rotateY('+(-85*direction)+'deg)',filter:'brightness(.86)',offset:.53},{transform:'rotateY('+(-179*direction)+'deg)',filter:'brightness(.96)'}],{duration:680,easing:'cubic-bezier(.3,.08,.25,1)',fill:'forwards'});
     animation.finished.catch(()=>{}).finally(()=>{sheet.remove();turning=false;});
   }
-  function open(tab='chambre'){
-    if(tab==='titres')tab='stickers';
-    if(!pages[tab])return false;
+  function open(tab='stickers'){
+    const legacy={chambre:'stickers',titres:'stickers',cadeaux:'souvenirs',secrets:'souvenirs',jeux:'souvenirs',dressing:'looks'};
+    if(Object.hasOwn(legacy,tab))tab=legacy[tab];
+    if(!Object.hasOwn(pages,tab))return false;
+    keepsakeFilter='all';
     active=tab;page=0;selectedKeepsake=null;looks.reset();
     const wasOpen=dialog.open;
     if(!wasOpen){previousFocus=document.activeElement;dialog.showModal();window.NanaAnalytics?.record('journal/open');}
-    notice.hidden=true;render();if(active==='dressing')loadWardrobe();
+    notice.hidden=true;render();
     if(!wasOpen)fold();else if(bookOpened)dialog.querySelector('[data-nj-tab="'+active+'"]').focus({preventScroll:true});
     return true;
   }
@@ -276,9 +239,9 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
   function navigate(route){window.NanaDeepLinks.open(route);}
   function goTab(tab){
     const direction=tabs.findIndex(x=>x[0]===tab)>=tabs.findIndex(x=>x[0]===active)?1:-1;
-    turnPage(()=>{active=tab;page=0;selectedKeepsake=null;looks.reset();render();if(tab==='dressing')loadWardrobe();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]').focus({preventScroll:true});},direction);
+    turnPage(()=>{active=tab;page=0;selectedKeepsake=null;looks.reset();render();window.NanaDeepLinks?.sync();dialog.querySelector('[data-nj-tab="'+tab+'"]').focus({preventScroll:true});},direction);
   }
-  trigger.addEventListener('click',()=>navigate('carnet/chambre'));
+  trigger.addEventListener('click',()=>navigate('carnet/stickers'));
   dialog.addEventListener('click',async event=>{
     const target=event.target.closest('button');if(!target)return;
     if(looks.handle(target))return;
@@ -305,7 +268,6 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
     else if(target.dataset.njOutfit)navigate('jeu/dressing/tenue/'+target.dataset.njOutfit);
     else if(target.dataset.njTitle)progress.selectTitle(progress.snapshot().title===target.dataset.njTitle?null:target.dataset.njTitle);
     else if(target.dataset.njPage){page+=Number(target.dataset.njPage);render();pager.querySelector('button:not(:disabled)')?.focus({preventScroll:true});}
-    else if(target.hasAttribute('data-nj-retry'))loadWardrobe();
     else if(target.hasAttribute('data-nj-copy')){
       try {await navigator.clipboard.writeText('MERCI10');target.textContent=t('Copié !','Copied!');}
       catch(_){const range=document.createRange();range.selectNodeContents(dialog.querySelector('.nj-coupon code'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);target.textContent=t('Sélectionné : copie le code','Selected: copy the code');}
