@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=cheval-bascule-1');
+  const response = await fetch(folder + 'objets.svg?v=fleur-niki-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -52,7 +52,7 @@
         : pieces + ref.slice(1) + '-' + u + '-' + v + '.webp';
       nightImages.push([image, nightUrl]);
     }
-    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, #v2-fifi-visual, .v2-kero-faces'), image => {
+    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, #v2-fifi-visual, #v2-niki-petals, .v2-kero-faces'), image => {
       const day = image.getAttribute('href');
       return { image, day, night: folderNight + day.split('/').pop() };
     });
@@ -346,6 +346,15 @@
       horse.style.removeProperty('visibility');
       item.removeAttribute('data-rearing');
     }
+  }
+  function spinNikiFlower(item) {
+    const petals = item.querySelector('#v2-niki-petals');
+    if (quiet.matches || petals.getAnimations().length) return;
+    // Each tile carries only the rotating black-and-white ring. Tile zero is clear.
+    petals.animate([
+      {transform: 'translateX(0px)', easing: 'steps(48, end)'},
+      {transform: 'translateX(-2304px)'}
+    ], {duration: 1450, easing: 'cubic-bezier(.15,.55,.3,1)'});
   }
   function shy() {
     motion(svg.querySelector('.kokeshi-tilt'), turns(0,-11,-9,0), 1500, '2865px 166px');
@@ -1647,6 +1656,7 @@
       window.NanaKeroWake?.activate(item);
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
+    if (item.dataset.object === 'niki') spinNikiFlower(item);
     if (item.dataset.object === 'fifi') rearHorse(item);
     if (item.dataset.object === 'van') {
       const already = window.NanaProgress?.hasFeat('olive-van-started');
