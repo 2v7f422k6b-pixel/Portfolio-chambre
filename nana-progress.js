@@ -89,7 +89,7 @@
     ["Affiches", "Posters", ["posters"]],
     ["Lumières de la chambre", "Room lights", ["night", "lights", "wall-lamp", "object:guirlande", "object:jelly", "object:bambi-lampe", "object:lampe-bureau"]],
     ["Paysages", "Landscapes", ["landscapes"]],
-    ["Le chat", "The cat", ["object:chat"]],
+    ["J’ai caressé Niki", "I petted Niki", ["object:chat"]],
     ["Le coquelicot", "The poppy", ["object:vase"]],
     ["Figurines qui parlent", "Talking figurines", ["object:miffy", "object:sonny-angel"]],
     ["Polaroïds", "Polaroids", ["photos", "object:instax"]],

@@ -117,3 +117,21 @@ html[data-theme="night"] #cat-cv-paper .cv-paper-night { opacity:1; }
 }
 
 
+
+/* The body expands toward the spine while the paws rest on the duvet. */
+#room-v2-ambient .niki-breath {
+  transform-box: view-box;
+  transform-origin: 861px 1221px;
+  animation: niki-breathe 3.9s ease-in-out infinite;
+}
+@keyframes niki-breathe {
+  0%, 100% { transform: scale(1); }
+  46% { transform: scale(1.002, 1.025); }
+}
+#app:not(.mode-play) .niki-breath { animation-play-state: paused; }
+#room-v2-ambient [data-cat-pet] .v2-hit { touch-action: none; }
+.niki-awake-eyes, [data-niki-awake] .niki-sleep-eyes { visibility: hidden; }
+[data-niki-awake] .niki-awake-eyes { visibility: visible; }
+@media (prefers-reduced-motion: reduce) {
+  #room-v2-ambient .niki-breath { animation: none; }
+}

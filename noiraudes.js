@@ -97,6 +97,7 @@
         ctx.restore();
         if (!discovered && reveal > 0 && ctx.globalAlpha > 0) {
           discovered = true;
+          scene.dispatchEvent(new Event('nana-noiraudes-emerge'));
           window.NanaProgress?.feat('noiraudes-seen');
         }
       });
