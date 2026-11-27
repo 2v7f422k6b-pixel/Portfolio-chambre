@@ -29,6 +29,7 @@
   52%{transform:translate3d(calc(var(--flight-x, 0px)*66),calc(var(--flight-y, 0px)*-6),0) rotate(12deg)}
   70%{transform:translate3d(calc(var(--flight-x, 0px)*75),calc(var(--flight-y, 0px)*17),0) rotate(-9deg)}
   86%{transform:translate3d(calc(var(--flight-x, 0px)*32),calc(var(--flight-y, 0px)*26),0) rotate(7deg)}
+  92%{transform:translate3d(calc(var(--flight-x, 0px)*18),calc(var(--flight-y, 0px)*26),0) rotate(-5deg)}
 }
 @media(prefers-reduced-motion:reduce) {
   #play-scene #paprika-butterfly {left:54%;top:32%;transform:none;animation:none}

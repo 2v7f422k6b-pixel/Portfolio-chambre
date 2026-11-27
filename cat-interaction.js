@@ -43,7 +43,7 @@
     pet(cat);
   });
 
-  scene.addEventListener('nana-noiraudes-emerge', () => {
+  function twitchEar() {
     const face = scene.querySelector('.niki-face');
     if (!face || reduced.matches) return;
     cancelAnimationFrame(earFrame);
@@ -55,7 +55,42 @@
       if (t < 1) earFrame = requestAnimationFrame(twitch);
     }
     earFrame = requestAnimationFrame(twitch);
-  });
+  }
+  scene.addEventListener('nana-noiraudes-emerge', twitchEar);
+
+  const butterfly = document.getElementById('paprika-butterfly');
+  let nearEar = false, proximityTimer;
+  function checkPassage() {
+    const cat = scene.querySelector('#room-v2-ambient [data-cat-pet]');
+    if (!cat || scene.classList.contains('sea-lit')) return;
+    const bounds = butterfly.getBoundingClientRect();
+    const matrix = cat.getScreenCTM();
+    if (!bounds.width || !matrix) return;
+    const center = new DOMPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+      .matrixTransform(matrix.inverse());
+    const distance = Math.hypot(center.x - 945, center.y - 1075);
+    if (!nearEar && distance < 95) {
+      nearEar = true;
+      twitchEar();
+    } else if (distance > 135) {
+      nearEar = false;
+    }
+  }
+  let inView = false;
+  function watchPassages() {
+    clearInterval(proximityTimer);
+    if (inView && !document.hidden && !reduced.matches) {
+      proximityTimer = setInterval(checkPassage, 160);
+    }
+  }
+  if (butterfly) {
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      watchPassages();
+    }).observe(butterfly);
+    document.addEventListener('visibilitychange', watchPassages);
+    reduced.addEventListener('change', watchPassages);
+  }
   window.addEventListener('pagehide', () => {
     clearTimeout(hideTimer);
     clearTimeout(sleepTimer);
