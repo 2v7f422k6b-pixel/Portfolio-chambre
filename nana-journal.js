@@ -217,11 +217,18 @@ const r=ratio(),pct=r.total?Math.round(r.count/r.total*100):0;trigger.querySelec
     change();
     if(!bookOpened||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
     // The turning leaf is artwork only. Never clone old HTML, tabs or interactive content.
-    const sheet=document.createElement('div');sheet.className='nj-turn-sheet nj-art-turn'+(direction<0?' nj-turn-back':'');sheet.inert=true;sheet.setAttribute('aria-hidden','true');
-    const front=document.createElement('div');front.className='nj-turn-front';
-    const back=document.createElement('div');back.className='nj-turn-reverse';
-    sheet.append(front,back);dialog.querySelector('.nj-main').append(sheet);turning=true;
-    const animation=sheet.animate([{transform:'rotateY(0deg)',filter:'brightness(1)'},{transform:'rotateY('+(-85*direction)+'deg)',filter:'brightness(.86)',offset:.53},{transform:'rotateY('+(-179*direction)+'deg)',filter:'brightness(.96)'}],{duration:680,easing:'cubic-bezier(.3,.08,.25,1)',fill:'forwards'});
+    const sheet=document.createElement('div');
+    sheet.className='nj-turn-sheet';
+    sheet.inert=true;
+    sheet.setAttribute('aria-hidden','true');
+    dialog.querySelector('.nj-main').append(sheet);
+    turning=true;
+    // Sweep one opaque paper surface across the binding in either direction.
+    const animation=sheet.animate([
+      {transform:'scaleX('+direction+') skewY(0deg)'},
+      {transform:'scaleX('+(direction*.08)+') skewY('+(-direction*3)+'deg)',offset:.48},
+      {transform:'scaleX('+(-direction)+') skewY(0deg)'}
+    ],{duration:680,easing:'ease-in-out',fill:'forwards'});
     animation.finished.catch(()=>{}).finally(()=>{sheet.remove();turning=false;});
   }
   function open(tab='stickers'){
