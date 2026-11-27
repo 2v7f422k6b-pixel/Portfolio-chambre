@@ -295,6 +295,58 @@
     return node.animate(frames, {duration: quiet.matches ? 0 : duration, easing:'ease-in-out', fill});
   }
   const turns = (...angles) => angles.map(angle => ({transform:'rotate(' + angle + 'deg)'}));
+  // The day and night sheets use the same poses, all warped from the original drawing.
+  async function rearHorse(item) {
+    if (quiet.matches || item.hasAttribute('data-rearing')) return;
+    const horse = item.querySelector('#v2-fifi-visual');
+    const sheet = horse.getAttribute('href').replace('cheval-etagere.webp', 'cheval-cabre.webp');
+    const frame = document.createElementNS(svg.namespaceURI, 'svg');
+    item.setAttribute('data-rearing', '');
+    try {
+      const preload = new Image();
+      preload.src = sheet;
+      await preload.decode();
+      if (quiet.matches || !item.isConnected) return;
+      const drawing = document.createElementNS(svg.namespaceURI, 'image');
+      drawing.setAttribute('href', sheet);
+      drawing.setAttribute('width', preload.naturalWidth);
+      drawing.setAttribute('height', preload.naturalHeight);
+      const width = preload.naturalWidth / 8;
+      const height = preload.naturalHeight / 4;
+      frame.setAttribute('x', Number(horse.getAttribute('x')) - 62);
+      frame.setAttribute('y', Number(horse.getAttribute('y')) - 62);
+      frame.setAttribute('width', width);
+      frame.setAttribute('height', height);
+      frame.setAttribute('overflow', 'hidden');
+      frame.setAttribute('pointer-events', 'none');
+      frame.setAttribute('aria-hidden', 'true');
+      frame.append(drawing);
+      horse.after(frame);
+      await new Promise(resolve => {
+        let start;
+        function tick(time) {
+          start ??= time;
+          const pose = Math.floor((time - start) * 32 / 1320);
+          if (pose >= 32 || quiet.matches || !item.isConnected ||
+              horse.getAttribute('href').replace('cheval-etagere.webp', 'cheval-cabre.webp') !== sheet) {
+            resolve();
+            return;
+          }
+          frame.setAttribute('viewBox', [(pose % 8) * width, Math.floor(pose / 8) * height, width, height].join(' '));
+          horse.style.visibility = 'hidden';
+          requestAnimationFrame(tick);
+        }
+        frame.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+        requestAnimationFrame(tick);
+      });
+    } catch (error) {
+      console.warn('Animation du cheval indisponible', error);
+    } finally {
+      frame.remove();
+      horse.style.removeProperty('visibility');
+      item.removeAttribute('data-rearing');
+    }
+  }
   function shy() {
     motion(svg.querySelector('.kokeshi-tilt'), turns(0,-11,-9,0), 1500, '2865px 166px');
   }
@@ -1595,10 +1647,7 @@
       window.NanaKeroWake?.activate(item);
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
-    if (item.dataset.object === 'fifi') {
-      // Pivot at the rear hoof where it meets the shelf.
-      motion(item.querySelector('image'), turns(0, -9, -9, -3, 0), 960, '210px 195px');
-    }
+    if (item.dataset.object === 'fifi') rearHorse(item);
     if (item.dataset.object === 'van') {
       const already = window.NanaProgress?.hasFeat('olive-van-started');
       window.NanaProgress?.visit('objet/volkswagen');
