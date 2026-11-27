@@ -275,3 +275,20 @@ html[data-theme=night] #nana-journal .nj-locked>img,html[data-theme=night] #nana
 #nana-journal .nj-pin[open] summary {width:32%}
 #nana-journal .nj-pin p {margin:.3em 0;line-height:1.35}
 #nana-journal .nj-pin-page>p {font-size:.85em}
+
+/* Use the original paper silhouettes as two blank sheets for reading. */
+#nana-journal .nj-main::after {
+  background:white;
+  -webkit-mask:url("assets/diary/IMG_6943.png") center / 100% 100% no-repeat,
+               url("assets/diary/IMG_6942.png") center / 100% 100% no-repeat;
+  mask:url("assets/diary/IMG_6943.png") center / 100% 100% no-repeat,
+       url("assets/diary/IMG_6942.png") center / 100% 100% no-repeat;
+}
+#nana-journal .nj-content {
+  background:url("assets/diary/IMG_6944.png") center / 100% 100% no-repeat;
+}
+#nana-journal .nj-art-turn .nj-turn-front,#nana-journal .nj-art-turn .nj-turn-reverse {
+  filter:brightness(0) invert(1);
+}
+#nana-journal .nj-leaf-inner {color:#55323d}
+#nana-journal .nj-pin-page>p,#nana-journal .nj-pin p {font-size:clamp(13px,1.3vw,17px);color:#55323d}
