@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=miffy-pieds-1');
+  const response = await fetch(folder + 'objets.svg?v=cheval-bascule-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -1596,8 +1596,8 @@
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
     if (item.dataset.object === 'fifi') {
-      const hops = [[0,0],[-16,-5],[0,0],[-9,3],[0,0],[0,-1],[0,0]];
-      motion(item.querySelector('image'), hops.map(([y,a]) => ({transform:`translateY(${y}px) rotate(${a}deg)`})), 1300, '278px 237px');
+      // Pivot at the rear hoof where it meets the shelf.
+      motion(item.querySelector('image'), turns(0, -9, -9, -3, 0), 960, '210px 195px');
     }
     if (item.dataset.object === 'van') {
       const already = window.NanaProgress?.hasFeat('olive-van-started');
