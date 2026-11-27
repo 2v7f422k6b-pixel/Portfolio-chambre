@@ -31,8 +31,8 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
 #window-life .night-cloud-art {filter:url(#lena-night-cloud-ink);}
 #window-life image.night-star {filter:url(#lena-night-star-ink);}
 #window-life image.shooting-star {filter:url(#lena-shooting-star-ink);}
-#window-life .cloud-back { opacity:.85; animation:window-cloud-back 28s linear infinite -11s; }
-#window-life .cloud-front { opacity:.95; animation:window-cloud-front 35s linear infinite -16s; }
+#window-life .cloud-back { opacity:.85; animation:window-cloud-back 37s linear infinite -11s; }
+#window-life .cloud-front { opacity:.95; animation:window-cloud-front 55s linear infinite -16s; }
 #window-life .bird-flock {
   fill:none;
   stroke:#233c73;
@@ -59,7 +59,7 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
 #window-life .night-cloud {
   fill:#9bb2dc;
   opacity:.15;
-  animation:window-night-cloud 67s linear infinite -30s;
+  animation:window-night-cloud 87s linear infinite -30s;
 }
 #window-life .night-star {
   fill:#fff7df;
@@ -85,11 +85,11 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
 
 @keyframes window-cloud-back {
   from {transform:translateX(-110px);}
-  to {transform:translateX(145px);}
+  to {transform:translateX(225px);}
 }
 @keyframes window-cloud-front {
-  from {transform:translateX(-85px);}
-  to {transform:translateX(145px);}
+  from {transform:translateX(-140px);}
+  to {transform:translateX(225px);}
 }
 @keyframes window-birds-fly {
   from {transform:translate(-90px,9px);}
@@ -104,8 +104,8 @@ html[data-theme="night"] #window-life .outside-night { opacity:1; }
   to {transform:scaleY(1.08);}
 }
 @keyframes window-night-cloud {
-  from {transform:translateX(-112px);}
-  to {transform:translateX(178px);}
+  from {transform:translateX(-155px);}
+  to {transform:translateX(225px);}
 }
 @keyframes window-star-twinkle {
   0%,100% {opacity:.47; transform:scale(.65);}
