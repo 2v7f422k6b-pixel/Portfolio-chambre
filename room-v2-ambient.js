@@ -10,7 +10,7 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=niki-lit-1');
+  const response = await fetch(folder + 'objets.svg?v=niki-lit-2');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
@@ -52,7 +52,7 @@
         : pieces + ref.slice(1) + '-' + u + '-' + v + '.webp';
       nightImages.push([image, nightUrl]);
     }
-    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, #v2-fifi-visual, #v2-niki-petals, #niki-bed-atlas, .v2-kero-faces'), image => {
+    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, #v2-fifi-visual, #v2-niki-petals, #niki-bed-atlas, .niki-breath, .v2-kero-faces'), image => {
       const day = image.getAttribute('href');
       return { image, day, night: folderNight + day.split('/').pop() };
     });

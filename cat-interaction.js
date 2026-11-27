@@ -6,29 +6,17 @@
   let hideTimer, sleepTimer, stroke, earFrame;
   let lastStroke = -Infinity;
 
-  function pet(cat, clientX, clientY) {
+  function pet(cat) {
     clearTimeout(hideTimer);
     response.classList.remove('is-purring');
     void response.getBoundingClientRect();
     response.classList.add('is-purring');
     hideTimer = setTimeout(() => response.classList.remove('is-purring'), 2200);
-    const head = cat.querySelector('.niki-nuzzle');
-    if (!head) return;
+    if (!cat.closest('#room-v2-ambient')) return;
     window.NanaProgress?.visit('objet/chat');
     clearTimeout(sleepTimer);
     cat.setAttribute('data-niki-awake', '');
     sleepTimer = setTimeout(() => cat.removeAttribute('data-niki-awake'), 1400);
-    if (reduced.matches) return;
-    const cheek = new DOMPoint(971, 1160).matrixTransform(cat.getScreenCTM());
-    const cx = cheek.x, cy = cheek.y;
-    const dx = (clientX ?? cx) - cx, dy = (clientY ?? cy - 1) - cy;
-    const dist = Math.max(1, Math.hypot(dx, dy));
-    const lean = 'translate(' + (dx / dist * 5) + 'px,' + (dy / dist * 3 - 2) + 'px)';
-    head.getAnimations().forEach(animation => animation.cancel());
-    head.animate([
-      {transform:'translate(0,0)'}, {transform:lean, offset:.36},
-      {transform:lean, offset:.59}, {transform:'translate(0,0)'}
-    ], {duration:1250, easing:'ease-in-out'});
   }
 
   scene.addEventListener('pointerdown', event => {
@@ -41,7 +29,7 @@
     if (!stroke || stroke.id !== event.pointerId || stroke.petted) return;
     if (Math.hypot(event.clientX - stroke.x, event.clientY - stroke.y) < 5) return;
     stroke.petted = true;
-    pet(stroke.cat, event.clientX, event.clientY);
+    pet(stroke.cat);
   });
   scene.addEventListener('pointerup', event => {
     if (!stroke || event.pointerId !== stroke.id) return;
@@ -52,7 +40,7 @@
   scene.addEventListener('click', event => {
     const cat = event.target.closest('[data-cat-pet]');
     if (!cat || (event.detail && performance.now() - lastStroke < 500)) return;
-    pet(cat, event.detail ? event.clientX : undefined, event.detail ? event.clientY : undefined);
+    pet(cat);
   });
 
   scene.addEventListener('nana-noiraudes-emerge', () => {
