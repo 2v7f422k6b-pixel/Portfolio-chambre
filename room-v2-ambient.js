@@ -10,12 +10,12 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=mer-1');
+  const response = await fetch(folder + 'objets.svg?v=etagere-nana-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
   const [underlay] = await Promise.all([
-    loadImage('fond-mouvements.webp?v=van12'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
+    loadImage('fond-mouvements.webp?v=etagere-nana-1'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
     loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp'), loadImage('calques-personnages.webp')
   ]);
   underlay.id = 'room-v2-underlay';
@@ -52,7 +52,7 @@
         : pieces + ref.slice(1) + '-' + u + '-' + v + '.webp';
       nightImages.push([image, nightUrl]);
     }
-    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, .v2-kero-faces'), image => {
+    const textures = Array.from(svg.querySelectorAll('#v2-van-visual, #v2-fifi-visual, .v2-kero-faces'), image => {
       const day = image.getAttribute('href');
       return { image, day, night: folderNight + day.split('/').pop() };
     });
@@ -1595,6 +1595,10 @@
       window.NanaKeroWake?.activate(item);
     }
     if (item.dataset.object === 'plant') window.NanaProgress?.visit('objet/plante-fleur');
+    if (item.dataset.object === 'fifi') {
+      const hops = [[0,0],[-16,-5],[0,0],[-9,3],[0,0],[0,-1],[0,0]];
+      motion(item.querySelector('image'), hops.map(([y,a]) => ({transform:`translateY(${y}px) rotate(${a}deg)`})), 1300, '278px 237px');
+    }
     if (item.dataset.object === 'van') {
       const already = window.NanaProgress?.hasFeat('olive-van-started');
       window.NanaProgress?.visit('objet/volkswagen');
