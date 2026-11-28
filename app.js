@@ -633,7 +633,7 @@ function openPokemonCard(){
  <p class="card-anecdote">${t('Les petits objets lui paraissent systématiquement nécessaires.','Small objects always seem essential to her.')}</p>
  <footer><span>Nana Color Studio · ${t('Niv.','Lv.')} 32</span><span>${t('Exemplaire unique','One of a kind')} · 001 / 001</span></footer>
  </article></div><div class="nana-card-actions" data-no-translate>
- <a data-card-download hidden>${t('Télécharger le PNG','Download PNG')}</a>
+ <button type="button" data-card-download hidden>${t('Enregistrer l’image','Save image')}</button>
  <button type="button" data-card-retry hidden>${t('Réessayer','Try again')}</button><p role="status"></p>
  </div>`,'pokemon-card');
  window.NanaCardExport?.prepare(document.querySelector('.nana-profile-card'),document.querySelector('.nana-card-actions'));
@@ -668,7 +668,7 @@ function openAbout(outfit,figure){
  closeWindow();
  closeSpecial();
  window.NanaAnalytics?.startActivity('dressing');
- specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=discoveries46-1'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+(window.NanaGacha?.figures.some(f=>f.id===figure)?'&amp;figure='+encodeURIComponent(figure):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#fff4e8;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
+ specialHost.innerHTML='<iframe title="About Me — interactive dress-up game" src="about-me.html?v=photo-save-1'+(window.NanaProgress?.outfits.some(x=>x.id===outfit)?'&amp;outfit='+encodeURIComponent(outfit):'')+(window.NanaGacha?.figures.some(f=>f.id===figure)?'&amp;figure='+encodeURIComponent(figure):'')+'" loading="eager" style="display:block;width:min(1140px,95vw);height:min(900px,90dvh);border:0;border-radius:11px;background:#fff4e8;box-shadow:0 12px 35px #2f1c4c60" allow="web-share"></iframe>';
  specialShade.hidden=false;specialShade.style.pointerEvents='auto';
  $('#special-close').setAttribute('aria-label','Close');
  $('#special-close').focus({preventScroll:true});

@@ -2,7 +2,7 @@
    Uses native canvas, no remote renderer and no SVG foreignObject (Safari). */
 (() => {
   'use strict';
-  let lastURL=null,revision=0;
+  let revision=0;
   const transparent=color=>!color||color==='transparent'||color==='rgba(0, 0, 0, 0)';
   function loadImage(src){return new Promise((resolve,reject)=>{
     const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('Card image unavailable'));image.src=src;
@@ -76,9 +76,12 @@
     status.textContent=en?'Preparing your PNG…':'Préparation du PNG…';retry.hidden=true;
     try{
       const blob=await render(card);if(token!==revision||!card.isConnected)return;
-      if(lastURL)URL.revokeObjectURL(lastURL);lastURL=URL.createObjectURL(blob);
       const filename=en?'lena-character-card.png':'carte-lena.png';
-      download.href=lastURL;download.download=filename;download.hidden=false;
+      download.onclick=async()=>{
+        try{await window.NanaImageSave.show(blob,filename);status.textContent='';}
+        catch(_){status.textContent=en?'The image could not be opened.':'L’image n’a pas pu être ouverte.';}
+      };
+      download.hidden=false;
       status.textContent='';
     }catch(_){
       if(token!==revision||!card.isConnected)return;

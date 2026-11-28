@@ -223,6 +223,7 @@ html body.has-saved-looks.bag-adjusting .main>.profile{display:flex!important;gr
 }
 @media(min-width:601px){.nl-mobile-category{display:none}}
 </style>
+<script src="image-save.js?v=photo-save-1" defer></script>
 </head><body>
 <div class="frame">
 <header class="top"><div class="actions"><button id="reset" class="action" type="button">↶ Reset</button><button id="save" class="action primary" type="button">Enregistrer en PNG</button><button id="close" class="action close" type="button" title="Fermer" aria-label="Fermer"><img src="assets/portfolio-ux/IMG_5035.png" alt=""></button></div></header>
@@ -751,11 +752,7 @@ return c;
 async function saveLook(){const btn=$('#save');btn.disabled=true;try{const c=await composeLook();
 const blob=await new Promise(resolve=>c.toBlob(resolve,'image/png'));
 if(!blob)throw new Error('PNG export unavailable');
-const file=new File([blob],'lena-tenue.png',{type:'image/png'});
-if(navigator.canShare?.({files:[file]})){
- try{await navigator.share({files:[file]});return}catch(error){if(error.name==='AbortError')return;}
-}
-const u=URL.createObjectURL(blob),link=document.createElement('a');link.href=u;link.download=file.name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);toast('Tenue enregistrée en PNG transparent');
+await window.NanaImageSave.show(blob,'lena-tenue.png');
 }catch(e){toast('Impossible d’enregistrer la tenue');console.error(e)}finally{btn.disabled=false}}
 
 $('#save').addEventListener('click',saveLook);

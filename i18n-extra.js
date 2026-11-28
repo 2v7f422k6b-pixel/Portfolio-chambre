@@ -83,7 +83,7 @@ window.NanaI18nExtra = {
   "You have achieved absolutely nothing.": "Tu n’as absolument rien accompli.",
   "Do nothing again?": "Recommencer à ne rien faire ?",
   "Start doing nothing": "Commencer à ne rien faire",
-  "Download my certificate": "Télécharger mon certificat",
+  "Save my certificate as an image": "Enregistrer mon certificat en image",
   "Time remaining": "Temps restant",
   "One minute of nothing": "Une minute de rien",
   "✳ AWARDED WITHOUT THE SLIGHTEST EFFORT ✳": "✳ DÉLIVRÉ SANS LE MOINDRE EFFORT ✳",

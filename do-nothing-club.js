@@ -107,7 +107,7 @@
           '<strong>Official Champion<br>of Absolutely Nothing</strong>' +
           '<small>For 60 seconds of world-class inactivity.</small>' +
         '</div>' +
-        '<button id="nothing-download" class="nothing-button nothing-download" type="button" hidden>Download my certificate</button>' +
+        '<button id="nothing-download" class="nothing-button nothing-download" type="button" hidden>Save my certificate as an image</button>' +
         '<button id="nothing-action" class="nothing-button" type="button" data-nothing-action="start">Start doing nothing</button>' +
       '</section>';
     if (typeof window.openWindow === 'function') window.openWindow('DO NOTHING CLUB.exe', content, 'do-nothing');
@@ -215,7 +215,7 @@
       await window.NanaImageSave.show(blob, fr ? 'certificat-de-flemme-intersiderale.png' : 'certificate-of-intergalactic-laziness.png');
     } catch (error) {
       console.error('Could not export the Do Nothing certificate', error);
-      window.alert(fr ? 'Impossible de télécharger le certificat pour le moment.' : 'Could not download the certificate right now.');
+      window.alert(fr ? 'Impossible d’ouvrir l’image du certificat pour le moment.' : 'Could not open the certificate image right now.');
     } finally {
       button.disabled = false;
     }
