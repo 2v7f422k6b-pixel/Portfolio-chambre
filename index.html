@@ -236,11 +236,13 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     html[data-theme="night"] #room-v2-ambient > svg[viewBox],
     html[data-theme="night"] #room-v2-ambient image[href$="-fond.webp"] { display:none; }
-    /* Room objects use their illustrated feedback instead of bounding-box outlines. */
-    #play-scene :is([tabindex], [role="button"]) {
+    /* Illustrated hit areas include the capsule and figure in the separate Gachapon dialog. */
+    #play-scene :is(button, [tabindex], [role="button"]),
+    .gacha-reveal .gacha-stage {
       -webkit-tap-highlight-color: transparent;
     }
-    #play-scene :is([tabindex], [role="button"]):focus {
+    #play-scene :is(button, [tabindex], [role="button"]):focus,
+    .gacha-reveal .gacha-stage:focus {
       outline: none !important;
     }
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
