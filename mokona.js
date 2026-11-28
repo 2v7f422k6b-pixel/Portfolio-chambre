@@ -165,7 +165,7 @@
     ["feat:fish-mobile-seen","Les poissons au mur jurent qu’ils savent nager. Moi, j’aimerais bien voir ça.","Those fish on the wall swear they can swim. I’d like to see that."],
     ["feat:noiraudes-seen","Ça chatouille sous la couette. Moi ? Mais tu vois bien mes deux pattes !","Something tickles under the duvet. Me? You can see both my paws!"],
     ["visit:jeu/word-lab","Un mot est tombé de l’étagère du haut. Tu crois qu’on peut le remettre dans une autre phrase ?","A word fell off the top shelf. Think we could slip it into a different sentence?"],
-    ["feat:secret-cookie","Un biscuit qui connaît ton avenir… Est-ce qu’il sait aussi ce qui va lui arriver ?","A biscuit that knows your future… I wonder if it knows its own."],
+    ["discovery:secret-cookie","Un biscuit qui connaît ton avenir… Est-ce qu’il sait aussi ce qui va lui arriver ?","A biscuit that knows your future… I wonder if it knows its own."],
     ["feat:alice-bottle","Sur la table, il y a une toute petite fiole. Enfin… petite, de mon point de vue.","There’s a tiny bottle on the table. Well… tiny from where I’m sitting."],
     ["visit:jeu/bead-box","J’ai essayé d’enfiler une perle. Tu as déjà essayé avec des pattes comme ça ?","I tried threading a bead. Ever tried it with paws like these?"],
     ["feat:secret-memory-box","Ce carreau sonne creux. Comment je le sais ? Oh, comme ça…","That tile sounds hollow. How would I know? Oh, just a hunch…"],
@@ -221,16 +221,18 @@
       const {read,total} = progress.dialogueProgress(id);
       return read.length > 0 && read.length < total;
     };
+    const room = progress.snapshot().room;
     const started = {
       kodamaPartial:kodama > 0 && kodama < 5 && !progress.hasFeat('mononoke-kodama'),
       miffyPartial:reading('miffy'), sonnyPartial:reading('sonny-angel'),
       polaroidPartial:progress.hasVisit('photos') && !progress.hasFeat('polaroids-all'),
-      landscapePartial:progress.snapshot().room.counters.landscapes[0]<4,
+      landscapePartial:room.counters.landscapes[0]<4,
       gachaEmpty:figures === 0, gachaPartial:figures > 0 && figures < 15
     };
     const clue = bedClues.find(([key]) => {
       const [type,id] = key.split(':');
       if (type === 'feat') return !progress.hasFeat(id);
+      if (type === 'discovery') return !room.discovered.includes(id);
       if (type === 'visit') return !progress.hasVisit(id);
       if (type === 'dialogue') return !progress.hasReadDialogue(id);
       return started[key];
