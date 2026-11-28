@@ -42,7 +42,8 @@
       const saved=JSON.parse(localStorage.getItem(deliveredKey));
       if(Array.isArray(saved)){for(const id of saved)delivered.add(id);}
       else if(localStorage.getItem('nana-mokona-discovered-v1')==='1'){
-        for(const id of progress.earnedBadgeIds())delivered.add(id);
+        // Only the introductory badge was handed over during the first meeting.
+        delivered.add('glance');
         saveDelivered();
       }
     }catch{}

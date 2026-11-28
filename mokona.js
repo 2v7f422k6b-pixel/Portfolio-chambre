@@ -644,7 +644,8 @@
   function checkPendingGift(){
     if(!discovered || gift || landing || document.hidden || !app.classList.contains('mode-play') ||
        bed.hidden || !stage.hidden || document.querySelector('dialog[open], #window-shade:not([hidden]), #special-shade:not([hidden])'))return;
-    if(!document.getElementById('play-viewport')?.getClientRects().length)return;
+    const room=document.getElementById('play-viewport');
+    if(!room?.getClientRects().length || room.getAttribute('aria-busy')==='true')return;
     const badge=window.NanaJournal?.pendingBadge?.();
     if(badge)presentGift(badge);
   }
@@ -656,7 +657,7 @@
   roomChanges.observe(app,{attributes:true,attributeFilter:['class']});
   for(const id of ['play-viewport','window-shade','special-shade']){
     const node=document.getElementById(id);
-    if(node)roomChanges.observe(node,{attributes:true,attributeFilter:['hidden']});
+    if(node)roomChanges.observe(node,{attributes:true,attributeFilter:id==='play-viewport'?['hidden','aria-busy']:['hidden']});
   }
   document.addEventListener('close',schedulePendingGift,true);
   document.addEventListener('visibilitychange',schedulePendingGift);
