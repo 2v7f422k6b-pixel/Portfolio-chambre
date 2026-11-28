@@ -208,6 +208,14 @@
     ["visit:objet/gabzilla","Tu as vu qui s’est installé sur le t-shirt de la chaise ? Moi, je lui laisse la place.","Seen who’s on the T-shirt draped over the chair? They can keep that seat."],
     ["feat:rested","L’ours et moi faisons un concours de rien du tout. Tu restes un peu avec nous ?","The bear and I are having a do-nothing contest. Care to stay a while?"],
     ["feat:severance-refined","Les chiffres de Lumon sont très pointilleux sur le rangement. Quatre catégories, vraiment ?","Those Lumon numbers are terribly fussy about sorting. Four categories, really?"],
+    ["discovery:posters","Une des affiches a peut-être une histoire à te raconter. Choisis celle qui te fait de l’œil !","One of the posters might have a story to tell. Pick whichever catches your eye!"],
+    ["discovery:object:chat","Niki dort sur le lit. Tu peux la caresser tout doucement, si tu veux.","Niki is asleep on the bed. You can give her a gentle pet if you like."],
+    ["discovery:object:vase","Regarde les fleurs rouges dans le vase sur la table basse. Il y en a une qui n’attend qu’un petit coucou.","Look at the red flowers in the vase on the coffee table. One of them is waiting for a little hello."],
+    ["discovery:sailor","Le réveil rouge est sur l’étagère, près de la gelée. Tu crois qu’il sait quelle heure il est sur la Lune ?","The red alarm clock is on the shelf by the jelly. Think it knows what time it is on the Moon?"],
+    ["discovery:office","Sur la pancarte au-dessus de l’iMac, il y a quelqu’un qui tient beaucoup à son titre. Touche-la pour voir.","Someone on the sign above the iMac takes his job title very seriously. Tap it and see."],
+    ["discovery:care-feed","Le Tamagotchi est sur l’étagère, à côté de Kero. Essaie de prendre un peu soin de lui.","The Tamagotchi is on the shelf next to Kero. Try taking care of it for a bit."],
+    ["discovery:colored","Un coup de crayon dans le coloriage et la page sera déjà un peu plus à toi.","Add a little colour to a page to make it yours."],
+    ["discovery:word-placed","Dans le Laboratoire des mots, essaie de placer un mot. Je te laisse choisir lequel.","Try placing a word in the Word Lab. I’ll let you pick which one."],
     ["landscapePartial","Le cadran a quatre paysages en tête. Tu les as tous vus, toi ?","That dial has four places in mind. Have you seen them all?"],
     ["gachaPartial","Il manque quelqu’un à l’appel des figurines. La machine fait semblant de ne rien savoir.","Someone’s missing at figurine roll call. The machine is pretending it knows nothing."]
   ];
@@ -230,7 +238,8 @@
       gachaEmpty:figures === 0, gachaPartial:figures > 0 && figures < 15
     };
     const clue = bedClues.find(([key]) => {
-      const [type,id] = key.split(':');
+      const [type,...parts] = key.split(':');
+      const id = parts.join(':');
       if (type === 'feat') return !progress.hasFeat(id);
       if (type === 'discovery') return !room.discovered.includes(id);
       if (type === 'visit') return !progress.hasVisit(id);
@@ -238,6 +247,12 @@
       return started[key];
     });
     if (clue) return clue[english ? 2 : 1];
+    const missing = room.required.find(id => !room.discovered.includes(id));
+    if (missing !== undefined) {
+      const name = progress.discoveries.find(discovery => discovery.id === missing)?.name[language];
+      if (name) return english ? `I think there’s still something to find: ${name}.` : `Il te reste encore une piste : ${name}.`;
+      return english ? 'There’s still something left to discover in the room.' : 'Il reste encore quelque chose à découvrir dans la chambre.';
+    }
     return ["Plus un secret dans ma manche. D’ailleurs… où est ma manche ?","Not a secret left up my sleeve. Come to think of it… where’s my sleeve?"][Number(english)];
   }
   function wakeOrDismiss(event) {
