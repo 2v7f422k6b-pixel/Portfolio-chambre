@@ -294,6 +294,10 @@ dialog.sea-interaction-shield::backdrop { background: transparent; backdrop-filt
 .sea-interaction-shield button {
   position: fixed; margin: 0; padding: 0; border: 0;
   background: transparent; box-shadow: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sea-interaction-shield button:focus {
+  outline: none !important;
 }
 
 #play-scene > .sea-window {
