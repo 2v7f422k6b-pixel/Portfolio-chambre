@@ -10,13 +10,14 @@
     image.src = folder + file;
     return image.decode().then(() => image);
   }
-  const response = await fetch(folder + 'objets.svg?v=happy-berry-lit-1');
+  const response = await fetch(folder + 'objets.svg?v=happy-berry-calques-1');
   if (!response.ok) throw new Error('Room drawing unavailable');
   const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml').documentElement;
   if (svg.localName !== 'svg') throw new Error('Invalid room drawing');
   const [underlay] = await Promise.all([
     loadImage('fond-mouvements.webp?v=etagere-nana-2'), loadImage('objets-jour.webp'), loadImage('kero-visages.webp'),
-    loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp'), loadImage('calques-personnages.webp')
+    loadImage('miroir.webp'), loadImage('lampe-fleur.webp'), loadImage('cinq-objets.webp'), loadImage('calques-personnages.webp'),
+    loadImage('happy-berry-lit-jour.webp'), loadImage('happy-berry-lit-nuit.webp')
   ]);
   underlay.id = 'room-v2-underlay';
   underlay.dataset.roomV2Layer = '';
