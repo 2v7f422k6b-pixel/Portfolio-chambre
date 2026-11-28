@@ -235,8 +235,13 @@ html[data-theme="night"] #nana-glow-stars-layer .nana-phosphor-star {opacity:1!i
     }
     html[data-theme="night"] #room-v2-ambient > svg[viewBox],
     html[data-theme="night"] #room-v2-ambient image[href$="-fond.webp"] { display:none; }
-    /* Keep keyboard focus on the drawn van hit area while its image falls. */
-    #room-v2-ambient [data-object="van"]:focus { outline:none!important; }
+    /* Room objects use their illustrated feedback instead of bounding-box outlines. */
+    #play-scene :is([tabindex], [role="button"]) {
+      -webkit-tap-highlight-color: transparent;
+    }
+    #play-scene :is([tabindex], [role="button"]):focus {
+      outline: none !important;
+    }
     #room-v2-ambient [data-object="van"]:has([data-motion-playing]) .v2-hit { stroke:transparent; }
     html:not([data-theme="night"]) #room-v2-ambient [data-object="office"] text { fill: #ff173b; }
     /* Match the SVG viewport to the desert artwork while keeping its room coordinates. */
