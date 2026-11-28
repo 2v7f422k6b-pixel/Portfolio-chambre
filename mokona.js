@@ -661,8 +661,13 @@
   document.addEventListener('close',schedulePendingGift,true);
   document.addEventListener('visibilitychange',schedulePendingGift);
   window.addEventListener('pageshow',schedulePendingGift);
-  window.NanaProgress?.subscribe(schedulePendingGift);
-  schedulePendingGift();
+  function watchBadgeProgress() {
+    window.NanaProgress?.subscribe(schedulePendingGift);
+    schedulePendingGift();
+  }
+  // The progression script is deferred, while this scene initializes during parsing.
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchBadgeProgress,{once:true});
+  else watchBadgeProgress();
   const heldImages = [];
   scene.addEventListener('incense:start', () => {
     if (discovered || heldImages.length) return;
